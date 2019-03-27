@@ -4489,3 +4489,15 @@ user global configuration and to define the default location to store repositori
 not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
 EGit might behave differently since they see different configuration options.
 This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2019-03-27 09:04:28.400
+!MESSAGE The POM for jdr.exia:contract:jar:0.0.1-SNAPSHOT is missing, no dependency information available
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2019-03-27 09:04:29.440
+!MESSAGE The POM for jdr.exia:contract:jar:0.0.1-SNAPSHOT is missing, no dependency information available
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2019-03-27 09:04:39.687
+!MESSAGE The POM for jdr.exia:contract:jar:0.0.1-SNAPSHOT is missing, no dependency information available
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2019-03-27 09:04:39.927
+!MESSAGE The POM for jdr.exia:contract:jar:0.0.1-SNAPSHOT is missing, no dependency information available
