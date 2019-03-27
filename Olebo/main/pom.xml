@@ -9,17 +9,17 @@
   <dependencies>
   	<dependency>
   		<groupId>jdr.exia</groupId>
-  		<artifactId>Model</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>jdr.exia</groupId>
   		<artifactId>Contract</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   	<dependency>
   		<groupId>jdr.exia</groupId>
   		<artifactId>Controler</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>jdr.exia</groupId>
+  		<artifactId>Model</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   	<dependency>
