@@ -2,6 +2,7 @@ package jdr.exia;
 
 import jdr.exia.controler.IControler;
 import jdr.exia.model.IModel;
+import jdr.exia.model.Model;
 import jdr.exia.view.IView;
 
 public class Olebo {

@@ -1,4 +1,4 @@
-package jdr.exia;
+package jdr.exia.model;
 
 import jdr.exia.model.IModel;
 
