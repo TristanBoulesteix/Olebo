@@ -13,8 +13,5 @@ public class Olebo {
 		IControler controler = new Controler(viewManager, model);
 		controler.initDatas();
 		controler.start();
-
-		// Hello world !
-		System.out.println("Hello world !");
 	}
 }
