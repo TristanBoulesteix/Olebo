@@ -1,14 +1,13 @@
-package jdr.exia;
+package jdr.exia.controller;
 
-import jdr.exia.controler.IControler;
 import jdr.exia.model.IModel;
 import jdr.exia.view.IView;
 
-public class Controler implements IControler {
+public class Controller implements IController {
 	private final IView viewManager;
 	private final IModel model;
 
-	public Controler(IView viewManager, IModel model) {
+	public Controller(IView viewManager, IModel model) {
 		this.viewManager = viewManager;
 		this.model = model;
 	}

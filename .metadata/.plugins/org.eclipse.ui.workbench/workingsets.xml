@@ -32,7 +32,7 @@
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/main" type="4"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/Model" type="4"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/Contract" type="4"/>
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/Controler" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/Controller" type="4"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/View" type="4"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/Olebo" type="4"/>
 </workingSet>

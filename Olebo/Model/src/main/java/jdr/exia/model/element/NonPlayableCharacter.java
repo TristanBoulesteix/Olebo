@@ -1,4 +1,4 @@
-package Element;
+package jdr.exia.model.element;
 
 public class NonPlayableCharacter {
 

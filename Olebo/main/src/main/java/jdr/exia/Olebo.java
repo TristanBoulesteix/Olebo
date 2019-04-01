@@ -1,6 +1,7 @@
 package jdr.exia;
 
-import jdr.exia.controler.IControler;
+import jdr.exia.controller.Controller;
+import jdr.exia.controller.IController;
 import jdr.exia.model.IModel;
 import jdr.exia.model.Model;
 import jdr.exia.view.IView;
@@ -10,7 +11,7 @@ public class Olebo {
 		// Instantiation of the MVC and start of the program
 		IModel model = new Model();
 		IView viewManager = new ViewManager();
-		IControler controler = new Controler(viewManager, model);
+		IController controler = new Controller(viewManager, model);
 		controler.initDatas();
 		controler.start();
 	}
