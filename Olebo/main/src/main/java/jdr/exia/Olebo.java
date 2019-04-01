@@ -11,7 +11,7 @@ public class Olebo {
 		IModel model = new Model();
 		IView viewManager = new ViewManager();
 		IControler controler = new Controler(viewManager, model);
-		// controler.initDatas();
+		controler.initDatas();
 		controler.start();
 
 		// Hello world !
