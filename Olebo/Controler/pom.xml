@@ -5,10 +5,8 @@
     <artifactId>Olebo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>Controler</artifactId>
+  <artifactId>Controller</artifactId>
   <dependencies>
-
-
   <dependency>
   	<groupId>jdr.exia</groupId>
   	<artifactId>contract</artifactId>
