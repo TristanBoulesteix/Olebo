@@ -14,5 +14,6 @@ public class Olebo {
 		IController controler = new Controller(viewManager, model);
 		controler.initDatas();
 		controler.start();
+		
 	}
 }
