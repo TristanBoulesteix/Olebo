@@ -2594,3 +2594,1116 @@ java.lang.NullPointerException: null
 2019-04-01 09:45:32,854 [Worker-4: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
 2019-04-01 09:45:32,856 [Worker-4: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
 2019-04-01 09:45:32,857 [Worker-4: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:13:26,541 [Worker-4: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2019-04-01 10:13:44,500 [Worker-13: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using NULL lifecycle mapping for MavenProject: jdr.exia:Olebo:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\pom.xml.
+2019-04-01 10:13:45,477 [Worker-13: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:main:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\main\pom.xml.
+2019-04-01 10:13:45,522 [Worker-13: Importing Maven projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 10:13:45,523 [Worker-13: Importing Maven projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier  to /Controler/target/classes
+2019-04-01 10:13:45,524 [Worker-13: Importing Maven projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 10:13:45,525 [Worker-13: Importing Maven projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 10:13:45,643 [Worker-13: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Controler:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Controler\pom.xml.
+2019-04-01 10:13:45,757 [Worker-13: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Model:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Model\pom.xml.
+2019-04-01 10:13:45,759 [Worker-13: Importing Maven projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 10:13:46,003 [Worker-13: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Contract:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Contract\pom.xml.
+2019-04-01 10:13:47,157 [Worker-13: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:View:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\View\pom.xml.
+2019-04-01 10:13:47,159 [Worker-13: Importing Maven projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 10:13:49,738 [Worker-13: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Contract/src/main/java
+2019-04-01 10:13:49,739 [Worker-13: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Contract/src/main/resources
+2019-04-01 10:13:49,740 [Worker-13: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Contract/src/test/java
+2019-04-01 10:13:49,740 [Worker-13: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Contract/src/test/resources
+2019-04-01 10:13:52,045 [Worker-13: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Controler/src/main/java
+2019-04-01 10:13:52,045 [Worker-13: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Controler/src/main/resources
+2019-04-01 10:13:52,047 [Worker-13: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Controler/src/test/java
+2019-04-01 10:13:52,047 [Worker-13: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Controler/src/test/resources
+2019-04-01 10:13:52,677 [Worker-13: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Model/src/main/java
+2019-04-01 10:13:52,678 [Worker-13: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Model/src/main/resources
+2019-04-01 10:13:52,679 [Worker-13: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Model/src/test/java
+2019-04-01 10:13:52,679 [Worker-13: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Model/src/test/resources
+2019-04-01 10:13:52,806 [Worker-13: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /View/src/main/java
+2019-04-01 10:13:52,806 [Worker-13: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /View/src/main/resources
+2019-04-01 10:13:52,807 [Worker-13: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /View/src/test/java
+2019-04-01 10:13:52,808 [Worker-13: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /View/src/test/resources
+2019-04-01 10:13:53,129 [Worker-13: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /main/src/main/java
+2019-04-01 10:13:53,129 [Worker-13: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /main/src/main/resources
+2019-04-01 10:13:53,130 [Worker-13: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /main/src/test/java
+2019-04-01 10:13:53,130 [Worker-13: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /main/src/test/resources
+2019-04-01 10:13:53,455 [Worker-13: Importing Maven projects] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Imported and configured 6 project(s) in 11 sec
+2019-04-01 10:13:57,824 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:13:57,830 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:13:57,833 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:13:57,834 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:13:58,185 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:13:58,186 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:13:58,188 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:13:58,190 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:13:59,624 [Worker-5: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 10:13:59,629 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:13:59,630 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:13:59,632 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:13:59,633 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:14:00,673 [Worker-5: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 10:14:00,682 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:14:00,683 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:14:00,687 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:14:00,687 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:14:01,071 [Worker-5: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 10:14:01,072 [Worker-5: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier  to /Controler/target/classes
+2019-04-01 10:14:01,073 [Worker-5: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 10:14:01,074 [Worker-5: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 10:14:01,088 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:14:01,088 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:14:01,090 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:14:01,090 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:14:21,538 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:14:21,541 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:14:21,543 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:14:21,543 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:14:39,651 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:14:39,652 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:14:39,654 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:14:39,655 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:14:39,787 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:14:39,788 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:14:39,791 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:14:39,792 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:18:23,737 [Worker-15: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:18:23,738 [Worker-15: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:18:23,739 [Worker-15: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:18:23,740 [Worker-15: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:18:23,890 [Worker-15: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:18:23,890 [Worker-15: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:18:23,892 [Worker-15: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:18:23,893 [Worker-15: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:19:07,538 [Worker-4: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:19:07,540 [Worker-4: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:19:07,542 [Worker-4: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:19:07,542 [Worker-4: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:19:11,215 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:19:11,215 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:19:11,216 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:19:11,216 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:20:12,012 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:20:12,013 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:20:12,015 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:20:12,015 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:20:36,925 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:20:36,926 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:20:36,928 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:20:36,928 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:20:42,950 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier null to /Contract/target/classes
+2019-04-01 10:20:42,950 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier null to /Controler/target/classes
+2019-04-01 10:20:42,951 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier null to /Model/target/classes
+2019-04-01 10:20:42,951 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier null to /View/target/classes
+2019-04-01 10:20:42,976 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier null to /Contract/target/classes
+2019-04-01 10:20:42,976 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier null to /Controler/target/classes
+2019-04-01 10:20:42,976 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier null to /Model/target/classes
+2019-04-01 10:20:42,977 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier null to /View/target/classes
+2019-04-01 10:20:43,002 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier null to /Contract/target/classes
+2019-04-01 10:20:43,003 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier null to /Controler/target/classes
+2019-04-01 10:20:43,003 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier null to /Model/target/classes
+2019-04-01 10:20:43,003 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier null to /View/target/classes
+2019-04-01 10:21:02,914 [Worker-15: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:21:02,915 [Worker-15: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:21:02,917 [Worker-15: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:21:02,917 [Worker-15: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:22:17,833 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier null to /Contract/target/classes
+2019-04-01 10:22:17,833 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier null to /Controler/target/classes
+2019-04-01 10:22:17,834 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier null to /Model/target/classes
+2019-04-01 10:22:17,835 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier null to /View/target/classes
+2019-04-01 10:22:17,867 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier null to /Contract/target/classes
+2019-04-01 10:22:17,867 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier null to /Controler/target/classes
+2019-04-01 10:22:17,867 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier null to /Model/target/classes
+2019-04-01 10:22:17,867 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier null to /View/target/classes
+2019-04-01 10:22:17,899 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier null to /Contract/target/classes
+2019-04-01 10:22:17,899 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier null to /Controler/target/classes
+2019-04-01 10:22:17,899 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier null to /Model/target/classes
+2019-04-01 10:22:17,899 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier null to /View/target/classes
+2019-04-01 10:25:59,880 [Worker-6: Updating Maven Dependencies] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:View:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\View\pom.xml.
+2019-04-01 10:26:05,451 [Worker-6: Updating Maven Dependencies] ERROR o.e.m.j.i.l.MavenLaunchConfigurationListener - Launch configuration Olebo (8) references non-existing project main.
+org.eclipse.core.runtime.CoreException: Launch configuration Olebo (8) references non-existing project main.
+	at org.eclipse.jdt.launching.JavaRuntime.abort(JavaRuntime.java:1839) ~[na:na]
+	at org.eclipse.jdt.launching.JavaRuntime.getJavaProject(JavaRuntime.java:1714) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenLaunchConfigurationListener.updateLaunchConfiguration(MavenLaunchConfigurationListener.java:53) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenLaunchConfigurationListener.launchConfigurationChanged(MavenLaunchConfigurationListener.java:38) ~[na:na]
+	at org.eclipse.debug.internal.core.LaunchManager$ConfigurationNotifier.run(LaunchManager.java:225) ~[na:na]
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45) ~[org.eclipse.equinox.common_3.10.300.v20190218-2100.jar:na]
+	at org.eclipse.debug.internal.core.LaunchManager$ConfigurationNotifier.notify(LaunchManager.java:209) ~[na:na]
+	at org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy.setDirty(LaunchConfigurationWorkingCopy.java:528) ~[na:na]
+	at org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy.setAttribute(LaunchConfigurationWorkingCopy.java:416) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenRuntimeClasspathProvider.disable(MavenRuntimeClasspathProvider.java:352) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenRuntimeClasspathProvider.disable(MavenRuntimeClasspathProvider.java:378) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenLaunchConfigurationListener.mavenProjectChanged(MavenLaunchConfigurationListener.java:70) ~[na:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryManager.notifyProjectChangeListeners(ProjectRegistryManager.java:777) ~[na:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryManager.applyMutableProjectRegistry(ProjectRegistryManager.java:921) ~[na:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryRefreshJob$1.call(ProjectRegistryRefreshJob.java:98) ~[na:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryRefreshJob$1.call(ProjectRegistryRefreshJob.java:1) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.executeBare(MavenExecutionContext.java:177) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:151) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:99) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.execute(MavenImpl.java:1336) ~[na:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryRefreshJob.run(ProjectRegistryRefreshJob.java:81) ~[na:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63) ~[org.eclipse.core.jobs_3.10.300.v20190215-2048.jar:na]
+2019-04-01 10:26:05,460 [Worker-6: Updating Maven Dependencies] ERROR o.e.m.j.i.l.MavenLaunchConfigurationListener - Launch configuration Olebo (8) references non-existing project main.
+org.eclipse.core.runtime.CoreException: Launch configuration Olebo (8) references non-existing project main.
+	at org.eclipse.jdt.launching.JavaRuntime.abort(JavaRuntime.java:1839) ~[na:na]
+	at org.eclipse.jdt.launching.JavaRuntime.getJavaProject(JavaRuntime.java:1714) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenLaunchConfigurationListener.updateLaunchConfiguration(MavenLaunchConfigurationListener.java:53) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenLaunchConfigurationListener.launchConfigurationChanged(MavenLaunchConfigurationListener.java:38) ~[na:na]
+	at org.eclipse.debug.internal.core.LaunchManager$ConfigurationNotifier.run(LaunchManager.java:225) ~[na:na]
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45) ~[org.eclipse.equinox.common_3.10.300.v20190218-2100.jar:na]
+	at org.eclipse.debug.internal.core.LaunchManager$ConfigurationNotifier.notify(LaunchManager.java:209) ~[na:na]
+	at org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy.setDirty(LaunchConfigurationWorkingCopy.java:528) ~[na:na]
+	at org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy.setAttribute(LaunchConfigurationWorkingCopy.java:416) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenRuntimeClasspathProvider.disable(MavenRuntimeClasspathProvider.java:353) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenRuntimeClasspathProvider.disable(MavenRuntimeClasspathProvider.java:378) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenLaunchConfigurationListener.mavenProjectChanged(MavenLaunchConfigurationListener.java:70) ~[na:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryManager.notifyProjectChangeListeners(ProjectRegistryManager.java:777) ~[na:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryManager.applyMutableProjectRegistry(ProjectRegistryManager.java:921) ~[na:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryRefreshJob$1.call(ProjectRegistryRefreshJob.java:98) ~[na:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryRefreshJob$1.call(ProjectRegistryRefreshJob.java:1) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.executeBare(MavenExecutionContext.java:177) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:151) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:99) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.execute(MavenImpl.java:1336) ~[na:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryRefreshJob.run(ProjectRegistryRefreshJob.java:81) ~[na:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63) ~[org.eclipse.core.jobs_3.10.300.v20190215-2048.jar:na]
+2019-04-01 10:26:05,518 [Worker-6: Updating Maven Dependencies] ERROR o.e.m.j.i.l.MavenLaunchConfigurationListener - Launch configuration Olebo (8) references non-existing project main.
+org.eclipse.core.runtime.CoreException: Launch configuration Olebo (8) references non-existing project main.
+	at org.eclipse.jdt.launching.JavaRuntime.abort(JavaRuntime.java:1839) ~[na:na]
+	at org.eclipse.jdt.launching.JavaRuntime.getJavaProject(JavaRuntime.java:1714) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenLaunchConfigurationListener.updateLaunchConfiguration(MavenLaunchConfigurationListener.java:53) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenLaunchConfigurationListener.launchConfigurationChanged(MavenLaunchConfigurationListener.java:38) ~[na:na]
+	at org.eclipse.debug.internal.core.LaunchManager$ConfigurationNotifier.run(LaunchManager.java:225) ~[na:na]
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45) ~[org.eclipse.equinox.common_3.10.300.v20190218-2100.jar:na]
+	at org.eclipse.debug.internal.core.LaunchManager$ConfigurationNotifier.notify(LaunchManager.java:209) ~[na:na]
+	at org.eclipse.debug.internal.core.LaunchManager.launchConfigurationChanged(LaunchManager.java:2151) ~[na:na]
+	at org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy.writeNewFile(LaunchConfigurationWorkingCopy.java:381) ~[na:na]
+	at org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy.doSave0(LaunchConfigurationWorkingCopy.java:258) ~[na:na]
+	at org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy.doSave(LaunchConfigurationWorkingCopy.java:228) ~[na:na]
+	at org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy.doSave(LaunchConfigurationWorkingCopy.java:186) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenRuntimeClasspathProvider.disable(MavenRuntimeClasspathProvider.java:354) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenRuntimeClasspathProvider.disable(MavenRuntimeClasspathProvider.java:378) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.launch.MavenLaunchConfigurationListener.mavenProjectChanged(MavenLaunchConfigurationListener.java:70) ~[na:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryManager.notifyProjectChangeListeners(ProjectRegistryManager.java:777) ~[na:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryManager.applyMutableProjectRegistry(ProjectRegistryManager.java:921) ~[na:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryRefreshJob$1.call(ProjectRegistryRefreshJob.java:98) ~[na:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryRefreshJob$1.call(ProjectRegistryRefreshJob.java:1) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.executeBare(MavenExecutionContext.java:177) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:151) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:99) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.execute(MavenImpl.java:1336) ~[na:na]
+	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryRefreshJob.run(ProjectRegistryRefreshJob.java:81) ~[na:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63) ~[org.eclipse.core.jobs_3.10.300.v20190215-2048.jar:na]
+2019-04-01 10:26:10,817 [Worker-15: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using NULL lifecycle mapping for MavenProject: jdr.exia:Olebo:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\pom.xml.
+2019-04-01 10:26:11,401 [Worker-15: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:main:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\main\pom.xml.
+2019-04-01 10:26:12,389 [Worker-15: Importing Maven projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 10:26:12,390 [Worker-15: Importing Maven projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier  to /Controler/target/classes
+2019-04-01 10:26:12,391 [Worker-15: Importing Maven projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 10:26:12,392 [Worker-15: Importing Maven projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 10:26:12,472 [Worker-15: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Controler:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Controler\pom.xml.
+2019-04-01 10:26:12,558 [Worker-15: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Model:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Model\pom.xml.
+2019-04-01 10:26:12,559 [Worker-15: Importing Maven projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 10:26:12,638 [Worker-15: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Contract:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Contract\pom.xml.
+2019-04-01 10:26:12,724 [Worker-15: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:View:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\View\pom.xml.
+2019-04-01 10:26:12,725 [Worker-15: Importing Maven projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 10:26:20,693 [Worker-15: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Contract/src/main/java
+2019-04-01 10:26:20,694 [Worker-15: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Contract/src/main/resources
+2019-04-01 10:26:20,694 [Worker-15: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Contract/src/test/java
+2019-04-01 10:26:20,694 [Worker-15: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Contract/src/test/resources
+2019-04-01 10:26:20,824 [Worker-15: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Controler/src/main/java
+2019-04-01 10:26:20,824 [Worker-15: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Controler/src/main/resources
+2019-04-01 10:26:20,825 [Worker-15: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Controler/src/test/java
+2019-04-01 10:26:20,825 [Worker-15: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Controler/src/test/resources
+2019-04-01 10:26:20,958 [Worker-15: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Model/src/main/java
+2019-04-01 10:26:20,958 [Worker-15: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Model/src/main/resources
+2019-04-01 10:26:20,959 [Worker-15: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Model/src/test/java
+2019-04-01 10:26:20,959 [Worker-15: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Model/src/test/resources
+2019-04-01 10:26:21,123 [Worker-15: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /View/src/main/java
+2019-04-01 10:26:21,125 [Worker-15: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /View/src/main/resources
+2019-04-01 10:26:21,127 [Worker-15: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /View/src/test/java
+2019-04-01 10:26:21,128 [Worker-15: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /View/src/test/resources
+2019-04-01 10:26:21,258 [Worker-15: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /main/src/main/java
+2019-04-01 10:26:21,258 [Worker-15: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /main/src/main/resources
+2019-04-01 10:26:21,259 [Worker-15: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /main/src/test/java
+2019-04-01 10:26:21,259 [Worker-15: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /main/src/test/resources
+2019-04-01 10:26:21,388 [Worker-15: Importing Maven projects] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Imported and configured 6 project(s) in 12 sec
+2019-04-01 10:26:26,538 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:26:26,539 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:26:26,542 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:26:26,543 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:26:26,843 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:26:26,845 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:26:26,848 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:26:26,849 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:26:28,805 [Worker-6: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 10:26:28,822 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:26:28,823 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:26:28,827 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:26:28,831 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:26:29,356 [Worker-6: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 10:26:29,360 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:26:29,360 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:26:29,362 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:26:29,363 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:26:29,648 [Worker-6: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 10:26:29,648 [Worker-6: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier  to /Controler/target/classes
+2019-04-01 10:26:29,649 [Worker-6: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 10:26:29,655 [Worker-6: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 10:26:29,694 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:26:29,694 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:26:29,696 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:26:29,697 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:27:08,583 [Worker-7: Updating Maven Project] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update started
+2019-04-01 10:27:08,756 [Worker-7: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using NULL lifecycle mapping for MavenProject: jdr.exia:Olebo:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\pom.xml.
+2019-04-01 10:27:09,281 [Worker-7: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Contract:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Contract\pom.xml.
+2019-04-01 10:27:09,377 [Worker-7: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Controler:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Controler\pom.xml.
+2019-04-01 10:27:09,483 [Worker-7: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:main:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\main\pom.xml.
+2019-04-01 10:27:09,496 [Worker-7: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 10:27:09,497 [Worker-7: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier  to /Controler/target/classes
+2019-04-01 10:27:09,498 [Worker-7: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 10:27:09,499 [Worker-7: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 10:27:09,605 [Worker-7: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Model:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Model\pom.xml.
+2019-04-01 10:27:09,606 [Worker-7: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 10:27:09,698 [Worker-7: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:View:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\View\pom.xml.
+2019-04-01 10:27:09,699 [Worker-7: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 10:27:11,511 [Worker-7: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Contract/src/main/java
+2019-04-01 10:27:11,512 [Worker-7: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Contract/src/main/resources
+2019-04-01 10:27:11,513 [Worker-7: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Contract/src/test/java
+2019-04-01 10:27:11,513 [Worker-7: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Contract/src/test/resources
+2019-04-01 10:27:11,611 [Worker-7: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Controler/src/main/java
+2019-04-01 10:27:11,611 [Worker-7: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Controler/src/main/resources
+2019-04-01 10:27:11,612 [Worker-7: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Controler/src/test/java
+2019-04-01 10:27:11,612 [Worker-7: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Controler/src/test/resources
+2019-04-01 10:27:11,733 [Worker-7: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /main/src/main/java
+2019-04-01 10:27:11,734 [Worker-7: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /main/src/main/resources
+2019-04-01 10:27:11,734 [Worker-7: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /main/src/test/java
+2019-04-01 10:27:11,735 [Worker-7: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /main/src/test/resources
+2019-04-01 10:27:11,845 [Worker-7: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Model/src/main/java
+2019-04-01 10:27:11,845 [Worker-7: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Model/src/main/resources
+2019-04-01 10:27:11,845 [Worker-7: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Model/src/test/java
+2019-04-01 10:27:11,845 [Worker-7: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Model/src/test/resources
+2019-04-01 10:27:11,953 [Worker-7: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /View/src/main/java
+2019-04-01 10:27:11,953 [Worker-7: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /View/src/main/resources
+2019-04-01 10:27:11,953 [Worker-7: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /View/src/test/java
+2019-04-01 10:27:11,954 [Worker-7: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /View/src/test/resources
+2019-04-01 10:27:12,678 [Worker-7: Updating Maven Project] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update completed: 4 sec
+2019-04-01 10:27:13,155 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:27:13,156 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:27:13,157 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:27:13,158 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:27:13,271 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:27:13,271 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:27:13,272 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:27:13,273 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:27:13,951 [Worker-6: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 10:27:13,955 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:27:13,956 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:27:13,957 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:27:13,958 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:27:14,389 [Worker-6: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 10:27:14,392 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:27:14,393 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:27:14,394 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:27:14,395 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:27:14,510 [Worker-6: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 10:27:14,512 [Worker-6: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier  to /Controler/target/classes
+2019-04-01 10:27:14,513 [Worker-6: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 10:27:14,514 [Worker-6: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 10:27:14,520 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:27:14,520 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:27:14,522 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:27:14,523 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:27:34,508 [main] INFO  o.e.m2e.actions.ExecutePomAction - Creating new launch configuration
+2019-04-01 10:27:38,566 [Worker-11: Launching Olebo (9)] INFO  o.e.m.i.launch.MavenLaunchDelegate - D:\Java JDR\Olebo
+2019-04-01 10:27:38,568 [Worker-11: Launching Olebo (9)] INFO  o.e.m.i.launch.MavenLaunchDelegate -  mvn -B package
+2019-04-01 10:28:10,602 [Worker-15: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:28:10,604 [Worker-15: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:28:10,606 [Worker-15: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:28:10,607 [Worker-15: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:29:23,194 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:29:23,194 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:29:23,195 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:29:23,195 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:29:37,433 [Worker-18: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:29:37,434 [Worker-18: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:29:37,438 [Worker-18: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:29:37,438 [Worker-18: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:29:48,154 [Worker-19: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:29:48,155 [Worker-19: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:29:48,156 [Worker-19: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:29:48,157 [Worker-19: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:32:16,789 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:32:16,790 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:32:16,791 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:32:16,792 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:32:43,117 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier null to /Contract/target/classes
+2019-04-01 10:32:43,117 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier null to /Controler/target/classes
+2019-04-01 10:32:43,118 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier null to /Model/target/classes
+2019-04-01 10:32:43,119 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier null to /View/target/classes
+2019-04-01 10:32:43,148 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier null to /Contract/target/classes
+2019-04-01 10:32:43,148 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier null to /Controler/target/classes
+2019-04-01 10:32:43,149 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier null to /Model/target/classes
+2019-04-01 10:32:43,149 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier null to /View/target/classes
+2019-04-01 10:32:43,181 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier null to /Contract/target/classes
+2019-04-01 10:32:43,181 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier null to /Controler/target/classes
+2019-04-01 10:32:43,181 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier null to /Model/target/classes
+2019-04-01 10:32:43,181 [Worker-15: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier null to /View/target/classes
+2019-04-01 10:37:23,455 [Worker-21: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:37:23,456 [Worker-21: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:37:23,457 [Worker-21: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:37:23,458 [Worker-21: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:37:38,590 [Worker-22: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:37:38,590 [Worker-22: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:37:38,592 [Worker-22: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:37:38,592 [Worker-22: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:37:46,416 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:37:46,417 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:37:46,420 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:37:46,421 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:37:53,361 [Worker-22: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:37:53,361 [Worker-22: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 10:37:53,363 [Worker-22: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 10:37:53,363 [Worker-22: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:39:01,956 [Worker-2: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2019-04-01 14:39:23,087 [Worker-10: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:39:23,099 [Worker-10: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:39:23,105 [Worker-10: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:39:23,184 [Worker-10: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:39:25,333 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:39:25,333 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:39:25,335 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:39:25,346 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:39:25,438 [Worker-8: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:39:25,448 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:39:25,449 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:39:25,451 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:39:25,452 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:39:26,184 [Worker-8: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:39:26,189 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:39:26,190 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:39:26,191 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:39:26,192 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:39:27,111 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:39:27,117 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:39:27,119 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:39:27,119 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:39:27,316 [Worker-7: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:39:27,317 [Worker-7: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier  to /Controler/target/classes
+2019-04-01 14:39:27,318 [Worker-7: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 14:39:27,319 [Worker-7: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 14:39:27,332 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:39:27,333 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:39:27,334 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:39:27,352 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:40:02,073 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:40:02,074 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:40:02,076 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:40:02,076 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:40:02,288 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:40:02,289 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:40:02,291 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:40:02,292 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:40:10,154 [Worker-7: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier null to /Contract/target/classes
+2019-04-01 14:40:10,155 [Worker-7: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier null to /Controler/target/classes
+2019-04-01 14:40:10,156 [Worker-7: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier null to /Model/target/classes
+2019-04-01 14:40:10,156 [Worker-7: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier null to /View/target/classes
+2019-04-01 14:40:10,193 [Worker-7: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier null to /Contract/target/classes
+2019-04-01 14:40:10,193 [Worker-7: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier null to /Controler/target/classes
+2019-04-01 14:40:10,194 [Worker-7: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier null to /Model/target/classes
+2019-04-01 14:40:10,194 [Worker-7: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier null to /View/target/classes
+2019-04-01 14:40:10,234 [Worker-7: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier null to /Contract/target/classes
+2019-04-01 14:40:10,234 [Worker-7: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier null to /Controler/target/classes
+2019-04-01 14:40:10,235 [Worker-7: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier null to /Model/target/classes
+2019-04-01 14:40:10,236 [Worker-7: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier null to /View/target/classes
+2019-04-01 14:40:50,551 [Worker-9: Cleaning all projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:40:50,651 [Worker-9: Cleaning all projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:40:50,781 [Worker-9: Cleaning all projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:40:50,782 [Worker-9: Cleaning all projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier  to /Controler/target/classes
+2019-04-01 14:40:50,783 [Worker-9: Cleaning all projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 14:40:50,784 [Worker-9: Cleaning all projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 14:40:52,707 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:40:52,708 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:40:52,711 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:40:52,711 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:40:53,883 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:40:53,883 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:40:53,885 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:40:53,885 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:40:54,535 [Worker-11: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:40:54,540 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:40:54,540 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:40:54,542 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:40:54,543 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:40:55,002 [Worker-11: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:40:55,007 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:40:55,007 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:40:55,009 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:40:55,009 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:40:55,114 [Worker-11: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:40:55,114 [Worker-11: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier  to /Controler/target/classes
+2019-04-01 14:40:55,115 [Worker-11: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 14:40:55,117 [Worker-11: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 14:40:55,122 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:40:55,122 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:40:55,124 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:40:55,124 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:41:15,246 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:41:15,249 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:41:15,252 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:41:15,252 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:41:15,457 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:41:15,458 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:41:15,459 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:41:15,460 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:41:31,297 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:41:31,297 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:41:31,299 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:41:31,299 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:43:06,390 [Worker-6: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier null to /Contract/target/classes
+2019-04-01 14:43:06,391 [Worker-6: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier null to /Controler/target/classes
+2019-04-01 14:43:06,393 [Worker-6: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier null to /Model/target/classes
+2019-04-01 14:43:06,393 [Worker-6: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier null to /View/target/classes
+2019-04-01 14:43:06,423 [Worker-6: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier null to /Contract/target/classes
+2019-04-01 14:43:06,423 [Worker-6: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier null to /Controler/target/classes
+2019-04-01 14:43:06,423 [Worker-6: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier null to /Model/target/classes
+2019-04-01 14:43:06,423 [Worker-6: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier null to /View/target/classes
+2019-04-01 14:43:06,449 [Worker-6: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier null to /Contract/target/classes
+2019-04-01 14:43:06,450 [Worker-6: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier null to /Controler/target/classes
+2019-04-01 14:43:06,450 [Worker-6: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier null to /Model/target/classes
+2019-04-01 14:43:06,450 [Worker-6: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier null to /View/target/classes
+2019-04-01 14:43:54,344 [Worker-8: Launching Executing clean in D__Java JDR_Olebo] INFO  o.e.m.i.launch.MavenLaunchDelegate - D:\Java JDR\Olebo
+2019-04-01 14:43:54,345 [Worker-8: Launching Executing clean in D__Java JDR_Olebo] INFO  o.e.m.i.launch.MavenLaunchDelegate -  mvn -B clean
+2019-04-01 14:43:59,888 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:43:59,889 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:43:59,890 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:43:59,891 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:43:59,974 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:43:59,976 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:43:59,978 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:43:59,978 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:44:00,085 [Worker-8: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:44:00,089 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:44:00,090 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:44:00,094 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:44:00,094 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:44:00,203 [Worker-8: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:44:00,207 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:44:00,207 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:44:00,209 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:44:00,209 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:44:00,362 [Worker-8: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:44:00,362 [Worker-8: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier  to /Controler/target/classes
+2019-04-01 14:44:00,363 [Worker-8: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 14:44:00,364 [Worker-8: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 14:44:00,370 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:44:00,370 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:44:00,372 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:44:00,372 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:44:41,655 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:44:41,656 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:44:41,657 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:44:41,657 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:44:41,881 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:44:41,882 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:44:41,883 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:44:41,883 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:45:12,952 [Worker-0: Updating Maven Project] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update started
+2019-04-01 14:45:13,772 [Worker-0: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using NULL lifecycle mapping for MavenProject: jdr.exia:Olebo:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\pom.xml.
+2019-04-01 14:45:18,254 [Worker-0: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Contract:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Contract\pom.xml.
+2019-04-01 14:45:18,368 [Worker-0: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Controler:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Controler\pom.xml.
+2019-04-01 14:45:18,501 [Worker-0: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:main:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\main\pom.xml.
+2019-04-01 14:45:18,519 [Worker-0: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:45:18,520 [Worker-0: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier  to /Controler/target/classes
+2019-04-01 14:45:18,523 [Worker-0: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 14:45:18,524 [Worker-0: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 14:45:18,621 [Worker-0: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Model:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Model\pom.xml.
+2019-04-01 14:45:18,623 [Worker-0: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:45:18,707 [Worker-0: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:View:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\View\pom.xml.
+2019-04-01 14:45:18,708 [Worker-0: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:45:25,808 [Worker-0: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Contract/src/main/java
+2019-04-01 14:45:25,809 [Worker-0: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Contract/src/main/resources
+2019-04-01 14:45:25,810 [Worker-0: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Contract/src/test/java
+2019-04-01 14:45:25,811 [Worker-0: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Contract/src/test/resources
+2019-04-01 14:45:25,951 [Worker-0: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Controler/src/main/java
+2019-04-01 14:45:25,951 [Worker-0: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Controler/src/main/resources
+2019-04-01 14:45:25,951 [Worker-0: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Controler/src/test/java
+2019-04-01 14:45:25,952 [Worker-0: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Controler/src/test/resources
+2019-04-01 14:45:26,093 [Worker-0: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /main/src/main/java
+2019-04-01 14:45:26,093 [Worker-0: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /main/src/main/resources
+2019-04-01 14:45:26,093 [Worker-0: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /main/src/test/java
+2019-04-01 14:45:26,094 [Worker-0: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /main/src/test/resources
+2019-04-01 14:45:26,376 [Worker-0: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Model/src/main/java
+2019-04-01 14:45:26,376 [Worker-0: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Model/src/main/resources
+2019-04-01 14:45:26,376 [Worker-0: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Model/src/test/java
+2019-04-01 14:45:26,377 [Worker-0: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Model/src/test/resources
+2019-04-01 14:45:26,592 [Worker-0: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /View/src/main/java
+2019-04-01 14:45:26,592 [Worker-0: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /View/src/main/resources
+2019-04-01 14:45:26,593 [Worker-0: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /View/src/test/java
+2019-04-01 14:45:26,593 [Worker-0: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /View/src/test/resources
+2019-04-01 14:45:27,155 [Worker-0: Updating Maven Project] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update completed: 14 sec
+2019-04-01 14:45:27,913 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:45:27,914 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:45:27,915 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:45:27,916 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:45:28,066 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:45:28,067 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:45:28,068 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:45:28,069 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:45:28,603 [Worker-0: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:45:28,608 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:45:28,608 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:45:28,611 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:45:28,612 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:45:28,960 [Worker-0: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:45:28,962 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:45:28,962 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:45:28,970 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:45:28,971 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:45:29,091 [Worker-0: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:45:29,091 [Worker-0: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier  to /Controler/target/classes
+2019-04-01 14:45:29,092 [Worker-0: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 14:45:29,093 [Worker-0: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 14:45:29,096 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:45:29,096 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:45:29,099 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:45:29,100 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:45:56,217 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:45:56,219 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:45:56,221 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:45:56,221 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:46:10,984 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:46:10,985 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:46:10,985 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:46:10,986 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:46:36,751 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:46:36,752 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:46:36,754 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:46:36,755 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:47:34,613 [Worker-13: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:47:34,614 [Worker-13: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:47:34,615 [Worker-13: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:47:34,616 [Worker-13: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:48:45,389 [Worker-3: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier null to /Contract/target/classes
+2019-04-01 14:48:45,389 [Worker-3: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier null to /Controler/target/classes
+2019-04-01 14:48:45,390 [Worker-3: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier null to /Model/target/classes
+2019-04-01 14:48:45,390 [Worker-3: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier null to /View/target/classes
+2019-04-01 14:48:45,416 [Worker-3: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier null to /Contract/target/classes
+2019-04-01 14:48:45,417 [Worker-3: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier null to /Controler/target/classes
+2019-04-01 14:48:45,417 [Worker-3: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier null to /Model/target/classes
+2019-04-01 14:48:45,417 [Worker-3: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier null to /View/target/classes
+2019-04-01 14:48:45,440 [Worker-3: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier null to /Contract/target/classes
+2019-04-01 14:48:45,441 [Worker-3: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier null to /Controler/target/classes
+2019-04-01 14:48:45,441 [Worker-3: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier null to /Model/target/classes
+2019-04-01 14:48:45,441 [Worker-3: Launching Olebo (8)] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier null to /View/target/classes
+2019-04-01 14:48:55,832 [Worker-12: Launching Executing clean in D__Java JDR_Olebo] INFO  o.e.m.i.launch.MavenLaunchDelegate - D:\Java JDR\Olebo
+2019-04-01 14:48:55,832 [Worker-12: Launching Executing clean in D__Java JDR_Olebo] INFO  o.e.m.i.launch.MavenLaunchDelegate -  mvn -B clean
+2019-04-01 14:49:00,122 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:49:00,123 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:49:00,124 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:49:00,124 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:49:00,187 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:49:00,188 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:49:00,189 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:49:00,189 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:49:00,263 [Worker-1: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:49:00,267 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:49:00,268 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:49:00,269 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:49:00,269 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:49:00,376 [Worker-1: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:49:00,386 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:49:00,387 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:49:00,388 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:49:00,389 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:49:00,504 [Worker-1: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:49:00,504 [Worker-1: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier  to /Controler/target/classes
+2019-04-01 14:49:00,505 [Worker-1: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 14:49:00,505 [Worker-1: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 14:49:00,509 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:49:00,509 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:49:00,510 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:49:00,511 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:49:06,714 [main] INFO  o.e.m2e.actions.ExecutePomAction - Creating new launch configuration
+2019-04-01 14:49:11,274 [Worker-6: Launching Olebo (10)] INFO  o.e.m.i.launch.MavenLaunchDelegate - D:\Java JDR\Olebo
+2019-04-01 14:49:11,274 [Worker-6: Launching Olebo (10)] INFO  o.e.m.i.launch.MavenLaunchDelegate -  mvn -B package
+2019-04-01 14:49:31,662 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:49:31,662 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:49:31,663 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:49:31,663 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:51:07,046 [main] INFO  o.e.m2e.actions.ExecutePomAction - Creating new launch configuration
+2019-04-01 14:51:16,583 [Worker-4: Launching Olebo (11)] INFO  o.e.m.i.launch.MavenLaunchDelegate - D:\Java JDR\Olebo
+2019-04-01 14:51:16,583 [Worker-4: Launching Olebo (11)] INFO  o.e.m.i.launch.MavenLaunchDelegate -  mvn -B clean install
+2019-04-01 14:51:53,283 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:51:53,283 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:51:53,286 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:51:53,287 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:51:53,368 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:51:53,369 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:51:53,370 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:51:53,370 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:51:57,238 [Worker-12: Launching Olebo (11)] INFO  o.e.m.i.launch.MavenLaunchDelegate - D:\Java JDR\Olebo
+2019-04-01 14:51:57,238 [Worker-12: Launching Olebo (11)] INFO  o.e.m.i.launch.MavenLaunchDelegate -  mvn -B clean install
+2019-04-01 14:52:16,844 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:52:16,844 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:52:16,845 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:52:16,845 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:52:17,928 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:52:17,928 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:52:17,929 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:52:17,930 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:52:21,394 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:52:21,395 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:52:21,396 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:52:21,396 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:52:22,514 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:52:22,514 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:52:22,515 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:52:22,515 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:52:39,130 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:52:39,131 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:52:39,132 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:52:39,133 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:52:48,733 [Worker-5: Updating Maven Project] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update started
+2019-04-01 14:52:48,942 [Worker-5: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using NULL lifecycle mapping for MavenProject: jdr.exia:Olebo:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\pom.xml.
+2019-04-01 14:52:49,490 [Worker-5: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Contract:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Contract\pom.xml.
+2019-04-01 14:52:49,601 [Worker-5: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Controler:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Controler\pom.xml.
+2019-04-01 14:52:49,706 [Worker-5: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:main:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\main\pom.xml.
+2019-04-01 14:52:49,720 [Worker-5: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:52:49,720 [Worker-5: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier  to /Controler/target/classes
+2019-04-01 14:52:49,721 [Worker-5: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 14:52:49,722 [Worker-5: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 14:52:49,808 [Worker-5: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Model:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Model\pom.xml.
+2019-04-01 14:52:49,809 [Worker-5: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:52:49,883 [Worker-5: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:View:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\View\pom.xml.
+2019-04-01 14:52:49,884 [Worker-5: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:52:57,849 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Contract/src/main/java
+2019-04-01 14:52:57,850 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Contract/src/main/resources
+2019-04-01 14:52:57,850 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Contract/src/test/java
+2019-04-01 14:52:57,850 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Contract/src/test/resources
+2019-04-01 14:52:57,958 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Controler/src/main/java
+2019-04-01 14:52:57,958 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Controler/src/main/resources
+2019-04-01 14:52:57,959 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Controler/src/test/java
+2019-04-01 14:52:57,959 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Controler/src/test/resources
+2019-04-01 14:52:58,067 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /main/src/main/java
+2019-04-01 14:52:58,068 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /main/src/main/resources
+2019-04-01 14:52:58,068 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /main/src/test/java
+2019-04-01 14:52:58,069 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /main/src/test/resources
+2019-04-01 14:52:58,178 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Model/src/main/java
+2019-04-01 14:52:58,178 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Model/src/main/resources
+2019-04-01 14:52:58,179 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Model/src/test/java
+2019-04-01 14:52:58,179 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Model/src/test/resources
+2019-04-01 14:52:58,291 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /View/src/main/java
+2019-04-01 14:52:58,291 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /View/src/main/resources
+2019-04-01 14:52:58,292 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /View/src/test/java
+2019-04-01 14:52:58,292 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /View/src/test/resources
+2019-04-01 14:52:58,964 [Worker-5: Updating Maven Project] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update completed: 10 sec
+2019-04-01 14:52:59,459 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:52:59,460 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:52:59,462 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:52:59,462 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:52:59,557 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:52:59,557 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:52:59,558 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:52:59,558 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:53:00,377 [Worker-2: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:53:00,379 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:53:00,380 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:53:00,381 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:53:00,381 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:53:00,733 [Worker-2: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:53:00,736 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:53:00,736 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:53:00,737 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:53:00,737 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:53:00,839 [Worker-2: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 14:53:00,839 [Worker-2: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier  to /Controler/target/classes
+2019-04-01 14:53:00,840 [Worker-2: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 14:53:00,840 [Worker-2: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 14:53:00,844 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:53:00,844 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:53:00,845 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:53:00,846 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:53:17,917 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:53:17,919 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 14:53:17,921 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 14:53:17,921 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:10:53,601 [Worker-5: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2019-04-01 15:11:21,423 [Worker-11: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using NULL lifecycle mapping for MavenProject: jdr.exia:Olebo:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\pom.xml.
+2019-04-01 15:11:22,490 [Worker-11: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:main:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\main\pom.xml.
+2019-04-01 15:11:22,861 [Worker-11: Importing Maven projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:11:22,861 [Worker-11: Importing Maven projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier  to /Controler/target/classes
+2019-04-01 15:11:22,862 [Worker-11: Importing Maven projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 15:11:22,863 [Worker-11: Importing Maven projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 15:11:23,473 [Worker-11: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Controler:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Controler\pom.xml.
+2019-04-01 15:11:23,689 [Worker-11: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Model:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Model\pom.xml.
+2019-04-01 15:11:23,691 [Worker-11: Importing Maven projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:11:23,906 [Worker-11: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Contract:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Contract\pom.xml.
+2019-04-01 15:11:24,039 [Worker-11: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:View:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\View\pom.xml.
+2019-04-01 15:11:24,042 [Worker-11: Importing Maven projects] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:11:33,319 [Worker-11: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Contract/src/main/java
+2019-04-01 15:11:33,320 [Worker-11: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Contract/src/main/resources
+2019-04-01 15:11:33,322 [Worker-11: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Contract/src/test/java
+2019-04-01 15:11:33,322 [Worker-11: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Contract/src/test/resources
+2019-04-01 15:11:33,620 [Worker-11: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Controler/src/main/java
+2019-04-01 15:11:33,621 [Worker-11: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Controler/src/main/resources
+2019-04-01 15:11:33,622 [Worker-11: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Controler/src/test/java
+2019-04-01 15:11:33,622 [Worker-11: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Controler/src/test/resources
+2019-04-01 15:11:34,032 [Worker-11: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Model/src/main/java
+2019-04-01 15:11:34,033 [Worker-11: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Model/src/main/resources
+2019-04-01 15:11:34,034 [Worker-11: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Model/src/test/java
+2019-04-01 15:11:34,035 [Worker-11: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Model/src/test/resources
+2019-04-01 15:11:34,390 [Worker-11: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /View/src/main/java
+2019-04-01 15:11:34,390 [Worker-11: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /View/src/main/resources
+2019-04-01 15:11:34,391 [Worker-11: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /View/src/test/java
+2019-04-01 15:11:34,391 [Worker-11: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /View/src/test/resources
+2019-04-01 15:11:34,780 [Worker-11: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /main/src/main/java
+2019-04-01 15:11:34,780 [Worker-11: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /main/src/main/resources
+2019-04-01 15:11:34,781 [Worker-11: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /main/src/test/java
+2019-04-01 15:11:34,781 [Worker-11: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /main/src/test/resources
+2019-04-01 15:11:35,173 [Worker-11: Importing Maven projects] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Imported and configured 6 project(s) in 16 sec
+2019-04-01 15:11:39,289 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:11:39,296 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:11:39,299 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:11:39,300 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:11:39,517 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:11:39,518 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:11:39,520 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:11:39,521 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:11:40,451 [Worker-14: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:11:40,457 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:11:40,458 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:11:40,459 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:11:40,460 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:11:40,962 [Worker-14: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:11:40,967 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:11:40,967 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:11:40,969 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:11:40,971 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:11:41,123 [Worker-14: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:11:41,123 [Worker-14: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controler: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier  to /Controler/target/classes
+2019-04-01 15:11:41,124 [Worker-14: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 15:11:41,125 [Worker-14: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 15:11:41,136 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:11:41,137 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:11:41,138 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:11:41,139 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:12:30,840 [Worker-7: Building workspace] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Controler:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Controler\pom.xml.
+2019-04-01 15:12:32,055 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:12:32,055 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:12:32,057 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:12:32,057 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:12:46,909 [Worker-0: Building workspace] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:main:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\main\pom.xml.
+2019-04-01 15:12:46,915 [Worker-0: Building workspace] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for jdr.exia:Controller:jar:0.0.1-SNAPSHOT is missing, no dependency information available
+2019-04-01 15:12:46,941 [Worker-0: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:12:46,941 [Worker-0: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 15:12:46,942 [Worker-0: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 15:12:48,368 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:12:48,370 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:12:48,372 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:12:48,373 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:12:49,290 [Worker-7: Download sources and javadoc] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for jdr.exia:Controller:jar:0.0.1-SNAPSHOT is missing, no dependency information available
+2019-04-01 15:12:49,303 [Worker-7: Download sources and javadoc] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:12:49,304 [Worker-7: Download sources and javadoc] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 15:12:49,305 [Worker-7: Download sources and javadoc] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 15:12:49,326 [Worker-7: Download sources and javadoc] ERROR o.e.m.j.internal.DownloadSourcesJob - Could not download sources for jdr.exia:Controller:0.0.1-SNAPSHOT
+org.eclipse.core.runtime.CoreException: Could not resolve artifact jdr.exia:Controller:jar:sources:0.0.1-SNAPSHOT
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.lambda$4(MavenImpl.java:763) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.executeBare(MavenExecutionContext.java:177) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:112) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:99) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.resolve(MavenImpl.java:731) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.resolve(MavenImpl.java:708) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.download(DownloadSourcesJob.java:279) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.downloadAttachments(DownloadSourcesJob.java:254) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.downloadMaven(DownloadSourcesJob.java:221) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.run(DownloadSourcesJob.java:161) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob$1.call(DownloadSourcesJob.java:137) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob$1.call(DownloadSourcesJob.java:1) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.executeBare(MavenExecutionContext.java:177) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:151) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:99) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.execute(MavenImpl.java:1336) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.run(DownloadSourcesJob.java:135) ~[na:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63) ~[org.eclipse.core.jobs_3.10.300.v20190215-2048.jar:na]
+2019-04-01 15:13:01,537 [Worker-1: Building workspace] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using NULL lifecycle mapping for MavenProject: jdr.exia:Olebo:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\pom.xml.
+2019-04-01 15:13:02,121 [Worker-1: Building workspace] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:View:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\View\pom.xml.
+2019-04-01 15:13:02,126 [Worker-1: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:13:02,233 [Worker-1: Building workspace] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Model:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Model\pom.xml.
+2019-04-01 15:13:02,240 [Worker-1: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:13:02,339 [Worker-1: Building workspace] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Contract:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Contract\pom.xml.
+2019-04-01 15:13:02,435 [Worker-1: Building workspace] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Controler:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Controler\pom.xml.
+2019-04-01 15:13:02,534 [Worker-1: Building workspace] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:main:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\main\pom.xml.
+2019-04-01 15:13:02,536 [Worker-1: Building workspace] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for jdr.exia:Controller:jar:0.0.1-SNAPSHOT is missing, no dependency information available
+2019-04-01 15:13:02,544 [Worker-1: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:13:02,544 [Worker-1: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 15:13:02,545 [Worker-1: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 15:13:04,533 [Worker-1: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:13:04,740 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:13:04,743 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:13:04,745 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:13:04,746 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:13:04,817 [Worker-1: Building workspace] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for jdr.exia:Controller:jar:0.0.1-SNAPSHOT is missing, no dependency information available
+2019-04-01 15:13:04,827 [Worker-1: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:13:04,828 [Worker-1: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 15:13:04,829 [Worker-1: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 15:13:04,833 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:13:04,833 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:13:04,835 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:13:04,835 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:13:05,422 [Worker-12: Download sources and javadoc] ERROR o.e.m.j.internal.DownloadSourcesJob - Could not download javadoc for jdr.exia:Controller:0.0.1-SNAPSHOT
+org.eclipse.core.runtime.CoreException: Could not resolve artifact jdr.exia:Controller:jar:javadoc:0.0.1-SNAPSHOT
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.lambda$4(MavenImpl.java:763) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.executeBare(MavenExecutionContext.java:177) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:112) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:99) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.resolve(MavenImpl.java:731) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.resolve(MavenImpl.java:708) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.download(DownloadSourcesJob.java:279) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.downloadAttachments(DownloadSourcesJob.java:265) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.downloadMaven(DownloadSourcesJob.java:221) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.run(DownloadSourcesJob.java:161) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob$1.call(DownloadSourcesJob.java:137) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob$1.call(DownloadSourcesJob.java:1) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.executeBare(MavenExecutionContext.java:177) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:151) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:99) ~[na:na]
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.execute(MavenImpl.java:1336) ~[na:na]
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.run(DownloadSourcesJob.java:135) ~[na:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63) ~[org.eclipse.core.jobs_3.10.300.v20190215-2048.jar:na]
+2019-04-01 15:13:05,903 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:13:05,903 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:13:05,906 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:13:05,906 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:13:05,985 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:13:05,985 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:13:05,986 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:13:05,987 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:13:06,075 [Worker-5: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:13:06,079 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:13:06,079 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:13:06,081 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:13:06,081 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:13:20,361 [Worker-14: Building workspace] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:main:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\main\pom.xml.
+2019-04-01 15:13:20,370 [Worker-14: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:13:20,371 [Worker-14: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 15:13:20,371 [Worker-14: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 15:13:20,685 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:13:20,685 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:13:20,687 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:13:20,687 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:13:22,805 [Worker-8: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:13:22,805 [Worker-8: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 15:13:22,806 [Worker-8: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 15:13:22,811 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:13:22,814 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:13:22,815 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:13:22,816 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:13:52,872 [Worker-2: Building workspace] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Controller:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Controler\pom.xml.
+2019-04-01 15:13:54,032 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:13:54,033 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:13:54,036 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:13:54,036 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:14:09,303 [Worker-0: Building workspace] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:main:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\main\pom.xml.
+2019-04-01 15:14:09,326 [Worker-0: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:14:09,327 [Worker-0: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 15:14:09,328 [Worker-0: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 15:14:09,329 [Worker-0: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controller: jdr.exia:Controller:0.0.1-SNAPSHOT with classifier  to /Controller/target/classes
+2019-04-01 15:14:09,542 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:14:09,543 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:14:09,544 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:14:09,545 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:14:12,161 [Worker-6: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:14:12,161 [Worker-6: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 15:14:12,162 [Worker-6: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 15:14:12,162 [Worker-6: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controller: jdr.exia:Controller:0.0.1-SNAPSHOT with classifier  to /Controller/target/classes
+2019-04-01 15:14:12,165 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:14:12,166 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:14:12,167 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:14:12,167 [Worker-6: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:15:23,893 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update started
+2019-04-01 15:15:24,092 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using NULL lifecycle mapping for MavenProject: jdr.exia:Olebo:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\pom.xml.
+2019-04-01 15:15:24,505 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Contract:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Contract\pom.xml.
+2019-04-01 15:15:24,603 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Controller:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Controler\pom.xml.
+2019-04-01 15:15:24,697 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:main:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\main\pom.xml.
+2019-04-01 15:15:24,706 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:15:24,707 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 15:15:24,708 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 15:15:24,708 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controller: jdr.exia:Controller:0.0.1-SNAPSHOT with classifier  to /Controller/target/classes
+2019-04-01 15:15:24,789 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Model:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Model\pom.xml.
+2019-04-01 15:15:24,791 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:15:24,868 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:View:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\View\pom.xml.
+2019-04-01 15:15:24,869 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:15:26,284 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Contract/src/main/java
+2019-04-01 15:15:26,285 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Contract/src/main/resources
+2019-04-01 15:15:26,285 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Contract/src/test/java
+2019-04-01 15:15:26,286 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Contract/src/test/resources
+2019-04-01 15:15:26,386 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Controller/src/main/java
+2019-04-01 15:15:26,386 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Controller/src/main/resources
+2019-04-01 15:15:26,387 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Controller/src/test/java
+2019-04-01 15:15:26,387 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Controller/src/test/resources
+2019-04-01 15:15:26,495 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /main/src/main/java
+2019-04-01 15:15:26,495 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /main/src/main/resources
+2019-04-01 15:15:26,496 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /main/src/test/java
+2019-04-01 15:15:26,496 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /main/src/test/resources
+2019-04-01 15:15:26,612 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Model/src/main/java
+2019-04-01 15:15:26,612 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Model/src/main/resources
+2019-04-01 15:15:26,613 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Model/src/test/java
+2019-04-01 15:15:26,613 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Model/src/test/resources
+2019-04-01 15:15:26,724 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /View/src/main/java
+2019-04-01 15:15:26,724 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /View/src/main/resources
+2019-04-01 15:15:26,725 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /View/src/test/java
+2019-04-01 15:15:26,725 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /View/src/test/resources
+2019-04-01 15:15:27,275 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update completed: 3 sec
+2019-04-01 15:15:27,660 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:15:27,661 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:15:27,662 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:15:27,662 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:15:27,746 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:15:27,747 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:15:27,748 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:15:27,748 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:15:28,226 [Worker-11: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:15:28,229 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:15:28,230 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:15:28,231 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:15:28,231 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:15:28,586 [Worker-11: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:15:28,588 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:15:28,589 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:15:28,589 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:15:28,590 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:15:28,686 [Worker-11: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:15:28,687 [Worker-11: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 15:15:28,687 [Worker-11: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 15:15:28,688 [Worker-11: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controller: jdr.exia:Controller:0.0.1-SNAPSHOT with classifier  to /Controller/target/classes
+2019-04-01 15:15:28,691 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:15:28,692 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:15:28,693 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:15:28,694 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:16:24,812 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:16:24,815 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:16:24,817 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:16:24,818 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:16:25,212 [Worker-2: Building workspace] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Controler:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Controler\pom.xml.
+2019-04-01 15:16:25,315 [Worker-2: Building workspace] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:main:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\main\pom.xml.
+2019-04-01 15:16:25,326 [Worker-2: Building workspace] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for jdr.exia:Controller:jar:0.0.1-SNAPSHOT is missing, no dependency information available
+2019-04-01 15:16:25,330 [Worker-2: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:16:25,331 [Worker-2: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 15:16:25,332 [Worker-2: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 15:16:28,276 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:16:28,276 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:16:28,278 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:16:28,279 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:16:30,017 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:16:30,017 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:16:30,019 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:16:30,020 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:16:48,973 [Worker-3: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2019-04-01 15:17:09,112 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update started
+2019-04-01 15:17:09,643 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using NULL lifecycle mapping for MavenProject: jdr.exia:Olebo:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\pom.xml.
+2019-04-01 15:17:10,514 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Contract:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Contract\pom.xml.
+2019-04-01 15:17:10,615 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Controler:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Controler\pom.xml.
+2019-04-01 15:17:10,730 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:main:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\main\pom.xml.
+2019-04-01 15:17:10,750 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:17:10,751 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controller: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier  to /Controller/target/classes
+2019-04-01 15:17:10,752 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 15:17:10,753 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 15:17:10,863 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:Model:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\Model\pom.xml.
+2019-04-01 15:17:10,865 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:17:10,973 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: jdr.exia:View:0.0.1-SNAPSHOT @ D:\Java JDR\Olebo\View\pom.xml.
+2019-04-01 15:17:10,975 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:17:13,247 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Contract/src/main/java
+2019-04-01 15:17:13,248 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Contract/src/main/resources
+2019-04-01 15:17:13,250 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Contract/src/test/java
+2019-04-01 15:17:13,250 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Contract/src/test/resources
+2019-04-01 15:17:14,414 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Controller/src/main/java
+2019-04-01 15:17:14,414 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Controller/src/main/resources
+2019-04-01 15:17:14,415 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Controller/src/test/java
+2019-04-01 15:17:14,416 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Controller/src/test/resources
+2019-04-01 15:17:14,543 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /main/src/main/java
+2019-04-01 15:17:14,544 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /main/src/main/resources
+2019-04-01 15:17:14,545 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /main/src/test/java
+2019-04-01 15:17:14,545 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /main/src/test/resources
+2019-04-01 15:17:14,675 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Model/src/main/java
+2019-04-01 15:17:14,675 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Model/src/main/resources
+2019-04-01 15:17:14,676 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /Model/src/test/java
+2019-04-01 15:17:14,676 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /Model/src/test/resources
+2019-04-01 15:17:14,796 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /View/src/main/java
+2019-04-01 15:17:14,797 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /View/src/main/resources
+2019-04-01 15:17:14,797 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /View/src/test/java
+2019-04-01 15:17:14,798 [Worker-11: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /View/src/test/resources
+2019-04-01 15:17:15,738 [Worker-11: Updating Maven Project] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update completed: 6 sec
+2019-04-01 15:17:16,253 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:17:16,257 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:17:16,260 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:17:16,261 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:17:16,419 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:17:16,420 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:17:16,423 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:17:16,423 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:17:16,673 [Worker-2: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:17:16,677 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:17:16,678 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:17:16,679 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:17:16,680 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:17:16,839 [Worker-2: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:17:16,843 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:17:16,843 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:17:16,845 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:17:16,845 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:17:17,003 [Worker-2: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Contract: jdr.exia:Contract:0.0.1-SNAPSHOT with classifier  to /Contract/target/classes
+2019-04-01 15:17:17,004 [Worker-2: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Controller: jdr.exia:Controler:0.0.1-SNAPSHOT with classifier  to /Controller/target/classes
+2019-04-01 15:17:17,004 [Worker-2: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/Model: jdr.exia:Model:0.0.1-SNAPSHOT with classifier  to /Model/target/classes
+2019-04-01 15:17:17,005 [Worker-2: Building workspace] INFO  o.e.m.c.i.p.WorkspaceClassifierResolverManager - Resolving P/View: jdr.exia:View:0.0.1-SNAPSHOT with classifier  to /View/target/classes
+2019-04-01 15:17:17,011 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:17:17,012 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:17:17,013 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:17:17,014 [Worker-2: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:17:27,396 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:17:27,400 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:17:27,402 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:17:27,402 [Worker-1: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:18:09,766 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:18:09,767 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:18:09,768 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:18:09,769 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:18:10,031 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:18:10,031 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:18:10,037 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:18:10,037 [Worker-7: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:18:19,032 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:18:19,033 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:18:19,034 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:18:19,034 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:19:31,433 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:19:31,433 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:19:31,436 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:19:31,436 [Worker-11: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:19:44,765 [Worker-3: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:19:44,766 [Worker-3: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:19:44,768 [Worker-3: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:19:44,769 [Worker-3: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:19:45,064 [Worker-3: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:19:45,064 [Worker-3: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:19:45,066 [Worker-3: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:19:45,066 [Worker-3: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:19:48,687 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:19:48,687 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:19:48,689 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:19:48,690 [Worker-5: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:20:24,519 [Worker-3: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:20:24,520 [Worker-3: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:20:24,521 [Worker-3: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:20:24,522 [Worker-3: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:20:51,282 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:20:51,283 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:20:51,284 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:20:51,285 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:20:51,392 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:20:51,393 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:20:51,396 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:20:51,397 [Worker-0: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:21:06,685 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:21:06,685 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-01 15:21:06,687 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-04-01 15:21:06,687 [Worker-8: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
