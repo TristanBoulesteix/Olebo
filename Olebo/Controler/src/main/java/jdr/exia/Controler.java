@@ -14,6 +14,11 @@ public class Controler implements IControler {
 	}
 
 	@Override
+	public void initDatas() {
+
+	}
+
+	@Override
 	public void start() {
 
 	}
