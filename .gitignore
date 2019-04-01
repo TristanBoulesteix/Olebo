@@ -10,3 +10,8 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 /.metadata/
 /.recommenders/
+*.resources
+*.prefs
+.metadata/.plugins/org.eclipse.jdt.core/externalLibsTimeStamps
+*.dat
+*.ser
