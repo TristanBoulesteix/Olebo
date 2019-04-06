@@ -1,5 +1,8 @@
 package jdr.exia;
 
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -14,12 +17,18 @@ public class MasterFrame extends JFrame implements KeyListener {
 	private static final long serialVersionUID = 3204299780560212927L;
 
 	private static MasterFrame instance;
+
 	private MapPanel mapPanel; // similar to PlayerFrame's MapPanel, must stay synced
+
 	private SelectPanel selectPanel; // Will contain all info on selected Item
-	private ItemPanel itemPanel; // Will contain list of availaible items
-	private JPanel masterFramePanel; /* Simply the frame's BackGround, it's use is to serve as a general layout for
-										 smaller panels (multiple panels can't be put straight into a new frame, there
-										 needs to be a global panel and layout first)*/
+
+	private ItemPanel itemPanel; // Will contain list of available items
+
+	private JPanel masterFramePanel; /*
+										 * Simply the frame's BackGround, it's use is to serve as a general layout for
+										 * smaller panels (multiple panels can't be put straight into a new frame, there
+										 * needs to be a global panel and layout first)
+										 */
 
 	public static MasterFrame getInstance() {
 		if (instance == null) {
@@ -30,19 +39,10 @@ public class MasterFrame extends JFrame implements KeyListener {
 	}
 
 	private MasterFrame() {
-		
-		this.masterFramePanel = new JPanel();
-		this.mapPanel = new MapPanel();
-		this.setTitle("Master");
-		this.setSize(1936, 1056);
-		addKeyListener(this);
-		this.mapPanel.setSize(1280, 720);
-		this.setContentPane(masterFramePanel);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		this.initialize();
 
 	}
-
-	
 
 	// KeyListener section, to add Key bindings
 	@Override
@@ -68,9 +68,9 @@ public class MasterFrame extends JFrame implements KeyListener {
 		// TODO Auto-generated method stub
 
 	}
-	
-	//getters and setters 
-	
+
+	// getters and setters
+
 	public ItemPanel getItemPanel() {
 		return itemPanel;
 	}
@@ -93,5 +93,60 @@ public class MasterFrame extends JFrame implements KeyListener {
 
 	public void setMapPanel(MapPanel mapPanel) {
 		this.mapPanel = mapPanel;
+	}
+
+	private void initialize() {
+
+		this.setTitle("Master");
+		this.setSize(1936, 1056);
+		addKeyListener(this);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		mapPanel = new MapPanel();
+		mapPanel.setSize(1280, 720);
+
+		selectPanel = SelectPanel.getInstance();
+		selectPanel.setSize(100, 100);
+		selectPanel.setBackground(Color.green);
+
+		itemPanel = ItemPanel.getInstance();
+		itemPanel.setSize(100, 100);
+		itemPanel.setBackground(Color.yellow);
+
+		/*
+		 
+		 */
+		masterFramePanel = new JPanel(new GridBagLayout());
+		masterFramePanel.setSize(this.getSize());
+		masterFramePanel.setBackground(Color.GRAY);
+		this.setContentPane(masterFramePanel);
+
+		GridBagConstraints mapConstraints = new GridBagConstraints();
+		GridBagConstraints itemConstraints = new GridBagConstraints();
+		GridBagConstraints selectConstraints = new GridBagConstraints();
+
+		itemConstraints.gridx = 0;
+		itemConstraints.gridy = 0;
+		itemConstraints.gridheight = 2;
+		itemConstraints.weightx = 1;
+		itemConstraints.weighty = 2;
+		itemConstraints.fill = GridBagConstraints.BOTH;
+
+		selectConstraints.gridx = 1;
+		selectConstraints.gridy = 1;
+		selectConstraints.weightx = 0.5;
+		selectConstraints.weighty = 1;
+		selectConstraints.gridwidth = GridBagConstraints.REMAINDER;
+		selectConstraints.fill = GridBagConstraints.BOTH;
+
+		mapConstraints.gridx = 3;
+		mapConstraints.gridy = 0;
+		mapConstraints.weightx = 3;
+		mapConstraints.weighty = 5;
+		mapConstraints.fill = GridBagConstraints.BOTH;
+
+		masterFramePanel.add(mapPanel, mapConstraints);
+		masterFramePanel.add(itemPanel, itemConstraints);
+		masterFramePanel.add(selectPanel, selectConstraints);
 	}
 }

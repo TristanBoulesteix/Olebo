@@ -23,13 +23,6 @@ public class ViewManager implements IView {
 		this.initializeFrames();
 	}
 
-	public static ViewManager getInstance() {
-
-		if (instance == null) {
-			instance = new ViewManager();
-		}
-		return instance;
-	}
 	
 	private void initializeFrames() {
 		
@@ -68,12 +61,24 @@ public class ViewManager implements IView {
 
 	}
 	
+	
+	
 	/* these 2 lines generate a GraphicsDevice array, GraphicsDevice are screens*/
 	private GraphicsDevice[] getScreens()
 	{
 		
 		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		return  graphicsEnvironment.getScreenDevices();
+	}
+	
+	
+
+	public static ViewManager getInstance() {
+
+		if (instance == null) {
+			instance = new ViewManager();
+		}
+		return instance;
 	}
 	
 }
