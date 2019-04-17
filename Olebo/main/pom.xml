@@ -22,7 +22,6 @@
   		<artifactId>View</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
-
   	<dependency>
   		<groupId>jdr.exia</groupId>
   		<artifactId>Controller</artifactId>

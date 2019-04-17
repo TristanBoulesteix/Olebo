@@ -30,12 +30,12 @@
 <item elementID="=main/src\/test\/resources" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSet>
 <workingSet editPageId="org.eclipse.ui.resourceWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1554104703167_5" label="Olebo" name="Olebo">
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/Olebo" type="4"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/main" type="4"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/Model" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/Controller" type="4"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/Contract" type="4"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/View" type="4"/>
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/Controller" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/Olebo" type="4"/>
 </workingSet>
 <workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1542898919405_2" label="Window Working Set" name="Aggregate for window 1542898919405"/>
 <workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1553633248600_3" label="Window Working Set" name="Aggregate for window 1553633248600"/>
