@@ -9,7 +9,6 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>main</module>
-
 		<module>Model</module>
 		<module>Contract</module>
 		<module>View</module>
