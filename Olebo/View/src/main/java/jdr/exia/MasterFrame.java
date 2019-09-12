@@ -12,13 +12,19 @@ import javax.swing.JPanel;
 /*MasterFrame is the Game Master's Interface, it contains a Map panel (the same as PlayerFrame), an ItemPanel and a SelectPanel.
  * MasterFrame will be focused most of the time, so it contains all KeyListeners for the program
 this is a singleton*/
+
+/* TODO: create the Drag and drop system
+ * 
+ * Idea on how this works:
+ * The 
+ * */
 public class MasterFrame extends JFrame implements KeyListener {
 
 	private static final long serialVersionUID = 3204299780560212927L;
 
 	private static MasterFrame instance;
 
-	private MapPanel mapPanel; // similar to PlayerFrame's MapPanel, must stay synced
+	private MapPanel mapPanel; // similar to PlayerFrame's MapPanel, must stay synchronized
 
 	private SelectPanel selectPanel; // Will contain all info on selected Item
 
@@ -30,6 +36,10 @@ public class MasterFrame extends JFrame implements KeyListener {
 										 * needs to be a global panel and layout first)
 										 */
 
+	
+
+	
+	
 	public static MasterFrame getInstance() {
 		if (instance == null) {
 			instance = new MasterFrame();
@@ -37,7 +47,7 @@ public class MasterFrame extends JFrame implements KeyListener {
 
 		return instance;
 	}
-
+	
 	private MasterFrame() {
 
 		this.initialize();

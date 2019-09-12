@@ -1,5 +1,7 @@
 package jdr.exia;
 
+import java.awt.Graphics;
+
 import javax.swing.JPanel;
 
 
@@ -26,5 +28,16 @@ public class ItemPanel extends JPanel {
 		}else{}
 		return instance;
 		}
+	
+	public void paintComponent(Graphics graphics) {
+		super.paintComponent(graphics);
+
+		// graphics.drawImage(,X,Y,null);
+
+	}
+	
+	
+	
+	
 
 }
