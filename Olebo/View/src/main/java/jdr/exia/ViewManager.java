@@ -15,16 +15,31 @@ this is a singleton*/
 public class ViewManager implements IView {
 
 	private static ViewManager instance;
+	
 	private PlayerFrame playerFrame;
+	
 	private MasterFrame masterFrame;
-
+	
+	
+	
 	private ViewManager() {
 
-		this.initializeFrames();
+		this.initializeActFrames();
+		this.test();
+	}
+	
+	void test() {
+		
+		
+	}
+	
+	
+	void refreshFrames() {  // Refreshes Player and MasterFrames at once
+		masterFrame.getMapPanel().refresh();
 	}
 
 	
-	private void initializeFrames() {
+	private void initializeActFrames() { /*this method activates the Player and GM frames to initiate/start back an act	*/
 		
 		this.playerFrame = PlayerFrame.getInstance();
 		this.masterFrame = MasterFrame.getInstance();
@@ -81,6 +96,12 @@ public class ViewManager implements IView {
 		return instance;
 	}
 	
+	
+	
+	
+	
+	/* Code supposed to be in Controller, but due to the non-existence of the Controller, the view is kindly sheltering these lines of code */
+	private Object clickedElement; //this is the last Element that was clicked on, if it is equal to NULL, the program tries to fill this slot with an object	
 }
 
 

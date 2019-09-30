@@ -12,7 +12,7 @@ public class MapPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1127620292584522731L;
-
+	
 	public MapPanel() {
 		this.setBackground(Color.blue);
 	}
@@ -23,5 +23,14 @@ public class MapPanel extends JPanel {
 		// graphics.drawImage(,X,Y,null);
 
 	}
+	
+	void refresh() { // refreshes the panel's content
+		this.repaint();
+	}
+	
+	
+	
+	
+	
 
 }
