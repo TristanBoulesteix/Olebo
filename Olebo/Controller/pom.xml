@@ -5,27 +5,11 @@
     <artifactId>Olebo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>main</artifactId>
+  <artifactId>Controller</artifactId>
   <dependencies>
   	<dependency>
   		<groupId>jdr.exia</groupId>
   		<artifactId>Contract</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>jdr.exia</groupId>
-  		<artifactId>Model</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>jdr.exia</groupId>
-  		<artifactId>View</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
-
-  	<dependency>
-  		<groupId>jdr.exia</groupId>
-  		<artifactId>Controller</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>

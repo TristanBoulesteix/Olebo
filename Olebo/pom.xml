@@ -9,10 +9,11 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>main</module>
-		<module>Controler</module>
+		
 		<module>Model</module>
 		<module>Contract</module>
 		<module>View</module>
+		<module>Controller</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
