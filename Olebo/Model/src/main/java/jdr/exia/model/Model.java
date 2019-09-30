@@ -6,7 +6,7 @@ public class Model implements IModel {
 	}
 
 	@Override
-	public void importSettingsFromDatabase() {
+	public void loadDatabase() {
 
 	}
 }

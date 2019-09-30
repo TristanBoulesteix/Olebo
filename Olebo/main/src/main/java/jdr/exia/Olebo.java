@@ -10,10 +10,9 @@ public class Olebo {
 	public static void main(String[] args) {
 		// Instantiation of the MVC and start of the program
 		IModel model = new Model();
-		IView viewManager = new ViewManager();
-		IController controler = new Controller(viewManager, model);
-		controler.initDatas();
-		controler.start();
-
+		IView viewManager = ViewManager.getInstance();
+		IController controller = new Controller(viewManager, model);
+		controller.initDatas();
+		controller.start();
 	}
 }

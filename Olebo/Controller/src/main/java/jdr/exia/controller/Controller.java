@@ -15,7 +15,7 @@ public class Controller implements IController {
 
 	@Override
 	public void initDatas() {
-		model.importSettingsFromDatabase();
+		model.loadDatabase();
 	}
 
 	@Override

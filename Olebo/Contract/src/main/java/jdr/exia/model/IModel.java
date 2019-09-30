@@ -1,6 +1,6 @@
 package jdr.exia.model;
 
 public interface IModel {
-	public void importSettingsFromDatabase();
+	public void loadDatabase();
 
 }
