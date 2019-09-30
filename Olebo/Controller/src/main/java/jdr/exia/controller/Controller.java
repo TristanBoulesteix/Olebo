@@ -1,6 +1,5 @@
 package jdr.exia.controller;
 
-import jdr.exia.controller.IController;
 import jdr.exia.model.IModel;
 import jdr.exia.view.IView;
 
@@ -20,11 +19,6 @@ public class Controller implements IController {
 
 	@Override
 	public void start() {
-
-	}
-
-	@Override
-	public void initDatas() {
 
 	}
 }
