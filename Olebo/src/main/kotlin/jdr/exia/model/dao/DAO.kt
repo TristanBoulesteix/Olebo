@@ -7,7 +7,7 @@ import java.sql.ResultSet
 import javax.swing.ImageIcon
 
 object DAO {
-    private const val url = "jdbc:sqlite:C://sqlite/db/test.db"
+    private const val url = "jdbc:sqlite:C://sqlite/db/test.db" // TODO : Mettre la bonne url de la base
 
     private val connection = DriverManager.getConnection(url)
 
