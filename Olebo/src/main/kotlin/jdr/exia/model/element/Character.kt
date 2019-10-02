@@ -10,7 +10,7 @@ abstract class Character(
     position: Position,
     visible: Boolean,
     size: Size,
-    player: Boolean = false
+    val player: Boolean = false
 ) : Element(
     name,
     sprite,

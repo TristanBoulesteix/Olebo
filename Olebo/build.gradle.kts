@@ -15,6 +15,7 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     testCompile("junit", "junit", "4.12")
+    compile("org.xerial", "sqlite-jdbc",  "3.28.0")
 }
 
 configure<JavaPluginConvention> {
