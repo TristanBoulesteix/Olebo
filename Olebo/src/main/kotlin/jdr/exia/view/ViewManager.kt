@@ -62,6 +62,11 @@ object ViewManager {
         }
 
     }
+
+    fun placeElement(element: ElementPlaceHolder){
+
+    }
+
 }
 
 

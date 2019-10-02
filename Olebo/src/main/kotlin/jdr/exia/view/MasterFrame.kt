@@ -9,21 +9,20 @@ import javax.swing.JFrame
 import javax.swing.JPanel
 import kotlin.system.exitProcess
 
-/*MasterFrame is the Game Master's Interface, it contains a Map panel (the same as PlayerFrame), an ItemPanel and a SelectPanel.
+/*MasterFrame is the Game Master's Interface, it contains a Map panel (the same as PlayerFrame, but scaled down), an ItemPanel and a SelectPanel.
  * MasterFrame will be focused most of the time, so it contains all KeyListeners for the program
 this is a singleton*/
 
 /* TODO: create the Drag and drop system
- *
  * Idea on how this works:
  * The
  * */
 object MasterFrame : JFrame(), KeyListener {
-    private var masterFramePanel: JPanel? = null
+    private val masterFramePanel: JPanel = JPanel(GridBagLayout())
 
-    var mapPanel = MapPanel
-    var selectPanel = SelectPanel // Will contain all info on selected Item
-    var itemPanel = ItemPanel // Will contain list of available items
+    val mapPanel = MapPanel
+    val selectPanel = SelectPanel // Will contain all info on selected Item
+    val itemPanel = ItemPanel // Will contain list of available items
 
     init {
         this.title = "Master"
@@ -34,12 +33,13 @@ object MasterFrame : JFrame(), KeyListener {
         mapPanel.setSize(1280, 720)
 
         selectPanel.setSize(100, 100)
+
         selectPanel.background = Color.green
 
         itemPanel.setSize(100, 100)
         itemPanel.background = Color.yellow
 
-        masterFramePanel = JPanel(GridBagLayout())
+
         masterFramePanel!!.size = this.size
         masterFramePanel!!.background = Color.GRAY
         this.contentPane = masterFramePanel
@@ -68,9 +68,9 @@ object MasterFrame : JFrame(), KeyListener {
         mapConstraints.weighty = 5.0
         mapConstraints.fill = GridBagConstraints.BOTH
 
-        masterFramePanel!!.add(mapPanel, mapConstraints)
-        masterFramePanel!!.add(itemPanel, itemConstraints)
-        masterFramePanel!!.add(selectPanel, selectConstraints)
+        masterFramePanel.add(mapPanel, mapConstraints)
+        masterFramePanel.add(itemPanel, itemConstraints)
+        masterFramePanel.add(selectPanel, selectConstraints)
     }
 
     // KeyListener section, to add Key bindings

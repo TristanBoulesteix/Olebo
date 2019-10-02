@@ -10,7 +10,7 @@ object PlayerFrame : JFrame() {
     init {
         this.title = "Player"
         this.isResizable = false
-        this.setSize(1936, 1056)
+        this.setSize(1920, 1080)
         this.contentPane = mapPanel
 
         this.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
