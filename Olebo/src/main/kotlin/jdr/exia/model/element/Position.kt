@@ -1,3 +1,3 @@
 package jdr.exia.model.element
 
-class Position
+data class Position(val x: Int, val y: Int)

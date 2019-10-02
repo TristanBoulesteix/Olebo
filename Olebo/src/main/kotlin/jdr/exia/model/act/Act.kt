@@ -1,3 +1,3 @@
 package jdr.exia.model.act
 
-class Act
+class Act(val name: String, val scenes: MutableList<Scene>)

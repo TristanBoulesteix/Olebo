@@ -56,3 +56,5 @@ out/
 /subprojects/docs/src/samples/**/build
 /subprojects/internal-android-performance-testing/build-android-libs
 Olebo/.idea/codeStyles/Project.xml
+Olebo/.idea/workspace.xml___jb_tmp___
+*.lck
