@@ -55,3 +55,6 @@ out/
 /subprojects/*/build
 /subprojects/docs/src/samples/**/build
 /subprojects/internal-android-performance-testing/build-android-libs
+Olebo/.idea/codeStyles/Project.xml
+Olebo/.idea/modules/Olebo.main.iml
+Olebo/.idea/modules/Olebo.test.iml
