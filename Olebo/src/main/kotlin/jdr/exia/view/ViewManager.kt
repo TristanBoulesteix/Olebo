@@ -7,9 +7,10 @@ import javax.swing.JFrame
 /*ViewManager is View's facade
 this is a singleton*/
 object ViewManager {
-    private var playerFrame = PlayerFrame
+    private val playerFrame = PlayerFrame
+    private val tokens = mutableListOf<ElementPlaceHolder>()
 
-    private var masterFrame = MasterFrame
+    private val masterFrame = MasterFrame
 
     /* these 2 lines generate a GraphicsDevice array, GraphicsDevice are screens*/
     private val screens: Array<GraphicsDevice>
@@ -60,6 +61,11 @@ object ViewManager {
             }
             else -> throw RuntimeException("No Screens Found")
         }
+
+    }
+
+    fun placeTokensOnMaps(tokens: MutableList<ElementPlaceHolder>){ //places
+
 
     }
 }

@@ -3,6 +3,7 @@ package jdr.exia.view
 import java.awt.Color
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
+import java.awt.Image
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import javax.swing.JFrame
@@ -19,9 +20,8 @@ this is a singleton*/
  * The
  * */
 object MasterFrame : JFrame(), KeyListener {
-    private var masterFramePanel: JPanel? = null
-
-    var mapPanel = MapPanel
+    private var masterFramePanel = MapPanel()
+    private val mapPanel = MapPanel()
     var selectPanel = SelectPanel // Will contain all info on selected Item
     var itemPanel = ItemPanel // Will contain list of available items
 
@@ -39,9 +39,9 @@ object MasterFrame : JFrame(), KeyListener {
         itemPanel.setSize(100, 100)
         itemPanel.background = Color.yellow
 
-        masterFramePanel = JPanel(GridBagLayout())
-        masterFramePanel!!.size = this.size
-        masterFramePanel!!.background = Color.GRAY
+
+        masterFramePanel.size = this.size
+        masterFramePanel.background = Color.GRAY
         this.contentPane = masterFramePanel
 
         val mapConstraints = GridBagConstraints()
@@ -68,9 +68,9 @@ object MasterFrame : JFrame(), KeyListener {
         mapConstraints.weighty = 5.0
         mapConstraints.fill = GridBagConstraints.BOTH
 
-        masterFramePanel!!.add(mapPanel, mapConstraints)
-        masterFramePanel!!.add(itemPanel, itemConstraints)
-        masterFramePanel!!.add(selectPanel, selectConstraints)
+        masterFramePanel.add(mapPanel, mapConstraints)
+        masterFramePanel.add(itemPanel, itemConstraints)
+        masterFramePanel.add(selectPanel, selectConstraints)
     }
 
     // KeyListener section, to add Key bindings
@@ -90,4 +90,13 @@ object MasterFrame : JFrame(), KeyListener {
     override fun keyReleased(keyEvent: KeyEvent) {
         TODO("Auto-generated method stub")
     }
+
+    fun updateMapTokens(tokens: MutableList<ElementPlaceHolder>){
+        this.mapPanel.updateTokens(tokens)
+
+    }
+
+
+
+
 }
