@@ -2,14 +2,23 @@ package jdr.exia.model.dao
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
+import jdr.exia.model.appDatas
+import java.io.File
+import java.io.File.separator
 import java.sql.DriverManager
 import java.sql.ResultSet
 import javax.swing.ImageIcon
 
 object DAO {
-    private const val url = "jdbc:sqlite:C://sqlite/db/test.db" // TODO : Mettre la bonne url de la base
+    private val DB_NAME = "db${separator}template.db"
+    private val url = "jdbc:sqlite:$appDatas$DB_NAME"
+    private val connection by lazy {
+        if(!File(url).exists()) {
+            println(File(this.javaClass.classLoader.getResource("db/template.db")!!.toURI()).absolutePath)
+        }
 
-    private val connection = DriverManager.getConnection(url)
+        DriverManager.getConnection(url)
+    }
 
     private fun select(rSQL: String): ResultSet {
         val stmt = connection.createStatement()
