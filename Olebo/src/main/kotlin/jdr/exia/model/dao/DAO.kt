@@ -2,7 +2,7 @@ package jdr.exia.model.dao
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
-import jdr.exia.model.appDatas
+import jdr.exia.model.utils.appDatas
 import java.io.File
 import java.io.File.separator
 import java.sql.DriverManager
@@ -10,11 +10,14 @@ import java.sql.ResultSet
 import javax.swing.ImageIcon
 
 object DAO {
-    private val DB_NAME = "db${separator}template.db"
-    private val url = "jdbc:sqlite:$appDatas$DB_NAME"
+    private val db_name = "Olebo${separator}db${separator}template.db"
+    private val file_path = "$appDatas$db_name"
+    private val url = "jdbc:sqlite:$file_path"
     private val connection by lazy {
-        if(!File(url).exists()) {
-            println(File(this.javaClass.classLoader.getResource("db/template.db")!!.toURI()).absolutePath)
+        if (!File(file_path).exists()) {
+            File(this.javaClass.classLoader.getResource("db/template.db")!!.toURI()).copyTo(
+                File(file_path), true
+            )
         }
 
         DriverManager.getConnection(url)
