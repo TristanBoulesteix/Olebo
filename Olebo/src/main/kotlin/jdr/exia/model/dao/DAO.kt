@@ -28,9 +28,22 @@ object DAO {
         return stmt.executeQuery(rSQL)
     }
 
+    fun getActsList(): List<String> {
+        val actsName = mutableListOf<String>()
+        val req = select("SELECT Name FROM Act")
+
+        while (req.next()) {
+            actsName += req.getString(0)
+        }
+
+        req.close()
+
+        return actsName
+    }
+
     // Get all acts in a mutableList
-    fun getAllActs(): MutableList<Act> {
-        val actName = mutableListOf<Act>()
+    fun getAllActs(): List<Act> {
+        val acts = mutableListOf<Act>()
         val req = select("SELECT * FROM Act")
 
         // Select all scene with act id
@@ -53,11 +66,11 @@ object DAO {
         }
 
         while (req.next()) {
-            actName += Act(req.getString("Name"), sceneFromAct(req.getInt("Id")))
+            acts += Act(req.getString("Name"), sceneFromAct(req.getInt("Id")))
         }
 
         req.close()
 
-        return actName
+        return acts
     }
 }
