@@ -1,14 +1,13 @@
 package jdr.exia.controller
 
 import jdr.exia.model.dao.DAO
+import jdr.exia.view.acts.ActSelector
 
 class Controller {
-    fun initDatas(): List<String> {
+    fun initDatas(): Array<String> {
         val acts = DAO.getActsList()
 
-        if(acts.isEmpty()) {
-            TODO("Open act creation window")
-        }
+        ActSelector(acts).isVisible = true
 
         return acts
     }

@@ -28,20 +28,20 @@ object DAO {
         return stmt.executeQuery(rSQL)
     }
 
-    fun getActsList(): List<String> {
+    fun getActsList(): Array<String> {
         val actsName = mutableListOf<String>()
         val req = select("SELECT Name FROM Act")
 
         while (req.next()) {
-            actsName += req.getString(0)
+            actsName += req.getString(1)
         }
 
         req.close()
 
-        return actsName
+        return actsName.toTypedArray()
     }
 
-    // Get all acts in a mutableList
+    // Get all acts in a List
     fun getAllActs(): List<Act> {
         val acts = mutableListOf<Act>()
         val req = select("SELECT * FROM Act")
