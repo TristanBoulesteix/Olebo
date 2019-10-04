@@ -56,3 +56,4 @@ out/
 /subprojects/docs/src/samples/**/build
 /subprojects/internal-android-performance-testing/build-android-libs
 Olebo/.idea/codeStyles/Project.xml
+*.bak_007d
