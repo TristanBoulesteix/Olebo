@@ -26,7 +26,7 @@ class ActSelector(acts: Array<String>) : JFrame("Sélection de l'acte") {
             border = EmptyBorder(10,10,10,10)
             font = Font("Arial", Font.BOLD, 16)
             selectionBackground = Color.ORANGE
-        }), BorderLayout.SOUTH)
+        }), BorderLayout.NORTH)
 
         this.pack()
     }
