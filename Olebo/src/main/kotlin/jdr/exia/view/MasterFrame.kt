@@ -1,9 +1,6 @@
 package jdr.exia.view
 
-import java.awt.Color
-import java.awt.GridBagConstraints
-import java.awt.GridBagLayout
-import java.awt.Image
+import java.awt.*
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import javax.swing.JFrame
@@ -25,11 +22,34 @@ object MasterFrame : JFrame(), KeyListener {
     var selectPanel = SelectPanel // Will contain all info on selected Item
     var itemPanel = ItemPanel // Will contain list of available items
 
+
+
+
+
+
     init {
+
+
+
+        val screens = GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices
+        this.setSize(screens[0].displayMode.width,screens[0].displayMode.height)
+
+
+
+
+
+
         this.title = "Master"
-        this.setSize(1936, 1056)
+
         addKeyListener(this)
         this.defaultCloseOperation = EXIT_ON_CLOSE
+
+
+
+
+        masterFramePanel.size = this.size
+        masterFramePanel.background = Color.GRAY
+        this.contentPane = masterFramePanel
 
         mapPanel.setSize(1280, 720)
 
@@ -38,11 +58,6 @@ object MasterFrame : JFrame(), KeyListener {
 
         itemPanel.setSize(100, 100)
         itemPanel.background = Color.yellow
-
-
-        masterFramePanel.size = this.size
-        masterFramePanel.background = Color.GRAY
-        this.contentPane = masterFramePanel
 
         val mapConstraints = GridBagConstraints()
         val itemConstraints = GridBagConstraints()
@@ -80,9 +95,11 @@ object MasterFrame : JFrame(), KeyListener {
     }
 
     override fun keyPressed(keyEvent: KeyEvent) {
-        // TODO("Auto-generated method stub")
+
         if (keyEvent.keyCode == KeyEvent.VK_ESCAPE) {
+
             this.dispose()
+
             exitProcess(0)
         }
     }
