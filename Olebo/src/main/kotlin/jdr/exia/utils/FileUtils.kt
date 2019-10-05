@@ -1,4 +1,4 @@
-package jdr.exia.model.utils
+package jdr.exia.utils
 
 import java.io.File
 

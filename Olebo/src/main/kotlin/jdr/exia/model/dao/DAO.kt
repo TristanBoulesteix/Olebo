@@ -2,7 +2,8 @@ package jdr.exia.model.dao
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
-import jdr.exia.model.utils.appDatas
+import jdr.exia.utils.MessageException
+import jdr.exia.utils.appDatas
 import java.io.File
 import java.io.File.separator
 import java.sql.DriverManager
@@ -23,11 +24,17 @@ object DAO {
         DriverManager.getConnection(url)
     }
 
+    /**
+     * A select request
+     */
     private fun select(rSQL: String): ResultSet {
         val stmt = connection.createStatement()
         return stmt.executeQuery(rSQL)
     }
 
+    /**
+     * Get all acts stored into the database
+     */
     fun getActsList(): Array<String> {
         val actsName = mutableListOf<String>()
         val req = select("SELECT Name FROM Act")
@@ -41,36 +48,31 @@ object DAO {
         return actsName.toTypedArray()
     }
 
-    // Get all acts in a List
-    fun getAllActs(): List<Act> {
-        val acts = mutableListOf<Act>()
-        val req = select("SELECT * FROM Act")
+    /**
+     * Get an instance of a selected act with its ID
+     */
+    fun getActWithId(idAct: Int): Act {
+        val scenes = mutableListOf<Scene>()
+        val reqScenes = select("SELECT * FROM Scene WHERE ID_Act = $idAct")
 
-        // Select all scene with act id
-        fun sceneFromAct(idAct: Int): MutableList<Scene> {
-            val reqAct = select("SELECT * FROM Scene WHERE ID_Act = $idAct")
-
-            val scene = mutableListOf<Scene>()
-
-            while (reqAct.next()) {
-                scene += Scene(
-                    reqAct.getString("Nom"),
-                    ImageIcon(reqAct.getString("Background")),
-                    mutableListOf()
-                )
-            }
-
-            reqAct.close()
-
-            return scene
+        while (reqScenes.next()) {
+            scenes += Scene(
+                reqScenes.getString("name"),
+                ImageIcon(reqScenes.getString("Background")),
+                mutableListOf()
+            )
         }
 
-        while (req.next()) {
-            acts += Act(req.getString("Name"), sceneFromAct(req.getInt("Id")))
+        reqScenes.close()
+
+        val reqAct = select("SELECT * FROM Act Where id = $idAct")
+
+        var act: Act? = null
+
+        while (reqAct.next()) {
+            act = Act(reqAct.getString("Name"), scenes)
         }
 
-        req.close()
-
-        return acts
+        return act ?: throw MessageException("Error ! This act doesn't exist.")
     }
 }
