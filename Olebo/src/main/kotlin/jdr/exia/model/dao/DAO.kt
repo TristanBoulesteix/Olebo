@@ -71,6 +71,7 @@ object DAO {
 
         while (reqAct.next()) {
             act = Act(reqAct.getString("Name"), scenes)
+            break
         }
 
         return act ?: throw MessageException("Error ! This act doesn't exist.")
