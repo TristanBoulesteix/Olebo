@@ -1,8 +1,7 @@
-package jdr.exia.utils
+package jdr.exia.model.utils
 
 import javax.swing.FocusManager
 import javax.swing.JOptionPane
-
 
 class MessageException(message: String) : Exception(message) {
     init {

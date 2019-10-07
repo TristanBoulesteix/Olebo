@@ -1,13 +1,11 @@
 package jdr.exia.model.act
 
-import jdr.exia.model.dao.DAO
-import jdr.exia.model.dao.getContent
 import jdr.exia.model.dao.ActTable
 import jdr.exia.model.dao.SceneTable
+import jdr.exia.model.utils.DelegateIterable
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.EntityID
-import org.jetbrains.exposed.sql.transactions.transaction
 
 class Act(id: EntityID<Int>) : Entity<Int>(id) {
     companion object : EntityClass<Int, Act>(ActTable)
@@ -15,10 +13,5 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
     private val scenesIterable by Scene referrersOn SceneTable.idAct
 
     val name by ActTable.name
-    val scenes by lazy {
-        transaction(DAO.database) {
-            scenesIterable.getContent()
-        }
-    }
-
+    val scenes by DelegateIterable { scenesIterable }
 }

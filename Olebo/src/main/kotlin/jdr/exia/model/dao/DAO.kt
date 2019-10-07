@@ -1,9 +1,9 @@
 package jdr.exia.model.dao
 
 import jdr.exia.model.act.Act
-import jdr.exia.utils.appDatas
+import jdr.exia.model.utils.MessageException
+import jdr.exia.model.utils.appDatas
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SizedIterable
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -46,17 +46,13 @@ object DAO {
      */
     fun getActWithId(idAct: Int): Act {
         return transaction {
-            Act.findById(idAct)!!
+            Act.findById(idAct) ?: throw MessageException("Error ! This act doesn't exist.")
         }
     }
 }
 
-fun <T> SizedIterable<T>.getContent(): MutableList<T> {
-    val content = mutableListOf<T>()
-
-    this.forEach {
-        content += it
+fun main() {
+    DAO.getActWithId(1).scenes.forEach {
+        println(it.name)
     }
-
-    return content
 }
