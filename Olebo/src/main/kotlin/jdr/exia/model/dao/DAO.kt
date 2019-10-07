@@ -1,79 +1,63 @@
 package jdr.exia.model.dao
 
 import jdr.exia.model.act.Act
-import jdr.exia.model.act.Scene
-import jdr.exia.utils.MessageException
+import jdr.exia.model.dao.tables.ActTable
 import jdr.exia.utils.appDatas
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SizedIterable
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.transactions.TransactionManager
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
 import java.io.File.separator
-import java.sql.DriverManager
-import java.sql.ResultSet
-import javax.swing.ImageIcon
+import java.sql.Connection
 
 object DAO {
-    private val db_name = "Olebo${separator}db${separator}template.db"
-    private val file_path = "$appDatas$db_name"
-    private val url = "jdbc:sqlite:$file_path"
-    private val connection by lazy {
-        if (!File(file_path).exists()) {
+    private val dbName = "Olebo${separator}db${separator}template.db"
+    private val filePath = "$appDatas$dbName"
+    private val url = "jdbc:sqlite:$filePath"
+
+    val database: Database
+
+    init {
+        if (!File(filePath).exists()) {
             File(this.javaClass.classLoader.getResource("db/template.db")!!.toURI()).copyTo(
-                File(file_path), true
+                File(filePath), true
             )
         }
 
-        DriverManager.getConnection(url)
-    }
+        database = Database.connect(url, "org.sqlite.JDBC")
 
-    /**
-     * A select request
-     */
-    private fun select(rSQL: String): ResultSet {
-        val stmt = connection.createStatement()
-        return stmt.executeQuery(rSQL)
+        TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
     }
 
     /**
      * Get all acts stored into the database
      */
     fun getActsList(): Array<String> {
-        val actsName = mutableListOf<String>()
-        val req = select("SELECT Name FROM Act")
-
-        while (req.next()) {
-            actsName += req.getString(1)
+        return transaction {
+            ActTable.selectAll().withDistinct().map {
+                it[ActTable.name]
+            }.toTypedArray()
         }
-
-        req.close()
-
-        return actsName.toTypedArray()
     }
 
     /**
      * Get an instance of a selected act with its ID
      */
     fun getActWithId(idAct: Int): Act {
-        val scenes = mutableListOf<Scene>()
-        val reqScenes = select("SELECT * FROM Scene WHERE ID_Act = $idAct")
-
-        while (reqScenes.next()) {
-            scenes += Scene(
-                reqScenes.getString("name"),
-                ImageIcon(reqScenes.getString("Background")),
-                mutableListOf()
-            )
+        return transaction {
+            Act.findById(idAct)!!
         }
-
-        reqScenes.close()
-
-        val reqAct = select("SELECT * FROM Act Where id = $idAct")
-
-        var act: Act? = null
-
-        while (reqAct.next()) {
-            act = Act(reqAct.getString("Name"), scenes)
-            break
-        }
-
-        return act ?: throw MessageException("Error ! This act doesn't exist.")
     }
+}
+
+fun <T> SizedIterable<T>.getContent(): MutableList<T> {
+    val content = mutableListOf<T>()
+
+    this.forEach {
+        content += it
+    }
+
+    return content
 }

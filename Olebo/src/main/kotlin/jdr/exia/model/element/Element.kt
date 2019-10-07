@@ -1,7 +1,7 @@
 package jdr.exia.model.element
 
 import javax.swing.ImageIcon
-
+// TODO("Add hitbox")
 abstract class Element(
     val name: String,
     val sprite: ImageIcon,
