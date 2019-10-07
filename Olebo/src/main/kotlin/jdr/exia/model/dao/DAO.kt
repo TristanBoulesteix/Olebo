@@ -1,8 +1,10 @@
 package jdr.exia.model.dao
 
 import jdr.exia.model.act.Act
+import jdr.exia.model.act.Scene
 import jdr.exia.model.utils.MessageException
 import jdr.exia.model.utils.appDatas
+import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.TransactionManager
@@ -33,10 +35,10 @@ object DAO {
     /**
      * Get all acts stored into the database
      */
-    fun getActsList(): Array<String> {
+    fun getActsList(result: Column<*> = ActTable.name): Array<String> {
         return transaction {
             ActTable.selectAll().withDistinct().map {
-                it[ActTable.name]
+                it[result].toString()
             }.toTypedArray()
         }
     }
@@ -52,7 +54,11 @@ object DAO {
 }
 
 fun main() {
-    DAO.getActWithId(1).scenes.forEach {
-        println(it.name)
+    transaction(DAO.database) {
+        DAO.getActWithId(1).scenes += Scene.new {
+            name = "test1"
+            background = "test_back"
+            idAct = 1
+        }
     }
 }
