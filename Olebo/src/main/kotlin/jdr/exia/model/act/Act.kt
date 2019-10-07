@@ -2,8 +2,8 @@ package jdr.exia.model.act
 
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.getContent
-import jdr.exia.model.dao.tables.ActTable
-import jdr.exia.model.dao.tables.SceneTable
+import jdr.exia.model.dao.ActTable
+import jdr.exia.model.dao.SceneTable
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.EntityID

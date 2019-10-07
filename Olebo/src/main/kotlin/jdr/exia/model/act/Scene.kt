@@ -1,6 +1,6 @@
 package jdr.exia.model.act
 
-import jdr.exia.model.dao.tables.SceneTable
+import jdr.exia.model.dao.SceneTable
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.EntityID

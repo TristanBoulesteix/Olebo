@@ -1,6 +1,11 @@
-package jdr.exia.model.dao.tables
+package jdr.exia.model.dao
 
 import org.jetbrains.exposed.dao.IntIdTable
+
+object ActTable : IntIdTable() {
+    val name = varchar("name", 50)
+    val idScene = integer("id_scene").references(SceneTable.id)
+}
 
 object SceneTable : IntIdTable() {
     val name = varchar("name", 50)

@@ -1,7 +1,6 @@
 package jdr.exia.model.dao
 
 import jdr.exia.model.act.Act
-import jdr.exia.model.dao.tables.ActTable
 import jdr.exia.utils.appDatas
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SizedIterable
