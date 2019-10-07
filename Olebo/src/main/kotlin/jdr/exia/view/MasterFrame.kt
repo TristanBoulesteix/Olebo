@@ -4,7 +4,9 @@ import java.awt.*
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import javax.swing.JFrame
-import javax.swing.JPanel
+import jdr.exia.model.element.Element
+import java.io.File
+import javax.imageio.ImageIO
 import kotlin.system.exitProcess
 
 /*MasterFrame is the Game Master's Interface, it contains a Map panel (the same as PlayerFrame), an ItemPanel and a SelectPanel.
@@ -16,16 +18,21 @@ this is a singleton*/
  * Idea on how this works:
  * The
  * */
-object MasterFrame : JFrame(), KeyListener {
+object MasterFrame : JFrame(), KeyListener, gameFrame {
+
+
     private var masterFramePanel = MapPanel()
     private val mapPanel = MapPanel()
     var selectPanel = SelectPanel // Will contain all info on selected Item
     var itemPanel = ItemPanel // Will contain list of available items
 
 
-
-
-
+    override fun setMapBackground(imageName: String) {
+        this.mapPanel.backGroundImage = ImageIO.read(Element::class.java.getResource(imageName).openStream())
+        this.invalidate()
+        this.mapPanel.repaint()
+        //this.mapPanel.paintImmediately(0,0,this.width,this.height)
+    }
 
     init {
 
@@ -108,7 +115,7 @@ object MasterFrame : JFrame(), KeyListener {
         TODO("Auto-generated method stub")
     }
 
-    fun updateMapTokens(tokens: MutableList<ElementPlaceHolder>){
+    override fun updateMap(tokens: MutableList<Element>){
         this.mapPanel.updateTokens(tokens)
 
     }

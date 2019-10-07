@@ -23,6 +23,12 @@ object ViewManager {
        // masterFrame.mapPanel.refresh()
     }
 
+    fun setMapBackground(imageName: String){
+
+        MasterFrame.setMapBackground(imageName)
+        PlayerFrame.setMapBackground(imageName)
+    }
+
     private fun initializeActFrames()
     { /*this method activates the Player and GM frames to initiate/start back an act	*/
 

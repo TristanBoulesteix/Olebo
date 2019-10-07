@@ -7,6 +7,11 @@ object ViewController {
 
     var mapTokens = mutableListOf<Element>()
 
+    init {
+        ViewManager.setMapBackground("/tools.jpg")
+
+    }
+
     fun updateTokens (){ //updates the tokens on the maps
         ViewManager.placeTokensOnMaps(mapTokens)
     }

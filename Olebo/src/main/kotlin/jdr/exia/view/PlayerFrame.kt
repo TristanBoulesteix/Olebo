@@ -1,12 +1,19 @@
 package jdr.exia.view
 
+import jdr.exia.model.element.Element
 import java.awt.GraphicsEnvironment
-import java.awt.Image
+
+import java.io.File
+import javax.imageio.ImageIO
 import javax.swing.JFrame
 
 /*PlayerFrame is the Frame the Players can see, it shares its content with MasterFrame
 this is a singleton*/
-object PlayerFrame : JFrame() {
+object PlayerFrame : JFrame(), gameFrame {
+
+
+
+
     private val mapPanel = MapPanel()
 
     init {
@@ -28,9 +35,14 @@ object PlayerFrame : JFrame() {
 
     }
 
-    fun placeElementOnMap(tokens: MutableList<ElementPlaceHolder>){
+    override fun updateMap(tokens: MutableList<Element>){
             this.mapPanel.updateTokens(tokens)
 
+    }
+
+    override fun setMapBackground(imageName: String) {
+        this.mapPanel.backGroundImage = ImageIO.read( File(this.javaClass.getResource(imageName).path))
+        this.mapPanel.repaint()
     }
 
 }
