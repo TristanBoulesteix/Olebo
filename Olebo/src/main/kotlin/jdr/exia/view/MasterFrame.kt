@@ -5,8 +5,11 @@ import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import javax.swing.JFrame
 import jdr.exia.model.element.Element
+import java.awt.event.MouseEvent
+import java.awt.event.MouseListener
 import java.io.File
 import javax.imageio.ImageIO
+import javax.swing.JPanel
 import kotlin.system.exitProcess
 
 /*MasterFrame is the Game Master's Interface, it contains a Map panel (the same as PlayerFrame), an ItemPanel and a SelectPanel.
@@ -21,7 +24,7 @@ this is a singleton*/
 object MasterFrame : JFrame(), KeyListener, gameFrame {
 
 
-    private var masterFramePanel = MapPanel()
+    private var masterFramePanel = JPanel()
     private val mapPanel = MapPanel()
     var selectPanel = SelectPanel // Will contain all info on selected Item
     var itemPanel = ItemPanel // Will contain list of available items
@@ -29,9 +32,7 @@ object MasterFrame : JFrame(), KeyListener, gameFrame {
 
     override fun setMapBackground(imageName: String) {
         this.mapPanel.backGroundImage = ImageIO.read(Element::class.java.getResource(imageName).openStream())
-        this.invalidate()
-        this.mapPanel.repaint()
-        //this.mapPanel.paintImmediately(0,0,this.width,this.height)
+
     }
 
     init {
@@ -56,7 +57,9 @@ object MasterFrame : JFrame(), KeyListener, gameFrame {
 
         masterFramePanel.size = this.size
         masterFramePanel.background = Color.GRAY
-        this.contentPane = masterFramePanel
+        masterFramePanel.layout = GridBagLayout()
+        contentPane = masterFramePanel
+
 
         mapPanel.setSize(1280, 720)
 
@@ -97,7 +100,8 @@ object MasterFrame : JFrame(), KeyListener, gameFrame {
 
     // KeyListener section, to add Key bindings
     override fun keyTyped(keyEvent: KeyEvent) {
-        TODO("Auto-generated method stub")
+      println("haha")
+
 
     }
 
@@ -112,13 +116,16 @@ object MasterFrame : JFrame(), KeyListener, gameFrame {
     }
 
     override fun keyReleased(keyEvent: KeyEvent) {
-        TODO("Auto-generated method stub")
+
     }
 
     override fun updateMap(tokens: MutableList<Element>){
         this.mapPanel.updateTokens(tokens)
 
     }
+
+
+
 
 
 

@@ -42,7 +42,7 @@ object PlayerFrame : JFrame(), gameFrame {
 
     override fun setMapBackground(imageName: String) {
         this.mapPanel.backGroundImage = ImageIO.read( File(this.javaClass.getResource(imageName).path))
-        this.mapPanel.repaint()
+
     }
 
 }

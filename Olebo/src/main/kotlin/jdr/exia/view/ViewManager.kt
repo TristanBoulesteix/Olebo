@@ -27,6 +27,12 @@ object ViewManager {
 
         MasterFrame.setMapBackground(imageName)
         PlayerFrame.setMapBackground(imageName)
+        repaintFrames()
+    }
+
+    fun repaintFrames(){
+        MasterFrame.repaint()
+        PlayerFrame.repaint()
     }
 
     private fun initializeActFrames()
@@ -42,7 +48,9 @@ object ViewManager {
 
 
     fun placeTokensOnMaps(tokens: MutableList<Element>){ //places tokens on both maps at corresponding points
-        //TODO: Give tokens to BOTH mapPanels
+        PlayerFrame.updateMap(tokens)
+        MasterFrame.updateMap(tokens)
+        repaintFrames()
     }
 }
 
