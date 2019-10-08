@@ -1,11 +1,15 @@
 package jdr.exia.controller
 
-import jdr.exia.model.Model
-import jdr.exia.view.ViewManager
+import jdr.exia.model.dao.DAO
+import jdr.exia.view.acts.ActSelector
 
-class Controller(private val viewManager: ViewManager, private val model: Model) {
-    fun initDatas() {
-        model.loadDatabase()
+class Controller {
+    fun initDatas(): Array<String> {
+        val acts = DAO.getActsList()
+
+        ActSelector(acts).isVisible = true
+
+        return acts
     }
 
     fun start() {

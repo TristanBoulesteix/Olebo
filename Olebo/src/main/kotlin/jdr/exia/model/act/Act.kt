@@ -1,3 +1,17 @@
 package jdr.exia.model.act
 
-class Act
+import jdr.exia.model.dao.ActTable
+import jdr.exia.model.dao.SceneTable
+import jdr.exia.model.utils.DelegateIterable
+import org.jetbrains.exposed.dao.Entity
+import org.jetbrains.exposed.dao.EntityClass
+import org.jetbrains.exposed.dao.EntityID
+
+class Act(id: EntityID<Int>) : Entity<Int>(id) {
+    companion object : EntityClass<Int, Act>(ActTable)
+
+    private val scenesIterable by Scene referrersOn SceneTable.idAct
+
+    val name by ActTable.name
+    val scenes by DelegateIterable { scenesIterable }
+}
