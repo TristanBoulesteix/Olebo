@@ -52,8 +52,8 @@ object ViewManager {
 
                 playerFrame.isUndecorated = false
                 masterFrame.isUndecorated = false
-                screens[0].fullScreenWindow = playerFrame
-                screens[0].fullScreenWindow = masterFrame
+                playerFrame.isVisible = true
+                masterFrame.isVisible = true
                 masterFrame.extendedState = JFrame.MAXIMIZED_BOTH
                 playerFrame.extendedState = JFrame.MAXIMIZED_BOTH
 
