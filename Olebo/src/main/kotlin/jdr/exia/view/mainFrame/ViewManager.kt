@@ -1,5 +1,6 @@
 package jdr.exia.view.mainFrame
 
+import jdr.exia.controller.ViewController
 import jdr.exia.model.element.Element
 
 /*ViewManager is View's facade
@@ -13,6 +14,10 @@ object ViewManager {
 
     init {
         initializeActFrames() //Temporary, needs to be altered later
+    }
+
+    fun dragDrop(x: Int, y: Int){
+        ViewController.dragDrop(x,y)
     }
 
 

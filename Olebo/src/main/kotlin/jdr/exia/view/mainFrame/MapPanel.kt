@@ -1,4 +1,5 @@
 package jdr.exia.view.mainFrame
+import jdr.exia.controller.ViewController
 import java.awt.Graphics
 import java.awt.GridBagLayout
 import javax.swing.JPanel
@@ -18,14 +19,14 @@ class MapPanel : JPanel(), MouseListener {
     var tokens = mutableListOf<Element>(); //These are all the tokens placed on  the current map
 
 
-    fun relativeX(absoluteX: Int): Int{ //translates an X coordinate in 1000th to a relative coordinate on this panel
+    private fun relativeX(absoluteX: Int): Int{ //translates an X coordinate in 1000th to a relative coordinate on this panel
         return (absoluteX*this.width)/1000
     }
-    fun relativeY(absoluteY: Int): Int { //translates a y coordinate in 1000th to a relative coordinate on this panel
+    private fun relativeY(absoluteY: Int): Int { //translates a y coordinate in 1000th to a relative coordinate on this panel
         return (absoluteY*this.height)/1000
     }
 
-    fun absoluteX(relativeX: Int): Int {
+    private fun absoluteX(relativeX: Int): Int {
         return (((relativeX.toFloat()/ this.width.toFloat()))*1000).toInt()
     }
     fun absoluteY(relativeY: Int): Int {
@@ -61,7 +62,16 @@ class MapPanel : JPanel(), MouseListener {
 
 
     override fun mouseClicked(p0: MouseEvent?) {  /* /!\ Coordinates are stated in pixels here, not in absolute 1000th /!\ */
-        println("clicked at coordinates: X = "+absoluteX(p0!!.x)+" Y = "+absoluteY(p0.y) )
+
+        var clickedX = absoluteX(p0!!.x)
+        var clickedY= absoluteY(p0!!.y)
+
+       when(p0.button) //  1, middle button: 2, Right click: 3
+       {
+           1 -> ViewManager.dragDrop(clickedX,clickedY) //Left click
+           2 -> null //Middle button
+           3 -> null //Right click
+       }
     }
 
 

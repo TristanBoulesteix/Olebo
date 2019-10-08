@@ -97,8 +97,6 @@ object MasterFrame : JFrame(), KeyListener, gameFrame {
 
     // KeyListener section, to add Key bindings
     override fun keyTyped(keyEvent: KeyEvent) {
-      println("haha")
-
 
     }
 

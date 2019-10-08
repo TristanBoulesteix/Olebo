@@ -18,8 +18,8 @@ abstract class Character(
     sprite,
     position,
     visible,
-    hitbox,
-    size
+    size,
+    hitbox
 ) {
     var currentHealth = maxHealth
     var currentMana = maxMana
