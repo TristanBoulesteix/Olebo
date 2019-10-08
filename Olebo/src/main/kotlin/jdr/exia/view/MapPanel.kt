@@ -25,12 +25,20 @@ class MapPanel : JPanel(), MouseListener {
         return (absoluteY*this.height)/1000
     }
 
+    fun absoluteX(relativeX: Int): Int {
+        return (((relativeX.toFloat()/ this.width.toFloat()))*1000).toInt()
+    }
+    fun absoluteY(relativeY: Int): Int {
+
+
+        return (((relativeY.toFloat()/ this.height.toFloat()))*1000).toInt()
+    }
+
 
     init {
         this.layout= GridBagLayout();
         this.background = Color.blue
         addMouseListener(this)
-
     }
 
 
@@ -52,12 +60,11 @@ class MapPanel : JPanel(), MouseListener {
     }
 
 
-
-
     override fun mouseClicked(p0: MouseEvent?) {  /* /!\ Coordinates are stated in pixels here, not in absolute 1000th /!\ */
-        println("clicked at coordinates: X = "+p0?.x+" Y = "+p0?.y )
-        
+        println("clicked at coordinates: X = "+absoluteX(p0!!.x)+" Y = "+absoluteY(p0.y) )
     }
+
+
 
 
     // Unused mouse methods
