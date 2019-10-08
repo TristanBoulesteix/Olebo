@@ -1,5 +1,6 @@
 package jdr.exia.view
 
+import jdr.exia.model.element.Element
 import java.awt.GraphicsDevice
 import java.awt.GraphicsEnvironment
 import javax.swing.JFrame
@@ -7,60 +8,49 @@ import javax.swing.JFrame
 /*ViewManager is View's facade
 this is a singleton*/
 object ViewManager {
-    private var playerFrame = PlayerFrame
 
-    private var masterFrame = MasterFrame
 
-    /* these 2 lines generate a GraphicsDevice array, GraphicsDevice are screens*/
-    private val screens: Array<GraphicsDevice>
-        get() {
-            val graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment()
-            return graphicsEnvironment.screenDevices
-        }
 
-    /* Code supposed to be in Controller, but due to the non-existence of the Controller, the view is kindly sheltering these lines of code */
-    private val clickedElement: Any? =
-        null //this is the last Element that was clicked on, if it is equal to NULL, the program tries to fill this slot with an object
+
+
 
     init {
-        this.initializeActFrames()
+        this.initializeActFrames() //Temporary, needs to be altered later
     }
 
 
     fun refreshFrames() {  // Refreshes Player and MasterFrames at once
-        masterFrame.mapPanel.refresh()
+       // masterFrame.mapPanel.refresh()
     }
 
-    private fun initializeActFrames() { /*this method activates the Player and GM frames to initiate/start back an act	*/
-        val screens = this.screens
+    fun setMapBackground(imageName: String){
 
-        /* if there are 2 screens or more, the the 1st one is GM's screen, and the 2nd
-		is the players' screen.*/
-        when {
-            screens.size >= 2 -> {
-                playerFrame.isUndecorated = true
-                masterFrame.isUndecorated = true
-                screens[1].fullScreenWindow = playerFrame
-                screens[0].fullScreenWindow = masterFrame
-                masterFrame.extendedState = JFrame.MAXIMIZED_BOTH
-                playerFrame.extendedState = JFrame.MAXIMIZED_BOTH
+        MasterFrame.setMapBackground(imageName)
+        PlayerFrame.setMapBackground(imageName)
+        repaintFrames()
+    }
 
-                /* if there's only 1 screen, we assume the act is played for testing purposes,
-                and we make both frames decorated*/
-            }
-            screens.size == 1 -> {
+    fun repaintFrames(){
+        MasterFrame.repaint()
+        PlayerFrame.repaint()
+    }
 
-                playerFrame.isUndecorated = false
-                masterFrame.isUndecorated = false
-                playerFrame.isVisible = true
-                masterFrame.isVisible = true
-                masterFrame.extendedState = JFrame.MAXIMIZED_BOTH
-                playerFrame.extendedState = JFrame.MAXIMIZED_BOTH
+    private fun initializeActFrames()
+    { /*this method activates the Player and GM frames to initiate/start back an act	*/
 
-            }
-            else -> throw RuntimeException("No Screens Found")
-        }
+        MasterFrame.isVisible = true
+        PlayerFrame.isVisible = true
 
+        /*TODO: give master frame and player frame the objects relative to*/
+
+    }
+
+
+
+    fun placeTokensOnMaps(tokens: MutableList<Element>){ //places tokens on both maps at corresponding points
+        PlayerFrame.updateMap(tokens)
+        MasterFrame.updateMap(tokens)
+        repaintFrames()
     }
 
     fun placeElement(element: ElementPlaceHolder){
@@ -68,5 +58,3 @@ object ViewManager {
     }
 
 }
-
-

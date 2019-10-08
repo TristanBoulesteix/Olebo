@@ -8,3 +8,11 @@ fun main() {
         this.start()
     }
 }
+
+/*
+fun main() {
+    val model = Model()
+    val viewController = ViewController
+
+
+}*/
