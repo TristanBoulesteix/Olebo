@@ -1,4 +1,4 @@
-package jdr.exia.view
+package jdr.exia.view.mainFrame
 
 import jdr.exia.model.element.Element
 import java.awt.GraphicsEnvironment
@@ -36,12 +36,12 @@ object PlayerFrame : JFrame(), gameFrame {
     }
 
     override fun updateMap(tokens: MutableList<Element>){
-            this.mapPanel.updateTokens(tokens)
+            mapPanel.updateTokens(tokens)
 
     }
 
     override fun setMapBackground(imageName: String) {
-        this.mapPanel.backGroundImage = ImageIO.read( File(this.javaClass.getResource(imageName).path))
+        mapPanel.backGroundImage = ImageIO.read( File(this.javaClass.getResource(imageName).path))
 
     }
 

@@ -1,4 +1,4 @@
-package jdr.exia.view
+package jdr.exia.view.mainFrame
 
 import jdr.exia.model.element.Element
 import java.awt.Image

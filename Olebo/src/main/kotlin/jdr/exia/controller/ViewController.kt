@@ -1,9 +1,7 @@
 package jdr.exia.controller
-import jdr.exia.view.*
 
 import jdr.exia.model.element.Element
-import javax.imageio.ImageIO
-import javax.swing.ImageIcon
+import jdr.exia.view.mainFrame.ViewManager
 
 object ViewController {
 

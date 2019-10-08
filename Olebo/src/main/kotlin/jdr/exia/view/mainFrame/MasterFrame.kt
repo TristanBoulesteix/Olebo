@@ -1,13 +1,10 @@
-package jdr.exia.view
+package jdr.exia.view.mainFrame
 
 import java.awt.*
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import javax.swing.JFrame
 import jdr.exia.model.element.Element
-import java.awt.event.MouseEvent
-import java.awt.event.MouseListener
-import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.JPanel
 import kotlin.system.exitProcess
@@ -30,7 +27,7 @@ object MasterFrame : JFrame(), KeyListener, gameFrame {
 
 
     override fun setMapBackground(imageName: String) {
-        this.mapPanel.backGroundImage = ImageIO.read(Element::class.java.getResource(imageName).openStream())
+        mapPanel.backGroundImage = ImageIO.read(Element::class.java.getResource(imageName).openStream())
 
     }
 
@@ -120,7 +117,7 @@ object MasterFrame : JFrame(), KeyListener, gameFrame {
     }
 
     override fun updateMap(tokens: MutableList<Element>){
-        this.mapPanel.updateTokens(tokens)
+        mapPanel.updateTokens(tokens)
 
     }
 

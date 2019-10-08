@@ -1,4 +1,4 @@
-package jdr.exia.view
+package jdr.exia.view.mainFrame
 import java.awt.Graphics
 import java.awt.GridBagLayout
 import javax.swing.JPanel
