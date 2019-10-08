@@ -12,7 +12,7 @@ import java.io.File.separator
 import java.sql.Connection
 
 object DAO {
-    private val dbName = "Olebo${separator}db${separator}template.db"
+    private val dbName = "Olebo${separator}db${separator}database.db"
     private val filePath = "$appDatas$dbName"
     private val url = "jdbc:sqlite:$filePath"
 
