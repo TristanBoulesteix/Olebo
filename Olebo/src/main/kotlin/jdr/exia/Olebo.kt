@@ -1,14 +1,11 @@
 package jdr.exia
 
-import jdr.exia.controller.ViewController
-
-/*fun main() {
-    Controller().apply {
-        this.initDatas()
-        this.start()
-    }
-}*/
+import jdr.exia.view.homeFrame.HomeFrame
+import javax.swing.UIManager
 
 fun main() {
-    val viewController = ViewController
+    UIManager.setLookAndFeel(
+        UIManager.getSystemLookAndFeelClassName()
+    )
+    HomeFrame().isVisible = true
 }
