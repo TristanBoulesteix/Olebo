@@ -8,7 +8,7 @@ import javax.swing.border.EmptyBorder
 
 class ActSelectorPanel : JPanel() {
     init {
-        this.background = Color.BLUE
+        this.background = Color(158, 195, 255)
         this.border = EmptyBorder(20, 20, 20, 20)
         this.layout = BorderLayout()
 
@@ -25,7 +25,7 @@ class ActSelectorPanel : JPanel() {
 
     private class ActPanel(val id: Int, name: String) : JPanel() {
         init {
-            this.maximumSize = Dimension(Int.MAX_VALUE, 100)
+            this.maximumSize = Dimension(Int.MAX_VALUE, 65)
             this.border = BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK)
             this.layout = BoxLayout(this, BoxLayout.X_AXIS)
 

@@ -11,14 +11,15 @@ import javax.swing.JPanel
 
 class HomeFrame : JFrame("Menu principal") {
     companion object {
-        private val DIMENSION = Dimension(600, 800)
+        private val DIMENSION_FRAME = Dimension(600, 800)
+        private val BORDER_BUTTONS = BorderFactory.createEmptyBorder(15,15,15,15)
     }
 
     private val controller = HomeFrameController
 
     init {
-        this.minimumSize = DIMENSION
-        this.preferredSize = DIMENSION
+        this.minimumSize = DIMENSION_FRAME
+        this.preferredSize = DIMENSION_FRAME
         this.defaultCloseOperation = EXIT_ON_CLOSE
         this.setLocationRelativeTo(null)
 
@@ -29,6 +30,7 @@ class HomeFrame : JFrame("Menu principal") {
             this.layout = GridBagLayout()
 
             val elementButton = JButton("Éléments")
+            elementButton.border = BORDER_BUTTONS
             val cElementButton = GridBagConstraints().apply {
                 this.gridx = 0
                 this.gridy = 0
@@ -37,6 +39,7 @@ class HomeFrame : JFrame("Menu principal") {
             this.add(elementButton, cElementButton)
 
             val actButton = JButton("Ajouter un acte")
+            actButton.border = BORDER_BUTTONS
             val cActButton = GridBagConstraints().apply {
                 this.gridx = 1
                 this.gridy = 0
