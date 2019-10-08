@@ -1,10 +1,8 @@
 package jdr.exia.model.dao
 
 import jdr.exia.model.act.Act
-import jdr.exia.model.act.Scene
 import jdr.exia.model.utils.MessageException
 import jdr.exia.model.utils.appDatas
-import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.TransactionManager
@@ -33,12 +31,14 @@ object DAO {
     }
 
     /**
-     * Get all acts stored into the database
+     * Get all acts stored into the database.
+     *
+     * Acts are stored as pairs. The first part is the ID and the second is the name
      */
-    fun getActsList(result: Column<*> = ActTable.name): Array<String> {
+    fun getActsList(): Array<Pair<String, String>> {
         return transaction {
-            ActTable.selectAll().withDistinct().map {
-                it[result].toString()
+            ActTable.slice(ActTable.id, ActTable.name).selectAll().map {
+                it[ActTable.id].toString() to it[ActTable.name]
             }.toTypedArray()
         }
     }

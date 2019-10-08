@@ -2,6 +2,8 @@ package jdr.exia.view.homeFrame
 
 import jdr.exia.controller.HomeFrameController
 import java.awt.*
+import java.awt.BorderLayout.CENTER
+import java.awt.BorderLayout.NORTH
 import javax.swing.JButton
 import javax.swing.JFrame
 import javax.swing.JPanel
@@ -43,7 +45,9 @@ class HomeFrame : JFrame("Menu principal") {
             this.add(actButton, cActButton)
 
             this.background = Color.ORANGE
-        }, BorderLayout.NORTH)
+        }, NORTH)
+
+        this.add(ActSelectorPanel(), CENTER)
 
         this.pack()
     }
