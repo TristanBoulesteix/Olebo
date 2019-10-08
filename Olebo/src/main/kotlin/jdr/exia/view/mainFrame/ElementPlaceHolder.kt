@@ -1,4 +1,4 @@
-package jdr.exia.view
+package jdr.exia.view.mainFrame
 
 import org.w3c.dom.css.Rect
 import java.awt.Image

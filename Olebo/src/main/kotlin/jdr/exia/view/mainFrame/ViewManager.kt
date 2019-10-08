@@ -1,9 +1,6 @@
-package jdr.exia.view
+package jdr.exia.view.mainFrame
 
 import jdr.exia.model.element.Element
-import java.awt.GraphicsDevice
-import java.awt.GraphicsEnvironment
-import javax.swing.JFrame
 
 /*ViewManager is View's facade
 this is a singleton*/
@@ -15,7 +12,7 @@ object ViewManager {
 
 
     init {
-        this.initializeActFrames() //Temporary, needs to be altered later
+        initializeActFrames() //Temporary, needs to be altered later
     }
 
 
