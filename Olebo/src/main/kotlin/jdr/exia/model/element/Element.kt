@@ -10,12 +10,12 @@ open class Element( //TODO return to abstract
     var position: Position,
     var visible: Boolean = false,
     val size: Size,
-    var hitBox: Rectangle = Rectangle(position.x,position.y,size.thousandth,size.thousandth)
+    var hitBox: Rectangle = Rectangle(position.x,position.y,size.absoluteSizeValue,size.absoluteSizeValue)
 
 ){
     fun setPosition(x: Int,y: Int){
         this.position = Position(x,y)
-        this.hitBox = Rectangle(x,y,size.thousandth,size.thousandth)
+        this.hitBox = Rectangle(x,y,size.absoluteSizeValue,size.absoluteSizeValue)
     }
 }
 

@@ -12,11 +12,11 @@ import javax.swing.ImageIcon
 object ViewController {
 
     var mapTokens = mutableListOf<Element>()
-    var selectedToken: Element? = null
+    var grabbedToken: Element? = null
     init {
         ViewManager.setMapBackground("/tools.jpg")
        var toky = Element("test",ImageIcon(ImageIO.read(Element::class.java.getResource("/AH!.png").openStream())),Position(500,500),
-           true,Size.M)
+           true,Size.XXL)
         this.addToken(toky)
         this.updateTokens()
 
@@ -27,16 +27,17 @@ object ViewController {
 
         for(token in mapTokens){
             if (token.hitBox.contains(clickedPoint)){
-                selectedToken = token
+                grabbedToken = token
                 updateTokens()
             }
         }
 
     }
 
-    fun dragDrop(x:Int,y: Int){
-
-        if (selectedToken == null){
+    fun clickNDrop(x:Int,y: Int){
+        /*If a token has already been grabbed, then it is placed with dropToken(),
+        else tries to find a token where the screen was clicked with  loadTokenFromClick(x,y)*/
+        if (grabbedToken == null){
             loadTokenFromClick(x,y)
         }
         else {
@@ -44,18 +45,31 @@ object ViewController {
         }
     }
 
-    fun dropToken(x: Int,y: Int){
-       selectedToken!!.setPosition(x,y)
-        selectedToken = null
-       updateTokens()
+    fun moveToken(x:Int,y:Int){
+        if(grabbedToken != null) {
+            val newX = (x - (grabbedToken!!.hitBox.width / 2))
+            val newY = (y - (grabbedToken!!.hitBox.height / 2))
+            grabbedToken!!.setPosition(newX, newY)
+            updateTokens()
+        }
+    }
+
+    fun dropToken(x: Int,y: Int){ /* Places the currently grabbed token to last click's location*/
+
+            val newX = (x - (grabbedToken!!.hitBox.width / 2))
+            val newY = (y - (grabbedToken!!.hitBox.height / 2))
+            grabbedToken!!.setPosition(newX, newY)
+            grabbedToken = null
+            updateTokens()
+
 
     }
 
-    fun addToken(token: Element){
+    fun addToken(token: Element){ //Adds a single token to this object's Token list
         this.mapTokens.add(token)
     }
 
-    fun updateTokens (){ //updates the tokens on the maps
+    fun updateTokens (){ //Updates the tokens on the maps
         ViewManager.placeTokensOnMaps(mapTokens)
     }
 

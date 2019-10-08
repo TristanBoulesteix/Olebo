@@ -7,32 +7,25 @@ import jdr.exia.model.element.Element
 this is a singleton*/
 object ViewManager {
 
-
-
-
-
-
     init {
         initializeActFrames() //Temporary, needs to be altered later
     }
 
-    fun dragDrop(x: Int, y: Int){
-        ViewController.dragDrop(x,y)
+    fun clickNDrop(x: Int, y: Int){
+        ViewController.clickNDrop(x,y)
+    }
+    fun moveToken(x:Int,y:Int){
+        ViewController.moveToken(x,y)
     }
 
-
-    fun refreshFrames() {  // Refreshes Player and MasterFrames at once
-       // masterFrame.mapPanel.refresh()
-    }
-
-    fun setMapBackground(imageName: String){
+    fun setMapBackground(imageName: String){ //Sets the MapPanels backGround
 
         MasterFrame.setMapBackground(imageName)
         PlayerFrame.setMapBackground(imageName)
         repaintFrames()
     }
 
-    fun repaintFrames(){
+    private fun repaintFrames(){ //Repaints both frames simultaneously
         MasterFrame.repaint()
         PlayerFrame.repaint()
     }
@@ -55,8 +48,6 @@ object ViewManager {
         repaintFrames()
     }
 
-    fun placeElement(element: ElementPlaceHolder){
 
-    }
 
 }

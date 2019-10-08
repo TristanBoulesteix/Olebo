@@ -14,35 +14,30 @@ import java.awt.event.MouseListener
 
 class MapPanel : JPanel(), MouseListener {
 
-
-    var backGroundImage: Image? = null
-    var tokens = mutableListOf<Element>(); //These are all the tokens placed on  the current map
-
-
-    private fun relativeX(absoluteX: Int): Int{ //translates an X coordinate in 1000th to a relative coordinate on this panel
-        return (absoluteX*this.width)/1000
-    }
-    private fun relativeY(absoluteY: Int): Int { //translates a y coordinate in 1000th to a relative coordinate on this panel
-        return (absoluteY*this.height)/1000
-    }
-
-    private fun absoluteX(relativeX: Int): Int {
-        return (((relativeX.toFloat()/ this.width.toFloat()))*1000).toInt()
-    }
-    fun absoluteY(relativeY: Int): Int {
-
-
-        return (((relativeY.toFloat()/ this.height.toFloat()))*1000).toInt()
-    }
-
-
     init {
         this.layout= GridBagLayout();
         this.background = Color.blue
         addMouseListener(this)
     }
 
+    var backGroundImage: Image? = null
+    var tokens = mutableListOf<Element>(); //These are all the tokens placed on  the current map
 
+
+
+    private fun relativeX(absoluteX: Int): Int{ //translates an X coordinate in 1600:900px to proportional coords according to this window's size
+        return (absoluteX*this.width)/1600
+    }
+    private fun relativeY(absoluteY: Int): Int { //translates a y coordinate in 1600:900px to proportional coords according to this window's size
+        return (absoluteY*this.height)/900
+    }
+
+    private fun absoluteX(relativeX: Int): Int { // Translates an X coordinate from this window into a 1600:900 X coord
+        return (((relativeX.toFloat()/ this.width.toFloat()))*1600).toInt()
+    }
+    fun absoluteY(relativeY: Int): Int { // Translates an Y coordinate from this window into a 1600:900 Y coord
+        return (((relativeY.toFloat()/ this.height.toFloat()))*900).toInt()
+    }
 
     fun refresh() { // refreshes the panel's content
         this.repaint()
@@ -56,7 +51,8 @@ class MapPanel : JPanel(), MouseListener {
         g?.drawImage(backGroundImage,0,0,this.width,this.height,null)
         for(token in tokens)
             if (g != null) {
-                g.drawImage(token.sprite.image,relativeX(token.position.x),relativeY(token.position.y),null)
+
+                g.drawImage(token.sprite.image,relativeX(token.position.x),relativeY(token.position.y),token.hitBox.width,token.hitBox.height,null)
             }
     }
 
@@ -68,8 +64,8 @@ class MapPanel : JPanel(), MouseListener {
 
        when(p0.button) //  1, middle button: 2, Right click: 3
        {
-           1 -> ViewManager.dragDrop(clickedX,clickedY) //Left click
-           2 -> null //Middle button
+           1 -> ViewManager.clickNDrop(clickedX,clickedY) //Left click
+           2 -> ViewManager.moveToken(clickedX,clickedY) //Middle button
            3 -> null //Right click
        }
     }
