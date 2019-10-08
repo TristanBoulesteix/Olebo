@@ -4,10 +4,10 @@ import jdr.exia.controller.HomeFrameController
 import java.awt.*
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.NORTH
+import javax.swing.BorderFactory
 import javax.swing.JButton
 import javax.swing.JFrame
 import javax.swing.JPanel
-import javax.swing.border.EmptyBorder
 
 class HomeFrame : JFrame("Menu principal") {
     companion object {
@@ -25,7 +25,7 @@ class HomeFrame : JFrame("Menu principal") {
         this.layout = BorderLayout()
 
         this.add(JPanel().apply {
-            this.border = EmptyBorder(15, 0, 15, 0)
+            this.border = BorderFactory.createEmptyBorder(15, 0, 15, 0)
             this.layout = GridBagLayout()
 
             val elementButton = JButton("Éléments")
