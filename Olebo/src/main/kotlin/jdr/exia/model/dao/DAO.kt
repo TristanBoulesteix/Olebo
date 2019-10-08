@@ -52,13 +52,3 @@ object DAO {
         }
     }
 }
-
-fun main() {
-    transaction(DAO.database) {
-        DAO.getActWithId(1).scenes += Scene.new {
-            name = "test1"
-            background = "test_back"
-            idAct = 1
-        }
-    }
-}
