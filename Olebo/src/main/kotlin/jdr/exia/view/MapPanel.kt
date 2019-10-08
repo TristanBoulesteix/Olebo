@@ -55,7 +55,7 @@ class MapPanel : JPanel(), MouseListener {
         g?.drawImage(backGroundImage,0,0,this.width,this.height,null)
         for(token in tokens)
             if (g != null) {
-                g.drawImage(token.sprite.image,relativeX(token.x),relativeY(token.y),null)
+                g.drawImage(token.sprite.image,relativeX(token.position.x),relativeY(token.position.y),null)
             }
     }
 
