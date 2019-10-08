@@ -11,7 +11,7 @@ object ViewController {
 
     init {
         ViewManager.setMapBackground("/tools.jpg")
-        var toky =  Element(ImageIcon(ImageIO.read(Element::class.java.getResource("/AH!.png").openStream())),500,500)
+        var toky = Element(ImageIcon(ImageIO.read(Element::class.java.getResource("/AH!.png").openStream())),500,500)
         this.addToken(toky)
         this.updateTokens()
 
