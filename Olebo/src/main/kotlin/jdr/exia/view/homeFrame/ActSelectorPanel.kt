@@ -1,6 +1,8 @@
 package jdr.exia.view.homeFrame
 
+import jdr.exia.controller.HomeFrameController
 import jdr.exia.model.dao.DAO
+import jdr.exia.model.utils.getIcon
 import java.awt.*
 import java.awt.BorderLayout.CENTER
 import javax.swing.*
@@ -40,21 +42,9 @@ class ActSelectorPanel : JPanel() {
                 })
             })
 
-            this.add(SquareLabel('E'))
+            this.add(SquareLabel(getIcon("edit_icon", HomeFrameController.javaClass)))
 
-            this.add(SquareLabel('D'))
-        }
-
-        private class SquareLabel(text: Char) : JLabel(text.toString(), CENTER) {
-            companion object {
-                val DIMENSION = Dimension(65, 65)
-            }
-
-            init {
-                this.preferredSize = DIMENSION
-                this.maximumSize = DIMENSION
-                this.border = BorderFactory.createLineBorder(Color.YELLOW)
-            }
+            this.add(SquareLabel(getIcon("delete_icon", HomeFrameController.javaClass)))
         }
     }
 }
