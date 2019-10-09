@@ -33,12 +33,28 @@ class ActSelectorPanel : JPanel() {
                 this.layout = GridBagLayout()
                 this.add(JLabel(name).apply {
                     this.font = Font("Tahoma", Font.BOLD, 18)
-                    this.border = BorderFactory.createEmptyBorder(0,10,0,0)
+                    this.border = BorderFactory.createEmptyBorder(0, 10, 0, 0)
                 }, GridBagConstraints().apply {
                     this.anchor = GridBagConstraints.WEST
                     this.weightx = 1.0
                 })
             })
+
+            this.add(SquareLabel('E'))
+
+            this.add(SquareLabel('D'))
+        }
+
+        private class SquareLabel(text: Char) : JLabel(text.toString(), CENTER) {
+            companion object {
+                val DIMENSION = Dimension(65, 65)
+            }
+
+            init {
+                this.preferredSize = DIMENSION
+                this.maximumSize = DIMENSION
+                this.border = BorderFactory.createLineBorder(Color.YELLOW)
+            }
         }
     }
 }

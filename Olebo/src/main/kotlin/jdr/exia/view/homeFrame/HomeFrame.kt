@@ -1,6 +1,5 @@
 package jdr.exia.view.homeFrame
 
-import jdr.exia.controller.HomeFrameController
 import java.awt.*
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.NORTH
@@ -14,8 +13,6 @@ class HomeFrame : JFrame("Menu principal") {
         private val DIMENSION_FRAME = Dimension(600, 800)
         private val BORDER_BUTTONS = BorderFactory.createEmptyBorder(15,15,15,15)
     }
-
-    private val controller = HomeFrameController
 
     init {
         this.minimumSize = DIMENSION_FRAME
