@@ -9,7 +9,11 @@ object HomeFrameController {
     fun openAct(id: Int) {
         frame.dispose()
 
-        DAO.getActWithId(id)
+        val act = DAO.getActWithId(id)
         TODO("Open act")
+    }
+
+    val deleteAct= {id: Int ->
+        DAO.getActWithId(id).delete()
     }
 }

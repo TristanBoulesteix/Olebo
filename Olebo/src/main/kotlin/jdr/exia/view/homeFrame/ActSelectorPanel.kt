@@ -3,10 +3,10 @@ package jdr.exia.view.homeFrame
 import jdr.exia.controller.HomeFrameController
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.utils.getIcon
+import jdr.exia.view.event.ClickListener
 import java.awt.*
 import java.awt.BorderLayout.CENTER
 import java.awt.event.MouseEvent
-import java.awt.event.MouseListener
 import javax.swing.*
 import javax.swing.border.EmptyBorder
 
@@ -27,7 +27,11 @@ class ActSelectorPanel : JPanel() {
         this.add(JScrollPane(listPanel), CENTER)
     }
 
-    private class ActPanel(private val id: Int, name: String) : JPanel(), MouseListener {
+    private class ActPanel(private val id: Int, name: String) : JPanel(), ClickListener {
+        companion object {
+            val DIMENSION_LABEL = Dimension(65, 65)
+        }
+
         init {
             this.maximumSize = Dimension(Int.MAX_VALUE, 65)
             this.border = BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK)
@@ -45,23 +49,25 @@ class ActSelectorPanel : JPanel() {
                 this.addMouseListener(this@ActPanel)
             })
 
-            this.add(SquareLabel(getIcon("edit_icon", HomeFrameController.javaClass)))
+            this.add(SquareLabel(getIcon("edit_icon", HomeFrameController.javaClass), HomeFrameController.deleteAct))
 
-            this.add(SquareLabel(getIcon("delete_icon", HomeFrameController.javaClass)))
+            this.add(SquareLabel(getIcon("delete_icon", HomeFrameController.javaClass), HomeFrameController.deleteAct))
         }
 
         override fun mouseClicked(e: MouseEvent?) {
-            if (e!!.clickCount == 2) {
-                HomeFrameController.openAct(id)
-            }
+            if (e!!.clickCount == 2) HomeFrameController.openAct(id)
         }
 
-        override fun mouseExited(e: MouseEvent?) {}
+        private inner class SquareLabel(icon: ImageIcon, private val action: (Int) -> Unit) : JLabel(icon, CENTER), ClickListener {
+            init {
+                this.preferredSize = DIMENSION_LABEL
+                this.maximumSize = DIMENSION_LABEL
+                this.border = BorderFactory.createLineBorder(Color.YELLOW)
+            }
 
-        override fun mousePressed(e: MouseEvent?) {}
-
-        override fun mouseEntered(e: MouseEvent?) {}
-
-        override fun mouseReleased(e: MouseEvent?) {}
+            override fun mouseClicked(e: MouseEvent?) {
+                action(id)
+            }
+        }
     }
 }
