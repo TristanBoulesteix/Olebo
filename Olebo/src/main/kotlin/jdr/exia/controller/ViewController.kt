@@ -15,24 +15,29 @@ object ViewController {
     var grabbedToken: Element? = null
     init {
         ViewManager.setMapBackground("/tools.jpg")
-       var toky = Element("test",ImageIcon(ImageIO.read(Element::class.java.getResource("/AH!.png").openStream())),Position(500,500),
-           true,Size.XXL)
-        this.addToken(toky)
-        this.updateTokens()
+
+
+       var toky = Element(
+           "test",
+           ImageIcon(ImageIO.read(Element::class.java.getResource("/AH!.png").openStream())),
+           Position(500,500),
+           true,
+           Size.S)
+        var tokar = Element(
+            "test",
+            ImageIcon(ImageIO.read(Element::class.java.getResource("/blue.png").openStream())),
+            Position(550,500),
+            true,
+            Size.XXL)
+
+
+        addToken(toky)
+        addToken(tokar)
+        updateTokens()
 
     }
 
-    fun loadTokenFromClick(x: Int,y: Int){ //Takes a point that was clicked, and return the 1st token that connects
-        val clickedPoint = Point(x,y)
 
-        for(token in mapTokens){
-            if (token.hitBox.contains(clickedPoint)){
-                grabbedToken = token
-                updateTokens()
-            }
-        }
-
-    }
 
     fun clickNDrop(x:Int,y: Int){
         /*If a token has already been grabbed, then it is placed with dropToken(),
@@ -44,22 +49,37 @@ object ViewController {
             dropToken(x,y)
         }
     }
+    fun loadTokenFromClick(x: Int,y: Int){ //Takes a point that was clicked, and return the 1st token that connects
+        val clickedPoint = Point(x,y)
 
-    fun moveToken(x:Int,y:Int){
+        for(token in mapTokens){
+            if (token.hitBox.contains(clickedPoint)){
+                grabbedToken = token
+                ViewManager.addMarker(token)
+                updateTokens()
+            }
+        }
+
+    }
+
+
+    fun moveToken(x:Int,y:Int){ //Changes a token's position without dropping it (a moved token stays selected) , intended for small steps
         if(grabbedToken != null) {
             val newX = (x - (grabbedToken!!.hitBox.width / 2))
             val newY = (y - (grabbedToken!!.hitBox.height / 2))
             grabbedToken!!.setPosition(newX, newY)
+            ViewManager.addMarker(grabbedToken!!)
             updateTokens()
         }
     }
 
-    fun dropToken(x: Int,y: Int){ /* Places the currently grabbed token to last click's location*/
+    fun dropToken(x: Int,y: Int){ /* Places the currently grabbed token to last click's location, and drops it*/
 
             val newX = (x - (grabbedToken!!.hitBox.width / 2))
             val newY = (y - (grabbedToken!!.hitBox.height / 2))
             grabbedToken!!.setPosition(newX, newY)
             grabbedToken = null
+            ViewManager.removeMarker()
             updateTokens()
 
 

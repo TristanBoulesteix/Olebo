@@ -1,5 +1,5 @@
 package jdr.exia.model.element
 
 enum class Size(val absoluteSizeValue: Int) {
-   XS(15), S(30), M(60), L(100), XL(150), XXL(200)
+   XS(30), S(60), M(120), L(200), XL(300), XXL(400)
 }

@@ -11,6 +11,13 @@ object ViewManager {
         initializeActFrames() //Temporary, needs to be altered later
     }
 
+    fun addMarker(token: Element){
+        MasterFrame.setMarker(token)
+    }
+    fun removeMarker(){
+        MasterFrame.removeMarker()
+    }
+
     fun clickNDrop(x: Int, y: Int){
         ViewController.clickNDrop(x,y)
     }
