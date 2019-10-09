@@ -11,7 +11,7 @@ import javax.swing.JPanel
 class HomeFrame : JFrame("Menu principal") {
     companion object {
         private val DIMENSION_FRAME = Dimension(600, 800)
-        private val BORDER_BUTTONS = BorderFactory.createEmptyBorder(15,15,15,15)
+        private val BORDER_BUTTONS = BorderFactory.createEmptyBorder(15, 15, 15, 15)
     }
 
     init {

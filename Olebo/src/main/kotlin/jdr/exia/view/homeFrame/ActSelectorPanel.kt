@@ -49,9 +49,13 @@ class ActSelectorPanel : JPanel() {
                 this.addMouseListener(this@ActPanel)
             })
 
-            this.add(SquareLabel(getIcon("edit_icon", HomeFrameController.javaClass), HomeFrameController.deleteAct))
+            this.add(SquareLabel(getIcon("edit_icon", HomeFrameController.javaClass), {id: Int ->
+                DAO.getActWithId(id).delete()
+            }))
 
-            this.add(SquareLabel(getIcon("delete_icon", HomeFrameController.javaClass), HomeFrameController.deleteAct))
+            this.add(SquareLabel(getIcon("delete_icon", HomeFrameController.javaClass), {id: Int ->
+                DAO.getActWithId(id).delete()
+            }))
         }
 
         override fun mouseClicked(e: MouseEvent?) {
