@@ -52,7 +52,7 @@ class MapPanel : JPanel(), MouseListener {
         for(token in tokens)
             if (g != null) {
 
-                g.drawImage(token.sprite.image,relativeX(token.position.x),relativeY(token.position.y),token.hitBox.width,token.hitBox.height,null)
+                g.drawImage(token.sprite.image,relativeX(token.position.x),relativeY(token.position.y),relativeX(token.hitBox.width),relativeY(token.hitBox.height),null)
             }
     }
 
