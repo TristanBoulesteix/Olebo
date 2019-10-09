@@ -1,6 +1,6 @@
 package jdr.exia
 
-import jdr.exia.view.homeFrame.HomeFrame
+import jdr.exia.controller.HomeFrameController
 import javax.swing.SwingUtilities
 import javax.swing.UIManager
 
@@ -9,6 +9,6 @@ fun main() {
         UIManager.setLookAndFeel(
             UIManager.getSystemLookAndFeelClassName()
         )
-        HomeFrame().isVisible = true
+        HomeFrameController.frame.isVisible = true
     }
 }
