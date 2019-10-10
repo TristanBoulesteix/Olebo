@@ -1,5 +1,6 @@
 package jdr.exia.model.element
 
+import java.awt.Rectangle
 import javax.swing.ImageIcon
 
 class PlayableCharacter(
@@ -9,5 +10,6 @@ class PlayableCharacter(
     sprite: ImageIcon,
     position: Position,
     visible: Boolean,
+    hitbox: Rectangle,
     size: Size
-) : Character(maxHealth, maxMana, name, sprite, position, visible, size, true)
+) : Character(maxHealth, maxMana, name, sprite, position, visible, hitbox, size, true)

@@ -1,4 +1,4 @@
-package jdr.exia.view.acts
+package jdr.exia.view.mainFrame.acts
 
 import java.awt.BorderLayout
 import java.awt.Color

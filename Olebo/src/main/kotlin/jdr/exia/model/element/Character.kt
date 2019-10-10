@@ -1,5 +1,6 @@
 package jdr.exia.model.element
 
+import java.awt.Rectangle
 import javax.swing.ImageIcon
 
 abstract class Character(
@@ -9,6 +10,7 @@ abstract class Character(
     sprite: ImageIcon,
     position: Position,
     visible: Boolean,
+    hitbox: Rectangle,
     size: Size,
     val player: Boolean = false
 ) : Element(
@@ -16,6 +18,7 @@ abstract class Character(
     sprite,
     position,
     visible,
+    hitbox,
     size
 ) {
     var currentHealth = maxHealth

@@ -1,8 +1,15 @@
 package jdr.exia.model.utils
 
 import java.io.File
+import javax.swing.ImageIcon
 
-val appDatas : String
+
+fun getIcon(name: String, controllerClass: Class<*>, extension: String = ".png"): ImageIcon {
+    return ImageIcon(controllerClass.classLoader.getResource("icons/$name$extension"))
+}
+
+
+val appDatas: String
     get() {
         val os = System.getProperty("os.name").toUpperCase()
 

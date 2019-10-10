@@ -1,48 +1,70 @@
-package jdr.exia.view
+package jdr.exia.view.mainFrame
 
-import java.awt.Color
-import java.awt.GridBagConstraints
-import java.awt.GridBagLayout
+import java.awt.*
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import javax.swing.JFrame
+import jdr.exia.model.element.Element
+import javax.imageio.ImageIO
 import javax.swing.JPanel
 import kotlin.system.exitProcess
 
-/*MasterFrame is the Game Master's Interface, it contains a Map panel (the same as PlayerFrame), an ItemPanel and a SelectPanel.
+/*MasterFrame is the Game Master's Interface, it contains a Map panel (the same as PlayerFrame, but scaled down), an ItemPanel and a SelectPanel.
  * MasterFrame will be focused most of the time, so it contains all KeyListeners for the program
 this is a singleton*/
 
 /* TODO: create the Drag and drop system
- *
  * Idea on how this works:
  * The
  * */
-object MasterFrame : JFrame(), KeyListener {
-    private var masterFramePanel: JPanel? = null
+object MasterFrame : JFrame(), KeyListener, gameFrame {
 
-    var mapPanel = MapPanel
+
+    private var masterFramePanel = JPanel()
+    private val mapPanel = MapPanel()
     var selectPanel = SelectPanel // Will contain all info on selected Item
     var itemPanel = ItemPanel // Will contain list of available items
 
+
+    override fun setMapBackground(imageName: String) {
+        mapPanel.backGroundImage = ImageIO.read(Element::class.java.getResource(imageName).openStream())
+
+    }
+
     init {
+
+
+
+        val screens = GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices
+        this.setSize(screens[0].displayMode.width,screens[0].displayMode.height)
+
+
+
+
+
+
         this.title = "Master"
-        this.setSize(1936, 1056)
+
         addKeyListener(this)
         this.defaultCloseOperation = EXIT_ON_CLOSE
+
+
+
+
+        masterFramePanel.size = this.size
+        masterFramePanel.background = Color.GRAY
+        masterFramePanel.layout = GridBagLayout()
+        contentPane = masterFramePanel
+
 
         mapPanel.setSize(1280, 720)
 
         selectPanel.setSize(100, 100)
+
         selectPanel.background = Color.green
 
         itemPanel.setSize(100, 100)
         itemPanel.background = Color.yellow
-
-        masterFramePanel = JPanel(GridBagLayout())
-        masterFramePanel!!.size = this.size
-        masterFramePanel!!.background = Color.GRAY
-        this.contentPane = masterFramePanel
 
         val mapConstraints = GridBagConstraints()
         val itemConstraints = GridBagConstraints()
@@ -68,26 +90,41 @@ object MasterFrame : JFrame(), KeyListener {
         mapConstraints.weighty = 5.0
         mapConstraints.fill = GridBagConstraints.BOTH
 
-        masterFramePanel!!.add(mapPanel, mapConstraints)
-        masterFramePanel!!.add(itemPanel, itemConstraints)
-        masterFramePanel!!.add(selectPanel, selectConstraints)
+        masterFramePanel.add(mapPanel, mapConstraints)
+        masterFramePanel.add(itemPanel, itemConstraints)
+        masterFramePanel.add(selectPanel, selectConstraints)
     }
 
     // KeyListener section, to add Key bindings
     override fun keyTyped(keyEvent: KeyEvent) {
-        TODO("Auto-generated method stub")
+      println("haha")
+
 
     }
 
     override fun keyPressed(keyEvent: KeyEvent) {
-        // TODO("Auto-generated method stub")
+
         if (keyEvent.keyCode == KeyEvent.VK_ESCAPE) {
+
             this.dispose()
+
             exitProcess(0)
         }
     }
 
     override fun keyReleased(keyEvent: KeyEvent) {
-        TODO("Auto-generated method stub")
+
     }
+
+    override fun updateMap(tokens: MutableList<Element>){
+        mapPanel.updateTokens(tokens)
+
+    }
+
+
+
+
+
+
+
 }
