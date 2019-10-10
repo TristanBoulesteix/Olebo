@@ -4,7 +4,23 @@ import jdr.exia.view.template.event.ClickListener
 import java.awt.*
 import java.awt.event.MouseEvent
 import javax.swing.*
+import javax.swing.border.Border
 import javax.swing.border.EmptyBorder
+
+abstract class JFrameTemplate(title: String) : JFrame(title) {
+    protected companion object {
+        val DIMENSION_FRAME = Dimension(600, 800)
+        val BORDER_BUTTONS: Border = BorderFactory.createEmptyBorder(15, 15, 15, 15)
+    }
+
+    init {
+        this.minimumSize = DIMENSION_FRAME
+        this.preferredSize = DIMENSION_FRAME
+        this.defaultCloseOperation = EXIT_ON_CLOSE
+        this.setLocationRelativeTo(null)
+        this.layout = BorderLayout()
+    }
+}
 
 abstract class SelectorPanel : JPanel() {
     init {

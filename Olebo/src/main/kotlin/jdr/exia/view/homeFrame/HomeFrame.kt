@@ -1,27 +1,17 @@
 package jdr.exia.view.homeFrame
 
-import java.awt.*
+import jdr.exia.view.template.components.JFrameTemplate
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.NORTH
+import java.awt.Color
+import java.awt.GridBagConstraints
+import java.awt.GridBagLayout
 import javax.swing.BorderFactory
 import javax.swing.JButton
-import javax.swing.JFrame
 import javax.swing.JPanel
 
-class HomeFrame : JFrame("Menu principal") {
-    companion object {
-        private val DIMENSION_FRAME = Dimension(600, 800)
-        private val BORDER_BUTTONS = BorderFactory.createEmptyBorder(15, 15, 15, 15)
-    }
-
+class HomeFrame : JFrameTemplate("Menu principal") {
     init {
-        this.minimumSize = DIMENSION_FRAME
-        this.preferredSize = DIMENSION_FRAME
-        this.defaultCloseOperation = EXIT_ON_CLOSE
-        this.setLocationRelativeTo(null)
-
-        this.layout = BorderLayout()
-
         this.add(JPanel().apply {
             this.border = BorderFactory.createEmptyBorder(15, 0, 15, 0)
             this.layout = GridBagLayout()

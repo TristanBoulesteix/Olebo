@@ -1,7 +1,7 @@
 package jdr.exia.view.actCreator
 
-import jdr.exia.view.template.components.SelectorPanel
+import jdr.exia.view.template.components.JFrameTemplate
 
-class ActCreatorFrame : SelectorPanel() {
+class ActCreatorFrame : JFrameTemplate("Nouvel acte") {
 
 }
