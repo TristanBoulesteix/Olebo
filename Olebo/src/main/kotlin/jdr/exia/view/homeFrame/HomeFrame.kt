@@ -1,5 +1,6 @@
 package jdr.exia.view.homeFrame
 
+import jdr.exia.view.actCreator.ActCreatorFrame
 import jdr.exia.view.template.components.JFrameTemplate
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.NORTH
@@ -25,8 +26,12 @@ class HomeFrame : JFrameTemplate("Menu principal") {
             }
             this.add(elementButton, cElementButton)
 
-            val actButton = JButton("Ajouter un acte")
-            actButton.border = BORDER_BUTTONS
+            val actButton = JButton("Ajouter un acte").apply {
+                this.border = BORDER_BUTTONS
+                this.addActionListener {
+                    ActCreatorFrame().isVisible = true
+                }
+            }
             val cActButton = GridBagConstraints().apply {
                 this.gridx = 1
                 this.gridy = 0
