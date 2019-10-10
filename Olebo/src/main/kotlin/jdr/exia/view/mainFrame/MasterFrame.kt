@@ -13,13 +13,10 @@ import kotlin.system.exitProcess
  * MasterFrame will be focused most of the time, so it contains all KeyListeners for the program
 this is a singleton*/
 
-/* TODO: create the Drag and drop system
- * Idea on how this works:
- * The
+/* TODO:
+ *
  * */
-object MasterFrame : JFrame(), KeyListener, gameFrame {
-
-
+object MasterFrame : JFrame(), KeyListener, GameFrame {
     private var masterFramePanel = JPanel()
     private val mapPanel = MapPanel()
     var selectPanel = SelectPanel // Will contain all info on selected Item
@@ -95,10 +92,15 @@ object MasterFrame : JFrame(), KeyListener, gameFrame {
         masterFramePanel.add(selectPanel, selectConstraints)
     }
 
+    fun setMarker(token: Element){
+        mapPanel.setMarker(token)
+    }
+    fun removeMarker(){
+        mapPanel.clearMarker()
+    }
+
     // KeyListener section, to add Key bindings
     override fun keyTyped(keyEvent: KeyEvent) {
-      println("haha")
-
 
     }
 
@@ -120,11 +122,4 @@ object MasterFrame : JFrame(), KeyListener, gameFrame {
         mapPanel.updateTokens(tokens)
 
     }
-
-
-
-
-
-
-
 }

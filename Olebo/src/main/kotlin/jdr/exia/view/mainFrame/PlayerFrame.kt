@@ -9,11 +9,7 @@ import javax.swing.JFrame
 
 /*PlayerFrame is the Frame the Players can see, it shares its content with MasterFrame
 this is a singleton*/
-object PlayerFrame : JFrame(), gameFrame {
-
-
-
-
+object PlayerFrame : JFrame(), GameFrame {
     private val mapPanel = MapPanel()
 
     init {

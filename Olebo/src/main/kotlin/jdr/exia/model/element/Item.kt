@@ -8,6 +8,6 @@ class Item(name: String, sprite: ImageIcon, position: Position, visible: Boolean
     sprite,
     position,
     visible,
-    hitbox,
-    size
+    size,
+    hitbox
 )
