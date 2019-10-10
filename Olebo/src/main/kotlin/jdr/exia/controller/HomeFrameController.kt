@@ -13,7 +13,7 @@ object HomeFrameController {
         TODO("Open act")
     }
 
-    val deleteAct= {id: Int ->
-        DAO.getActWithId(id).delete()
+    fun deleteAct(id: Int) {
+        DAO.deleteEntity(DAO.getActWithId(id))
     }
 }

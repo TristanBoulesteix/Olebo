@@ -49,13 +49,9 @@ class ActSelectorPanel : JPanel() {
                 this.addMouseListener(this@ActPanel)
             })
 
-            this.add(SquareLabel(getIcon("edit_icon", HomeFrameController.javaClass), {id: Int ->
-                DAO.getActWithId(id).delete()
-            }))
+            this.add(SquareLabel(getIcon("edit_icon", HomeFrameController.javaClass), HomeFrameController::deleteAct))
 
-            this.add(SquareLabel(getIcon("delete_icon", HomeFrameController.javaClass), {id: Int ->
-                DAO.getActWithId(id).delete()
-            }))
+            this.add(SquareLabel(getIcon("delete_icon", HomeFrameController.javaClass), HomeFrameController::deleteAct))
         }
 
         override fun mouseClicked(e: MouseEvent?) {
@@ -67,6 +63,7 @@ class ActSelectorPanel : JPanel() {
                 this.preferredSize = DIMENSION_LABEL
                 this.maximumSize = DIMENSION_LABEL
                 this.border = BorderFactory.createLineBorder(Color.YELLOW)
+                this.addMouseListener(this)
             }
 
             override fun mouseClicked(e: MouseEvent?) {

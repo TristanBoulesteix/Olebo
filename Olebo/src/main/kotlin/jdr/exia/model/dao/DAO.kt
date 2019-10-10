@@ -3,6 +3,7 @@ package jdr.exia.model.dao
 import jdr.exia.model.act.Act
 import jdr.exia.model.utils.MessageException
 import jdr.exia.model.utils.appDatas
+import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.TransactionManager
@@ -49,6 +50,12 @@ object DAO {
     fun getActWithId(idAct: Int): Act {
         return transaction {
             Act.findById(idAct) ?: throw MessageException("Error ! This act doesn't exist.")
+        }
+    }
+
+    fun deleteEntity(entity: Entity<Int>) {
+        transaction {
+            entity.delete()
         }
     }
 }
