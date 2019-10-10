@@ -1,4 +1,4 @@
-package jdr.exia.view.components
+package jdr.exia.view.template.components
 
 import java.awt.Color
 import javax.swing.BorderFactory

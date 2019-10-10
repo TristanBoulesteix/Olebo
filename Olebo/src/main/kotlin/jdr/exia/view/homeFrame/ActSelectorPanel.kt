@@ -3,7 +3,7 @@ package jdr.exia.view.homeFrame
 import jdr.exia.controller.HomeFrameController
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.utils.getIcon
-import jdr.exia.view.event.ClickListener
+import jdr.exia.view.template.event.ClickListener
 import java.awt.*
 import java.awt.BorderLayout.CENTER
 import java.awt.event.MouseEvent
@@ -55,7 +55,7 @@ class ActSelectorPanel : JPanel() {
         }
 
         override fun mouseClicked(e: MouseEvent?) {
-            if (e!!.clickCount == 2) HomeFrameController.openAct(id)
+            if (e!!.clickCount == 2) HomeFrameController.launchAct(id)
         }
 
         private inner class SquareLabel(icon: ImageIcon, private val action: (Int) -> Unit) : JLabel(icon, CENTER), ClickListener {
