@@ -3,6 +3,7 @@ package jdr.exia.view.homeFrame
 import jdr.exia.controller.HomeFrameController
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.utils.getIcon
+import jdr.exia.view.template.components.SelectorPanel
 import jdr.exia.view.template.event.ClickListener
 import java.awt.*
 import java.awt.BorderLayout.CENTER
@@ -10,7 +11,7 @@ import java.awt.event.MouseEvent
 import javax.swing.*
 import javax.swing.border.EmptyBorder
 
-class ActSelectorPanel : JPanel() {
+class ActSelectorPanel : SelectorPanel() {
     init {
         this.background = Color(158, 195, 255)
         this.border = EmptyBorder(20, 20, 20, 20)
