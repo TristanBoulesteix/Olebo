@@ -32,6 +32,7 @@ object ViewManager {
         repaintFrames()
     }
 
+
     private fun repaintFrames(){ //Repaints both frames simultaneously
         MasterFrame.repaint()
         PlayerFrame.repaint()
@@ -54,7 +55,4 @@ object ViewManager {
         MasterFrame.updateMap(tokens)
         repaintFrames()
     }
-
-
-
 }

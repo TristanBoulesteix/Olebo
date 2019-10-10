@@ -1,10 +1,9 @@
 package jdr.exia.model.dao
 
 import jdr.exia.model.act.Act
-import jdr.exia.model.act.Scene
 import jdr.exia.model.utils.MessageException
 import jdr.exia.model.utils.appDatas
-import org.jetbrains.exposed.sql.Column
+import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.TransactionManager
@@ -14,7 +13,7 @@ import java.io.File.separator
 import java.sql.Connection
 
 object DAO {
-    private val dbName = "Olebo${separator}db${separator}template.db"
+    private val dbName = "Olebo${separator}db${separator}database.db"
     private val filePath = "$appDatas$dbName"
     private val url = "jdbc:sqlite:$filePath"
 
@@ -33,12 +32,14 @@ object DAO {
     }
 
     /**
-     * Get all acts stored into the database
+     * Get all acts stored into the database.
+     *
+     * Acts are stored as pairs. The first part is the ID and the second is the name
      */
-    fun getActsList(result: Column<*> = ActTable.name): Array<String> {
+    fun getActsList(): Array<Pair<String, String>> {
         return transaction {
-            ActTable.selectAll().withDistinct().map {
-                it[result].toString()
+            ActTable.slice(ActTable.id, ActTable.name).selectAll().map {
+                it[ActTable.id].toString() to it[ActTable.name]
             }.toTypedArray()
         }
     }
@@ -49,6 +50,12 @@ object DAO {
     fun getActWithId(idAct: Int): Act {
         return transaction {
             Act.findById(idAct) ?: throw MessageException("Error ! This act doesn't exist.")
+        }
+    }
+
+    fun deleteEntity(entity: Entity<Int>) {
+        transaction {
+            entity.delete()
         }
     }
 }

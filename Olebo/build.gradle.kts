@@ -5,7 +5,7 @@ plugins {
     kotlin("jvm") version "1.3.50"
 }
 
-group = "exia.jdr"
+group = "jdr.exia"
 version = "1.0-SNAPSHOT"
 
 repositories {
