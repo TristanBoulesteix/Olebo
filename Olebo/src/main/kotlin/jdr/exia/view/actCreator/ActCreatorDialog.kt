@@ -1,30 +1,45 @@
 package jdr.exia.view.actCreator
 
-import jdr.exia.controller.ActCreatorFrameManager
+import jdr.exia.controller.ActCreatorDialogManager
 import jdr.exia.controller.HomeFrameManager
-import jdr.exia.pattern.Action
-import jdr.exia.pattern.Observable
-import jdr.exia.view.template.components.JFrameTemplate
+import jdr.exia.model.act.Act
+import jdr.exia.model.dao.DAO
+import jdr.exia.pattern.observer.Action
+import jdr.exia.pattern.observer.Observable
+import jdr.exia.view.template.components.JDialogTemplate
 import jdr.exia.view.template.components.PlaceholderTextField
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.NORTH
 import java.awt.Color
 import java.awt.GridBagConstraints
 import java.awt.GridBagConstraints.BOTH
 import java.awt.GridBagLayout
+import java.awt.Window
+import java.awt.event.WindowAdapter
+import java.awt.event.WindowEvent
 import javax.swing.BorderFactory
 import javax.swing.JPanel
 
-class ActCreatorFrame : JFrameTemplate("Nouvel acte") {
+class ActCreatorDialog : JDialogTemplate("Nouvel acte", true) {
     override val observable: Observable = HomeFrameManager
 
     private val selectorPanel = SceneSelectorPanel()
+    private val newAct = transaction(DAO.database) {
+        Act.new {
+            name = "test"
+        }
+    }
 
     init {
-        ActCreatorFrameManager.observer = this
+        ActCreatorDialogManager.observer = this
 
         this.defaultCloseOperation = DISPOSE_ON_CLOSE
-
+        this.addWindowListener(object : WindowAdapter() {
+            override fun windowClosing(e: WindowEvent?) {
+                DAO.deleteEntity(newAct)
+            }
+        })
         this.add(JPanel().apply {
             this.border = BorderFactory.createEmptyBorder(15, 10, 15, 10)
             this.layout = GridBagLayout()
@@ -40,7 +55,7 @@ class ActCreatorFrame : JFrameTemplate("Nouvel acte") {
         this.add(selectorPanel, CENTER)
     }
 
-    override fun update(data: Action) {
+    override fun update(data: Action): Window? {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

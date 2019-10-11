@@ -1,19 +1,20 @@
 package jdr.exia.view.homeFrame
 
 import jdr.exia.controller.HomeFrameManager
-import jdr.exia.pattern.Action
-import jdr.exia.pattern.Observable
+import jdr.exia.pattern.observer.Action
+import jdr.exia.pattern.observer.Observable
 import jdr.exia.view.template.components.JFrameTemplate
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.NORTH
 import java.awt.Color
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
+import java.awt.Window
 import javax.swing.BorderFactory
 import javax.swing.JButton
 import javax.swing.JPanel
 
-class HomeFrame : JFrameTemplate("Menu principal") {
+class HomeFrame : JFrameTemplate("Olebo") {
     override val observable: Observable = HomeFrameManager
 
     private val selectorPanel =  ActSelectorPanel()
@@ -55,10 +56,12 @@ class HomeFrame : JFrameTemplate("Menu principal") {
         this.pack()
     }
 
-    override fun update(data: Action) {
-        when(data) {
+    @Suppress("IMPLICIT_CAST_TO_ANY")
+    override fun update(data: Action) : Window? {
+        return when(data) {
             Action.DISPOSE -> this.dispose()
             Action.REFRESH -> this.selectorPanel.refresh()
-        }
+            Action.GET -> this
+        } as? Window
     }
 }

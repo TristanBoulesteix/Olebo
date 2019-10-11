@@ -12,6 +12,6 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
 
     private val scenesIterable by Scene referrersOn SceneTable.idAct
 
-    val name by ActTable.name
+    var name by ActTable.name
     val scenes by DelegateIterable { scenesIterable }
 }

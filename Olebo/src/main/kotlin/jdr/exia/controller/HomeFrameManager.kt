@@ -1,10 +1,10 @@
 package jdr.exia.controller
 
 import jdr.exia.model.dao.DAO
-import jdr.exia.pattern.Action
-import jdr.exia.pattern.Observable
-import jdr.exia.pattern.Observer
-import jdr.exia.view.actCreator.ActCreatorFrame
+import jdr.exia.pattern.observer.Action
+import jdr.exia.pattern.observer.Observable
+import jdr.exia.pattern.observer.Observer
+import jdr.exia.view.actCreator.ActCreatorDialog
 
 object HomeFrameManager : Observable {
     override var observer: Observer? = null
@@ -21,7 +21,7 @@ object HomeFrameManager : Observable {
     }
 
     fun openActCreatorFrame() {
-        ActCreatorFrame().isVisible = true
+        ActCreatorDialog().isVisible = true
     }
 
     fun deleteAct(id: Int) {

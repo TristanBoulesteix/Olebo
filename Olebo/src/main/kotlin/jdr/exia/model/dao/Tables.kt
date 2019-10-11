@@ -4,7 +4,7 @@ import org.jetbrains.exposed.dao.IntIdTable
 
 object ActTable : IntIdTable() {
     val name = varchar("name", 50)
-    val idScene = integer("id_scene").references(SceneTable.id)
+    val idScene = integer("id_scene").references(SceneTable.id).default(0)
 }
 
 object SceneTable : IntIdTable() {

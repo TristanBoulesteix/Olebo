@@ -1,6 +1,6 @@
 package jdr.exia.view.actCreator
 
-import jdr.exia.controller.ActCreatorFrameManager
+import jdr.exia.controller.ActCreatorDialogManager
 import jdr.exia.controller.HomeFrameManager
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.utils.getIcon
@@ -29,7 +29,7 @@ class SceneSelectorPanel : SelectorPanel() {
                     this.border = null
                     this.add(
                         SquareLabel(
-                            getIcon("create_icon", ActCreatorFrameManager.javaClass),
+                            getIcon("create_icon", ActCreatorDialogManager.javaClass),
                             HomeFrameManager::deleteAct,
                             false
                         )
