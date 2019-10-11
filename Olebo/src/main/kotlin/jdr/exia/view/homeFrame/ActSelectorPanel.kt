@@ -1,6 +1,6 @@
 package jdr.exia.view.homeFrame
 
-import jdr.exia.controller.HomeFrameManager
+import jdr.exia.controller.HomeManager
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.utils.getIcon
 import jdr.exia.view.template.components.ItemPanel
@@ -21,13 +21,13 @@ class ActSelectorPanel : SelectorPanel() {
         init {
             this.namePanel.addMouseListener(this)
 
-            this.add(SquareLabel(getIcon("edit_icon", HomeFrameManager.javaClass), HomeFrameManager::deleteAct))
+            this.add(SquareLabel(getIcon("edit_icon", HomeManager.javaClass), HomeManager::deleteAct))
 
-            this.add(SquareLabel(getIcon("delete_icon", HomeFrameManager.javaClass), HomeFrameManager::deleteAct))
+            this.add(SquareLabel(getIcon("delete_icon", HomeManager.javaClass), HomeManager::deleteAct))
         }
 
         override fun mouseClicked(e: MouseEvent?) {
-            if (e!!.clickCount == 2) HomeFrameManager.launchAct(id)
+            if (e!!.clickCount == 2) HomeManager.launchAct(id)
         }
     }
 }

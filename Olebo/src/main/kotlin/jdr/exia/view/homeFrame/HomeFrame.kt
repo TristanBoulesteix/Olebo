@@ -1,6 +1,6 @@
 package jdr.exia.view.homeFrame
 
-import jdr.exia.controller.HomeFrameManager
+import jdr.exia.controller.HomeManager
 import jdr.exia.pattern.observer.Action
 import jdr.exia.pattern.observer.Observable
 import jdr.exia.view.template.BORDER_BUTTONS
@@ -16,12 +16,12 @@ import javax.swing.JButton
 import javax.swing.JPanel
 
 class HomeFrame : JFrameTemplate("Olebo") {
-    override val observable: Observable = HomeFrameManager
+    override val observable: Observable = HomeManager
 
     private val selectorPanel =  ActSelectorPanel()
 
     init {
-        HomeFrameManager.observer = this
+        HomeManager.observer = this
 
         this.add(JPanel().apply {
             this.border = BorderFactory.createEmptyBorder(15, 0, 15, 0)
@@ -39,7 +39,7 @@ class HomeFrame : JFrameTemplate("Olebo") {
             val actButton = JButton("Ajouter un acte").apply {
                 this.border = BORDER_BUTTONS
                 this.addActionListener {
-                    HomeFrameManager.openActCreatorFrame()
+                    HomeManager.openActCreatorFrame()
                 }
             }
             val cActButton = GridBagConstraints().apply {

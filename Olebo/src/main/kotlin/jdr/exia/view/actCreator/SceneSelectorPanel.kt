@@ -1,7 +1,7 @@
 package jdr.exia.view.actCreator
 
-import jdr.exia.controller.ActCreatorDialogManager
-import jdr.exia.controller.HomeFrameManager
+import jdr.exia.controller.ActCreatorManager
+import jdr.exia.controller.HomeManager
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.utils.getIcon
 import jdr.exia.view.template.components.ItemPanel
@@ -31,8 +31,8 @@ class SceneSelectorPanel : SelectorPanel() {
                     this.border = BorderFactory.createMatteBorder(2, 2, 0, 2, Color.BLACK)
                     this.add(
                         SquareLabel(
-                            getIcon("create_icon", ActCreatorDialogManager.javaClass),
-                            HomeFrameManager::deleteAct
+                            getIcon("create_icon", ActCreatorManager.javaClass),
+                            HomeManager::deleteAct
                         )
                     )
                 }
@@ -50,9 +50,9 @@ class SceneSelectorPanel : SelectorPanel() {
     @Suppress("ProtectedInFinal")
     protected class ScenePanel(id: Int, name: String) : ItemPanel(id, name) {
         init {
-            this.add(SquareLabel(getIcon("edit_icon", HomeFrameManager.javaClass), HomeFrameManager::deleteAct))
+            this.add(SquareLabel(getIcon("edit_icon", HomeManager.javaClass), HomeManager::deleteAct))
 
-            this.add(SquareLabel(getIcon("delete_icon", HomeFrameManager.javaClass), HomeFrameManager::deleteAct))
+            this.add(SquareLabel(getIcon("delete_icon", HomeManager.javaClass), HomeManager::deleteAct))
         }
     }
 }

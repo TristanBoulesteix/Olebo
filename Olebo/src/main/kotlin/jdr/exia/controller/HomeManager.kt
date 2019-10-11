@@ -6,7 +6,7 @@ import jdr.exia.pattern.observer.Observable
 import jdr.exia.pattern.observer.Observer
 import jdr.exia.view.actCreator.ActCreatorDialog
 
-object HomeFrameManager : Observable {
+object HomeManager : Observable {
     override var observer: Observer? = null
 
     fun launchAct(id: Int) {
