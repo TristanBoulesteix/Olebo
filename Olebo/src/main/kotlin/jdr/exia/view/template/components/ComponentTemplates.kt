@@ -1,5 +1,7 @@
 package jdr.exia.view.template.components
 
+import jdr.exia.pattern.Observable
+import jdr.exia.pattern.Observer
 import jdr.exia.view.template.event.ClickListener
 import java.awt.*
 import java.awt.event.MouseEvent
@@ -7,11 +9,13 @@ import javax.swing.*
 import javax.swing.border.Border
 import javax.swing.border.EmptyBorder
 
-abstract class JFrameTemplate(title: String) : JFrame(title) {
+abstract class JFrameTemplate(title: String) : JFrame(title), Observer {
     protected companion object {
         val DIMENSION_FRAME = Dimension(600, 800)
         val BORDER_BUTTONS: Border = BorderFactory.createEmptyBorder(15, 15, 15, 15)
     }
+
+    protected abstract val observable : Observable
 
     init {
         this.minimumSize = DIMENSION_FRAME
@@ -20,19 +24,27 @@ abstract class JFrameTemplate(title: String) : JFrame(title) {
         this.setLocationRelativeTo(null)
         this.layout = BorderLayout()
     }
+
+    override fun dispose() {
+        observable.observer = null
+        super.dispose()
+    }
 }
 
 abstract class SelectorPanel : JPanel() {
+    protected abstract val pairs: Array<Pair<String, String>>
+
+    protected abstract fun builder(id: Int, name: String) : ItemSelectablePanel
+
     init {
         this.background = Color(158, 195, 255)
-        this.border = EmptyBorder(20, 20, 20, 20)
+        this.border = EmptyBorder(20,20,20,20)
         this.layout = BorderLayout()
+
+        this.createJPanelWithItemSelectablePanel()
     }
 
-    protected fun createJPanelWithItemSelectablePanel(
-        pairs: Array<Pair<String, String>>,
-        builder: (id: Int, name: String) -> ItemSelectablePanel
-    ) {
+    private fun createJPanelWithItemSelectablePanel() {
         val panel = JPanel().apply {
             this.layout = BoxLayout(this, BoxLayout.Y_AXIS)
 
@@ -42,6 +54,11 @@ abstract class SelectorPanel : JPanel() {
         }
 
         this.add(JScrollPane(panel), BorderLayout.CENTER)
+        this.revalidate()
+    }
+
+    fun refresh() {
+        this.createJPanelWithItemSelectablePanel()
     }
 }
 

@@ -1,13 +1,15 @@
 package jdr.exia.controller
 
 import jdr.exia.model.dao.DAO
-import jdr.exia.view.homeFrame.HomeFrame
+import jdr.exia.pattern.Action
+import jdr.exia.pattern.Observable
+import jdr.exia.pattern.Observer
 
-object HomeFrameController {
-    val frame = HomeFrame()
+object HomeFrameController : Observable {
+    override var observer: Observer? = null
 
     fun launchAct(id: Int) {
-        frame.dispose()
+        notifyObserver(Action.DISPOSE)
 
         val act = DAO.getActWithId(id)
         TODO("Open act")
@@ -19,5 +21,6 @@ object HomeFrameController {
 
     fun deleteAct(id: Int) {
         DAO.deleteEntity(DAO.getActWithId(id))
+        notifyObserver(Action.REFRESH)
     }
 }

@@ -9,15 +9,17 @@ import jdr.exia.view.template.event.ClickListener
 import java.awt.event.MouseEvent
 
 class ActSelectorPanel : SelectorPanel() {
-    init {
-        this.createJPanelWithItemSelectablePanel(DAO.getActsList()) { id: Int, name: String ->
-            ActPanel(id, name)
-        }
+    override val pairs
+        get() = DAO.getActsList()
+
+    override fun builder(id: Int, name: String): ItemSelectablePanel {
+        return ActPanel(id, name)
     }
 
-    private class ActPanel(id: Int, name: String) : ItemSelectablePanel(id, name), ClickListener {
+    @Suppress("ProtectedInFinal")
+    protected class ActPanel(id: Int, name: String) : ItemSelectablePanel(id, name), ClickListener {
         init {
-            this.namePanel.addMouseListener(this@ActPanel)
+            this.namePanel.addMouseListener(this)
 
             this.add(SquareLabel(getIcon("edit_icon", HomeFrameController.javaClass), HomeFrameController::deleteAct))
 
