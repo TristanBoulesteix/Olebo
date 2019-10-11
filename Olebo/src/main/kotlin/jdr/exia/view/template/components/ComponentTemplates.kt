@@ -53,12 +53,16 @@ abstract class JDialogTemplate(title: String, modal: Boolean = false) : JDialog(
 }
 
 abstract class SelectorPanel : JPanel() {
+    companion object {
+        val BACKGROUND_COLOR = Color(158, 195, 255)
+    }
+
     protected abstract val pairs: Array<Pair<String, String>>
 
     protected abstract fun builder(id: Int, name: String): ItemPanel
 
     init {
-        this.background = Color(158, 195, 255)
+        this.background = BACKGROUND_COLOR
         this.border = EmptyBorder(20, 20, 20, 20)
         this.layout = BorderLayout()
 
@@ -67,6 +71,7 @@ abstract class SelectorPanel : JPanel() {
 
     private fun createJPanelWithItemSelectablePanel() {
         val panel = JPanel().apply {
+            this.border = BorderFactory.createLineBorder(Color.BLACK)
             this.layout = BoxLayout(this, BoxLayout.Y_AXIS)
 
             pairs.forElse {
@@ -113,13 +118,13 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
         this.add(namePanel)
     }
 
-    protected inner class SquareLabel(icon: ImageIcon, private val action: (Int) -> Unit, showBorder: Boolean = true) :
+    protected inner class SquareLabel(icon: ImageIcon, private val action: (Int) -> Unit) :
         JLabel(icon, CENTER),
         ClickListener {
         init {
             this.preferredSize = DIMENSION_LABEL
             this.maximumSize = DIMENSION_LABEL
-            if (showBorder) this.border = BorderFactory.createLineBorder(Color.YELLOW)
+            this.border = BorderFactory.createMatteBorder(0, 2, 0, 0, Color.BLACK)
             this.addMouseListener(this)
         }
 

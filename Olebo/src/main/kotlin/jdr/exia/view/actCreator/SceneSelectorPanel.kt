@@ -7,9 +7,11 @@ import jdr.exia.model.utils.getIcon
 import jdr.exia.view.template.components.ItemPanel
 import jdr.exia.view.template.components.SelectorPanel
 import java.awt.BorderLayout.NORTH
+import java.awt.Color
 import java.awt.GridBagConstraints
 import java.awt.GridBagConstraints.BOTH
 import java.awt.GridBagLayout
+import javax.swing.BorderFactory
 import javax.swing.JPanel
 
 class SceneSelectorPanel : SelectorPanel() {
@@ -26,12 +28,11 @@ class SceneSelectorPanel : SelectorPanel() {
 
             val titleItems = object : ItemPanel(0, "Scènes") {
                 init {
-                    this.border = null
+                    this.border = BorderFactory.createMatteBorder(2, 2, 0, 2, Color.BLACK)
                     this.add(
                         SquareLabel(
                             getIcon("create_icon", ActCreatorDialogManager.javaClass),
-                            HomeFrameManager::deleteAct,
-                            false
+                            HomeFrameManager::deleteAct
                         )
                     )
                 }
