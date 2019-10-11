@@ -4,16 +4,19 @@ import jdr.exia.controller.ActCreatorDialogManager
 import jdr.exia.controller.HomeFrameManager
 import jdr.exia.pattern.observer.Action
 import jdr.exia.pattern.observer.Observable
+import jdr.exia.view.template.BACKGROUND_COLOR_LIGHT_BLUE
+import jdr.exia.view.template.BACKGROUND_COLOR_ORANGE
+import jdr.exia.view.template.BORDER_BUTTONS
 import jdr.exia.view.template.components.JDialogTemplate
 import jdr.exia.view.template.components.PlaceholderTextField
-import java.awt.BorderLayout.CENTER
-import java.awt.BorderLayout.NORTH
-import java.awt.Color
+import java.awt.BorderLayout
+import java.awt.BorderLayout.*
 import java.awt.GridBagConstraints
 import java.awt.GridBagConstraints.BOTH
 import java.awt.GridBagLayout
 import java.awt.Window
 import javax.swing.BorderFactory
+import javax.swing.JButton
 import javax.swing.JPanel
 
 class ActCreatorDialog : JDialogTemplate("Nouvel acte", true) {
@@ -34,10 +37,21 @@ class ActCreatorDialog : JDialogTemplate("Nouvel acte", true) {
                 this.fill = BOTH
             })
 
-            this.background = Color.ORANGE
+            this.background = BACKGROUND_COLOR_ORANGE
         }, NORTH)
 
         this.add(selectorPanel, CENTER)
+
+        val panel = JPanel().apply {
+            this.border = BorderFactory.createEmptyBorder(10,20,10,20)
+            this.layout = BorderLayout()
+            this.background = BACKGROUND_COLOR_LIGHT_BLUE
+            this.add(JButton("Valider").apply {
+                this.border = BORDER_BUTTONS
+            }, CENTER)
+        }
+
+        this.add(panel, SOUTH)
     }
 
     override fun update(data: Action): Window? {

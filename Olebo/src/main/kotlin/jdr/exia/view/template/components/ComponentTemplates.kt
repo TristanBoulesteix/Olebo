@@ -2,16 +2,13 @@ package jdr.exia.view.template.components
 
 import jdr.exia.pattern.observer.Observable
 import jdr.exia.pattern.observer.Observer
+import jdr.exia.view.template.BACKGROUND_COLOR_LIGHT_BLUE
+import jdr.exia.view.template.DIMENSION_FRAME
 import jdr.exia.view.template.event.ClickListener
 import java.awt.*
 import java.awt.event.MouseEvent
 import javax.swing.*
-import javax.swing.border.Border
 import javax.swing.border.EmptyBorder
-
-val DIMENSION_FRAME = Dimension(600, 800)
-val BORDER_BUTTONS: Border = BorderFactory.createEmptyBorder(15, 15, 15, 15)
-
 
 abstract class JFrameTemplate(title: String) : JFrame(),
     Observer {
@@ -53,16 +50,12 @@ abstract class JDialogTemplate(title: String, modal: Boolean = false) : JDialog(
 }
 
 abstract class SelectorPanel : JPanel() {
-    companion object {
-        val BACKGROUND_COLOR = Color(158, 195, 255)
-    }
-
     protected abstract val pairs: Array<Pair<String, String>>
 
     protected abstract fun builder(id: Int, name: String): ItemPanel
 
     init {
-        this.background = BACKGROUND_COLOR
+        this.background = BACKGROUND_COLOR_LIGHT_BLUE
         this.border = EmptyBorder(20, 20, 20, 20)
         this.layout = BorderLayout()
 

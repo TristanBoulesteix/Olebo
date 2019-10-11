@@ -3,7 +3,7 @@ package jdr.exia.view.homeFrame
 import jdr.exia.controller.HomeFrameManager
 import jdr.exia.pattern.observer.Action
 import jdr.exia.pattern.observer.Observable
-import jdr.exia.view.template.components.BORDER_BUTTONS
+import jdr.exia.view.template.BORDER_BUTTONS
 import jdr.exia.view.template.components.JFrameTemplate
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.NORTH
