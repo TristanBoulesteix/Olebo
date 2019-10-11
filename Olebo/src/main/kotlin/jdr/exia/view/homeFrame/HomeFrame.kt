@@ -1,9 +1,8 @@
 package jdr.exia.view.homeFrame
 
-import jdr.exia.controller.HomeFrameController
+import jdr.exia.controller.HomeFrameManager
 import jdr.exia.pattern.Action
 import jdr.exia.pattern.Observable
-import jdr.exia.view.actCreator.ActCreatorFrame
 import jdr.exia.view.template.components.JFrameTemplate
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.NORTH
@@ -15,12 +14,12 @@ import javax.swing.JButton
 import javax.swing.JPanel
 
 class HomeFrame : JFrameTemplate("Menu principal") {
+    override val observable: Observable = HomeFrameManager
+
     private val selectorPanel =  ActSelectorPanel()
 
-    override val observable: Observable = HomeFrameController
-
     init {
-        HomeFrameController.observer = this
+        HomeFrameManager.observer = this
 
         this.add(JPanel().apply {
             this.border = BorderFactory.createEmptyBorder(15, 0, 15, 0)
@@ -38,7 +37,7 @@ class HomeFrame : JFrameTemplate("Menu principal") {
             val actButton = JButton("Ajouter un acte").apply {
                 this.border = BORDER_BUTTONS
                 this.addActionListener {
-                    ActCreatorFrame().isVisible = true
+                    HomeFrameManager.openActCreatorFrame()
                 }
             }
             val cActButton = GridBagConstraints().apply {

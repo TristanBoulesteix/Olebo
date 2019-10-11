@@ -34,7 +34,7 @@ abstract class JFrameTemplate(title: String) : JFrame(title), Observer {
 abstract class SelectorPanel : JPanel() {
     protected abstract val pairs: Array<Pair<String, String>>
 
-    protected abstract fun builder(id: Int, name: String) : ItemSelectablePanel
+    protected abstract fun builder(id: Int, name: String) : ItemPanel
 
     init {
         this.background = Color(158, 195, 255)
@@ -68,7 +68,7 @@ abstract class SelectorPanel : JPanel() {
 }
 
 @Suppress("LeakingThis")
-abstract class ItemSelectablePanel(protected val id: Int, name: String) : JPanel() {
+abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
     companion object {
         val DIMENSION_LABEL = Dimension(65, 65)
     }
@@ -92,12 +92,12 @@ abstract class ItemSelectablePanel(protected val id: Int, name: String) : JPanel
         this.add(namePanel)
     }
 
-    protected inner class SquareLabel(icon: ImageIcon, private val action: (Int) -> Unit) : JLabel(icon, CENTER),
+    protected inner class SquareLabel(icon: ImageIcon, private val action: (Int) -> Unit, showBorder: Boolean = true) : JLabel(icon, CENTER),
         ClickListener {
         init {
             this.preferredSize = DIMENSION_LABEL
             this.maximumSize = DIMENSION_LABEL
-            this.border = BorderFactory.createLineBorder(Color.YELLOW)
+            if(showBorder) this.border = BorderFactory.createLineBorder(Color.YELLOW)
             this.addMouseListener(this)
         }
 

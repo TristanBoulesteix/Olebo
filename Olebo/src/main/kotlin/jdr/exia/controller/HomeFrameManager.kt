@@ -4,8 +4,9 @@ import jdr.exia.model.dao.DAO
 import jdr.exia.pattern.Action
 import jdr.exia.pattern.Observable
 import jdr.exia.pattern.Observer
+import jdr.exia.view.actCreator.ActCreatorFrame
 
-object HomeFrameController : Observable {
+object HomeFrameManager : Observable {
     override var observer: Observer? = null
 
     fun launchAct(id: Int) {
@@ -17,6 +18,10 @@ object HomeFrameController : Observable {
 
     fun openActProperties(id: Int) {
         TODO("Open act properties")
+    }
+
+    fun openActCreatorFrame() {
+        ActCreatorFrame().isVisible = true
     }
 
     fun deleteAct(id: Int) {
