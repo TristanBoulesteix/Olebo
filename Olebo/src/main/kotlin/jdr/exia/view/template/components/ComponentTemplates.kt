@@ -48,18 +48,23 @@ abstract class SelectorPanel : JPanel() {
         val panel = JPanel().apply {
             this.layout = BoxLayout(this, BoxLayout.Y_AXIS)
 
-            pairs.forEach {
+            pairs.forElse {
                 this.add(builder(it.first.toInt(), it.second))
-            }
+            } ?: this.add(JPanel().apply {
+                this.layout = GridBagLayout()
+                this.add(JLabel("Aucun élément").apply {
+                    this.font = Font("Tahoma", Font.BOLD, 20)
+                })
+            })
         }
 
         this.add(JScrollPane(panel), BorderLayout.CENTER)
         this.revalidate()
     }
 
-    fun refresh() {
-        this.createJPanelWithItemSelectablePanel()
-    }
+    fun refresh() = this.createJPanelWithItemSelectablePanel()
+
+    private fun <T> Array<T>.forElse(block: (T) -> Unit) = if (isEmpty()) null else forEach(block)
 }
 
 @Suppress("LeakingThis")
