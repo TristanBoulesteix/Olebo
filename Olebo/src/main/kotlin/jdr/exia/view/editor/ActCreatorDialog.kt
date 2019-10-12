@@ -1,4 +1,4 @@
-package jdr.exia.view.actCreator
+package jdr.exia.view.editor
 
 import jdr.exia.controller.ActCreatorManager
 import jdr.exia.controller.HomeManager
@@ -19,7 +19,7 @@ import javax.swing.BorderFactory
 import javax.swing.JButton
 import javax.swing.JPanel
 
-class ActCreatorDialog : JDialogTemplate("Nouvel acte", true) {
+object ActCreatorDialog : JDialogTemplate("Nouvel acte") {
     override val observable: Observable = HomeManager
 
     private val selectorPanel = SceneSelectorPanel()

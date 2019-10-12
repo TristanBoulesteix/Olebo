@@ -1,4 +1,4 @@
-package jdr.exia.view.actCreator
+package jdr.exia.view.editor
 
 import jdr.exia.controller.ActCreatorManager
 import jdr.exia.controller.HomeManager
@@ -14,6 +14,9 @@ import java.awt.GridBagLayout
 import javax.swing.BorderFactory
 import javax.swing.JPanel
 
+/**
+ * This panel contains a JScrollpane which show the list of scenes for the current act in creation
+ */
 class SceneSelectorPanel : SelectorPanel() {
     override val pairs: Array<Pair<String, String>>
         get() = DAO.getActsList()
@@ -32,7 +35,7 @@ class SceneSelectorPanel : SelectorPanel() {
                     this.add(
                         SquareLabel(
                             getIcon("create_icon", ActCreatorManager.javaClass),
-                            HomeManager::deleteAct
+                            ActCreatorManager::createNewScene
                         )
                     )
                 }

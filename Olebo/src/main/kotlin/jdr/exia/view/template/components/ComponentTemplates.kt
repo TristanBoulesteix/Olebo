@@ -29,7 +29,7 @@ abstract class JFrameTemplate(title: String) : JFrame(),
     }
 }
 
-abstract class JDialogTemplate(title: String, modal: Boolean = false) : JDialog(),
+abstract class JDialogTemplate(title: String, modal: Boolean = true) : JDialog(),
     Observer {
     protected abstract val observable: Observable
 
