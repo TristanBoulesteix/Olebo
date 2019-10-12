@@ -2,10 +2,12 @@ package jdr.exia.view.mainFrame
 
 import jdr.exia.controller.ViewController
 import jdr.exia.model.element.Element
+import java.awt.Toolkit
 
 /*ViewManager is View's facade
 this is a singleton*/
 object ViewManager {
+
 
     init {
         initializeActFrames() //Temporary, needs to be altered later
@@ -43,6 +45,8 @@ object ViewManager {
 
         MasterFrame.isVisible = true
         PlayerFrame.isVisible = true
+
+
 
         /*TODO: give master frame and player frame the objects relative to*/
 

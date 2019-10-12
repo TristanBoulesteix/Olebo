@@ -21,6 +21,7 @@ object PlayerFrame : JFrame(), GameFrame {
             this.setSize(screens[1].displayMode.width,screens[1].displayMode.height)  //Sets the frame's size as exactly the size of the screen.
             this.isUndecorated = true
             screens[1].fullScreenWindow = this
+
         }
 
         this.title = "Player"
