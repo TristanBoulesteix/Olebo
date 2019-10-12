@@ -13,7 +13,6 @@ import java.awt.BorderLayout.*
 import java.awt.GridBagConstraints
 import java.awt.GridBagConstraints.BOTH
 import java.awt.GridBagLayout
-import java.awt.Window
 import javax.swing.BorderFactory
 import javax.swing.JButton
 import javax.swing.JPanel
@@ -54,7 +53,10 @@ object ActCreatorDialog : JDialogTemplate("Nouvel acte") {
         this.add(panel, SOUTH)
     }
 
-    override fun update(data: Action): Window? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun update(data: Action) {
+        when(data) {
+            Action.DISPOSE -> this.dispose()
+            Action.REFRESH -> this.selectorPanel.refresh()
+        }
     }
 }
