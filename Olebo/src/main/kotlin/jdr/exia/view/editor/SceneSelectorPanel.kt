@@ -17,7 +17,7 @@ import javax.swing.JPanel
 /**
  * This panel contains a JScrollpane which show the list of scenes for the current act in creation
  */
-class SceneSelectorPanel : SelectorPanel() {
+class SceneSelectorPanel(private val manager: ActCreatorManager) : SelectorPanel() {
     override val pairs: Array<Pair<String, String>>
         get() = DAO.getActsList()
 
@@ -34,8 +34,8 @@ class SceneSelectorPanel : SelectorPanel() {
                     this.border = BorderFactory.createMatteBorder(2, 2, 0, 2, Color.BLACK)
                     this.add(
                         SquareLabel(
-                            getIcon("create_icon", ActCreatorManager.javaClass),
-                            ActCreatorManager::createNewScene
+                            getIcon("create_icon", manager.javaClass),
+                            manager::createNewScene
                         )
                     )
                 }

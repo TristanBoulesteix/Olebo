@@ -1,7 +1,6 @@
 package jdr.exia.view.editor
 
 import jdr.exia.controller.ActCreatorManager
-import jdr.exia.controller.HomeManager
 import jdr.exia.pattern.observer.Action
 import jdr.exia.pattern.observer.Observable
 import jdr.exia.view.template.BACKGROUND_COLOR_LIGHT_BLUE
@@ -20,12 +19,13 @@ import javax.swing.JButton
 import javax.swing.JPanel
 
 object ActCreatorDialog : JDialogTemplate("Nouvel acte") {
-    override val observable: Observable = HomeManager
+    private val manager = ActCreatorManager()
+    override val observable: Observable = manager
 
-    private val selectorPanel = SceneSelectorPanel()
+    private val selectorPanel = SceneSelectorPanel(manager)
 
     init {
-        ActCreatorManager.observer = this
+        this.manager.observer = this
 
         this.defaultCloseOperation = DISPOSE_ON_CLOSE
         this.add(JPanel().apply {
