@@ -10,13 +10,5 @@ import javax.swing.UIManager
 
 fun main() {
   ViewController
-  val screens = GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices
-  while (true){
-    println(PlayerFrame.locationOnScreen.x)
-    Thread.sleep(200)
-    if(PlayerFrame.locationOnScreen.x < 0){
-      println("a")
 
-    }
-  }
 }
