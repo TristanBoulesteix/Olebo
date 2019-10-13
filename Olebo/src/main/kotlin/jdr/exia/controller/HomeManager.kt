@@ -21,7 +21,7 @@ object HomeManager : Observable {
     }
 
     fun openActCreatorFrame() {
-        ActCreatorDialog.isVisible = true
+        ActCreatorDialog().isVisible = true
         notifyObserver(Action.REFRESH)
     }
 

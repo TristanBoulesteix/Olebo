@@ -3,6 +3,7 @@ package jdr.exia.controller
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.DAO
+import jdr.exia.model.utils.saveImg
 import jdr.exia.pattern.observer.Action
 import jdr.exia.pattern.observer.Observable
 import jdr.exia.pattern.observer.Observer
@@ -21,9 +22,11 @@ class ActCreatorManager : Observable {
             val scenes = mutableListOf<Scene>()
 
             tempScenes.forEach {
+                val background = saveImg(it[Field.IMG]!!)
+
                 scenes += Scene.new {
                     this.name = it[Field.NAME]!!
-                    this.background = it[Field.IMG]!!
+                    this.background = background
                     this.idAct = idCurrentAct
                 }
             }
@@ -32,12 +35,13 @@ class ActCreatorManager : Observable {
         }
 
         transaction(DAO.database) {
-            val act = Act.new {
+            Act.new {
                 this.name = actName
+            }.apply {
+                val scenesList = createScenes(this.id.value)
+                this.scenes += scenesList
+                this.sceneId = scenesList[0].id.value
             }
-            val scenesList = createScenes(act.id.value)
-            act.scenes += scenesList
-            act.sceneId = scenesList[0].id.value
         }
     }
 

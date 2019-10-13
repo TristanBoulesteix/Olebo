@@ -17,7 +17,7 @@ import javax.swing.BorderFactory
 import javax.swing.JButton
 import javax.swing.JPanel
 
-object ActCreatorDialog : JDialogTemplate("Nouvel acte") {
+class ActCreatorDialog : JDialogTemplate("Nouvel acte") {
     private val manager = ActCreatorManager()
     override val observable: Observable = manager
 
@@ -28,6 +28,7 @@ object ActCreatorDialog : JDialogTemplate("Nouvel acte") {
         this.manager.observer = this
 
         this.defaultCloseOperation = DISPOSE_ON_CLOSE
+
         this.add(JPanel().apply {
             this.border = BorderFactory.createEmptyBorder(15, 10, 15, 10)
             this.layout = GridBagLayout()
