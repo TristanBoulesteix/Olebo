@@ -77,11 +77,17 @@ abstract class SelectorPanel : JPanel() {
             })
         }
 
+        (layout as BorderLayout).getLayoutComponent(BorderLayout.CENTER)?.let {
+            this.remove(it)
+        }
         this.add(JScrollPane(panel), BorderLayout.CENTER)
-        this.revalidate()
     }
 
-    fun refresh() = this.createJPanelWithItemSelectablePanel()
+    fun refresh() {
+        this.createJPanelWithItemSelectablePanel()
+        this.revalidate()
+        this.repaint()
+    }
 
     private fun <T> Array<T>.forElse(block: (T) -> Unit) = if (isEmpty()) null else forEach(block)
 }
@@ -112,17 +118,16 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
     }
 
     protected inner class SquareLabel(icon: ImageIcon, private val action: (Int) -> Unit) :
-        JLabel(icon, CENTER),
-        ClickListener {
+        JLabel(icon, CENTER) {
         init {
             this.preferredSize = DIMENSION_LABEL
             this.maximumSize = DIMENSION_LABEL
             this.border = BorderFactory.createMatteBorder(0, 2, 0, 0, Color.BLACK)
-            this.addMouseListener(this)
-        }
-
-        override fun mouseClicked(e: MouseEvent?) {
-            action(id)
+            this.addMouseListener(object : ClickListener {
+                override fun mouseClicked(e: MouseEvent?) {
+                    action(id)
+                }
+            })
         }
     }
 }
