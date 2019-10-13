@@ -14,4 +14,5 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
 
     var name by ActTable.name
     val scenes by DelegateIterable { scenesIterable }
+    var sceneId by ActTable.idScene
 }

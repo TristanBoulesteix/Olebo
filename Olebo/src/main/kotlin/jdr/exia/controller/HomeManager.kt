@@ -22,6 +22,7 @@ object HomeManager : Observable {
 
     fun openActCreatorFrame() {
         ActCreatorDialog.isVisible = true
+        notifyObserver(Action.REFRESH)
     }
 
     fun deleteAct(id: Int) {

@@ -22,6 +22,7 @@ object ActCreatorDialog : JDialogTemplate("Nouvel acte") {
     override val observable: Observable = manager
 
     private val selectorPanel = SceneSelectorPanel(manager)
+    private val nameField = PlaceholderTextField("Nom")
 
     init {
         this.manager.observer = this
@@ -31,7 +32,7 @@ object ActCreatorDialog : JDialogTemplate("Nouvel acte") {
             this.border = BorderFactory.createEmptyBorder(15, 10, 15, 10)
             this.layout = GridBagLayout()
 
-            this.add(PlaceholderTextField("Nom"), GridBagConstraints().apply {
+            this.add(nameField, GridBagConstraints().apply {
                 this.weightx = 1.0
                 this.fill = BOTH
             })
@@ -46,6 +47,10 @@ object ActCreatorDialog : JDialogTemplate("Nouvel acte") {
             this.layout = BorderLayout()
             this.background = BACKGROUND_COLOR_LIGHT_BLUE
             this.add(JButton("Valider").apply {
+                this.addActionListener {
+                    this@ActCreatorDialog.manager.createAct(nameField.text)
+                    this@ActCreatorDialog.dispose()
+                }
                 this.border = BORDER_BUTTONS
             }, CENTER)
         }

@@ -1,16 +1,45 @@
 package jdr.exia.controller
 
+import jdr.exia.model.act.Act
+import jdr.exia.model.act.Scene
+import jdr.exia.model.dao.DAO
 import jdr.exia.pattern.observer.Action
 import jdr.exia.pattern.observer.Observable
 import jdr.exia.pattern.observer.Observer
 import jdr.exia.view.editor.SceneEditorDialog
 import jdr.exia.view.editor.SceneEditorDialog.Field
 import jdr.exia.view.utils.showPopup
+import org.jetbrains.exposed.sql.transactions.transaction
 
 class ActCreatorManager : Observable {
     val tempScenes = mutableListOf<HashMap<Field, String>>()
 
     override var observer: Observer? = null
+
+    fun createAct(actName: String) {
+        fun createScenes(idCurrentAct: Int): MutableList<Scene> {
+            val scenes = mutableListOf<Scene>()
+
+            tempScenes.forEach {
+                scenes += Scene.new {
+                    this.name = it[Field.NAME]!!
+                    this.background = it[Field.IMG]!!
+                    this.idAct = idCurrentAct
+                }
+            }
+
+            return scenes
+        }
+
+        transaction(DAO.database) {
+            val act = Act.new {
+                this.name = actName
+            }
+            val scenesList = createScenes(act.id.value)
+            act.scenes += scenesList
+            act.sceneId = scenesList[0].id.value
+        }
+    }
 
     fun createNewScene(@Suppress("UNUSED_PARAMETER") id: Int) {
         SceneEditorDialog().showDialog()?.let {
