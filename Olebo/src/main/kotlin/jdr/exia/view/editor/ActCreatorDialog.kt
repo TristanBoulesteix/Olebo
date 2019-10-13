@@ -3,11 +3,11 @@ package jdr.exia.view.editor
 import jdr.exia.controller.ActCreatorManager
 import jdr.exia.pattern.observer.Action
 import jdr.exia.pattern.observer.Observable
-import jdr.exia.view.template.BACKGROUND_COLOR_LIGHT_BLUE
-import jdr.exia.view.template.BACKGROUND_COLOR_ORANGE
-import jdr.exia.view.template.BORDER_BUTTONS
-import jdr.exia.view.template.components.JDialogTemplate
-import jdr.exia.view.template.components.PlaceholderTextField
+import jdr.exia.view.utils.BACKGROUND_COLOR_LIGHT_BLUE
+import jdr.exia.view.utils.BACKGROUND_COLOR_ORANGE
+import jdr.exia.view.utils.BORDER_BUTTONS
+import jdr.exia.view.utils.components.JDialogTemplate
+import jdr.exia.view.utils.components.PlaceholderTextField
 import java.awt.BorderLayout
 import java.awt.BorderLayout.*
 import java.awt.GridBagConstraints

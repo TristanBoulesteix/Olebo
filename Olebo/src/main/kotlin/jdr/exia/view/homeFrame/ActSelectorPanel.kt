@@ -3,9 +3,9 @@ package jdr.exia.view.homeFrame
 import jdr.exia.controller.HomeManager
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.utils.getIcon
-import jdr.exia.view.template.components.ItemPanel
-import jdr.exia.view.template.components.SelectorPanel
-import jdr.exia.view.template.event.ClickListener
+import jdr.exia.view.utils.components.ItemPanel
+import jdr.exia.view.utils.components.SelectorPanel
+import jdr.exia.view.utils.event.ClickListener
 import java.awt.event.MouseEvent
 
 class ActSelectorPanel : SelectorPanel() {

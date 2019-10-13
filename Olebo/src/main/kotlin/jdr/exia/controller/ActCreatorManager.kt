@@ -3,8 +3,9 @@ package jdr.exia.controller
 import jdr.exia.pattern.observer.Action
 import jdr.exia.pattern.observer.Observable
 import jdr.exia.pattern.observer.Observer
-import jdr.exia.view.editor.SceneCreatorDialog
-import jdr.exia.view.editor.SceneCreatorDialog.Field
+import jdr.exia.view.editor.SceneEditorDialog
+import jdr.exia.view.editor.SceneEditorDialog.Field
+import jdr.exia.view.utils.showPopup
 
 class ActCreatorManager : Observable {
     val tempScenes = mutableListOf<HashMap<Field, String>>()
@@ -12,8 +13,13 @@ class ActCreatorManager : Observable {
     override var observer: Observer? = null
 
     fun createNewScene(@Suppress("UNUSED_PARAMETER") id: Int) {
-        SceneCreatorDialog().showDialog()?.let {
-            tempScenes += it
+        SceneEditorDialog().showDialog()?.let {
+            if (tempScenes.map { map -> map[Field.NAME] }.contains(it[Field.NAME])) {
+                showPopup("Une scène avec le même nom existe déjà ! !")
+                createNewScene(0)
+            } else {
+                tempScenes += it
+            }
         }
         notifyObserver(Action.REFRESH)
     }

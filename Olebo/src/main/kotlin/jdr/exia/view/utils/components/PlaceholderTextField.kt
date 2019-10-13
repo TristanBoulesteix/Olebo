@@ -1,4 +1,4 @@
-package jdr.exia.view.template.components
+package jdr.exia.view.utils.components
 
 import java.awt.Font
 import java.awt.Graphics

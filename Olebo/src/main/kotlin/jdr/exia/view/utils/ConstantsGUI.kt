@@ -1,4 +1,4 @@
-package jdr.exia.view.template
+package jdr.exia.view.utils
 
 import java.awt.Color
 import java.awt.Dimension

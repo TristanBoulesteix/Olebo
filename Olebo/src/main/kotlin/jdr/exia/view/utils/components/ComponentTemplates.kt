@@ -1,10 +1,10 @@
-package jdr.exia.view.template.components
+package jdr.exia.view.utils.components
 
 import jdr.exia.pattern.observer.Observable
 import jdr.exia.pattern.observer.Observer
-import jdr.exia.view.template.BACKGROUND_COLOR_LIGHT_BLUE
-import jdr.exia.view.template.DIMENSION_FRAME
-import jdr.exia.view.template.event.ClickListener
+import jdr.exia.view.utils.BACKGROUND_COLOR_LIGHT_BLUE
+import jdr.exia.view.utils.DIMENSION_FRAME
+import jdr.exia.view.utils.event.ClickListener
 import java.awt.*
 import java.awt.event.MouseEvent
 import javax.swing.*

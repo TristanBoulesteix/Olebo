@@ -4,8 +4,8 @@ import jdr.exia.controller.ActCreatorManager
 import jdr.exia.controller.HomeManager
 import jdr.exia.controller.getArrayOfPairs
 import jdr.exia.model.utils.getIcon
-import jdr.exia.view.template.components.ItemPanel
-import jdr.exia.view.template.components.SelectorPanel
+import jdr.exia.view.utils.components.ItemPanel
+import jdr.exia.view.utils.components.SelectorPanel
 import org.jetbrains.exposed.sql.transactions.TransactionManager.Companion.manager
 import java.awt.BorderLayout.NORTH
 import java.awt.Color

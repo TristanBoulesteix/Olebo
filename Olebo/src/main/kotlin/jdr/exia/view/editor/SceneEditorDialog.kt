@@ -1,5 +1,6 @@
 package jdr.exia.view.editor
 
+import jdr.exia.view.utils.showPopup
 import java.awt.Dimension
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
@@ -8,7 +9,7 @@ import javax.imageio.ImageIO
 import javax.swing.*
 import javax.swing.filechooser.FileNameExtensionFilter
 
-class SceneCreatorDialog : JDialog() {
+class SceneEditorDialog : JDialog() {
     private val nameField = JTextField().apply {
         this.preferredSize = Dimension(100, 25)
     }
@@ -48,7 +49,7 @@ class SceneCreatorDialog : JDialog() {
                     )
                     this.isAcceptAllFileFilterUsed = false
                 }
-                val result = file.showSaveDialog(this@SceneCreatorDialog)
+                val result = file.showSaveDialog(this@SceneEditorDialog)
 
                 if (result == JFileChooser.APPROVE_OPTION) {
                     selectedFile = file.selectedFile
@@ -61,8 +62,8 @@ class SceneCreatorDialog : JDialog() {
         })
 
         this.add(JPanel().apply {
-            this.add(JButton("Valider").addAction { this@SceneCreatorDialog.isVisible = false; canceled = false })
-            this.add(JButton("Annuler").addAction { this@SceneCreatorDialog.isVisible = false })
+            this.add(JButton("Valider").addAction { this@SceneEditorDialog.isVisible = false; canceled = false })
+            this.add(JButton("Annuler").addAction { this@SceneEditorDialog.isVisible = false })
             this.border = BorderFactory.createEmptyBorder(10, 0, 0, 0)
         }, GridBagConstraints().apply {
             this.gridx = 0
@@ -72,11 +73,16 @@ class SceneCreatorDialog : JDialog() {
 
     fun showDialog(): HashMap<Field, String>? {
         this.isVisible = true
-        return if (validateField() && !canceled) hashMapOf(
-            Field.NAME to nameField.text,
-            Field.IMG to selectedFile.absolutePath
-        )
-        else null
+        return if (validateField() && !canceled) {
+            hashMapOf(
+                Field.NAME to nameField.text,
+                Field.IMG to selectedFile.absolutePath
+            )
+        } else if (!canceled) {
+            this.canceled = true
+            showPopup("Le nom existe déjà ou le fichier sélectionné est invalide !", this)
+            return this.showDialog()
+        } else null
     }
 
     private fun validateField(): Boolean {
