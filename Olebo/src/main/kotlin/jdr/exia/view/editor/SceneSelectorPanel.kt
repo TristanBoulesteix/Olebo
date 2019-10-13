@@ -57,7 +57,7 @@ class SceneSelectorPanel(private val controller: ActCreatorManager?) : SelectorP
     @Suppress("ProtectedInFinal")
     protected inner class ScenePanel(id: Int, name: String) : ItemPanel(id, name) {
         init {
-            this.add(SquareLabel(getIcon("edit_icon", HomeManager.javaClass), HomeManager::deleteAct))
+            this.add(SquareLabel(getIcon("edit_icon", HomeManager.javaClass), controller!!::updateNewScene))
 
             this.add(SquareLabel(getIcon("delete_icon", HomeManager.javaClass), controller!!::deleteNewScene))
         }

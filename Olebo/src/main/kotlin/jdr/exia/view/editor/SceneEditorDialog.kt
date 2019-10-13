@@ -9,8 +9,8 @@ import javax.imageio.ImageIO
 import javax.swing.*
 import javax.swing.filechooser.FileNameExtensionFilter
 
-class SceneEditorDialog : JDialog() {
-    private val nameField = JTextField().apply {
+class SceneEditorDialog(scene: HashMap<Field, String>? = null) : JDialog() {
+    private val nameField = JTextField(if (scene != null) scene[Field.NAME] else null).apply {
         this.preferredSize = Dimension(100, 25)
     }
 
@@ -18,18 +18,18 @@ class SceneEditorDialog : JDialog() {
     private var canceled = true
 
     init {
-        this.title = "Nouvelle scène"
+        fun <T : JButton> T.addAction(action: () -> Unit): T {
+            this.addActionListener { action() }
+            return this
+        }
+
+        this.title = if (scene != null) "Nouvelle scène" else "Modification de la scène"
         this.modalityType = ModalityType.APPLICATION_MODAL
         this.size = Dimension(200, 200)
         this.defaultCloseOperation = DO_NOTHING_ON_CLOSE
         this.isResizable = false
         this.layout = GridBagLayout()
         this.setLocationRelativeTo(null)
-
-        fun <T : JButton> T.addAction(action: () -> Unit): T {
-            this.addActionListener { action() }
-            return this
-        }
 
         this.add(JPanel().apply {
             this.preferredSize = Dimension(220, 60)
@@ -41,6 +41,10 @@ class SceneEditorDialog : JDialog() {
         })
 
         this.add(JButton("Importer une image").apply {
+            this.toolTipText = if (scene != null) {
+                selectedFile = File(scene[Field.IMG]!!)
+                selectedFile.name
+            } else null
             this.addActionListener {
                 val file = JFileChooser().apply {
                     this.currentDirectory = File(System.getProperty("user.home"))

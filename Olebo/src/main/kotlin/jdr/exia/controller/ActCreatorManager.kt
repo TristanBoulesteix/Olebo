@@ -15,7 +15,7 @@ class ActCreatorManager : Observable {
     fun createNewScene(@Suppress("UNUSED_PARAMETER") id: Int) {
         SceneEditorDialog().showDialog()?.let {
             if (tempScenes.map { map -> map[Field.NAME] }.contains(it[Field.NAME])) {
-                showPopup("Une scène avec le même nom existe déjà ! !")
+                showPopup("Une scène avec le même nom existe déjà !")
                 createNewScene(0)
             } else {
                 tempScenes += it
@@ -24,8 +24,21 @@ class ActCreatorManager : Observable {
         notifyObserver(Action.REFRESH)
     }
 
+    fun updateNewScene(index: Int) {
+        SceneEditorDialog(tempScenes[index]).showDialog()?.let {
+            if (tempScenes.map { map ->
+                    if (tempScenes[index][Field.NAME] == map[Field.NAME]) "" else map[Field.NAME]
+                }.contains(it[Field.NAME])) {
+                showPopup("Une scène avec le même nom existe déjà !")
+                updateNewScene(index)
+            } else {
+                tempScenes[index] = it
+            }
+        }
+        notifyObserver(Action.REFRESH)
+    }
+
     fun deleteNewScene(index: Int) {
-        println(index)
         tempScenes.removeAt(index)
         notifyObserver(Action.REFRESH)
     }
