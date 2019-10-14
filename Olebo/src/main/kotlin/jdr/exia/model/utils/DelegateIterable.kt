@@ -21,14 +21,14 @@ class DelegateIterable<T>(initializer: () -> SizedIterable<T>) : Lazy<MutableLis
     override val value: MutableList<T>
         get() {
             val v1 = _value
-            if (v1 !== UnitializedValue) {
+/*            if (v1 !== UnitializedValue) {
                 @Suppress("UNCHECKED_CAST")
                 return v1 as MutableList<T>
-            }
+            }*/
 
             return transaction(DAO.database) {
                 synchronized(this) {
-                    val v2 = _value
+/*                    val v2 = _value
                     if (v2 !== UnitializedValue) {
                         @Suppress("UNCHECKED_CAST") (v2 as MutableList<T>)
                     } else {
@@ -37,7 +37,13 @@ class DelegateIterable<T>(initializer: () -> SizedIterable<T>) : Lazy<MutableLis
                         initializer = null
 
                         typedValue.getContent()
-                    }
+                    }*/
+                    val typedValue = initializer!!()
+                    _value = typedValue
+                    //initializer = null
+
+                    typedValue.getContent()
+
                 }
             }
         }

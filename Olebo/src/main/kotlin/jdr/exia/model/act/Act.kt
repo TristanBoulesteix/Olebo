@@ -12,6 +12,19 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
 
     private val scenesIterable by Scene referrersOn SceneTable.idAct
 
-    val name by ActTable.name
+    var name by ActTable.name
     val scenes by DelegateIterable { scenesIterable }
+    var sceneId by ActTable.idScene
+
+    override fun delete() {
+        scenesIterable.forEach {
+            it.delete()
+        }
+
+        super.delete()
+    }
+
+    fun MutableList<Scene>.findWithId(id: Int): Scene? {
+        return this.find { it.id.value == id }
+    }
 }

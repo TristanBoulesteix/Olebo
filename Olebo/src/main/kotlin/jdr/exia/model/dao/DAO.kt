@@ -2,19 +2,19 @@ package jdr.exia.model.dao
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.utils.MessageException
-import jdr.exia.model.utils.appDatas
+import jdr.exia.model.utils.OLEBO_DIRECTORY
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
-import java.io.File.separator
 import java.sql.Connection
 
 object DAO {
-    private val dbName = "Olebo${separator}db${separator}database.db"
-    private val filePath = "$appDatas$dbName"
+    private const val DATABASE_NAME = "database.db"
+
+    private val filePath = OLEBO_DIRECTORY + "db${File.separator}$DATABASE_NAME"
     private val url = "jdbc:sqlite:$filePath"
 
     val database: Database
