@@ -21,7 +21,7 @@ class ActSelectorPanel : SelectorPanel() {
         init {
             this.namePanel.addMouseListener(this)
 
-            this.add(SquareLabel(getIcon("edit_icon", HomeManager.javaClass), HomeManager::deleteAct))
+            this.add(SquareLabel(getIcon("edit_icon", HomeManager.javaClass), HomeManager::updateAct))
 
             this.add(SquareLabel(getIcon("delete_icon", HomeManager.javaClass), HomeManager::deleteAct))
         }

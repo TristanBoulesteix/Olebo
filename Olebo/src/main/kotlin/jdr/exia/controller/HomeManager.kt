@@ -25,6 +25,10 @@ object HomeManager : Observable {
         notifyObserver(Action.REFRESH)
     }
 
+    fun updateAct(id: Int) {
+        ActCreatorDialog().fillWithAct(DAO.getActWithId(id)).isVisible = true
+    }
+
     fun deleteAct(id: Int) {
         DAO.deleteEntity(DAO.getActWithId(id))
         notifyObserver(Action.REFRESH)

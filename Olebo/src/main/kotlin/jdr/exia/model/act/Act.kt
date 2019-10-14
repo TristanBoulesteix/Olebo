@@ -23,4 +23,8 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
 
         super.delete()
     }
+
+    fun MutableList<Scene>.findWithId(id: Int): Scene? {
+        return this.find { it.id.value == id }
+    }
 }

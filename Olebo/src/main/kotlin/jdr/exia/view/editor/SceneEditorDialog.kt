@@ -9,7 +9,7 @@ import javax.imageio.ImageIO
 import javax.swing.*
 import javax.swing.filechooser.FileNameExtensionFilter
 
-class SceneEditorDialog(scene: HashMap<Field, String>? = null) : JDialog() {
+class SceneEditorDialog(private val scene: HashMap<Field, String>? = null) : JDialog() {
     private val nameField = JTextField(if (scene != null) scene[Field.NAME] else null).apply {
         this.preferredSize = Dimension(100, 25)
     }
@@ -81,7 +81,10 @@ class SceneEditorDialog(scene: HashMap<Field, String>? = null) : JDialog() {
             hashMapOf(
                 Field.NAME to nameField.text,
                 Field.IMG to selectedFile.absolutePath
-            )
+            ).also {
+                if (scene != null && scene[Field.ID] != null)
+                    it[Field.ID] = scene[Field.ID]
+            }
         } else if (!canceled) {
             this.canceled = true
             showPopup("Le nom existe déjà ou le fichier sélectionné est invalide !", this)
@@ -94,6 +97,6 @@ class SceneEditorDialog(scene: HashMap<Field, String>? = null) : JDialog() {
     }
 
     enum class Field {
-        NAME, IMG
+        NAME, IMG, ID
     }
 }

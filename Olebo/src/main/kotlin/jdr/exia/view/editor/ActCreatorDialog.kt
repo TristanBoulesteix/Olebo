@@ -1,6 +1,7 @@
 package jdr.exia.view.editor
 
 import jdr.exia.controller.ActCreatorManager
+import jdr.exia.model.act.Act
 import jdr.exia.pattern.observer.Action
 import jdr.exia.pattern.observer.Observable
 import jdr.exia.view.utils.BACKGROUND_COLOR_LIGHT_BLUE
@@ -50,7 +51,7 @@ class ActCreatorDialog : JDialogTemplate("Nouvel acte") {
             this.background = BACKGROUND_COLOR_LIGHT_BLUE
             this.add(JButton("Valider").apply {
                 this.addActionListener {
-                    if (this@ActCreatorDialog.manager.createAct(nameField.text)) {
+                    if (nameField.text.isNotEmpty() && this@ActCreatorDialog.manager.saveAct(nameField.text)) {
                         this@ActCreatorDialog.dispose()
                     } else {
                         showPopup("Désolé, un acte avec le même nom existe déjà !", this@ActCreatorDialog)
@@ -61,6 +62,12 @@ class ActCreatorDialog : JDialogTemplate("Nouvel acte") {
         }
 
         this.add(panel, SOUTH)
+    }
+
+    fun fillWithAct(act: Act) : ActCreatorDialog {
+        this.nameField.text = act.name
+        this.manager.updateAct(act.scenes, act.id.value)
+        return this
     }
 
     override fun update(data: Action) {

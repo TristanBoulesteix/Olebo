@@ -17,32 +17,63 @@ class ActCreatorManager : Observable {
 
     override var observer: Observer? = null
 
-    fun createAct(actName: String): Boolean {
-        if (DAO.getActsList().map { it.second }.contains(actName)) return false
+    var idAct = 0
 
-        fun createScenes(idCurrentAct: Int): MutableList<Scene> {
-            val scenes = mutableListOf<Scene>()
+    fun saveAct(actName: String): Boolean {
+        if (DAO.getActsList().map { if (it.first != idAct.toString()) it.second else "" }.contains(actName)) return false
 
-            tempScenes.forEach {
-                val background = saveImg(it[Field.IMG]!!)
+        if (idAct == 0) {
+            fun createScenes(idCurrentAct: Int): MutableList<Scene> {
+                val scenes = mutableListOf<Scene>()
 
-                scenes += Scene.new {
-                    this.name = it[Field.NAME]!!
-                    this.background = background
-                    this.idAct = idCurrentAct
+                tempScenes.forEach {
+                    val background = saveImg(it[Field.IMG]!!)
+
+                    scenes += Scene.new {
+                        this.name = it[Field.NAME]!!
+                        this.background = background
+                        this.idAct = idCurrentAct
+                    }
                 }
+
+                return scenes
             }
 
-            return scenes
-        }
+            transaction(DAO.database) {
+                Act.new {
+                    this.name = actName
+                }.apply {
+                    val scenesList = createScenes(this.id.value)
+                    this.scenes += scenesList
+                    if (scenesList.isNotEmpty()) this.sceneId = scenesList[0].id.value
+                }
+            }
+        } else {
+            transaction(DAO.database) {
+                with(Act[idAct]) {
+                    this.name = actName
 
-        transaction(DAO.database) {
-            Act.new {
-                this.name = actName
-            }.apply {
-                val scenesList = createScenes(this.id.value)
-                this.scenes += scenesList
-                if (scenesList.isNotEmpty()) this.sceneId = scenesList[0].id.value
+                    this.scenes.forEach { scene ->
+                        if(!tempScenes.map { it[Field.ID] ?: "" }.contains(scene.id.value.toString())) {
+                            scene.delete()
+                        }
+                    }
+
+                    tempScenes.forElse { map ->
+                        when {
+                            map[Field.ID] != null -> {
+                                val scene = this.scenes.findWithId(map[Field.ID]!!.toInt())
+                                scene?.name = map[Field.NAME]!!
+                                if (scene?.background != map[Field.IMG]) scene?.background = saveImg(map[Field.IMG]!!)
+                            }
+                            else -> this.scenes += Scene.new {
+                                this.name = map[Field.NAME]!!
+                                this.background = saveImg(map[Field.IMG]!!)
+                                this.idAct = this@with.id.value
+                            }
+                        }
+                    } ?: this.scenes.forEach { it.delete() }
+                }
             }
         }
 
@@ -79,6 +110,14 @@ class ActCreatorManager : Observable {
         tempScenes.removeAt(index)
         notifyObserver(Action.REFRESH)
     }
+
+    fun updateAct(scenes: MutableList<Scene>, id: Int) {
+        tempScenes += scenes.map {
+            hashMapOf(Field.NAME to it.name, Field.IMG to it.background, Field.ID to it.id.value.toString())
+        }.toMutableList()
+        idAct = id
+        notifyObserver(Action.REFRESH)
+    }
 }
 
 fun MutableList<HashMap<Field, String>>.getArrayOfPairs(): Array<Pair<String, String>> {
@@ -89,3 +128,5 @@ fun MutableList<HashMap<Field, String>>.getArrayOfPairs(): Array<Pair<String, St
         Pair(i.toString(), it[Field.NAME]!!)
     }.toTypedArray()
 }
+
+private fun <T> List<T>.forElse(block: (T) -> Unit) = if (isEmpty()) null else forEach(block)
