@@ -2,7 +2,6 @@ package jdr.exia.view.mainFrame
 
 import jdr.exia.controller.ViewController
 import jdr.exia.model.element.Element
-import java.awt.Toolkit
 
 /*ViewManager is View's facade
 this is a singleton*/
@@ -13,21 +12,23 @@ object ViewManager {
         initializeActFrames() //Temporary, needs to be altered later
     }
 
-    fun addMarker(token: Element){
+    fun addMarker(token: Element) {
         MasterFrame.setMarker(token)
     }
-    fun removeMarker(){
+
+    fun removeMarker() {
         MasterFrame.removeMarker()
     }
 
-    fun clickNDrop(x: Int, y: Int){
-        ViewController.clickNDrop(x,y)
-    }
-    fun moveToken(x:Int,y:Int){
-        ViewController.moveToken(x,y)
+    fun clickNDrop(x: Int, y: Int) {
+        ViewController.clickNDrop(x, y)
     }
 
-    fun setMapBackground(imageName: String){ //Sets the MapPanels backGround
+    fun moveToken(x: Int, y: Int) {
+        ViewController.moveToken(x, y)
+    }
+
+    fun setMapBackground(imageName: String) { //Sets the MapPanels backGround
 
         MasterFrame.setMapBackground(imageName)
         PlayerFrame.setMapBackground(imageName)
@@ -35,17 +36,15 @@ object ViewManager {
     }
 
 
-    private fun repaintFrames(){ //Repaints both frames simultaneously
+    private fun repaintFrames() { //Repaints both frames simultaneously
         MasterFrame.repaint()
         PlayerFrame.repaint()
     }
 
-    private fun initializeActFrames()
-    { /*this method activates the Player and GM frames to initiate/start back an act	*/
+    private fun initializeActFrames() { /*this method activates the Player and GM frames to initiate/start back an act	*/
 
         MasterFrame.isVisible = true
         PlayerFrame.isVisible = true
-
 
 
         /*TODO: give master frame and player frame the objects relative to*/
@@ -53,8 +52,7 @@ object ViewManager {
     }
 
 
-
-    fun placeTokensOnMaps(tokens: MutableList<Element>){ //places tokens on both maps at corresponding points
+    fun placeTokensOnMaps(tokens: MutableList<Element>) { //places tokens on both maps at corresponding points
         PlayerFrame.updateMap(tokens)
         MasterFrame.updateMap(tokens)
         repaintFrames()
