@@ -8,6 +8,7 @@ import jdr.exia.view.utils.BACKGROUND_COLOR_ORANGE
 import jdr.exia.view.utils.BORDER_BUTTONS
 import jdr.exia.view.utils.components.JDialogTemplate
 import jdr.exia.view.utils.components.PlaceholderTextField
+import jdr.exia.view.utils.showPopup
 import java.awt.BorderLayout
 import java.awt.BorderLayout.*
 import java.awt.GridBagConstraints
@@ -44,13 +45,16 @@ class ActCreatorDialog : JDialogTemplate("Nouvel acte") {
         this.add(selectorPanel, CENTER)
 
         val panel = JPanel().apply {
-            this.border = BorderFactory.createEmptyBorder(10,20,10,20)
+            this.border = BorderFactory.createEmptyBorder(10, 20, 10, 20)
             this.layout = BorderLayout()
             this.background = BACKGROUND_COLOR_LIGHT_BLUE
             this.add(JButton("Valider").apply {
                 this.addActionListener {
-                    this@ActCreatorDialog.manager.createAct(nameField.text)
-                    this@ActCreatorDialog.dispose()
+                    if (this@ActCreatorDialog.manager.createAct(nameField.text)) {
+                        this@ActCreatorDialog.dispose()
+                    } else {
+                        showPopup("Désolé, un acte avec le même nom existe déjà !", this@ActCreatorDialog)
+                    }
                 }
                 this.border = BORDER_BUTTONS
             }, CENTER)
@@ -60,7 +64,7 @@ class ActCreatorDialog : JDialogTemplate("Nouvel acte") {
     }
 
     override fun update(data: Action) {
-        when(data) {
+        when (data) {
             Action.DISPOSE -> this.dispose()
             Action.REFRESH -> this.selectorPanel.refresh()
         }

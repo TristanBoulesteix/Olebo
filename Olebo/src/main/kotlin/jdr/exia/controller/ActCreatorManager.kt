@@ -17,7 +17,9 @@ class ActCreatorManager : Observable {
 
     override var observer: Observer? = null
 
-    fun createAct(actName: String) {
+    fun createAct(actName: String): Boolean {
+        if (DAO.getActsList().map { it.second }.contains(actName)) return false
+
         fun createScenes(idCurrentAct: Int): MutableList<Scene> {
             val scenes = mutableListOf<Scene>()
 
@@ -40,9 +42,11 @@ class ActCreatorManager : Observable {
             }.apply {
                 val scenesList = createScenes(this.id.value)
                 this.scenes += scenesList
-                this.sceneId = scenesList[0].id.value
+                if (scenesList.isNotEmpty()) this.sceneId = scenesList[0].id.value
             }
         }
+
+        return true
     }
 
     fun createNewScene(@Suppress("UNUSED_PARAMETER") id: Int) {
