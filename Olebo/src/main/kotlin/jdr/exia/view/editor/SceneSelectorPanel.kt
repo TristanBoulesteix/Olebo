@@ -54,6 +54,9 @@ class SceneSelectorPanel(private val controller: ActCreatorManager?) : SelectorP
         this.refresh()
     }
 
+    /**
+     * Display a scene and its options
+     */
     @Suppress("ProtectedInFinal")
     protected inner class ScenePanel(id: Int, name: String) : ItemPanel(id, name) {
         init {

@@ -19,6 +19,9 @@ import javax.swing.BorderFactory
 import javax.swing.JButton
 import javax.swing.JPanel
 
+/**
+ * This JDialog allows us to create or update an act.
+ */
 class ActCreatorDialog : JDialogTemplate("Nouvel acte") {
     private val manager = ActCreatorManager()
     override val observable: Observable = manager
@@ -64,6 +67,11 @@ class ActCreatorDialog : JDialogTemplate("Nouvel acte") {
         this.add(panel, SOUTH)
     }
 
+    /**
+     * Fill the dialog frame with act data. This changes its state to "update".
+     *
+     * @param act The act to update
+     */
     fun fillWithAct(act: Act) : ActCreatorDialog {
         this.nameField.text = act.name
         this.manager.updateAct(act.scenes, act.id.value)

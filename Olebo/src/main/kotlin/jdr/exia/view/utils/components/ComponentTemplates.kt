@@ -10,6 +10,9 @@ import java.awt.event.MouseEvent
 import javax.swing.*
 import javax.swing.border.EmptyBorder
 
+/**
+ * Template of all JFrame's menu templates
+ */
 abstract class JFrameTemplate(title: String) : JFrame(),
     Observer {
     protected abstract val observable: Observable
@@ -29,6 +32,11 @@ abstract class JFrameTemplate(title: String) : JFrame(),
     }
 }
 
+/**
+ * Template of all JDialog's menu templates.
+ *
+ * It is similar to JFrameTemplate because I didn't find a public common parent to JDialog and JFrame.
+ */
 abstract class JDialogTemplate(title: String, modal: Boolean = true) : JDialog(),
     Observer {
     protected abstract val observable: Observable
@@ -49,6 +57,9 @@ abstract class JDialogTemplate(title: String, modal: Boolean = true) : JDialog()
     }
 }
 
+/**
+ * This panel is a template for all panels which display a list of components
+ */
 abstract class SelectorPanel : JPanel() {
     protected abstract val pairs: Array<Pair<String, String>>
 
@@ -83,6 +94,9 @@ abstract class SelectorPanel : JPanel() {
         this.add(JScrollPane(panel), BorderLayout.CENTER)
     }
 
+    /**
+     * Refresh the panel with new datas
+     */
     fun refresh() {
         this.createJPanelWithItemSelectablePanel()
         this.revalidate()
@@ -92,6 +106,9 @@ abstract class SelectorPanel : JPanel() {
     private fun <T> Array<T>.forElse(block: (T) -> Unit) = if (isEmpty()) null else forEach(block)
 }
 
+/**
+ * Template for panel which display an item.
+ */
 @Suppress("LeakingThis")
 abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
     companion object {
@@ -117,6 +134,9 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
         this.add(namePanel)
     }
 
+    /**
+     * Label that act like a button.
+     */
     protected inner class SquareLabel(icon: ImageIcon, private val action: (Int) -> Unit) :
         JLabel(icon, CENTER) {
         init {
