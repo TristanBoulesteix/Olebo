@@ -34,8 +34,12 @@ class HomeFrame : JFrameTemplate("Olebo") {
             this.border = BorderFactory.createEmptyBorder(15, 0, 15, 0)
             this.layout = GridBagLayout()
 
-            val elementButton = JButton("Éléments")
-            elementButton.border = BORDER_BUTTONS
+            val elementButton = JButton("Éléments").apply {
+                this.border = BORDER_BUTTONS
+                this.addActionListener {
+                    HomeManager.openObjectEditorFrame()
+                }
+            }
             val cElementButton = GridBagConstraints().apply {
                 this.gridx = 0
                 this.gridy = 0

@@ -4,7 +4,8 @@ import jdr.exia.model.dao.DAO
 import jdr.exia.pattern.observer.Action
 import jdr.exia.pattern.observer.Observable
 import jdr.exia.pattern.observer.Observer
-import jdr.exia.view.editor.acts.ActCreatorDialog
+import jdr.exia.view.editor.acts.ActEditorDialog
+import jdr.exia.view.editor.elements.ObjectEditorDialog
 
 object HomeManager : Observable {
     override var observer: Observer? = null
@@ -22,10 +23,17 @@ object HomeManager : Observable {
     }
 
     /**
+     * Show elements
+     */
+    fun openObjectEditorFrame() {
+        ObjectEditorDialog().isVisible = true
+    }
+
+    /**
      * Show JDialog to create a new act.
      */
     fun openActCreatorFrame() {
-        ActCreatorDialog().isVisible = true
+        ActEditorDialog().isVisible = true
         notifyObserver(Action.REFRESH)
     }
 
@@ -35,7 +43,7 @@ object HomeManager : Observable {
      * @param id The id of the act to update
      */
     fun updateAct(id: Int) {
-        ActCreatorDialog().fillWithAct(DAO.getActWithId(id)).isVisible = true
+        ActEditorDialog().fillWithAct(DAO.getActWithId(id)).isVisible = true
         notifyObserver(Action.REFRESH)
     }
 

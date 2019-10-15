@@ -3,7 +3,6 @@ package jdr.exia.view.editor.acts
 import jdr.exia.controller.ActCreatorManager
 import jdr.exia.model.act.Act
 import jdr.exia.pattern.observer.Action
-import jdr.exia.pattern.observer.Observable
 import jdr.exia.view.utils.BACKGROUND_COLOR_LIGHT_BLUE
 import jdr.exia.view.utils.BACKGROUND_COLOR_ORANGE
 import jdr.exia.view.utils.BORDER_BUTTONS
@@ -22,9 +21,9 @@ import javax.swing.JPanel
 /**
  * This JDialog allows us to create or update an act.
  */
-class ActCreatorDialog : JDialogTemplate("Nouvel acte") {
+class ActEditorDialog : JDialogTemplate("Nouvel acte") {
     private val manager = ActCreatorManager()
-    override val observable: Observable = manager
+    override val observable = manager
 
     private val selectorPanel = SceneSelectorPanel(manager)
     private val nameField = PlaceholderTextField("Nom")
@@ -54,10 +53,10 @@ class ActCreatorDialog : JDialogTemplate("Nouvel acte") {
             this.background = BACKGROUND_COLOR_LIGHT_BLUE
             this.add(JButton("Valider").apply {
                 this.addActionListener {
-                    if (nameField.text.isNotEmpty() && this@ActCreatorDialog.manager.saveAct(nameField.text)) {
-                        this@ActCreatorDialog.dispose()
+                    if (nameField.text.isNotEmpty() && this@ActEditorDialog.manager.saveAct(nameField.text)) {
+                        this@ActEditorDialog.dispose()
                     } else {
-                        showPopup("Désolé, un acte avec le même nom existe déjà !", this@ActCreatorDialog)
+                        showPopup("Désolé, un acte avec le même nom existe déjà !", this@ActEditorDialog)
                     }
                 }
                 this.border = BORDER_BUTTONS
@@ -72,7 +71,7 @@ class ActCreatorDialog : JDialogTemplate("Nouvel acte") {
      *
      * @param act The act to update
      */
-    fun fillWithAct(act: Act) : ActCreatorDialog {
+    fun fillWithAct(act: Act) : ActEditorDialog {
         this.nameField.text = act.name
         this.manager.updateAct(act.scenes, act.id.value)
         return this
