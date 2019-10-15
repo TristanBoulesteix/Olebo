@@ -9,9 +9,7 @@ import org.jetbrains.exposed.dao.EntityID
 
 class Act(id: EntityID<Int>) : Entity<Int>(id) {
     companion object : EntityClass<Int, Act>(ActTable)
-
     private val scenesIterable by Scene referrersOn SceneTable.idAct
-
     var name by ActTable.name
     val scenes by DelegateIterable { scenesIterable }
     var sceneId by ActTable.idScene

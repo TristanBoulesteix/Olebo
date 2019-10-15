@@ -8,6 +8,11 @@ import jdr.exia.model.element.Element
 this is a singleton*/
 object ViewFacade {
 
+    fun testRun(){ //TODO: remove once test is not needed
+        MasterFrame.isVisible = true
+        PlayerFrame.isVisible = true
+    }
+
     init {
 
     }
@@ -28,6 +33,16 @@ object ViewFacade {
         ViewManager.moveToken(x, y)
     }
 
+    fun selectToken(x: Int,y:Int){
+
+        ViewManager.selectToken(x,y)
+
+    }
+
+    fun setSelectedToken(token: Element){
+        SelectPanel.selectedElement = token
+    }
+
     fun setMapBackground(imageName: String) { //Sets the MapPanels backGround
 
         MasterFrame.setMapBackground(imageName)
@@ -36,25 +51,19 @@ object ViewFacade {
     }
 
 
+
+
     private fun repaintFrames() { //Repaints both frames simultaneously
         MasterFrame.repaint()
         PlayerFrame.repaint()
     }
 
+
+
     private fun initializeAct(act: Act) { /*this method activates the Player and GM frames to initiate/start back an act	*/
-
-
-
-
-
-
-
         MasterFrame.isVisible = true
         PlayerFrame.isVisible = true
-
-
         /*TODO: give master frame and player frame the objects relative to the current act*/
-
     }
 
 

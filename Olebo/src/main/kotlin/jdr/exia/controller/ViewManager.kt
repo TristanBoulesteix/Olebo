@@ -12,20 +12,16 @@ import javax.swing.ImageIcon
 
 object ViewManager {
 
-    var mapTokens = mutableListOf<Element>()
-    var grabbedToken: Element? = null
-    var activeAct: Act? = null
-    var activeScene: Scene? = null
-    init {
+    fun testRun(){ //TODO: Remove ASAP
+
         ViewFacade.setMapBackground("/tools.jpg")
 
-
-       var toky = Element(
-           "test",
-           ImageIcon(ImageIO.read(Element::class.java.getResource("/AH!.png").openStream())),
-           Position(500,500),
-           true,
-           Size.S)
+        var toky = Element(
+            "test",
+            ImageIcon(ImageIO.read(Element::class.java.getResource("/AH!.png").openStream())),
+            Position(500,500),
+            true,
+            Size.S)
         var tokar = Element(
             "test",
             ImageIcon(ImageIO.read(Element::class.java.getResource("/blue.png").openStream())),
@@ -33,18 +29,36 @@ object ViewManager {
             false,
             Size.XXL)
 
-
         addToken(toky)
         addToken(tokar)
         updateTokens()
+        ViewFacade.testRun()
+    }
+
+    var mapTokens = mutableListOf<Element>()
+    var grabbedToken: Element? = null
+    var activeAct: Act? = null
+    var activeScene: Scene? = null
+    init {
+
+
+        testRun()
+
 
     }
+
+
 
     fun clickNDrop(x:Int,y: Int){
         /*If a token has already been grabbed, then it is placed with dropToken(),
         else tries to find a token where the screen was clicked with  loadTokenFromClick(x,y)*/
         if (grabbedToken == null){
-            loadTokenFromClick(x,y)
+           grabbedToken = getTokenFromXY(x,y)
+            if(grabbedToken!=null) {
+                ViewFacade.addMarker(grabbedToken!!)
+                updateTokens()
+            }
+
         }
         else {
             dropToken(x,y)
@@ -60,25 +74,12 @@ object ViewManager {
         activeAct!!.sceneId = sceneId
     }
 
-    fun loadCurrentScene(){
+    private fun loadCurrentScene(){
         with(activeAct) {
            activeScene = this!!.scenes.findWithId(activeAct!!.sceneId)
            mapTokens//TODO : load tokens from instances table
            ViewFacade.setMapBackground(activeScene!!.background)
         }
-    }
-
-    private fun loadTokenFromClick(x: Int, y: Int){ //Takes a point that was clicked, and return the 1st token that connects
-        val clickedPoint = Point(x,y)
-
-        for(token in mapTokens){
-            if (token.hitBox.contains(clickedPoint)){
-                grabbedToken = token
-                ViewFacade.addMarker(token)
-                updateTokens()
-            }
-        }
-
     }
 
     fun moveToken(x:Int,y:Int){ //Changes a token's position without dropping it (a moved token stays selected) , intended for small steps
@@ -107,7 +108,28 @@ object ViewManager {
         this.mapTokens.add(token)
     }
 
-    private fun updateTokens (){ //Updates the tokens on the maps
+    private fun getTokenFromXY(x: Int, y: Int): Element?{ //Receives a clicked point (x,y), returns the first soken found in the Tokens array, or null if none matched
+        for(token in mapTokens){
+            if (token.hitBox.contains(x,y)){
+
+                return(token)
+
+            }
+        }
+        return null
+    }
+
+    fun selectToken(x: Int,y:Int){ //cheks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
+        var selected = getTokenFromXY(x,y)
+
+        if(selected!=null){
+
+            ViewFacade.setSelectedToken(selected)
+            updateTokens()
+        }
+    }
+
+    private fun updateTokens (){ //Updates the tokens on the maps by repainting everything
         ViewFacade.placeTokensOnMaps(mapTokens)
     }
 

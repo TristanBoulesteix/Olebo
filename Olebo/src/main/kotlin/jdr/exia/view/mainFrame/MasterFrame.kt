@@ -22,28 +22,18 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
     var selectPanel = SelectPanel // Will contain all info on selected Item
     var itemPanel = ItemPanel // Will contain list of available items
 
-
     override fun setMapBackground(imageName: String) {
         mapPanel.backGroundImage = ImageIO.read(Element::class.java.getResource(imageName).openStream())
-
     }
 
     init {
-
-
-
         val screens = GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices
         this.setSize(screens[0].displayMode.width,screens[0].displayMode.height)
-
         if (screens.size == 1) { //If there is only 1 screen, we display both frames there
-
         } else { //If 2 screens are present, we display the player frame in fullscreen on the 2nd screen
-
             //this.isUndecorated = true
             screens[0].fullScreenWindow = this
-
         }
-
         this.title = "Master"
         addKeyListener(this)
         this.defaultCloseOperation = EXIT_ON_CLOSE
@@ -51,7 +41,6 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         masterFramePanel.background = Color.GRAY
         masterFramePanel.layout = GridBagLayout()
         contentPane = masterFramePanel
-
 
         mapPanel.setSize(1280, 720)
 
@@ -107,7 +96,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
     override fun keyPressed(keyEvent: KeyEvent) {
 
         if (keyEvent.keyCode == KeyEvent.VK_ESCAPE) { //remove after tesing is complete
-            this.isVisible = false
+            exitProcess(0)
         }
 
     }

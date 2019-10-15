@@ -52,13 +52,9 @@ class MapPanel : JPanel(), MouseListener {
                     this.height,
                     null
                 )
-
                 if (marker != null) { // First, place a marker if there needs to be one, so the token will then be painted over it
                     drawMoveableMarker(g)
-
-
                 }
-
                 for (token in tokens) //Display every token one by one
                 {
                     if((!isMasterMapPanel)&&!(token.visible)){} //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
@@ -78,8 +74,9 @@ class MapPanel : JPanel(), MouseListener {
         }
 
     private fun drawMoveableMarker(g:Graphics){ //Draws a red rectangle around the currently selected token for movement
-        g?.color = Color.RED
-        g?.drawRect( //Draws a 1 pixel thick rectangle
+        g.color = Color.RED
+        g.setPaintMode()
+        g.drawRect( //Draws a 1 pixel thick rectangle
             marker!!.x,
             marker!!.y,
             marker!!.width,
@@ -88,8 +85,8 @@ class MapPanel : JPanel(), MouseListener {
     }
 
     private fun drawInvisibleMarker(token: Element, g:Graphics){//Draws a blue rectangle to signify the GM that a token is invisible to the player
-        g?.color = Color.BLUE
-        g?.drawRect( //Draws a 1 pixel thick rectangle
+        g.color = Color.BLUE
+        g.drawRect( //Draws a 1 pixel thick rectangle
             (relativeX(token.position.x)-3),
             ( relativeY(token.position.y)-3),
             (relativeX(token.hitBox.width)+3),
@@ -106,7 +103,7 @@ class MapPanel : JPanel(), MouseListener {
             {
                 1 -> ViewFacade.clickNDrop(clickedX, clickedY) //Left click
                 2 -> ViewFacade.moveToken(clickedX, clickedY) //Middle button
-                3 -> null //Right click
+                3 -> ViewFacade.selectToken(clickedX, clickedY) //Right click
             }
         }
     } //Actions to take when the mouse is clicked
