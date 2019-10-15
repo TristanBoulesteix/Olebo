@@ -1,12 +1,8 @@
 package jdr.exia.controller
 
 import jdr.exia.model.element.Element
-import jdr.exia.model.element.Position
-import jdr.exia.model.element.Size
 import jdr.exia.view.mainFrame.ViewFacade
 import java.awt.Point
-import javax.imageio.ImageIO
-import javax.swing.ImageIcon
 
 object ViewManager {
 
@@ -16,7 +12,7 @@ object ViewManager {
         ViewFacade.setMapBackground("/tools.jpg")
 
 
-       var toky = Element(
+/*       var toky = Element(
            "test",
            ImageIcon(ImageIO.read(Element::class.java.getResource("/AH!.png").openStream())),
            Position(500,500),
@@ -27,11 +23,11 @@ object ViewManager {
             ImageIcon(ImageIO.read(Element::class.java.getResource("/blue.png").openStream())),
             Position(550,500),
             true,
-            Size.XXL)
+            Size.XXL)*/
 
 
-        addToken(toky)
-        addToken(tokar)
+/*        addToken(toky)
+        addToken(tokar)*/
         updateTokens()
 
     }
