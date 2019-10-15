@@ -1,8 +1,6 @@
 package jdr.exia.view.mainFrame
-import jdr.exia.controller.ViewController
 import javax.swing.JPanel
 import jdr.exia.model.element.Element
-import org.w3c.dom.css.Rect
 import java.awt.*
 import java.awt.event.MouseEvent
 import java.awt.event.MouseListener
@@ -86,8 +84,8 @@ class MapPanel : JPanel(), MouseListener {
 
        when(p0.button) //  1, middle button: 2, Right click: 3
        {
-           1 -> ViewManager.clickNDrop(clickedX,clickedY) //Left click
-           2 -> ViewManager.moveToken(clickedX,clickedY) //Middle button
+           1 -> ViewFacade.clickNDrop(clickedX,clickedY) //Left click
+           2 -> ViewFacade.moveToken(clickedX,clickedY) //Middle button
            3 -> null //Right click
        }
     } //Actions to take when the mouse is clicked

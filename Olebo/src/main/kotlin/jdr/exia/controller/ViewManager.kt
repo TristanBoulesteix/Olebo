@@ -3,18 +3,17 @@ package jdr.exia.controller
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Position
 import jdr.exia.model.element.Size
-import jdr.exia.view.mainFrame.ViewManager
+import jdr.exia.view.mainFrame.ViewFacade
 import java.awt.Point
-import java.awt.Rectangle
 import javax.imageio.ImageIO
 import javax.swing.ImageIcon
 
-object ViewController {
+object ViewManager {
 
     var mapTokens = mutableListOf<Element>()
     var grabbedToken: Element? = null
     init {
-        ViewManager.setMapBackground("/tools.jpg")
+        ViewFacade.setMapBackground("/tools.jpg")
 
 
        var toky = Element(
@@ -55,7 +54,7 @@ object ViewController {
         for(token in mapTokens){
             if (token.hitBox.contains(clickedPoint)){
                 grabbedToken = token
-                ViewManager.addMarker(token)
+                ViewFacade.addMarker(token)
                 updateTokens()
             }
         }
@@ -68,7 +67,7 @@ object ViewController {
             val newX = (x - (grabbedToken!!.hitBox.width / 2))
             val newY = (y - (grabbedToken!!.hitBox.height / 2))
             grabbedToken!!.setPosition(newX, newY)
-            ViewManager.addMarker(grabbedToken!!)
+            ViewFacade.addMarker(grabbedToken!!)
             updateTokens()
         }
     }
@@ -79,7 +78,7 @@ object ViewController {
             val newY = (y - (grabbedToken!!.hitBox.height / 2))
             grabbedToken!!.setPosition(newX, newY)
             grabbedToken = null
-            ViewManager.removeMarker()
+            ViewFacade.removeMarker()
             updateTokens()
 
 
@@ -90,7 +89,7 @@ object ViewController {
     }
 
     fun updateTokens (){ //Updates the tokens on the maps
-        ViewManager.placeTokensOnMaps(mapTokens)
+        ViewFacade.placeTokensOnMaps(mapTokens)
     }
 
 }

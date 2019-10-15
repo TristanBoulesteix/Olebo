@@ -1,11 +1,11 @@
 package jdr.exia.view.mainFrame
 
-import jdr.exia.controller.ViewController
+import jdr.exia.controller.ViewManager
 import jdr.exia.model.element.Element
 
 /*ViewManager is View's facade
 this is a singleton*/
-object ViewManager {
+object ViewFacade {
 
 
     init {
@@ -21,11 +21,11 @@ object ViewManager {
     }
 
     fun clickNDrop(x: Int, y: Int) {
-        ViewController.clickNDrop(x, y)
+        ViewManager.clickNDrop(x, y)
     }
 
     fun moveToken(x: Int, y: Int) {
-        ViewController.moveToken(x, y)
+        ViewManager.moveToken(x, y)
     }
 
     fun setMapBackground(imageName: String) { //Sets the MapPanels backGround
