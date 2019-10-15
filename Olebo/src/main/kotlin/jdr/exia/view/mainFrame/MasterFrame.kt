@@ -7,6 +7,7 @@ import javax.swing.JFrame
 import jdr.exia.model.element.Element
 import javax.imageio.ImageIO
 import javax.swing.JPanel
+import javax.swing.WindowConstants
 import kotlin.system.exitProcess
 
 /*MasterFrame is the Game Master's Interface, it contains a Map panel (the same as PlayerFrame, but scaled down), an ItemPanel and a SelectPanel.
@@ -32,7 +33,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         if (screens.size == 1) { //If there is only 1 screen, we display both frames there
         } else { //If 2 screens are present, we display the player frame in fullscreen on the 2nd screen
             //this.isUndecorated = true
-            screens[0].fullScreenWindow = this
+
         }
         this.title = "Master"
         addKeyListener(this)
@@ -44,12 +45,15 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
 
         mapPanel.setSize(1280, 720)
 
-        selectPanel.setSize(100, 100)
-
-        selectPanel.background = Color.green
-
-        itemPanel.setSize(100, 100)
+        itemPanel.setSize(this.width-1280, this.height)
         itemPanel.background = Color.yellow
+
+
+
+        selectPanel.setSize(this.mapPanel.width,(this.height - mapPanel.height))
+
+
+
 
         val mapConstraints = GridBagConstraints()
         val itemConstraints = GridBagConstraints()
@@ -96,6 +100,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
     override fun keyPressed(keyEvent: KeyEvent) {
 
         if (keyEvent.keyCode == KeyEvent.VK_ESCAPE) { //remove after tesing is complete
+            dispose()
             exitProcess(0)
         }
 
