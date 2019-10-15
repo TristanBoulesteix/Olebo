@@ -14,6 +14,11 @@ import javax.swing.BorderFactory
 import javax.swing.JButton
 import javax.swing.JPanel
 
+/**
+ * Main frame of the application. It allows us to create, delete and update an act and an element.
+ *
+ * This frame will send the selected act to the Games Views
+ */
 class HomeFrame : JFrameTemplate("Olebo") {
     override val observable: Observable = HomeManager
 

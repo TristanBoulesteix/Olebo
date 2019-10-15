@@ -8,6 +8,9 @@ import jdr.exia.view.utils.components.SelectorPanel
 import jdr.exia.view.utils.event.ClickListener
 import java.awt.event.MouseEvent
 
+/**
+ * This panel's goals is to display all acts in the database
+ */
 class ActSelectorPanel : SelectorPanel() {
     override val pairs
         get() = DAO.getActsList()
@@ -16,6 +19,9 @@ class ActSelectorPanel : SelectorPanel() {
         return ActPanel(id, name)
     }
 
+    /**
+     * This panel display an Act 
+     */
     @Suppress("ProtectedInFinal")
     protected class ActPanel(id: Int, name: String) : ItemPanel(id, name), ClickListener {
         init {

@@ -6,7 +6,10 @@ import java.awt.Graphics2D
 import java.awt.RenderingHints
 import javax.swing.JTextField
 
-class PlaceholderTextField(var placeholder: String) : JTextField() {
+/**
+ * A JTextField with placeholder
+ */
+class PlaceholderTextField(private var placeholder: String) : JTextField() {
     init {
         this.font = Font("Tahoma", Font.BOLD, 20)
     }

@@ -12,13 +12,19 @@ import jdr.exia.view.editor.SceneEditorDialog.Field
 import jdr.exia.view.utils.showPopup
 import org.jetbrains.exposed.sql.transactions.transaction
 
+/**
+ * Manager to create an act (uses all classes in jdr.exia.view.editor)
+ */
 class ActCreatorManager : Observable {
     val tempScenes = mutableListOf<HashMap<Field, String>>()
 
     override var observer: Observer? = null
 
-    var idAct = 0
+    private var idAct = 0
 
+    /**
+     * Save or create an act into the database.
+     */
     fun saveAct(actName: String): Boolean {
         if (DAO.getActsList().map { if (it.first != idAct.toString()) it.second else "" }.contains(actName)) return false
 
@@ -80,6 +86,9 @@ class ActCreatorManager : Observable {
         return true
     }
 
+    /**
+     * Show dialog to create a scene and save it as HashMap.
+     */
     fun createNewScene(@Suppress("UNUSED_PARAMETER") id: Int) {
         SceneEditorDialog().showDialog()?.let {
             if (tempScenes.map { map -> map[Field.NAME] }.contains(it[Field.NAME])) {
@@ -92,6 +101,9 @@ class ActCreatorManager : Observable {
         notifyObserver(Action.REFRESH)
     }
 
+    /**
+     * Show dialog to update a scene and save it as HashMap.
+     */
     fun updateNewScene(index: Int) {
         SceneEditorDialog(tempScenes[index]).showDialog()?.let {
             if (tempScenes.map { map ->
@@ -106,11 +118,17 @@ class ActCreatorManager : Observable {
         notifyObserver(Action.REFRESH)
     }
 
+    /**
+     * Delete a scene in the HashMap list. It does not affect the database.
+     */
     fun deleteNewScene(index: Int) {
         tempScenes.removeAt(index)
         notifyObserver(Action.REFRESH)
     }
 
+    /**
+     * Get act datas stored into the database and save it into variables.
+     */
     fun updateAct(scenes: MutableList<Scene>, id: Int) {
         tempScenes += scenes.map {
             hashMapOf(Field.NAME to it.name, Field.IMG to it.background, Field.ID to it.id.value.toString())
@@ -120,6 +138,9 @@ class ActCreatorManager : Observable {
     }
 }
 
+/**
+ * Extension function to convert a MutableList<HashMap<Field, String>> to Array<Pair<String, String>>.
+ */
 fun MutableList<HashMap<Field, String>>.getArrayOfPairs(): Array<Pair<String, String>> {
     var i = -1
 

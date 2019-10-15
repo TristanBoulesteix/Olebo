@@ -9,6 +9,11 @@ import jdr.exia.view.editor.ActCreatorDialog
 object HomeManager : Observable {
     override var observer: Observer? = null
 
+    /**
+     * Start an act
+     *
+     * @param id The id of the act to launch.
+     */
     fun launchAct(id: Int) {
         notifyObserver(Action.DISPOSE)
 
@@ -16,19 +21,28 @@ object HomeManager : Observable {
         TODO("Open act")
     }
 
-    fun openActProperties(id: Int) {
-        TODO("Open act properties")
-    }
-
+    /**
+     * Show JDialog to create a new act.
+     */
     fun openActCreatorFrame() {
         ActCreatorDialog().isVisible = true
         notifyObserver(Action.REFRESH)
     }
 
+    /**
+     * Show JDialog to update an act.
+     *
+     * @param id The id of the act to update
+     */
     fun updateAct(id: Int) {
         ActCreatorDialog().fillWithAct(DAO.getActWithId(id)).isVisible = true
     }
 
+    /**
+     * Show JDialog to delete an act.
+     *
+     * @param id The id of the act to delete
+     */
     fun deleteAct(id: Int) {
         DAO.deleteEntity(DAO.getActWithId(id))
         notifyObserver(Action.REFRESH)

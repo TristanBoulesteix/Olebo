@@ -9,10 +9,21 @@ import javax.imageio.ImageIO
 import javax.swing.*
 import javax.swing.filechooser.FileNameExtensionFilter
 
+/**
+ * This JDialog allows us to update or create a scene.
+ *
+ * @param scene The scene to update. If the scene is <strong>null</strong>, it will be created.
+ */
 class SceneEditorDialog(private val scene: HashMap<Field, String>? = null) : JDialog() {
     private val nameField = JTextField(if (scene != null) scene[Field.NAME] else null).apply {
         this.preferredSize = Dimension(100, 25)
     }
+
+    /**
+     * Check if all field are valid
+     */
+    private val isFieldValid
+        get() = (nameField.text != "") && (::selectedFile.isInitialized) && (selectedFile.exists())
 
     private lateinit var selectedFile: File
     private var canceled = true
@@ -75,9 +86,12 @@ class SceneEditorDialog(private val scene: HashMap<Field, String>? = null) : JDi
         })
     }
 
+    /**
+     * Display the JDialog and return the new scene datas.
+     */
     fun showDialog(): HashMap<Field, String>? {
         this.isVisible = true
-        return if (validateField() && !canceled) {
+        return if (isFieldValid && !canceled) {
             hashMapOf(
                 Field.NAME to nameField.text,
                 Field.IMG to selectedFile.absolutePath
@@ -92,10 +106,9 @@ class SceneEditorDialog(private val scene: HashMap<Field, String>? = null) : JDi
         } else null
     }
 
-    private fun validateField(): Boolean {
-        return (nameField.text != "") && (::selectedFile.isInitialized) && (selectedFile.exists())
-    }
-
+    /**
+     * All scenes datas type
+     */
     enum class Field {
         NAME, IMG, ID
     }
