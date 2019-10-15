@@ -1,4 +1,4 @@
-package jdr.exia.view.editor
+package jdr.exia.view.editor.acts
 
 import jdr.exia.view.utils.showPopup
 import java.awt.Dimension

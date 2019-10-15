@@ -7,8 +7,8 @@ import jdr.exia.model.utils.saveImg
 import jdr.exia.pattern.observer.Action
 import jdr.exia.pattern.observer.Observable
 import jdr.exia.pattern.observer.Observer
-import jdr.exia.view.editor.SceneEditorDialog
-import jdr.exia.view.editor.SceneEditorDialog.Field
+import jdr.exia.view.editor.acts.SceneEditorDialog
+import jdr.exia.view.editor.acts.SceneEditorDialog.Field
 import jdr.exia.view.utils.showPopup
 import org.jetbrains.exposed.sql.transactions.transaction
 
