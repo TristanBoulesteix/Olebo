@@ -1,15 +1,15 @@
 package jdr.exia.view.mainFrame
 
 import jdr.exia.controller.ViewManager
+import jdr.exia.model.act.Act
 import jdr.exia.model.element.Element
 
 /*ViewManager is View's facade
 this is a singleton*/
 object ViewFacade {
 
-
     init {
-        initializeActFrames() //Temporary, needs to be altered later
+
     }
 
     fun addMarker(token: Element) {
@@ -41,13 +41,19 @@ object ViewFacade {
         PlayerFrame.repaint()
     }
 
-    private fun initializeActFrames() { /*this method activates the Player and GM frames to initiate/start back an act	*/
+    private fun initializeAct(act: Act) { /*this method activates the Player and GM frames to initiate/start back an act	*/
+
+
+
+
+
+
 
         MasterFrame.isVisible = true
         PlayerFrame.isVisible = true
 
 
-        /*TODO: give master frame and player frame the objects relative to*/
+        /*TODO: give master frame and player frame the objects relative to the current act*/
 
     }
 

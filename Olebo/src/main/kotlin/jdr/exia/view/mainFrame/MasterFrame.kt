@@ -44,18 +44,9 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
 
         }
 
-
-
-
-
         this.title = "Master"
-
         addKeyListener(this)
         this.defaultCloseOperation = EXIT_ON_CLOSE
-
-
-
-
         masterFramePanel.size = this.size
         masterFramePanel.background = Color.GRAY
         masterFramePanel.layout = GridBagLayout()
@@ -98,6 +89,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         masterFramePanel.add(mapPanel, mapConstraints)
         masterFramePanel.add(itemPanel, itemConstraints)
         masterFramePanel.add(selectPanel, selectConstraints)
+        this.mapPanel.isMasterMapPanel = true
     }
 
     fun setMarker(token: Element){

@@ -1,5 +1,7 @@
 package jdr.exia.controller
 
+import jdr.exia.model.act.Act
+import jdr.exia.model.act.Scene
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Position
 import jdr.exia.model.element.Size
@@ -12,6 +14,8 @@ object ViewManager {
 
     var mapTokens = mutableListOf<Element>()
     var grabbedToken: Element? = null
+    var activeAct: Act? = null
+    var activeScene: Scene? = null
     init {
         ViewFacade.setMapBackground("/tools.jpg")
 
@@ -26,7 +30,7 @@ object ViewManager {
             "test",
             ImageIcon(ImageIO.read(Element::class.java.getResource("/blue.png").openStream())),
             Position(550,500),
-            true,
+            false,
             Size.XXL)
 
 
@@ -35,8 +39,6 @@ object ViewManager {
         updateTokens()
 
     }
-
-
 
     fun clickNDrop(x:Int,y: Int){
         /*If a token has already been grabbed, then it is placed with dropToken(),
@@ -48,7 +50,25 @@ object ViewManager {
             dropToken(x,y)
         }
     }
-    fun loadTokenFromClick(x: Int,y: Int){ //Takes a point that was clicked, and return the 1st token that connects
+
+    fun initializeAct(act:Act) {
+        activeAct = act
+        loadCurrentScene()
+    }
+
+    fun changeCurrentScene(sceneId: Int){
+        activeAct!!.sceneId = sceneId
+    }
+
+    fun loadCurrentScene(){
+        with(activeAct) {
+           activeScene = this!!.scenes.findWithId(activeAct!!.sceneId)
+           mapTokens//TODO : load tokens from instances table
+           ViewFacade.setMapBackground(activeScene!!.background)
+        }
+    }
+
+    private fun loadTokenFromClick(x: Int, y: Int){ //Takes a point that was clicked, and return the 1st token that connects
         val clickedPoint = Point(x,y)
 
         for(token in mapTokens){
@@ -61,7 +81,6 @@ object ViewManager {
 
     }
 
-
     fun moveToken(x:Int,y:Int){ //Changes a token's position without dropping it (a moved token stays selected) , intended for small steps
         if(grabbedToken != null) {
             val newX = (x - (grabbedToken!!.hitBox.width / 2))
@@ -72,7 +91,7 @@ object ViewManager {
         }
     }
 
-    fun dropToken(x: Int,y: Int){ /* Places the currently grabbed token to last click's location, and drops it*/
+    private fun dropToken(x: Int,y: Int){ /* Places the currently grabbed token to last click's location, and drops it*/
 
             val newX = (x - (grabbedToken!!.hitBox.width / 2))
             val newY = (y - (grabbedToken!!.hitBox.height / 2))
@@ -84,11 +103,11 @@ object ViewManager {
 
     }
 
-    fun addToken(token: Element){ //Adds a single token to this object's Token list
+    private fun addToken(token: Element){ //Adds a single token to this object's Token list
         this.mapTokens.add(token)
     }
 
-    fun updateTokens (){ //Updates the tokens on the maps
+    private fun updateTokens (){ //Updates the tokens on the maps
         ViewFacade.placeTokensOnMaps(mapTokens)
     }
 
