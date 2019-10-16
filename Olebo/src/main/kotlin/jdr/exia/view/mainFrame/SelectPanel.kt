@@ -5,6 +5,7 @@ import jdr.exia.controller.HomeManager
 import jdr.exia.controller.ViewManager
 import jdr.exia.model.element.Character
 import jdr.exia.model.element.Element
+import jdr.exia.model.element.Size
 import java.awt.*
 import javax.swing.*
 
@@ -44,12 +45,14 @@ object SelectPanel : JPanel() {
         }
     }
 
-    private val visibilityButton = JButton("Toggle Visible").apply {
-        preferredSize = Dimension(100,40)
+    private val visibilityButton = JButton("Toggle \n Visible").apply {
+        preferredSize = Dimension(150,40)
         addActionListener{
             ViewManager.toggleVisibility(selectedElement)
         }
     }
+
+    //private val sizeCombo = JComboBox<Size>() //TODO: Complete the Size drop down menu
 
     private fun checkTextValue(str: String): Int{
         try {
@@ -69,38 +72,52 @@ object SelectPanel : JPanel() {
 
         val leftPanel = JPanel().apply { background = Color.gray
             border = BorderFactory.createLineBorder(Color.black)
-            layout = GridLayout(2,3).apply {}
-            add(JPanel().apply { isOpaque = false })
+            layout = GridLayout(2,1).apply {}
+
             isOpaque = false
             add(JPanel().apply { isOpaque = false; add(nameLabel)})
+            add(JPanel().apply { add(visibilityButton); isOpaque = false})
+
         }
 
         val centerPanel = JPanel().apply { background = Color.gray
             border = BorderFactory.createLineBorder(Color.black)
             layout = GridLayout(1,3).apply {}
-            add(JPanel().apply { isOpaque = false; add(hpAmount); border = BorderFactory.createLineBorder(Color.black)})
-            add(JPanel().apply { isOpaque = false; add(hpField); border = BorderFactory.createLineBorder(Color.black)})
-            add(JPanel().apply { isOpaque = false; add(hpButton); border = BorderFactory.createLineBorder(Color.black)})
+            add(
+                JPanel().apply {
+                    isOpaque = false
+                    layout = GridLayout(2,1)
+                    add(hpAmount)
+                    add(manaAmount)
+                    border = BorderFactory.createLineBorder(Color.black)
+                    })
+            add(JPanel().apply { isOpaque = false;
+                isOpaque = false
+                layout = GridLayout(2,1)
+                add(JPanel().apply { add(hpField); isOpaque = false})
+                add(JPanel().apply { add(manaField); isOpaque = false})
+                border = BorderFactory.createLineBorder(Color.black)
+            })
+            add(JPanel().apply { isOpaque = false;
+                isOpaque = false
+                layout = GridLayout(2,1)
+                add(JPanel().apply { add(hpButton); isOpaque = false})
+                add(JPanel().apply { add(manaButton); isOpaque = false})
+                border = BorderFactory.createLineBorder(Color.black)
+            })
         }
 
 
         val rightPanel = JPanel().apply { background = Color.gray
             border = BorderFactory.createLineBorder(Color.black)
-            layout = GridLayout(1,3).apply { vgap = 1 }
-            add(JPanel().apply { isOpaque = false; add(manaAmount); border = BorderFactory.createLineBorder(Color.black)})
-            add(JPanel().apply { isOpaque = false; add(manaField); border = BorderFactory.createLineBorder(Color.black) })
-            add(JPanel().apply { isOpaque = false; add(manaButton); border = BorderFactory.createLineBorder(Color.black)})
-        }
-        val lastPanel = JPanel().apply { background = Color.gray
-            border = BorderFactory.createLineBorder(Color.black)
-            add(JPanel().apply { add(visibilityButton)})
             layout = GridLayout(2,2)
         }
+
 
         add(leftPanel)
         add(centerPanel)
         add(rightPanel)
-        add(lastPanel)
+
 
         this.background = Color.GRAY
     }
@@ -110,9 +127,12 @@ object SelectPanel : JPanel() {
     public override fun paintComponent(g: Graphics) {
 
         super.paintComponent(g)
-        g.color = Color.BLACK
-        g.fillRect(45,10,110,110)
+
+
         if(selectedElement!=null) {
+            if(selectedElement!!.visible){
+                g.color = Color.BLACK} else { g.color = Color.BLUE}
+            g.fillRect(45,10,110,110)
             nameLabel.text = selectedElement!!.name
 
             g.drawImage(selectedElement!!.sprite.image,50,15,100,100,null)
