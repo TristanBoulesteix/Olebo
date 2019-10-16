@@ -4,11 +4,16 @@ import jdr.exia.pattern.observer.Observable
 import jdr.exia.pattern.observer.Observer
 import jdr.exia.view.utils.BACKGROUND_COLOR_LIGHT_BLUE
 import jdr.exia.view.utils.DIMENSION_FRAME
+import jdr.exia.view.utils.IntegerFilter
 import jdr.exia.view.utils.event.ClickListener
 import java.awt.*
+import java.awt.event.FocusEvent
+import java.awt.event.FocusListener
+import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.*
 import javax.swing.border.EmptyBorder
+import javax.swing.text.PlainDocument
 
 /**
  * Template of all JFrame's menu templates
@@ -86,6 +91,13 @@ abstract class SelectorPanel : JPanel() {
                     this.font = Font("Tahoma", Font.BOLD, 20)
                 })
             })
+
+            this.addMouseListener(object : MouseAdapter() {
+                override fun mouseClicked(e: MouseEvent?) {
+                    super.mouseClicked(e)
+                    requestFocusInWindow()
+                }
+            })
         }
 
         (layout as BorderLayout).getLayoutComponent(BorderLayout.CENTER)?.let {
@@ -112,16 +124,21 @@ abstract class SelectorPanel : JPanel() {
 @Suppress("LeakingThis")
 abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
     companion object {
-        val DIMENSION_LABEL = Dimension(65, 65)
+        val DIMENSION_SQUARE = Dimension(65, 65)
+    }
+
+    protected val nameLabel = JTextField(name).apply {
+        this.isEditable = false
+        this.isOpaque = false
+        this.font = Font("Tahoma", Font.BOLD, 18)
+        this.border = BorderFactory.createEmptyBorder(0, 10, 0, 0)
     }
 
     protected val namePanel = JPanel().apply {
         this.layout = GridBagLayout()
-        this.add(JLabel(name).apply {
-            this.font = Font("Tahoma", Font.BOLD, 18)
-            this.border = BorderFactory.createEmptyBorder(0, 10, 0, 0)
-        }, GridBagConstraints().apply {
+        this.add(nameLabel, GridBagConstraints().apply {
             this.anchor = GridBagConstraints.WEST
+            this.fill = GridBagConstraints.BOTH
             this.weightx = 1.0
         })
     }
@@ -137,16 +154,44 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
     /**
      * Label that act like a button.
      */
-    protected inner class SquareLabel(icon: ImageIcon, private val action: (Int) -> Unit) :
+    protected inner class SquareLabel(icon: ImageIcon, action: (Int) -> Unit) :
         JLabel(icon, CENTER) {
+
+        private val listener = object : ClickListener {
+            override fun mouseClicked(e: MouseEvent?) {
+                action(id)
+            }
+        }
+
         init {
-            this.preferredSize = DIMENSION_LABEL
-            this.maximumSize = DIMENSION_LABEL
+            this.preferredSize = DIMENSION_SQUARE
+            this.maximumSize = DIMENSION_SQUARE
             this.border = BorderFactory.createMatteBorder(0, 2, 0, 0, Color.BLACK)
-            this.addMouseListener(object : ClickListener {
-                override fun mouseClicked(e: MouseEvent?) {
-                    action(id)
-                }
+            this.addMouseListener(listener)
+        }
+
+        constructor(text: String, action: (Int, String) -> Unit) : this(ImageIcon(), { }) {
+            this.removeMouseListener(listener)
+            this.layout = GridBagLayout()
+
+            this.add(JTextField(text).apply {
+                this.isOpaque = false
+                (this.document as PlainDocument).documentFilter = IntegerFilter()
+                this.font = Font("Tahoma", Font.BOLD, 18)
+                this.horizontalAlignment = JTextField.CENTER
+                this.addFocusListener(object : FocusListener {
+                    override fun focusLost(e: FocusEvent) {
+                        if(!e.isTemporary) {
+                           action(id, this@apply.text)
+                        }
+                    }
+
+                    override fun focusGained(e: FocusEvent?) {}
+                })
+            }, GridBagConstraints().apply {
+                this.fill = GridBagConstraints.BOTH
+                this.weightx = 1.0
+                this.weighty = 1.0
             })
         }
     }
