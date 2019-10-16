@@ -76,11 +76,11 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         mapConstraints.gridx = 3
         mapConstraints.gridy = 0
         mapConstraints.weightx = 3.0
-        mapConstraints.weighty = 5.0
+        mapConstraints.weighty = 7.0
         mapConstraints.fill = GridBagConstraints.BOTH
 
         masterFramePanel.add(mapPanel, mapConstraints)
-        masterFramePanel.add(itemPanel, itemConstraints)
+        //masterFramePanel.add(itemPanel, itemConstraints)
         masterFramePanel.add(selectPanel, selectConstraints)
         this.mapPanel.isMasterMapPanel = true
     }

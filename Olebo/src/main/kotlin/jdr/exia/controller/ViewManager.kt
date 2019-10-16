@@ -2,11 +2,10 @@ package jdr.exia.controller
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
-import jdr.exia.model.element.Element
-import jdr.exia.model.element.Position
-import jdr.exia.model.element.Size
+import jdr.exia.model.element.*
 import jdr.exia.view.mainFrame.ViewFacade
 import java.awt.Point
+import java.awt.Rectangle
 import javax.imageio.ImageIO
 import javax.swing.ImageIcon
 
@@ -16,21 +15,36 @@ object ViewManager {
 
         ViewFacade.setMapBackground("/tools.jpg")
 
-        var toky = Element(
-            "test",
+        val toky = Element(
+            "test1",
             ImageIcon(ImageIO.read(Element::class.java.getResource("/AH!.png").openStream())),
             Position(500,500),
             true,
             Size.S)
-        var tokar = Element(
-            "test",
+
+        val talkien = PlayableCharacter(
+            25,
+            15,
+            "gandalf",
+            ImageIcon(ImageIO.read(PlayableCharacter::class.java.getResource("/purse.jpg").openStream())),
+            Position(250,25),
+            true,
+            Rectangle(250,25,250,64),
+            Size.M
+        )
+
+        val tokar = Element(
+            "test2",
             ImageIcon(ImageIO.read(Element::class.java.getResource("/blue.png").openStream())),
             Position(550,500),
             false,
             Size.XXL)
 
+
+
         addToken(toky)
         addToken(tokar)
+        addToken(talkien)
         updateTokens()
         ViewFacade.testRun()
     }
@@ -111,9 +125,7 @@ object ViewManager {
     private fun getTokenFromXY(x: Int, y: Int): Element?{ //Receives a clicked point (x,y), returns the first soken found in the Tokens array, or null if none matched
         for(token in mapTokens){
             if (token.hitBox.contains(x,y)){
-
                 return(token)
-
             }
         }
         return null
@@ -131,6 +143,13 @@ object ViewManager {
 
     private fun updateTokens (){ //Updates the tokens on the maps by repainting everything
         ViewFacade.placeTokensOnMaps(mapTokens)
+    }
+
+    fun toggleVisibility(token: Element?) {
+        if (token != null) {
+            token.visible = !token.visible
+            updateTokens()
+        }
     }
 
 }
