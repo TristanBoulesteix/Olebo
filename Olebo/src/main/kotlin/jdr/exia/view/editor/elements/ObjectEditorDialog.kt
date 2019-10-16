@@ -15,7 +15,7 @@ import javax.swing.JComboBox
 import javax.swing.JPanel
 import jdr.exia.model.element.Type as TypeBlueprint
 
-class ObjectEditorDialog : JDialogTemplate("LIste des objets") {
+class ObjectEditorDialog : JDialogTemplate("Liste des objets") {
     private val manager = ElementEditorManager()
     override val observable = manager
 

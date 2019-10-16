@@ -1,21 +1,19 @@
 package jdr.exia.view.editor.elements
 
 import jdr.exia.controller.ElementEditorManager
-import jdr.exia.controller.HomeManager
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
 import jdr.exia.model.utils.getIcon
+import jdr.exia.view.utils.buildTitleItemPanel
 import jdr.exia.view.utils.components.ItemPanel
 import jdr.exia.view.utils.components.SelectorPanel
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.BorderLayout
-import java.awt.Color
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.awt.event.FocusEvent
 import java.awt.event.FocusListener
-import javax.swing.BorderFactory
 import javax.swing.ImageIcon
 import javax.swing.JPanel
 
@@ -25,35 +23,32 @@ class ElementSelectorPanel(private val controller: ElementEditorManager?) :
         get() = controller?.elements?.map { Pair(it.id.value.toString(), it.name) }?.toTypedArray() ?: arrayOf()
 
     override fun builder(id: Int, name: String): ItemPanel {
-        return if(controller?.type != Type.OBJECT) CharacterPanel(id, name) else ObjectPanel(id, name)
+        return if (controller?.type != Type.OBJECT) CharacterPanel(id, name) else ObjectPanel(id, name)
+    }
+
+    private val titlePanel = JPanel()
+    private val cTitleItem = GridBagConstraints().apply {
+        this.fill = GridBagConstraints.BOTH
+        this.weightx = 1.0
+        this.gridx = 0
+        this.gridy = 0
     }
 
     init {
         this.isFocusable = true
 
-        this.add(JPanel().apply {
+        this.add(titlePanel.apply {
             this.layout = GridBagLayout()
 
-            val titleItems = object : ItemPanel(0, "Objets") {
-                init {
-                    this.border = BorderFactory.createMatteBorder(2, 2, 0, 2, Color.BLACK)
-                    this.add(
-                        SquareLabel(
-                            getIcon("create_icon", controller!!.javaClass),
-                            HomeManager::updateAct
-                        )
-                    )
-                }
-            }
-            val cTitleItem = GridBagConstraints().apply {
-                this.fill = GridBagConstraints.BOTH
-                this.weightx = 1.0
-            }
-
-            this.add(titleItems, cTitleItem)
+            this.add(buildTitleItemPanel(), cTitleItem)
             this.revalidate()
         }, BorderLayout.NORTH)
         this.refresh()
+    }
+
+    override fun refresh() {
+        titlePanel.add(buildTitleItemPanel(controller!!.type), cTitleItem)
+        super.refresh()
     }
 
     /**
@@ -66,7 +61,7 @@ class ElementSelectorPanel(private val controller: ElementEditorManager?) :
                 this.isEditable = true
                 this.addFocusListener(object : FocusListener {
                     override fun focusLost(e: FocusEvent) {
-                        if(!e.isTemporary) {
+                        if (!e.isTemporary) {
                             controller!!.updateName(id, this@apply.text)
                         }
                     }
@@ -90,7 +85,7 @@ class ElementSelectorPanel(private val controller: ElementEditorManager?) :
                 this.isEditable = true
                 this.addFocusListener(object : FocusListener {
                     override fun focusLost(e: FocusEvent) {
-                        if(!e.isTemporary) {
+                        if (!e.isTemporary) {
                             controller!!.updateName(id, this@apply.text)
                         }
                     }

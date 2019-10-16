@@ -109,7 +109,7 @@ abstract class SelectorPanel : JPanel() {
     /**
      * Refresh the panel with new datas
      */
-    fun refresh() {
+    open fun refresh() {
         this.createJPanelWithItemSelectablePanel()
         this.revalidate()
         this.repaint()
@@ -170,7 +170,7 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
             this.addMouseListener(listener)
         }
 
-        constructor(text: String, action: (Int, String) -> Unit) : this(ImageIcon(), { }) {
+        constructor(text: String, action: ((Int, String) -> Unit)? = null) : this(ImageIcon(), { }) {
             this.removeMouseListener(listener)
             this.layout = GridBagLayout()
 
@@ -182,7 +182,9 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
                 this.addFocusListener(object : FocusListener {
                     override fun focusLost(e: FocusEvent) {
                         if(!e.isTemporary) {
-                           action(id, this@apply.text)
+                            if (action != null) {
+                                action(id, this@apply.text)
+                            }
                         }
                     }
 
