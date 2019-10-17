@@ -5,7 +5,7 @@ import jdr.exia.pattern.observer.Action
 import jdr.exia.pattern.observer.Observable
 import jdr.exia.pattern.observer.Observer
 import jdr.exia.view.editor.acts.ActEditorDialog
-import jdr.exia.view.editor.elements.ObjectEditorDialog
+import jdr.exia.view.editor.elements.BlueprintDialog
 
 object HomeManager : Observable {
     override var observer: Observer? = null
@@ -26,7 +26,7 @@ object HomeManager : Observable {
      * Show elements
      */
     fun openObjectEditorFrame() {
-        ObjectEditorDialog().isVisible = true
+        BlueprintDialog().isVisible = true
     }
 
     /**

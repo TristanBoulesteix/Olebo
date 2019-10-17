@@ -1,14 +1,14 @@
 package jdr.exia.view.editor.elements
 
-import jdr.exia.controller.ElementEditorManager
+import jdr.exia.controller.BlueprintManager
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
 import jdr.exia.model.utils.getIcon
-import jdr.exia.view.utils.TitlePanel
-import jdr.exia.view.utils.buildTitleItemPanel
 import jdr.exia.view.utils.components.ItemPanel
 import jdr.exia.view.utils.components.SelectorPanel
+import jdr.exia.view.utils.factories.TitlePanel
+import jdr.exia.view.utils.factories.buildTitleItemPanel
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.BorderLayout
 import java.awt.GridBagConstraints
@@ -18,7 +18,7 @@ import java.awt.event.FocusListener
 import javax.swing.ImageIcon
 import javax.swing.JPanel
 
-class ElementSelectorPanel(private val controller: ElementEditorManager?) :
+class ElementSelectorPanel(private val controller: BlueprintManager?) :
     SelectorPanel() {
     override val pairs: Array<Pair<String, String>>
         get() = controller?.elements?.map { Pair(it.id.value.toString(), it.name) }?.toTypedArray() ?: arrayOf()
@@ -43,7 +43,7 @@ class ElementSelectorPanel(private val controller: ElementEditorManager?) :
         this.add(titlePanel.apply {
             this.layout = GridBagLayout()
 
-            titleContentPanel = buildTitleItemPanel()
+            titleContentPanel = buildTitleItemPanel(controller!!)
             this.add(titleContentPanel, cTitleItem)
             this.revalidate()
         }, BorderLayout.NORTH)
@@ -52,7 +52,7 @@ class ElementSelectorPanel(private val controller: ElementEditorManager?) :
 
     override fun refresh() {
         titlePanel.remove(titleContentPanel)
-        titleContentPanel = buildTitleItemPanel(controller!!.type)
+        titleContentPanel = buildTitleItemPanel(controller!!)
         titlePanel.add(titleContentPanel, cTitleItem)
         super.refresh()
     }

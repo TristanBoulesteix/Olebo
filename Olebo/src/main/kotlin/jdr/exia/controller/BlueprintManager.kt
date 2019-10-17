@@ -6,6 +6,7 @@ import jdr.exia.model.element.Type
 import jdr.exia.pattern.observer.Action
 import jdr.exia.pattern.observer.Observable
 import jdr.exia.pattern.observer.Observer
+import jdr.exia.view.editor.elements.BlueprintEditorDialog
 import jdr.exia.view.utils.showPopup
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Component
@@ -14,7 +15,7 @@ import javax.imageio.ImageIO
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
-class ElementEditorManager : Observable {
+class BlueprintManager : Observable {
     val elements
         get() = DAO.getElementsWithType(type)
 
@@ -91,6 +92,12 @@ class ElementEditorManager : Observable {
     fun saveLife(id: Int, text: String) {
         transaction(DAO.database) {
             Blueprint[id].HP = text.toInt()
+        }
+    }
+
+    fun createBlueprint(@Suppress("UNUSED_PARAMETER") id: Int) {
+        BlueprintEditorDialog(type).showDialog()?.let {
+
         }
     }
 }

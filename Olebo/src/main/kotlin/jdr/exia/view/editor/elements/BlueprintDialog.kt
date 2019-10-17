@@ -1,6 +1,6 @@
 package jdr.exia.view.editor.elements
 
-import jdr.exia.controller.ElementEditorManager
+import jdr.exia.controller.BlueprintManager
 import jdr.exia.pattern.observer.Action
 import jdr.exia.view.utils.BACKGROUND_COLOR_ORANGE
 import jdr.exia.view.utils.components.JDialogTemplate
@@ -15,8 +15,8 @@ import javax.swing.JComboBox
 import javax.swing.JPanel
 import jdr.exia.model.element.Type as TypeBlueprint
 
-class ObjectEditorDialog : JDialogTemplate("Liste des objets") {
-    private val manager = ElementEditorManager()
+class BlueprintDialog : JDialogTemplate("Liste des objets") {
+    private val manager = BlueprintManager()
     override val observable = manager
 
     private val comboType = JComboBox(arrayOf("Objets", "PJ", "PNJ")).apply {

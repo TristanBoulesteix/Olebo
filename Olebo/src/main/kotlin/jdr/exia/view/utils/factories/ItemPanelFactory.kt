@@ -1,5 +1,6 @@
-package jdr.exia.view.utils
+package jdr.exia.view.utils.factories
 
+import jdr.exia.controller.BlueprintManager
 import jdr.exia.model.element.Type
 import jdr.exia.model.utils.getIcon
 import jdr.exia.view.utils.components.ItemPanel
@@ -12,25 +13,26 @@ abstract class TitlePanel(name: String) : ItemPanel(0, name) {
     }
 }
 
-class ObjectTitlePanel(name: String) : TitlePanel(name) {
+class ObjectTitlePanel(name: String, manager: BlueprintManager) : TitlePanel(name) {
     init {
-        this.add(SquareLabel(getIcon("create_icon", this.javaClass)) {})
+        this.add(SquareLabel(getIcon("create_icon", this.javaClass), manager::createBlueprint))
     }
 }
 
-class CharacterTitlePanel(name: String) : TitlePanel(name) {
+class CharacterTitlePanel(name: String, manager: BlueprintManager) : TitlePanel(name) {
     init {
         this.add(SquareLabel("PV", { _, _ -> println("toto") }, isEditable = false))
         this.add(SquareLabel("PM", isEditable = false))
         this.add(SquareLabel("Img", isEditable = false))
-        this.add(SquareLabel(getIcon("create_icon", this.javaClass)) {})
+        this.add(SquareLabel(getIcon("create_icon", this.javaClass), manager::createBlueprint))
     }
 }
 
-fun buildTitleItemPanel(type: Type = Type.OBJECT): TitlePanel {
+fun buildTitleItemPanel(manager: BlueprintManager): TitlePanel {
+    val type = manager.type
     return if (type == Type.OBJECT) {
-        ObjectTitlePanel("Objects")
+        ObjectTitlePanel("Objects", manager)
     } else {
-        CharacterTitlePanel(type.name)
+        CharacterTitlePanel(type.name, manager)
     }
 }
