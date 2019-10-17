@@ -50,9 +50,7 @@ class MapPanel : JPanel(), MouseListener {
                     this.height,
                     null
                 )
-                if (marker != null) { // First, place a marker if there needs to be one, so the token will then be painted over it
-                    drawMoveableMarker(g)
-                }
+
                 for (token in tokens) //Display every token one by one
                 {
                     if((!isMasterMapPanel)&&!(token.visible)){} //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
@@ -69,6 +67,11 @@ class MapPanel : JPanel(), MouseListener {
                     }
                 }
             }
+        if (marker != null) { // First, place a marker if there needs to be one, so the token will then be painted over it
+            if (g != null) {
+                drawMoveableMarker(g)
+            }
+        }
         }
 
     private fun drawMoveableMarker(g:Graphics){ //Draws a red rectangle around the currently selected token for movement
