@@ -9,7 +9,7 @@ import java.awt.event.MouseListener
 class MapPanel : JPanel(), MouseListener {
 
     var backGroundImage: Image? = null      //The background... Why are you reading this? Stop!! I said stop!!! You're still doing it, even when you had to scroll sideways... Ok i'm giving up, bye
-    private var tokens = mutableListOf<Element>();  //These are all the tokens placed on  the current map
+    private var tokens = mutableListOf<Element>() //These are all the tokens placed on  the current map
     private var marker: Rectangle? = null //Marker that's placed around a token when it is selected
     var isMasterMapPanel: Boolean = false
 
@@ -18,6 +18,8 @@ class MapPanel : JPanel(), MouseListener {
         this.background = Color.blue
         addMouseListener(this)
     }
+
+
 
     private fun relativeX(absoluteX: Int): Int{ //translates an X coordinate in 1600:900px to proportional coords according to this window's size
         return (absoluteX*this.width)/1600
@@ -33,16 +35,12 @@ class MapPanel : JPanel(), MouseListener {
         return (((relativeY.toFloat()/ this.height.toFloat()))*900).toInt()
     }
 
-    fun refresh() { // refreshes the panel's content
-        this.repaint()
-    }
 
-    public fun updateTokens(tokens: MutableList<Element>){ //Gets the current token display up to date
+    fun updateTokens(tokens: MutableList<Element>){ //Gets the current token display up to date
         this.tokens = tokens;
     }
 
     override fun paintComponent(g: Graphics?) {
-
             if (g != null) {
                 g.drawImage(
                     backGroundImage,
@@ -88,9 +86,9 @@ class MapPanel : JPanel(), MouseListener {
         g.color = Color.BLUE
         g.drawRect( //Draws a 1 pixel thick rectangle
             (relativeX(token.position.x)-3),
-            ( relativeY(token.position.y)-3),
-            (relativeX(token.hitBox.width)+3),
-            (relativeY(token.hitBox.height)+3)
+            (relativeY(token.position.y)-3),
+            (relativeX(token.hitBox.width)+6),
+            (relativeY(token.hitBox.height)+6)
         )
     }
 

@@ -7,7 +7,6 @@ import javax.swing.JFrame
 import jdr.exia.model.element.Element
 import javax.imageio.ImageIO
 import javax.swing.JPanel
-import javax.swing.WindowConstants
 import kotlin.system.exitProcess
 
 /*MasterFrame is the Game Master's Interface, it contains a Map panel (the same as PlayerFrame, but scaled down), an ItemPanel and a SelectPanel.
@@ -19,7 +18,7 @@ this is a singleton*/
  * */
 object MasterFrame : JFrame(), KeyListener, GameFrame {
     private var masterFramePanel = JPanel()
-    private val mapPanel = MapPanel()
+    val mapPanel = MapPanel()
     var selectPanel = SelectPanel // Will contain all info on selected Item
     var itemPanel = ItemPanel // Will contain list of available items
 
@@ -83,6 +82,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         //masterFramePanel.add(itemPanel, itemConstraints)
         masterFramePanel.add(selectPanel, selectConstraints)
         this.mapPanel.isMasterMapPanel = true
+
     }
 
     fun setMarker(token: Element){
@@ -91,6 +91,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
     fun removeMarker(){
         mapPanel.clearMarker()
     }
+
 
     // KeyListener section, to add Key bindings
     override fun keyTyped(keyEvent: KeyEvent) {
@@ -112,6 +113,5 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
 
     override fun updateMap(tokens: MutableList<Element>){
         mapPanel.updateTokens(tokens)
-
     }
 }

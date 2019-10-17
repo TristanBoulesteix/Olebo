@@ -52,7 +52,21 @@ object SelectPanel : JPanel() {
         }
     }
 
-    //private val sizeCombo = JComboBox<Size>() //TODO: Complete the Size drop down menu
+    private val sizeCombo = JComboBox(arrayOf("XS","S","M","L","XL","XXL")).apply {
+        addActionListener{
+            if(selectedElement!=null){
+                when (this.selectedItem) {
+
+                    "XS" -> selectedElement!!.size = Size.XS
+                    "S"  -> selectedElement!!.size = Size.S
+                    "M"  -> selectedElement!!.size = Size.M
+                    "L"  -> selectedElement!!.size = Size.L
+                    "XL" -> selectedElement!!.size = Size.XL
+                    "XXL"-> selectedElement!!.size = Size.XXL
+                }}
+          ViewManager.repaint()
+    }
+    } //TODO: Complete the Size drop down menu
 
     private fun checkTextValue(str: String): Int{
         try {
@@ -66,17 +80,20 @@ object SelectPanel : JPanel() {
 
 
     init{
-        this.layout = GridLayout(1,4)
+        this.layout = GridLayout(1,3)
         this.preferredSize = Dimension(500,10)
         nameLabel.horizontalTextPosition = JLabel.CENTER
 
         val leftPanel = JPanel().apply { background = Color.gray
             border = BorderFactory.createLineBorder(Color.black)
-            layout = GridLayout(2,1).apply {}
+            layout = GridLayout(2,2).apply {}
 
             isOpaque = false
             add(JPanel().apply { isOpaque = false; add(nameLabel)})
             add(JPanel().apply { add(visibilityButton); isOpaque = false})
+            add(JPanel().apply { add(sizeCombo); isOpaque = false})
+
+
 
         }
 
@@ -110,7 +127,7 @@ object SelectPanel : JPanel() {
 
         val rightPanel = JPanel().apply { background = Color.gray
             border = BorderFactory.createLineBorder(Color.black)
-            layout = GridLayout(2,2)
+            layout = GridLayout(1,1)
         }
 
 
@@ -125,17 +142,14 @@ object SelectPanel : JPanel() {
 
 
     public override fun paintComponent(g: Graphics) {
-
         super.paintComponent(g)
-
-
         if(selectedElement!=null) {
-            if(selectedElement!!.visible){
-                g.color = Color.BLACK} else { g.color = Color.BLUE}
-            g.fillRect(45,10,110,110)
+
+            if(selectedElement!!.visible){g.color = Color.BLACK} else { g.color = Color.BLUE}
+            g.fillRect(5,10,110,110)
             nameLabel.text = selectedElement!!.name
 
-            g.drawImage(selectedElement!!.sprite.image,50,15,100,100,null)
+            g.drawImage(selectedElement!!.sprite.image,10,15,100,100,null)
 
             if(selectedElement is Character)
             {

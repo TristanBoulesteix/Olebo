@@ -131,6 +131,12 @@ object ViewManager {
         return null
     }
 
+
+
+    fun repaint(){
+        ViewFacade.repaintFrames()
+    }
+
     fun selectToken(x: Int,y:Int){ //cheks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
         var selected = getTokenFromXY(x,y)
 
@@ -141,7 +147,7 @@ object ViewManager {
         }
     }
 
-    private fun updateTokens (){ //Updates the tokens on the maps by repainting everything
+    fun updateTokens (){ //Updates the tokens on the maps by repainting everything
         ViewFacade.placeTokensOnMaps(mapTokens)
     }
 

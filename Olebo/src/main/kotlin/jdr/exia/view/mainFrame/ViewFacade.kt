@@ -44,7 +44,6 @@ object ViewFacade {
     }
 
     fun setMapBackground(imageName: String) { //Sets the MapPanels backGround
-
         MasterFrame.setMapBackground(imageName)
         PlayerFrame.setMapBackground(imageName)
         repaintFrames()
@@ -53,7 +52,7 @@ object ViewFacade {
 
 
 
-    private fun repaintFrames() { //Repaints both frames simultaneously
+    fun repaintFrames() { //Repaints both frames simultaneously
         MasterFrame.repaint()
         PlayerFrame.repaint()
     }
@@ -62,7 +61,10 @@ object ViewFacade {
 
     private fun initializeAct(act: Act) { /*this method activates the Player and GM frames to initiate/start back an act	*/
         MasterFrame.isVisible = true
+        MasterFrame.mapPanel.isVisible = true
+        PlayerFrame.mapPanel.isVisible = true
         PlayerFrame.isVisible = true
+
         /*TODO: give master frame and player frame the objects relative to the current act*/
     }
 
@@ -71,5 +73,8 @@ object ViewFacade {
         PlayerFrame.updateMap(tokens)
         MasterFrame.updateMap(tokens)
         repaintFrames()
+
     }
+
+
 }
