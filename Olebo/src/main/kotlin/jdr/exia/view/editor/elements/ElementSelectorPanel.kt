@@ -5,6 +5,7 @@ import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
 import jdr.exia.model.utils.getIcon
+import jdr.exia.view.utils.TitlePanel
 import jdr.exia.view.utils.buildTitleItemPanel
 import jdr.exia.view.utils.components.ItemPanel
 import jdr.exia.view.utils.components.SelectorPanel
@@ -34,20 +35,25 @@ class ElementSelectorPanel(private val controller: ElementEditorManager?) :
         this.gridy = 0
     }
 
+    private var titleContentPanel: TitlePanel
+
     init {
         this.isFocusable = true
 
         this.add(titlePanel.apply {
             this.layout = GridBagLayout()
 
-            this.add(buildTitleItemPanel(), cTitleItem)
+            titleContentPanel = buildTitleItemPanel()
+            this.add(titleContentPanel, cTitleItem)
             this.revalidate()
         }, BorderLayout.NORTH)
         this.refresh()
     }
 
     override fun refresh() {
-        titlePanel.add(buildTitleItemPanel(controller!!.type), cTitleItem)
+        titlePanel.remove(titleContentPanel)
+        titleContentPanel = buildTitleItemPanel(controller!!.type)
+        titlePanel.add(titleContentPanel, cTitleItem)
         super.refresh()
     }
 

@@ -20,9 +20,9 @@ class ObjectTitlePanel(name: String) : TitlePanel(name) {
 
 class CharacterTitlePanel(name: String) : TitlePanel(name) {
     init {
-        this.add(SquareLabel("PV") {_,_-> println("toto")})
-        this.add(SquareLabel("PM"))
-        this.add(SquareLabel("Image"))
+        this.add(SquareLabel("PV", { _, _ -> println("toto") }, isEditable = false))
+        this.add(SquareLabel("PM", isEditable = false))
+        this.add(SquareLabel("Img", isEditable = false))
         this.add(SquareLabel(getIcon("create_icon", this.javaClass)) {})
     }
 }

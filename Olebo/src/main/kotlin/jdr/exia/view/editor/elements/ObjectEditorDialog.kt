@@ -23,7 +23,7 @@ class ObjectEditorDialog : JDialogTemplate("Liste des objets") {
         this.font = Font("Tahoma", Font.BOLD, 20)
         this.addActionListener {
             when (this.selectedItem) {
-               "Objets" -> manager.type = TypeBlueprint.OBJECT
+                "Objets" -> manager.type = TypeBlueprint.OBJECT
                 "PJ" -> manager.type = TypeBlueprint.PJ
                 "PNJ" -> manager.type = TypeBlueprint.PNJ
             }

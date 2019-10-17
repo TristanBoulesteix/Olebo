@@ -170,18 +170,23 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
             this.addMouseListener(listener)
         }
 
-        constructor(text: String, action: ((Int, String) -> Unit)? = null) : this(ImageIcon(), { }) {
+        constructor(
+            text: String,
+            action: ((Int, String) -> Unit)? = null,
+            isEditable: Boolean = true
+        ) : this(ImageIcon(), { }) {
             this.removeMouseListener(listener)
             this.layout = GridBagLayout()
 
             this.add(JTextField(text).apply {
                 this.isOpaque = false
+                this.isEnabled = isEditable
                 (this.document as PlainDocument).documentFilter = IntegerFilter()
                 this.font = Font("Tahoma", Font.BOLD, 18)
                 this.horizontalAlignment = JTextField.CENTER
                 this.addFocusListener(object : FocusListener {
                     override fun focusLost(e: FocusEvent) {
-                        if(!e.isTemporary) {
+                        if (!e.isTemporary) {
                             if (action != null) {
                                 action(id, this@apply.text)
                             }
