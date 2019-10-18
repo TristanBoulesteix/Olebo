@@ -3,6 +3,7 @@ package jdr.exia.controller
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
+import jdr.exia.model.utils.saveImg
 import jdr.exia.pattern.observer.Action
 import jdr.exia.pattern.observer.Observable
 import jdr.exia.pattern.observer.Observer
@@ -104,7 +105,7 @@ class BlueprintManager : Observable {
                         this.HP = map[BlueprintEditorDialog.Field.LIFE]!!.toInt()
                         this.MP = map[BlueprintEditorDialog.Field.MANA]!!.toInt()
                     }
-                    this.sprite = map[BlueprintEditorDialog.Field.IMG]!!
+                    this.sprite = saveImg(map[BlueprintEditorDialog.Field.IMG]!!)
                     this.type = this@BlueprintManager.type.type
                 }
             }

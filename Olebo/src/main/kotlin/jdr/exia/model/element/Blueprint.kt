@@ -4,6 +4,7 @@ import jdr.exia.model.dao.BlueprintTable
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.EntityID
+import java.io.File
 
 @Suppress("PropertyName")
 class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
@@ -14,5 +15,10 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
     var HP by BlueprintTable.HP
     var MP by BlueprintTable.MP
     var type by Type.TypeElement referencedOn BlueprintTable.idType
+
+    override fun delete() {
+        File(sprite).delete()
+        super.delete()
+    }
 }
 
