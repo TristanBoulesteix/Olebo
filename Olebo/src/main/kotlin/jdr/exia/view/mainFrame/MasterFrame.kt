@@ -1,11 +1,15 @@
 package jdr.exia.view.mainFrame
 
-import java.awt.*
+import jdr.exia.model.element.Element
+import java.awt.Color
+import java.awt.GraphicsEnvironment
+import java.awt.GridBagConstraints
+import java.awt.GridBagLayout
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
-import javax.swing.JFrame
-import jdr.exia.model.element.Element
+import java.io.File
 import javax.imageio.ImageIO
+import javax.swing.JFrame
 import javax.swing.JPanel
 import kotlin.system.exitProcess
 
@@ -23,7 +27,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
     var itemPanel = ItemPanel // Will contain list of available items
 
     override fun setMapBackground(imageName: String) {
-        mapPanel.backGroundImage = ImageIO.read(Element::class.java.getResource(imageName).openStream())
+        mapPanel.backGroundImage = ImageIO.read(File(imageName))
     }
 
     init {

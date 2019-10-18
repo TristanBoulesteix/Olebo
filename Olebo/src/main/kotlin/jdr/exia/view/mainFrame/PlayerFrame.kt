@@ -41,7 +41,7 @@ object PlayerFrame : JDialog(), GameFrame {
     }
 
     override fun setMapBackground(imageName: String) {
-        mapPanel.backGroundImage = ImageIO.read( File(this.javaClass.getResource(imageName).path))
+        mapPanel.backGroundImage = ImageIO.read(File(imageName))
 
     }
 

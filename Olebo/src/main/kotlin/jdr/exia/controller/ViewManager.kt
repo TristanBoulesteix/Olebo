@@ -2,10 +2,11 @@ package jdr.exia.controller
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
-import jdr.exia.model.element.*
+import jdr.exia.model.element.Element
+import jdr.exia.model.element.PlayableCharacter
+import jdr.exia.model.element.Position
+import jdr.exia.model.element.Size
 import jdr.exia.view.mainFrame.ViewFacade
-import java.awt.Point
-import java.awt.Rectangle
 import javax.imageio.ImageIO
 import javax.swing.ImageIcon
 
@@ -15,12 +16,7 @@ object ViewManager {
 
         ViewFacade.setMapBackground("/tools.jpg")
 
-        val toky = Element(
-            "test1",
-            ImageIcon(ImageIO.read(Element::class.java.getResource("/AH!.png").openStream())),
-            Position(500,500),
-            true,
-            Size.S)
+
 
         val talkien = PlayableCharacter(
             25,
@@ -29,21 +25,9 @@ object ViewManager {
             ImageIcon(ImageIO.read(PlayableCharacter::class.java.getResource("/purse.jpg").openStream())),
             Position(250,25),
             true,
-            Rectangle(250,25,250,64),
             Size.M
         )
 
-        val tokar = Element(
-            "test2",
-            ImageIcon(ImageIO.read(Element::class.java.getResource("/blue.png").openStream())),
-            Position(550,500),
-            false,
-            Size.XXL)
-
-
-
-        addToken(toky)
-        addToken(tokar)
         addToken(talkien)
         updateTokens()
         ViewFacade.testRun()
@@ -56,7 +40,7 @@ object ViewManager {
     init {
 
 
-        testRun()
+
 
 
     }
@@ -93,6 +77,7 @@ object ViewManager {
            activeScene = this!!.scenes.findWithId(activeAct!!.sceneId)
            mapTokens//TODO : load tokens from instances table
            ViewFacade.setMapBackground(activeScene!!.background)
+            ViewFacade.turnVisible()
         }
     }
 

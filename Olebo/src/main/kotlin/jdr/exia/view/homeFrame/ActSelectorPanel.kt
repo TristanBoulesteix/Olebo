@@ -26,6 +26,7 @@ class ActSelectorPanel : SelectorPanel() {
     protected class ActPanel(id: Int, name: String) : ItemPanel(id, name), ClickListener {
         init {
             this.namePanel.addMouseListener(this)
+            this.nameLabel.isEnabled = false
 
             this.add(SquareLabel(getIcon("edit_icon", HomeManager.javaClass), HomeManager::updateAct))
 
@@ -33,7 +34,7 @@ class ActSelectorPanel : SelectorPanel() {
         }
 
         override fun mouseClicked(e: MouseEvent?) {
-            if (e!!.clickCount == 2) HomeManager.launchAct(id)
+            if (e!!.clickCount == 2) HomeManager.launchAct(id); println("+toto")
         }
     }
 }

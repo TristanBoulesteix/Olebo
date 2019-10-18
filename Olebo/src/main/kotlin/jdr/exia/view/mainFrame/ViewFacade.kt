@@ -1,7 +1,6 @@
 package jdr.exia.view.mainFrame
 
 import jdr.exia.controller.ViewManager
-import jdr.exia.model.act.Act
 import jdr.exia.model.element.Element
 
 /*ViewManager is View's facade
@@ -59,7 +58,7 @@ object ViewFacade {
 
 
 
-    private fun initializeAct(act: Act) { /*this method activates the Player and GM frames to initiate/start back an act	*/
+    fun turnVisible() { /*this method activates the Player and GM frames to initiate/start back an act	*/
         MasterFrame.isVisible = true
         MasterFrame.mapPanel.isVisible = true
         PlayerFrame.mapPanel.isVisible = true
