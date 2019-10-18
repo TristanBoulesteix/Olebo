@@ -6,7 +6,6 @@ import jdr.exia.model.element.Element
 import jdr.exia.model.element.Type
 import jdr.exia.model.utils.MessageException
 import jdr.exia.model.utils.OLEBO_DIRECTORY
-import jdr.exia.model.utils.buildElementFromRequest
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.select
@@ -68,7 +67,7 @@ object DAO {
 
     fun getElementsWithIdScene(idScene: Int): MutableList<Element> {
         return transaction {
-            buildElementFromRequest(InstanceTable.select { InstanceTable.idScene eq idScene }.toCollection(mutableListOf()))
+            Element.buildElementFromRequest(InstanceTable.select { InstanceTable.idScene eq idScene }.toCollection(mutableListOf()))
         }
     }
 
