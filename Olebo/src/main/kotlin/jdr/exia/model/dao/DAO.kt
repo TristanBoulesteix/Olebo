@@ -2,11 +2,14 @@ package jdr.exia.model.dao
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.element.Blueprint
+import jdr.exia.model.element.Element
 import jdr.exia.model.element.Type
 import jdr.exia.model.utils.MessageException
 import jdr.exia.model.utils.OLEBO_DIRECTORY
+import jdr.exia.model.utils.buildElementFromRequest
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -60,6 +63,12 @@ object DAO {
             Blueprint.find {
                 BlueprintTable.idType eq type.type.id.value
             }.toCollection(mutableListOf())
+        }
+    }
+
+    fun getElementsWithIdScene(idScene: Int): MutableList<Element> {
+        return transaction {
+            buildElementFromRequest(InstanceTable.select { InstanceTable.idScene eq idScene }.toCollection(mutableListOf()))
         }
     }
 

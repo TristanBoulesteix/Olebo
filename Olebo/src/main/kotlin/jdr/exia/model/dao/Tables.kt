@@ -30,5 +30,8 @@ object InstanceTable : IntIdTable() {
     val currentMP = integer("current_mana")
     val x = integer("x")
     val y = integer("y")
-    val idAct = SceneTable.integer("id_act").references(ActTable.id)
+    val size = varchar("Size", 10)
+    val visible = integer("Visible")
+    val idScene = SceneTable.integer("id_act").references(SceneTable.id)
+    val idBlueprint = BlueprintTable.integer("id_blueprint").references(BlueprintTable.id)
 }

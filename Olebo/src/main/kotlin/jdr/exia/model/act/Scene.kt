@@ -7,8 +7,6 @@ import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.EntityID
 import java.io.File
 
-//class Scene(val name: String, val background: ImageIcon, val elements: MutableList<Element>, var spawnPoint: Position = Position(0, 0))
-
 class Scene(id: EntityID<Int>) : Entity<Int>(id) {
     companion object : EntityClass<Int, Scene>(SceneTable) {
         override fun new(init: Scene.() -> Unit): Scene {
@@ -32,6 +30,8 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
     var name by SceneTable.name
     var background by SceneTable.background
     var idAct by SceneTable.idAct
+    val element
+        get() = DAO.getElementsWithIdScene(id.value)
 
     override fun delete() {
         File(background).delete()
