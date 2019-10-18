@@ -1,9 +1,9 @@
 package jdr.exia.view.mainFrame
-import javax.swing.JPanel
 import jdr.exia.model.element.Element
 import java.awt.*
 import java.awt.event.MouseEvent
 import java.awt.event.MouseListener
+import javax.swing.JPanel
 // This panel contains the map and all the objects placed within it
 
 class MapPanel : JPanel(), MouseListener {
@@ -95,7 +95,7 @@ class MapPanel : JPanel(), MouseListener {
     override fun mouseClicked(p0: MouseEvent?) {  /* /!\ Coordinates are stated in pixels here, not in absolute 1000th /!\ */
         if(isMasterMapPanel) {
             var clickedX = absoluteX(p0!!.x)
-            var clickedY = absoluteY(p0!!.y)
+            var clickedY = absoluteY(p0.y)
 
             when (p0.button) //  1, middle button: 2, Right click: 3
             {

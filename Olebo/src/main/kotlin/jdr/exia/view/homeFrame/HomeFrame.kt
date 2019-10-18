@@ -68,7 +68,6 @@ class HomeFrame : JFrameTemplate("Olebo") {
         this.pack()
     }
 
-    @Suppress("IMPLICIT_CAST_TO_ANY")
     override fun update(data: Action) {
         when(data) {
             Action.DISPOSE -> this.dispose()

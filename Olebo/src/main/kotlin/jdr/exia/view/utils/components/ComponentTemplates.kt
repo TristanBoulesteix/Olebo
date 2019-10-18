@@ -132,6 +132,7 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
         this.isOpaque = false
         this.font = Font("Tahoma", Font.BOLD, 18)
         this.border = BorderFactory.createEmptyBorder(0, 10, 0, 0)
+        this.disabledTextColor = Color.BLACK
     }
 
     protected val namePanel = JPanel().apply {
