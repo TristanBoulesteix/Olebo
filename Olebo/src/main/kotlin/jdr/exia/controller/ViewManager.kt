@@ -13,11 +13,7 @@ import javax.swing.ImageIcon
 object ViewManager {
 
     fun testRun(){ //TODO: Remove ASAP
-
         ViewFacade.setMapBackground("/tools.jpg")
-
-
-
         val talkien = PlayableCharacter(
             25,
             15,
@@ -27,25 +23,18 @@ object ViewManager {
             true,
             Size.M
         )
-
         addToken(talkien)
         updateTokens()
         ViewFacade.testRun()
     }
 
+
+
+    private var activeAct: Act? = null
+    private var activeScene: Scene? = null
     var mapTokens = mutableListOf<Element>()
     var grabbedToken: Element? = null
-    var activeAct: Act? = null
-    var activeScene: Scene? = null
-    init {
-
-
-
-
-
-    }
-
-
+    init {}
 
     fun clickNDrop(x:Int,y: Int){
         /*If a token has already been grabbed, then it is placed with dropToken(),
@@ -70,12 +59,14 @@ object ViewManager {
 
     fun changeCurrentScene(sceneId: Int){
         activeAct!!.sceneId = sceneId
+        loadCurrentScene()
+        updateTokens()
     }
 
     private fun loadCurrentScene(){
         with(activeAct) {
            activeScene = this!!.scenes.findWithId(activeAct!!.sceneId)
-           mapTokens//TODO : load tokens from instances table
+           //mapTokens = activeScene. TODO: 
            ViewFacade.setMapBackground(activeScene!!.background)
             ViewFacade.turnVisible()
         }
@@ -124,9 +115,7 @@ object ViewManager {
 
     fun selectToken(x: Int,y:Int){ //cheks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
         var selected = getTokenFromXY(x,y)
-
         if(selected!=null){
-
             ViewFacade.setSelectedToken(selected)
             updateTokens()
         }

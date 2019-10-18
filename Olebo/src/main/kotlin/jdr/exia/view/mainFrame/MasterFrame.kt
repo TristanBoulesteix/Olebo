@@ -86,7 +86,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         //masterFramePanel.add(itemPanel, itemConstraints)
         masterFramePanel.add(selectPanel, selectConstraints)
         this.mapPanel.isMasterMapPanel = true
-        //jMenuBar = MasterMenuBar
+        jMenuBar = MasterMenuBar
 
     }
 
