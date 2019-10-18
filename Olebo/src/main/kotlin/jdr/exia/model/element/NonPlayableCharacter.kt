@@ -9,5 +9,7 @@ class NonPlayableCharacter(
     sprite: ImageIcon,
     position: Position,
     visible: Boolean,
-    size: Size
-) : Character(maxHealth, maxMana, name, sprite, position, visible, size, false)
+    size: Size,
+    currentHealth: Int = maxHealth,
+    currentMana: Int = maxMana
+) : Character(maxHealth, maxMana, name, sprite, position, visible, size, currentHealth, currentMana, false)

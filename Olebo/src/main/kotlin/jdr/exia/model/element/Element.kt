@@ -3,8 +3,7 @@ package jdr.exia.model.element
 import java.awt.Rectangle
 import javax.swing.ImageIcon
 
-// TODO("Add hitbox")
-abstract class Element( //TODO return to abstract
+abstract class Element(
     val name: String,
     val sprite: ImageIcon,
     var position: Position,
@@ -14,7 +13,7 @@ abstract class Element( //TODO return to abstract
     var hitBox: Rectangle = Rectangle(position.x, position.y, size.absoluteSizeValue, size.absoluteSizeValue)
 
     var size: Size = size
-        set(newSize: Size) {
+        set(newSize) {
             field = newSize
             hitBox = Rectangle(position.x, position.y, newSize.absoluteSizeValue, newSize.absoluteSizeValue)
         }

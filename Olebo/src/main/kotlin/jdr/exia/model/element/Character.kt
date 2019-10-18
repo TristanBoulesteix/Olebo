@@ -10,6 +10,8 @@ abstract class Character(
     position: Position,
     visible: Boolean,
     size: Size,
+    var currentHealth: Int = maxHealth,
+    var currentMana: Int = maxMana,
     val player: Boolean = false
 ) : Element(
     name,
@@ -17,7 +19,4 @@ abstract class Character(
     position,
     visible,
     size
-) {
-    var currentHealth = maxHealth
-    var currentMana = maxMana
-}
+)

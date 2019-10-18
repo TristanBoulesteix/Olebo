@@ -17,8 +17,7 @@ enum class Type(val type: TypeElement) {
 
         val name by TypeTable.name
 
-        fun getTypeWithTypeElement(): Type {
-            return if (this.name == "Object") OBJECT else if (this.name == "PJ") PJ else PNJ
-        }
+        val typeElement
+            get() = if (this.name == "Object") OBJECT else if (this.name == "PJ") PJ else PNJ
     }
 }

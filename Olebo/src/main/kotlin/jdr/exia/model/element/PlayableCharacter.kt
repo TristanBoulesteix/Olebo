@@ -9,5 +9,7 @@ class PlayableCharacter(
     sprite: ImageIcon,
     position: Position,
     visible: Boolean,
-    size: Size
-) : Character(maxHealth, maxMana, name, sprite, position, visible, size, true)
+    size: Size,
+    currentHealth: Int = maxHealth,
+    currentMana: Int = maxMana
+) : Character(maxHealth, maxMana, name, sprite, position, visible, size, currentHealth, currentMana, true)

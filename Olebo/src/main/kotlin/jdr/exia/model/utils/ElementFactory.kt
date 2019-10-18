@@ -10,7 +10,7 @@ fun buildElementFromRequest(result: MutableList<ResultRow>): MutableList<Element
 
     result.forEach {
         elements += with(Blueprint[it[InstanceTable.idBlueprint]]) {
-            when (this.type.getTypeWithTypeElement()) {
+            when (this.type.typeElement) {
                 Type.OBJECT -> Item(
                     this.name,
                     ImageIcon(this.sprite),
@@ -25,7 +25,9 @@ fun buildElementFromRequest(result: MutableList<ResultRow>): MutableList<Element
                     ImageIcon(this.sprite),
                     Position(it[InstanceTable.x], it[InstanceTable.x]),
                     it[InstanceTable.visible].getEnum(),
-                    Size.valueOf(it[InstanceTable.size])
+                    Size.valueOf(it[InstanceTable.size]),
+                    it[InstanceTable.currentHP],
+                    it[InstanceTable.currentMP]
                 )
                 Type.PJ -> PlayableCharacter(
                     this.HP,
@@ -34,7 +36,9 @@ fun buildElementFromRequest(result: MutableList<ResultRow>): MutableList<Element
                     ImageIcon(this.sprite),
                     Position(it[InstanceTable.x], it[InstanceTable.x]),
                     it[InstanceTable.visible].getEnum(),
-                    Size.valueOf(it[InstanceTable.size])
+                    Size.valueOf(it[InstanceTable.size]),
+                    it[InstanceTable.currentHP],
+                    it[InstanceTable.currentMP]
                 )
             }
         }
