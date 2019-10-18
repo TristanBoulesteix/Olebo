@@ -1,6 +1,8 @@
 package jdr.exia.model.dao
 
 import jdr.exia.model.act.Act
+import jdr.exia.model.element.Blueprint
+import jdr.exia.model.element.Type
 import jdr.exia.model.utils.MessageException
 import jdr.exia.model.utils.OLEBO_DIRECTORY
 import org.jetbrains.exposed.dao.Entity
@@ -53,6 +55,17 @@ object DAO {
         }
     }
 
+    fun getElementsWithType(type: Type): MutableList<Blueprint> {
+        return transaction {
+            Blueprint.find {
+                BlueprintTable.idType eq type.type.id.value
+            }.toCollection(mutableListOf())
+        }
+    }
+
+    /**
+     * Delete an element in the database
+     */
     fun deleteEntity(entity: Entity<Int>) {
         transaction {
             entity.delete()

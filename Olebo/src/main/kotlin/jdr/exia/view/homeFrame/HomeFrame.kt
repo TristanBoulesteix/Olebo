@@ -14,6 +14,11 @@ import javax.swing.BorderFactory
 import javax.swing.JButton
 import javax.swing.JPanel
 
+/**
+ * Main frame of the application. It allows us to create, delete and update an act and an element.
+ *
+ * This frame will send the selected act to the Games Views
+ */
 class HomeFrame : JFrameTemplate("Olebo") {
     override val observable: Observable = HomeManager
 
@@ -29,8 +34,12 @@ class HomeFrame : JFrameTemplate("Olebo") {
             this.border = BorderFactory.createEmptyBorder(15, 0, 15, 0)
             this.layout = GridBagLayout()
 
-            val elementButton = JButton("Éléments")
-            elementButton.border = BORDER_BUTTONS
+            val elementButton = JButton("Éléments").apply {
+                this.border = BORDER_BUTTONS
+                this.addActionListener {
+                    HomeManager.openObjectEditorFrame()
+                }
+            }
             val cElementButton = GridBagConstraints().apply {
                 this.gridx = 0
                 this.gridy = 0

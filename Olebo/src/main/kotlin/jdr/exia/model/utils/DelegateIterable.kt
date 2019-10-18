@@ -20,7 +20,7 @@ class DelegateIterable<T>(initializer: () -> SizedIterable<T>) : Lazy<MutableLis
 
     override val value: MutableList<T>
         get() {
-            val v1 = _value
+            //val v1 = _value
 /*            if (v1 !== UnitializedValue) {
                 @Suppress("UNCHECKED_CAST")
                 return v1 as MutableList<T>

@@ -1,4 +1,4 @@
-package jdr.exia.view.editor
+package jdr.exia.view.editor.acts
 
 import jdr.exia.controller.ActCreatorManager
 import jdr.exia.controller.HomeManager
@@ -6,7 +6,6 @@ import jdr.exia.controller.getArrayOfPairs
 import jdr.exia.model.utils.getIcon
 import jdr.exia.view.utils.components.ItemPanel
 import jdr.exia.view.utils.components.SelectorPanel
-import org.jetbrains.exposed.sql.transactions.TransactionManager.Companion.manager
 import java.awt.BorderLayout.NORTH
 import java.awt.Color
 import java.awt.GridBagConstraints
@@ -37,8 +36,8 @@ class SceneSelectorPanel(private val controller: ActCreatorManager?) : SelectorP
                     this.border = BorderFactory.createMatteBorder(2, 2, 0, 2, Color.BLACK)
                     this.add(
                         SquareLabel(
-                            getIcon("create_icon", manager.javaClass),
-                            controller!!::createNewScene
+                            getIcon("create_icon", controller!!.javaClass),
+                            controller::createNewScene
                         )
                     )
                 }
@@ -54,6 +53,9 @@ class SceneSelectorPanel(private val controller: ActCreatorManager?) : SelectorP
         this.refresh()
     }
 
+    /**
+     * Display a scene and its options
+     */
     @Suppress("ProtectedInFinal")
     protected inner class ScenePanel(id: Int, name: String) : ItemPanel(id, name) {
         init {
