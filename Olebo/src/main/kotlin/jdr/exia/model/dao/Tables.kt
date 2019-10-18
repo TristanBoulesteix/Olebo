@@ -18,8 +18,7 @@ object BlueprintTable : IntIdTable() {
     val sprite = varchar("sprite", 200)
     val HP = integer("HP")
     val MP = integer("MP")
-    val idType = integer("id_type").references(TypeTable.id)
-    val size = varchar("size", 50)
+    val idType = reference("id_type", TypeTable)
 }
 
 object TypeTable : IntIdTable() {

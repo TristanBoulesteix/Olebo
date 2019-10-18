@@ -1,5 +1,6 @@
 package jdr.exia.view.editor.elements
 
+import jdr.exia.view.utils.IntegerFilter
 import jdr.exia.view.utils.showPopup
 import java.awt.Dimension
 import java.awt.GridBagConstraints
@@ -8,6 +9,7 @@ import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.*
 import javax.swing.filechooser.FileNameExtensionFilter
+import javax.swing.text.PlainDocument
 import jdr.exia.model.element.Type as TypeElement
 
 /**
@@ -24,19 +26,25 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
     private val lifeField by lazy {
         JTextField(if (blueprint != null) blueprint[Field.LIFE] else null).apply {
             this.preferredSize = Dimension(100, 25)
+            (this.document as PlainDocument).documentFilter = IntegerFilter()
         }
     }
     private val manaField by lazy {
         JTextField(if (blueprint != null) blueprint[Field.MANA] else null).apply {
             this.preferredSize = Dimension(100, 25)
+            (this.document as PlainDocument).documentFilter = IntegerFilter()
         }
     }
 
     /**
      * Check if all field are valid
      */
-    private val isFieldValid
-        get() = (nameField.text != "") && (::selectedFile.isInitialized) && (selectedFile.exists())
+    private val isFieldValid: Boolean
+        get() {
+            val validManaAndLife =
+                if (type == TypeElement.OBJECT) true else (lifeField.text.isNotBlank()) && (manaField.text.isNotBlank())
+            return (nameField.text.isNotBlank()) && validManaAndLife && (::selectedFile.isInitialized) && (selectedFile.exists())
+        }
 
     private lateinit var selectedFile: File
     private var canceled = true
@@ -64,7 +72,7 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
             this.gridy = 0
         })
 
-        if(type != TypeElement.OBJECT) {
+        if (type != TypeElement.OBJECT) {
             this.add(JPanel().apply {
                 this.preferredSize = Dimension(220, 60)
                 this.add(JLabel("PV max :"))
@@ -106,7 +114,7 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
             }
         }, GridBagConstraints().apply {
             this.gridx = 0
-            this.gridy = if(type == TypeElement.OBJECT) 1 else 3
+            this.gridy = if (type == TypeElement.OBJECT) 1 else 3
         })
 
         this.add(JPanel().apply {
@@ -115,7 +123,7 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
             this.border = BorderFactory.createEmptyBorder(10, 0, 0, 0)
         }, GridBagConstraints().apply {
             this.gridx = 0
-            this.gridy = if(type == TypeElement.OBJECT) 2 else 4
+            this.gridy = if (type == TypeElement.OBJECT) 2 else 4
         })
     }
 
@@ -129,7 +137,13 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
                 Field.NAME to nameField.text,
                 Field.IMG to selectedFile.absolutePath
             ).also {
-                if (blueprint != null && blueprint[Field.ID] != null)
+                if (type != TypeElement.OBJECT) {
+                    it += hashMapOf(
+                        Field.MANA to manaField.text,
+                        Field.LIFE to lifeField.text
+                    )
+                }
+                if (blueprint?.get(Field.ID) != null)
                     it[Field.ID] = blueprint[Field.ID]
             }
         } else if (!canceled) {

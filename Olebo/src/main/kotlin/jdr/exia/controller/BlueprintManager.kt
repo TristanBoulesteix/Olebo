@@ -73,7 +73,7 @@ class BlueprintManager : Observable {
 
             if (result == JFileChooser.APPROVE_OPTION) {
                 val selectedFile = file.selectedFile
-                if(selectedFile.exists()) {
+                if (selectedFile.exists()) {
                     File(Blueprint[id].sprite).delete()
                     Blueprint[id].sprite = selectedFile.absolutePath
                 }
@@ -95,9 +95,21 @@ class BlueprintManager : Observable {
         }
     }
 
-    fun createBlueprint(@Suppress("UNUSED_PARAMETER") id: Int) {
-        BlueprintEditorDialog(type).showDialog()?.let {
-
+    fun createBlueprint(@Suppress("UNUSED_PARAMETER") id: Int?) {
+        transaction(DAO.database) {
+            BlueprintEditorDialog(type).showDialog()?.let { map ->
+                Blueprint.new {
+                    this.name = map[BlueprintEditorDialog.Field.NAME]!!
+                    if (this@BlueprintManager.type != Type.OBJECT) {
+                        this.HP = map[BlueprintEditorDialog.Field.LIFE]!!.toInt()
+                        this.MP = map[BlueprintEditorDialog.Field.MANA]!!.toInt()
+                    }
+                    this.sprite = map[BlueprintEditorDialog.Field.IMG]!!
+                    this.type = this@BlueprintManager.type.type
+                }
+            }
         }
+
+        notifyObserver(Action.REFRESH)
     }
 }

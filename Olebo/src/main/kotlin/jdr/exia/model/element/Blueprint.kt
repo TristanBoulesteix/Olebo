@@ -14,6 +14,5 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
     var HP by BlueprintTable.HP
     var MP by BlueprintTable.MP
     var type by Type.TypeElement referencedOn BlueprintTable.idType
-    var size by BlueprintTable.size
 }
 
