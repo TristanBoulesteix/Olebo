@@ -19,8 +19,6 @@ class MapPanel : JPanel(), MouseListener {
         addMouseListener(this)
     }
 
-
-
     private fun relativeX(absoluteX: Int): Int{ //translates an X coordinate in 1600:900px to proportional coords according to this window's size
         return (absoluteX*this.width)/1600
     }
@@ -34,7 +32,6 @@ class MapPanel : JPanel(), MouseListener {
     fun absoluteY(relativeY: Int): Int { // Translates an Y coordinate from this window into a 1600:900 Y coord
         return (((relativeY.toFloat()/ this.height.toFloat()))*900).toInt()
     }
-
 
     fun updateTokens(tokens: MutableList<Element>){ //Gets the current token display up to date
         this.tokens = tokens;
@@ -67,11 +64,11 @@ class MapPanel : JPanel(), MouseListener {
                     }
                 }
             }
-        if (marker != null) { // First, place a marker if there needs to be one, so the token will then be painted over it
-            if (g != null) {
-                drawMoveableMarker(g)
+            if (marker != null) { // First, place a marker if there needs to be one, so the token will then be painted over it
+                if (g != null) {
+                    drawMoveableMarker(g)
+                }
             }
-        }
         }
 
     private fun drawMoveableMarker(g:Graphics){ //Draws a red rectangle around the currently selected token for movement
