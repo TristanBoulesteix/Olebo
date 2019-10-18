@@ -4,15 +4,14 @@ import jdr.exia.model.element.Element
 import java.awt.*
 import java.awt.event.MouseEvent
 import java.awt.event.MouseListener
-
-
 // This panel contains the map and all the objects placed within it
 
 class MapPanel : JPanel(), MouseListener {
 
     var backGroundImage: Image? = null      //The background... Why are you reading this? Stop!! I said stop!!! You're still doing it, even when you had to scroll sideways... Ok i'm giving up, bye
-    var tokens = mutableListOf<Element>();  //These are all the tokens placed on  the current map
-    var marker: Rectangle? = null           //Marker that's placed around a token when it is selected
+    private var tokens = mutableListOf<Element>() //These are all the tokens placed on  the current map
+    private var marker: Rectangle? = null //Marker that's placed around a token when it is selected
+    var isMasterMapPanel: Boolean = false
 
     init {
         this.layout= GridBagLayout();
@@ -34,78 +33,89 @@ class MapPanel : JPanel(), MouseListener {
         return (((relativeY.toFloat()/ this.height.toFloat()))*900).toInt()
     }
 
-    fun refresh() { // refreshes the panel's content
-        this.repaint()
-    }
-
-    public fun updateTokens(tokens: MutableList<Element>){ //Gets the current token display up to date
+    fun updateTokens(tokens: MutableList<Element>){ //Gets the current token display up to date
         this.tokens = tokens;
     }
 
     override fun paintComponent(g: Graphics?) {
-        if (g != null) {
-            g.drawImage(
-                backGroundImage,
-                0,
-                0,
-                this.width,
-                this.height,
-                null)
-
-            if (marker != null) { // First, place a marker if there needs to be one, so the token will then be painted over it
-                g?.color = Color.RED
-                g?.drawRect( //Draws a 1 pixel thick rectangle
-                    marker!!.x,
-                    marker!!.y,
-                    marker!!.width,
-                    marker!!.height)
-
-            }
-
-            for (token in tokens) //Display every token one by one
-            {
-
+            if (g != null) {
                 g.drawImage(
-                    token.sprite.image,
-                    relativeX(token.position.x),
-                    relativeY(token.position.y),
-                    relativeX(token.hitBox.width),
-                    relativeY(token.hitBox.height),
+                    backGroundImage,
+                    0,
+                    0,
+                    this.width,
+                    this.height,
                     null
                 )
+
+                for (token in tokens) //Display every token one by one
+                {
+                    if((!isMasterMapPanel)&&!(token.visible)){} //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
+                    else {
+                        if ((isMasterMapPanel) && !(token.visible)) { drawInvisibleMarker(token,g) }
+                        g.drawImage(
+                            token.sprite.image,
+                            relativeX(token.position.x),
+                            relativeY(token.position.y),
+                            relativeX(token.hitBox.width),
+                            relativeY(token.hitBox.height),
+                            null
+                        )
+                    }
+                }
+            }
+            if (marker != null) { // First, place a marker if there needs to be one, so the token will then be painted over it
+                if (g != null) {
+                    drawMoveableMarker(g)
+                }
             }
         }
+
+    private fun drawMoveableMarker(g:Graphics){ //Draws a red rectangle around the currently selected token for movement
+        g.color = Color.RED
+        g.setPaintMode()
+        g.drawRect( //Draws a 1 pixel thick rectangle
+            marker!!.x,
+            marker!!.y,
+            marker!!.width,
+            marker!!.height
+        )
+    }
+
+    private fun drawInvisibleMarker(token: Element, g:Graphics){//Draws a blue rectangle to signify the GM that a token is invisible to the player
+        g.color = Color.BLUE
+        g.drawRect( //Draws a 1 pixel thick rectangle
+            (relativeX(token.position.x)-3),
+            (relativeY(token.position.y)-3),
+            (relativeX(token.hitBox.width)+6),
+            (relativeY(token.hitBox.height)+6)
+        )
     }
 
     override fun mouseClicked(p0: MouseEvent?) {  /* /!\ Coordinates are stated in pixels here, not in absolute 1000th /!\ */
+        if(isMasterMapPanel) {
+            var clickedX = absoluteX(p0!!.x)
+            var clickedY = absoluteY(p0!!.y)
 
-        var clickedX = absoluteX(p0!!.x)
-        var clickedY= absoluteY(p0!!.y)
-
-       when(p0.button) //  1, middle button: 2, Right click: 3
-       {
-           1 -> ViewFacade.clickNDrop(clickedX,clickedY) //Left click
-           2 -> ViewFacade.moveToken(clickedX,clickedY) //Middle button
-           3 -> null //Right click
-       }
+            when (p0.button) //  1, middle button: 2, Right click: 3
+            {
+                1 -> ViewFacade.clickNDrop(clickedX, clickedY) //Left click
+                2 -> ViewFacade.moveToken(clickedX, clickedY) //Middle button
+                3 -> ViewFacade.selectToken(clickedX, clickedY) //Right click
+            }
+        }
     } //Actions to take when the mouse is clicked
-
     fun setMarker(token: Element){ //Sets a new selector marker
-        val thickness = 1 //The amount of space between the token and the marker
-        marker = Rectangle(
-            relativeX(token.hitBox.x)-(thickness+1),
-            relativeY(token.hitBox.y)-(thickness+1),
-            relativeX(token.hitBox.width)+(2*thickness),
-            relativeY(token.hitBox.height)+(2*thickness))
-    }
 
-    fun clearMarker(){ //Removes the current marker
+        marker = Rectangle(
+            relativeX(token.hitBox.x)-2,
+            relativeY(token.hitBox.y)-2,
+            relativeX(token.hitBox.width)+2,
+            relativeY(token.hitBox.height)+2)
+    }
+    fun clearMarker() { //Removes the current marker
         marker = null
     }
-
-
-
-
     // Unused mouse methods
     override fun mouseExited(p0: MouseEvent?) {}
     override fun mousePressed(p0: MouseEvent?) {}

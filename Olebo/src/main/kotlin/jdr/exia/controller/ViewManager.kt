@@ -1,34 +1,63 @@
 package jdr.exia.controller
 
-import jdr.exia.model.element.Element
+import jdr.exia.model.act.Act
+import jdr.exia.model.act.Scene
+import jdr.exia.model.element.*
 import jdr.exia.view.mainFrame.ViewFacade
 import java.awt.Point
+import java.awt.Rectangle
+import javax.imageio.ImageIO
+import javax.swing.ImageIcon
 
 object ViewManager {
 
-    var mapTokens = mutableListOf<Element>()
-    var grabbedToken: Element? = null
-    init {
+    fun testRun(){ //TODO: Remove ASAP
+
         ViewFacade.setMapBackground("/tools.jpg")
 
+        val toky = Element(
+            "test1",
+            ImageIcon(ImageIO.read(Element::class.java.getResource("/AH!.png").openStream())),
+            Position(500,500),
+            true,
+            Size.S)
 
-/*       var toky = Element(
-           "test",
-           ImageIcon(ImageIO.read(Element::class.java.getResource("/AH!.png").openStream())),
-           Position(500,500),
-           true,
-           Size.S)
-        var tokar = Element(
-            "test",
+        val talkien = PlayableCharacter(
+            25,
+            15,
+            "gandalf",
+            ImageIcon(ImageIO.read(PlayableCharacter::class.java.getResource("/purse.jpg").openStream())),
+            Position(250,25),
+            true,
+            Rectangle(250,25,250,64),
+            Size.M
+        )
+
+        val tokar = Element(
+            "test2",
             ImageIcon(ImageIO.read(Element::class.java.getResource("/blue.png").openStream())),
             Position(550,500),
-            true,
-            Size.XXL)*/
+            false,
+            Size.XXL)
 
 
-/*        addToken(toky)
-        addToken(tokar)*/
+
+        addToken(toky)
+        addToken(tokar)
+        addToken(talkien)
         updateTokens()
+        ViewFacade.testRun()
+    }
+
+    var mapTokens = mutableListOf<Element>()
+    var grabbedToken: Element? = null
+    var activeAct: Act? = null
+    var activeScene: Scene? = null
+    init {
+
+
+        testRun()
+
 
     }
 
@@ -38,25 +67,34 @@ object ViewManager {
         /*If a token has already been grabbed, then it is placed with dropToken(),
         else tries to find a token where the screen was clicked with  loadTokenFromClick(x,y)*/
         if (grabbedToken == null){
-            loadTokenFromClick(x,y)
+           grabbedToken = getTokenFromXY(x,y)
+            if(grabbedToken!=null) {
+                ViewFacade.addMarker(grabbedToken!!)
+                updateTokens()
+            }
+
         }
         else {
             dropToken(x,y)
         }
     }
-    fun loadTokenFromClick(x: Int,y: Int){ //Takes a point that was clicked, and return the 1st token that connects
-        val clickedPoint = Point(x,y)
 
-        for(token in mapTokens){
-            if (token.hitBox.contains(clickedPoint)){
-                grabbedToken = token
-                ViewFacade.addMarker(token)
-                updateTokens()
-            }
-        }
-
+    fun initializeAct(act:Act) {
+        activeAct = act
+        loadCurrentScene()
     }
 
+    fun changeCurrentScene(sceneId: Int){
+        activeAct!!.sceneId = sceneId
+    }
+
+    private fun loadCurrentScene(){
+        with(activeAct) {
+           activeScene = this!!.scenes.findWithId(activeAct!!.sceneId)
+           mapTokens//TODO : load tokens from instances table
+           ViewFacade.setMapBackground(activeScene!!.background)
+        }
+    }
 
     fun moveToken(x:Int,y:Int){ //Changes a token's position without dropping it (a moved token stays selected) , intended for small steps
         if(grabbedToken != null) {
@@ -68,7 +106,7 @@ object ViewManager {
         }
     }
 
-    fun dropToken(x: Int,y: Int){ /* Places the currently grabbed token to last click's location, and drops it*/
+    private fun dropToken(x: Int,y: Int){ /* Places the currently grabbed token to last click's location, and drops it*/
 
             val newX = (x - (grabbedToken!!.hitBox.width / 2))
             val newY = (y - (grabbedToken!!.hitBox.height / 2))
@@ -80,12 +118,44 @@ object ViewManager {
 
     }
 
-    fun addToken(token: Element){ //Adds a single token to this object's Token list
+    private fun addToken(token: Element){ //Adds a single token to this object's Token list
         this.mapTokens.add(token)
     }
 
-    fun updateTokens (){ //Updates the tokens on the maps
+    private fun getTokenFromXY(x: Int, y: Int): Element?{ //Receives a clicked point (x,y), returns the first soken found in the Tokens array, or null if none matched
+        for(token in mapTokens){
+            if (token.hitBox.contains(x,y)){
+                return(token)
+            }
+        }
+        return null
+    }
+
+
+
+    fun repaint(){
+        ViewFacade.repaintFrames()
+    }
+
+    fun selectToken(x: Int,y:Int){ //cheks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
+        var selected = getTokenFromXY(x,y)
+
+        if(selected!=null){
+
+            ViewFacade.setSelectedToken(selected)
+            updateTokens()
+        }
+    }
+
+    fun updateTokens (){ //Updates the tokens on the maps by repainting everything
         ViewFacade.placeTokensOnMaps(mapTokens)
+    }
+
+    fun toggleVisibility(token: Element?) {
+        if (token != null) {
+            token.visible = !token.visible
+            updateTokens()
+        }
     }
 
 }

@@ -9,7 +9,7 @@ import javax.swing.JDialog
 /*PlayerFrame is the Frame the Players can see, it shares its content with MasterFrame
 this is a singleton*/
 object PlayerFrame : JDialog(), GameFrame {
-    private val mapPanel = MapPanel()
+     val mapPanel = MapPanel()
 
     init {
         this.title = "Player"
@@ -38,7 +38,6 @@ object PlayerFrame : JDialog(), GameFrame {
 
     override fun updateMap(tokens: MutableList<Element>){
             mapPanel.updateTokens(tokens)
-
     }
 
     override fun setMapBackground(imageName: String) {

@@ -1,15 +1,20 @@
 package jdr.exia.view.mainFrame
 
 import jdr.exia.controller.ViewManager
+import jdr.exia.model.act.Act
 import jdr.exia.model.element.Element
 
 /*ViewManager is View's facade
 this is a singleton*/
 object ViewFacade {
 
+    fun testRun(){ //TODO: remove once test is not needed
+        MasterFrame.isVisible = true
+        PlayerFrame.isVisible = true
+    }
 
     init {
-        initializeActFrames() //Temporary, needs to be altered later
+
     }
 
     fun addMarker(token: Element) {
@@ -28,27 +33,39 @@ object ViewFacade {
         ViewManager.moveToken(x, y)
     }
 
-    fun setMapBackground(imageName: String) { //Sets the MapPanels backGround
+    fun selectToken(x: Int,y:Int){
 
+        ViewManager.selectToken(x,y)
+
+    }
+
+    fun setSelectedToken(token: Element){
+        SelectPanel.selectedElement = token
+    }
+
+    fun setMapBackground(imageName: String) { //Sets the MapPanels backGround
         MasterFrame.setMapBackground(imageName)
         PlayerFrame.setMapBackground(imageName)
         repaintFrames()
     }
 
 
-    private fun repaintFrames() { //Repaints both frames simultaneously
+
+
+    fun repaintFrames() { //Repaints both frames simultaneously
         MasterFrame.repaint()
         PlayerFrame.repaint()
     }
 
-    private fun initializeActFrames() { /*this method activates the Player and GM frames to initiate/start back an act	*/
 
+
+    private fun initializeAct(act: Act) { /*this method activates the Player and GM frames to initiate/start back an act	*/
         MasterFrame.isVisible = true
+        MasterFrame.mapPanel.isVisible = true
+        PlayerFrame.mapPanel.isVisible = true
         PlayerFrame.isVisible = true
 
-
-        /*TODO: give master frame and player frame the objects relative to*/
-
+        /*TODO: give master frame and player frame the objects relative to the current act*/
     }
 
 
@@ -56,5 +73,8 @@ object ViewFacade {
         PlayerFrame.updateMap(tokens)
         MasterFrame.updateMap(tokens)
         repaintFrames()
+
     }
+
+
 }

@@ -10,7 +10,7 @@ object ItemPanel : JPanel() {
     public override fun paintComponent(graphics: Graphics) {
         super.paintComponent(graphics)
 
-        // graphics.drawImage(,X,Y,null);
+
 
     }
 }

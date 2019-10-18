@@ -18,58 +18,41 @@ this is a singleton*/
  * */
 object MasterFrame : JFrame(), KeyListener, GameFrame {
     private var masterFramePanel = JPanel()
-    private val mapPanel = MapPanel()
+    val mapPanel = MapPanel()
     var selectPanel = SelectPanel // Will contain all info on selected Item
     var itemPanel = ItemPanel // Will contain list of available items
 
-
     override fun setMapBackground(imageName: String) {
         mapPanel.backGroundImage = ImageIO.read(Element::class.java.getResource(imageName).openStream())
-
     }
 
     init {
-
-
-
         val screens = GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices
         this.setSize(screens[0].displayMode.width,screens[0].displayMode.height)
-
         if (screens.size == 1) { //If there is only 1 screen, we display both frames there
-
         } else { //If 2 screens are present, we display the player frame in fullscreen on the 2nd screen
-
             //this.isUndecorated = true
-            screens[0].fullScreenWindow = this
 
         }
-
-
-
-
-
         this.title = "Master"
-
         addKeyListener(this)
         this.defaultCloseOperation = EXIT_ON_CLOSE
-
-
-
-
         masterFramePanel.size = this.size
         masterFramePanel.background = Color.GRAY
         masterFramePanel.layout = GridBagLayout()
         contentPane = masterFramePanel
 
-
         mapPanel.setSize(1280, 720)
 
-        selectPanel.setSize(100, 100)
-
-        selectPanel.background = Color.green
-
-        itemPanel.setSize(100, 100)
+        itemPanel.setSize(this.width-1280, this.height)
         itemPanel.background = Color.yellow
+
+
+
+        selectPanel.setSize(this.mapPanel.width,(this.height - mapPanel.height))
+
+
+
 
         val mapConstraints = GridBagConstraints()
         val itemConstraints = GridBagConstraints()
@@ -92,12 +75,15 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         mapConstraints.gridx = 3
         mapConstraints.gridy = 0
         mapConstraints.weightx = 3.0
-        mapConstraints.weighty = 5.0
+        mapConstraints.weighty = 7.0
         mapConstraints.fill = GridBagConstraints.BOTH
 
         masterFramePanel.add(mapPanel, mapConstraints)
-        masterFramePanel.add(itemPanel, itemConstraints)
+        //masterFramePanel.add(itemPanel, itemConstraints)
         masterFramePanel.add(selectPanel, selectConstraints)
+        this.mapPanel.isMasterMapPanel = true
+        //jMenuBar = MasterMenuBar
+
     }
 
     fun setMarker(token: Element){
@@ -107,6 +93,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         mapPanel.clearMarker()
     }
 
+
     // KeyListener section, to add Key bindings
     override fun keyTyped(keyEvent: KeyEvent) {
 
@@ -115,7 +102,8 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
     override fun keyPressed(keyEvent: KeyEvent) {
 
         if (keyEvent.keyCode == KeyEvent.VK_ESCAPE) { //remove after tesing is complete
-            this.isVisible = false
+            dispose()
+            exitProcess(0)
         }
 
     }
@@ -126,6 +114,5 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
 
     override fun updateMap(tokens: MutableList<Element>){
         mapPanel.updateTokens(tokens)
-
     }
 }
