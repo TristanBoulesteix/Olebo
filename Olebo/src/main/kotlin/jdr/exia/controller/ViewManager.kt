@@ -32,7 +32,7 @@ object ViewManager {
 
     private var activeAct: Act? = null
     private var activeScene: Scene? = null
-    var mapTokens = mutableListOf<Element>()
+    var mapTokens = mutableListOf<Element>() //TODO: replace mapToken with activeScene.elements
     var grabbedToken: Element? = null
     init {}
 
@@ -57,6 +57,10 @@ object ViewManager {
         loadCurrentScene()
     }
 
+    fun removeToken(token: Element){ //removes given token from MutableList
+        mapTokens.remove(token) //TODO: replace mapToken with activeScene.elements
+    }
+
     fun changeCurrentScene(sceneId: Int){
         activeAct!!.sceneId = sceneId
         loadCurrentScene()
@@ -66,7 +70,6 @@ object ViewManager {
     private fun loadCurrentScene(){
         with(activeAct) {
            activeScene = this!!.scenes.findWithId(activeAct!!.sceneId)
-           //mapTokens = activeScene. TODO: 
            ViewFacade.setMapBackground(activeScene!!.background)
             ViewFacade.turnVisible()
         }
@@ -99,7 +102,7 @@ object ViewManager {
     }
 
     private fun getTokenFromXY(x: Int, y: Int): Element?{ //Receives a clicked point (x,y), returns the first soken found in the Tokens array, or null if none matched
-        for(token in mapTokens){
+        for(token in mapTokens){ //TODO: replace mapToken with activeScene.elements
             if (token.hitBox.contains(x,y)){
                 return(token)
             }
@@ -121,7 +124,7 @@ object ViewManager {
         }
     }
 
-    fun updateTokens (){ //Updates the tokens on the maps by repainting everything
+    fun updateTokens (){ //Updates the tokens on the maps by repainting everything //TODO: replace mapToken with activeScene.elements
         ViewFacade.placeTokensOnMaps(mapTokens)
     }
 
