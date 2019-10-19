@@ -2,14 +2,14 @@ package jdr.exia.model.dao
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.element.Blueprint
+import jdr.exia.model.element.Character
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Type
 import jdr.exia.model.utils.MessageException
 import jdr.exia.model.utils.OLEBO_DIRECTORY
 import org.jetbrains.exposed.dao.Entity
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.dao.IntIdTable
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
@@ -67,7 +67,29 @@ object DAO {
 
     fun getElementsWithIdScene(idScene: Int): MutableList<Element> {
         return transaction {
-            Element.buildElementFromRequest(InstanceTable.select { InstanceTable.idScene eq idScene }.toCollection(mutableListOf()))
+            Element.buildElementFromRequest(InstanceTable.select { InstanceTable.idScene eq idScene }.toCollection(mutableListOf()), idScene)
+        }
+    }
+
+    fun saveElement(element: Element) {
+        fun Boolean.toInt(): Int {
+            return if(this) 1 else 0
+        }
+
+        transaction {
+            InstanceTable.insert {
+                it[idBlueprint] = element.idBlueprint
+                it[idScene] = element.idScene
+                it[size] = element.size.name
+                it[visible] = element.visible.toInt()
+                it[x] = element.position.x
+                it[y] = element.position.y
+
+                if(element is Character) {
+                    it[currentHP] = element.currentHealth
+                    it[currentMP] = element.currentMana
+                }
+            }
         }
     }
 
@@ -77,6 +99,12 @@ object DAO {
     fun deleteEntity(entity: Entity<Int>) {
         transaction {
             entity.delete()
+        }
+    }
+
+    fun deleteWithId(id: Int, table: IntIdTable) {
+        transaction {
+            table.deleteWhere { table.id eq id }
         }
     }
 }

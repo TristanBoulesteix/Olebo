@@ -32,6 +32,6 @@ object InstanceTable : IntIdTable() {
     val y = integer("y")
     val size = varchar("Size", 10)
     val visible = integer("Visible")
-    val idScene = SceneTable.integer("id_act").references(SceneTable.id)
+    val idScene = SceneTable.integer("id_scene").references(SceneTable.id)
     val idBlueprint = BlueprintTable.integer("id_blueprint").references(BlueprintTable.id)
 }

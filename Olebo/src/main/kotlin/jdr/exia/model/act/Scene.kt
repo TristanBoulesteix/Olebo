@@ -2,6 +2,7 @@ package jdr.exia.model.act
 
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.SceneTable
+import jdr.exia.model.utils.elementListOf
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.EntityID
@@ -30,8 +31,7 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
     var name by SceneTable.name
     var background by SceneTable.background
     var idAct by SceneTable.idAct
-    val element
-        get() = DAO.getElementsWithIdScene(id.value)
+    val elements by lazy { elementListOf(id.value) }
 
     override fun delete() {
         File(background).delete()
