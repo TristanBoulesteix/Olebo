@@ -3,12 +3,14 @@ package jdr.exia.controller
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.element.Element
+import jdr.exia.view.mainFrame.MasterMenuBar
 import jdr.exia.view.mainFrame.ViewFacade
 
 object ViewManager {
     private var activeAct: Act? = null
     private var activeScene: Scene? = null
-    var grabbedToken: Element? = null
+    private var grabbedToken: Element? = null
+    init {}
 
     fun clickNDrop(x: Int, y: Int) {
         /*If a token has already been grabbed, then it is placed with dropToken(),
@@ -27,6 +29,8 @@ object ViewManager {
 
     fun initializeAct(act: Act) {
         activeAct = act
+        MasterMenuBar.act = act
+        MasterMenuBar.initialize()
         loadCurrentScene()
     }
 
@@ -40,7 +44,8 @@ object ViewManager {
         updateTokens()
     }
 
-    private fun loadCurrentScene() {
+
+    fun loadCurrentScene() {
         with(activeAct) {
             activeScene = this!!.scenes.findWithId(activeAct!!.sceneId)
             ViewFacade.setMapBackground(activeScene!!.background)
