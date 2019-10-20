@@ -24,6 +24,10 @@ abstract class Element(id: EntityID<Int>) : Entity<Int>(id) {
         get() = ImageIcon(blueprint.sprite)
     val name
         get() = blueprint.name
+    val maxHP
+        get() = blueprint.HP
+    val maxMana
+        get() = blueprint.MP
 
     var hitBox = Rectangle(x, y, size.absoluteSizeValue, size.absoluteSizeValue)
 
