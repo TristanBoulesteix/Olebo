@@ -19,8 +19,7 @@ abstract class Element(id: EntityID<Int>) : Entity<Int>(id) {
     var x by InstanceTable.x
     var y by InstanceTable.y
 
-    val idScene by InstanceTable.idScene
-    val blueprint by Blueprint referencedOn InstanceTable.idBlueprint
+    private val blueprint by Blueprint referencedOn InstanceTable.idBlueprint
     val sprite
         get() = ImageIcon(blueprint.sprite)
     val name
