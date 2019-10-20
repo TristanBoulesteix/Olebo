@@ -14,8 +14,8 @@ abstract class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
     private var size by Size.SizeElement referencedOn InstanceTable.size
     private var visible by InstanceTable.visible
-    var currentHP by InstanceTable.currentHP
-    var currentMP by InstanceTable.currentMP
+    var currentHealth by InstanceTable.currentHP
+    var currentMana by InstanceTable.currentMP
     var x by InstanceTable.x
     var y by InstanceTable.y
 
@@ -28,6 +28,8 @@ abstract class Element(id: EntityID<Int>) : Entity<Int>(id) {
         get() = blueprint.HP
     val maxMana
         get() = blueprint.MP
+    val type
+        get() = blueprint.type
 
     var hitBox = Rectangle(x, y, size.absoluteSizeValue, size.absoluteSizeValue)
 
@@ -53,5 +55,9 @@ abstract class Element(id: EntityID<Int>) : Entity<Int>(id) {
     }
 
     fun getPosition() = Position(x, y)
+}
+
+fun Element?.isCharacter(): Boolean {
+    return this != null && (this.type.typeElement == Type.PNJ || this.type.typeElement == Type.PJ)
 }
 
