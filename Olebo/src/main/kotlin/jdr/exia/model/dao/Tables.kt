@@ -1,8 +1,6 @@
 package jdr.exia.model.dao
 
 import org.jetbrains.exposed.dao.IntIdTable
-import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.transactions.transaction
 
 object ActTable : IntIdTable() {
     val name = varchar("name", 50)
@@ -32,19 +30,13 @@ object InstanceTable : IntIdTable() {
     val currentMP = integer("current_MP")
     val x = integer("x")
     val y = integer("y")
-    val size = varchar("Size", 10)
+    val size = integer("Size").references(SizeTable.id)
     val visible = integer("Visible")
     val idScene = integer("ID_Scene").references(SceneTable.id)
     val idBlueprint = integer("id_blueprint").references(BlueprintTable.id)
-
-    val nextId
-        get() = this.slice(size).selectAll()
 }
 
-fun main() {
-    transaction(DAO.database) {
-        InstanceTable.nextId.forEach {
-            println(it[InstanceTable.size])
-        }
-    }
+object SizeTable : IntIdTable() {
+    val size = varchar("Size", 10)
+    val value = integer("Value")
 }
