@@ -7,6 +7,7 @@ import jdr.exia.model.element.Element
 import jdr.exia.model.element.Type
 import jdr.exia.model.utils.MessageException
 import jdr.exia.model.utils.OLEBO_DIRECTORY
+import jdr.exia.model.utils.toInt
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.IntIdTable
 import org.jetbrains.exposed.sql.*
@@ -67,15 +68,15 @@ object DAO {
 
     fun getElementsWithIdScene(idScene: Int): MutableList<Element> {
         return transaction {
-            Element.buildElementFromRequest(InstanceTable.select { InstanceTable.idScene eq idScene }.toCollection(mutableListOf()), idScene)
+            Element.buildElementsFromRequest(
+                InstanceTable.select { InstanceTable.idScene eq idScene }.toCollection(
+                    mutableListOf()
+                ), idScene
+            )
         }
     }
 
-    fun saveElement(element: Element) {
-        fun Boolean.toInt(): Int {
-            return if(this) 1 else 0
-        }
-
+    fun saveNewElement(element: Element) {
         transaction {
             InstanceTable.insert {
                 it[idBlueprint] = element.idBlueprint
@@ -85,7 +86,23 @@ object DAO {
                 it[x] = element.position.x
                 it[y] = element.position.y
 
-                if(element is Character) {
+                if (element is Character) {
+                    it[currentHP] = element.currentHealth
+                    it[currentMP] = element.currentMana
+                }
+            }
+        }
+    }
+
+    fun updateElement(element: Element) {
+        transaction {
+            InstanceTable.update({ InstanceTable.id eq element.idInstance }) {
+                it[size] = element.size.name
+                it[visible] = element.visible.toInt()
+                it[x] = element.position.x
+                it[y] = element.position.y
+
+                if (element is Character) {
                     it[currentHP] = element.currentHealth
                     it[currentMP] = element.currentMana
                 }
@@ -95,6 +112,8 @@ object DAO {
 
     /**
      * Delete an element in the database
+     *
+     * @param entity The entity to delete
      */
     fun deleteEntity(entity: Entity<Int>) {
         transaction {
@@ -102,6 +121,12 @@ object DAO {
         }
     }
 
+    /**
+     * Delete an element in the database
+     *
+     * @param id The element id to delete
+     * @param table The table where the element is from
+     */
     fun deleteWithId(id: Int, table: IntIdTable) {
         transaction {
             table.deleteWhere { table.id eq id }
