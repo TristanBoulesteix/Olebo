@@ -1,7 +1,10 @@
 package jdr.exia.model.act
 
 import jdr.exia.model.dao.DAO
+import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.dao.SceneTable
+import jdr.exia.model.element.Element
+import jdr.exia.model.utils.DelegateIterable
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.EntityID
@@ -26,6 +29,10 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
             else throw Exception("Error ! Invalid foreign key")
         }
     }
+
+    private val elementIterable by Element referrersOn InstanceTable.idScene
+
+    val elements by DelegateIterable { elementIterable }
 
     var name by SceneTable.name
     var background by SceneTable.background

@@ -23,6 +23,8 @@ abstract class Element(id: EntityID<Int>) : Entity<Int>(id) {
     val blueprint by Blueprint referencedOn InstanceTable.idBlueprint
     val sprite
         get() = ImageIcon(blueprint.sprite)
+    val name
+        get() = blueprint.name
 
     var hitBox = Rectangle(x, y, size.absoluteSizeValue, size.absoluteSizeValue)
 
