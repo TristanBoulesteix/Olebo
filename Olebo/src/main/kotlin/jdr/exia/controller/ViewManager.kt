@@ -6,34 +6,21 @@ import jdr.exia.model.element.Element
 import jdr.exia.model.element.PlayableCharacter
 import jdr.exia.model.element.Position
 import jdr.exia.model.element.Size
+import jdr.exia.view.mainFrame.MasterMenuBar
 import jdr.exia.view.mainFrame.ViewFacade
 import javax.imageio.ImageIO
 import javax.swing.ImageIcon
 
 object ViewManager {
 
-    fun testRun(){ //TODO: Remove ASAP
-        ViewFacade.setMapBackground("/tools.jpg")
-        val talkien = PlayableCharacter(
-            25,
-            15,
-            "gandalf",
-            ImageIcon(ImageIO.read(PlayableCharacter::class.java.getResource("/purse.jpg").openStream())),
-            Position(250,25),
-            true,
-            Size.M
-        )
-        addToken(talkien)
-        updateTokens()
-        ViewFacade.testRun()
-    }
+
 
 
 
     private var activeAct: Act? = null
     private var activeScene: Scene? = null
     var mapTokens = mutableListOf<Element>() //TODO: replace mapToken with activeScene.elements
-    var grabbedToken: Element? = null
+    private var grabbedToken: Element? = null
     init {}
 
     fun clickNDrop(x:Int,y: Int){
@@ -54,6 +41,8 @@ object ViewManager {
 
     fun initializeAct(act:Act) {
         activeAct = act
+        MasterMenuBar.act = act
+        MasterMenuBar.initialize()
         loadCurrentScene()
     }
 
@@ -67,7 +56,7 @@ object ViewManager {
         updateTokens()
     }
 
-    private fun loadCurrentScene(){
+    fun loadCurrentScene(){
         with(activeAct) {
            activeScene = this!!.scenes.findWithId(activeAct!!.sceneId)
            ViewFacade.setMapBackground(activeScene!!.background)

@@ -60,9 +60,7 @@ object ViewFacade {
 
     fun turnVisible() { /*this method activates the Player and GM frames to initiate/start back an act	*/
         MasterFrame.isVisible = true
-        MasterFrame.mapPanel.isVisible = true
-        PlayerFrame.mapPanel.isVisible = true
-        PlayerFrame.isVisible = true
+
 
         /*TODO: give master frame and player frame the objects relative to the current act*/
     }

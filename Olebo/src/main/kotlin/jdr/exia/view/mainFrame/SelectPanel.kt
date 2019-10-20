@@ -45,10 +45,19 @@ object SelectPanel : JPanel() {
         }
     }
 
-    private val visibilityButton = JButton("Toggle \n Visible").apply {
+    private val visibilityButton = JButton("Toggle  Visible").apply {
         preferredSize = Dimension(150,40)
         addActionListener{
             ViewManager.toggleVisibility(selectedElement)
+        }
+    }
+
+    private val deleteButton = JButton("Delete").apply {
+        preferredSize = Dimension(150,40)
+        addActionListener{
+            if(selectedElement!=null) {
+                ViewManager.removeToken(selectedElement!!)
+            }
         }
     }
 
@@ -92,6 +101,7 @@ object SelectPanel : JPanel() {
             add(JPanel().apply { isOpaque = false; add(nameLabel)})
             add(JPanel().apply { add(visibilityButton); isOpaque = false})
             add(JPanel().apply { add(sizeCombo); isOpaque = false})
+            add(JPanel().apply { add(deleteButton); isOpaque = false})
 
 
 

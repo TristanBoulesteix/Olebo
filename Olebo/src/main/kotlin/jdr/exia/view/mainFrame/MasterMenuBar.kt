@@ -1,6 +1,9 @@
 package jdr.exia.view.mainFrame
 
+import jdr.exia.controller.ViewManager
 import jdr.exia.model.act.Act
+import jdr.exia.model.dao.DAO
+import org.jetbrains.exposed.sql.transactions.transaction
 import javax.swing.JMenu
 import javax.swing.JMenuBar
 import javax.swing.JMenuItem
@@ -17,27 +20,37 @@ object MasterMenuBar: JMenuBar() {
     fun initialize(){
         this.removeAll()
         val actMenu = JMenu("Act")
-        val closeAct = JMenuItem("changeAct")
+        val closeAct = JMenuItem("Close Act")
         actMenu.add(closeAct)
 
+        val pcFrameMenu = JMenu("Player Frame")
+        val togglePlayerFrame = JMenuItem("Toggle Player Frame").apply {
+            addActionListener{
+                PlayerFrame.toggleDisplay()
 
-
+            } }
+        pcFrameMenu.add(togglePlayerFrame)
+        this.add(pcFrameMenu)
         val sceneMenu = JMenu("Scene")
-        var selectScene = JMenu("SelectScene")
+        var selectScene = JMenu("Select a Scene")
+
             if (act != null){
                 var i = 0
                 for(scene in act!!.scenes){
+
                     i++
-                    selectScene.add(JMenuItem("$i ${scene.name}").apply { act!!.sceneId= scene.id.value})
+                    var item =JMenuItem("$i ${scene.name}")
+                    item.addActionListener{ transaction(DAO.database){act!!.sceneId= scene.id.value; ViewManager.loadCurrentScene()} }
+                    selectScene.add(item)
                 }
             }
 
-        val changeScene = JMenu("selectScene")
 
-        sceneMenu.add(changeScene)
+
+        sceneMenu.add(selectScene)
 
         val tokenMenu = JMenu("Token")
-        val addToken = JMenuItem("addToken").apply { addActionListener{ println("k")} }
+        val addToken = JMenuItem("Add a Token").apply { addActionListener{ println("k")} }
         val removeSelectedToken = JMenuItem("Remove Selected Item").apply { addActionListener{ println("helpoutjjjj")} }
         tokenMenu.add(addToken)
         tokenMenu.add(removeSelectedToken)
@@ -48,6 +61,7 @@ object MasterMenuBar: JMenuBar() {
 
         this.add(actMenu)
         this.add(tokenMenu)
+        this.add(sceneMenu)
 
     }
 
