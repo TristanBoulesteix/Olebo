@@ -28,16 +28,16 @@ class DelegateIterable<T>(initializer: () -> SizedIterable<T>) : Lazy<MutableLis
 
             return transaction(DAO.database) {
                 synchronized(this) {
-/*                    val v2 = _value
-                    if (v2 !== UnitializedValue) {
-                        @Suppress("UNCHECKED_CAST") (v2 as MutableList<T>)
-                    } else {
-                        val typedValue = initializer!!()
-                        _value = typedValue
-                        initializer = null
+                    /*                    val v2 = _value
+                                        if (v2 !== UnitializedValue) {
+                                            @Suppress("UNCHECKED_CAST") (v2 as MutableList<T>)
+                                        } else {
+                                            val typedValue = initializer!!()
+                                            _value = typedValue
+                                            initializer = null
 
-                        typedValue.getContent()
-                    }*/
+                                            typedValue.getContent()
+                                        }*/
                     val typedValue = initializer!!()
                     _value = typedValue
                     //initializer = null
@@ -53,11 +53,7 @@ class DelegateIterable<T>(initializer: () -> SizedIterable<T>) : Lazy<MutableLis
      */
     private fun <T> SizedIterable<T>.getContent(): MutableList<T> {
         val content = mutableListOf<T>()
-
-        this.forEach {
-            content += it
-        }
-
+        content += this
         return content
     }
 }
