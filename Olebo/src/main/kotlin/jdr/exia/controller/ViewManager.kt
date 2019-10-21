@@ -89,9 +89,9 @@ object ViewManager {
         x: Int,
         y: Int
     ): Element? { //Receives a clicked point (x,y), returns the first soken found in the Tokens array, or null if none matched
-        for (token in activeScene!!.elements) { //TODO: replace mapToken with activeScene.elements
-            if (token.hitBox.contains(x, y)) {
-                return (token)
+        activeScene!!.elements.forEach {
+            if (it.hitBox.contains(x, y)) {
+                return (it)
             }
         }
         return null
