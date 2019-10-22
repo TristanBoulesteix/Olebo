@@ -3,7 +3,7 @@ package jdr.exia.view.mainFrame
 import jdr.exia.controller.ViewManager
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Size
-import jdr.exia.model.element.isCharacter
+import jdr.exia.view.utils.isCharacter
 import java.awt.Color
 import java.awt.Dimension
 import java.awt.Graphics
@@ -25,7 +25,7 @@ object SelectPanel : JPanel() {
         preferredSize = Dimension(100, 40)
         this.addActionListener {
             if (selectedElement.isCharacter()) {
-                selectedElement!!.currentHealth += checkTextValue(hpField.text)
+                selectedElement!!.currentHealth = selectedElement!!.currentHealth?.plus(checkTextValue(hpField.text))
             }
             hpField.text = ""
             MasterFrame.repaint()
@@ -38,7 +38,7 @@ object SelectPanel : JPanel() {
         preferredSize = Dimension(110, 40)
         this.addActionListener {
             if (selectedElement.isCharacter()) {
-                selectedElement!!.currentMana += checkTextValue(manaField.text)
+                selectedElement!!.currentMana = selectedElement!!.currentMana!! + checkTextValue(manaField.text)
             }
             manaField.text = ""
             MasterFrame.repaint()
@@ -66,12 +66,12 @@ object SelectPanel : JPanel() {
             if (selectedElement != null) {
                 when (this.selectedItem) {
 
-                    "XS" -> selectedElement!!.setSize(Size.XS)
-                    "S" -> selectedElement!!.setSize(Size.S)
-                    "M" -> selectedElement!!.setSize(Size.M)
-                    "L" -> selectedElement!!.setSize(Size.L)
-                    "XL" -> selectedElement!!.setSize(Size.XL)
-                    "XXL" -> selectedElement!!.setSize(Size.XXL)
+                    "XS" -> selectedElement!!.size = Size.XS
+                    "S" -> selectedElement!!.size = Size.S
+                    "M" -> selectedElement!!.size = Size.M
+                    "L" -> selectedElement!!.size = Size.L
+                    "XL" -> selectedElement!!.size = Size.XL
+                    "XXL" -> selectedElement!!.size = Size.XXL
                 }
             }
             ViewManager.repaint()

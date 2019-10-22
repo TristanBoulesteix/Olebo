@@ -3,6 +3,7 @@ package jdr.exia.controller
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.element.Element
+import jdr.exia.model.element.Position
 import jdr.exia.view.mainFrame.MasterMenuBar
 import jdr.exia.view.mainFrame.ViewFacade
 
@@ -61,7 +62,7 @@ object ViewManager {
         if (grabbedToken != null) {
             val newX = (x - (grabbedToken!!.hitBox.width / 2))
             val newY = (y - (grabbedToken!!.hitBox.height / 2))
-            grabbedToken!!.setPosition(newX, newY)
+            grabbedToken!!.position = Position(newX, newY)
             ViewFacade.addMarker(grabbedToken!!)
             updateTokens()
         }
@@ -74,7 +75,7 @@ object ViewManager {
 
         val newX = (x - (grabbedToken!!.hitBox.width / 2))
         val newY = (y - (grabbedToken!!.hitBox.height / 2))
-        grabbedToken!!.setPosition(newX, newY)
+        grabbedToken!!.position = Position(newX, newY)
         grabbedToken = null
         ViewFacade.removeMarker()
         updateTokens()

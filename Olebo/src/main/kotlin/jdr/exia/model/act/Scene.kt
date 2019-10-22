@@ -14,13 +14,11 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
     companion object : EntityClass<Int, Scene>(SceneTable) {
         override fun new(init: Scene.() -> Unit): Scene {
             fun Array<Pair<String, String>>.checkContent(toCheck: String): Boolean {
-                var contains = false
-
                 this.forEach {
-                    if (it.first == toCheck) contains = true
+                    if (it.first == toCheck) return true
                 }
 
-                return contains
+                return false
             }
 
             val newScene = super.new(init)
@@ -33,7 +31,6 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
     private val elementIterable by Element referrersOn InstanceTable.idScene
 
     val elements by DelegateIterable { elementIterable }
-
     var name by SceneTable.name
     var background by SceneTable.background
     var idAct by SceneTable.idAct

@@ -55,8 +55,8 @@ class MapPanel : JPanel(), MouseListener {
                         if ((isMasterMapPanel) && !(token.isVisible)) { drawInvisibleMarker(token,g) }
                         g.drawImage(
                             token.sprite.image,
-                            relativeX(token.getPosition().x),
-                            relativeY(token.getPosition().y),
+                            relativeX(token.position.x),
+                            relativeY(token.position.y),
                             relativeX(token.hitBox.width),
                             relativeY(token.hitBox.height),
                             null
@@ -85,8 +85,8 @@ class MapPanel : JPanel(), MouseListener {
     private fun drawInvisibleMarker(token: Element, g:Graphics){//Draws a blue rectangle to signify the GM that a token is invisible to the player
         g.color = Color.BLUE
         g.drawRect( //Draws a 1 pixel thick rectangle
-            (relativeX(token.getPosition().x)-3),
-            (relativeY(token.getPosition().y)-3),
+            (relativeX(token.position.x)-3),
+            (relativeY(token.position.y)-3),
             (relativeX(token.hitBox.width)+6),
             (relativeY(token.hitBox.height)+6)
         )

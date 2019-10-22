@@ -26,11 +26,11 @@ object TypeTable : IntIdTable() {
 }
 
 object InstanceTable : IntIdTable() {
-    val currentHP = integer("current_HP")
-    val currentMP = integer("current_MP")
+    val currentHP = integer("current_HP").nullable()
+    val currentMP = integer("current_MP").nullable()
     val x = integer("x")
     val y = integer("y")
-    val size = integer("Size").references(SizeTable.id)
+    val idSize = integer("ID_Size").references(SizeTable.id)
     val visible = integer("Visible")
     val idScene = integer("ID_Scene").references(SceneTable.id)
     val idBlueprint = integer("id_blueprint").references(BlueprintTable.id)
