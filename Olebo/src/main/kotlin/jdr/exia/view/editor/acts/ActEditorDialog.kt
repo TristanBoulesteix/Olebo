@@ -53,10 +53,10 @@ class ActEditorDialog : JDialogTemplate("Nouvel acte") {
             this.background = BACKGROUND_COLOR_LIGHT_BLUE
             this.add(JButton("Valider").apply {
                 this.addActionListener {
-                    if (nameField.text.isNotEmpty() && this@ActEditorDialog.manager.saveAct(nameField.text)) {
+                    if (nameField.text.isNotEmpty() && this@ActEditorDialog.manager.tempScenes.isNotEmpty() && this@ActEditorDialog.manager.saveAct(nameField.text)) {
                         this@ActEditorDialog.dispose()
                     } else {
-                        showPopup("Désolé, un acte avec le même nom existe déjà !", this@ActEditorDialog)
+                        showPopup("Désolé, un acte avec le même nom existe déjà ou les données de l'acte sont invalides !", this@ActEditorDialog)
                     }
                 }
                 this.border = BORDER_BUTTONS
