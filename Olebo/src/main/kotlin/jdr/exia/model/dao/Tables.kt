@@ -26,8 +26,8 @@ object TypeTable : IntIdTable() {
 }
 
 object InstanceTable : IntIdTable() {
-    val currentHP = integer("current_HP")
-    val currentMP = integer("current_MP")
+    val currentHP = integer("current_HP").nullable()
+    val currentMP = integer("current_MP").nullable()
     val x = integer("x")
     val y = integer("y")
     val idSize = integer("ID_Size").references(SizeTable.id)

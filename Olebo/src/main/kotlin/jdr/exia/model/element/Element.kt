@@ -9,17 +9,23 @@ import org.jetbrains.exposed.dao.EntityID
 import java.awt.Rectangle
 import javax.swing.ImageIcon
 
-abstract class Element(id: EntityID<Int>) : Entity<Int>(id) {
+class Element(id: EntityID<Int>) : Entity<Int>(id) {
     companion object : EntityClass<Int, Element>(InstanceTable)
 
-    var size by Size.SizeElement referencedOn InstanceTable.idSize
-    var visible by InstanceTable.visible
+    // Value stored into the database
+    private val blueprint by Blueprint referencedOn InstanceTable.idBlueprint
+    val idScene by InstanceTable.idScene
+
+    // Variables stored into the database
+    private var visible by InstanceTable.visible
     var currentHealth by InstanceTable.currentHP
     var currentMana by InstanceTable.currentMP
     var x by InstanceTable.x
     var y by InstanceTable.y
+    var sizeElement by Size.SizeElement referencedOn InstanceTable.idSize
 
-    private val blueprint by Blueprint referencedOn InstanceTable.idBlueprint
+
+    // Value from the Blueprint
     val sprite
         get() = ImageIcon(blueprint.sprite)
     val name
@@ -31,7 +37,9 @@ abstract class Element(id: EntityID<Int>) : Entity<Int>(id) {
     val type
         get() = blueprint.type
 
-    var hitBox = Rectangle(x, y, size.absoluteSizeValue, size.absoluteSizeValue)
+    // Custom getters / setters / variables / values
+    val hitBox
+        get() = Rectangle(x, y, sizeElement.absoluteSizeValue, sizeElement.absoluteSizeValue)
 
     var isVisible
         get() = visible.toBoolean()
@@ -39,25 +47,20 @@ abstract class Element(id: EntityID<Int>) : Entity<Int>(id) {
             visible = value.toInt()
         }
 
-    fun setSize(newSize: Size) {
-        this.size = newSize.size
-        hitBox = Rectangle(x, y, size.absoluteSizeValue, size.absoluteSizeValue)
-    }
+    var size
+        get() = sizeElement.sizeElement
+        set(value) {
+            sizeElement = value.size
+        }
 
-    fun getSize(): Size {
-        return size.sizeElement
-    }
-
-    fun setPosition(x: Int, y: Int) {
-        this.x = x
-        this.y = y
-        this.hitBox = Rectangle(x, y, size.absoluteSizeValue, size.absoluteSizeValue)
-    }
-
-    fun getPosition() = Position(x, y)
+    var position
+        get() = Position(x, y)
+        set(value) {
+            this.x = value.x
+            this.y = value.y
+        }
 }
 
 fun Element?.isCharacter(): Boolean {
     return this != null && (this.type.typeElement == Type.PNJ || this.type.typeElement == Type.PJ)
 }
-
