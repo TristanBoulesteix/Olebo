@@ -48,6 +48,7 @@ object ViewManager {
     fun loadCurrentScene() {
         with(activeAct) {
             activeScene = this!!.scenes.findWithId(activeAct!!.sceneId)
+
             ViewFacade.setMapBackground(activeScene!!.background)
             ViewFacade.turnVisible()
         }

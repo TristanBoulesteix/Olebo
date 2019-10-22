@@ -45,6 +45,7 @@ object ViewFacade {
     fun setMapBackground(imageName: String) { //Sets the MapPanels backGround
         MasterFrame.setMapBackground(imageName)
         PlayerFrame.setMapBackground(imageName)
+        MasterMenuBar.initialize()
         repaintFrames()
     }
 

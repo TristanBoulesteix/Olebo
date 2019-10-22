@@ -3,6 +3,8 @@ package jdr.exia.view.mainFrame
 import jdr.exia.controller.ViewManager
 import jdr.exia.model.act.Act
 import jdr.exia.model.dao.DAO
+import jdr.exia.view.homeFrame.ActSelectorPanel
+import jdr.exia.view.homeFrame.HomeFrame
 import org.jetbrains.exposed.sql.transactions.transaction
 import javax.swing.JMenu
 import javax.swing.JMenuBar
@@ -20,7 +22,7 @@ object MasterMenuBar: JMenuBar() {
     fun initialize(){
         this.removeAll()
         val actMenu = JMenu("Act")
-        val closeAct = JMenuItem("Close Act")
+        val closeAct = JMenuItem("Close Act").apply { addActionListener{ MasterFrame.isVisible = false; PlayerFrame.isVisible = false; HomeFrame().isVisible = true} }
         actMenu.add(closeAct)
 
         val pcFrameMenu = JMenu("Player Frame")
@@ -39,9 +41,16 @@ object MasterMenuBar: JMenuBar() {
                 for(scene in act!!.scenes){
 
                     i++
+                    if (scene.id.value == act!!.sceneId){var item =JMenuItem("$i ${scene.name} (Active)")
+                        selectScene.add(item)
+                    }
+                    else{
+
                     var item =JMenuItem("$i ${scene.name}")
                     item.addActionListener{ transaction(DAO.database){act!!.sceneId= scene.id.value; ViewManager.loadCurrentScene()} }
-                    selectScene.add(item)
+                        selectScene.add(item)
+                    }
+
                 }
             }
 
@@ -51,7 +60,9 @@ object MasterMenuBar: JMenuBar() {
 
         val tokenMenu = JMenu("Token")
         val addToken = JMenuItem("Add a Token").apply { addActionListener{ println("k")} }
-        val removeSelectedToken = JMenuItem("Remove Selected Item").apply { addActionListener{ println("helpoutjjjj")} }
+        val removeSelectedToken = JMenuItem("Remove Selected Item").apply { addActionListener{ SelectPanel.selectedElement?.let { it1 ->
+            ViewManager.removeToken(it1)
+        } } }
         tokenMenu.add(addToken)
         tokenMenu.add(removeSelectedToken)
 
