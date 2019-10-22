@@ -12,8 +12,8 @@ import javax.swing.ImageIcon
 abstract class Element(id: EntityID<Int>) : Entity<Int>(id) {
     companion object : EntityClass<Int, Element>(InstanceTable)
 
-    private var size by Size.SizeElement referencedOn InstanceTable.size
-    private var visible by InstanceTable.visible
+    var size by Size.SizeElement referencedOn InstanceTable.idSize
+    var visible by InstanceTable.visible
     var currentHealth by InstanceTable.currentHP
     var currentMana by InstanceTable.currentMP
     var x by InstanceTable.x

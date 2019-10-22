@@ -4,10 +4,10 @@ import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.dao.SceneTable
 import jdr.exia.model.element.Element
-import jdr.exia.model.utils.DelegateIterable
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.EntityID
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
 
 class Scene(id: EntityID<Int>) : Entity<Int>(id) {
@@ -30,10 +30,10 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
         }
     }
 
-    private val elementIterable by Element referrersOn InstanceTable.idScene
+    val elementIterable by Element referrersOn InstanceTable.idScene
 
-    val elements by DelegateIterable { elementIterable }
-
+    // val elements by DelegateIterable { elementIterable }
+    val elements = mutableListOf<Element>()
     var name by SceneTable.name
     var background by SceneTable.background
     var idAct by SceneTable.idAct
@@ -41,5 +41,19 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
     override fun delete() {
         File(background).delete()
         super.delete()
+    }
+}
+
+fun main() {
+    transaction(DAO.database) {
+        /*        Act.all().forEach { act ->
+                    act.scenes.forEach { scene ->
+                        println(scene.name)
+                        scene.elementIterable.forEach {
+                            println(it.name)
+                        }
+                    }
+                }*/
+        println(Element[1].name)
     }
 }

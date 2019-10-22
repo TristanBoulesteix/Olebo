@@ -30,7 +30,7 @@ object InstanceTable : IntIdTable() {
     val currentMP = integer("current_MP")
     val x = integer("x")
     val y = integer("y")
-    val size = integer("Size").references(SizeTable.id)
+    val idSize = integer("ID_Size").references(SizeTable.id)
     val visible = integer("Visible")
     val idScene = integer("ID_Scene").references(SceneTable.id)
     val idBlueprint = integer("id_blueprint").references(BlueprintTable.id)
