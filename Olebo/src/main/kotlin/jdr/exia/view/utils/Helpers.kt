@@ -1,5 +1,7 @@
 package jdr.exia.view.utils
 
+import jdr.exia.model.element.Element
+import jdr.exia.model.element.Type
 import java.awt.Component
 import javax.swing.JOptionPane
 
@@ -12,3 +14,7 @@ fun showPopup(message: String, parent: Component? = null) = JOptionPane.showMess
     "Attention !",
     JOptionPane.INFORMATION_MESSAGE
 )
+
+fun Element?.isCharacter(): Boolean {
+    return this != null && (this.type.typeElement == Type.PNJ || this.type.typeElement == Type.PJ)
+}

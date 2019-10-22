@@ -60,7 +60,3 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             this.y = value.y
         }
 }
-
-fun Element?.isCharacter(): Boolean {
-    return this != null && (this.type.typeElement == Type.PNJ || this.type.typeElement == Type.PJ)
-}
