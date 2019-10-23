@@ -16,8 +16,8 @@ object SceneTable : IntIdTable() {
 object BlueprintTable : IntIdTable() {
     val name = varchar("name", 50)
     val sprite = varchar("sprite", 200)
-    val HP = integer("HP")
-    val MP = integer("MP")
+    val HP = integer("HP").nullable()
+    val MP = integer("MP").nullable()
     val idType = reference("id_type", TypeTable)
 }
 

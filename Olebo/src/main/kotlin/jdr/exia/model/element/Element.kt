@@ -1,6 +1,8 @@
 package jdr.exia.model.element
 
+import jdr.exia.CharacterException
 import jdr.exia.model.dao.InstanceTable
+import jdr.exia.model.utils.isCharacter
 import jdr.exia.model.utils.toBoolean
 import jdr.exia.model.utils.toInt
 import org.jetbrains.exposed.dao.Entity
@@ -18,8 +20,8 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
     // Variables stored into the database
     private var visible by InstanceTable.visible
-    var currentHealth by InstanceTable.currentHP
-    var currentMana by InstanceTable.currentMP
+    private var currentHP by InstanceTable.currentHP
+    private var currentPM by InstanceTable.currentMP
     var x by InstanceTable.x
     var y by InstanceTable.y
     var sizeElement by Size.SizeElement referencedOn InstanceTable.idSize
@@ -59,4 +61,14 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             this.x = value.x
             this.y = value.y
         }
+
+    var currentHealth
+        get() = if (this.isCharacter()) currentHP!! else throw Exception("Cet élément n'est pas un personnage !")
+        set(value) = if (this.isCharacter()) currentHP = value
+        else throw CharacterException(this::class, "currentHealth")
+
+    var currentMana
+        get() = if (this.isCharacter()) currentPM!! else throw Exception("Cet élément n'est pas un personnage !")
+        set(value) = if (this.isCharacter()) currentPM = value
+        else throw CharacterException(this::class, "currentMana")
 }

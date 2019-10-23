@@ -3,7 +3,7 @@ package jdr.exia.view.mainFrame
 import jdr.exia.controller.ViewManager
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Size
-import jdr.exia.view.utils.isCharacter
+import jdr.exia.model.utils.isCharacter
 import java.awt.Color
 import java.awt.Dimension
 import java.awt.Graphics
