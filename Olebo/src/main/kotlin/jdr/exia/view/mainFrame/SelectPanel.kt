@@ -25,7 +25,7 @@ object SelectPanel : JPanel() {
         preferredSize = Dimension(100, 40)
         this.addActionListener {
             if (selectedElement.isCharacter()) {
-                selectedElement!!.currentHealth = selectedElement!!.currentHealth?.plus(checkTextValue(hpField.text))
+                selectedElement!!.currentHealth += checkTextValue(hpField.text)
             }
             hpField.text = ""
             MasterFrame.repaint()
@@ -38,7 +38,7 @@ object SelectPanel : JPanel() {
         preferredSize = Dimension(110, 40)
         this.addActionListener {
             if (selectedElement.isCharacter()) {
-                selectedElement!!.currentMana = selectedElement!!.currentMana!! + checkTextValue(manaField.text)
+                selectedElement!!.currentMana += checkTextValue(manaField.text)
             }
             manaField.text = ""
             MasterFrame.repaint()

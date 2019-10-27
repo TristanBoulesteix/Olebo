@@ -1,5 +1,6 @@
 package jdr.exia.view.editor.acts
 
+import jdr.exia.controller.SceneData
 import jdr.exia.view.utils.showPopup
 import java.awt.Dimension
 import java.awt.GridBagConstraints
@@ -14,8 +15,8 @@ import javax.swing.filechooser.FileNameExtensionFilter
  *
  * @param scene The scene to update. If the scene is <strong>null</strong>, it will be created.
  */
-class SceneEditorDialog(private val scene: HashMap<Field, String>? = null) : JDialog() {
-    private val nameField = JTextField(if (scene != null) scene[Field.NAME] else null).apply {
+class SceneEditorDialog(private val scene: SceneData? = null) : JDialog() {
+    private val nameField = JTextField(scene?.name).apply {
         this.preferredSize = Dimension(100, 25)
     }
 
@@ -36,7 +37,7 @@ class SceneEditorDialog(private val scene: HashMap<Field, String>? = null) : JDi
 
         this.title = if (scene == null) "Nouvelle scène" else "Modification de la scène"
         this.modalityType = ModalityType.APPLICATION_MODAL
-        this.size = Dimension(200, 200)
+        this.size = Dimension(400, 400)
         this.defaultCloseOperation = DO_NOTHING_ON_CLOSE
         this.isResizable = false
         this.layout = GridBagLayout()
@@ -53,7 +54,7 @@ class SceneEditorDialog(private val scene: HashMap<Field, String>? = null) : JDi
 
         this.add(JButton("Importer une image").apply {
             this.toolTipText = if (scene != null) {
-                selectedFile = File(scene[Field.IMG]!!)
+                selectedFile = File(scene.img)
                 selectedFile.name
             } else null
             this.addActionListener {
@@ -89,27 +90,14 @@ class SceneEditorDialog(private val scene: HashMap<Field, String>? = null) : JDi
     /**
      * Display the JDialog and return the new scene datas.
      */
-    fun showDialog(): HashMap<Field, String>? {
+    fun showDialog(): SceneData? {
         this.isVisible = true
         return if (isFieldValid && !canceled) {
-            hashMapOf(
-                Field.NAME to nameField.text,
-                Field.IMG to selectedFile.absolutePath
-            ).also {
-                if (scene != null && scene[Field.ID] != null)
-                    it[Field.ID] = scene[Field.ID]
-            }
+            SceneData(nameField.text, selectedFile.absolutePath, scene?.id)
         } else if (!canceled) {
             this.canceled = true
             showPopup("Le nom existe déjà ou le fichier sélectionné est invalide !", this)
             return this.showDialog()
         } else null
-    }
-
-    /**
-     * All scenes datas type
-     */
-    enum class Field {
-        NAME, IMG, ID
     }
 }
