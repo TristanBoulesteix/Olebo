@@ -19,13 +19,13 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
     var type by Type.TypeElement referencedOn BlueprintTable.idType
 
     var HP
-        get() = if (type.typeElement == Type.PNJ || type.typeElement == Type.PNJ) maxLife!! else throw Exception("Cet élément n'est pas un personnage !")
-        set(value) = if (type.typeElement == Type.PNJ || type.typeElement == Type.PNJ) maxLife = value
+        get() = if (type.typeElement == Type.PNJ || type.typeElement == Type.PJ) maxLife!! else throw Exception("Cet élément n'est pas un personnage !")
+        set(value) = if (type.typeElement == Type.PNJ || type.typeElement == Type.PJ) maxLife = value
         else throw CharacterException(this::class, "HP")
 
     var MP
-        get() = if (type.typeElement == Type.PNJ || type.typeElement == Type.PNJ) maxMana!! else throw Exception("Cet élément n'est pas un personnage !")
-        set(value) = if (type.typeElement == Type.PNJ || type.typeElement == Type.PNJ) maxMana = value
+        get() = if (type.typeElement == Type.PNJ || type.typeElement == Type.PJ) maxMana!! else throw Exception("Cet élément n'est pas un personnage !")
+        set(value) = if (type.typeElement == Type.PNJ || type.typeElement == Type.PJ) maxMana = value
         else throw CharacterException(this::class, "MP")
 
     override fun delete() {

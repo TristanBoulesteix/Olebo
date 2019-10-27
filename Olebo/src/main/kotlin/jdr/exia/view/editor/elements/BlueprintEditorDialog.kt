@@ -1,5 +1,6 @@
 package jdr.exia.view.editor.elements
 
+import jdr.exia.controller.BlueprintData
 import jdr.exia.view.utils.IntegerFilter
 import jdr.exia.view.utils.showPopup
 import java.awt.Dimension
@@ -18,19 +19,19 @@ import jdr.exia.model.element.Type as TypeElement
  * @param type The type of element to create
  * @param blueprint The blueprint to update. If the scene is <strong>null</strong>, it will be created.
  */
-class BlueprintEditorDialog(private val type: TypeElement, private val blueprint: HashMap<Field, String>? = null) :
+class BlueprintEditorDialog(private val type: TypeElement, private val blueprint: BlueprintData? = null) :
     JDialog() {
-    private val nameField = JTextField(if (blueprint != null) blueprint[Field.NAME] else null).apply {
+    private val nameField = JTextField(blueprint?.name).apply {
         this.preferredSize = Dimension(100, 25)
     }
     private val lifeField by lazy {
-        JTextField(if (blueprint != null) blueprint[Field.LIFE] else null).apply {
+        JTextField(blueprint?.life?.toString()).apply {
             this.preferredSize = Dimension(100, 25)
             (this.document as PlainDocument).documentFilter = IntegerFilter()
         }
     }
     private val manaField by lazy {
-        JTextField(if (blueprint != null) blueprint[Field.MANA] else null).apply {
+        JTextField(blueprint?.mana?.toString()).apply {
             this.preferredSize = Dimension(100, 25)
             (this.document as PlainDocument).documentFilter = IntegerFilter()
         }
@@ -94,7 +95,7 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
 
         this.add(JButton("Importer une image").apply {
             this.toolTipText = if (blueprint != null) {
-                selectedFile = File(blueprint[Field.IMG]!!)
+                selectedFile = File(blueprint.img)
                 selectedFile.name
             } else null
             this.addActionListener {
@@ -130,33 +131,20 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
     /**
      * Display the JDialog and return the new blueprint datas.
      */
-    fun showDialog(): HashMap<Field, String>? {
+    fun showDialog(): BlueprintData? {
         this.isVisible = true
         return if (isFieldValid && !canceled) {
-            hashMapOf(
-                Field.NAME to nameField.text,
-                Field.IMG to selectedFile.absolutePath
-            ).also {
-                if (type != TypeElement.OBJECT) {
-                    it += hashMapOf(
-                        Field.MANA to manaField.text,
-                        Field.LIFE to lifeField.text
-                    )
-                }
-                if (blueprint?.get(Field.ID) != null)
-                    it[Field.ID] = blueprint[Field.ID]
-            }
+            BlueprintData(
+                nameField.text,
+                selectedFile.absolutePath,
+                if (type != TypeElement.OBJECT) manaField.text.toInt() else null,
+                if (type != TypeElement.OBJECT) lifeField.text.toInt() else null,
+                blueprint?.id
+            )
         } else if (!canceled) {
             this.canceled = true
             showPopup("Le nom existe déjà ou le fichier sélectionné est invalide !", this)
             return this.showDialog()
         } else null
-    }
-
-    /**
-     * All blueprints datas type
-     */
-    enum class Field {
-        NAME, IMG, ID, LIFE, MANA
     }
 }

@@ -100,13 +100,13 @@ class BlueprintManager : Observable {
         transaction(DAO.database) {
             BlueprintEditorDialog(type).showDialog()?.let { map ->
                 Blueprint.new {
-                    this.name = map[BlueprintEditorDialog.Field.NAME]!!
-                    if (this@BlueprintManager.type != Type.OBJECT) {
-                        this.HP = map[BlueprintEditorDialog.Field.LIFE]!!.toInt()
-                        this.MP = map[BlueprintEditorDialog.Field.MANA]!!.toInt()
-                    }
-                    this.sprite = saveImg(map[BlueprintEditorDialog.Field.IMG]!!)
                     this.type = this@BlueprintManager.type.type
+                    this.name = map.name
+                    if (this@BlueprintManager.type != Type.OBJECT) {
+                        this.HP = map.life!!
+                        this.MP = map.mana!!
+                    }
+                    this.sprite = saveImg(map.img)
                 }
             }
         }
@@ -114,3 +114,5 @@ class BlueprintManager : Observable {
         notifyObserver(Action.REFRESH)
     }
 }
+
+data class BlueprintData(val name: String, val img: String, val mana: Int? = null, val life: Int? = null, val id: Int? = null)
