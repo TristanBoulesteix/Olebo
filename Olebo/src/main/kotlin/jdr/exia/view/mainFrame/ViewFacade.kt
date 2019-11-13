@@ -13,7 +13,6 @@ object ViewFacade {
     }
 
     init {
-
     }
 
     fun addMarker(token: Element) {

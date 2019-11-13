@@ -3,6 +3,7 @@ package jdr.exia.controller
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.element.Element
+import jdr.exia.view.homeFrame.HomeFrame
 import jdr.exia.view.mainFrame.MasterMenuBar
 import jdr.exia.view.mainFrame.ViewFacade
 
@@ -28,10 +29,14 @@ object ViewManager {
     }
 
     fun initializeAct(act: Act) {
-        activeAct = act
-        MasterMenuBar.act = act
-        MasterMenuBar.initialize()
-        loadCurrentScene()
+        if (act.scenes.isNotEmpty()) {
+            activeAct = act
+            MasterMenuBar.act = act
+            MasterMenuBar.initialize()
+            loadCurrentScene()
+        } else{
+            HomeFrame().isVisible = true
+        }
     }
 
     fun removeToken(token: Element) { //removes given token from MutableList
@@ -42,10 +47,11 @@ object ViewManager {
         activeAct!!.sceneId = sceneId
         loadCurrentScene()
         updateTokens()
+
     }
 
 
-    fun loadCurrentScene() {
+    private fun loadCurrentScene() {
         with(activeAct) {
             activeScene = this!!.scenes.findWithId(activeAct!!.sceneId)
 

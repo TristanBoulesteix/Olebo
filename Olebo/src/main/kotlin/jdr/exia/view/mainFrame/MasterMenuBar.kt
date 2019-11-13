@@ -47,7 +47,7 @@ object MasterMenuBar: JMenuBar() {
                     else{
 
                     var item =JMenuItem("$i ${scene.name}")
-                    item.addActionListener{ transaction(DAO.database){act!!.sceneId= scene.id.value; ViewManager.loadCurrentScene()} }
+                    item.addActionListener{ transaction(DAO.database){ViewManager.changeCurrentScene(scene.id.value);} }
                         selectScene.add(item)
                     }
 
