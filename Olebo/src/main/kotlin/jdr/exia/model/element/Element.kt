@@ -9,7 +9,7 @@ import org.jetbrains.exposed.dao.EntityID
 import java.awt.Rectangle
 import javax.swing.ImageIcon
 
- class Element(id: EntityID<Int>) : Entity<Int>(id) {
+ abstract class Element(id: EntityID<Int>) : Entity<Int>(id) {
     companion object : EntityClass<Int, Element>(InstanceTable)
 
     private var size by Size.SizeElement referencedOn InstanceTable.size
