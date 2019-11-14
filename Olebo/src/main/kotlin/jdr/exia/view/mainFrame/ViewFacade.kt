@@ -7,7 +7,7 @@ import jdr.exia.model.element.Element
 this is a singleton*/
 object ViewFacade {
 
-    fun testRun(){ //TODO: remove once test is not needed
+    fun testRun(){
         MasterFrame.isVisible = true
         PlayerFrame.isVisible = true
     }
@@ -32,12 +32,10 @@ object ViewFacade {
     }
 
     fun selectToken(x: Int,y:Int){
-
         ViewManager.selectToken(x,y)
-
     }
 
-    fun setSelectedToken(token: Element){
+    fun setSelectedToken(token: Element?){
         SelectPanel.selectedElement = token
     }
 
@@ -69,7 +67,7 @@ object ViewFacade {
     fun placeTokensOnMaps(tokens: MutableList<Element>) { //places tokens on both maps at corresponding points
         PlayerFrame.updateMap(tokens)
         MasterFrame.updateMap(tokens)
-        repaintFrames()
+
 
     }
 

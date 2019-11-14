@@ -64,7 +64,7 @@ object MasterMenuBar : JMenuBar() {
 
         val tokenMenu = JMenu("Token")
         val addToken = JMenuItem("Add a Token").apply { addActionListener {  } }
-        val removeSelectedToken = JMenuItem("Remove Selected Item").apply {
+        val removeSelectedToken = JMenuItem("Remove Selected Token").apply {
             addActionListener {
                 SelectPanel.selectedElement?.let { it1 ->
                     ViewManager.removeToken(it1)
@@ -73,11 +73,6 @@ object MasterMenuBar : JMenuBar() {
         }
         tokenMenu.add(addToken)
         tokenMenu.add(removeSelectedToken)
-
-
-
-
-
         this.add(actMenu)
         this.add(tokenMenu)
         this.add(sceneMenu)

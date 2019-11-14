@@ -15,7 +15,12 @@ import javax.swing.*
 //this is a singleton
 object SelectPanel : JPanel() {
     var selectedElement: Element? = null
-
+        set(value){
+            field = value
+            if (selectedElement!=null) {
+               sizeCombo.selectedItem =  selectedElement!!.size.name
+            }
+        }
 
     private val nameLabel = JLabel("Name").apply { horizontalTextPosition = JLabel.CENTER }
 
@@ -49,6 +54,7 @@ object SelectPanel : JPanel() {
         preferredSize = Dimension(150, 40)
         addActionListener {
             ViewManager.toggleVisibility(selectedElement)
+
         }
     }
 
@@ -61,22 +67,22 @@ object SelectPanel : JPanel() {
         }
     }
 
-    private val sizeCombo = JComboBox(arrayOf("XS", "S", "M", "L", "XL", "XXL")).apply {
+    private val sizeCombo = JComboBox(arrayOf("XS", "S", "M  (unsafe)", "L", "XL  (unsafe)", "XXL")).apply {
         addActionListener {
             if (selectedElement != null) {
                 when (this.selectedItem) {
-
                     "XS" -> selectedElement!!.size = Size.XS
                     "S" -> selectedElement!!.size = Size.S
-                    "M" -> selectedElement!!.size = Size.M
+                    "M  (unsafe)" -> selectedElement!!.size = Size.M
                     "L" -> selectedElement!!.size = Size.L
-                    "XL" -> selectedElement!!.size = Size.XL
+                    "XL  (unsafe)" -> selectedElement!!.size = Size.XL
                     "XXL" -> selectedElement!!.size = Size.XXL
                 }
             }
+
             ViewManager.repaint()
         }
-    } //TODO: Complete the Size drop down menu
+    }
 
     private fun checkTextValue(str: String): Int {
         try {

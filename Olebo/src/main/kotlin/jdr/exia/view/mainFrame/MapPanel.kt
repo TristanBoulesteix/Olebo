@@ -47,13 +47,14 @@ class MapPanel : JPanel(), MouseListener {
                     this.height,
                     null
                 )
-
+                val rotator = g as Graphics2D
                 for (token in tokens) //Display every token one by one
                 {
                     if((!isMasterMapPanel)&&!(token.isVisible)){} //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
                     else {
                         if ((isMasterMapPanel) && !(token.isVisible)) { drawInvisibleMarker(token,g) }
-                        g.drawImage(
+                        rotator.rotate( Math.toRadians(token.orientation*45.0))
+                        rotator.drawImage(
                             token.sprite.image,
                             relativeX(token.position.x),
                             relativeY(token.position.y),
@@ -113,9 +114,13 @@ class MapPanel : JPanel(), MouseListener {
             relativeX(token.hitBox.width)+2,
             relativeY(token.hitBox.height)+2)
     }
+
+
     fun clearMarker() { //Removes the current marker
         marker = null
     }
+
+
     // Unused mouse methods
     override fun mouseExited(p0: MouseEvent?) {}
     override fun mousePressed(p0: MouseEvent?) {}
