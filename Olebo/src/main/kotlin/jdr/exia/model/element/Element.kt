@@ -28,7 +28,6 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     var sizeElement by Size.SizeElement referencedOn InstanceTable.idSize
     var orientation by InstanceTable.orientation
 
-
     // Value from the Blueprint
     val sprite
         get() = ImageIcon(blueprint.sprite)

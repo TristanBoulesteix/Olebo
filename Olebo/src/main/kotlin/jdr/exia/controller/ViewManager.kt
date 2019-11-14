@@ -2,6 +2,7 @@ package jdr.exia.controller
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
+import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Position
 import jdr.exia.view.mainFrame.MasterMenuBar
@@ -11,7 +12,9 @@ object ViewManager {
     private var activeAct: Act? = null
     private var activeScene: Scene? = null
     private var grabbedToken: Element? = null
-    init {}
+
+    val items
+        get() = Blueprint.all()
 
     fun clickNDrop(x: Int, y: Int) {
         /*If a token has already been grabbed, then it is placed with dropToken(),
@@ -22,7 +25,6 @@ object ViewManager {
                 ViewFacade.addMarker(grabbedToken!!)
                 updateTokens()
             }
-
         } else {
             dropToken(x, y)
         }
@@ -45,8 +47,7 @@ object ViewManager {
         updateTokens()
     }
 
-
-    fun loadCurrentScene() {
+    private fun loadCurrentScene() {
         with(activeAct) {
             activeScene = this!!.scenes.findWithId(activeAct!!.sceneId)
 
@@ -72,15 +73,12 @@ object ViewManager {
         x: Int,
         y: Int
     ) { /* Places the currently grabbed token to last click's location, and drops it*/
-
         val newX = (x - (grabbedToken!!.hitBox.width / 2))
         val newY = (y - (grabbedToken!!.hitBox.height / 2))
         grabbedToken!!.position = Position(newX, newY)
         grabbedToken = null
         ViewFacade.removeMarker()
         updateTokens()
-
-
     }
 
     private fun addToken(token: Element) { //Adds a single token to this object's Token list
@@ -99,7 +97,6 @@ object ViewManager {
         return null
     }
 
-
     fun repaint() {
         ViewFacade.repaintFrames()
     }
@@ -108,14 +105,14 @@ object ViewManager {
         x: Int,
         y: Int
     ) { //cheks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
-        var selected = getTokenFromXY(x, y)
+        val selected = getTokenFromXY(x, y)
         if (selected != null) {
             ViewFacade.setSelectedToken(selected)
             updateTokens()
         }
     }
 
-    fun updateTokens() { //Updates the tokens on the maps by repainting everything //TODO: replace mapToken with activeScene.elements
+    private fun updateTokens() { //Updates the tokens on the maps by repainting everything //TODO: replace mapToken with activeScene.elements
         ViewFacade.placeTokensOnMaps(activeScene!!.elements)
     }
 

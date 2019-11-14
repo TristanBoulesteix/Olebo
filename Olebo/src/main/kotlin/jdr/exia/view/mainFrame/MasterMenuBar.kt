@@ -10,9 +10,7 @@ import javax.swing.JMenuBar
 import javax.swing.JMenuItem
 
 object MasterMenuBar : JMenuBar() {
-
     var act: Act? = null
-
 
     init {
         initialize()
@@ -38,7 +36,7 @@ object MasterMenuBar : JMenuBar() {
         pcFrameMenu.add(togglePlayerFrame)
         this.add(pcFrameMenu)
         val sceneMenu = JMenu("Scene")
-        var selectScene = JMenu("Select a Scene")
+        val selectScene = JMenu("Select a Scene")
 
         if (act != null) {
             var i = 0
@@ -46,19 +44,15 @@ object MasterMenuBar : JMenuBar() {
 
                 i++
                 if (scene.id.value == act!!.sceneId) {
-                    var item = JMenuItem("$i ${scene.name} (Active)")
+                    val item = JMenuItem("$i ${scene.name} (Active)")
                     selectScene.add(item)
                 } else {
-
-                    var item = JMenuItem("$i ${scene.name}")
+                    val item = JMenuItem("$i ${scene.name}")
                     item.addActionListener { transaction(DAO.database) { ViewManager.changeCurrentScene(scene.id.value); } }
                     selectScene.add(item)
                 }
-
             }
         }
-
-
 
         sceneMenu.add(selectScene)
 
@@ -74,14 +68,8 @@ object MasterMenuBar : JMenuBar() {
         tokenMenu.add(addToken)
         tokenMenu.add(removeSelectedToken)
 
-
-
-
-
         this.add(actMenu)
         this.add(tokenMenu)
         this.add(sceneMenu)
-
     }
-
 }
