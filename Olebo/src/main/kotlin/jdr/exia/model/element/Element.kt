@@ -41,7 +41,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
     // Custom getters / setters / variables / values
     val hitBox
-        get() = Rectangle(x, y, sizeElement.absoluteSizeValue, sizeElement.absoluteSizeValue)
+        get() = transaction { Rectangle(x, y, sizeElement.absoluteSizeValue, sizeElement.absoluteSizeValue) }
 
     var isVisible
         get() = visible.toBoolean()
