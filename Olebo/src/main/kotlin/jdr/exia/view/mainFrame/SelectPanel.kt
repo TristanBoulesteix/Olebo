@@ -3,7 +3,7 @@ package jdr.exia.view.mainFrame
 import jdr.exia.controller.ViewManager
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Size
-import jdr.exia.model.element.isCharacter
+import jdr.exia.model.utils.isCharacter
 import java.awt.Color
 import java.awt.Dimension
 import java.awt.Graphics
@@ -66,12 +66,12 @@ object SelectPanel : JPanel() {
             if (selectedElement != null) {
                 when (this.selectedItem) {
 
-                    "XS" -> selectedElement!!.setSize(Size.XS)
-                    "S" -> selectedElement!!.setSize(Size.S)
-                    "M" -> selectedElement!!.setSize(Size.M)
-                    "L" -> selectedElement!!.setSize(Size.L)
-                    "XL" -> selectedElement!!.setSize(Size.XL)
-                    "XXL" -> selectedElement!!.setSize(Size.XXL)
+                    "XS" -> selectedElement!!.size = Size.XS
+                    "S" -> selectedElement!!.size = Size.S
+                    "M" -> selectedElement!!.size = Size.M
+                    "L" -> selectedElement!!.size = Size.L
+                    "XL" -> selectedElement!!.size = Size.XL
+                    "XXL" -> selectedElement!!.size = Size.XXL
                 }
             }
             ViewManager.repaint()

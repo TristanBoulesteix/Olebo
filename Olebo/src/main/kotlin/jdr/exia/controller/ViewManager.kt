@@ -3,7 +3,7 @@ package jdr.exia.controller
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.element.Element
-import jdr.exia.view.homeFrame.HomeFrame
+import jdr.exia.model.element.Position
 import jdr.exia.view.mainFrame.MasterMenuBar
 import jdr.exia.view.mainFrame.ViewFacade
 
@@ -29,14 +29,10 @@ object ViewManager {
     }
 
     fun initializeAct(act: Act) {
-        if (act.scenes.isNotEmpty()) {
-            activeAct = act
-            MasterMenuBar.act = act
-            MasterMenuBar.initialize()
-            loadCurrentScene()
-        } else{
-            HomeFrame().isVisible = true
-        }
+        activeAct = act
+        MasterMenuBar.act = act
+        MasterMenuBar.initialize()
+        loadCurrentScene()
     }
 
     fun removeToken(token: Element) { //removes given token from MutableList
@@ -47,11 +43,10 @@ object ViewManager {
         activeAct!!.sceneId = sceneId
         loadCurrentScene()
         updateTokens()
-
     }
 
 
-    private fun loadCurrentScene() {
+    fun loadCurrentScene() {
         with(activeAct) {
             activeScene = this!!.scenes.findWithId(activeAct!!.sceneId)
 
@@ -67,7 +62,7 @@ object ViewManager {
         if (grabbedToken != null) {
             val newX = (x - (grabbedToken!!.hitBox.width / 2))
             val newY = (y - (grabbedToken!!.hitBox.height / 2))
-            grabbedToken!!.setPosition(newX, newY)
+            grabbedToken!!.position = Position(newX, newY)
             ViewFacade.addMarker(grabbedToken!!)
             updateTokens()
         }
@@ -80,7 +75,7 @@ object ViewManager {
 
         val newX = (x - (grabbedToken!!.hitBox.width / 2))
         val newY = (y - (grabbedToken!!.hitBox.height / 2))
-        grabbedToken!!.setPosition(newX, newY)
+        grabbedToken!!.position = Position(newX, newY)
         grabbedToken = null
         ViewFacade.removeMarker()
         updateTokens()

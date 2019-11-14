@@ -8,7 +8,6 @@ import jdr.exia.pattern.observer.Action
 import jdr.exia.pattern.observer.Observable
 import jdr.exia.pattern.observer.Observer
 import jdr.exia.view.editor.acts.SceneEditorDialog
-import jdr.exia.view.editor.acts.SceneEditorDialog.Field
 import jdr.exia.view.utils.showPopup
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -16,7 +15,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
  * Manager to create an act (uses all classes in jdr.exia.view.editor)
  */
 class ActCreatorManager : Observable {
-    val tempScenes = mutableListOf<HashMap<Field, String>>()
+    val tempScenes = mutableListOf<SceneData>()
 
     override var observer: Observer? = null
 
@@ -33,10 +32,10 @@ class ActCreatorManager : Observable {
                 val scenes = mutableListOf<Scene>()
 
                 tempScenes.forEach {
-                    val background = saveImg(it[Field.IMG]!!)
+                    val background = saveImg(it.img)
 
                     scenes += Scene.new {
-                        this.name = it[Field.NAME]!!
+                        this.name = it.name
                         this.background = background
                         this.idAct = idCurrentAct
                     }
@@ -60,21 +59,21 @@ class ActCreatorManager : Observable {
                     this.name = actName
 
                     this.scenes.forEach { scene ->
-                        if(!tempScenes.map { it[Field.ID] ?: "" }.contains(scene.id.value.toString())) {
+                        if(!tempScenes.map { it.id ?: -1 }.contains(scene.id.value)) {
                             scene.delete()
                         }
                     }
 
                     tempScenes.forElse { map ->
                         when {
-                            map[Field.ID] != null -> {
-                                val scene = this.scenes.findWithId(map[Field.ID]!!.toInt())
-                                scene?.name = map[Field.NAME]!!
-                                if (scene?.background != map[Field.IMG]) scene?.background = saveImg(map[Field.IMG]!!)
+                            map.id != null -> {
+                                val scene = this.scenes.findWithId(map.id)
+                                scene?.name = map.name
+                                if (scene?.background != map.img) scene?.background = saveImg(map.img)
                             }
                             else -> this.scenes += Scene.new {
-                                this.name = map[Field.NAME]!!
-                                this.background = saveImg(map[Field.IMG]!!)
+                                this.name = map.name
+                                this.background = saveImg(map.img)
                                 this.idAct = this@with.id.value
                             }
                         }
@@ -91,7 +90,7 @@ class ActCreatorManager : Observable {
      */
     fun createNewScene(@Suppress("UNUSED_PARAMETER") id: Int) {
         SceneEditorDialog().showDialog()?.let {
-            if (tempScenes.map { map -> map[Field.NAME] }.contains(it[Field.NAME])) {
+            if (tempScenes.map { map -> map.name }.contains(it.name)) {
                 showPopup("Une scène avec le même nom existe déjà !")
                 createNewScene(0)
             } else {
@@ -107,8 +106,8 @@ class ActCreatorManager : Observable {
     fun updateNewScene(index: Int) {
         SceneEditorDialog(tempScenes[index]).showDialog()?.let {
             if (tempScenes.map { map ->
-                    if (tempScenes[index][Field.NAME] == map[Field.NAME]) "" else map[Field.NAME]
-                }.contains(it[Field.NAME])) {
+                    if (tempScenes[index].name == map.name) "" else map.name
+                }.contains(it.name)) {
                 showPopup("Une scène avec le même nom existe déjà !")
                 updateNewScene(index)
             } else {
@@ -131,7 +130,7 @@ class ActCreatorManager : Observable {
      */
     fun updateAct(scenes: MutableList<Scene>, id: Int) {
         tempScenes += scenes.map {
-            hashMapOf(Field.NAME to it.name, Field.IMG to it.background, Field.ID to it.id.value.toString())
+            SceneData(it.name, it.background, it.id.value)
         }.toMutableList()
         idAct = id
         notifyObserver(Action.REFRESH)
@@ -141,13 +140,15 @@ class ActCreatorManager : Observable {
 /**
  * Extension function to convert a MutableList<HashMap<Field, String>> to Array<Pair<String, String>>.
  */
-fun MutableList<HashMap<Field, String>>.getArrayOfPairs(): Array<Pair<String, String>> {
+fun MutableList<SceneData>.getArrayOfPairs(): Array<Pair<String, String>> {
     var i = -1
 
     return this.map {
         i++
-        Pair(i.toString(), it[Field.NAME]!!)
+        Pair(i.toString(), it.name)
     }.toTypedArray()
 }
 
 private fun <T> List<T>.forElse(block: (T) -> Unit) = if (isEmpty()) null else forEach(block)
+
+data class SceneData(val name: String, val img: String, val id: Int? = null)

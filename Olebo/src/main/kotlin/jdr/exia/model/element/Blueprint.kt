@@ -1,6 +1,8 @@
 package jdr.exia.model.element
 
+import jdr.exia.CharacterException
 import jdr.exia.model.dao.BlueprintTable
+import jdr.exia.model.dao.InstanceTable
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.EntityID
@@ -12,12 +14,25 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
 
     var name by BlueprintTable.name
     var sprite by BlueprintTable.sprite
-    var HP by BlueprintTable.HP
-    var MP by BlueprintTable.MP
+    private var maxLife by BlueprintTable.HP
+    private var maxMana by BlueprintTable.MP
     var type by Type.TypeElement referencedOn BlueprintTable.idType
+
+    var HP
+        get() = if (type.typeElement == Type.PNJ || type.typeElement == Type.PJ) maxLife!! else throw Exception("Cet élément n'est pas un personnage !")
+        set(value) = if (type.typeElement == Type.PNJ || type.typeElement == Type.PJ) maxLife = value
+        else throw CharacterException(this::class, "HP")
+
+    var MP
+        get() = if (type.typeElement == Type.PNJ || type.typeElement == Type.PJ) maxMana!! else throw Exception("Cet élément n'est pas un personnage !")
+        set(value) = if (type.typeElement == Type.PNJ || type.typeElement == Type.PJ) maxMana = value
+        else throw CharacterException(this::class, "MP")
 
     override fun delete() {
         File(sprite).delete()
+        Element.find { InstanceTable.idBlueprint eq id.value }.forEach {
+            it.delete()
+        }
         super.delete()
     }
 }
