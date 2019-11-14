@@ -9,7 +9,7 @@ fun main() {
         UIManager.setLookAndFeel(
             UIManager.getSystemLookAndFeelClassName()
         )
-        
+
         HomeFrame().isVisible = true
     }
 }

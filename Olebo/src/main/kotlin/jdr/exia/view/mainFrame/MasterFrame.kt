@@ -83,7 +83,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         mapConstraints.fill = GridBagConstraints.BOTH
 
         masterFramePanel.add(mapPanel, mapConstraints)
-        //masterFramePanel.add(itemPanel, itemConstraints)
+        masterFramePanel.add(itemPanel, itemConstraints)
         masterFramePanel.add(selectPanel, selectConstraints)
         this.mapPanel.isMasterMapPanel = true
         jMenuBar = MasterMenuBar
