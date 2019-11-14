@@ -32,6 +32,7 @@ object InstanceTable : IntIdTable() {
     val y = integer("y")
     val idSize = integer("ID_Size").references(SizeTable.id)
     val visible = integer("Visible")
+    val orientation = integer("Orientation").default(0)
     val idScene = integer("ID_Scene").references(SceneTable.id)
     val idBlueprint = integer("id_blueprint").references(BlueprintTable.id)
 }

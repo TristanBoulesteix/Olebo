@@ -26,6 +26,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     var x by InstanceTable.x
     var y by InstanceTable.y
     var sizeElement by Size.SizeElement referencedOn InstanceTable.idSize
+    var orientation by InstanceTable.orientation
 
 
     // Value from the Blueprint
