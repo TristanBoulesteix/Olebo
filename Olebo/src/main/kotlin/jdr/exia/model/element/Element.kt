@@ -8,6 +8,7 @@ import jdr.exia.model.utils.toInt
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.EntityID
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
 import javax.swing.ImageIcon
 
