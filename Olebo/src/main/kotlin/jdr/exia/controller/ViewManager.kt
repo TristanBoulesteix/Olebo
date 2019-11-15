@@ -2,7 +2,7 @@ package jdr.exia.controller
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
-import jdr.exia.model.dao.DAO
+import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Position
 import jdr.exia.view.mainFrame.MasterMenuBar
@@ -17,6 +17,9 @@ object ViewManager {
     private var selectedElement: Element? = null
     init {}
 
+    val items
+        get() = Blueprint.all()
+
     fun clickNDrop(x: Int, y: Int) {
         /*If a token has already been grabbed, then it is placed with dropToken(),
         else tries to find a token where the screen was clicked with  loadTokenFromClick(x,y)*/
@@ -25,10 +28,8 @@ object ViewManager {
             if (grabbedToken != null) {
                 ViewFacade.addMarker(grabbedToken!!)
             }
-        }else if(grabbedToken != null){
+        } else {
             dropToken(x, y)
-        }else{
-            ViewFacade.removeMarker()
         }
         repaint()
     }
@@ -60,7 +61,6 @@ object ViewManager {
         repaint()
     }
 
-
     private fun loadCurrentScene() {
         with(activeAct) {
             activeScene = this!!.scenes.findWithId(id = activeAct!!.sceneId)
@@ -90,8 +90,9 @@ object ViewManager {
         repaint()
     }
 
-    private fun addToken(token: Element) { //Adds a single token to this object's Token list
-        this.activeScene?.elements?.add(token)
+    fun addToken(token: Blueprint) { //Adds a single token to this object's Token list
+        this.activeScene?.addElement(token)
+        this.repaint()
     }
 
     private fun getTokenFromXY(x: Int,y: Int): Element? {//Receives a clicked point (x,y), returns the first soken found in the Tokens array, or null if none matched
@@ -102,7 +103,6 @@ object ViewManager {
         }
         return null
     }
-
 
     fun repaint() {
         updateTokens()
@@ -147,7 +147,4 @@ object ViewManager {
             repaint()
         }
     }
-
-
-
 }

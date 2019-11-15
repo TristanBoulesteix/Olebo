@@ -28,10 +28,10 @@ object TypeTable : IntIdTable() {
 object InstanceTable : IntIdTable() {
     val currentHP = integer("current_HP").nullable()
     val currentMP = integer("current_MP").nullable()
-    val x = integer("x")
-    val y = integer("y")
+    val x = integer("x").default(10)
+    val y = integer("y").default(10)
     val idSize = integer("ID_Size").references(SizeTable.id)
-    val visible = integer("Visible")
+    val visible = integer("Visible").default(1)
     val orientation = integer("Orientation").default(0)
     val idScene = integer("ID_Scene").references(SceneTable.id)
     val idBlueprint = integer("id_blueprint").references(BlueprintTable.id)

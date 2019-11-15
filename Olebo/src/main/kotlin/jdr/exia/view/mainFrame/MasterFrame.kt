@@ -23,9 +23,9 @@ this is a singleton*/
  * */
 object MasterFrame : JFrame(), KeyListener, GameFrame {
     private var masterFramePanel = JPanel()
-    val mapPanel = MapPanel()
+    private val mapPanel = MapPanel()
     var selectPanel = SelectPanel // Will contain all info on selected Item
-    var itemPanel = ItemPanel // Will contain list of available items
+    var itemPanel = ItemPanel() // Will contain list of available items
 
     override fun setMapBackground(imageName: String) {
         mapPanel.backGroundImage = ImageIO.read(File(imageName))
@@ -33,11 +33,12 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
 
     init {
         val screens = GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices
-        this.setSize(screens[0].displayMode.width,screens[0].displayMode.height)
+        this.setSize(screens[0].displayMode.width, screens[0].displayMode.height)
         if (screens.size == 1) { //If there is only 1 screen, we display both frames there
         } else {
 
         }
+
         this.title = "Master"
         addKeyListener(this)
         this.defaultCloseOperation = EXIT_ON_CLOSE
@@ -48,15 +49,10 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
 
         mapPanel.setSize(1280, 720)
 
-        itemPanel.setSize(this.width-1280, this.height)
+        itemPanel.setSize(this.width - 1280, this.height)
         itemPanel.background = Color.yellow
 
-
-
-        selectPanel.setSize(this.mapPanel.width,(this.height - mapPanel.height))
-
-
-
+        selectPanel.setSize(this.mapPanel.width, (this.height - mapPanel.height))
 
         val mapConstraints = GridBagConstraints()
         val itemConstraints = GridBagConstraints()
@@ -87,13 +83,13 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         masterFramePanel.add(selectPanel, selectConstraints)
         this.mapPanel.isMasterMapPanel = true
         jMenuBar = MasterMenuBar
-
     }
 
-    fun setMarker(token: Element){
+    fun setMarker(token: Element) {
         mapPanel.setMarker(token)
     }
-    fun removeMarker(){
+
+    fun removeMarker() {
         mapPanel.clearMarker()
     }
 
@@ -118,15 +114,17 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
     }
 
     override fun keyPressed(keyEvent: KeyEvent) {
-
-
+        if (keyEvent.keyCode == KeyEvent.VK_ESCAPE) { //remove after tesing is complete
+            dispose()
+            exitProcess(0)
+        }
     }
 
     override fun keyReleased(keyEvent: KeyEvent) {
 
     }
 
-    override fun updateMap(tokens: MutableList<Element>){
+    override fun updateMap(tokens: MutableList<Element>) {
         mapPanel.updateTokens(tokens)
     }
 }

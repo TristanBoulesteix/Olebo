@@ -9,26 +9,39 @@ import jdr.exia.model.utils.toInt
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.EntityID
+import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
 import javax.swing.ImageIcon
 
 class Element(id: EntityID<Int>) : Entity<Int>(id) {
-    companion object : EntityClass<Int, Element>(InstanceTable)
+    companion object : EntityClass<Int, Element>(InstanceTable) {
+        fun createElement(b: Blueprint): Element {
+            return transaction(DAO.database) {
+                val id = InstanceTable.insertAndGetId {
+                    if (b.type.typeElement != Type.OBJECT) {
+                        it[currentHP] = b.HP
+                        it[currentMP]= b.MP
+                    }
+                    it[idBlueprint] = b.id.value
+                }
+
+                Element[id]
+            }
+        }
+    }
 
     // Value stored into the database
-    private val blueprint by Blueprint referencedOn InstanceTable.idBlueprint
-    val idScene by InstanceTable.idScene
+    private var blueprint by Blueprint referencedOn InstanceTable.idBlueprint
 
     // Variables stored into the database
     private var visible by InstanceTable.visible
     private var currentHP by InstanceTable.currentHP
-    private var currentPM by InstanceTable.currentMP
+    private var currentMP by InstanceTable.currentMP
     var x by InstanceTable.x
     var y by InstanceTable.y
     var sizeElement by Size.SizeElement referencedOn InstanceTable.idSize
     var orientation by InstanceTable.orientation
-
 
     // Value from the Blueprint
     val sprite
@@ -71,7 +84,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         else throw CharacterException(this::class, "currentHealth")
 
     var currentMana
-        get() = if (this.isCharacter()) currentPM!! else throw Exception("Cet élément n'est pas un personnage !")
-        set(value) = if (this.isCharacter()) currentPM = value
+        get() = if (this.isCharacter()) currentMP!! else throw Exception("Cet élément n'est pas un personnage !")
+        set(value) = if (this.isCharacter()) currentMP = value
         else throw CharacterException(this::class, "currentMana")
 }
