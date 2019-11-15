@@ -45,37 +45,37 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
     // Value from the Blueprint
     val sprite
-        get() = ImageIcon(blueprint.sprite)
+        get() = transaction(DAO.database) { ImageIcon(blueprint.sprite) }
     val name
-        get() = blueprint.name
+        get() = transaction(DAO.database) {blueprint.name}
     val maxHP
-        get() = blueprint.HP
+        get() = transaction(DAO.database) {blueprint.HP}
     val maxMana
-        get() = blueprint.MP
+        get() = transaction(DAO.database) {blueprint.MP}
     val type
-        get() = blueprint.type
+        get() = transaction(DAO.database) {blueprint.type}
 
     // Custom getters / setters / variables / values
     val hitBox
-        get() = transaction { Rectangle(x, y, sizeElement.absoluteSizeValue, sizeElement.absoluteSizeValue) }
+        get() = transaction (DAO.database){ Rectangle(x, y, sizeElement.absoluteSizeValue, sizeElement.absoluteSizeValue) }
 
     var isVisible
-        get() = visible.toBoolean()
+        get() = transaction(DAO.database) {visible.toBoolean()}
         set(value) {
-            visible = value.toInt()
+            transaction(DAO.database) { visible = value.toInt() }
         }
 
     var size
-        get() = sizeElement.sizeElement
+        get() =  transaction(DAO.database) {sizeElement.sizeElement}
         set(value) {
-            sizeElement = value.size
+            transaction(DAO.database) { sizeElement = value.size}
         }
 
     var position
         get() = Position(x, y)
         set(value) {
-            this.x = value.x
-            this.y = value.y
+           transaction(DAO.database) {  x = value.x;
+           y = value.y }
         }
 
     var currentHealth

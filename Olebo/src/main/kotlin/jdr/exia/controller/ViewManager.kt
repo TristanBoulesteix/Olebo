@@ -23,10 +23,11 @@ object ViewManager {
             grabbedToken = getTokenFromXY(x, y)
             if (grabbedToken != null) {
                 ViewFacade.addMarker(grabbedToken!!)
-                updateTokens()
+                this.repaint()
             }
         } else {
             dropToken(x, y)
+            this.repaint()
         }
     }
 
@@ -38,20 +39,21 @@ object ViewManager {
     }
 
     fun removeToken(token: Element) { //removes given token from MutableList
-        activeScene?.elements?.remove(token) //TODO: replace mapToken with activeScene.elements
+        activeScene?.elements?.remove(token)
     }
 
     fun changeCurrentScene(sceneId: Int) {
         activeAct!!.sceneId = sceneId
         loadCurrentScene()
-        updateTokens()
+        repaint()
     }
 
     private fun loadCurrentScene() {
         with(activeAct) {
-            activeScene = this!!.scenes.findWithId(activeAct!!.sceneId)
-
+            activeScene = this!!.scenes.findWithId(id = activeAct!!.sceneId)
             ViewFacade.setMapBackground(activeScene!!.background)
+            ViewFacade.setSelectedToken(null)
+            ViewManager.repaint()
             ViewFacade.turnVisible()
         }
     }
@@ -65,7 +67,7 @@ object ViewManager {
             val newY = (y - (grabbedToken!!.hitBox.height / 2))
             grabbedToken!!.position = Position(newX, newY)
             ViewFacade.addMarker(grabbedToken!!)
-            updateTokens()
+            repaint()
         }
     }
 
@@ -78,7 +80,9 @@ object ViewManager {
         grabbedToken!!.position = Position(newX, newY)
         grabbedToken = null
         ViewFacade.removeMarker()
-        updateTokens()
+        repaint()
+
+
     }
 
     fun addToken(token: Blueprint) { //Adds a single token to this object's Token list
@@ -99,6 +103,7 @@ object ViewManager {
     }
 
     fun repaint() {
+        updateTokens()
         ViewFacade.repaintFrames()
     }
 
@@ -109,18 +114,18 @@ object ViewManager {
         val selected = getTokenFromXY(x, y)
         if (selected != null) {
             ViewFacade.setSelectedToken(selected)
-            updateTokens()
+            repaint()
         }
     }
 
-    private fun updateTokens() { //Updates the tokens on the maps by repainting everything //TODO: replace mapToken with activeScene.elements
+    private fun updateTokens() { //Updates the tokens on the maps by repainting everything
         ViewFacade.placeTokensOnMaps(activeScene!!.elements)
     }
 
     fun toggleVisibility(token: Element?) {
         if (token != null) {
             token.isVisible = !token.isVisible
-            updateTokens()
+            repaint()
         }
     }
 }

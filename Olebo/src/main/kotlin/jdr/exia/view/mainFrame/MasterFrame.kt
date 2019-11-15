@@ -34,8 +34,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         val screens = GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices
         this.setSize(screens[0].displayMode.width, screens[0].displayMode.height)
         if (screens.size == 1) { //If there is only 1 screen, we display both frames there
-        } else { //If 2 screens are present, we display the player frame in fullscreen on the 2nd screen
-            //this.isUndecorated = true
+        } else {
 
         }
 
