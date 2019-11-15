@@ -15,7 +15,6 @@ class MapPanel : JPanel(), MouseListener{
 
     var backGroundImage: Image? = null      //The background... Why are you reading this? Stop!! I said stop!!! You're still doing it, even when you had to scroll sideways... Ok i'm giving up, bye
     var tokens = mutableListOf<Element>() //These are all the tokens placed on  the current map
-    var moveAbleElement: Element? = null //Marker that's placed around a token when it is selected
     var selectedElement: Element? = null
     var isMasterMapPanel: Boolean = false
 
@@ -74,32 +73,21 @@ class MapPanel : JPanel(), MouseListener{
                         )
                     }
                 }
-                if (moveAbleElement != null) { // First, place a marker if there needs to be one, so the token will then be painted over it
-                    drawMoveableMarker(g)
-                }
+
                 if (selectedElement != null) {
                     drawSelectedMarker(g)
             }
         }
     }
 
-    private fun drawMoveableMarker(g:Graphics){ //Draws a red rectangle around the currently selected token for movement
+
+
+    private fun drawSelectedMarker(g:Graphics){ //Draws a red rectangle around the currently selected token for movement
         g.color = Color.RED
         g.setPaintMode()
         g.drawRect( //Draws a 1 pixel thick rectangle
-            relativeX(moveAbleElement!!.hitBox.x)-2,
-            relativeY(moveAbleElement!!.hitBox.y)-2,
-            relativeX(moveAbleElement!!.hitBox.width)+2,
-            relativeY(moveAbleElement!!.hitBox.height)+2
-        )
-    }
-
-    private fun drawSelectedMarker(g:Graphics){ //Draws a red rectangle around the currently selected token for movement
-        g.color = Color.GREEN
-        g.setPaintMode()
-        g.drawRect( //Draws a 1 pixel thick rectangle
-            relativeX(selectedElement!!.hitBox.x)-4,
-            relativeY(selectedElement!!.hitBox.y)-4,
+            relativeX(selectedElement!!.position.x)-4,
+            relativeY(selectedElement!!.position.y)-4,
             relativeX(selectedElement!!.hitBox.width)+8,
             relativeY(selectedElement!!.hitBox.height)+8
         )
@@ -122,26 +110,15 @@ class MapPanel : JPanel(), MouseListener{
 
             when (p0.button) //  left button: 1, middle button: 2, Right click: 3
             {
-                1 -> ViewFacade.clickNDrop(clickedX, clickedY) //Left click
+                1 -> if(selectedElement!=null){ViewFacade.moveToken(clickedX, clickedY)}else{ViewFacade.selectToken(clickedX, clickedY)} //Left click
                 2 -> ViewFacade.moveToken(clickedX, clickedY) //Middle button
-                3 -> ViewFacade.selectToken(clickedX, clickedY) //Right click
+                3 -> ViewFacade.unSelectElement() //Right click
             }
         }
     } //Actions to take when the mouse is clicked
-    fun setMoveableElement(token: Element){ //Sets a new selector marker
-        moveAbleElement = token
-        /*marker = Rectangle(
-            relativeX(token.hitBox.x)-2,
-            relativeY(token.hitBox.y)-2,
-            relativeX(token.hitBox.width)+2,
-            relativeY(token.hitBox.height)+2
-        )*/
-    }
 
 
-    fun clearMarker() { //Removes the current marker
-        moveAbleElement = null
-    }
+
 
     // Unused mouse methods
     override fun mouseExited(p0: MouseEvent?) {}

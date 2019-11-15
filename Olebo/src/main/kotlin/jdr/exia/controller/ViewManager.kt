@@ -13,26 +13,14 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object ViewManager {
     private var activeAct: Act? = null
     private var activeScene: Scene? = null
-    private var grabbedToken: Element? = null
+    //private var grabbedToken: Element? = null
     private var selectedElement: Element? = null
     init {}
 
     val items
         get() = Blueprint.all()
 
-    fun clickNDrop(x: Int, y: Int) {
-        /*If a token has already been grabbed, then it is placed with dropToken(),
-        else tries to find a token where the screen was clicked with  loadTokenFromClick(x,y)*/
-        if (grabbedToken == null){
-            grabbedToken = getTokenFromXY(x,y)
-            if (grabbedToken != null) {
-                ViewFacade.setMoveableElement(grabbedToken!!)
-            }
-        } else {
-            dropToken(x, y)
-        }
-        repaint()
-    }
+
 
     fun initializeAct(act: Act) {
         activeAct = act
@@ -42,14 +30,8 @@ object ViewManager {
     }
 
     fun removeToken(token: Element) { //removes given token from MutableList
-        if (selectedElement?.id == token.id){
-            selectedElement = null
-        }
-        if (grabbedToken?.id == token.id){
-            grabbedToken = null
-        }
+        selectedElement = null
         ViewFacade.setSelectedToken(null)
-        ViewFacade.setMoveableElement(null)
         activeScene?.elements?.remove(token)
         transaction(DAO.database) { token.delete() }
         repaint()
@@ -72,22 +54,17 @@ object ViewManager {
     }
 
     fun moveToken(x: Int,y: Int) { //Changes a token's position without dropping it (a moved token stays selected) , intended for small steps
-        if (grabbedToken != null) {
-            val newX = (x - (grabbedToken!!.hitBox.width / 2))
-            val newY = (y - (grabbedToken!!.hitBox.height / 2))
-            grabbedToken!!.position = Position(newX, newY)
-            ViewFacade.setMoveableElement(grabbedToken!!)
+        if (selectedElement!= null) {
+            val newX = (x - (selectedElement!!.hitBox.width / 2))
+            val newY = (y - (selectedElement!!.hitBox.height / 2))
+            selectedElement!!.position = Position(newX, newY)
             repaint()
         }
     }
 
-    private fun dropToken(x: Int,y: Int) { /* Places the currently grabbed token to last click's location, and drops it*/
-        val newX = (x - (grabbedToken!!.hitBox.width / 2))
-        val newY = (y - (grabbedToken!!.hitBox.height / 2))
-        grabbedToken!!.position = Position(newX, newY)
-        grabbedToken = null
-        ViewFacade.setMoveableElement(null)
-        repaint()
+    fun unSelectElement(){
+        selectedElement = null
+        ViewFacade.unSelectElement()
     }
 
     fun addToken(token: Blueprint) { //Adds a single token to this object's Token list
@@ -109,7 +86,7 @@ object ViewManager {
         ViewFacade.repaintFrames()
     }
 
-    fun selectToken(x: Int,y: Int) { //cheks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
+    fun selectElement(x: Int,y: Int) { //cheks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
         selectedElement = getTokenFromXY(x, y)
         if (selectedElement != null) {
             ViewFacade.setSelectedToken(selectedElement)
