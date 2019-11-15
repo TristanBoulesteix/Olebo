@@ -81,12 +81,9 @@ object ViewManager {
         grabbedToken = null
         ViewFacade.removeMarker()
         repaint()
-
-
     }
 
     fun addToken(token: Blueprint) { //Adds a single token to this object's Token list
-        println("test")
         this.activeScene?.addElement(token)
     }
 
