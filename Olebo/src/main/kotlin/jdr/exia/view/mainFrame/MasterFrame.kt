@@ -1,5 +1,6 @@
 package jdr.exia.view.mainFrame
 
+import jdr.exia.controller.ViewManager
 import jdr.exia.model.element.Element
 import java.awt.Color
 import java.awt.GraphicsEnvironment
@@ -99,15 +100,25 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
 
     // KeyListener section, to add Key bindings
     override fun keyTyped(keyEvent: KeyEvent) {
-
+        println(keyEvent.keyCode)
+        when (keyEvent.keyCode) {
+            KeyEvent.VK_ESCAPE -> { //remove after tesing is complete
+                dispose()
+                exitProcess(0)
+            }
+            KeyEvent.VK_UP -> {
+                ViewManager.selectUp()
+                println("esh")
+            }
+            KeyEvent.VK_DOWN -> {
+                ViewManager.selectDown()
+                println("ush")
+            }
+        }
     }
 
     override fun keyPressed(keyEvent: KeyEvent) {
 
-        if (keyEvent.keyCode == KeyEvent.VK_ESCAPE) { //remove after tesing is complete
-            dispose()
-            exitProcess(0)
-        }
 
     }
 

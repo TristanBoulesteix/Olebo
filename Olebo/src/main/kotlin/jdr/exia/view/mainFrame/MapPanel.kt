@@ -29,7 +29,7 @@ class MapPanel : JPanel(), MouseListener {
     private fun absoluteX(relativeX: Int): Int { // Translates an X coordinate from this window into a 1600:900 X coord
         return (((relativeX.toFloat()/ this.width.toFloat()))*1600).toInt()
     }
-    fun absoluteY(relativeY: Int): Int { // Translates an Y coordinate from this window into a 1600:900 Y coord
+    private fun absoluteY(relativeY: Int): Int { // Translates an Y coordinate from this window into a 1600:900 Y coord
         return (((relativeY.toFloat()/ this.height.toFloat()))*900).toInt()
     }
 
@@ -98,7 +98,7 @@ class MapPanel : JPanel(), MouseListener {
             var clickedX = absoluteX(p0!!.x)
             var clickedY = absoluteY(p0.y)
 
-            when (p0.button) //  1, middle button: 2, Right click: 3
+            when (p0.button) //  left button: 1, middle button: 2, Right click: 3
             {
                 1 -> ViewFacade.clickNDrop(clickedX, clickedY) //Left click
                 2 -> ViewFacade.moveToken(clickedX, clickedY) //Middle button
@@ -107,12 +107,12 @@ class MapPanel : JPanel(), MouseListener {
         }
     } //Actions to take when the mouse is clicked
     fun setMarker(token: Element){ //Sets a new selector marker
-
         marker = Rectangle(
             relativeX(token.hitBox.x)-2,
             relativeY(token.hitBox.y)-2,
             relativeX(token.hitBox.width)+2,
-            relativeY(token.hitBox.height)+2)
+            relativeY(token.hitBox.height)+2
+        )
     }
 
 

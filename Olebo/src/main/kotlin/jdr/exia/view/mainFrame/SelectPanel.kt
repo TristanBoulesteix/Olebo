@@ -1,14 +1,17 @@
 package jdr.exia.view.mainFrame
 
 import jdr.exia.controller.ViewManager
+import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Size
 import jdr.exia.model.utils.isCharacter
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Color
 import java.awt.Dimension
 import java.awt.Graphics
 import java.awt.GridLayout
 import javax.swing.*
+import javax.swing.border.EmptyBorder
 
 
 // contains all this info regarding the item selected by the Game Master
@@ -22,10 +25,10 @@ object SelectPanel : JPanel() {
             }
         }
 
-    private val nameLabel = JLabel("Name").apply { horizontalTextPosition = JLabel.CENTER }
+    private val nameLabel = JLabel("Name").apply { horizontalTextPosition = JLabel.CENTER; border = EmptyBorder(20, 0, 0, 0) }
 
-    private val hpAmount = JLabel("X/Y")
-    private val hpField = JTextField().apply { preferredSize = Dimension(50, 25) }
+    private val hpAmount = JLabel("X/Y").apply { border = EmptyBorder(0, 20, 10, 0) }
+    private val hpField = JTextField().apply { preferredSize = Dimension(50, 25); border = EmptyBorder(20, 0, 0, 0) }
     private val hpButton = JButton("ADD HP").apply {
         preferredSize = Dimension(100, 40)
         this.addActionListener {
@@ -37,8 +40,8 @@ object SelectPanel : JPanel() {
         }
     }
 
-    private val manaAmount = JLabel("X/Y")
-    private val manaField = JTextField().apply { preferredSize = Dimension(50, 25) }
+    private val manaAmount = JLabel("X/Y").apply { border = EmptyBorder(0, 20, 10, 0) }
+    private val manaField = JTextField().apply { preferredSize = Dimension(50, 25);border = EmptyBorder(10, 0, 0, 0) }
     private val manaButton = JButton("ADD MANA").apply {
         preferredSize = Dimension(110, 40)
         this.addActionListener {
@@ -54,7 +57,6 @@ object SelectPanel : JPanel() {
         preferredSize = Dimension(150, 40)
         addActionListener {
             ViewManager.toggleVisibility(selectedElement)
-
         }
     }
 
@@ -62,33 +64,36 @@ object SelectPanel : JPanel() {
         preferredSize = Dimension(150, 40)
         addActionListener {
             if (selectedElement != null) {
+
                 ViewManager.removeToken(selectedElement!!)
-            }
+                ViewManager.repaint()
+                }
         }
     }
 
-    private val sizeCombo = JComboBox(arrayOf("XS", "S", "M  (unsafe)", "L", "XL  (unsafe)", "XXL")).apply {
+    private val sizeCombo = JComboBox(arrayOf("XS", "S", "M", "L", "XL", "XXL")).apply {
         addActionListener {
             if (selectedElement != null) {
                 when (this.selectedItem) {
                     "XS" -> selectedElement!!.size = Size.XS
                     "S" -> selectedElement!!.size = Size.S
-                    "M  (unsafe)" -> selectedElement!!.size = Size.M
+                    "M" -> selectedElement!!.size = Size.M
                     "L" -> selectedElement!!.size = Size.L
-                    "XL  (unsafe)" -> selectedElement!!.size = Size.XL
+                    "XL" -> selectedElement!!.size = Size.XL
                     "XXL" -> selectedElement!!.size = Size.XXL
                 }
             }
 
             ViewManager.repaint()
         }
+        border = EmptyBorder(0, 0, 0, 0)
     }
 
     private fun checkTextValue(str: String): Int {
         try {
             return Integer.parseInt(str)
         } catch (e: NumberFormatException) {
-            println("Wrong number")
+
             return (0)
         }
 
@@ -103,14 +108,15 @@ object SelectPanel : JPanel() {
         val leftPanel = JPanel().apply {
             background = Color.gray
             border = BorderFactory.createLineBorder(Color.black)
-            layout = GridLayout(2, 2).apply {}
+            layout = GridLayout(2, 3).apply {}
 
             isOpaque = false
-
+            add(JPanel().apply { isOpaque = false;})
             add(JPanel().apply { isOpaque = false; add(nameLabel) })
             add(JPanel().apply { add(visibilityButton); isOpaque = false })
+            add(JPanel().apply { isOpaque = false;})
             add(JPanel().apply { add(sizeCombo); isOpaque = false })
-            add(JPanel().apply { add(deleteButton); isOpaque = false })
+            add(JPanel().apply { add(deleteButton); isOpaque = false; })
         }
 
         val centerPanel = JPanel().apply {
@@ -169,10 +175,10 @@ object SelectPanel : JPanel() {
             } else {
                 g.color = Color.BLUE
             }
-            g.fillRect(5, 10, 110, 110)
+            g.fillRect(15, 15, 110, 110)
             nameLabel.text = selectedElement!!.name
 
-            g.drawImage(selectedElement!!.sprite.image, 10, 15, 100, 100, null)
+            g.drawImage(selectedElement!!.sprite.image, 20, 20, 100, 100, null)
 
             if (selectedElement.isCharacter()) {
                 hpAmount.text =
@@ -184,4 +190,10 @@ object SelectPanel : JPanel() {
             }
         }
     }
+
+
+
+
+
+
 }

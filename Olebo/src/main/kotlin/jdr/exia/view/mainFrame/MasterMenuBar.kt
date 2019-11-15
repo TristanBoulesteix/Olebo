@@ -3,6 +3,7 @@ package jdr.exia.view.mainFrame
 import jdr.exia.controller.ViewManager
 import jdr.exia.model.act.Act
 import jdr.exia.model.dao.DAO
+import jdr.exia.view.editor.elements.BlueprintDialog
 import jdr.exia.view.homeFrame.HomeFrame
 import org.jetbrains.exposed.sql.transactions.transaction
 import javax.swing.JMenu
@@ -57,20 +58,20 @@ object MasterMenuBar : JMenuBar() {
 
             }
         }
-
-
-
         sceneMenu.add(selectScene)
 
         val tokenMenu = JMenu("Token")
         val addToken = JMenuItem("Add a Token").apply { addActionListener {  } }
         val removeSelectedToken = JMenuItem("Remove Selected Token").apply {
             addActionListener {
-                SelectPanel.selectedElement?.let { it1 ->
-                    ViewManager.removeToken(it1)
+                SelectPanel.selectedElement?.let { it1 ->ViewManager.removeToken(it1)
                 }
             }
         }
+        val bpManagement = JMenuItem("Manage Blueprints").apply { addActionListener {
+            BlueprintDialog().isVisible = true
+        } }
+        tokenMenu.add(bpManagement)
         tokenMenu.add(addToken)
         tokenMenu.add(removeSelectedToken)
         this.add(actMenu)
