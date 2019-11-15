@@ -7,21 +7,15 @@ import jdr.exia.model.element.Element
 this is a singleton*/
 object ViewFacade {
 
-    fun testRun(){
-        MasterFrame.isVisible = true
-        PlayerFrame.isVisible = true
-    }
-
     init {
     }
 
-    fun addMarker(token: Element) {
-        MasterFrame.setMarker(token)
+    fun setMoveableElement(token: Element?) {
+        MasterFrame.mapPanel.moveAbleElement = token
+        PlayerFrame.mapPanel.moveAbleElement = token
     }
 
-    fun removeMarker() {
-        MasterFrame.removeMarker()
-    }
+
 
     fun clickNDrop(x: Int, y: Int) {
         ViewManager.clickNDrop(x, y)
@@ -37,6 +31,8 @@ object ViewFacade {
 
     fun setSelectedToken(token: Element?){
         SelectPanel.selectedElement = token
+        MasterFrame.mapPanel.selectedElement = token
+        PlayerFrame.mapPanel.selectedElement = token
     }
 
     fun setMapBackground(imageName: String) { //Sets the MapPanels backGround

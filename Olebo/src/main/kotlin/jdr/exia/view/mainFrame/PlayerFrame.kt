@@ -13,7 +13,7 @@ this is a singleton*/
 object PlayerFrame : JDialog(), GameFrame, KeyListener {
 
 
-    private val mapPanel = MapPanel()
+    val mapPanel = MapPanel()
 
     init {
         this.title = "Player"
