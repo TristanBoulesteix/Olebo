@@ -1,22 +1,29 @@
 package jdr.exia.view.mainFrame
+import jdr.exia.controller.ViewManager
 import jdr.exia.model.element.Element
 import java.awt.*
+import java.awt.event.KeyEvent
+import java.awt.event.KeyListener
 import java.awt.event.MouseEvent
 import java.awt.event.MouseListener
 import javax.swing.JPanel
+import kotlin.system.exitProcess
+
 // This panel contains the map and all the objects placed within it
 
-class MapPanel : JPanel(), MouseListener {
+class MapPanel : JPanel(), MouseListener{
 
     var backGroundImage: Image? = null      //The background... Why are you reading this? Stop!! I said stop!!! You're still doing it, even when you had to scroll sideways... Ok i'm giving up, bye
-    private var tokens = mutableListOf<Element>() //These are all the tokens placed on  the current map
-    private var marker: Rectangle? = null //Marker that's placed around a token when it is selected
+    var tokens = mutableListOf<Element>() //These are all the tokens placed on  the current map
+    var moveAbleElement: Element? = null //Marker that's placed around a token when it is selected
+    var selectedElement: Element? = null
     var isMasterMapPanel: Boolean = false
 
     init {
         this.layout= GridBagLayout();
         this.background = Color.blue
         addMouseListener(this)
+
     }
 
     private fun relativeX(absoluteX: Int): Int{ //translates an X coordinate in 1600:900px to proportional coords according to this window's size
@@ -50,10 +57,13 @@ class MapPanel : JPanel(), MouseListener {
                 val rotator = g as Graphics2D
                 for (token in tokens) //Display every token one by one
                 {
-                    if((!isMasterMapPanel)&&!(token.isVisible)){} //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
+                    if ((!isMasterMapPanel) && !(token.isVisible)) {
+                    } //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
                     else {
-                        if ((isMasterMapPanel) && !(token.isVisible)) { drawInvisibleMarker(token,g) }
-                        rotator.rotate( Math.toRadians(token.orientation*45.0))
+                        if ((isMasterMapPanel) && !(token.isVisible)) {
+                            drawInvisibleMarker(token, g)
+                        }
+                        rotator.rotate(Math.toRadians(token.orientation * 45.0))
                         rotator.drawImage(
                             token.sprite.image,
                             relativeX(token.position.x),
@@ -64,22 +74,34 @@ class MapPanel : JPanel(), MouseListener {
                         )
                     }
                 }
-            }
-            if (marker != null) { // First, place a marker if there needs to be one, so the token will then be painted over it
-                if (g != null) {
+                if (moveAbleElement != null) { // First, place a marker if there needs to be one, so the token will then be painted over it
                     drawMoveableMarker(g)
                 }
+                if (selectedElement != null) {
+                    drawSelectedMarker(g)
             }
         }
+    }
 
     private fun drawMoveableMarker(g:Graphics){ //Draws a red rectangle around the currently selected token for movement
         g.color = Color.RED
         g.setPaintMode()
         g.drawRect( //Draws a 1 pixel thick rectangle
-            marker!!.x,
-            marker!!.y,
-            marker!!.width,
-            marker!!.height
+            relativeX(moveAbleElement!!.hitBox.x)-2,
+            relativeY(moveAbleElement!!.hitBox.y)-2,
+            relativeX(moveAbleElement!!.hitBox.width)+2,
+            relativeY(moveAbleElement!!.hitBox.height)+2
+        )
+    }
+
+    private fun drawSelectedMarker(g:Graphics){ //Draws a red rectangle around the currently selected token for movement
+        g.color = Color.GREEN
+        g.setPaintMode()
+        g.drawRect( //Draws a 1 pixel thick rectangle
+            relativeX(selectedElement!!.hitBox.x)-4,
+            relativeY(selectedElement!!.hitBox.y)-4,
+            relativeX(selectedElement!!.hitBox.width)+8,
+            relativeY(selectedElement!!.hitBox.height)+8
         )
     }
 
@@ -106,26 +128,24 @@ class MapPanel : JPanel(), MouseListener {
             }
         }
     } //Actions to take when the mouse is clicked
-    fun setMarker(token: Element){ //Sets a new selector marker
-        marker = Rectangle(
+    fun setMoveableElement(token: Element){ //Sets a new selector marker
+        moveAbleElement = token
+        /*marker = Rectangle(
             relativeX(token.hitBox.x)-2,
             relativeY(token.hitBox.y)-2,
             relativeX(token.hitBox.width)+2,
             relativeY(token.hitBox.height)+2
-        )
+        )*/
     }
 
 
     fun clearMarker() { //Removes the current marker
-        marker = null
+        moveAbleElement = null
     }
-
 
     // Unused mouse methods
     override fun mouseExited(p0: MouseEvent?) {}
     override fun mousePressed(p0: MouseEvent?) {}
     override fun mouseReleased(p0: MouseEvent?) {}
     override fun mouseEntered(p0: MouseEvent?) {}
-
-
 }

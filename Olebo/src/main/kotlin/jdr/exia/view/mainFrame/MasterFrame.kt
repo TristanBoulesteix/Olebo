@@ -38,7 +38,6 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         } else {
 
         }
-
         this.title = "Master"
         addKeyListener(this)
         this.defaultCloseOperation = EXIT_ON_CLOSE
@@ -85,18 +84,13 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         jMenuBar = MasterMenuBar
     }
 
-    fun setMarker(token: Element) {
-        mapPanel.setMarker(token)
-    }
-
-    fun removeMarker() {
-        mapPanel.clearMarker()
-    }
 
 
     // KeyListener section, to add Key bindings
     override fun keyTyped(keyEvent: KeyEvent) {
-        println(keyEvent.keyCode)
+    }
+
+    override fun keyPressed(keyEvent: KeyEvent) {
         when (keyEvent.keyCode) {
             KeyEvent.VK_ESCAPE -> { //remove after tesing is complete
                 dispose()
@@ -104,19 +98,10 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
             }
             KeyEvent.VK_UP -> {
                 ViewManager.selectUp()
-                println("esh")
             }
             KeyEvent.VK_DOWN -> {
                 ViewManager.selectDown()
-                println("ush")
             }
-        }
-    }
-
-    override fun keyPressed(keyEvent: KeyEvent) {
-        if (keyEvent.keyCode == KeyEvent.VK_ESCAPE) { //remove after tesing is complete
-            dispose()
-            exitProcess(0)
         }
     }
 

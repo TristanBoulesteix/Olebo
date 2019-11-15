@@ -6,7 +6,6 @@ import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Position
 import jdr.exia.view.mainFrame.MasterMenuBar
-import jdr.exia.view.mainFrame.SelectPanel
 import jdr.exia.view.mainFrame.ViewFacade
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -26,10 +25,12 @@ object ViewManager {
         if (grabbedToken == null){
             grabbedToken = getTokenFromXY(x,y)
             if (grabbedToken != null) {
-                ViewFacade.addMarker(grabbedToken!!)
+                ViewFacade.setMoveableElement(grabbedToken!!)
             }
         } else {
             dropToken(x, y)
+        }else{
+            ViewFacade.setMoveableElement(null)
         }
         repaint()
     }
@@ -49,7 +50,7 @@ object ViewManager {
             grabbedToken = null
         }
         ViewFacade.setSelectedToken(null)
-        ViewFacade.removeMarker()
+        ViewFacade.setMoveableElement(null)
         activeScene?.elements?.remove(token)
         transaction(DAO.database) { token.delete() }
         repaint()
@@ -76,7 +77,7 @@ object ViewManager {
             val newX = (x - (grabbedToken!!.hitBox.width / 2))
             val newY = (y - (grabbedToken!!.hitBox.height / 2))
             grabbedToken!!.position = Position(newX, newY)
-            ViewFacade.addMarker(grabbedToken!!)
+            ViewFacade.setMoveableElement(grabbedToken!!)
             repaint()
         }
     }
@@ -86,7 +87,7 @@ object ViewManager {
         val newY = (y - (grabbedToken!!.hitBox.height / 2))
         grabbedToken!!.position = Position(newX, newY)
         grabbedToken = null
-        ViewFacade.removeMarker()
+        ViewFacade.setMoveableElement(null)
         repaint()
     }
 
@@ -118,7 +119,7 @@ object ViewManager {
     }
 
     fun selectUp(){
-        if(selectedElement == null && activeScene!!.elements[0] != null){
+        if(selectedElement == null && activeScene!!.elements.size > 0){
             selectedElement = activeScene!!.elements[0]
         } else if(activeScene!!.elements.getOrNull(activeScene!!.elements.indexOf(selectedElement)+1) != null){
             selectedElement = activeScene!!.elements[activeScene!!.elements.indexOf(selectedElement)+1]
@@ -128,7 +129,7 @@ object ViewManager {
     }
 
     fun selectDown(){
-        if(selectedElement == null && activeScene!!.elements[0] != null){
+        if(selectedElement == null && activeScene!!.elements.size > 0){
             selectedElement = activeScene!!.elements[0]
         } else if(activeScene!!.elements.getOrNull(activeScene!!.elements.indexOf(selectedElement)-1) != null){
             selectedElement = activeScene!!.elements[activeScene!!.elements.indexOf(selectedElement)-1]

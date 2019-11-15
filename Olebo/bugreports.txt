@@ -1,3 +1,4 @@
-Quand on ouvre un acte vide, l'application crash (ajouter un check sur l'ouverture?) (fixed dans ViewManager.initalizeact?)
 
 BUG SA RACE: Si on change de taille deux fois d'affilé, erreur: (ex XL>L>XXL = erreur)
+
+La rotation ne marche pas?
