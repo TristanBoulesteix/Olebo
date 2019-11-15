@@ -9,8 +9,8 @@ import jdr.exia.model.utils.DelegateIterable
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.EntityID
-import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 import java.io.File
 
 class Scene(id: EntityID<Int>) : Entity<Int>(id) {
@@ -39,17 +39,10 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
     var idAct by SceneTable.idAct
 
     fun addElement(element: Blueprint) {
-        val a = transaction(DAO.database) {
-             InstanceTable.select { InstanceTable.id eq Element.createElement(element).id }
-        }
-
-        transaction(DAO.database) {
-            a.forEach {
-                it[InstanceTable.idScene] = this@Scene.id
-            }
-
-            elements.forEach {
-                println(it)
+        val id = Element.createElement(element).id
+        transaction {
+            InstanceTable.update({ InstanceTable.id eq id }) {
+                it[idScene] = this@Scene.id.value
             }
         }
     }

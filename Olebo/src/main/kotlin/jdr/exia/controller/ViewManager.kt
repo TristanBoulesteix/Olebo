@@ -85,6 +85,7 @@ object ViewManager {
 
     fun addToken(token: Blueprint) { //Adds a single token to this object's Token list
         this.activeScene?.addElement(token)
+        this.repaint()
     }
 
     private fun getTokenFromXY(
