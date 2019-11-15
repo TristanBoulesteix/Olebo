@@ -3,7 +3,9 @@ package jdr.exia.view.mainFrame
 import jdr.exia.controller.ViewManager
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
+import jdr.exia.view.utils.event.ClickListener
 import java.awt.*
+import java.awt.event.MouseEvent
 import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.*
@@ -29,13 +31,30 @@ class ItemPanel : JPanel() {
 
     private fun reloadContent() {
         with(itemsView) {
+            // Object list
             this.add(CustomTitlePanel("Objets").apply { this.isEnabled = false })
 
-            ViewManager.items.filter { it.type == Type.OBJECT.type }.forEach {
+            ViewManager.items.filter { it.type == Type.OBJECT.type }.forElse {
                 this.add(CustomPanel(it))
-            }
+            } ?: this.add(EmptyField())
+
+            // PJ list
+            this.add(CustomTitlePanel("PJ").apply { this.isEnabled = false })
+
+            ViewManager.items.filter { it.type == Type.PJ.type }.forElse {
+                this.add(CustomPanel(it))
+            } ?: this.add(EmptyField())
+
+            // PNJ list
+            this.add(CustomTitlePanel("PNJ").apply { this.isEnabled = false })
+
+            ViewManager.items.filter { it.type == Type.PNJ.type }.forElse {
+                this.add(CustomPanel(it))
+            } ?: this.add(EmptyField())
         }
     }
+
+    private fun <T> List<T>.forElse(block: (T) -> Unit) = if (isEmpty()) null else forEach(block)
 
     private class CustomTitlePanel(name: String) : JTextField(name) {
         init {
@@ -47,12 +66,19 @@ class ItemPanel : JPanel() {
     }
 
     private class CustomPanel(element: Blueprint) : JPanel() {
+        private val eventListener = object: ClickListener {
+            override fun mouseClicked(e: MouseEvent?) {
+                ViewManager.addToken(element)
+            }
+        }
+
         init {
             this.maximumSize = dimensionElement
             this.layout = BoxLayout(this, BoxLayout.X_AXIS)
+            this.isFocusable = true
 
             val label = JLabel().apply {
-                this.size = Dimension(10, 40)
+                this.size = Dimension(40, 40)
                 val icon = ImageIO.read(File(element.sprite)).getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH)
                 this.icon = ImageIcon(icon)
             }
@@ -61,7 +87,18 @@ class ItemPanel : JPanel() {
             this.add(JTextField(element.name).apply {
                 this.isEnabled = false
                 this.disabledTextColor = Color.BLACK
+                this.isFocusable = false
+                this.addMouseListener(eventListener)
             })
+
+            this.addMouseListener(eventListener)
+        }
+    }
+
+    class EmptyField : JTextField("Aucun élément") {
+        init {
+            this.isEnabled = false
+            this.maximumSize = dimensionElement
         }
     }
 }

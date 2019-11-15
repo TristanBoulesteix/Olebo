@@ -81,8 +81,9 @@ object ViewManager {
         updateTokens()
     }
 
-    private fun addToken(token: Element) { //Adds a single token to this object's Token list
-        this.activeScene?.elements?.add(token)
+    fun addToken(token: Blueprint) { //Adds a single token to this object's Token list
+        println("test")
+        this.activeScene?.addElement(token)
     }
 
     private fun getTokenFromXY(
@@ -122,5 +123,4 @@ object ViewManager {
             updateTokens()
         }
     }
-
 }

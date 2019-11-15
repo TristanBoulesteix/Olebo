@@ -3,6 +3,7 @@ package jdr.exia.model.act
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.dao.SceneTable
+import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.utils.DelegateIterable
 import org.jetbrains.exposed.dao.Entity
@@ -34,6 +35,11 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
     var name by SceneTable.name
     var background by SceneTable.background
     var idAct by SceneTable.idAct
+
+    fun addElement(element: Blueprint) {
+        val a = Element.createElement(element)
+        this.elements += a
+    }
 
     override fun delete() {
         File(background).delete()
