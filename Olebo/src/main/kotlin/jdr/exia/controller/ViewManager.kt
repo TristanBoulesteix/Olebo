@@ -2,6 +2,7 @@ package jdr.exia.controller
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
+import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Position
@@ -29,8 +30,6 @@ object ViewManager {
             }
         } else {
             dropToken(x, y)
-        }else{
-            ViewFacade.setMoveableElement(null)
         }
         repaint()
     }
