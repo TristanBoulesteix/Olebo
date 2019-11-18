@@ -54,7 +54,7 @@ class MapPanel : JPanel(), MouseListener {
                 this.height,
                 null
             )
-            val rotator = g as Graphics2D
+
             for (token in tokens) //Display every token one by one
             {
                 if ((!isMasterMapPanel) && !(token.isVisible)) {
@@ -63,8 +63,8 @@ class MapPanel : JPanel(), MouseListener {
                     if ((isMasterMapPanel) && !(token.isVisible)) {
                         drawInvisibleMarker(token, g)
                     }
-                    rotator.rotate(Math.toRadians(token.orientation * 45.0))
-                    rotator.drawImage(
+                    //rotator.rotate(Math.toRadians(token.orientation * 45.0))
+                    g.drawImage(
                         token.sprite.image,
                         relativeX(token.position.x),
                         relativeY(token.position.y),
