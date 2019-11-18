@@ -21,7 +21,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
                 val id = InstanceTable.insertAndGetId {
                     if (b.type.typeElement != Type.OBJECT) {
                         it[currentHP] = b.HP
-                        it[currentMP]= b.MP
+                        it[currentMP] = b.MP
                     }
                     it[idBlueprint] = b.id.value
                 }
@@ -47,35 +47,44 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     val sprite
         get() = transaction(DAO.database) { ImageIcon(blueprint.sprite) }
     val name
-        get() = transaction(DAO.database) {blueprint.name}
+        get() = transaction(DAO.database) { blueprint.name }
     val maxHP
-        get() = transaction(DAO.database) {blueprint.HP}
+        get() = transaction(DAO.database) { blueprint.HP }
     val maxMana
-        get() = transaction(DAO.database) {blueprint.MP}
+        get() = transaction(DAO.database) { blueprint.MP }
     val type
-        get() = transaction(DAO.database) {blueprint.type}
+        get() = transaction(DAO.database) { blueprint.type }
 
     // Custom getters / setters / variables / values
     val hitBox
-        get() = transaction (DAO.database){ Rectangle(x, y, sizeElement.absoluteSizeValue, sizeElement.absoluteSizeValue) }
+        get() = transaction(DAO.database) {
+            Rectangle(
+                x,
+                y,
+                sizeElement.absoluteSizeValue,
+                sizeElement.absoluteSizeValue
+            )
+        }
 
     var isVisible
-        get() = transaction(DAO.database) {visible.toBoolean()}
+        get() = transaction(DAO.database) { visible.toBoolean() }
         set(value) {
             transaction(DAO.database) { visible = value.toInt() }
         }
 
     var size
-        get() =  transaction(DAO.database) {sizeElement.sizeElement}
+        get() = transaction(DAO.database) { sizeElement.sizeElement }
         set(value) {
-            transaction(DAO.database) { sizeElement = value.size}
+            transaction(DAO.database) { sizeElement = value.size }
         }
 
     var position
         get() = Position(x, y)
         set(value) {
-           transaction(DAO.database) {  x = value.x;
-           y = value.y }
+            transaction(DAO.database) {
+                x = value.x;
+                y = value.y
+            }
         }
 
     var currentHealth

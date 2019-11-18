@@ -1,6 +1,7 @@
 package jdr.exia.model.dao
 
 import org.jetbrains.exposed.dao.IntIdTable
+import org.jetbrains.exposed.sql.ReferenceOption
 
 object ActTable : IntIdTable() {
     val name = varchar("name", 50)
@@ -30,7 +31,7 @@ object InstanceTable : IntIdTable() {
     val currentMP = integer("current_MP").nullable()
     val x = integer("x").default(10)
     val y = integer("y").default(10)
-    val idSize = integer("ID_Size").references(SizeTable.id)
+    val idSize = reference("ID_Size", SizeTable, onDelete = ReferenceOption.CASCADE)
     val visible = integer("Visible").default(1)
     val orientation = integer("Orientation").default(0)
     val idScene = integer("ID_Scene").references(SceneTable.id)
