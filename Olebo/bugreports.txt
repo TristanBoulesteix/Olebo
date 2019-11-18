@@ -1,4 +1,2 @@
-
-BUG SA RACE: Si on change de taille deux fois d'affilé, erreur: (ex XL>L>XXL = erreur)
-
 La rotation ne marche pas?
+Issue #6 : Le carré vert ne suit pas l'objet qui se déplace
