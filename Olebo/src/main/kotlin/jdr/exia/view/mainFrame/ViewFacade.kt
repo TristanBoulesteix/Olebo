@@ -10,23 +10,16 @@ object ViewFacade {
     init {
     }
 
-    fun setMoveableElement(token: Element?) {
-        MasterFrame.mapPanel.moveAbleElement = token
-        PlayerFrame.mapPanel.moveAbleElement = token
-    }
 
 
 
-    fun clickNDrop(x: Int, y: Int) {
-        ViewManager.clickNDrop(x, y)
-    }
 
     fun moveToken(x: Int, y: Int) {
         ViewManager.moveToken(x, y)
     }
 
     fun selectToken(x: Int,y:Int){
-        ViewManager.selectToken(x,y)
+        ViewManager.selectElement(x,y)
     }
 
     fun setSelectedToken(token: Element?){
@@ -65,6 +58,11 @@ object ViewFacade {
         MasterFrame.updateMap(tokens)
 
 
+    }
+
+    fun unSelectElement(){
+        PlayerFrame.mapPanel.selectedElement = null
+        MasterFrame.mapPanel.selectedElement = null
     }
 
 

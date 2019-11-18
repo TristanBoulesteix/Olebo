@@ -73,7 +73,7 @@ object SelectPanel : JPanel() {
 
     private val sizeCombo = JComboBox(arrayOf("XS", "S", "M", "L", "XL", "XXL")).apply {
         addActionListener {
-            if (selectedElement != null) {
+            if (selectedElement != null && selectedItem != selectedElement!!.size) {
                 when (this.selectedItem) {
                     "XS" -> selectedElement!!.size = Size.XS
                     "S" -> selectedElement!!.size = Size.S
