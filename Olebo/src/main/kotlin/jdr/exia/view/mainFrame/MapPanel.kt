@@ -62,7 +62,7 @@ class MapPanel : JPanel(), MouseListener{
                         if ((isMasterMapPanel) && !(token.isVisible)) {
                             drawInvisibleMarker(token, g)
                         }
-                        rotator.rotate(Math.toRadians(token.orientation * 45.0))
+                        //rotator.rotate(2.0)
                         rotator.drawImage(
                             token.sprite.image,
                             relativeX(token.position.x),
