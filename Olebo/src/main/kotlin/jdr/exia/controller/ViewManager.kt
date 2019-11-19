@@ -13,7 +13,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object ViewManager {
     private var activeAct: Act? = null
     private var activeScene: Scene? = null
-    //private var grabbedToken: Element? = null
+
     private var selectedElement: Element? = null
     init {}
 
@@ -46,6 +46,7 @@ object ViewManager {
     private fun loadCurrentScene() {
         with(activeAct) {
             activeScene = this!!.scenes.findWithId(id = activeAct!!.sceneId)
+            ViewFacade.loadItems()
             ViewFacade.setMapBackground(activeScene!!.background)
             ViewFacade.setSelectedToken(null)
             repaint()
@@ -65,6 +66,7 @@ object ViewManager {
     fun unSelectElement(){
         selectedElement = null
         ViewFacade.unSelectElement()
+        repaint()
     }
 
     fun addToken(token: Blueprint) { //Adds a single token to this object's Token list

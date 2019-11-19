@@ -26,10 +26,10 @@ class ItemPanel : JPanel() {
         this.layout = BorderLayout()
         this.add(JTextField("Rechercher"), BorderLayout.NORTH)
         this.add(JScrollPane(itemsView), BorderLayout.CENTER)
-        reloadContent()
+
     }
 
-    private fun reloadContent() {
+    fun reloadContent() {
         with(itemsView) {
             // Object list
             this.add(CustomTitlePanel("Objets").apply { this.isEnabled = false })

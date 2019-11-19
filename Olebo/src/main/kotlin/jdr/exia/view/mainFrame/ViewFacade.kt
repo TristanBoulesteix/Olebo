@@ -63,6 +63,11 @@ object ViewFacade {
     fun unSelectElement(){
         PlayerFrame.mapPanel.selectedElement = null
         MasterFrame.mapPanel.selectedElement = null
+        SelectPanel.selectedElement = null
+    }
+
+    fun loadItems(){
+        MasterFrame.itemPanel.reloadContent()
     }
 
 
