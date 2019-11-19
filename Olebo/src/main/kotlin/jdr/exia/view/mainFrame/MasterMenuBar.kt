@@ -42,7 +42,6 @@ object MasterMenuBar : JMenuBar() {
         if (act != null) {
             var i = 0
             for (scene in act!!.scenes) {
-
                 i++
                 if (scene.id.value == act!!.sceneId) {
                     val item = JMenuItem("$i ${scene.name} (Active)")
@@ -57,18 +56,20 @@ object MasterMenuBar : JMenuBar() {
         sceneMenu.add(selectScene)
 
         val tokenMenu = JMenu("Token")
-        val addToken = JMenuItem("Add a Token").apply { addActionListener {  } }
         val removeSelectedToken = JMenuItem("Remove Selected Token").apply {
             addActionListener {
-                SelectPanel.selectedElement?.let { it1 ->ViewManager.removeToken(it1)
+                SelectPanel.selectedElement?.let { it1 ->
+                    ViewManager.removeToken(it1)
                 }
             }
         }
-        val bpManagement = JMenuItem("Manage Blueprints").apply { addActionListener {
-            BlueprintDialog().isVisible = true
-        } }
+        val bpManagement = JMenuItem("Manage Blueprints").apply {
+            addActionListener {
+                BlueprintDialog().isVisible = true
+                MasterFrame.itemPanel.reloadContent()
+            }
+        }
         tokenMenu.add(bpManagement)
-        tokenMenu.add(addToken)
         tokenMenu.add(removeSelectedToken)
         this.add(actMenu)
         this.add(tokenMenu)

@@ -91,7 +91,7 @@ class ItemPanel : JPanel() {
                 this.add(CustomTitlePanel("PJ").apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type == Type.PJ.type && (searchConstraint.isEmpty() || it.name.contains(
+                    it.type.typeElement == Type.PJ && (searchConstraint.isEmpty() || it.name.contains(
                         searchConstraint
                     ))
                 }.forElse {
@@ -102,7 +102,7 @@ class ItemPanel : JPanel() {
                 this.add(CustomTitlePanel("PNJ").apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type == Type.PNJ.type && (searchConstraint.isEmpty() || it.name.contains(
+                    it.type.typeElement == Type.PNJ && (searchConstraint.isEmpty() || it.name.contains(
                         searchConstraint
                     ))
                 }.forElse {

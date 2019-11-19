@@ -24,7 +24,7 @@ this is a singleton*/
 object MasterFrame : JFrame(), KeyListener, GameFrame {
     private var masterFramePanel = JPanel()
     val mapPanel = MapPanel()
-    var selectPanel = SelectPanel // Will contain all info on selected Item
+    private var selectPanel = SelectPanel // Will contain all info on selected Item
     var itemPanel = ItemPanel() // Will contain list of available items
 
     override fun setMapBackground(imageName: String) {
