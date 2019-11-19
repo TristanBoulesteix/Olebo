@@ -1,14 +1,20 @@
 package jdr.exia.view.mainFrame
 
 import jdr.exia.controller.ViewManager
+import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
 import jdr.exia.view.utils.event.ClickListener
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.*
+import java.awt.RenderingHints
 import java.awt.event.MouseEvent
 import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.*
+import javax.swing.event.DocumentEvent
+import javax.swing.event.DocumentListener
+
 
 /**
  * This panel is intended to contain the entire list of items that the Game master can use
@@ -22,37 +28,87 @@ class ItemPanel : JPanel() {
         this.layout = BoxLayout(this, BoxLayout.Y_AXIS)
     }
 
+    private val searchField = object : JTextField() {
+        override fun paintComponent(pG: Graphics) {
+            super.paintComponent(pG)
+
+            if(text.isNotEmpty()) return
+
+            (pG as Graphics2D).apply {
+                setRenderingHint(
+                    RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON
+                )
+                color = disabledTextColor
+                drawString(
+                    "Rechercher", insets.left, pG.getFontMetrics()
+                        .maxAscent + insets.top
+                )
+            }
+        }
+    }
+
+    private val changeEvent = object : DocumentListener {
+        override fun changedUpdate(e: DocumentEvent?) = warn()
+
+        override fun insertUpdate(e: DocumentEvent?) = warn()
+
+        override fun removeUpdate(e: DocumentEvent?) = warn()
+
+        fun warn() {
+            searchConstraint = searchField.text
+            reloadContent()
+        }
+    }
+
+    private var searchConstraint = ""
+
     init {
         this.layout = BorderLayout()
-        this.add(JTextField("Rechercher"), BorderLayout.NORTH)
+        this.searchField.document.addDocumentListener(changeEvent)
+        this.add(searchField, BorderLayout.NORTH)
         this.add(JScrollPane(itemsView), BorderLayout.CENTER)
     }
 
     fun reloadContent() {
-        with(itemsView) {
-            this.removeAll()
-            this.updateUI()
+        transaction(DAO.database) {
+            with(itemsView) {
+                this.removeAll()
+                this.updateUI()
 
-            // Object list
-            this.add(CustomTitlePanel("Objets").apply { this.isEnabled = false })
+                // Object list
+                this.add(CustomTitlePanel("Objets").apply { this.isEnabled = false })
 
-            ViewManager.items.filter { it.type.typeElement == Type.OBJECT }.forElse {
-                this.add(CustomPanel(it))
-            } ?: this.add(EmptyField())
+                ViewManager.items.filter {
+                    it.type.typeElement == Type.OBJECT && (searchConstraint.isEmpty() || it.name.contains(
+                        searchConstraint
+                    ))
+                }.forElse {
+                    this.add(CustomPanel(it))
+                } ?: this.add(EmptyField())
 
-            // PJ list
-            this.add(CustomTitlePanel("PJ").apply { this.isEnabled = false })
+                // PJ list
+                this.add(CustomTitlePanel("PJ").apply { this.isEnabled = false })
 
-            ViewManager.items.filter { it.type == Type.PJ.type }.forElse {
-                this.add(CustomPanel(it))
-            } ?: this.add(EmptyField())
+                ViewManager.items.filter {
+                    it.type == Type.PJ.type && (searchConstraint.isEmpty() || it.name.contains(
+                        searchConstraint
+                    ))
+                }.forElse {
+                    this.add(CustomPanel(it))
+                } ?: this.add(EmptyField())
 
-            // PNJ list
-            this.add(CustomTitlePanel("PNJ").apply { this.isEnabled = false })
+                // PNJ list
+                this.add(CustomTitlePanel("PNJ").apply { this.isEnabled = false })
 
-            ViewManager.items.filter { it.type == Type.PNJ.type }.forElse {
-                this.add(CustomPanel(it))
-            } ?: this.add(EmptyField())
+                ViewManager.items.filter {
+                    it.type == Type.PNJ.type && (searchConstraint.isEmpty() || it.name.contains(
+                        searchConstraint
+                    ))
+                }.forElse {
+                    this.add(CustomPanel(it))
+                } ?: this.add(EmptyField())
+            }
         }
     }
 
@@ -68,7 +124,7 @@ class ItemPanel : JPanel() {
     }
 
     private class CustomPanel(element: Blueprint) : JPanel() {
-        private val eventListener = object: ClickListener {
+        private val eventListener = object : ClickListener {
             override fun mouseClicked(e: MouseEvent?) {
                 ViewManager.addToken(element)
             }
@@ -81,7 +137,8 @@ class ItemPanel : JPanel() {
 
             val label = JLabel().apply {
                 this.size = Dimension(40, 40)
-                val icon = ImageIO.read(File(element.sprite)).getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH)
+                val icon =
+                    ImageIO.read(File(element.sprite)).getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH)
                 this.icon = ImageIcon(icon)
             }
 
