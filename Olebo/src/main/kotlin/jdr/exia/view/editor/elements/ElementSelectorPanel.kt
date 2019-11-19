@@ -15,7 +15,6 @@ import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.awt.event.FocusEvent
 import java.awt.event.FocusListener
-import javax.swing.ImageIcon
 import javax.swing.JPanel
 
 class ElementSelectorPanel(private val controller: BlueprintManager?) :
@@ -76,7 +75,7 @@ class ElementSelectorPanel(private val controller: BlueprintManager?) :
                 })
             }
 
-            this.add(SquareLabel(ImageIcon(controller!!.getBlueprintWithId(id).sprite), controller::updateIcon))
+            this.add(SquareLabel(controller!!.getBlueprintWithId(id).sprite, controller::updateIcon))
             this.add(SquareLabel(getIcon("delete_icon", controller!!.javaClass), controller::deleteElement))
         }
     }
@@ -102,7 +101,7 @@ class ElementSelectorPanel(private val controller: BlueprintManager?) :
 
             this.add(SquareLabel(transaction(DAO.database) { Blueprint[id].HP.toString() }, controller!!::saveLife))
             this.add(SquareLabel(transaction(DAO.database) { Blueprint[id].MP.toString() }, controller!!::saveMana))
-            this.add(SquareLabel(ImageIcon(controller!!.getBlueprintWithId(id).sprite), controller::updateIcon))
+            this.add(SquareLabel(controller!!.getBlueprintWithId(id).sprite, controller::updateIcon))
             this.add(SquareLabel(getIcon("delete_icon", controller!!.javaClass), controller::deleteElement))
         }
     }

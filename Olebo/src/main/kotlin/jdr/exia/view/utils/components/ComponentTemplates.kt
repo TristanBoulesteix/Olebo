@@ -11,6 +11,8 @@ import java.awt.event.FocusEvent
 import java.awt.event.FocusListener
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
+import java.io.File
+import javax.imageio.ImageIO
 import javax.swing.*
 import javax.swing.border.EmptyBorder
 import javax.swing.text.PlainDocument
@@ -170,6 +172,14 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
             this.border = BorderFactory.createMatteBorder(0, 2, 0, 0, Color.BLACK)
             this.addMouseListener(listener)
         }
+
+        constructor(img: String, action: (Int) -> Unit) : this(
+            ImageIcon(
+                ImageIO.read(File(img)).getScaledInstance(
+                    DIMENSION_SQUARE.width, DIMENSION_SQUARE.height, Image.SCALE_SMOOTH
+                )
+            ), action
+        )
 
         constructor(
             text: String,
