@@ -28,12 +28,12 @@ object SelectPanel : JPanel() {
     private val nameLabel = JLabel("Name").apply { horizontalTextPosition = JLabel.CENTER; border = EmptyBorder(20, 0, 0, 0) }
 
     private val hpAmount = JLabel("X/Y").apply { border = EmptyBorder(0, 20, 10, 0) }
-    private val hpField = JTextField().apply { preferredSize = Dimension(50, 25); border = EmptyBorder(20, 0, 0, 0) }
+    private val hpField = JTextField().apply { preferredSize = Dimension(50, 25)}
     private val hpButton = JButton("ADD HP").apply {
         preferredSize = Dimension(100, 40)
         this.addActionListener {
             if (selectedElement.isCharacter()) {
-                selectedElement!!.currentHealth += checkTextValue(hpField.text)
+                transaction(DAO.database){selectedElement!!.currentHealth += checkTextValue(hpField.text)}
             }
             hpField.text = ""
             MasterFrame.repaint()
@@ -41,12 +41,12 @@ object SelectPanel : JPanel() {
     }
 
     private val manaAmount = JLabel("X/Y").apply { border = EmptyBorder(0, 20, 10, 0) }
-    private val manaField = JTextField().apply { preferredSize = Dimension(50, 25);border = EmptyBorder(10, 0, 0, 0) }
+    private val manaField = JTextField().apply { preferredSize = Dimension(50, 25) }
     private val manaButton = JButton("ADD MANA").apply {
         preferredSize = Dimension(110, 40)
         this.addActionListener {
             if (selectedElement.isCharacter()) {
-                selectedElement!!.currentMana += checkTextValue(manaField.text)
+                transaction(DAO.database){selectedElement!!.currentMana += checkTextValue(manaField.text)}
             }
             manaField.text = ""
             MasterFrame.repaint()
@@ -190,10 +190,4 @@ object SelectPanel : JPanel() {
             }
         }
     }
-
-
-
-
-
-
 }
