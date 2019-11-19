@@ -26,15 +26,17 @@ class ItemPanel : JPanel() {
         this.layout = BorderLayout()
         this.add(JTextField("Rechercher"), BorderLayout.NORTH)
         this.add(JScrollPane(itemsView), BorderLayout.CENTER)
-
     }
 
     fun reloadContent() {
         with(itemsView) {
+            this.removeAll()
+            this.updateUI()
+
             // Object list
             this.add(CustomTitlePanel("Objets").apply { this.isEnabled = false })
 
-            ViewManager.items.filter { it.type == Type.OBJECT.type }.forElse {
+            ViewManager.items.filter { it.type.typeElement == Type.OBJECT }.forElse {
                 this.add(CustomPanel(it))
             } ?: this.add(EmptyField())
 
