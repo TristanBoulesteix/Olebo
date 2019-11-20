@@ -16,6 +16,9 @@ import java.io.File
 class Scene(id: EntityID<Int>) : Entity<Int>(id) {
     companion object : EntityClass<Int, Scene>(SceneTable) {
         override fun new(init: Scene.() -> Unit): Scene {
+            /**
+             * Check foreign key before insert
+             */
             fun Array<Pair<String, String>>.checkContent(toCheck: String): Boolean {
                 this.forEach {
                     if (it.first == toCheck) return true
@@ -38,6 +41,11 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
     var background by SceneTable.background
     var idAct by SceneTable.idAct
 
+    /**
+     * Add an element to the scene as Instance
+     *
+     * @param element The Blueprint to instanciate
+     */
     fun addElement(element: Blueprint) {
         val id = Element.createElement(element).id
         transaction {

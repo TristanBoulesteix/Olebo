@@ -16,6 +16,13 @@ import javax.swing.ImageIcon
 
 class Element(id: EntityID<Int>) : Entity<Int>(id) {
     companion object : EntityClass<Int, Element>(InstanceTable) {
+        /**
+         * Create a new element with a given blueprint
+         *
+         * @param b A given Blueprint
+         *
+         * @return The newly created element
+         */
         fun createElement(b: Blueprint): Element {
             return transaction(DAO.database) {
                 val id = InstanceTable.insertAndGetId {

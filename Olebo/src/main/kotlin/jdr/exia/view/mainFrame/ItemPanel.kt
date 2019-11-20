@@ -4,10 +4,10 @@ import jdr.exia.controller.ViewManager
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
+import jdr.exia.view.utils.components.PlaceholderTextField
 import jdr.exia.view.utils.event.ClickListener
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.*
-import java.awt.RenderingHints
 import java.awt.event.MouseEvent
 import java.io.File
 import javax.imageio.ImageIO
@@ -31,25 +31,7 @@ class ItemPanel : JPanel() {
     /**
      * Search field to find a specific blueprint
      */
-    private val searchField = object : JTextField() {
-        override fun paintComponent(pG: Graphics) {
-            super.paintComponent(pG)
-
-            if(text.isNotEmpty()) return
-
-            (pG as Graphics2D).apply {
-                setRenderingHint(
-                    RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON
-                )
-                color = disabledTextColor
-                drawString(
-                    "Rechercher", insets.left, pG.getFontMetrics()
-                        .maxAscent + insets.top
-                )
-            }
-        }
-    }
+    private val searchField = PlaceholderTextField("Rechercher")
 
     /**
      * Event which trigger when the search field is modified
