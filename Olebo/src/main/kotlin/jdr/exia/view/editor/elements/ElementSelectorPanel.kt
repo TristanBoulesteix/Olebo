@@ -17,6 +17,11 @@ import java.awt.event.FocusEvent
 import java.awt.event.FocusListener
 import javax.swing.JPanel
 
+/**
+ * Panel to select elements. Show a list of blueprints
+ *
+ * @param controller
+ */
 class ElementSelectorPanel(private val controller: BlueprintManager?) :
     SelectorPanel() {
     override val pairs: Array<Pair<String, String>>

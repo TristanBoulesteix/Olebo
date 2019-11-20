@@ -28,6 +28,9 @@ class ItemPanel : JPanel() {
         this.layout = BoxLayout(this, BoxLayout.Y_AXIS)
     }
 
+    /**
+     * Search field to find a specific blueprint
+     */
     private val searchField = object : JTextField() {
         override fun paintComponent(pG: Graphics) {
             super.paintComponent(pG)
@@ -48,6 +51,9 @@ class ItemPanel : JPanel() {
         }
     }
 
+    /**
+     * Event which trigger when the search field is modified
+     */
     private val changeEvent = object : DocumentListener {
         override fun changedUpdate(e: DocumentEvent?) = warn()
 
@@ -61,6 +67,9 @@ class ItemPanel : JPanel() {
         }
     }
 
+    /**
+     * Constraint applied to the content to show after a result
+     */
     private var searchConstraint = ""
 
     init {
@@ -70,9 +79,13 @@ class ItemPanel : JPanel() {
         this.add(JScrollPane(itemsView), BorderLayout.CENTER)
     }
 
+    /**
+     * Reload content depending on searchConstraint
+     */
     fun reloadContent() {
         transaction(DAO.database) {
             with(itemsView) {
+                // Remove previous components
                 this.removeAll()
                 this.updateUI()
 
@@ -114,6 +127,11 @@ class ItemPanel : JPanel() {
 
     private fun <T> List<T>.forElse(block: (T) -> Unit) = if (isEmpty()) null else forEach(block)
 
+    /**
+     * Name of the component
+     *
+     * @param name The name of the component as String
+     */
     private class CustomTitlePanel(name: String) : JTextField(name) {
         init {
             this.maximumSize = dimensionElement
@@ -123,6 +141,9 @@ class ItemPanel : JPanel() {
         }
     }
 
+    /**
+     * Icon of the component
+     */
     private class CustomPanel(element: Blueprint) : JPanel() {
         private val eventListener = object : ClickListener {
             override fun mouseClicked(e: MouseEvent?) {
@@ -154,6 +175,9 @@ class ItemPanel : JPanel() {
         }
     }
 
+    /**
+     * Class showing "Aucun élément" as JTextField
+     */
     class EmptyField : JTextField("Aucun élément") {
         init {
             this.isEnabled = false
