@@ -8,11 +8,9 @@ import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.JDialog
 
-/*PlayerFrame is the Frame the Players can see, it shares its content with MasterFrame
+/**PlayerFrame is the Frame the Players can see, it shares its content with MasterFrame
 this is a singleton*/
 object PlayerFrame : JDialog(), GameFrame, KeyListener {
-
-
     val mapPanel = MapPanel()
 
     init {

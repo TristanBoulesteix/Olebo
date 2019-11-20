@@ -14,8 +14,10 @@ import javax.swing.*
 import javax.swing.border.EmptyBorder
 
 
-// contains all this info regarding the item selected by the Game Master
-//this is a singleton
+/**
+ * Contains all this info regarding the item selected by the Game Master.
+ * This is a singleton.
+ */
 object SelectPanel : JPanel() {
     var selectedElement: Element? = null
         set(value){
