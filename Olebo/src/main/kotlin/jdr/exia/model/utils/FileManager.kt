@@ -3,12 +3,26 @@ package jdr.exia.model.utils
 import java.io.File
 import javax.swing.ImageIcon
 
+/**
+ * Path to the Olebo directory
+ */
 val OLEBO_DIRECTORY = "$appDatas${File.separator}Olebo${File.separator}"
 
-fun getIcon(name: String, controllerClass: Class<*>, extension: String = ".png"): ImageIcon {
-    return ImageIcon(controllerClass.classLoader.getResource("icons/$name$extension"))
-}
+/**
+ * Get icon from name in ressources
+ *
+ * @param name The name of the ressource
+ * @param controllerClass The class of the controller
+ * @param extension (optionnal) The extension of the picture. The defaut extension is ".png"
+ */
+fun getIcon(name: String, controllerClass: Class<*>, extension: String = ".png"): ImageIcon =
+    ImageIcon(controllerClass.classLoader.getResource("icons/$name$extension"))
 
+/**
+ * Save a picture to img folder
+ *
+ * @param path The path of the picture to save
+ */
 fun saveImg(path: String): String {
     val img = File.createTempFile(
         "img_",
@@ -21,6 +35,11 @@ fun saveImg(path: String): String {
     return img.absolutePath
 }
 
+/**
+ * Get the appdata path depending on the pateform.
+ *
+ * Available for Windows, Mac Os and Linux
+ */
 val appDatas: String
     get() {
         val os = System.getProperty("os.name").toUpperCase()

@@ -151,4 +151,7 @@ fun MutableList<SceneData>.getArrayOfPairs(): Array<Pair<String, String>> {
 
 private fun <T> List<T>.forElse(block: (T) -> Unit) = if (isEmpty()) null else forEach(block)
 
+/**
+ * All informations from a scene stored in a class
+ */
 data class SceneData(val name: String, val img: String, val id: Int? = null)

@@ -55,6 +55,13 @@ object DAO {
         }
     }
 
+    /**
+     * Get all elements with a given type
+     *
+     * @param type The wanted type of elements
+     *
+     * @return A MutableList of Blueprints
+     */
     fun getElementsWithType(type: Type): MutableList<Blueprint> {
         return transaction {
             Blueprint.find {

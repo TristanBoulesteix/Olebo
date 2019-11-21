@@ -41,6 +41,7 @@ object MasterMenuBar : JMenuBar() {
 
         if (act != null) {
             var i = 0
+
             for (scene in act!!.scenes) { //Pour chaque scene, on créé une option pour activer la scene
 
                 i++
@@ -56,18 +57,23 @@ object MasterMenuBar : JMenuBar() {
         }
         sceneMenu.add(selectScene)
 
+
         val tokenMenu = JMenu("Pions")
         val removeSelectedToken = JMenuItem("Supprimer pion selectionné").apply {
+
             addActionListener {
-                SelectPanel.selectedElement?.let { it1 ->ViewManager.removeToken(it1)
+                SelectPanel.selectedElement?.let { it1 ->
+                    ViewManager.removeToken(it1)
                 }
             }
         }
+
         val bpManagement = JMenuItem("Gèrer les Blueprints").apply { addActionListener {
             BlueprintDialog().isVisible = true
         }
         }
         val getTokenFromScene = JMenu("")
+
 
 
 

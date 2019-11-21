@@ -5,7 +5,7 @@ import org.jetbrains.exposed.sql.SizedIterable
 import org.jetbrains.exposed.sql.transactions.transaction
 
 /**
- * This class allow us to get a lazy Mutablelist from a SizedIterable by creating automatically a transaction
+ * This class allow us to get a lazy Mutablelist from a SizedIterable by creating automatically a transaction.
  */
 class DelegateIterable<T>(initializer: () -> SizedIterable<T>) : Lazy<MutableList<T>> {
     companion object UnitializedValue

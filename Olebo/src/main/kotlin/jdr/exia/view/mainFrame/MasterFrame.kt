@@ -22,6 +22,7 @@ this is a singleton*/
  *
  * */
 object MasterFrame : JFrame(), KeyListener, GameFrame {
+
     private var masterFramePanel = JPanel() // Main JPanel that contains other panels
     val mapPanel = MapPanel() //this frame's mapPanel
     var selectPanel = SelectPanel // Will contain all info on selected Item

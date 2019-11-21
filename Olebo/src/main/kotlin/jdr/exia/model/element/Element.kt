@@ -1,6 +1,7 @@
 package jdr.exia.model.element
 
 import jdr.exia.CharacterException
+import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.utils.isCharacter
@@ -16,6 +17,13 @@ import javax.swing.ImageIcon
 
 class Element(id: EntityID<Int>) : Entity<Int>(id) {
     companion object : EntityClass<Int, Element>(InstanceTable) {
+        /**
+         * Create a new element with a given blueprint
+         *
+         * @param b A given Blueprint
+         *
+         * @return The newly created element
+         */
         fun createElement(b: Blueprint): Element {
             return transaction(DAO.database) {
                 val id = InstanceTable.insertAndGetId {
@@ -33,6 +41,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
     // Value stored into the database
     private var blueprint by Blueprint referencedOn InstanceTable.idBlueprint
+    var scene by Scene referencedOn InstanceTable.idScene
 
     // Variables stored into the database
     private var visible by InstanceTable.visible

@@ -10,17 +10,20 @@ import jdr.exia.view.mainFrame.MasterMenuBar
 import jdr.exia.view.mainFrame.ViewFacade
 import org.jetbrains.exposed.sql.transactions.transaction
 
+/**
+ * Manage MasterFrame and PlayerFrame
+ */
 object ViewManager {
     private var activeAct: Act? = null
     private var activeScene: Scene? = null
 
     private var selectedElement: Element? = null
-    init {}
 
+    /**
+     * Get the list of all blueprints
+     */
     val items
         get() = Blueprint.all()
-
-
 
     fun initializeAct(act: Act) {
         activeAct = act

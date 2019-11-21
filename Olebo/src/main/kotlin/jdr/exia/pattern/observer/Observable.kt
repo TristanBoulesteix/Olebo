@@ -1,5 +1,8 @@
 package jdr.exia.pattern.observer
 
+/**
+ * Observable class
+ */
 interface Observable {
     var observer: Observer?
 

@@ -1,7 +1,8 @@
 package jdr.exia.pattern.observer
 
-import java.awt.Window
-
+/**
+ * Observer class
+ */
 interface Observer {
     fun update(data: Action)
 }
