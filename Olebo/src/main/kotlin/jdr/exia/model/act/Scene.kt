@@ -32,6 +32,18 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
             return if (DAO.getActsList().checkContent(newScene.idAct.toString())) newScene
             else throw Exception("Error ! Invalid foreign key")
         }
+
+        /**
+         * Move an element to a new scene
+         *
+         * @param element The element to move
+         * @param scene The destination scene
+         */
+        fun moveElementToScene(element: Element, scene: Scene) {
+            transaction(DAO.database) {
+                element.scene = scene
+            }
+        }
     }
 
     private val elementIterable by Element referrersOn InstanceTable.idScene
