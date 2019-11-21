@@ -5,6 +5,8 @@ import javax.swing.SwingUtilities
 import javax.swing.UIManager
 
 fun main() {
+    checkForUpdate()
+
     SwingUtilities.invokeLater {
         UIManager.setLookAndFeel(
             UIManager.getSystemLookAndFeelClassName()
@@ -13,3 +15,7 @@ fun main() {
         HomeFrame().isVisible = true
     }
 }
+
+fun checkForUpdate() = Thread(Runnable {
+
+}).run()
