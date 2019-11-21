@@ -72,11 +72,27 @@ object MasterMenuBar : JMenuBar() {
             BlueprintDialog().isVisible = true
         }
         }
-        val getTokenFromScene = JMenu("")
+        val getTokenFromScene = JMenu("Importer depuis une autre scene")
+        for(scene in act!!.scenes){
+            if(scene.id.value != act!!.sceneId) {
+                val itemMenu = JMenu(scene.name).apply {
+                    for (token in scene.elements) {
+                        val item = JMenuItem(token.name +" ("+ token.type.name+")").apply {
+                            addActionListener {
+                                println(token.name)
+                            }
+                        }
+                        this.add(item)
+                    }
+
+                }
+                getTokenFromScene.add(itemMenu)
+            }
+        }
 
 
 
-
+        tokenMenu.add(getTokenFromScene)
         tokenMenu.add(bpManagement)
         tokenMenu.add(removeSelectedToken)
         this.add(actMenu)
