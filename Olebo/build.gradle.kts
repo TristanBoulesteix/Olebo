@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.util.concurrent.Callable
 
 plugins {
     java
@@ -22,9 +23,21 @@ dependencies {
     compile("org.slf4j","slf4j-simple", "1.7.25")
 }
 
+val jar by tasks.getting(Jar::class) {
+    manifest {
+        attributes["Main-Class"] = "jdr.exia.OleboKt"
+    }
+    from(configurations.compile.map { configuration ->
+        configuration.asFileTree.fold(files().asFileTree) { collection, file ->
+            if (file.isDirectory) collection else collection.plus(zipTree(file))
+        }
+    })
+}
+
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8
 }
+
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
