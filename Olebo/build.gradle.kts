@@ -21,6 +21,8 @@ dependencies {
     compile("org.jetbrains.exposed", "exposed", "0.17.7")
     compile("org.slf4j", "slf4j-api", "1.7.25")
     compile("org.slf4j","slf4j-simple", "1.7.25")
+    compile("org.apache.httpcomponents", "httpclient", "4.5.10")
+    compile("org.json","json", "20190722")
 }
 
 val jar by tasks.getting(Jar::class) {
