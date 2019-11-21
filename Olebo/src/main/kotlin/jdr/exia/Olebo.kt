@@ -24,9 +24,16 @@ fun main() {
     }
 }
 
-fun checkForUpdate() = Thread(Runnable {
-    val client = HttpClientUpdater()
-    println(client.lastRelease["tag_name"])
+/**
+ * Check for update on startup
+ */
+private fun checkForUpdate() = Thread(Runnable {
+    HttpClientUpdater().apply {
+        val release = this.lastRelease
+        if (!release.isEmpty && release["tag_name"] != VERSION) {
+            println(((release["assets"] as JSONArray)[0] as JSONObject)["browser_download_url"])
+        }
+    }.close()
 }).run()
 
 /**
@@ -35,6 +42,9 @@ fun checkForUpdate() = Thread(Runnable {
 class HttpClientUpdater {
     private val httpClient by lazy { HttpClients.createDefault() }
 
+    /**
+     * Return a JSONObject with datas of the last release
+     */
     val lastRelease: JSONObject
         get() = try {
                val request = HttpGet("https://api.github.com/repos/TristanBoulesteix/Olebo/releases")
@@ -53,7 +63,10 @@ class HttpClientUpdater {
            }
 
 
-    private fun close() {
+    /**
+     * Close the connection
+     */
+    fun close() {
         httpClient.close()
     }
 }
