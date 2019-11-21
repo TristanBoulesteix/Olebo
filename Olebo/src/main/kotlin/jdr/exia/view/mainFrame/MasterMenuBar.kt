@@ -80,7 +80,8 @@ object MasterMenuBar : JMenuBar() {
                     for (token in scene.elements) {
                         val item = JMenuItem(token.name +" ("+ token.type.name+")").apply {
                             addActionListener {
-                                Scene.moveElementToScene(token, scene)
+                                transaction(DAO.database) { Scene.moveElementToScene(token, Scene[act!!.sceneId]) }
+                                ViewManager.repaint()
                             }
                         }
                         this.add(item)
