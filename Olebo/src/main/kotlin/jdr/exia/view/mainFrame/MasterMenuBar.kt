@@ -2,6 +2,7 @@ package jdr.exia.view.mainFrame
 
 import jdr.exia.controller.ViewManager
 import jdr.exia.model.act.Act
+import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.DAO
 import jdr.exia.view.editor.elements.BlueprintDialog
 import jdr.exia.view.homeFrame.HomeFrame
@@ -79,7 +80,7 @@ object MasterMenuBar : JMenuBar() {
                     for (token in scene.elements) {
                         val item = JMenuItem(token.name +" ("+ token.type.name+")").apply {
                             addActionListener {
-                                println(token.name)
+                                Scene.moveElementToScene(token, scene)
                             }
                         }
                         this.add(item)
