@@ -81,7 +81,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     var position
         get() = Position(x, y)
         set(value) {
-            transaction(DAO.database) {
+            transaction(DAO.database){
                 x = value.x;
                 y = value.y
             }

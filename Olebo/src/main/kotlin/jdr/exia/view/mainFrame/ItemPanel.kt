@@ -11,7 +11,7 @@ import javax.imageio.ImageIO
 import javax.swing.*
 
 /**
- * This panel is intended to contain the entire list of items that the Game master can use
+ * This panel is intended to contain the entire list of items that the Game master can use (and it does)
  * */
 class ItemPanel : JPanel() {
     companion object {

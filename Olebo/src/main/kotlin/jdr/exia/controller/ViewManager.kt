@@ -93,10 +93,11 @@ object ViewManager {
         if (selectedElement != null) {
             ViewFacade.setSelectedToken(selectedElement)
             repaint()
-        }
+        }else{
+            unSelectElement()}
     }
 
-    fun selectUp(){
+    fun selectUp(){ //TODO: Bug, mais pas prioritaire
         if(selectedElement == null && activeScene!!.elements.size > 0){
             selectedElement = activeScene!!.elements[0]
         } else if(activeScene!!.elements.getOrNull(activeScene!!.elements.indexOf(selectedElement)+1) != null){
@@ -106,10 +107,11 @@ object ViewManager {
         repaint()
     }
 
-    fun selectDown(){
+    fun selectDown(){ //TODO: Bug
         if(selectedElement == null && activeScene!!.elements.size > 0){
             selectedElement = activeScene!!.elements[0]
         } else if(activeScene!!.elements.getOrNull(activeScene!!.elements.indexOf(selectedElement)-1) != null){
+            println("je fonctionne")
             selectedElement = activeScene!!.elements[activeScene!!.elements.indexOf(selectedElement)-1]
         }
         ViewFacade.setSelectedToken(selectedElement)

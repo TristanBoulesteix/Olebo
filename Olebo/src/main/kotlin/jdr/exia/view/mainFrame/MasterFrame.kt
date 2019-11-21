@@ -22,12 +22,12 @@ this is a singleton*/
  *
  * */
 object MasterFrame : JFrame(), KeyListener, GameFrame {
-    private var masterFramePanel = JPanel()
-    val mapPanel = MapPanel()
+    private var masterFramePanel = JPanel() // Main JPanel that contains other panels
+    val mapPanel = MapPanel() //this frame's mapPanel
     var selectPanel = SelectPanel // Will contain all info on selected Item
     var itemPanel = ItemPanel() // Will contain list of available items
 
-    override fun setMapBackground(imageName: String) {
+    override fun setMapBackground(imageName: String) { //set the background image for the mappanels
         mapPanel.backGroundImage = ImageIO.read(File(imageName))
     }
 
@@ -38,6 +38,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         } else {
 
         }
+        this.isFocusable = true
         this.title = "Master"
         addKeyListener(this)
         this.defaultCloseOperation = EXIT_ON_CLOSE
@@ -91,8 +92,9 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
     }
 
     override fun keyPressed(keyEvent: KeyEvent) {
+
         when (keyEvent.keyCode) {
-            KeyEvent.VK_ESCAPE -> { //remove after tesing is complete
+            KeyEvent.VK_ESCAPE -> { //remove after testing is complete
                 dispose()
                 exitProcess(0)
             }

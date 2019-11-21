@@ -25,11 +25,11 @@ object SelectPanel : JPanel() {
             }
         }
 
-    private val nameLabel = JLabel("Name").apply { horizontalTextPosition = JLabel.CENTER; border = EmptyBorder(20, 0, 0, 0) }
+    private val nameLabel = JLabel("Nom").apply { horizontalTextPosition = JLabel.CENTER; border = EmptyBorder(20, 0, 0, 0) }
 
     private val hpAmount = JLabel("X/Y").apply { border = EmptyBorder(0, 20, 10, 0) }
     private val hpField = JTextField().apply { preferredSize = Dimension(50, 25)}
-    private val hpButton = JButton("ADD HP").apply {
+    private val hpButton = JButton("Ajouter PV").apply { //adds current indicated amount of HP to the char's total
         preferredSize = Dimension(100, 40)
         this.addActionListener {
             if (selectedElement.isCharacter()) {
@@ -40,9 +40,9 @@ object SelectPanel : JPanel() {
         }
     }
 
-    private val manaAmount = JLabel("X/Y").apply { border = EmptyBorder(0, 20, 10, 0) }
-    private val manaField = JTextField().apply { preferredSize = Dimension(50, 25) }
-    private val manaButton = JButton("ADD MANA").apply {
+    private val manaAmount = JLabel("X/Y").apply { border = EmptyBorder(0, 20, 10, 0) } // Current amount / max amount
+    private val manaField = JTextField().apply { preferredSize = Dimension(50, 25) } // Text field to indicate Mana amount
+    private val manaButton = JButton("Ajouter Mana").apply { //Adds the indicated amount of MP to the character's total
         preferredSize = Dimension(110, 40)
         this.addActionListener {
             if (selectedElement.isCharacter()) {
@@ -53,14 +53,14 @@ object SelectPanel : JPanel() {
         }
     }
 
-    private val visibilityButton = JButton("Toggle  Visible").apply {
+    private val visibilityButton = JButton("Visible ON/OFF").apply { //Toggles visibility on selected Token
         preferredSize = Dimension(150, 40)
         addActionListener {
             ViewManager.toggleVisibility(selectedElement)
         }
     }
 
-    private val deleteButton = JButton("Delete").apply {
+    private val deleteButton = JButton("Supprimer").apply { //Deletes selected Token
         preferredSize = Dimension(150, 40)
         addActionListener {
             if (selectedElement != null) {
@@ -89,7 +89,7 @@ object SelectPanel : JPanel() {
         border = EmptyBorder(0, 0, 0, 0)
     }
 
-    private fun checkTextValue(str: String): Int {
+    private fun checkTextValue(str: String): Int { // veryfies that the given string is a valid number
         try {
             return Integer.parseInt(str)
         } catch (e: NumberFormatException) {
@@ -180,7 +180,7 @@ object SelectPanel : JPanel() {
 
             g.drawImage(selectedElement!!.sprite.image, 20, 20, 100, 100, null)
 
-            if (selectedElement.isCharacter()) {
+            if (selectedElement.isCharacter()) { //draws informations relative to the char
                 hpAmount.text =
                     "HP: ${selectedElement!!.currentHealth}/${selectedElement!!.maxHP}"
                 manaAmount.text =

@@ -1,13 +1,10 @@
 package jdr.exia.view.mainFrame
-import jdr.exia.controller.ViewManager
 import jdr.exia.model.element.Element
 import java.awt.*
-import java.awt.event.KeyEvent
-import java.awt.event.KeyListener
 import java.awt.event.MouseEvent
 import java.awt.event.MouseListener
 import javax.swing.JPanel
-import kotlin.system.exitProcess
+
 
 // This panel contains the map and all the objects placed within it
 
@@ -53,27 +50,18 @@ class MapPanel : JPanel(), MouseListener{
                 this.height,
                 null
             )
-            val rotator = g as Graphics2D
+
             for (token in tokens) //Display every token one by one
             {
-                if ((!isMasterMapPanel) && !(token.isVisible)) {
+                if ((!isMasterMapPanel) && !(token.isVisible)) { //Do NOTHING
                 } //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
                 else {
                     if ((isMasterMapPanel) && !(token.isVisible)) {
                         drawInvisibleMarker(token, g)
                     }
-                    //rotator.rotate(2.0)
-                    rotator.drawImage(
-                        token.sprite.image,
-                        relativeX(token.position.x),
-                        relativeY(token.position.y),
-                        relativeX(token.hitBox.width),
-                        relativeY(token.hitBox.height),
-                        null
-                    )
+                   drawTokenUp(token,g)
                 }
             }
-
             if (selectedElement != null) {
                 drawSelectedMarker(g)
             }
@@ -103,19 +91,54 @@ class MapPanel : JPanel(), MouseListener{
         )
     }
 
-    override fun mouseClicked(p0: MouseEvent?) {  /* /!\ Coordinates are stated in pixels here, not in absolute 1000th /!\ */
+    override fun mouseClicked(p0: MouseEvent?) {  /* Reacts to the user's click and calls the corresponding function */
         if(isMasterMapPanel) {
             var clickedX = absoluteX(p0!!.x)
             var clickedY = absoluteY(p0.y)
 
             when (p0.button) //  left button: 1, middle button: 2, Right click: 3
             {
-                1 -> if(selectedElement!=null){ViewFacade.moveToken(clickedX, clickedY)}else{ViewFacade.selectToken(clickedX, clickedY)} //Left click
-                2 -> ViewFacade.moveToken(clickedX, clickedY) //Middle button
-                3 -> ViewManager.unSelectElement() //Right click
+                1 -> ViewFacade.selectToken(clickedX, clickedY) //Left click
+                2 -> ViewFacade.moveToken(clickedX, clickedY)   //Middle button
+                3 -> ViewFacade.moveToken(clickedX, clickedY)   //Right click
             }
         }
     } //Actions to take when the mouse is clicked
+
+    fun drawToken(token:Element, g: Graphics) { //draws a token with the adequate orientation TODO: implement rotation
+        when(token.orientation){
+            0-> drawTokenUp(token,g)
+        }
+
+    }
+
+    private fun drawTokenUp(token: Element, g:Graphics){
+        g.drawImage(token.sprite.image,
+            relativeX(token.position.x),
+            relativeY(token.position.y),
+            relativeX(token.hitBox.width),
+            relativeY(token.hitBox.height),
+            null)
+    }
+
+    private fun drawTokenRight(token: Element, g:Graphics){
+        val g2d = g as Graphics2D
+        g2d.rotate(Math.toRadians(90.0))
+        val printX = token.y
+        val printY = 900 - token.x
+        g.drawImage(token.sprite.image,
+            0,
+            0,
+            relativeX(token.hitBox.width),
+            relativeY(token.hitBox.height),
+            null)
+        g2d.rotate(Math.toRadians(270.0))
+
+    }
+
+
+
+
 
 
 
