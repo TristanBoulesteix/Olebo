@@ -10,6 +10,8 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import javax.swing.JMenu
 import javax.swing.JMenuBar
 import javax.swing.JMenuItem
+import kotlin.math.absoluteValue
+
 /*This is MasterFrame's menu bar (situated at the top)*/
 object MasterMenuBar : JMenuBar() {
     var act: Act? = null
@@ -92,11 +94,31 @@ object MasterMenuBar : JMenuBar() {
             }
         }
 
+        val annihilator = JMenu("Vider le plateau").apply {
+            val areYouSure = JMenu("Vraiment?").apply{
+                val really = JMenuItem("Sûr?").apply {
+                    addActionListener{
+
+                      transaction(DAO.database) {
+                          for (token in Scene[act!!.sceneId].elements) {
+                              println("test")
+                              ViewManager.removeToken(token)
+                              transaction(DAO.database) { token.delete() }
+                              Thread.sleep(100)
+                          }
+                      }
+                    }
+                }
+                this.add(really)
+            }
+            this.add(areYouSure)
+        }
 
 
         tokenMenu.add(getTokenFromScene)
         tokenMenu.add(bpManagement)
         tokenMenu.add(removeSelectedToken)
+        tokenMenu.add(annihilator)
         this.add(actMenu)
         this.add(tokenMenu)
         this.add(sceneMenu)
