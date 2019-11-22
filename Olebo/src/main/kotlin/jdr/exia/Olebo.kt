@@ -29,15 +29,17 @@ fun main() {
 /**
  * Check for update on startup
  */
-private fun checkForUpdate() = Thread(Runnable {
+private fun checkForUpdate() = Thread {
     HttpClientUpdater().apply {
         val release = this.lastRelease
         if (!release.isEmpty && release["tag_name"] != VERSION) {
-            val url = ((release["assets"] as JSONArray)[0] as JSONObject)["browser_download_url"] as String
-            Runtime.getRuntime().exec("java -jar $oleboUpdater $url $jarPath")
+            Runtime.getRuntime().addShutdownHook(Thread {
+                val url = ((release["assets"] as JSONArray)[0] as JSONObject)["browser_download_url"] as String
+                Runtime.getRuntime().exec("java -jar $oleboUpdater $url $jarPath")
+            })
         }
     }.close()
-}).start()
+}.start()
 
 
 /**
