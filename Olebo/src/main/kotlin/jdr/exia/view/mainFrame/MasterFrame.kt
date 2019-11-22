@@ -42,7 +42,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         this.isFocusable = true
         this.title = "Master"
         addKeyListener(this)
-        this.defaultCloseOperation = EXIT_ON_CLOSE
+        this.defaultCloseOperation = DISPOSE_ON_CLOSE
         masterFramePanel.size = this.size
         masterFramePanel.background = Color.GRAY
         masterFramePanel.layout = GridBagLayout()

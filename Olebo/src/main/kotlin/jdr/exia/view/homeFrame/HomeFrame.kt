@@ -28,7 +28,7 @@ class HomeFrame : JFrameTemplate("Olebo") {
         HomeManager.observer = this
 
         // This line may cause some issues with database writing ! But without it the X button won't close the program
-        this.defaultCloseOperation = EXIT_ON_CLOSE
+        this.defaultCloseOperation = DISPOSE_ON_CLOSE
 
         this.add(JPanel().apply {
             this.border = BorderFactory.createEmptyBorder(15, 0, 15, 0)
