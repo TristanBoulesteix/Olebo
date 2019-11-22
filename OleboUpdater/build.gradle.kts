@@ -6,7 +6,6 @@ plugins {
 }
 
 group = "jdr.exia.updater"
-version = "1.0-BETA"
 
 repositories {
     mavenCentral()

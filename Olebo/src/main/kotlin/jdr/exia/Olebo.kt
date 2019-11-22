@@ -8,7 +8,6 @@ import org.apache.http.impl.client.HttpClients
 import org.apache.http.util.EntityUtils
 import org.json.JSONArray
 import org.json.JSONObject
-import java.net.UnknownHostException
 import javax.swing.SwingUtilities
 import javax.swing.UIManager
 
@@ -64,7 +63,7 @@ class HttpClientUpdater {
                 val result = EntityUtils.toString(entity)
                 (JSONArray(result).first() as JSONObject)
             }
-        } catch (e: UnknownHostException) {
+        } catch (e: Exception) {
             JSONObject()
         }
 
