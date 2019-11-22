@@ -1,5 +1,6 @@
 package jdr.exia.model.utils
 
+import jdr.exia.main
 import java.io.File
 import javax.swing.ImageIcon
 
@@ -50,4 +51,22 @@ val appDatas: String
             os.contains("NUX") -> System.getProperty("user.home")
             else -> System.getProperty("user.dir")
         } + File.separator
+    }
+
+/**
+ * Get the path of Olebo
+ */
+val jarPath
+    get() = File(::main::class.java.protectionDomain.codeSource.location.toURI()).absolutePath
+
+val oleboUpdater: String
+    get() {
+        val jar = File("${OLEBO_DIRECTORY}oleboUpdater.jar")
+
+        if (!jar.exists()) {
+            File(::main.javaClass.classLoader.getResource("db/template.db")!!.toURI())
+                .copyTo(jar, true)
+        }
+
+        return jar.absolutePath
     }
