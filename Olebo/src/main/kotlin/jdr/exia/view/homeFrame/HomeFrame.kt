@@ -19,7 +19,7 @@ import javax.swing.JPanel
  *
  * This frame will send the selected act to the Games Views
  */
-class HomeFrame : JFrameTemplate("Olebo") {
+class HomeFrame : JFrameTemplate("Olebo - Test") {
     override val observable: Observable = HomeManager
 
     private val selectorPanel =  ActSelectorPanel()

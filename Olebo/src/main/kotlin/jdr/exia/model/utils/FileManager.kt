@@ -56,7 +56,7 @@ val appDatas: String
 /**
  * Get the path of Olebo
  */
-val jarPath
+val jarPath: String
     get() = File(::main::class.java.protectionDomain.codeSource.location.toURI()).absolutePath
 
 val oleboUpdater: String
@@ -64,8 +64,11 @@ val oleboUpdater: String
         val jar = File("${OLEBO_DIRECTORY}oleboUpdater.jar")
 
         if (!jar.exists()) {
-            File(::main.javaClass.classLoader.getResource("db/template.db")!!.toURI())
-                .copyTo(jar, true)
+            ::main.javaClass.classLoader.getResourceAsStream("updater/OleboUpdater.jar")!!.use { input ->
+                jar.outputStream().use { output ->
+                    input.copyTo(output)
+                }
+            }
         }
 
         return jar.absolutePath

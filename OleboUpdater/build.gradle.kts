@@ -1,4 +1,7 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
+    java
     kotlin("jvm") version "1.3.60"
 }
 
@@ -15,18 +18,17 @@ dependencies {
     compile("org.json","json", "20190722")
 }
 
-tasks {
-    compileKotlin {
-        kotlinOptions.jvmTarget = "1.8"
-    }
-    compileTestKotlin {
-        kotlinOptions.jvmTarget = "1.8"
-    }
+configure<JavaPluginConvention> {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions.jvmTarget = "1.8"
 }
 
 val jar by tasks.getting(Jar::class) {
     manifest {
-        attributes["Main-Class"] = "jdr.exia.OleboKt"
+        attributes["Main-Class"] = "jdr.exia.updater.OleboUpdaterKt"
     }
     from(configurations.compile.map { configuration ->
         configuration.asFileTree.fold(files().asFileTree) { collection, file ->
