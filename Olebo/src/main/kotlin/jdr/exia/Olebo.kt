@@ -11,7 +11,7 @@ import org.json.JSONObject
 import javax.swing.SwingUtilities
 import javax.swing.UIManager
 
-const val VERSION = "1.0-BETA"
+const val VERSION = "1.0.0-BETA"
 
 fun main() {
     checkForUpdate()
