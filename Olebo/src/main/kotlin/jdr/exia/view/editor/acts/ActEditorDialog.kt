@@ -21,7 +21,7 @@ import javax.swing.JPanel
 /**
  * This JDialog allows us to create or update an act.
  */
-class ActEditorDialog : JDialogTemplate("Nouvel acte") {
+class ActEditorDialog : JDialogTemplate("Nouvau scénario") {
     private val manager = ActCreatorManager()
     override val observable = manager
 
@@ -56,7 +56,7 @@ class ActEditorDialog : JDialogTemplate("Nouvel acte") {
                     if (nameField.text.isNotEmpty() && this@ActEditorDialog.manager.tempScenes.isNotEmpty() && this@ActEditorDialog.manager.saveAct(nameField.text)) {
                         this@ActEditorDialog.dispose()
                     } else {
-                        showPopup("Désolé, un acte avec le même nom existe déjà ou les données de l'acte sont invalides !", this@ActEditorDialog)
+                        showPopup("Désolé, un scénario avec le même nom existe déjà ou les données du scénario sont invalides !", this@ActEditorDialog)
                     }
                 }
                 this.border = BORDER_BUTTONS

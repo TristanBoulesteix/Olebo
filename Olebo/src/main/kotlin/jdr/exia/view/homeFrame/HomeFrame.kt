@@ -1,5 +1,6 @@
 package jdr.exia.view.homeFrame
 
+import jdr.exia.VERSION
 import jdr.exia.controller.HomeManager
 import jdr.exia.pattern.observer.Action
 import jdr.exia.pattern.observer.Observable
@@ -19,7 +20,7 @@ import javax.swing.JPanel
  *
  * This frame will send the selected act to the Games Views
  */
-class HomeFrame : JFrameTemplate("Olebo") {
+class HomeFrame : JFrameTemplate("Olebo - Version $VERSION") {
     override val observable: Observable = HomeManager
 
     private val selectorPanel =  ActSelectorPanel()
@@ -47,7 +48,7 @@ class HomeFrame : JFrameTemplate("Olebo") {
             }
             this.add(elementButton, cElementButton)
 
-            val actButton = JButton("Ajouter un acte").apply {
+            val actButton = JButton("Ajouter un scénario").apply {
                 this.border = BORDER_BUTTONS
                 this.addActionListener {
                     HomeManager.openActCreatorFrame()
