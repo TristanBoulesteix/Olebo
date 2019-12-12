@@ -1,6 +1,7 @@
 package jdr.exia.view.editor.elements
 
 import jdr.exia.controller.BlueprintData
+import jdr.exia.view.mainFrame.MasterFrame
 import jdr.exia.view.utils.IntegerFilter
 import jdr.exia.view.utils.showPopup
 import java.awt.Dimension
@@ -147,4 +148,6 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
             return this.showDialog()
         } else null
     }
+
+
 }

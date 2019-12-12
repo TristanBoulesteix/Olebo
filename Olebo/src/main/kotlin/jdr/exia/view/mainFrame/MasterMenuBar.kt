@@ -73,6 +73,7 @@ object MasterMenuBar : JMenuBar() {
 
         val bpManagement = JMenuItem("Gèrer les Blueprints").apply { addActionListener {
             BlueprintDialog().isVisible = true
+            MasterFrame.itemPanel.reloadContent()
         }
         }
         val getTokenFromScene = JMenu("Importer depuis une autre scene")

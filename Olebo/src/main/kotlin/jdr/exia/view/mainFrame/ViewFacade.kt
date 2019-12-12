@@ -13,7 +13,6 @@ object ViewFacade {
 
 
 
-
     fun moveToken(x: Int, y: Int) {
         ViewManager.moveToken(x, y)
     }
