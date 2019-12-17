@@ -62,7 +62,8 @@ class MapPanel : JPanel(), MouseListener{
                    drawTokenUp(token,g)
                 }
             }
-            if (selectedElement != null) {
+            if (selectedElement != null && this.isMasterMapPanel) {
+
                 drawSelectedMarker(g)
             }
         }
