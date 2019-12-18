@@ -32,7 +32,7 @@ object InstanceTable : IntIdTable() {
     val x = integer("x").default(10)
     val y = integer("y").default(10)
     val idSize = reference("ID_Size", SizeTable, onDelete = ReferenceOption.CASCADE)
-    val visible = integer("Visible").default(1)
+    val visible = integer("Visible").default(0)
     val orientation = integer("Orientation").default(0)
     val idScene = integer("ID_Scene").references(SceneTable.id)
     val idBlueprint = integer("id_blueprint").references(BlueprintTable.id)
