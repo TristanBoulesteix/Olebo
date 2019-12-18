@@ -1,3 +1,6 @@
 package jdr.exia.model.element
 
-data class Position(val x: Int, val y: Int)
+/**
+ * Coordinates of an element
+ */
+data class Position(var x: Int, var y: Int)

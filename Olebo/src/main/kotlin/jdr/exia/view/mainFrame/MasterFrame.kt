@@ -1,11 +1,16 @@
 package jdr.exia.view.mainFrame
 
-import java.awt.*
+import jdr.exia.controller.ViewManager
+import jdr.exia.model.element.Element
+import java.awt.Color
+import java.awt.GraphicsEnvironment
+import java.awt.GridBagConstraints
+import java.awt.GridBagLayout
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
-import javax.swing.JFrame
-import jdr.exia.model.element.Element
+import java.io.File
 import javax.imageio.ImageIO
+import javax.swing.JFrame
 import javax.swing.JPanel
 import kotlin.system.exitProcess
 
@@ -13,58 +18,42 @@ import kotlin.system.exitProcess
  * MasterFrame will be focused most of the time, so it contains all KeyListeners for the program
 this is a singleton*/
 
-/* TODO: create the Drag and drop system
- * Idea on how this works:
- * The
+/* TODO:
+ *
  * */
-object MasterFrame : JFrame(), KeyListener, gameFrame {
+object MasterFrame : JFrame(), KeyListener, GameFrame {
 
-
-    private var masterFramePanel = JPanel()
-    private val mapPanel = MapPanel()
+    private var masterFramePanel = JPanel() // Main JPanel that contains other panels
+    val mapPanel = MapPanel() //this frame's mapPanel
     var selectPanel = SelectPanel // Will contain all info on selected Item
-    var itemPanel = ItemPanel // Will contain list of available items
+    var itemPanel = ItemPanel() // Will contain list of available items
 
-
-    override fun setMapBackground(imageName: String) {
-        mapPanel.backGroundImage = ImageIO.read(Element::class.java.getResource(imageName).openStream())
-
+    override fun setMapBackground(imageName: String) { //set the background image for the mappanels
+        mapPanel.backGroundImage = ImageIO.read(File(imageName))
     }
 
     init {
-
-
-
         val screens = GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices
-        this.setSize(screens[0].displayMode.width,screens[0].displayMode.height)
+        this.setSize(screens[0].displayMode.width, screens[0].displayMode.height)
+        if (screens.size == 1) { //If there is only 1 screen, we display both frames there
+        } else {
 
-
-
-
-
-
+        }
+        this.isFocusable = true
         this.title = "Master"
-
         addKeyListener(this)
-        this.defaultCloseOperation = EXIT_ON_CLOSE
-
-
-
-
+        this.defaultCloseOperation = DISPOSE_ON_CLOSE
         masterFramePanel.size = this.size
         masterFramePanel.background = Color.GRAY
         masterFramePanel.layout = GridBagLayout()
         contentPane = masterFramePanel
 
-
         mapPanel.setSize(1280, 720)
 
-        selectPanel.setSize(100, 100)
-
-        selectPanel.background = Color.green
-
-        itemPanel.setSize(100, 100)
+        itemPanel.setSize(this.width - 1280, this.height)
         itemPanel.background = Color.yellow
+
+        selectPanel.setSize(this.mapPanel.width, (this.height - mapPanel.height))
 
         val mapConstraints = GridBagConstraints()
         val itemConstraints = GridBagConstraints()
@@ -87,28 +76,35 @@ object MasterFrame : JFrame(), KeyListener, gameFrame {
         mapConstraints.gridx = 3
         mapConstraints.gridy = 0
         mapConstraints.weightx = 3.0
-        mapConstraints.weighty = 5.0
+        mapConstraints.weighty = 7.0
         mapConstraints.fill = GridBagConstraints.BOTH
 
         masterFramePanel.add(mapPanel, mapConstraints)
         masterFramePanel.add(itemPanel, itemConstraints)
         masterFramePanel.add(selectPanel, selectConstraints)
+        this.mapPanel.isMasterMapPanel = true
+        jMenuBar = MasterMenuBar
     }
+
+
 
     // KeyListener section, to add Key bindings
     override fun keyTyped(keyEvent: KeyEvent) {
-      println("haha")
-
-
     }
 
     override fun keyPressed(keyEvent: KeyEvent) {
 
-        if (keyEvent.keyCode == KeyEvent.VK_ESCAPE) {
-
-            this.dispose()
-
-            exitProcess(0)
+        when (keyEvent.keyCode) {
+            KeyEvent.VK_ESCAPE -> { //remove after testing is complete
+                dispose()
+                exitProcess(0)
+            }
+            KeyEvent.VK_UP -> {
+                ViewManager.selectUp()
+            }
+            KeyEvent.VK_DOWN -> {
+                ViewManager.selectDown()
+            }
         }
     }
 
@@ -116,15 +112,7 @@ object MasterFrame : JFrame(), KeyListener, gameFrame {
 
     }
 
-    override fun updateMap(tokens: MutableList<Element>){
+    override fun updateMap(tokens: MutableList<Element>) {
         mapPanel.updateTokens(tokens)
-
     }
-
-
-
-
-
-
-
 }
