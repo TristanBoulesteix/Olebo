@@ -11,11 +11,10 @@ import org.json.JSONObject
 import javax.swing.SwingUtilities
 import javax.swing.UIManager
 
-const val VERSION = "1.0.1-BETA"
+val VERSION = Class.forName("jdr.exia.OleboKt").`package`.implementationVersion ?: "DEBUG"
 
 fun main() {
     checkForUpdate()
-
     SwingUtilities.invokeLater {
         UIManager.setLookAndFeel(
             UIManager.getSystemLookAndFeelClassName()

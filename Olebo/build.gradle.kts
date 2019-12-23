@@ -28,6 +28,10 @@ dependencies {
 val jar by tasks.getting(Jar::class) {
     manifest {
         attributes["Main-Class"] = "jdr.exia.OleboKt"
+        attributes(
+            "Implementation-Title" to "Gradle",
+            "Implementation-Version" to version
+        )
     }
     from(configurations.compile.map { configuration ->
         configuration.asFileTree.fold(files().asFileTree) { collection, file ->
