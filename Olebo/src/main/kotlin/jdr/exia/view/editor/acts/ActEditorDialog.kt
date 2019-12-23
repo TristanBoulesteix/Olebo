@@ -1,6 +1,6 @@
 package jdr.exia.view.editor.acts
 
-import jdr.exia.controller.ActCreatorManager
+import jdr.exia.viewmodel.ActCreatorManager
 import jdr.exia.model.act.Act
 import jdr.exia.pattern.observer.Action
 import jdr.exia.view.utils.BACKGROUND_COLOR_LIGHT_BLUE

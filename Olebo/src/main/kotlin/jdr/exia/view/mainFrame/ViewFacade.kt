@@ -1,6 +1,6 @@
 package jdr.exia.view.mainFrame
 
-import jdr.exia.controller.ViewManager
+import jdr.exia.viewmodel.ViewManager
 import jdr.exia.model.element.Element
 
 /*ViewManager is View's facade

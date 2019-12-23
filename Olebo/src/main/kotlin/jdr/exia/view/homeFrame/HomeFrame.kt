@@ -1,7 +1,7 @@
 package jdr.exia.view.homeFrame
 
 import jdr.exia.VERSION
-import jdr.exia.controller.HomeManager
+import jdr.exia.viewmodel.HomeManager
 import jdr.exia.pattern.observer.Action
 import jdr.exia.pattern.observer.Observable
 import jdr.exia.view.utils.BORDER_BUTTONS

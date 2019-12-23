@@ -1,7 +1,6 @@
 package jdr.exia.view.editor.elements
 
-import jdr.exia.controller.BlueprintData
-import jdr.exia.view.mainFrame.MasterFrame
+import jdr.exia.viewmodel.BlueprintData
 import jdr.exia.view.utils.IntegerFilter
 import jdr.exia.view.utils.showPopup
 import java.awt.Dimension

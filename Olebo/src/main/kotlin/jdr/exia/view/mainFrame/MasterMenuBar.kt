@@ -1,6 +1,6 @@
 package jdr.exia.view.mainFrame
 
-import jdr.exia.controller.ViewManager
+import jdr.exia.viewmodel.ViewManager
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.DAO
@@ -10,7 +10,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import javax.swing.JMenu
 import javax.swing.JMenuBar
 import javax.swing.JMenuItem
-import kotlin.math.absoluteValue
 
 /*This is MasterFrame's menu bar (situated at the top)*/
 object MasterMenuBar : JMenuBar() {

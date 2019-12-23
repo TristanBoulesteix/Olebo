@@ -1,6 +1,6 @@
 package jdr.exia.view.editor.elements
 
-import jdr.exia.controller.BlueprintManager
+import jdr.exia.viewmodel.BlueprintManager
 import jdr.exia.pattern.observer.Action
 import jdr.exia.view.utils.BACKGROUND_COLOR_ORANGE
 import jdr.exia.view.utils.components.JDialogTemplate

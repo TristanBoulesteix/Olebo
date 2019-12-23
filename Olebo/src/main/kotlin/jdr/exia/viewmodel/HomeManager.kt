@@ -1,4 +1,4 @@
-package jdr.exia.controller
+package jdr.exia.viewmodel
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.dao.DAO

@@ -1,8 +1,8 @@
 package jdr.exia.view.editor.acts
 
-import jdr.exia.controller.ActCreatorManager
-import jdr.exia.controller.HomeManager
-import jdr.exia.controller.getArrayOfPairs
+import jdr.exia.viewmodel.ActCreatorManager
+import jdr.exia.viewmodel.HomeManager
+import jdr.exia.viewmodel.getArrayOfPairs
 import jdr.exia.model.utils.getIcon
 import jdr.exia.view.utils.components.ItemPanel
 import jdr.exia.view.utils.components.SelectorPanel
