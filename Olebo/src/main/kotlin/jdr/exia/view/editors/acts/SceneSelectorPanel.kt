@@ -1,4 +1,4 @@
-package jdr.exia.view.editor.acts
+package jdr.exia.view.editors.acts
 
 import jdr.exia.viewmodel.ActCreatorManager
 import jdr.exia.viewmodel.HomeManager

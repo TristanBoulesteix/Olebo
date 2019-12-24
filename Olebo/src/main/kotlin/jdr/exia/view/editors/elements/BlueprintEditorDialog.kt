@@ -1,4 +1,4 @@
-package jdr.exia.view.editor.elements
+package jdr.exia.view.editors.elements
 
 import jdr.exia.viewmodel.BlueprintData
 import jdr.exia.view.utils.IntegerFilter

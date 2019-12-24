@@ -1,9 +1,9 @@
-package jdr.exia.view.mainFrame
+package jdr.exia.view.gameFrame
 
-import jdr.exia.viewmodel.ViewManager
 import jdr.exia.model.element.Element
+import jdr.exia.view.utils.setFullScreen
+import jdr.exia.viewmodel.ViewManager
 import java.awt.Color
-import java.awt.GraphicsEnvironment
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.awt.event.KeyEvent
@@ -14,18 +14,15 @@ import javax.swing.JFrame
 import javax.swing.JPanel
 import kotlin.system.exitProcess
 
-/*MasterFrame is the Game Master's Interface, it contains a Map panel (the same as PlayerFrame, but scaled down), an ItemPanel and a SelectPanel.
- * MasterFrame will be focused most of the time, so it contains all KeyListeners for the program
-this is a singleton*/
-
-/* TODO:
+/**
+ * MasterFrame is the Game Master's Interface, it contains a Map panel (the same as PlayerFrame, but scaled down), an ItemPanel and a SelectPanel.
+ * MasterFrame will be focused most of the time, so it contains all KeyListeners for the program.
  *
- * */
+ * This is a singleton*/
 object MasterFrame : JFrame(), KeyListener, GameFrame {
-
     private var masterFramePanel = JPanel() // Main JPanel that contains other panels
     val mapPanel = MapPanel() //this frame's mapPanel
-    var selectPanel = SelectPanel // Will contain all info on selected Item
+    private var selectPanel = SelectPanel // Will contain all info on selected Item
     var itemPanel = ItemPanel() // Will contain list of available items
 
     override fun setMapBackground(imageName: String) { //set the background image for the mappanels
@@ -33,16 +30,12 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
     }
 
     init {
-        val screens = GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices
-        this.setSize(screens[0].displayMode.width, screens[0].displayMode.height)
-        if (screens.size == 1) { //If there is only 1 screen, we display both frames there
-        } else {
-
-        }
+        //val screens = GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices
         this.isFocusable = true
         this.title = "Master"
         addKeyListener(this)
         this.defaultCloseOperation = DISPOSE_ON_CLOSE
+        this.setFullScreen()
         masterFramePanel.size = this.size
         masterFramePanel.background = Color.GRAY
         masterFramePanel.layout = GridBagLayout()
@@ -85,7 +78,6 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         this.mapPanel.isMasterMapPanel = true
         jMenuBar = MasterMenuBar
     }
-
 
 
     // KeyListener section, to add Key bindings

@@ -6,8 +6,8 @@ import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Position
-import jdr.exia.view.mainFrame.MasterMenuBar
-import jdr.exia.view.mainFrame.ViewFacade
+import jdr.exia.view.gameFrame.MasterMenuBar
+import jdr.exia.view.gameFrame.ViewFacade
 import org.jetbrains.exposed.sql.transactions.transaction
 
 /**
@@ -57,8 +57,11 @@ object ViewManager {
         }
     }
 
-    fun moveToken(x: Int,y: Int) { //Changes a token's position without dropping it (a moved token stays selected) , intended for small steps
-        if (selectedElement!= null) {
+    fun moveToken(
+        x: Int,
+        y: Int
+    ) { //Changes a token's position without dropping it (a moved token stays selected) , intended for small steps
+        if (selectedElement != null) {
             val newX = (x - (selectedElement!!.hitBox.width / 2))
             val newY = (y - (selectedElement!!.hitBox.height / 2))
             selectedElement!!.position = Position(newX, newY)
@@ -66,7 +69,7 @@ object ViewManager {
         }
     }
 
-    fun unSelectElement(){
+    private fun unSelectElement() {
         selectedElement = null
         ViewFacade.unSelectElement()
         repaint()
@@ -77,7 +80,10 @@ object ViewManager {
         this.repaint()
     }
 
-    private fun getTokenFromXY(x: Int,y: Int): Element? {//Receives a clicked point (x,y), returns the first soken found in the Tokens array, or null if none matched
+    private fun getTokenFromXY(
+        x: Int,
+        y: Int
+    ): Element? {//Receives a clicked point (x,y), returns the first soken found in the Tokens array, or null if none matched
         activeScene!!.elements.forEach {
             if (it.hitBox.contains(x, y)) {
                 return it
@@ -91,39 +97,44 @@ object ViewManager {
         ViewFacade.repaintFrames()
     }
 
-    fun selectElement(x: Int,y: Int) { //cheks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
+    fun selectElement(
+        x: Int,
+        y: Int
+    ) { //cheks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
         selectedElement = getTokenFromXY(x, y)
         if (selectedElement != null) {
             ViewFacade.setSelectedToken(selectedElement)
             repaint()
-        }else{
-            unSelectElement()}
+        } else {
+            unSelectElement()
+        }
     }
 
-    fun selectUp(){ //TODO: Bug, mais pas prioritaire
-        if(selectedElement == null && activeScene!!.elements.size > 0){
+    fun selectUp() { //TODO: Bug, mais pas prioritaire
+        if (selectedElement == null && activeScene!!.elements.size > 0) {
             selectedElement = activeScene!!.elements[0]
-        } else if(activeScene!!.elements.getOrNull(activeScene!!.elements.indexOf(selectedElement)+1) != null){
-            selectedElement = activeScene!!.elements[activeScene!!.elements.indexOf(selectedElement)+1]
+        } else if (activeScene!!.elements.getOrNull(activeScene!!.elements.indexOf(selectedElement) + 1) != null) {
+            selectedElement = activeScene!!.elements[activeScene!!.elements.indexOf(selectedElement) + 1]
         }
         ViewFacade.setSelectedToken(selectedElement)
         repaint()
     }
 
-    fun selectDown(){ //TODO: Bug
-        if(selectedElement == null && activeScene!!.elements.size > 0){
+    fun selectDown() { //TODO: Bug
+        if (selectedElement == null && activeScene!!.elements.size > 0) {
             selectedElement = activeScene!!.elements[0]
-        } else if(activeScene!!.elements.getOrNull(activeScene!!.elements.indexOf(selectedElement)-1) != null){
+        } else if (activeScene!!.elements.getOrNull(activeScene!!.elements.indexOf(selectedElement) - 1) != null) {
             println("je fonctionne")
-            selectedElement = activeScene!!.elements[activeScene!!.elements.indexOf(selectedElement)-1]
+            selectedElement = activeScene!!.elements[activeScene!!.elements.indexOf(selectedElement) - 1]
         }
         ViewFacade.setSelectedToken(selectedElement)
         repaint()
     }
 
-    private fun updateTokens() { //Updates the tokens on the maps by repainting everything
-        ViewFacade.placeTokensOnMaps(activeScene!!.elements)
-    }
+    /**
+     * Updates the tokens on the maps by repainting everything
+     */
+    private fun updateTokens() = ViewFacade.placeTokensOnMaps(activeScene!!.elements)
 
     fun toggleVisibility(token: Element?) {
         if (token != null) {

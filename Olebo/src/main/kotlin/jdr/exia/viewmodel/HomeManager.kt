@@ -5,8 +5,8 @@ import jdr.exia.model.dao.DAO
 import jdr.exia.pattern.observer.Action
 import jdr.exia.pattern.observer.Observable
 import jdr.exia.pattern.observer.Observer
-import jdr.exia.view.editor.acts.ActEditorDialog
-import jdr.exia.view.editor.elements.BlueprintDialog
+import jdr.exia.view.editors.acts.ActEditorDialog
+import jdr.exia.view.editors.elements.BlueprintDialog
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object HomeManager : Observable {

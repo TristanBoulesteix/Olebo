@@ -1,10 +1,10 @@
-package jdr.exia.view.mainFrame
+package jdr.exia.view.gameFrame
 
 import jdr.exia.viewmodel.ViewManager
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.DAO
-import jdr.exia.view.editor.elements.BlueprintDialog
+import jdr.exia.view.editors.elements.BlueprintDialog
 import jdr.exia.view.homeFrame.HomeFrame
 import org.jetbrains.exposed.sql.transactions.transaction
 import javax.swing.JMenu

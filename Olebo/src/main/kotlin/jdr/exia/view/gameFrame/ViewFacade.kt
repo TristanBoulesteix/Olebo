@@ -1,27 +1,23 @@
-package jdr.exia.view.mainFrame
+package jdr.exia.view.gameFrame
 
-import jdr.exia.viewmodel.ViewManager
 import jdr.exia.model.element.Element
+import jdr.exia.viewmodel.ViewManager
 
-/*ViewManager is View's facade
-this is a singleton*/
+/**
+ * ViewManager is View's facade.
+ *
+ * This is a singleton
+ */
 object ViewFacade {
-
-    init {
-    }
-
-
-
-
     fun moveToken(x: Int, y: Int) {
         ViewManager.moveToken(x, y)
     }
 
-    fun selectToken(x: Int,y:Int){
-        ViewManager.selectElement(x,y)
+    fun selectToken(x: Int, y: Int) {
+        ViewManager.selectElement(x, y)
     }
 
-    fun setSelectedToken(token: Element?){
+    fun setSelectedToken(token: Element?) {
         SelectPanel.selectedElement = token
         MasterFrame.mapPanel.selectedElement = token
         PlayerFrame.mapPanel.selectedElement = token
@@ -34,40 +30,28 @@ object ViewFacade {
         repaintFrames()
     }
 
-
-
-
     fun repaintFrames() { //Repaints both frames simultaneously
         MasterFrame.repaint()
         PlayerFrame.repaint()
     }
 
-
-
     fun turnVisible() { /*this method activates the Player and GM frames to initiate/start back an act	*/
         MasterFrame.isVisible = true
-
-
         /*TODO: give master frame and player frame the objects relative to the current act*/
     }
-
 
     fun placeTokensOnMaps(tokens: MutableList<Element>) { //places tokens on both maps at corresponding points
         PlayerFrame.updateMap(tokens)
         MasterFrame.updateMap(tokens)
-
-
     }
 
-    fun unSelectElement(){
+    fun unSelectElement() {
         PlayerFrame.mapPanel.selectedElement = null
         MasterFrame.mapPanel.selectedElement = null
         SelectPanel.selectedElement = null
     }
 
-    fun loadItems(){
+    fun loadItems() {
         MasterFrame.itemPanel.reloadContent()
     }
-
-
 }

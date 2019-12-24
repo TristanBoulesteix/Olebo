@@ -1,4 +1,4 @@
-package jdr.exia.view.editor.acts
+package jdr.exia.view.editors.acts
 
 import jdr.exia.viewmodel.SceneData
 import jdr.exia.view.utils.showPopup
