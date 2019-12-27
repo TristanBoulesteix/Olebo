@@ -23,9 +23,12 @@ object DAO {
 
     init {
         if (!File(filePath).exists()) {
-            File(this.javaClass.classLoader.getResource("db/template.db")!!.toURI()).copyTo(
-                File(filePath), true
-            )
+            this.javaClass.classLoader.getResourceAsStream("db/template.db")!!.use { input ->
+                File(filePath).parentFile.mkdirs()
+                File(filePath).outputStream().use { output ->
+                    input.copyTo(output)
+                }
+            }
         }
 
         database = Database.connect(url, "org.sqlite.JDBC")

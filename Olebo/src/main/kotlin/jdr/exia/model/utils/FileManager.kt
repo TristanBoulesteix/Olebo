@@ -7,7 +7,12 @@ import javax.swing.ImageIcon
 /**
  * Path to the Olebo directory
  */
-val OLEBO_DIRECTORY = "$appDatas${File.separator}Olebo${File.separator}"
+val OLEBO_DIRECTORY: String
+    get() {
+        val path = "$appDatas${File.separator}Olebo${File.separator}"
+        if(!File(path).exists()) File(path).mkdirs()
+        return path
+    }
 
 /**
  * Get icon from name in ressources
@@ -66,6 +71,7 @@ val oleboUpdater: String
         if (!jar.exists()) {
             ::main.javaClass.classLoader.getResourceAsStream("updater/OleboUpdater.jar")!!.use { input ->
                 jar.outputStream().use { output ->
+                    File(OLEBO_DIRECTORY).mkdirs()
                     input.copyTo(output)
                 }
             }
