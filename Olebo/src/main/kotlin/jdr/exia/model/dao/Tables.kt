@@ -122,9 +122,17 @@ object SizeTable : IntIdTable() {
     }
 }
 
-object SettingsTable : IdTable<String>() {
+object SettingsTable : IntIdTable() {
     val name = varchar("name", 255)
     val value = varchar("value", 255).default("")
 
-    override val id = name.entityId()
+    fun initialize() {
+        if (SettingsTable.select((id eq 1) and (name eq "autoUpdate")).count() <= 0) {
+            SettingsTable.insert {
+                it[id] = EntityID(1, SettingsTable)
+                it[name] = "autoUpdate"
+                it[value] = true.toString()
+            }
+        }
+    }
 }

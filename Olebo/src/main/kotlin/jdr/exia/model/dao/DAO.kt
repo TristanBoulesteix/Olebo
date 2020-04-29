@@ -1,11 +1,10 @@
 package jdr.exia.model.dao
 
-import jdr.exia.utils.MessageException
 import jdr.exia.model.act.Act
 import jdr.exia.model.element.Blueprint
-import jdr.exia.model.element.Size
 import jdr.exia.model.element.Type
 import jdr.exia.model.utils.OLEBO_DIRECTORY
+import jdr.exia.utils.MessageException
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -37,6 +36,7 @@ object DAO {
             SchemaUtils.createMissingTablesAndColumns(ActTable, SceneTable, BlueprintTable, TypeTable, InstanceTable, SizeTable, SettingsTable)
             TypeTable.initialize()
             SizeTable.initialize()
+            SettingsTable.initialize()
         }
     }
 
