@@ -4,9 +4,9 @@ import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
 import jdr.exia.model.utils.saveImg
-import jdr.exia.pattern.observer.Action
-import jdr.exia.pattern.observer.Observable
-import jdr.exia.pattern.observer.Observer
+import jdr.exia.controller.pattern.observer.Action
+import jdr.exia.controller.pattern.observer.Observable
+import jdr.exia.controller.pattern.observer.Observer
 import jdr.exia.view.editor.elements.BlueprintEditorDialog
 import jdr.exia.view.utils.showPopup
 import org.jetbrains.exposed.sql.transactions.transaction

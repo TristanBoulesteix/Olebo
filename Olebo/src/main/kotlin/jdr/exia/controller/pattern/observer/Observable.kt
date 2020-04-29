@@ -1,4 +1,4 @@
-package jdr.exia.pattern.observer
+package jdr.exia.controller.pattern.observer
 
 /**
  * Observable class

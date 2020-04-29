@@ -2,9 +2,9 @@ package jdr.exia.controller
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.dao.DAO
-import jdr.exia.pattern.observer.Action
-import jdr.exia.pattern.observer.Observable
-import jdr.exia.pattern.observer.Observer
+import jdr.exia.controller.pattern.observer.Action
+import jdr.exia.controller.pattern.observer.Observable
+import jdr.exia.controller.pattern.observer.Observer
 import jdr.exia.view.editor.acts.ActEditorDialog
 import jdr.exia.view.editor.elements.BlueprintDialog
 import org.jetbrains.exposed.sql.transactions.transaction

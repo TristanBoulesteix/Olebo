@@ -1,7 +1,7 @@
 package jdr.exia.view.utils.components
 
-import jdr.exia.pattern.observer.Observable
-import jdr.exia.pattern.observer.Observer
+import jdr.exia.controller.pattern.observer.Observable
+import jdr.exia.controller.pattern.observer.Observer
 import jdr.exia.view.utils.BACKGROUND_COLOR_LIGHT_BLUE
 import jdr.exia.view.utils.DIMENSION_FRAME
 import jdr.exia.view.utils.IntegerFilter

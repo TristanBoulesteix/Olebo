@@ -1,4 +1,4 @@
-package jdr.exia
+package jdr.exia.utils
 
 import javax.swing.FocusManager
 import javax.swing.JOptionPane

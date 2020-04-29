@@ -7,7 +7,7 @@ import javax.swing.ImageIcon
 /**
  * Path to the Olebo directory
  */
-val OLEBO_DIRECTORY = "$appDatas${File.separator}Olebo${File.separator}"
+val OLEBO_DIRECTORY = "${appDatas}Olebo${File.separator}"
 
 /**
  * Get icon from name in ressources

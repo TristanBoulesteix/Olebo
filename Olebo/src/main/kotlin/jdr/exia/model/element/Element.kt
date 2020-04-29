@@ -1,6 +1,6 @@
 package jdr.exia.model.element
 
-import jdr.exia.CharacterException
+import jdr.exia.utils.CharacterException
 import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.InstanceTable
