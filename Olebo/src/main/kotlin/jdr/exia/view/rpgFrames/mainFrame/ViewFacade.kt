@@ -11,17 +11,15 @@ object ViewFacade {
     }
 
 
-
-
     fun moveToken(x: Int, y: Int) {
         ViewManager.moveToken(x, y)
     }
 
-    fun selectToken(x: Int,y:Int){
-        ViewManager.selectElement(x,y)
+    fun selectToken(x: Int, y: Int) {
+        ViewManager.selectElement(x, y)
     }
 
-    fun setSelectedToken(token: Element?){
+    fun setSelectedToken(token: Element?) {
         SelectPanel.selectedElement = token
         MasterFrame.mapPanel.selectedElement = token
         PlayerFrame.mapPanel.selectedElement = token
@@ -34,14 +32,10 @@ object ViewFacade {
         repaintFrames()
     }
 
-
-
-
     fun repaintFrames() { //Repaints both frames simultaneously
         MasterFrame.repaint()
         PlayerFrame.repaint()
     }
-
 
 
     fun turnVisible() { /*this method activates the Player and GM frames to initiate/start back an act	*/
@@ -59,13 +53,13 @@ object ViewFacade {
 
     }
 
-    fun unSelectElement(){
+    fun unSelectElement() {
         PlayerFrame.mapPanel.selectedElement = null
         MasterFrame.mapPanel.selectedElement = null
         SelectPanel.selectedElement = null
     }
 
-    fun loadItems(){
+    fun loadItems() {
         MasterFrame.itemPanel.reloadContent()
     }
 
