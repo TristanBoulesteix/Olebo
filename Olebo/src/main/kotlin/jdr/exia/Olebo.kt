@@ -5,7 +5,7 @@ import jdr.exia.view.rpgFrames.homeFrame.HomeFrame
 import javax.swing.SwingUtilities
 import javax.swing.UIManager
 
-const val VERSION = "1.0.1-BETA"
+const val VERSION = "1.1.0-BETA"
 
 fun main() {
     HttpClientUpdater.checkForUpdate()

@@ -134,11 +134,20 @@ object SettingsTable : IntIdTable() {
                 it[value] = "1.0.0"
             }
         }
+
         if (SettingsTable.select((id eq 2) and (name eq "autoUpdate")).count() <= 0) {
             SettingsTable.insert {
                 it[id] = EntityID(2, SettingsTable)
                 it[name] = "autoUpdate"
                 it[value] = true.toString()
+            }
+        }
+
+        if (SettingsTable.select((id eq 3) and (name eq "updateWarn")).count() <= 0) {
+            SettingsTable.insert {
+                it[id] = EntityID(3, SettingsTable)
+                it[name] = "updateWarn"
+                it[value] = ""
             }
         }
     }
