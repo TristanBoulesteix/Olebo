@@ -1,4 +1,4 @@
-package jdr.exia.view.mainFrame
+package jdr.exia.view.rpgFrames.mainFrame
 
 import jdr.exia.model.element.Element
 import java.awt.GraphicsEnvironment

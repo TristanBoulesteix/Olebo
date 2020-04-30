@@ -6,8 +6,8 @@ import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Position
-import jdr.exia.view.mainFrame.MasterMenuBar
-import jdr.exia.view.mainFrame.ViewFacade
+import jdr.exia.view.rpgFrames.mainFrame.MasterMenuBar
+import jdr.exia.view.rpgFrames.mainFrame.ViewFacade
 import org.jetbrains.exposed.sql.transactions.transaction
 
 /**

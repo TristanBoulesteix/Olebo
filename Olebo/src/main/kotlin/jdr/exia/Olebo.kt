@@ -1,7 +1,7 @@
 package jdr.exia
 
 import jdr.exia.utils.HttpClientUpdater
-import jdr.exia.view.homeFrame.HomeFrame
+import jdr.exia.view.rpgFrames.homeFrame.HomeFrame
 import javax.swing.SwingUtilities
 import javax.swing.UIManager
 

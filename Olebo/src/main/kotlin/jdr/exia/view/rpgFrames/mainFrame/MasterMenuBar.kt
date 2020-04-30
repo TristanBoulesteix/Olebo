@@ -1,11 +1,12 @@
-package jdr.exia.view.mainFrame
+package jdr.exia.view.rpgFrames.mainFrame
 
 import jdr.exia.controller.ViewManager
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.DAO
 import jdr.exia.view.editor.elements.BlueprintDialog
-import jdr.exia.view.homeFrame.HomeFrame
+import jdr.exia.view.rpgFrames.homeFrame.HomeFrame
+import jdr.exia.view.utils.showConfirmMessage
 import org.jetbrains.exposed.sql.transactions.transaction
 import javax.swing.*
 
@@ -15,7 +16,7 @@ import javax.swing.*
 object MasterMenuBar : JMenuBar() {
     var act: Act? = null
 
-    private fun <T: JComponent> T.applyAndAppend(parent : JComponent, block: T.() -> Unit) {
+    private fun <T : JComponent> T.applyAndAppend(parent: JComponent, block: T.() -> Unit) {
         this.apply(block)
         parent.add(this)
     }
@@ -100,23 +101,19 @@ object MasterMenuBar : JMenuBar() {
                 }
             }
 
-            JMenu("Vider le plateau").applyAndAppend(this) {
-                val areYouSure = JMenu("Vraiment?").apply {
-                    val really = JMenuItem("Sûr?").apply {
-                        addActionListener {
-                            transaction(DAO.database) {
-                                for (token in Scene[act!!.sceneId].elements) {
-                                    println("test")
-                                    ViewManager.removeToken(token)
-                                    transaction(DAO.database) { token.delete() }
-                                    Thread.sleep(100)
-                                }
+            JMenuItem("Vider le plateau").applyAndAppend(this) {
+                addActionListener {
+                    showConfirmMessage(this, "Voulez-vous vraiment supprimer tous les éléments du plateau ? Cette action est irréversible.", "Suppression") {
+                        transaction(DAO.database) {
+                            for (token in Scene[act!!.sceneId].elements) {
+                                println("test")
+                                ViewManager.removeToken(token)
+                                transaction(DAO.database) { token.delete() }
+                                Thread.sleep(100)
                             }
                         }
                     }
-                    this.add(really)
                 }
-                this.add(areYouSure)
             }
         }
     }
