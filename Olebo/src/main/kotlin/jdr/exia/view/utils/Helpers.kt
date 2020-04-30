@@ -44,3 +44,8 @@ fun showConfirmMessage(parent: JComponent? = null, message: String, title: Strin
             ok
     )
 }
+
+fun <T : JComponent> T.applyAndAppend(parent: JComponent, block: T.() -> Unit) {
+    this.apply(block)
+    parent.add(this)
+}

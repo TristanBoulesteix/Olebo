@@ -6,6 +6,8 @@ import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.DAO
 import jdr.exia.view.editor.elements.BlueprintDialog
 import jdr.exia.view.rpgFrames.homeFrame.HomeFrame
+import jdr.exia.view.utils.applyAndAppend
+import jdr.exia.view.utils.components.FileMenu
 import jdr.exia.view.utils.showConfirmMessage
 import org.jetbrains.exposed.sql.transactions.transaction
 import javax.swing.*
@@ -16,13 +18,10 @@ import javax.swing.*
 object MasterMenuBar : JMenuBar() {
     var act: Act? = null
 
-    private fun <T : JComponent> T.applyAndAppend(parent: JComponent, block: T.() -> Unit) {
-        this.apply(block)
-        parent.add(this)
-    }
-
     fun initialize() {
         this.removeAll()
+
+        this.add(FileMenu())
 
         JMenu("Fenêtres").applyAndAppend(this) {
             JMenuItem("Fermer scenario").applyAndAppend(this) {
