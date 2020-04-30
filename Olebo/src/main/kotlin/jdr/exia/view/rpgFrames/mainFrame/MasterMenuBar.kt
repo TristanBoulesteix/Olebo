@@ -27,8 +27,8 @@ object MasterMenuBar : JMenuBar() {
         JMenu("Fenêtres").applyAndAppend(this) {
             JMenuItem("Fermer scenario").applyAndAppend(this) {
                 this.addActionListener {
-                    MasterFrame.isVisible = false;
-                    PlayerFrame.isVisible = false;
+                    MasterFrame.isVisible = false
+                    PlayerFrame.isVisible = false
                     HomeFrame().isVisible = true
                 }
             }
