@@ -4,19 +4,24 @@ import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.IntEntity
 import jdr.exia.model.utils.toBoolean
+import org.jetbrains.exposed.sql.transactions.transaction
 
 class Settings(id: EntityID<Int>) : IntEntity(id) {
     companion object : EntityClass<Int, Settings>(SettingsTable) {
         var databaseVersion
             get() = this["baseVersion"] ?: throw NullPointerException("Erreur de base de données ! Valeur manquante.")
             set(value) {
-                this["baseVersion"] = value
+                transaction(DAO.database) {
+                    this@Companion["baseVersion"] = value
+                }
             }
 
         var autoUpdate
             get() = this["autoUpdate"].toBoolean()
             set(value) {
-                this["autoUpdate"] = value.toString()
+                transaction(DAO.database) {
+                    this@Companion["autoUpdate"] = value.toString()
+                }
             }
 
         operator fun plusAssign(setting: Pair<String, Any?>) {

@@ -1,14 +1,13 @@
 package jdr.exia.view.utils.components
 
+import jdr.exia.model.dao.Settings
 import jdr.exia.view.utils.applyAndAppend
 import java.awt.Component
+import java.awt.event.ItemEvent
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
-import javax.swing.JFileChooser
-import javax.swing.JMenu
-import javax.swing.JMenuItem
-import javax.swing.SwingUtilities
+import javax.swing.*
 import javax.swing.filechooser.FileNameExtensionFilter
 
 
@@ -33,12 +32,19 @@ class FileMenu : JMenu("Ficher") {
                 }
             }
         }
+
+        JCheckBoxMenuItem("Mises à jour automatiques").applyAndAppend(this) {
+            this.isSelected = Settings.autoUpdate
+            this.addItemListener {
+                Settings.autoUpdate = it.stateChange == ItemEvent.SELECTED
+            }
+        }
     }
 
-    private fun getScreenShot(component: Component): BufferedImage? {
+    private fun getScreenShot(component: Component): BufferedImage {
         val image = BufferedImage(
-                component.width,
-                component.height,
+                component.bounds.width,
+                component.bounds.height,
                 BufferedImage.TYPE_INT_RGB
         )
 
