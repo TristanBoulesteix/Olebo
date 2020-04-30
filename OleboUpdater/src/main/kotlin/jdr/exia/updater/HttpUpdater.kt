@@ -14,7 +14,7 @@ import java.io.InputStream
 class HttpUpdater {
     private val downloadClient by lazy {
         HttpClients.custom().setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build())
-            .build()
+                .build()
     }
 
     /**
