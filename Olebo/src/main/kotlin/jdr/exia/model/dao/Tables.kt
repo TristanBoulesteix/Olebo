@@ -127,9 +127,16 @@ object SettingsTable : IntIdTable() {
     val value = varchar("value", 255).default("")
 
     fun initialize() {
-        if (SettingsTable.select((id eq 1) and (name eq "autoUpdate")).count() <= 0) {
+        if (SettingsTable.select((id eq 1) and (name eq "baseVersion")).count() <= 0) {
             SettingsTable.insert {
                 it[id] = EntityID(1, SettingsTable)
+                it[name] = "baseVersion"
+                it[value] = "1.0.0"
+            }
+        }
+        if (SettingsTable.select((id eq 2) and (name eq "autoUpdate")).count() <= 0) {
+            SettingsTable.insert {
+                it[id] = EntityID(2, SettingsTable)
                 it[name] = "autoUpdate"
                 it[value] = true.toString()
             }
