@@ -1,5 +1,6 @@
 package jdr.exia.view.utils.components
 
+import jdr.exia.VERSION
 import jdr.exia.model.dao.Settings
 import jdr.exia.view.utils.applyAndAppend
 import java.awt.Component
@@ -37,6 +38,17 @@ class FileMenu : JMenu("Ficher") {
             this.isSelected = Settings.autoUpdate
             this.addItemListener {
                 Settings.autoUpdate = it.stateChange == ItemEvent.SELECTED
+            }
+        }
+
+        this.addSeparator()
+
+        JMenuItem("A propos").applyAndAppend(this) {
+            this.addActionListener {
+                JOptionPane.showMessageDialog(null,
+                        "Olebo - Version de l'application : $VERSION - Version de la base de données : ${Settings.databaseVersion}",
+                        "A propos",
+                        JOptionPane.INFORMATION_MESSAGE)
             }
         }
     }
