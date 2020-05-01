@@ -21,7 +21,7 @@ import javax.swing.JPanel
 /**
  * This JDialog allows us to create or update an act.
  */
-class ActEditorDialog : JDialogTemplate("Nouvau scénario") {
+class ActEditorDialog : JDialogTemplate("Nouveau scénario") {
     private val manager = ActCreatorManager()
     override val observable = manager
 

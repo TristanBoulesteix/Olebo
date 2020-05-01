@@ -1,4 +1,4 @@
-package jdr.exia.view.rpgFrames.mainFrame
+package jdr.exia.view.rpgFrames
 
 import jdr.exia.controller.ViewManager
 import jdr.exia.model.dao.DAO
@@ -22,7 +22,7 @@ object SelectPanel : JPanel() {
     var selectedElement: Element? = null
         set(value){
             field = value
-            if (selectedElement!=null) {
+            if (selectedElement !=null) {
                sizeCombo.selectedItem =  selectedElement!!.size.name
             }
         }
@@ -35,7 +35,7 @@ object SelectPanel : JPanel() {
         preferredSize = Dimension(100, 40)
         this.addActionListener {
             if (selectedElement.isCharacter()) {
-                transaction(DAO.database){selectedElement!!.currentHealth += checkTextValue(hpField.text)}
+                transaction(DAO.database){ selectedElement!!.currentHealth += checkTextValue(hpField.text) }
             }
             hpField.text = ""
             MasterFrame.repaint()
@@ -48,7 +48,7 @@ object SelectPanel : JPanel() {
         preferredSize = Dimension(110, 40)
         this.addActionListener {
             if (selectedElement.isCharacter()) {
-                transaction(DAO.database){selectedElement!!.currentMana += checkTextValue(manaField.text)}
+                transaction(DAO.database){ selectedElement!!.currentMana += checkTextValue(manaField.text) }
             }
             manaField.text = ""
             MasterFrame.repaint()

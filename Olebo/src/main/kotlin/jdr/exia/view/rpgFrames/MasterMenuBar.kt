@@ -1,11 +1,11 @@
-package jdr.exia.view.rpgFrames.mainFrame
+package jdr.exia.view.rpgFrames
 
 import jdr.exia.controller.ViewManager
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.DAO
 import jdr.exia.view.editor.elements.BlueprintDialog
-import jdr.exia.view.rpgFrames.homeFrame.HomeFrame
+import jdr.exia.view.homeFrame.HomeFrame
 import jdr.exia.view.utils.applyAndAppend
 import jdr.exia.view.utils.components.FileMenu
 import jdr.exia.view.utils.showConfirmMessage

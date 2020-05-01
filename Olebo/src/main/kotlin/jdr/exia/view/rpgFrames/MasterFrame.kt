@@ -1,4 +1,4 @@
-package jdr.exia.view.rpgFrames.mainFrame
+package jdr.exia.view.rpgFrames
 
 import jdr.exia.controller.ViewManager
 import jdr.exia.model.element.Element
@@ -14,15 +14,12 @@ import javax.swing.JFrame
 import javax.swing.JPanel
 import kotlin.system.exitProcess
 
-/*MasterFrame is the Game Master's Interface, it contains a Map panel (the same as PlayerFrame, but scaled down), an ItemPanel and a SelectPanel.
+/**MasterFrame is the Game Master's Interface, it contains a Map panel (the same as PlayerFrame, but scaled down), an ItemPanel and a SelectPanel.
  * MasterFrame will be focused most of the time, so it contains all KeyListeners for the program
-this is a singleton*/
-
-/* TODO:
+ * this is a singleton
  *
  * */
 object MasterFrame : JFrame(), KeyListener, GameFrame {
-
     private var masterFramePanel = JPanel() // Main JPanel that contains other panels
     val mapPanel = MapPanel() //this frame's mapPanel
     var selectPanel = SelectPanel // Will contain all info on selected Item
@@ -32,15 +29,18 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         mapPanel.backGroundImage = ImageIO.read(File(imageName))
     }
 
+    override fun setTitle(title: String?) {
+        super.setTitle("Olebo - Fenêtre MJ - \"$title\"")
+    }
+
     init {
         val screens = GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices
         this.setSize(screens[0].displayMode.width, screens[0].displayMode.height)
-        if (screens.size == 1) { //If there is only 1 screen, we display both frames there
+/*        if (screens.size == 1) { //If there is only 1 screen, we display both frames there
         } else {
 
-        }
+        }*/
         this.isFocusable = true
-        this.title = "Master"
         addKeyListener(this)
         this.defaultCloseOperation = DISPOSE_ON_CLOSE
         masterFramePanel.size = this.size
@@ -53,7 +53,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         itemPanel.setSize(this.width - 1280, this.height)
         itemPanel.background = Color.yellow
 
-        selectPanel.setSize(this.mapPanel.width, (this.height - mapPanel.height))
+        selectPanel.setSize(mapPanel.width, (this.height - mapPanel.height))
 
         val mapConstraints = GridBagConstraints()
         val itemConstraints = GridBagConstraints()
@@ -82,10 +82,9 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         masterFramePanel.add(mapPanel, mapConstraints)
         masterFramePanel.add(itemPanel, itemConstraints)
         masterFramePanel.add(selectPanel, selectConstraints)
-        this.mapPanel.isMasterMapPanel = true
+        mapPanel.isMasterMapPanel = true
         jMenuBar = MasterMenuBar
     }
-
 
 
     // KeyListener section, to add Key bindings

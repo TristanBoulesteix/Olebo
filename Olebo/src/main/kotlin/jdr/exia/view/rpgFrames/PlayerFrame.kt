@@ -1,4 +1,4 @@
-package jdr.exia.view.rpgFrames.mainFrame
+package jdr.exia.view.rpgFrames
 
 import jdr.exia.model.element.Element
 import java.awt.GraphicsEnvironment
@@ -19,6 +19,10 @@ object PlayerFrame : JDialog(), GameFrame, KeyListener {
         this.isResizable = false
         this.contentPane = mapPanel
         this.defaultCloseOperation = DISPOSE_ON_CLOSE
+    }
+
+    override fun setTitle(title: String?) {
+        super.setTitle("Olebo - Fenêtre PJ - \"$title\"")
     }
 
     fun toggleDisplay() {

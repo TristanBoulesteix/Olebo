@@ -1,15 +1,19 @@
-package jdr.exia.view.rpgFrames.mainFrame
+package jdr.exia.view.rpgFrames
 
 import jdr.exia.controller.ViewManager
 import jdr.exia.model.element.Element
 
-/*ViewManager is View's facade
-this is a singleton*/
+/**
+ * ViewManager is View's facade
+ * This is a singleton
+ */
 object ViewFacade {
-
-    init {
-    }
-
+    var actName: String = ""
+        set(value) {
+            MasterFrame.title = value
+            PlayerFrame.title = value
+            field = value
+        }
 
     fun moveToken(x: Int, y: Int) {
         ViewManager.moveToken(x, y)
@@ -49,8 +53,6 @@ object ViewFacade {
     fun placeTokensOnMaps(tokens: MutableList<Element>) { //places tokens on both maps at corresponding points
         PlayerFrame.updateMap(tokens)
         MasterFrame.updateMap(tokens)
-
-
     }
 
     fun unSelectElement() {
@@ -62,6 +64,4 @@ object ViewFacade {
     fun loadItems() {
         MasterFrame.itemPanel.reloadContent()
     }
-
-
 }

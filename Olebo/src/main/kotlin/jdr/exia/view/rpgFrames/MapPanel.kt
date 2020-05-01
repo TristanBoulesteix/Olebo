@@ -1,4 +1,4 @@
-package jdr.exia.view.rpgFrames.mainFrame
+package jdr.exia.view.rpgFrames
 import jdr.exia.model.element.Element
 import java.awt.*
 import java.awt.event.MouseEvent

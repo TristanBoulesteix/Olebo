@@ -1,4 +1,4 @@
-package jdr.exia.view.rpgFrames.mainFrame
+package jdr.exia.view.rpgFrames
 
 import jdr.exia.controller.ViewManager
 import jdr.exia.model.dao.DAO
