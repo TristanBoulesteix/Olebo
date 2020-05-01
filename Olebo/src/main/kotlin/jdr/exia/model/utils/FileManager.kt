@@ -17,7 +17,7 @@ val OLEBO_DIRECTORY = "${appDatas}Olebo${File.separator}"
  * @param extension (optionnal) The extension of the picture. The defaut extension is ".png"
  */
 fun getIcon(name: String, controllerClass: Class<*>, extension: String = ".png"): ImageIcon =
-    ImageIcon(controllerClass.classLoader.getResource("icons/$name$extension"))
+        ImageIcon(controllerClass.classLoader.getResource("icons/$name$extension"))
 
 /**
  * Save a picture to img folder
@@ -26,9 +26,9 @@ fun getIcon(name: String, controllerClass: Class<*>, extension: String = ".png")
  */
 fun saveImg(path: String): String {
     val img = File.createTempFile(
-        "img_",
-        "_background.png",
-        File(OLEBO_DIRECTORY + "img${File.separator}").apply { this.mkdirs() }
+            "img_",
+            "_background.png",
+            File(OLEBO_DIRECTORY + "img${File.separator}").apply { this.mkdirs() }
     )
 
     File(path).copyTo(img, true)
@@ -63,11 +63,9 @@ val oleboUpdater: String
     get() {
         val jar = File("${OLEBO_DIRECTORY}oleboUpdater.jar")
 
-        if (!jar.exists()) {
-            ::main.javaClass.classLoader.getResourceAsStream("updater/OleboUpdater.jar")!!.use { input ->
-                jar.outputStream().use { output ->
-                    input.copyTo(output)
-                }
+        ::main.javaClass.classLoader.getResourceAsStream("updater/OleboUpdater.jar")!!.use { input ->
+            jar.outputStream().use { output ->
+                input.copyTo(output)
             }
         }
 

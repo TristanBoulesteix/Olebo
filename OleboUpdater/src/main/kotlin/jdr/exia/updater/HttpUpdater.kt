@@ -7,6 +7,7 @@ import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClients
 import java.io.InputStream
+import javax.swing.JOptionPane
 
 /**
  * Check all releases on <a href="github.com">Github</a>
