@@ -15,7 +15,7 @@ private val trayIcon by lazy {
 
     val trayIcon = TrayIcon(image, "Olebo updater").apply {
         this.isImageAutoSize = true
-        this.toolTip = "Olebo updater"
+        this.toolTip = "Olebo updater is running"
     }
 
     tray.add(trayIcon)

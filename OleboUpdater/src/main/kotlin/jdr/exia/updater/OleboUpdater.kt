@@ -19,8 +19,10 @@ fun main(args: Array<String>) {
         }.close()
         notify("Olebo a bien été mis à jour", null)
     } catch (e: Exception) {
-        e.printStackTrace(PrintStream(File("test.log")))
+        e.printStackTrace()
         notify("Impossible de mettre à jour Olebo", "Veuillez réessayer ultérieurement", TrayIcon.MessageType.ERROR)
+
+        Thread.sleep(2000)
         exitProcess(-1)
     }
 
