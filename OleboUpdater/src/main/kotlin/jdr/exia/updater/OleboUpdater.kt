@@ -9,8 +9,6 @@ import kotlin.system.exitProcess
 const val VERSION = "1.0.1"
 
 fun main(args: Array<String>) {
-    
-
     if (args.size == 1) println(VERSION)
 
     if (args.size != 2) exitProcess(-1)
