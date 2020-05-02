@@ -29,10 +29,11 @@ class CharacterTitlePanel(name: String, manager: BlueprintManager) : TitlePanel(
 }
 
 fun buildTitleItemPanel(manager: BlueprintManager): TitlePanel {
-    val type = manager.type
-    return if (type == Type.OBJECT) {
-        ObjectTitlePanel("Objects", manager)
-    } else {
-        CharacterTitlePanel(type.name, manager)
+    return with(manager.type) {
+        if (this == Type.OBJECT) {
+            ObjectTitlePanel("Objects", manager)
+        } else {
+            CharacterTitlePanel(this.name, manager)
+        }
     }
 }
