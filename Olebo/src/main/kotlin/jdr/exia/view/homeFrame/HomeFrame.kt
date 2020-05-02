@@ -5,15 +5,15 @@ import jdr.exia.controller.HomeManager
 import jdr.exia.controller.pattern.observer.Action
 import jdr.exia.controller.pattern.observer.Observable
 import jdr.exia.view.utils.BORDER_BUTTONS
+import jdr.exia.view.utils.applyAndAppend
+import jdr.exia.view.utils.components.FileMenu
 import jdr.exia.view.utils.components.JFrameTemplate
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.NORTH
 import java.awt.Color
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
-import javax.swing.BorderFactory
-import javax.swing.JButton
-import javax.swing.JPanel
+import javax.swing.*
 
 /**
  * Main frame of the application. It allows us to create, delete and update an act and an element.
@@ -23,13 +23,17 @@ import javax.swing.JPanel
 class HomeFrame : JFrameTemplate("Olebo - Version $VERSION") {
     override val observable: Observable = HomeManager
 
-    private val selectorPanel =  ActSelectorPanel()
+    private val selectorPanel = ActSelectorPanel()
 
     init {
         HomeManager.observer = this
 
         // This line may cause some issues with database writing ! But without it the X button won't close the program
         this.defaultCloseOperation = DISPOSE_ON_CLOSE
+
+        this.jMenuBar = JMenuBar().apply {
+            this.add(FileMenu())
+        }
 
         this.add(JPanel().apply {
             this.border = BorderFactory.createEmptyBorder(15, 0, 15, 0)
@@ -70,7 +74,7 @@ class HomeFrame : JFrameTemplate("Olebo - Version $VERSION") {
     }
 
     override fun update(data: Action) {
-        when(data) {
+        when (data) {
             Action.DISPOSE -> this.dispose()
             Action.REFRESH -> this.selectorPanel.refresh()
         }

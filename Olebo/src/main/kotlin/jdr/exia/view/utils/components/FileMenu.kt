@@ -2,9 +2,11 @@ package jdr.exia.view.utils.components
 
 import jdr.exia.VERSION
 import jdr.exia.model.dao.Settings
+import jdr.exia.view.utils.CTRL
 import jdr.exia.view.utils.applyAndAppend
 import java.awt.Component
 import java.awt.event.ItemEvent
+import java.awt.event.KeyEvent
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
@@ -25,13 +27,24 @@ class FileMenu : JMenu("Ficher") {
                     this.dialogTitle = SCREENSHOT
                     this.fileFilter = FileNameExtensionFilter("Image PNG", "png")
                     if (this.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
-                        ImageIO.write(getScreenShot(parent), "png", if (this.selectedFile.extension == "png")
+                        val fileToSave = if (this.selectedFile.extension == "png")
                             this.selectedFile
                         else
-                            File("${this.selectedFile.parentFile.absolutePath}${File.separator}${this.selectedFile.nameWithoutExtension}.png"))
+                            File("${this.selectedFile.parentFile.absolutePath}${File.separator}${this.selectedFile.nameWithoutExtension}.png")
+
+                        val saveImg = {
+                            ImageIO.write(getScreenShot(parent), "png", fileToSave)
+                        }
+
+                        if(fileToSave.exists()) {
+                            val result = JOptionPane.showConfirmDialog(null, "Ce fichier existe déjà, voulez-vous le remplacer ?", "Enregister sous", JOptionPane.YES_NO_OPTION)
+                            if(result == JOptionPane.YES_OPTION) saveImg()
+                        } else saveImg()
                     }
                 }
             }
+
+            this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_P, CTRL)
         }
 
         JCheckBoxMenuItem("Mises à jour automatiques").applyAndAppend(this) {
@@ -50,6 +63,7 @@ class FileMenu : JMenu("Ficher") {
                         "A propos",
                         JOptionPane.INFORMATION_MESSAGE)
             }
+            this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0)
         }
     }
 

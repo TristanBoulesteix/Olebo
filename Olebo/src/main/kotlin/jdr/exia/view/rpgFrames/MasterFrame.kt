@@ -12,7 +12,6 @@ import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.JFrame
 import javax.swing.JPanel
-import kotlin.system.exitProcess
 
 /**MasterFrame is the Game Master's Interface, it contains a Map panel (the same as PlayerFrame, but scaled down), an ItemPanel and a SelectPanel.
  * MasterFrame will be focused most of the time, so it contains all KeyListeners for the program
@@ -92,12 +91,11 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
     }
 
     override fun keyPressed(keyEvent: KeyEvent) {
-
         when (keyEvent.keyCode) {
-            KeyEvent.VK_ESCAPE -> { //remove after testing is complete
+/*            KeyEvent.VK_ESCAPE -> { //remove after testing is complete
                 dispose()
                 exitProcess(0)
-            }
+            }*/
             KeyEvent.VK_UP -> {
                 ViewManager.selectUp()
             }

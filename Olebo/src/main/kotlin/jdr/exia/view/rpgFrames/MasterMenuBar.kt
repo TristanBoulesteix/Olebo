@@ -6,11 +6,17 @@ import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.DAO
 import jdr.exia.view.editor.elements.BlueprintDialog
 import jdr.exia.view.homeFrame.HomeFrame
+import jdr.exia.view.utils.CTRL
+import jdr.exia.view.utils.CTRLSHIFT
 import jdr.exia.view.utils.applyAndAppend
 import jdr.exia.view.utils.components.FileMenu
 import jdr.exia.view.utils.showConfirmMessage
 import org.jetbrains.exposed.sql.transactions.transaction
-import javax.swing.*
+import java.awt.event.KeyEvent
+import javax.swing.JMenu
+import javax.swing.JMenuBar
+import javax.swing.JMenuItem
+import javax.swing.KeyStroke
 
 /**
  * This is MasterFrame's menu bar (situated at the top)
@@ -30,6 +36,7 @@ object MasterMenuBar : JMenuBar() {
                     PlayerFrame.isVisible = false
                     HomeFrame().isVisible = true
                 }
+                this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Q, CTRL)
             }
 
             this.addSeparator()
@@ -67,6 +74,7 @@ object MasterMenuBar : JMenuBar() {
                     BlueprintDialog().isVisible = true
                     MasterFrame.itemPanel.reloadContent()
                 }
+                this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_B, CTRLSHIFT)
             }
 
             JMenu("Importer depuis une autre scene").applyAndAppend(this) {
@@ -98,6 +106,7 @@ object MasterMenuBar : JMenuBar() {
                         ViewManager.removeToken(element)
                     }
                 }
+                this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0)
             }
 
             JMenuItem("Vider le plateau").applyAndAppend(this) {
@@ -113,6 +122,7 @@ object MasterMenuBar : JMenuBar() {
                         }
                     }
                 }
+                this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, CTRLSHIFT)
             }
         }
     }

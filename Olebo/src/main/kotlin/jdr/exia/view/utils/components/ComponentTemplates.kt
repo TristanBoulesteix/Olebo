@@ -7,10 +7,7 @@ import jdr.exia.view.utils.DIMENSION_FRAME
 import jdr.exia.view.utils.IntegerFilter
 import jdr.exia.view.utils.event.ClickListener
 import java.awt.*
-import java.awt.event.FocusEvent
-import java.awt.event.FocusListener
-import java.awt.event.MouseAdapter
-import java.awt.event.MouseEvent
+import java.awt.event.*
 import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.*
@@ -21,7 +18,7 @@ import javax.swing.text.PlainDocument
  * Template of all JFrame's menu templates
  */
 abstract class JFrameTemplate(title: String) : JFrame(),
-    Observer {
+        Observer {
     protected abstract val observable: Observable
 
     init {
@@ -45,7 +42,7 @@ abstract class JFrameTemplate(title: String) : JFrame(),
  * It is similar to JFrameTemplate because I didn't find a public common parent to JDialog and JFrame.
  */
 abstract class JDialogTemplate(title: String, modal: Boolean = true) : JDialog(),
-    Observer {
+        Observer {
     protected abstract val observable: Observable
 
     init {
@@ -56,6 +53,16 @@ abstract class JDialogTemplate(title: String, modal: Boolean = true) : JDialog()
         this.defaultCloseOperation = DISPOSE_ON_CLOSE
         this.setLocationRelativeTo(null)
         this.layout = BorderLayout()
+    }
+
+    override fun createRootPane(): JRootPane {
+        return super.createRootPane().apply {
+            this.registerKeyboardAction(
+                    { this@JDialogTemplate.dispose() },
+                    KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW
+            )
+        }
     }
 
     override fun dispose() {
@@ -158,7 +165,7 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
      * Label that act like a button.
      */
     protected inner class SquareLabel(icon: ImageIcon, action: (Int) -> Unit) :
-        JLabel(icon, CENTER) {
+            JLabel(icon, CENTER) {
 
         private val listener = object : ClickListener {
             override fun mouseClicked(e: MouseEvent?) {
@@ -174,17 +181,17 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
         }
 
         constructor(img: String, action: (Int) -> Unit) : this(
-            ImageIcon(
-                ImageIO.read(File(img)).getScaledInstance(
-                    DIMENSION_SQUARE.width, DIMENSION_SQUARE.height, Image.SCALE_SMOOTH
-                )
-            ), action
+                ImageIcon(
+                        ImageIO.read(File(img)).getScaledInstance(
+                                DIMENSION_SQUARE.width, DIMENSION_SQUARE.height, Image.SCALE_SMOOTH
+                        )
+                ), action
         )
 
         constructor(
-            text: String,
-            action: ((Int, String) -> Unit)? = null,
-            isEditable: Boolean = true
+                text: String,
+                action: ((Int, String) -> Unit)? = null,
+                isEditable: Boolean = true
         ) : this(ImageIcon(), { }) {
             this.removeMouseListener(listener)
             this.layout = GridBagLayout()
