@@ -5,6 +5,8 @@ import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Size
 import jdr.exia.model.utils.isCharacter
+import jdr.exia.view.utils.BACKGROUND_COLOR_SELECT_PANEL
+import jdr.exia.view.utils.applyAndAppend
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Color
 import java.awt.Dimension
@@ -20,35 +22,54 @@ import javax.swing.border.EmptyBorder
  */
 object SelectPanel : JPanel() {
     var selectedElement: Element? = null
-        set(value){
+        set(value) {
             field = value
-            if (selectedElement !=null) {
-               sizeCombo.selectedItem =  selectedElement!!.size.name
+            if (selectedElement != null) {
+                sizeCombo.selectedItem = selectedElement!!.size.name
             }
         }
 
-    private val nameLabel = JLabel("Nom").apply { horizontalTextPosition = JLabel.CENTER; border = EmptyBorder(20, 0, 0, 0) }
+    private val nameLabel = JLabel("Nom").apply {
+        horizontalTextPosition = JLabel.CENTER
+        border = EmptyBorder(20, 0, 0, 0)
+    }
 
-    private val hpAmount = JLabel("X/Y").apply { border = EmptyBorder(0, 20, 10, 0) }
-    private val hpField = JTextField().apply { preferredSize = Dimension(50, 25)}
-    private val hpButton = JButton("Ajouter PV").apply { //adds current indicated amount of HP to the char's total
+    private val hpAmount = JLabel("X/Y").apply {
+        border = EmptyBorder(0, 20, 10, 0)
+    }
+
+    private val hpField = JTextField().apply {
+        preferredSize = Dimension(50, 25)
+    }
+
+    private val hpButton = JButton("Ajouter PV").apply {
+        //adds current indicated amount of HP to the char's total
         preferredSize = Dimension(100, 40)
         this.addActionListener {
             if (selectedElement.isCharacter()) {
-                transaction(DAO.database){ selectedElement!!.currentHealth += checkTextValue(hpField.text) }
+                transaction(DAO.database) { selectedElement!!.currentHealth += checkTextValue(hpField.text) }
             }
             hpField.text = ""
             MasterFrame.repaint()
         }
     }
 
-    private val manaAmount = JLabel("X/Y").apply { border = EmptyBorder(0, 20, 10, 0) } // Current amount / max amount
-    private val manaField = JTextField().apply { preferredSize = Dimension(50, 25) } // Text field to indicate Mana amount
-    private val manaButton = JButton("Ajouter Mana").apply { //Adds the indicated amount of MP to the character's total
+    private val manaAmount = JLabel("X/Y").apply {
+        // Current amount / max amount
+        border = EmptyBorder(0, 20, 10, 0)
+    }
+
+    private val manaField = JTextField().apply {
+        // Text field to indicate Mana amount
+        preferredSize = Dimension(50, 25)
+    }
+
+    private val manaButton = JButton("Ajouter Mana").apply {
+        //Adds the indicated amount of MP to the character's total
         preferredSize = Dimension(110, 40)
         this.addActionListener {
             if (selectedElement.isCharacter()) {
-                transaction(DAO.database){ selectedElement!!.currentMana += checkTextValue(manaField.text) }
+                transaction(DAO.database) { selectedElement!!.currentMana += checkTextValue(manaField.text) }
             }
             manaField.text = ""
             MasterFrame.repaint()
@@ -65,131 +86,141 @@ object SelectPanel : JPanel() {
     private val deleteButton = JButton("Supprimer").apply { //Deletes selected Token
         preferredSize = Dimension(150, 40)
         addActionListener {
-            if (selectedElement != null) {
-
-                ViewManager.removeToken(selectedElement!!)
+            selectedElement?.let {
+                ViewManager.removeToken(it)
                 ViewManager.repaint()
-                }
+            }
         }
     }
 
     private val sizeCombo = JComboBox(arrayOf("XS", "S", "M", "L", "XL", "XXL")).apply {
         addActionListener {
-            if (selectedElement != null && selectedItem != selectedElement!!.size) {
-                when (this.selectedItem) {
-                    "XS" -> selectedElement!!.size = Size.XS
-                    "S" -> selectedElement!!.size = Size.S
-                    "M" -> selectedElement!!.size = Size.M
-                    "L" -> selectedElement!!.size = Size.L
-                    "XL" -> selectedElement!!.size = Size.XL
-                    "XXL" -> selectedElement!!.size = Size.XXL
+            selectedElement?.let {
+                if (selectedItem != it.size) {
+                    when (this.selectedItem) {
+                        "XS" -> it.size = Size.XS
+                        "S" -> it.size = Size.S
+                        "M" -> it.size = Size.M
+                        "L" -> it.size = Size.L
+                        "XL" -> it.size = Size.XL
+                        "XXL" -> it.size = Size.XXL
+                    }
                 }
             }
-
             ViewManager.repaint()
         }
         border = EmptyBorder(0, 0, 0, 0)
     }
 
     private fun checkTextValue(str: String): Int { // veryfies that the given string is a valid number
-        try {
-            return Integer.parseInt(str)
+        return try {
+            Integer.parseInt(str)
         } catch (e: NumberFormatException) {
-
-            return (0)
+            (0)
         }
-
     }
-
 
     init {
         this.layout = GridLayout(1, 3)
         this.preferredSize = Dimension(500, 10)
-        nameLabel.horizontalTextPosition = JLabel.CENTER
-
-        val leftPanel = JPanel().apply {
-            background = Color.gray
-            border = BorderFactory.createLineBorder(Color.black)
-            layout = GridLayout(2, 3).apply {}
-
-            isOpaque = false
-            add(JPanel().apply { isOpaque = false;})
-            add(JPanel().apply { isOpaque = false; add(nameLabel) })
-            add(JPanel().apply { add(visibilityButton); isOpaque = false })
-            add(JPanel().apply { isOpaque = false;})
-            add(JPanel().apply { add(sizeCombo); isOpaque = false })
-            add(JPanel().apply { add(deleteButton); isOpaque = false; })
-        }
-
-        val centerPanel = JPanel().apply {
-            background = Color.gray
-            border = BorderFactory.createLineBorder(Color.black)
-            layout = GridLayout(1, 3).apply {}
-            add(
-                JPanel().apply {
-                    isOpaque = false
-                    layout = GridLayout(2, 1)
-                    add(hpAmount)
-                    add(manaAmount)
-                    border = BorderFactory.createLineBorder(Color.black)
-                })
-            add(JPanel().apply {
-                isOpaque = false;
-                isOpaque = false
-                layout = GridLayout(2, 1)
-                add(JPanel().apply { add(hpField); isOpaque = false })
-                add(JPanel().apply { add(manaField); isOpaque = false })
-                border = BorderFactory.createLineBorder(Color.black)
-            })
-            add(JPanel().apply {
-                isOpaque = false;
-                isOpaque = false
-                layout = GridLayout(2, 1)
-                add(JPanel().apply { add(hpButton); isOpaque = false })
-                add(JPanel().apply { add(manaButton); isOpaque = false })
-                border = BorderFactory.createLineBorder(Color.black)
-            })
-        }
-
-
-        val rightPanel = JPanel().apply {
-            background = Color.gray
-            border = BorderFactory.createLineBorder(Color.black)
-            layout = GridLayout(1, 1)
-        }
-
-
-        add(leftPanel)
-        add(centerPanel)
-        add(rightPanel)
-
-
-        this.background = Color.GRAY
+        this.background = BACKGROUND_COLOR_SELECT_PANEL
     }
 
-
-    public override fun paintComponent(g: Graphics) {
+    override fun paintComponent(g: Graphics) {
+        this.removeAll()
         super.paintComponent(g)
-        if (selectedElement != null) {
 
-            if (selectedElement!!.isVisible) {
-                g.color = Color.BLACK
+        with(selectedElement) {
+            g.color = if (this == null || this.isVisible) {
+                Color.BLACK
             } else {
-                g.color = Color.BLUE
+                Color.BLUE
             }
             g.fillRect(15, 15, 110, 110)
-            nameLabel.text = selectedElement!!.name
 
-            g.drawImage(selectedElement!!.sprite.image, 20, 20, 100, 100, null)
+            if (this != null) {
+                JPanel().applyAndAppend(this@SelectPanel) {
+                    background = BACKGROUND_COLOR_SELECT_PANEL
+                    border = BorderFactory.createLineBorder(Color.RED)
+                    layout = GridLayout(2, 3)
 
-            if (selectedElement.isCharacter()) { //draws informations relative to the char
-                hpAmount.text =
-                    "HP: ${selectedElement!!.currentHealth}/${selectedElement!!.maxHP}"
-                manaAmount.text =
-                    "Mana: ${selectedElement!!.currentMana}/${selectedElement!!.maxMana}"
+                    isOpaque = false
+                    this.add(JPanel().apply { isOpaque = false; })
+                    this.add(JPanel().apply { isOpaque = false; add(nameLabel) })
+                    this.add(JPanel().apply { add(visibilityButton); isOpaque = false })
+                    this.add(JPanel().apply { isOpaque = false; })
+                    this.add(JPanel().apply { add(sizeCombo); isOpaque = false })
+                    this.add(JPanel().apply { add(deleteButton); isOpaque = false; })
+                }
+
+                JPanel().applyAndAppend(this@SelectPanel) {
+                    background = BACKGROUND_COLOR_SELECT_PANEL
+                    border = BorderFactory.createLineBorder(Color.BLACK)
+                    layout = GridLayout(1, 3)
+                    JPanel().applyAndAppend(this) {
+                        isOpaque = false
+                        layout = GridLayout(2, 1)
+                        add(hpAmount)
+                        add(manaAmount)
+                        border = BorderFactory.createLineBorder(Color.BLACK)
+                    }
+
+                    JPanel().applyAndAppend(this) {
+                        isOpaque = false
+                        isOpaque = false
+                        layout = GridLayout(2, 1)
+                        add(JPanel().apply { add(hpField); isOpaque = false })
+                        add(JPanel().apply { add(manaField); isOpaque = false })
+                        border = BorderFactory.createLineBorder(Color.BLACK)
+                    }
+
+                    JPanel().applyAndAppend(this) {
+                        isOpaque = false
+                        isOpaque = false
+                        layout = GridLayout(2, 1)
+                        add(JPanel().apply { add(hpButton); isOpaque = false })
+                        add(JPanel().apply { add(manaButton); isOpaque = false })
+                        border = BorderFactory.createLineBorder(Color.BLACK)
+                    }
+                }
+
+                JPanel().applyAndAppend(this@SelectPanel) {
+                    background = BACKGROUND_COLOR_SELECT_PANEL
+                    border = BorderFactory.createLineBorder(Color.BLACK)
+                    layout = GridLayout(1, 1)
+                }
+
+                nameLabel.text = this.name
+
+                g.drawImage(this.sprite.image, 20, 20, 100, 100, null)
+
+                if (this.isCharacter()) { //draws informations relative to the char
+                    hpAmount.text =
+                            "HP: ${this.currentHealth}/${this.maxHP}"
+                    hpAmount.isEnabled = true
+                    manaAmount.text =
+                            "Mana: ${this.currentMana}/${this.maxMana}"
+                    manaAmount.isEnabled = true
+                } else {
+                    hpAmount.apply {
+                        this.text = "HP: NA"
+                        this.isEnabled = false
+                    }
+
+                    manaAmount.apply {
+                        this.text = "Mana: NA"
+                        this.isEnabled = false
+                    }
+                }
             } else {
-                hpAmount.text = "HP: NA";manaAmount.text = "Mana: NA"
+                nameLabel.text = "Nom"
+                hpAmount.isEnabled = false
+                manaAmount.isEnabled = false
+                g.color = Color.WHITE
+                g.fillRect(20, 20, 100, 100)
             }
         }
+
+        this.revalidate()
     }
 }

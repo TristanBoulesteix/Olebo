@@ -14,6 +14,7 @@ val BORDER_BUTTONS: Border = BorderFactory.createEmptyBorder(15, 15, 15, 15)
 // Colors
 val BACKGROUND_COLOR_LIGHT_BLUE = Color(158, 195, 255)
 val BACKGROUND_COLOR_ORANGE: Color = Color.ORANGE
+val BACKGROUND_COLOR_SELECT_PANEL: Color = Color.LIGHT_GRAY
 
 // Key Event
 val CTRL = Toolkit.getDefaultToolkit().menuShortcutKeyMaskEx
