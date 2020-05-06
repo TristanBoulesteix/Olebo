@@ -1,6 +1,6 @@
 package jdr.exia.model.utils
 
-import jdr.exia.main
+import jdr.exia.Olebo
 import java.io.File
 import javax.swing.ImageIcon
 
@@ -57,13 +57,13 @@ val appDatas: String
  * Get the path of Olebo
  */
 val jarPath: String
-    get() = File(::main::class.java.protectionDomain.codeSource.location.toURI()).absolutePath
+    get() = File(Olebo::class.java.protectionDomain.codeSource.location.toURI()).absolutePath
 
 val oleboUpdater: String
     get() {
         val jar = File("${OLEBO_DIRECTORY}oleboUpdater.jar")
 
-        ::main.javaClass.classLoader.getResourceAsStream("updater/OleboUpdater.jar")!!.use { input ->
+        Olebo::class.java.javaClass.classLoader.getResourceAsStream("updater/OleboUpdater.jar")!!.use { input ->
             jar.outputStream().use { output ->
                 input.copyTo(output)
             }

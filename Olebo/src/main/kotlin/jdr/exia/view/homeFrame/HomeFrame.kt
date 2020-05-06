@@ -5,15 +5,16 @@ import jdr.exia.controller.HomeManager
 import jdr.exia.controller.pattern.observer.Action
 import jdr.exia.controller.pattern.observer.Observable
 import jdr.exia.view.utils.BORDER_BUTTONS
-import jdr.exia.view.utils.applyAndAppend
 import jdr.exia.view.utils.components.FileMenu
 import jdr.exia.view.utils.components.JFrameTemplate
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.NORTH
-import java.awt.Color
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
-import javax.swing.*
+import javax.swing.BorderFactory
+import javax.swing.JButton
+import javax.swing.JMenuBar
+import javax.swing.JPanel
 
 /**
  * Main frame of the application. It allows us to create, delete and update an act and an element.
@@ -64,8 +65,6 @@ class HomeFrame : JFrameTemplate("Olebo - Version $VERSION") {
                 this.weightx = .5
             }
             this.add(actButton, cActButton)
-
-            this.background = Color.ORANGE
         }, NORTH)
 
         this.add(selectorPanel, CENTER)

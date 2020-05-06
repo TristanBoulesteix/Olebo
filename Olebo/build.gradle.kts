@@ -15,6 +15,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
+    implementation("no.tornado", "tornadofx", "1.7.20")
     testCompile("junit", "junit", "4.12")
     compile("org.xerial", "sqlite-jdbc",  "3.28.0")
     compile("org.jetbrains.exposed", "exposed", "0.17.7")

@@ -17,5 +17,5 @@ val BACKGROUND_COLOR_ORANGE: Color = Color.ORANGE
 val BACKGROUND_COLOR_SELECT_PANEL: Color = Color.LIGHT_GRAY
 
 // Key Event
-val CTRL = Toolkit.getDefaultToolkit().menuShortcutKeyMaskEx
+val CTRL = Toolkit.getDefaultToolkit().menuShortcutKeyMask
 val CTRLSHIFT = CTRL or KeyEvent.SHIFT_DOWN_MASK
