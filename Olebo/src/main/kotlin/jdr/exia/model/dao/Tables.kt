@@ -1,7 +1,6 @@
 package jdr.exia.model.dao
 
 import org.jetbrains.exposed.dao.EntityID
-import org.jetbrains.exposed.dao.IdTable
 import org.jetbrains.exposed.dao.IntIdTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -21,7 +20,7 @@ object SceneTable : IntIdTable() {
 }
 
 object BlueprintTable : IntIdTable() {
-    val name = varchar("name", 50).uniqueIndex()
+    val name = varchar("name", 50)
     val sprite = varchar("sprite", 200)
     val HP = integer("HP").nullable()
     val MP = integer("MP").nullable()

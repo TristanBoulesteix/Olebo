@@ -63,10 +63,8 @@ val oleboUpdater: String
     get() {
         val jar = File("${OLEBO_DIRECTORY}oleboUpdater.jar")
 
-        Olebo::class.java.javaClass.classLoader.getResourceAsStream("updater/OleboUpdater.jar")!!.use { input ->
-            jar.outputStream().use { output ->
-                input.copyTo(output)
-            }
+        jar.outputStream().use {
+            Olebo::class.java.classLoader.getResourceAsStream("updater/OleboUpdater.jar")!!.copyTo(it)
         }
 
         return jar.absolutePath
