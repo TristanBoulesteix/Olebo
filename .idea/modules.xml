@@ -3,6 +3,17 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Olebo.iml" filepath="$PROJECT_DIR$/.idea/Olebo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Olebo.Olebo.iml" filepath="$PROJECT_DIR$/.idea/modules/Olebo.Olebo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Olebo.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Olebo.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Olebo.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Olebo.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OleboUpdater.iml" filepath="$PROJECT_DIR$/.idea/modules/OleboUpdater.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OleboUpdater.main.iml" filepath="$PROJECT_DIR$/.idea/modules/OleboUpdater.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OleboUpdater.test.iml" filepath="$PROJECT_DIR$/.idea/modules/OleboUpdater.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/jdr.exia.Olebo.iml" filepath="$PROJECT_DIR$/.idea/modules/jdr.exia.Olebo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/jdr.exia.Olebo.main.iml" filepath="$PROJECT_DIR$/.idea/modules/jdr.exia.Olebo.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/jdr.exia.Olebo.test.iml" filepath="$PROJECT_DIR$/.idea/modules/jdr.exia.Olebo.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/jdr.exia.updater.OleboUpdater.main.iml" filepath="$PROJECT_DIR$/.idea/modules/jdr.exia.updater.OleboUpdater.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/jdr.exia.updater.OleboUpdater.test.iml" filepath="$PROJECT_DIR$/.idea/modules/jdr.exia.updater.OleboUpdater.test.iml" />
     </modules>
   </component>
 </project>
