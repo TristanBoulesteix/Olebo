@@ -1,12 +1,14 @@
 package jdr.exia.view.rpgFrames
 
-import jdr.exia.viewModel.ViewManager
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Size
 import jdr.exia.model.utils.isCharacter
 import jdr.exia.view.utils.BACKGROUND_COLOR_SELECT_PANEL
+import jdr.exia.view.utils.DEFAULT_BORDER_SIZE
+import jdr.exia.view.utils.RIGHT_BORDER_BLACK
 import jdr.exia.view.utils.applyAndAppend
+import jdr.exia.viewModel.ViewManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Color
 import java.awt.Dimension
@@ -123,11 +125,61 @@ object SelectPanel : JPanel() {
     init {
         this.layout = GridLayout(1, 3)
         this.preferredSize = Dimension(500, 10)
+        nameLabel.horizontalTextPosition = JLabel.CENTER
+
+        JPanel().applyAndAppend(this) {
+            background = BACKGROUND_COLOR_SELECT_PANEL
+            border = BorderFactory.createEmptyBorder(0, 0, 0, 10)
+            layout = GridLayout(2, 3)
+
+            isOpaque = false
+            add(JPanel().apply { isOpaque = false; })
+            add(JPanel().apply { isOpaque = false; add(nameLabel) })
+            add(JPanel().apply { add(visibilityButton); isOpaque = false })
+            add(JPanel().apply { isOpaque = false; })
+            add(JPanel().apply { add(sizeCombo); isOpaque = false })
+            add(JPanel().apply { add(deleteButton); isOpaque = false; })
+        }
+
+        JPanel().applyAndAppend(this) {
+            background = BACKGROUND_COLOR_SELECT_PANEL
+            border = BorderFactory.createMatteBorder(0, DEFAULT_BORDER_SIZE, 0, DEFAULT_BORDER_SIZE, Color.BLACK)
+            layout = GridLayout(1, 3)
+            add(JPanel().apply {
+                isOpaque = false
+                layout = GridLayout(2, 1)
+                add(hpAmount)
+                add(manaAmount)
+                border = RIGHT_BORDER_BLACK
+            })
+            add(JPanel().apply {
+                isOpaque = false
+                isOpaque = false
+                layout = GridLayout(2, 1)
+                add(JPanel().apply { add(hpField); isOpaque = false })
+                add(JPanel().apply { add(manaField); isOpaque = false })
+                border = RIGHT_BORDER_BLACK
+            })
+            add(JPanel().apply {
+                isOpaque = false
+                isOpaque = false
+                layout = GridLayout(2, 1)
+                add(JPanel().apply { add(hpButton); isOpaque = false })
+                add(JPanel().apply { add(manaButton); isOpaque = false })
+            })
+        }
+
+
+        JPanel().applyAndAppend(this) {
+            background = BACKGROUND_COLOR_SELECT_PANEL
+            border = BorderFactory.createMatteBorder(0, 0, 0, 2, Color.BLACK)
+            layout = GridLayout(1, 1)
+        }
+
         this.background = BACKGROUND_COLOR_SELECT_PANEL
     }
 
     override fun paintComponent(g: Graphics) {
-        this.removeAll()
         super.paintComponent(g)
 
         with(selectedElement) {
@@ -139,57 +191,6 @@ object SelectPanel : JPanel() {
             g.fillRect(15, 15, 110, 110)
 
             if (this != null) {
-                JPanel().applyAndAppend(this@SelectPanel) {
-                    background = BACKGROUND_COLOR_SELECT_PANEL
-                    border = BorderFactory.createLineBorder(Color.RED)
-                    layout = GridLayout(2, 3)
-
-                    isOpaque = false
-                    this.add(JPanel().apply { isOpaque = false; })
-                    this.add(JPanel().apply { isOpaque = false; add(nameLabel) })
-                    this.add(JPanel().apply { add(visibilityButton); isOpaque = false })
-                    this.add(JPanel().apply { isOpaque = false; })
-                    this.add(JPanel().apply { add(sizeCombo); isOpaque = false })
-                    this.add(JPanel().apply { add(deleteButton); isOpaque = false; })
-                }
-
-                JPanel().applyAndAppend(this@SelectPanel) {
-                    background = BACKGROUND_COLOR_SELECT_PANEL
-                    border = BorderFactory.createLineBorder(Color.BLACK)
-                    layout = GridLayout(1, 3)
-                    JPanel().applyAndAppend(this) {
-                        isOpaque = false
-                        layout = GridLayout(2, 1)
-                        add(hpAmount)
-                        add(manaAmount)
-                        border = BorderFactory.createLineBorder(Color.BLACK)
-                    }
-
-                    JPanel().applyAndAppend(this) {
-                        isOpaque = false
-                        isOpaque = false
-                        layout = GridLayout(2, 1)
-                        add(JPanel().apply { add(hpField); isOpaque = false })
-                        add(JPanel().apply { add(manaField); isOpaque = false })
-                        border = BorderFactory.createLineBorder(Color.BLACK)
-                    }
-
-                    JPanel().applyAndAppend(this) {
-                        isOpaque = false
-                        isOpaque = false
-                        layout = GridLayout(2, 1)
-                        add(JPanel().apply { add(hpButton); isOpaque = false })
-                        add(JPanel().apply { add(manaButton); isOpaque = false })
-                        border = BorderFactory.createLineBorder(Color.BLACK)
-                    }
-                }
-
-                JPanel().applyAndAppend(this@SelectPanel) {
-                    background = BACKGROUND_COLOR_SELECT_PANEL
-                    border = BorderFactory.createLineBorder(Color.BLACK)
-                    layout = GridLayout(1, 1)
-                }
-
                 nameLabel.text = this.name
 
                 g.drawImage(this.sprite.image, 20, 20, 100, 100, null)
@@ -213,9 +214,6 @@ object SelectPanel : JPanel() {
                     }
                 }
             } else {
-                nameLabel.text = "Nom"
-                hpAmount.isEnabled = false
-                manaAmount.isEnabled = false
                 g.color = Color.WHITE
                 g.fillRect(20, 20, 100, 100)
             }
