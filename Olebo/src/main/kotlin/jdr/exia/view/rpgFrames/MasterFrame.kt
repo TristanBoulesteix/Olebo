@@ -13,11 +13,11 @@ import javax.imageio.ImageIO
 import javax.swing.JFrame
 import javax.swing.JPanel
 
-/**MasterFrame is the Game Master's Interface, it contains a Map panel (the same as PlayerFrame, but scaled down), an ItemPanel and a SelectPanel.
+/**
+ * MasterFrame is the Game Master's Interface, it contains a Map panel (the same as PlayerFrame, but scaled down), an ItemPanel and a SelectPanel.
  * MasterFrame will be focused most of the time, so it contains all KeyListeners for the program
  * this is a singleton
- *
- * */
+ */
 object MasterFrame : JFrame(), KeyListener, GameFrame {
     private var masterFramePanel = JPanel() // Main JPanel that contains other panels
     val mapPanel = MapPanel() //this frame's mapPanel
