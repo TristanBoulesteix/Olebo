@@ -1,12 +1,12 @@
-package jdr.exia.controller
+package jdr.exia.viewModel
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.utils.saveImg
-import jdr.exia.controller.pattern.observer.Action
-import jdr.exia.controller.pattern.observer.Observable
-import jdr.exia.controller.pattern.observer.Observer
+import jdr.exia.viewModel.pattern.observer.Action
+import jdr.exia.viewModel.pattern.observer.Observable
+import jdr.exia.viewModel.pattern.observer.Observer
 import jdr.exia.view.editor.acts.SceneEditorDialog
 import jdr.exia.view.utils.showPopup
 import org.jetbrains.exposed.sql.transactions.transaction

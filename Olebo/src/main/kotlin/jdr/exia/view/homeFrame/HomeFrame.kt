@@ -1,11 +1,10 @@
 package jdr.exia.view.homeFrame
 
 import jdr.exia.VERSION
-import jdr.exia.controller.HomeManager
-import jdr.exia.controller.pattern.observer.Action
-import jdr.exia.controller.pattern.observer.Observable
+import jdr.exia.viewModel.HomeManager
+import jdr.exia.viewModel.pattern.observer.Action
+import jdr.exia.viewModel.pattern.observer.Observable
 import jdr.exia.view.utils.BORDER_BUTTONS
-import jdr.exia.view.utils.applyAndAppend
 import jdr.exia.view.utils.components.FileMenu
 import jdr.exia.view.utils.components.JFrameTemplate
 import java.awt.BorderLayout.CENTER

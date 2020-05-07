@@ -1,4 +1,4 @@
-package jdr.exia.controller
+package jdr.exia.viewModel
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene

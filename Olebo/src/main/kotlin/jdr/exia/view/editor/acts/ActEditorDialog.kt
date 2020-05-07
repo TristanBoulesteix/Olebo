@@ -1,8 +1,8 @@
 package jdr.exia.view.editor.acts
 
-import jdr.exia.controller.ActCreatorManager
+import jdr.exia.viewModel.ActCreatorManager
 import jdr.exia.model.act.Act
-import jdr.exia.controller.pattern.observer.Action
+import jdr.exia.viewModel.pattern.observer.Action
 import jdr.exia.view.utils.BACKGROUND_COLOR_LIGHT_BLUE
 import jdr.exia.view.utils.BACKGROUND_COLOR_ORANGE
 import jdr.exia.view.utils.BORDER_BUTTONS

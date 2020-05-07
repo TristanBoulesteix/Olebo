@@ -1,14 +1,14 @@
-package jdr.exia.controller
+package jdr.exia.viewModel
 
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
 import jdr.exia.model.utils.saveImg
-import jdr.exia.controller.pattern.observer.Action
-import jdr.exia.controller.pattern.observer.Observable
-import jdr.exia.controller.pattern.observer.Observer
 import jdr.exia.view.editor.elements.BlueprintEditorDialog
 import jdr.exia.view.utils.showPopup
+import jdr.exia.viewModel.pattern.observer.Action
+import jdr.exia.viewModel.pattern.observer.Observable
+import jdr.exia.viewModel.pattern.observer.Observer
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Component
 import java.io.File
@@ -70,13 +70,14 @@ class BlueprintManager : Observable {
                 )
                 this.isAcceptAllFileFilterUsed = false
             }
+
             val result = file.showSaveDialog(observer as? Component)
 
             if (result == JFileChooser.APPROVE_OPTION) {
                 val selectedFile = file.selectedFile
                 if (selectedFile.exists()) {
                     File(Blueprint[id].sprite).delete()
-                    Blueprint[id].sprite = selectedFile.absolutePath
+                    Blueprint[id].sprite = saveImg(selectedFile.absolutePath)
                 }
             }
         }

@@ -1,4 +1,4 @@
-package jdr.exia.controller.pattern.observer
+package jdr.exia.viewModel.pattern.observer
 
 /**
  * Action the controler can send to the frame

@@ -1,7 +1,7 @@
 package jdr.exia.view.rpgFrames
 
-import jdr.exia.controller.ViewManager
 import jdr.exia.model.element.Element
+import jdr.exia.viewModel.ViewManager
 import java.awt.Color
 import java.awt.GraphicsEnvironment
 import java.awt.GridBagConstraints

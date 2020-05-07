@@ -1,6 +1,6 @@
 package jdr.exia.view.rpgFrames
 
-import jdr.exia.controller.ViewManager
+import jdr.exia.viewModel.ViewManager
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.DAO
