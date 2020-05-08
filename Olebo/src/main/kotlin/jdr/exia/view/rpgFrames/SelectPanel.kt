@@ -26,8 +26,11 @@ object SelectPanel : JPanel() {
     var selectedElement: Element? = null
         set(value) {
             field = value
+
             if (selectedElement != null) {
                 sizeCombo.selectedItem = selectedElement!!.size.name
+            } else {
+                sizeCombo.selectedItem = null
             }
         }
 
@@ -37,9 +40,21 @@ object SelectPanel : JPanel() {
 
     private var manaSlide = SlideStats(false)
 
-    private val nameLabel = JLabel("Nom").apply {
-        horizontalTextPosition = JLabel.CENTER
-        border = EmptyBorder(20, 0, 0, 0)
+    private val nameLabel = object : JLabel("Nom") {
+        init {
+            horizontalTextPosition = CENTER
+            border = EmptyBorder(20, 0, 0, 0)
+        }
+
+        override fun setText(text: String?) {
+            if (text == null) {
+                this.isEnabled = false
+                super.setText("Nom")
+            } else {
+                this.isEnabled = true
+                super.setText(text)
+            }
+        }
     }
 
     private val hpAmount = JLabel("X/Y").apply {
@@ -62,11 +77,6 @@ object SelectPanel : JPanel() {
         }
     }
 
-    private val manaField = JTextField().apply {
-        // Text field to indicate Mana amount
-        preferredSize = Dimension(50, 25)
-    }
-
     private val visibilityButton = JButton("Visible ON/OFF").apply { //Toggles visibility on selected Token
         preferredSize = Dimension(150, 40)
         addActionListener {
@@ -84,23 +94,35 @@ object SelectPanel : JPanel() {
         }
     }
 
-    private val sizeCombo = JComboBox(arrayOf("XS", "S", "M", "L", "XL", "XXL")).apply {
-        addActionListener {
-            selectedElement?.let {
-                if (selectedItem != it.size) {
-                    when (this.selectedItem) {
-                        "XS" -> it.size = Size.XS
-                        "S" -> it.size = Size.S
-                        "M" -> it.size = Size.M
-                        "L" -> it.size = Size.L
-                        "XL" -> it.size = Size.XL
-                        "XXL" -> it.size = Size.XXL
+    private val sizeCombo = object : JComboBox<String>(arrayOf("XS", "S", "M", "L", "XL", "XXL")) {
+        init {
+            addActionListener {
+                selectedElement?.let {
+                    if (selectedItem != it.size) {
+                        when (this.selectedItem) {
+                            "XS" -> it.size = Size.XS
+                            "S" -> it.size = Size.S
+                            "M" -> it.size = Size.M
+                            "L" -> it.size = Size.L
+                            "XL" -> it.size = Size.XL
+                            "XXL" -> it.size = Size.XXL
+                        }
                     }
                 }
+                ViewManager.repaint()
             }
-            ViewManager.repaint()
+            border = EmptyBorder(0, 0, 0, 0)
         }
-        border = EmptyBorder(0, 0, 0, 0)
+
+        override fun setSelectedItem(element: Any?) {
+            if(element == null) {
+                this.isEnabled = false
+                super.setSelectedItem("S")
+            } else {
+                this.isEnabled = true
+                super.setSelectedItem(element)
+            }
+        }
     }
 
     private fun checkTextValue(str: String): Int { // veryfies that the given string is a valid number
@@ -130,7 +152,7 @@ object SelectPanel : JPanel() {
             add(JPanel().apply { add(deleteButton); isOpaque = false; })
         }
 
-        slidePanel =JPanel().apply {
+        slidePanel = JPanel().apply {
             isOpaque = false
             layout = GridLayout(2, 1)
 
@@ -167,6 +189,8 @@ object SelectPanel : JPanel() {
             g.fillRect(15, 15, 110, 110)
 
             if (this != null) {
+                deleteButton.isEnabled = true
+                visibilityButton.isEnabled = true
                 nameLabel.text = this.name
 
                 g.drawImage(this.sprite.image, 20, 20, 100, 100, null)
@@ -180,11 +204,16 @@ object SelectPanel : JPanel() {
                     it.add(manaSlide)
                 }
             } else {
+                nameLabel.text = null
+                deleteButton.isEnabled = false
+                visibilityButton.isEnabled = false
+
                 g.color = Color.WHITE
                 g.fillRect(20, 20, 100, 100)
 
                 lifeSlide.element = null
                 manaSlide.element = null
+
             }
         }
 
