@@ -3,7 +3,7 @@ package jdr.exia.view.utils.components
 import jdr.exia.VERSION
 import jdr.exia.model.dao.Settings
 import jdr.exia.view.utils.CTRL
-import jdr.exia.view.utils.applyAndAppend
+import jdr.exia.view.utils.applyAndAppendTo
 import java.awt.Component
 import java.awt.event.ItemEvent
 import java.awt.event.KeyEvent
@@ -20,7 +20,7 @@ class FileMenu : JMenu("Ficher") {
     }
 
     init {
-        JMenuItem(SCREENSHOT).applyAndAppend(this) {
+        JMenuItem(SCREENSHOT).applyAndAppendTo(this) {
             this.addActionListener {
                 val parent = SwingUtilities.getWindowAncestor(this@FileMenu)
                 JFileChooser().apply {
@@ -47,7 +47,7 @@ class FileMenu : JMenu("Ficher") {
             this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_P, CTRL)
         }
 
-        JCheckBoxMenuItem("Mises à jour automatiques").applyAndAppend(this) {
+        JCheckBoxMenuItem("Mises à jour automatiques").applyAndAppendTo(this) {
             this.isSelected = Settings.autoUpdate
             this.addItemListener {
                 Settings.autoUpdate = it.stateChange == ItemEvent.SELECTED
@@ -56,7 +56,7 @@ class FileMenu : JMenu("Ficher") {
 
         this.addSeparator()
 
-        JMenuItem("A propos").applyAndAppend(this) {
+        JMenuItem("A propos").applyAndAppendTo(this) {
             this.addActionListener {
                 JOptionPane.showMessageDialog(null,
                         "Olebo - Version de l'application : $VERSION - Version de la base de données : ${Settings.databaseVersion}",

@@ -17,9 +17,9 @@ val BACKGROUND_COLOR_SELECT_PANEL: Color = Color.LIGHT_GRAY
 
 // Borders
 const val DEFAULT_BORDER_SIZE = 2
-val RIGHT_BORDER_BLACK: Border = BorderFactory.createMatteBorder(0, 0, 0, DEFAULT_BORDER_SIZE, Color.BLACK)
+val MARGIN_LEFT: Border = BorderFactory.createEmptyBorder(0, 10, 0, 0)
 val BORDER_BUTTONS: Border = BorderFactory.createEmptyBorder(15, 15, 15, 15)
 
-// Key Event
+// Keys
 val CTRL = Toolkit.getDefaultToolkit().menuShortcutKeyMask
 val CTRLSHIFT = CTRL or KeyEvent.SHIFT_DOWN_MASK

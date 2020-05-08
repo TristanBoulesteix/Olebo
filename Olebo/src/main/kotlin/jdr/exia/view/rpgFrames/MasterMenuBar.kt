@@ -8,7 +8,7 @@ import jdr.exia.view.editor.elements.BlueprintDialog
 import jdr.exia.view.homeFrame.HomeFrame
 import jdr.exia.view.utils.CTRL
 import jdr.exia.view.utils.CTRLSHIFT
-import jdr.exia.view.utils.applyAndAppend
+import jdr.exia.view.utils.applyAndAppendTo
 import jdr.exia.view.utils.components.FileMenu
 import jdr.exia.view.utils.showConfirmMessage
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -29,8 +29,8 @@ object MasterMenuBar : JMenuBar() {
 
         this.add(FileMenu())
 
-        JMenu("Fenêtres").applyAndAppend(this) {
-            JMenuItem("Fermer scenario").applyAndAppend(this) {
+        JMenu("Fenêtres").applyAndAppendTo(this) {
+            JMenuItem("Fermer scenario").applyAndAppendTo(this) {
                 this.addActionListener {
                     MasterFrame.isVisible = false
                     PlayerFrame.isVisible = false
@@ -41,7 +41,7 @@ object MasterMenuBar : JMenuBar() {
 
             this.addSeparator()
 
-            JMenuItem("Fenetre PJs ON/OFF").applyAndAppend(this) {
+            JMenuItem("Fenetre PJs ON/OFF").applyAndAppendTo(this) {
                 this.addActionListener {
                     PlayerFrame.toggleDisplay()
                 }
@@ -49,7 +49,7 @@ object MasterMenuBar : JMenuBar() {
 
             this.addSeparator()
 
-            JMenu("Choisir une Scene").applyAndAppend(this) {
+            JMenu("Choisir une Scene").applyAndAppendTo(this) {
                 if (act != null) {
                     var i = 0
 
@@ -68,8 +68,8 @@ object MasterMenuBar : JMenuBar() {
             }
         }
 
-        JMenu("Pions").applyAndAppend(this) {
-            JMenuItem("Gèrer les Blueprints").applyAndAppend(this) {
+        JMenu("Pions").applyAndAppendTo(this) {
+            JMenuItem("Gèrer les Blueprints").applyAndAppendTo(this) {
                 addActionListener {
                     BlueprintDialog().isVisible = true
                     MasterFrame.itemPanel.reloadContent()
@@ -77,7 +77,7 @@ object MasterMenuBar : JMenuBar() {
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_B, CTRLSHIFT)
             }
 
-            JMenu("Importer depuis une autre scene").applyAndAppend(this) {
+            JMenu("Importer depuis une autre scene").applyAndAppendTo(this) {
                 for (scene in act!!.scenes) {
                     if (scene.id.value != act!!.sceneId) {
                         val itemMenu = JMenu(scene.name).apply {
@@ -100,7 +100,7 @@ object MasterMenuBar : JMenuBar() {
 
             this.addSeparator()
 
-            JMenuItem("Supprimer pion selectionné").applyAndAppend(this) {
+            JMenuItem("Supprimer pion selectionné").applyAndAppendTo(this) {
                 this.addActionListener {
                     SelectPanel.selectedElement?.let { element ->
                         ViewManager.removeToken(element)
@@ -109,7 +109,7 @@ object MasterMenuBar : JMenuBar() {
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0)
             }
 
-            JMenuItem("Vider le plateau").applyAndAppend(this) {
+            JMenuItem("Vider le plateau").applyAndAppendTo(this) {
                 addActionListener {
                     showConfirmMessage(this, "Voulez-vous vraiment supprimer tous les éléments du plateau ? Cette action est irréversible.", "Suppression") {
                         transaction(DAO.database) {
