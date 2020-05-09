@@ -15,7 +15,7 @@ import javax.swing.filechooser.FileNameExtensionFilter
 
 
 class FileMenu : JMenu("Ficher") {
-    companion object {
+    private companion object {
         const val SCREENSHOT = "Prendre une capture d'écran"
     }
 

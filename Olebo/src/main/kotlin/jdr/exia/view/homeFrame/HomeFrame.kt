@@ -1,18 +1,21 @@
 package jdr.exia.view.homeFrame
 
 import jdr.exia.VERSION
-import jdr.exia.viewModel.HomeManager
-import jdr.exia.viewModel.pattern.observer.Action
-import jdr.exia.viewModel.pattern.observer.Observable
 import jdr.exia.view.utils.BORDER_BUTTONS
 import jdr.exia.view.utils.components.FileMenu
 import jdr.exia.view.utils.components.JFrameTemplate
+import jdr.exia.viewModel.HomeManager
+import jdr.exia.viewModel.pattern.observer.Action
+import jdr.exia.viewModel.pattern.observer.Observable
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.NORTH
 import java.awt.Color
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
-import javax.swing.*
+import javax.swing.BorderFactory
+import javax.swing.JButton
+import javax.swing.JMenuBar
+import javax.swing.JPanel
 
 /**
  * Main frame of the application. It allows us to create, delete and update an act and an element.

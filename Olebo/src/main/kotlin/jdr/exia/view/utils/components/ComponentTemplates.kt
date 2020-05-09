@@ -294,7 +294,10 @@ class SlideStats(private val hp: Boolean, initialElement: Element? = null) : JPa
                 maximum = 20
                 minimum = -20
                 value = 0
+                minorTickSpacing = 1
+                majorTickSpacing = 5
                 paintLabels = true
+                paintTicks = true
 
                 eventAction = ChangeListener {
                     transaction(DAO.database) {
