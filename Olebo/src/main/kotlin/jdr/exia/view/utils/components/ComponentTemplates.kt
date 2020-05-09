@@ -2,6 +2,7 @@ package jdr.exia.view.utils.components
 
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Element
+import jdr.exia.model.utils.isCharacter
 import jdr.exia.view.utils.*
 import jdr.exia.view.utils.event.ClickListener
 import jdr.exia.viewModel.pattern.observer.Observable
@@ -247,7 +248,7 @@ class SlideStats(private val hp: Boolean, initialElement: Element? = null) : JPa
         set(value) {
             field = value
 
-            if (value == null) {
+            if (value == null || !value.isCharacter()) {
                 label.text = "X / X"
                 slider.isEnabled = false
             } else {
