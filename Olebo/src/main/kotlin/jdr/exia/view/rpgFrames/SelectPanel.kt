@@ -77,10 +77,28 @@ object SelectPanel : JPanel() {
         }
     }
 
-    private val visibilityButton = JButton("Visible ON/OFF").apply { //Toggles visibility on selected Token
-        preferredSize = Dimension(150, 40)
-        addActionListener {
-            ViewManager.toggleVisibility(selectedElement)
+    private val visibilityButton = object : JButton() { //Toggles visibility on selected Token
+        private val defaultText = "Visibilité"
+
+        init {
+            text = defaultText
+            preferredSize = Dimension(150, 40)
+            addActionListener {
+                selectedElement?.let {
+                    ViewManager.toggleVisibility(it)
+                    this.text = if (it.isVisible) "Masquer" else "Afficher"
+                }
+            }
+        }
+
+        fun initialize(turnOff: Boolean) {
+            if (turnOff) {
+                text = defaultText
+                isEnabled = false
+            } else {
+                text = if (selectedElement?.isVisible == true) "Masquer" else "Afficher"
+                isEnabled = true
+            }
         }
     }
 
@@ -115,7 +133,7 @@ object SelectPanel : JPanel() {
         }
 
         override fun setSelectedItem(element: Any?) {
-            if(element == null) {
+            if (element == null) {
                 this.isEnabled = false
                 super.setSelectedItem("S")
             } else {
@@ -190,7 +208,7 @@ object SelectPanel : JPanel() {
 
             if (this != null) {
                 deleteButton.isEnabled = true
-                visibilityButton.isEnabled = true
+                visibilityButton.initialize(false)
                 nameLabel.text = this.name
 
                 g.drawImage(this.sprite.image, 20, 20, 100, 100, null)
@@ -206,7 +224,7 @@ object SelectPanel : JPanel() {
             } else {
                 nameLabel.text = null
                 deleteButton.isEnabled = false
-                visibilityButton.isEnabled = false
+                visibilityButton.initialize(true)
 
                 g.color = Color.WHITE
                 g.fillRect(20, 20, 100, 100)
