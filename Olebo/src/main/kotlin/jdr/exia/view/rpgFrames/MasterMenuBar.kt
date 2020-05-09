@@ -1,16 +1,13 @@
 package jdr.exia.view.rpgFrames
 
-import jdr.exia.viewModel.ViewManager
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.DAO
 import jdr.exia.view.editor.elements.BlueprintDialog
 import jdr.exia.view.homeFrame.HomeFrame
-import jdr.exia.view.utils.CTRL
-import jdr.exia.view.utils.CTRLSHIFT
-import jdr.exia.view.utils.applyAndAppendTo
+import jdr.exia.view.utils.*
 import jdr.exia.view.utils.components.FileMenu
-import jdr.exia.view.utils.showConfirmMessage
+import jdr.exia.viewModel.ViewManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.event.KeyEvent
 import javax.swing.JMenu
@@ -78,23 +75,31 @@ object MasterMenuBar : JMenuBar() {
             }
 
             JMenu("Importer depuis une autre scene").applyAndAppendTo(this) {
-                for (scene in act!!.scenes) {
-                    if (scene.id.value != act!!.sceneId) {
-                        val itemMenu = JMenu(scene.name).apply {
-                            for (token in scene.elements) {
-                                val item = JMenuItem(token.name + " (" + token.type.name + ")").apply {
-                                    addActionListener {
-                                        transaction(DAO.database) { Scene.moveElementToScene(token, Scene[act!!.sceneId]) }
-                                        ViewManager.repaint()
+                act?.let { act ->
+                    if (act.scenes.size <= 1)
+                        this.isEnabled = false
+
+                    act.scenes.forEach {
+                        if (it.id.value != act.sceneId) {
+                            val itemMenu = JMenu(it.name).apply {
+                                it.elements.forElse { token ->
+                                    val item = JMenuItem(token.name + " (" + token.type.name + ")").apply {
+                                        addActionListener {
+                                            transaction(DAO.database) { Scene.moveElementToScene(token, Scene[act.sceneId]) }
+                                            ViewManager.repaint()
+                                        }
                                     }
-                                }
 
-                                this.add(item)
+                                    this.add(item)
+                                } ?: { this.isEnabled = false }()
                             }
-                        }
 
-                        this.add(itemMenu)
+                            this.add(itemMenu)
+                        }
                     }
+
+                    if (this.menuComponents.none { it is JMenuItem && it.isEnabled })
+                        this.isEnabled = false
                 }
             }
 
@@ -114,7 +119,6 @@ object MasterMenuBar : JMenuBar() {
                     showConfirmMessage(this, "Voulez-vous vraiment supprimer tous les éléments du plateau ? Cette action est irréversible.", "Suppression") {
                         transaction(DAO.database) {
                             for (token in Scene[act!!.sceneId].elements) {
-                                println("test")
                                 ViewManager.removeToken(token)
                                 transaction(DAO.database) { token.delete() }
                                 Thread.sleep(100)

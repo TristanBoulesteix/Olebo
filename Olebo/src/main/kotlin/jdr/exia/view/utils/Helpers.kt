@@ -50,3 +50,5 @@ fun <T : JComponent> T.applyAndAppendTo(parent: JComponent, block: T.() -> Unit)
     parent.add(this)
     return this
 }
+
+fun <T> Collection<T>.forElse(block: (T) -> Unit) = if (isEmpty()) null else forEach(block)

@@ -1,11 +1,11 @@
 package jdr.exia.view.rpgFrames
 
-import jdr.exia.viewModel.ViewManager
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
 import jdr.exia.view.utils.components.PlaceholderTextField
 import jdr.exia.view.utils.event.ClickListener
+import jdr.exia.viewModel.ViewManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.*
 import java.awt.event.MouseEvent
@@ -75,8 +75,8 @@ class ItemPanel : JPanel() {
                 this.add(CustomTitlePanel("Objets").apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.OBJECT && (searchConstraint.isEmpty() || it.name.contains(
-                        searchConstraint
+                    it.type.typeElement == Type.OBJECT && (searchConstraint.isEmpty() || it.name.toLowerCase().contains(
+                        searchConstraint.toLowerCase()
                     ))
                 }.forElse {
                     this.add(CustomPanel(it))
@@ -86,8 +86,8 @@ class ItemPanel : JPanel() {
                 this.add(CustomTitlePanel("PJ").apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.PJ && (searchConstraint.isEmpty() || it.name.contains(
-                        searchConstraint
+                    it.type.typeElement == Type.PJ && (searchConstraint.isEmpty() || it.name.toLowerCase().contains(
+                        searchConstraint.toLowerCase()
                     ))
                 }.forElse {
                     this.add(CustomPanel(it))
@@ -97,8 +97,8 @@ class ItemPanel : JPanel() {
                 this.add(CustomTitlePanel("PNJ").apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.PNJ && (searchConstraint.isEmpty() || it.name.contains(
-                        searchConstraint
+                    it.type.typeElement == Type.PNJ && (searchConstraint.isEmpty() || it.name.toString().contains(
+                        searchConstraint.toLowerCase()
                     ))
                 }.forElse {
                     this.add(CustomPanel(it))
