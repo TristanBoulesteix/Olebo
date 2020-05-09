@@ -7,6 +7,7 @@ import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClients
 import java.io.InputStream
+import javax.swing.JOptionPane
 
 /**
  * Check all releases on <a href="github.com">Github</a>
@@ -14,7 +15,7 @@ import java.io.InputStream
 class HttpUpdater {
     private val downloadClient by lazy {
         HttpClients.custom().setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build())
-            .build()
+                .build()
     }
 
     /**

@@ -1,8 +1,8 @@
 package jdr.exia.view.editor.acts
 
-import jdr.exia.controller.ActCreatorManager
+import jdr.exia.viewModel.ActCreatorManager
 import jdr.exia.model.act.Act
-import jdr.exia.pattern.observer.Action
+import jdr.exia.viewModel.pattern.observer.Action
 import jdr.exia.view.utils.BACKGROUND_COLOR_LIGHT_BLUE
 import jdr.exia.view.utils.BACKGROUND_COLOR_ORANGE
 import jdr.exia.view.utils.BORDER_BUTTONS
@@ -21,7 +21,7 @@ import javax.swing.JPanel
 /**
  * This JDialog allows us to create or update an act.
  */
-class ActEditorDialog : JDialogTemplate("Nouvau scénario") {
+class ActEditorDialog : JDialogTemplate("Nouveau scénario") {
     private val manager = ActCreatorManager()
     override val observable = manager
 

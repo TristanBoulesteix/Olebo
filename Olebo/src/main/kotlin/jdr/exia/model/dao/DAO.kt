@@ -1,12 +1,13 @@
 package jdr.exia.model.dao
 
-import jdr.exia.MessageException
 import jdr.exia.model.act.Act
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
 import jdr.exia.model.utils.OLEBO_DIRECTORY
+import jdr.exia.utils.MessageException
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -22,19 +23,21 @@ object DAO {
     val database: Database
 
     init {
-        if (!File(filePath).exists()) {
-            File(filePath).apply {
-                this.parentFile.mkdirs()
-                this.createNewFile()
-            }
-            File(filePath).outputStream().use {
-                this.javaClass.classLoader.getResourceAsStream("db/template.db")!!.copyTo(it)
-            }
+        File(filePath).apply {
+            this.parentFile.mkdirs()
+            this.createNewFile()
         }
 
         database = Database.connect(url, "org.sqlite.JDBC")
 
         TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
+
+        transaction {
+            SchemaUtils.createMissingTablesAndColumns(ActTable, SceneTable, BlueprintTable, TypeTable, InstanceTable, SizeTable, SettingsTable)
+            TypeTable.initialize()
+            SizeTable.initialize()
+            SettingsTable.initialize()
+        }
     }
 
     /**

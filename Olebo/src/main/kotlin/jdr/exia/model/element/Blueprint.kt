@@ -1,6 +1,6 @@
 package jdr.exia.model.element
 
-import jdr.exia.CharacterException
+import jdr.exia.utils.CharacterException
 import jdr.exia.model.dao.BlueprintTable
 import jdr.exia.model.dao.InstanceTable
 import org.jetbrains.exposed.dao.Entity

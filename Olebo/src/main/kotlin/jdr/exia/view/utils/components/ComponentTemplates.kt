@@ -1,27 +1,28 @@
 package jdr.exia.view.utils.components
 
-import jdr.exia.pattern.observer.Observable
-import jdr.exia.pattern.observer.Observer
-import jdr.exia.view.utils.BACKGROUND_COLOR_LIGHT_BLUE
-import jdr.exia.view.utils.DIMENSION_FRAME
-import jdr.exia.view.utils.IntegerFilter
+import jdr.exia.model.dao.DAO
+import jdr.exia.model.element.Element
+import jdr.exia.model.utils.isCharacter
+import jdr.exia.view.utils.*
 import jdr.exia.view.utils.event.ClickListener
+import jdr.exia.viewModel.pattern.observer.Observable
+import jdr.exia.viewModel.pattern.observer.Observer
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.*
-import java.awt.event.FocusEvent
-import java.awt.event.FocusListener
-import java.awt.event.MouseAdapter
-import java.awt.event.MouseEvent
+import java.awt.event.*
 import java.io.File
+import java.util.*
 import javax.imageio.ImageIO
 import javax.swing.*
 import javax.swing.border.EmptyBorder
+import javax.swing.event.ChangeListener
 import javax.swing.text.PlainDocument
 
 /**
  * Template of all JFrame's menu templates
  */
 abstract class JFrameTemplate(title: String) : JFrame(),
-    Observer {
+        Observer {
     protected abstract val observable: Observable
 
     init {
@@ -45,7 +46,7 @@ abstract class JFrameTemplate(title: String) : JFrame(),
  * It is similar to JFrameTemplate because I didn't find a public common parent to JDialog and JFrame.
  */
 abstract class JDialogTemplate(title: String, modal: Boolean = true) : JDialog(),
-    Observer {
+        Observer {
     protected abstract val observable: Observable
 
     init {
@@ -56,6 +57,16 @@ abstract class JDialogTemplate(title: String, modal: Boolean = true) : JDialog()
         this.defaultCloseOperation = DISPOSE_ON_CLOSE
         this.setLocationRelativeTo(null)
         this.layout = BorderLayout()
+    }
+
+    override fun createRootPane(): JRootPane {
+        return super.createRootPane().apply {
+            this.registerKeyboardAction(
+                    { this@JDialogTemplate.dispose() },
+                    KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW
+            )
+        }
     }
 
     override fun dispose() {
@@ -133,7 +144,10 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
         this.isEditable = false
         this.isOpaque = false
         this.font = Font("Tahoma", Font.BOLD, 18)
-        this.border = BorderFactory.createEmptyBorder(0, 10, 0, 0)
+        //this.border = BorderFactory.createEmptyBorder(0, 10, 0, 0)
+        this.border = null
+        this.background = Color(0, 0, 0, 0)
+        this.bounds = Rectangle(0, 10, 0, 0)
         this.disabledTextColor = Color.BLACK
     }
 
@@ -158,7 +172,7 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
      * Label that act like a button.
      */
     protected inner class SquareLabel(icon: ImageIcon, action: (Int) -> Unit) :
-        JLabel(icon, CENTER) {
+            JLabel(icon, CENTER) {
 
         private val listener = object : ClickListener {
             override fun mouseClicked(e: MouseEvent?) {
@@ -174,17 +188,17 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
         }
 
         constructor(img: String, action: (Int) -> Unit) : this(
-            ImageIcon(
-                ImageIO.read(File(img)).getScaledInstance(
-                    DIMENSION_SQUARE.width, DIMENSION_SQUARE.height, Image.SCALE_SMOOTH
-                )
-            ), action
+                ImageIcon(
+                        ImageIO.read(File(img)).getScaledInstance(
+                                DIMENSION_SQUARE.width, DIMENSION_SQUARE.height, Image.SCALE_SMOOTH
+                        )
+                ), action
         )
 
         constructor(
-            text: String,
-            action: ((Int, String) -> Unit)? = null,
-            isEditable: Boolean = true
+                text: String,
+                action: ((Int, String) -> Unit)? = null,
+                isEditable: Boolean = true
         ) : this(ImageIcon(), { }) {
             this.removeMouseListener(listener)
             this.layout = GridBagLayout()
@@ -212,5 +226,132 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
                 this.weighty = 1.0
             })
         }
+    }
+}
+
+class SlideStats(private val hp: Boolean, initialElement: Element? = null) : JPanel() {
+    companion object {
+        fun lifeSlide(initialElement: Element? = null) = SlideStats(true, initialElement)
+
+        fun manaSlide(initialElement: Element? = null) = SlideStats(false, initialElement)
+    }
+
+    private val label: JTextField
+    private val slider: JSlider
+
+    private val statName
+        get() = if (hp) "PV" else "PM"
+
+    private var eventAction: ChangeListener
+
+    var element : Element? = null
+        set(value) {
+            field = value
+
+            if (value == null || !value.isCharacter()) {
+                label.text = "X / X"
+                slider.isEnabled = false
+            } else {
+                label.text = if (hp)
+                    "${value.currentHealth} / ${value.maxHP}"
+                else
+                    "${value.currentMana} / ${value.maxMana}"
+                slider.apply {
+                    this.maximum = if (hp) value.maxHP else value.maxMana
+                    this.value = if (hp) value.currentHealth else value.currentMana
+                    this.isEnabled = true
+                }
+            }
+        }
+
+    init {
+        layout = GridBagLayout()
+        border = MARGIN_LEFT
+        applyStyle()
+
+        label = object : JTextField() {
+            init {
+                text = "5"
+                preferredSize = Dimension(80, 30)
+                isEnabled = false
+                disabledTextColor = Color.BLACK
+                border = null
+                applyStyle()
+            }
+
+            override fun setText(t: String) {
+                super.setText("$statName : $t")
+            }
+        }
+
+        slider = object : JSlider() {
+            private val basePositions = Hashtable(mapOf(
+                    -20 to JLabel("-20"),
+                    0 to JLabel("0")
+            ))
+
+            init {
+                applyStyle()
+                maximum = 20
+                minimum = -20
+                value = 0
+                minorTickSpacing = 1
+                majorTickSpacing = 5
+                paintLabels = true
+                paintTicks = true
+
+                eventAction = ChangeListener {
+                    transaction(DAO.database) {
+                        element?.let {
+                            if (hp) it.currentHealth = value else it.currentMana = value
+                            label.text = if (hp)
+                                "${it.currentHealth} / ${it.maxHP}"
+                            else
+                                "${it.currentMana} / ${it.maxMana}"
+                        }
+                    }
+                }
+            }
+
+            override fun setEnabled(enabled: Boolean) {
+                if (element == null && !enabled) {
+                    removeChangeListener(eventAction)
+                    maximum = 20
+                    value = 0
+                } else {
+                    addChangeListener(eventAction)
+                }
+
+                super.setEnabled(enabled)
+            }
+
+            override fun setMaximum(maximum: Int) {
+                labelTable = Hashtable(mapOf(maximum to JLabel("$maximum"))).also { it += basePositions }
+
+                super.setMaximum(maximum)
+            }
+        }
+
+        this.add(label, GridBagConstraints().apply {
+            this.anchor = GridBagConstraints.LINE_START
+            this.gridx = 0
+            this.gridy = 0
+            this.insets = Insets(2, 0, 0, 0)
+        })
+
+        this.add(slider, GridBagConstraints().apply {
+            this.anchor = GridBagConstraints.LAST_LINE_END
+            this.gridx = 1
+            this.gridy = 0
+            this.fill = GridBagConstraints.BOTH
+            this.weightx = 1.toDouble()
+        })
+
+        element = initialElement
+    }
+
+    private fun JComponent.applyStyle() {
+        background = BACKGROUND_COLOR_SELECT_PANEL
+        isOpaque = false
     }
 }

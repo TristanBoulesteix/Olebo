@@ -1,6 +1,6 @@
 package jdr.exia.view.homeFrame
 
-import jdr.exia.controller.HomeManager
+import jdr.exia.viewModel.HomeManager
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.utils.getIcon
 import jdr.exia.view.utils.components.ItemPanel

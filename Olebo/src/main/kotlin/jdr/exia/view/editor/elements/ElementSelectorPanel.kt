@@ -1,6 +1,6 @@
 package jdr.exia.view.editor.elements
 
-import jdr.exia.controller.BlueprintManager
+import jdr.exia.viewModel.BlueprintManager
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type

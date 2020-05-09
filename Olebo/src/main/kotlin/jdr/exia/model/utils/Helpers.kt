@@ -15,7 +15,14 @@ fun Int.toBoolean() = this != 0
  *
  * @return 1 if true
  */
-fun Boolean.toInt(): Int = if(this) 1 else 0
+fun Boolean.toInt(): Int = if (this) 1 else 0
+
+/**
+ * Convert a String to the corresponding boolean
+ *
+ * @return true if the value is "true"
+ */
+fun String?.toBoolean(): Boolean = this?.toLowerCase() == "true"
 
 /**
  * Check if element is a PNJ or a PJ

@@ -1,6 +1,6 @@
 package jdr.exia.view.editor.acts
 
-import jdr.exia.controller.SceneData
+import jdr.exia.viewModel.SceneData
 import jdr.exia.view.utils.showPopup
 import java.awt.Dimension
 import java.awt.GridBagConstraints

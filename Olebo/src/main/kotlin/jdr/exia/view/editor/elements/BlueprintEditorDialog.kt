@@ -1,7 +1,6 @@
 package jdr.exia.view.editor.elements
 
-import jdr.exia.controller.BlueprintData
-import jdr.exia.view.mainFrame.MasterFrame
+import jdr.exia.viewModel.BlueprintData
 import jdr.exia.view.utils.IntegerFilter
 import jdr.exia.view.utils.showPopup
 import java.awt.Dimension
@@ -21,16 +20,18 @@ import jdr.exia.model.element.Type as TypeElement
  * @param blueprint The blueprint to update. If the scene is <strong>null</strong>, it will be created.
  */
 class BlueprintEditorDialog(private val type: TypeElement, private val blueprint: BlueprintData? = null) :
-    JDialog() {
+        JDialog() {
     private val nameField = JTextField(blueprint?.name).apply {
         this.preferredSize = Dimension(100, 25)
     }
+
     private val lifeField by lazy {
         JTextField(blueprint?.life?.toString()).apply {
             this.preferredSize = Dimension(100, 25)
             (this.document as PlainDocument).documentFilter = IntegerFilter()
         }
     }
+
     private val manaField by lazy {
         JTextField(blueprint?.mana?.toString()).apply {
             this.preferredSize = Dimension(100, 25)
@@ -44,7 +45,7 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
     private val isFieldValid: Boolean
         get() {
             val validManaAndLife =
-                if (type == TypeElement.OBJECT) true else (lifeField.text.isNotBlank()) && (manaField.text.isNotBlank())
+                    if (type == TypeElement.OBJECT) true else (lifeField.text.isNotBlank()) && (manaField.text.isNotBlank())
             return (nameField.text.isNotBlank()) && validManaAndLife && (::selectedFile.isInitialized) && (selectedFile.exists())
         }
 
@@ -103,7 +104,7 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
                 val file = JFileChooser().apply {
                     this.currentDirectory = File(System.getProperty("user.home"))
                     this.addChoosableFileFilter(
-                        FileNameExtensionFilter("Images", *ImageIO.getReaderFileSuffixes())
+                            FileNameExtensionFilter("Images", *ImageIO.getReaderFileSuffixes())
                     )
                     this.isAcceptAllFileFilterUsed = false
                 }
@@ -136,11 +137,11 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
         this.isVisible = true
         return if (isFieldValid && !canceled) {
             BlueprintData(
-                nameField.text,
-                selectedFile.absolutePath,
-                if (type != TypeElement.OBJECT) manaField.text.toInt() else null,
-                if (type != TypeElement.OBJECT) lifeField.text.toInt() else null,
-                blueprint?.id
+                    nameField.text,
+                    selectedFile.absolutePath,
+                    if (type != TypeElement.OBJECT) manaField.text.toInt() else null,
+                    if (type != TypeElement.OBJECT) lifeField.text.toInt() else null,
+                    blueprint?.id
             )
         } else if (!canceled) {
             this.canceled = true
