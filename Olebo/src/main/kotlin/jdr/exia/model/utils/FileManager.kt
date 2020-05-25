@@ -60,14 +60,12 @@ val jarPath: String
     get() = File(::main::class.java.protectionDomain.codeSource.location.toURI()).absolutePath
 
 val oleboUpdater: String
-    get() {
-        val jar = File("${OLEBO_DIRECTORY}oleboUpdater.jar")
-
+    get() = with(File("${OLEBO_DIRECTORY}oleboUpdater.jar")) {
         ::main.javaClass.classLoader.getResourceAsStream("updater/OleboUpdater.jar")!!.use { input ->
-            jar.outputStream().use { output ->
+            this.outputStream().use { output ->
                 input.copyTo(output)
             }
         }
 
-        return jar.absolutePath
+        this.absolutePath
     }
