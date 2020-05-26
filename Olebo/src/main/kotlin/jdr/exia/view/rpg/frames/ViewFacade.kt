@@ -1,7 +1,7 @@
-package jdr.exia.view.rpgFrames
+package jdr.exia.view.rpg.frames
 
-import jdr.exia.viewModel.ViewManager
 import jdr.exia.model.element.Element
+import jdr.exia.viewModel.ViewManager
 
 /**
  * ViewManager is View's facade
@@ -62,6 +62,6 @@ object ViewFacade {
     }
 
     fun loadItems() {
-        MasterFrame.itemPanel.reloadContent()
+        MasterFrame.toolsPanel.itemPanel.reloadContent()
     }
 }

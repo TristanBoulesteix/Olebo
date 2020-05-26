@@ -1,6 +1,7 @@
 package jdr.exia.view.utils
 
 import java.awt.Component
+import java.awt.Font
 import java.awt.event.ItemEvent
 import javax.swing.*
 
@@ -52,3 +53,5 @@ fun <T : JComponent> T.applyAndAppendTo(parent: JComponent, block: T.() -> Unit)
 }
 
 fun <T> Collection<T>.forElse(block: (T) -> Unit) = if (isEmpty()) null else forEach(block)
+
+fun Font.update(name: String = this.name, style: Int = this.style, size: Int = this.size) = Font(name, style, size)

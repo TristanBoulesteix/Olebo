@@ -1,4 +1,4 @@
-package jdr.exia.view.rpgFrames
+package jdr.exia.view.rpg.frames
 
 import jdr.exia.model.element.Element
 import jdr.exia.viewModel.ViewManager
@@ -22,7 +22,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
     private var masterFramePanel = JPanel() // Main JPanel that contains other panels
     val mapPanel = MapPanel() //this frame's mapPanel
     var selectPanel = SelectPanel // Will contain all info on selected Item
-    var itemPanel = ItemPanel() // Will contain list of available items
+    var toolsPanel = ToolsPanel() // Will contain list of available items
 
     override fun setMapBackground(imageName: String) { //set the background image for the mappanels
         mapPanel.backGroundImage = ImageIO.read(File(imageName))
@@ -49,8 +49,8 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
 
         mapPanel.setSize(1280, 720)
 
-        itemPanel.setSize(this.width - 1280, this.height)
-        itemPanel.background = Color.yellow
+        toolsPanel.itemPanel.setSize(this.width - 1280, this.height)
+        toolsPanel.itemPanel.background = Color.yellow
 
         selectPanel.setSize(mapPanel.width, (this.height - mapPanel.height))
 
@@ -79,7 +79,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         mapConstraints.fill = GridBagConstraints.BOTH
 
         masterFramePanel.add(mapPanel, mapConstraints)
-        masterFramePanel.add(itemPanel, itemConstraints)
+        masterFramePanel.add(toolsPanel, itemConstraints)
         masterFramePanel.add(selectPanel, selectConstraints)
         mapPanel.isMasterMapPanel = true
         jMenuBar = MasterMenuBar

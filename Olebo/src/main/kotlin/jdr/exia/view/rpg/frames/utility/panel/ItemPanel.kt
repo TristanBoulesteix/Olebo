@@ -1,4 +1,4 @@
-package jdr.exia.view.rpgFrames
+package jdr.exia.view.rpg.frames.utility.panel
 
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Blueprint
