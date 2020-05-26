@@ -25,6 +25,15 @@ object BlueprintTable : IntIdTable() {
     val HP = integer("HP").nullable()
     val MP = integer("MP").nullable()
     val idType = reference("id_type", TypeTable)
+
+    fun initialize() {
+        fun componentExist(id: Int, name: String, sprite: String, idType: Int) =
+                BlueprintTable.select((this.id eq id) and (this.sprite eq sprite) and (this.idType eq idType)).count() <= 0
+
+        if (componentExist(1, "Arrow 1", "", 2)) {
+
+        }
+    }
 }
 
 object TypeTable : IntIdTable() {
@@ -49,6 +58,13 @@ object TypeTable : IntIdTable() {
             TypeTable.insert {
                 it[id] = EntityID(3, TypeTable)
                 it[name] = "PNJ"
+            }
+        }
+
+        if (TypeTable.select((id eq 4) and (name eq "BASE")).count() <= 0) {
+            TypeTable.insert {
+                it[id] = EntityID(4, TypeTable)
+                it[name] = "BASE"
             }
         }
     }
