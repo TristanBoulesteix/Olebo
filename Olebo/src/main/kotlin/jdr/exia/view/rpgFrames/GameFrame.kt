@@ -1,4 +1,4 @@
-package jdr.exia.view.rpg.frames
+package jdr.exia.view.rpgFrames
 
 import jdr.exia.model.element.Element
 

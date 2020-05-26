@@ -1,4 +1,4 @@
-package jdr.exia.view.rpg.frames
+package jdr.exia.view.rpgFrames
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
@@ -69,7 +69,7 @@ object MasterMenuBar : JMenuBar() {
             JMenuItem("Gèrer les Blueprints").applyAndAppendTo(this) {
                 addActionListener {
                     BlueprintDialog().isVisible = true
-                    MasterFrame.toolsPanel.itemPanel.reloadContent()
+                    MasterFrame.itemPanel.reloadContent()
                 }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_B, CTRLSHIFT)
             }
