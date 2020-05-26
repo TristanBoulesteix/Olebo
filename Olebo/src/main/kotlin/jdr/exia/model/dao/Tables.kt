@@ -27,12 +27,19 @@ object BlueprintTable : IntIdTable() {
     val idType = reference("id_type", TypeTable)
 
     fun initialize() {
-        fun componentExist(id: Int, name: String, sprite: String, idType: Int) =
-                BlueprintTable.select((this.id eq id) and (this.sprite eq sprite) and (this.idType eq idType)).count() <= 0
-
-        if (componentExist(1, "Arrow 1", "", 2)) {
-
+        fun createIfNotExist(name: String, sprite: String, idType: Int = 4) {
+            if (BlueprintTable.select((this.sprite eq sprite) and (this.name eq name) and (this.idType eq idType)).count() <= 0) {
+                BlueprintTable.insert {
+                    it[this.name] = name
+                    it[this.sprite] = sprite
+                    it[this.idType] = EntityID(idType, TypeTable)
+                }
+            }
         }
+
+        createIfNotExist("Arrow_down_red", "/defaultBlueprints/arrow_down_red.png")
+        createIfNotExist("Arrow_down_blue", "/defaultBlueprints/arrow_down_blue.png")
+        createIfNotExist("Arrow_down_green", "/defaultBlueprints/arrow_down_green.png")
     }
 }
 

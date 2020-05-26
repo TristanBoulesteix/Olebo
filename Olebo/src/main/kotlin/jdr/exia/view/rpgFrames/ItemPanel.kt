@@ -76,7 +76,7 @@ class ItemPanel : JPanel() {
 
                 ViewManager.items.filter {
                     it.type.typeElement == Type.OBJECT && (searchConstraint.isEmpty() || it.name.toLowerCase().contains(
-                        searchConstraint.toLowerCase()
+                            searchConstraint.toLowerCase()
                     ))
                 }.forElse {
                     this.add(CustomPanel(it))
@@ -87,7 +87,7 @@ class ItemPanel : JPanel() {
 
                 ViewManager.items.filter {
                     it.type.typeElement == Type.PJ && (searchConstraint.isEmpty() || it.name.toLowerCase().contains(
-                        searchConstraint.toLowerCase()
+                            searchConstraint.toLowerCase()
                     ))
                 }.forElse {
                     this.add(CustomPanel(it))
@@ -98,7 +98,18 @@ class ItemPanel : JPanel() {
 
                 ViewManager.items.filter {
                     it.type.typeElement == Type.PNJ && (searchConstraint.isEmpty() || it.name.toString().contains(
-                        searchConstraint.toLowerCase()
+                            searchConstraint.toLowerCase()
+                    ))
+                }.forElse {
+                    this.add(CustomPanel(it))
+                } ?: this.add(EmptyField())
+
+                // Object list
+                this.add(CustomTitlePanel("Base").apply { this.isEnabled = false })
+
+                ViewManager.items.filter {
+                    it.type.typeElement == Type.BASE && (searchConstraint.isEmpty() || it.name.toLowerCase().contains(
+                            searchConstraint.toLowerCase()
                     ))
                 }.forElse {
                     this.add(CustomPanel(it))
@@ -140,8 +151,10 @@ class ItemPanel : JPanel() {
 
             val label = JLabel().apply {
                 this.size = Dimension(40, 40)
-                val icon =
+                val icon = if (element.type.typeElement != Type.BASE)
                     ImageIO.read(File(element.sprite)).getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH)
+                else
+                    ImageIO.read(ItemPanel::class.java.getResourceAsStream(element.sprite)).getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH)
                 this.icon = ImageIcon(icon)
             }
 

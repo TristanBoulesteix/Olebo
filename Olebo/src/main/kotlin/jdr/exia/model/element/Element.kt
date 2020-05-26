@@ -1,18 +1,19 @@
 package jdr.exia.model.element
 
-import jdr.exia.utils.CharacterException
 import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.utils.isCharacter
 import jdr.exia.model.utils.toBoolean
 import jdr.exia.model.utils.toInt
+import jdr.exia.utils.CharacterException
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
+import javax.imageio.ImageIO
 import javax.swing.ImageIcon
 
 class Element(id: EntityID<Int>) : Entity<Int>(id) {
@@ -27,7 +28,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         fun createElement(b: Blueprint): Element {
             return transaction(DAO.database) {
                 val id = InstanceTable.insertAndGetId {
-                    if (b.type.typeElement != Type.OBJECT) {
+                    if (b.type.typeElement != Type.OBJECT && b.type.typeElement != Type.BASE) {
                         it[currentHP] = b.HP
                         it[currentMP] = b.MP
                     }
@@ -54,7 +55,12 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
     // Value from the Blueprint
     val sprite
-        get() = transaction(DAO.database) { ImageIcon(blueprint.sprite) }
+        get() = transaction(DAO.database) {
+            if (blueprint.type.typeElement == Type.BASE)
+                ImageIcon(ImageIO.read(Element::class.java.getResourceAsStream(blueprint.sprite)))
+            else
+                ImageIcon(blueprint.sprite)
+        }
     val name
         get() = transaction(DAO.database) { blueprint.name }
     val maxHP
@@ -68,10 +74,10 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     val hitBox
         get() = transaction(DAO.database) {
             Rectangle(
-                x,
-                y,
-                sizeElement.absoluteSizeValue,
-                sizeElement.absoluteSizeValue
+                    x,
+                    y,
+                    sizeElement.absoluteSizeValue,
+                    sizeElement.absoluteSizeValue
             )
         }
 
@@ -90,7 +96,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     var position
         get() = Position(x, y)
         set(value) {
-            transaction(DAO.database){
+            transaction(DAO.database) {
                 x = value.x;
                 y = value.y
             }

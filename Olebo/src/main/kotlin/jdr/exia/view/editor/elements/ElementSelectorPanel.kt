@@ -1,6 +1,5 @@
 package jdr.exia.view.editor.elements
 
-import jdr.exia.viewModel.BlueprintManager
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
@@ -9,6 +8,7 @@ import jdr.exia.view.utils.components.ItemPanel
 import jdr.exia.view.utils.components.SelectorPanel
 import jdr.exia.view.utils.factories.TitlePanel
 import jdr.exia.view.utils.factories.buildTitleItemPanel
+import jdr.exia.viewModel.BlueprintManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.BorderLayout
 import java.awt.GridBagConstraints

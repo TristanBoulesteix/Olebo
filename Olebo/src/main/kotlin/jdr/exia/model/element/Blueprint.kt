@@ -1,8 +1,8 @@
 package jdr.exia.model.element
 
-import jdr.exia.utils.CharacterException
 import jdr.exia.model.dao.BlueprintTable
 import jdr.exia.model.dao.InstanceTable
+import jdr.exia.utils.CharacterException
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.EntityID
@@ -29,10 +29,13 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
         else throw CharacterException(this::class, "MP")
 
     override fun delete() {
-        File(sprite).delete()
+        if (this.type.typeElement == Type.BASE)
+            File(sprite).delete()
+
         Element.find { InstanceTable.idBlueprint eq id.value }.forEach {
             it.delete()
         }
+
         super.delete()
     }
 }

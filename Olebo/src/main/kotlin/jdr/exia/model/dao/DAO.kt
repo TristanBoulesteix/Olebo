@@ -36,6 +36,7 @@ object DAO {
             SchemaUtils.createMissingTablesAndColumns(ActTable, SceneTable, BlueprintTable, TypeTable, InstanceTable, SizeTable, SettingsTable)
             TypeTable.initialize()
             SizeTable.initialize()
+            BlueprintTable.initialize()
             SettingsTable.initialize()
         }
     }
