@@ -1,11 +1,11 @@
 package jdr.exia.view.editor.acts
 
-import jdr.exia.viewModel.ActCreatorManager
-import jdr.exia.viewModel.HomeManager
-import jdr.exia.viewModel.getArrayOfPairs
 import jdr.exia.model.utils.getIcon
 import jdr.exia.view.utils.components.ItemPanel
 import jdr.exia.view.utils.components.SelectorPanel
+import jdr.exia.viewModel.ActCreatorManager
+import jdr.exia.viewModel.HomeManager
+import jdr.exia.viewModel.getArrayOfPairs
 import java.awt.BorderLayout.NORTH
 import java.awt.Color
 import java.awt.GridBagConstraints
@@ -61,7 +61,7 @@ class SceneSelectorPanel(private val controller: ActCreatorManager?) : SelectorP
         init {
             this.add(SquareLabel(getIcon("edit_icon", HomeManager.javaClass), controller!!::updateNewScene))
 
-            this.add(SquareLabel(getIcon("delete_icon", HomeManager.javaClass), controller!!::deleteNewScene))
+            this.add(SquareLabel(getIcon("delete_icon", HomeManager.javaClass), controller::deleteNewScene))
         }
     }
 }
