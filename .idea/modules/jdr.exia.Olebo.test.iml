@@ -17,7 +17,7 @@
             <array>
               <option value="$MODULE_DIR$/../../Olebo/build/classes/java/main" />
               <option value="$MODULE_DIR$/../../Olebo/build/classes/kotlin/main" />
-              <option value="$MODULE_DIR$/../../Olebo/build/libs/Olebo-1.1.0-BETA.jar" />
+              <option value="$MODULE_DIR$/../../Olebo/build/libs/Olebo-1.1.1-BETA.jar" />
             </array>
           </option>
           <option name="languageVersion" value="1.4" />
