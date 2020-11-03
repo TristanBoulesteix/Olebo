@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     java
-    kotlin("jvm") version "1.3.50"
+    kotlin("jvm") version "1.4.10"
 }
 
 group = "jdr.exia.updater"
@@ -14,9 +14,8 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    compile("org.jetbrains.exposed", "exposed", "0.17.7")
-    compile("org.apache.httpcomponents", "httpclient", "4.5.10")
-    compile("org.json","json", "20190722")
+    implementation("org.apache.httpcomponents", "httpclient", "4.5.10")
+    implementation("org.json","json", "20190722")
 }
 
 val jar by tasks.getting(Jar::class) {
@@ -28,6 +27,10 @@ val jar by tasks.getting(Jar::class) {
             if (file.isDirectory) collection else collection.plus(zipTree(file))
         }
     })
+}
+
+tasks.named<Wrapper>("wrapper") {
+    distributionType = Wrapper.DistributionType.ALL
 }
 
 configure<JavaPluginConvention> {

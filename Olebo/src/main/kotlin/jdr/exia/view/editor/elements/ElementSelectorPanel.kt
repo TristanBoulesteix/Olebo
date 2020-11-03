@@ -1,6 +1,5 @@
 package jdr.exia.view.editor.elements
 
-import jdr.exia.viewModel.BlueprintManager
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
@@ -9,6 +8,7 @@ import jdr.exia.view.utils.components.ItemPanel
 import jdr.exia.view.utils.components.SelectorPanel
 import jdr.exia.view.utils.factories.TitlePanel
 import jdr.exia.view.utils.factories.buildTitleItemPanel
+import jdr.exia.viewModel.BlueprintManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.BorderLayout
 import java.awt.GridBagConstraints
@@ -81,7 +81,7 @@ class ElementSelectorPanel(private val controller: BlueprintManager?) :
             }
 
             this.add(SquareLabel(controller!!.getBlueprintWithId(id).sprite, controller::updateIcon))
-            this.add(SquareLabel(getIcon("delete_icon", controller!!.javaClass), controller::deleteElement))
+            this.add(SquareLabel(getIcon("delete_icon", controller.javaClass), controller::deleteElement))
         }
     }
 
@@ -105,9 +105,9 @@ class ElementSelectorPanel(private val controller: BlueprintManager?) :
             }
 
             this.add(SquareLabel(transaction(DAO.database) { Blueprint[id].HP.toString() }, controller!!::saveLife))
-            this.add(SquareLabel(transaction(DAO.database) { Blueprint[id].MP.toString() }, controller!!::saveMana))
-            this.add(SquareLabel(controller!!.getBlueprintWithId(id).sprite, controller::updateIcon))
-            this.add(SquareLabel(getIcon("delete_icon", controller!!.javaClass), controller::deleteElement))
+            this.add(SquareLabel(transaction(DAO.database) { Blueprint[id].MP.toString() }, controller::saveMana))
+            this.add(SquareLabel(controller.getBlueprintWithId(id).sprite, controller::updateIcon))
+            this.add(SquareLabel(getIcon("delete_icon", controller.javaClass), controller::deleteElement))
         }
     }
 }
