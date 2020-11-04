@@ -1,12 +1,10 @@
 package jdr.exia.model.dao
 
+import jdr.exia.VERSION
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.IntIdTable
-import org.jetbrains.exposed.sql.ReferenceOption
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
 
 object ActTable : IntIdTable() {
     val name = varchar("name", 50)
@@ -142,10 +140,16 @@ object SettingsTable : IntIdTable() {
             }
         }
 
-        if (SettingsTable.select((id eq 3) and (name eq "updateWarn")).count() <= 0) {
+        val updateWarnCondition = name eq "updateWarn"
+
+        if (SettingsTable.select((id eq 3) and (updateWarnCondition)).count() <= 0) {
             SettingsTable.insert {
                 it[id] = EntityID(3, SettingsTable)
                 it[name] = "updateWarn"
+                it[value] = ""
+            }
+        } else if(SettingsTable.select(updateWarnCondition).firstOrNull()?.get(value) != VERSION) {
+            SettingsTable.update({ updateWarnCondition }) {
                 it[value] = ""
             }
         }

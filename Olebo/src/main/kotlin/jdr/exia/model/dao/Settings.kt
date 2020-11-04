@@ -1,9 +1,9 @@
 package jdr.exia.model.dao
 
+import jdr.exia.model.utils.toBoolean
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.IntEntity
-import jdr.exia.model.utils.toBoolean
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class Settings(id: EntityID<Int>) : IntEntity(id) {
@@ -20,7 +20,7 @@ class Settings(id: EntityID<Int>) : IntEntity(id) {
             }
 
         var autoUpdate
-            get() = transaction(DAO.database) { this@Companion["autoUpdate"].toBoolean() }
+            get() = transaction(DAO.database) { this@Companion["autoUpdate"] }.toBoolean()
             set(value) {
                 transaction(DAO.database) {
                     this@Companion["autoUpdate"] = value.toString()
@@ -28,7 +28,7 @@ class Settings(id: EntityID<Int>) : IntEntity(id) {
             }
 
         var updateWarn
-            get() = transaction(DAO.database) { this@Companion["updateWarn"] }
+            get() = transaction(DAO.database) { this@Companion["updateWarn"] } ?: ""
             set(value) = transaction(DAO.database) {
                 this@Companion["updateWarn"] = value
             }
