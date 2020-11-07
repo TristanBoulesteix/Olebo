@@ -1,6 +1,7 @@
 package jdr.exia.view.utils
 
 import java.awt.Component
+import java.awt.GridBagConstraints
 import java.awt.event.ItemEvent
 import javax.swing.*
 
@@ -45,9 +46,11 @@ fun showConfirmMessage(parent: JComponent? = null, message: String, title: Strin
     )
 }
 
-fun <T : JComponent> T.applyAndAppendTo(parent: JComponent, block: T.() -> Unit): T {
+fun <T : JComponent> T.applyAndAppendTo(parent: JComponent, constraints: GridBagConstraints? = null, block: T.() -> Unit): T {
     this.apply(block)
-    parent.add(this)
+    constraints?.let {
+        parent.add(this, constraints)
+    } ?: parent.add(this)
     return this
 }
 
