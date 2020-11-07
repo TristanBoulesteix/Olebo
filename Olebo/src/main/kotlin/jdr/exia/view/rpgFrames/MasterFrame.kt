@@ -1,9 +1,9 @@
 package jdr.exia.view.rpgFrames
 
 import jdr.exia.model.element.Element
+import jdr.exia.view.utils.DIMENSION_FRAME
 import jdr.exia.viewModel.ViewManager
 import java.awt.Color
-import java.awt.GraphicsEnvironment
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.awt.event.KeyEvent
@@ -33,15 +33,13 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
     }
 
     init {
-        val screens = GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices
-        this.setSize(screens[0].displayMode.width, screens[0].displayMode.height)
-/*        if (screens.size == 1) { //If there is only 1 screen, we display both frames there
-        } else {
-
-        }*/
+        /*val screens = GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices
+        this.setSize(screens[0].displayMode.width, screens[0].displayMode.height)*/
+        this.extendedState = MAXIMIZED_BOTH
+        this.size = DIMENSION_FRAME
         this.isFocusable = true
         addKeyListener(this)
-        this.defaultCloseOperation = DISPOSE_ON_CLOSE
+        this.defaultCloseOperation = EXIT_ON_CLOSE
         masterFramePanel.size = this.size
         masterFramePanel.background = Color.GRAY
         masterFramePanel.layout = GridBagLayout()
@@ -84,7 +82,6 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         mapPanel.isMasterMapPanel = true
         jMenuBar = MasterMenuBar
     }
-
 
     // KeyListener section, to add Key bindings
     override fun keyTyped(keyEvent: KeyEvent) {

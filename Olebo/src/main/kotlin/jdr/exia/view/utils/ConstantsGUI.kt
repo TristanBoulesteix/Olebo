@@ -8,7 +8,8 @@ import javax.swing.BorderFactory
 import javax.swing.border.Border
 
 // Dimensions
-val DIMENSION_FRAME = Dimension(600, 800)
+val DIMENSION_MENU_FRAME = Dimension(600, 800)
+val DIMENSION_FRAME = Dimension(1920, 1080)
 
 // Colors
 val BACKGROUND_COLOR_LIGHT_BLUE = Color(158, 195, 255)

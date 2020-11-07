@@ -27,8 +27,8 @@ abstract class JFrameTemplate(title: String) : JFrame(),
 
     init {
         this.title = title
-        this.minimumSize = DIMENSION_FRAME
-        this.preferredSize = DIMENSION_FRAME
+        this.minimumSize = DIMENSION_MENU_FRAME
+        this.preferredSize = DIMENSION_MENU_FRAME
         this.defaultCloseOperation = DISPOSE_ON_CLOSE
         this.setLocationRelativeTo(null)
         this.layout = BorderLayout()
@@ -52,8 +52,8 @@ abstract class JDialogTemplate(title: String, modal: Boolean = true) : JDialog()
     init {
         this.title = title
         if (modal) this.modalityType = ModalityType.APPLICATION_MODAL
-        this.minimumSize = DIMENSION_FRAME
-        this.preferredSize = DIMENSION_FRAME
+        this.minimumSize = DIMENSION_MENU_FRAME
+        this.preferredSize = DIMENSION_MENU_FRAME
         this.defaultCloseOperation = DISPOSE_ON_CLOSE
         this.setLocationRelativeTo(null)
         this.layout = BorderLayout()
