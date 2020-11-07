@@ -16,7 +16,7 @@ class MapPanel : JPanel(), MouseListener {
     var isMasterMapPanel: Boolean = false
 
     init {
-        this.layout = GridBagLayout();
+        this.layout = GridBagLayout()
         this.background = Color.blue
         addMouseListener(this)
     }

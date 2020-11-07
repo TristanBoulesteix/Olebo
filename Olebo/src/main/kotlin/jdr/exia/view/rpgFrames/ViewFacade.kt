@@ -1,7 +1,7 @@
 package jdr.exia.view.rpgFrames
 
-import jdr.exia.viewModel.ViewManager
 import jdr.exia.model.element.Element
+import jdr.exia.viewModel.ViewManager
 
 /**
  * ViewManager is View's facade
@@ -26,12 +26,11 @@ object ViewFacade {
     fun setSelectedToken(token: Element?) {
         SelectPanel.selectedElement = token
         MasterFrame.mapPanel.selectedElement = token
-        PlayerFrame.mapPanel.selectedElement = token
     }
 
     fun setMapBackground(imageName: String) { //Sets the MapPanels backGround
         MasterFrame.setMapBackground(imageName)
-        PlayerFrame.setMapBackground(imageName)
+        PlayerFrame.mapBackground = imageName
         MasterMenuBar.initialize()
         repaintFrames()
     }
@@ -51,12 +50,11 @@ object ViewFacade {
 
 
     fun placeTokensOnMaps(tokens: MutableList<Element>) { //places tokens on both maps at corresponding points
-        PlayerFrame.updateMap(tokens)
+        PlayerFrame.map = tokens
         MasterFrame.updateMap(tokens)
     }
 
     fun unSelectElement() {
-        PlayerFrame.mapPanel.selectedElement = null
         MasterFrame.mapPanel.selectedElement = null
         SelectPanel.selectedElement = null
     }

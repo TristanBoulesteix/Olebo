@@ -10,16 +10,16 @@ import jdr.exia.view.utils.components.FileMenu
 import jdr.exia.viewModel.ViewManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.event.KeyEvent
-import javax.swing.JMenu
-import javax.swing.JMenuBar
-import javax.swing.JMenuItem
-import javax.swing.KeyStroke
+import javax.swing.*
 
 /**
  * This is MasterFrame's menu bar (situated at the top)
  */
 object MasterMenuBar : JMenuBar() {
     var act: Act? = null
+
+    var togglePlayerFrameMenuItem: JCheckBoxMenuItem? = null
+        private set
 
     fun initialize() {
         this.removeAll()
@@ -30,7 +30,7 @@ object MasterMenuBar : JMenuBar() {
             JMenuItem("Fermer scenario").applyAndAppendTo(this) {
                 this.addActionListener {
                     MasterFrame.isVisible = false
-                    PlayerFrame.isVisible = false
+                    PlayerFrame.hide()
                     HomeFrame().isVisible = true
                 }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Q, CTRL)
@@ -38,9 +38,13 @@ object MasterMenuBar : JMenuBar() {
 
             this.addSeparator()
 
-            JMenuItem("Fenetre PJs ON/OFF").applyAndAppendTo(this) {
-                this.addActionListener {
-                    PlayerFrame.toggleDisplay()
+            togglePlayerFrameMenuItem = JCheckBoxMenuItem("Fenetre PJs ON/OFF").applyAndAppendTo(this) {
+                this.addActionListener { e ->
+                    (e.source as AbstractButton).let {
+                        if (it.isSelected)
+                            PlayerFrame.show()
+                        else PlayerFrame.hide()
+                    }
                 }
             }
 
@@ -57,7 +61,7 @@ object MasterMenuBar : JMenuBar() {
                             this.add(item)
                         } else {
                             val item = JMenuItem("$i ${scene.name}")
-                            item.addActionListener { transaction(DAO.database) { ViewManager.changeCurrentScene(scene.id.value); } }
+                            item.addActionListener { transaction(DAO.database) { ViewManager.changeCurrentScene(scene.id.value) } }
                             this.add(item)
                         }
                     }
