@@ -6,13 +6,13 @@ import org.apache.http.client.config.CookieSpecs
 import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClients
+import java.io.Closeable
 import java.io.InputStream
-import javax.swing.JOptionPane
 
 /**
  * Check all releases on <a href="github.com">Github</a>
  */
-class HttpUpdater {
+class HttpUpdater : Closeable {
     private val downloadClient by lazy {
         HttpClients.custom().setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build())
                 .build()
@@ -39,5 +39,5 @@ class HttpUpdater {
     /**
      * Close the connection
      */
-    fun close() = downloadClient.close()
+    override fun close() = downloadClient.close()
 }

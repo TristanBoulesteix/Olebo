@@ -1,9 +1,9 @@
 package jdr.exia.updater
 
-import java.awt.SystemTray
-import java.awt.TrayIcon
+import java.awt.*
+import java.awt.event.MouseAdapter
+import java.awt.event.MouseEvent
 import java.awt.image.BufferedImage
-import java.io.File
 import javax.swing.UIManager
 
 private val trayIcon by lazy {
@@ -16,6 +16,26 @@ private val trayIcon by lazy {
     val trayIcon = TrayIcon(image, "Olebo updater").apply {
         this.isImageAutoSize = true
         this.toolTip = "Olebo updater is running"
+        popupMenu = PopupMenu().apply {
+            add(MenuItem("Test").apply {
+                addActionListener {
+
+                }
+            })
+        }
+        addMouseListener(object : MouseAdapter() {
+            private val frame = Frame().apply {
+                isUndecorated = true
+                type = Window.Type.UTILITY
+                isResizable = false
+                isVisible = true
+            }
+
+            override fun mouseClicked(e: MouseEvent) {
+                frame.add(popupMenu)
+                popupMenu.show(frame, e.xOnScreen, e.yOnScreen)
+            }
+        })
     }
 
     tray.add(trayIcon)

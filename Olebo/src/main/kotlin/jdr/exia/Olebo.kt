@@ -7,7 +7,7 @@ import javax.swing.UIManager
 
 const val VERSION = "1.2.0-BETA"
 
-const val DEBUG = true
+const val DEBUG = false
 
 fun main() {
     if (!DEBUG)
