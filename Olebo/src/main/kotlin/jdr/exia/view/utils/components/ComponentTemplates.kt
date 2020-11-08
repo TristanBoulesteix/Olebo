@@ -230,12 +230,6 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
 }
 
 class SlideStats(private val hp: Boolean, initialElement: Element? = null) : JPanel() {
-    companion object {
-        fun lifeSlide(initialElement: Element? = null) = SlideStats(true, initialElement)
-
-        fun manaSlide(initialElement: Element? = null) = SlideStats(false, initialElement)
-    }
-
     private val label: JTextField
     private val slider: JSlider
 
@@ -244,18 +238,20 @@ class SlideStats(private val hp: Boolean, initialElement: Element? = null) : JPa
 
     private var eventAction: ChangeListener
 
-    var element : Element? = null
+    var element: Element? = null
         set(value) {
             field = value
 
             if (value == null || !value.isCharacter()) {
                 label.text = "X / X"
+                label.disabledTextColor = Color(109, 109, 109)
                 slider.isEnabled = false
             } else {
                 label.text = if (hp)
                     "${value.currentHealth} / ${value.maxHP}"
                 else
                     "${value.currentMana} / ${value.maxMana}"
+                label.disabledTextColor = Color.BLACK
                 slider.apply {
                     this.maximum = if (hp) value.maxHP else value.maxMana
                     this.value = if (hp) value.currentHealth else value.currentMana
