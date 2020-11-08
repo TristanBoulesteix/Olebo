@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "jdr.exia"
-version = "1.1.1-BETA"
+version = "1.2.0-BETA"
 
 repositories {
     mavenCentral()
