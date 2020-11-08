@@ -109,11 +109,9 @@ object MasterMenuBar : JMenuBar() {
 
             this.addSeparator()
 
-            JMenuItem("Supprimer pion selectionné").applyAndAppendTo(this) {
+            JMenuItem("Supprimer pion(s) selectionné(s)").applyAndAppendTo(this) {
                 this.addActionListener {
-                    SelectPanel.selectedElement?.let { element ->
-                        ViewManager.removeToken(element)
-                    }
+                    SelectPanel.selectedElements.forEach(ViewManager::removeToken)
                 }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0)
             }

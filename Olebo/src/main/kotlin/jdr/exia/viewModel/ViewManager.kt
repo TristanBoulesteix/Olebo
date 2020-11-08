@@ -148,10 +148,8 @@ object ViewManager {
         ViewFacade.placeTokensOnMaps(activeScene!!.elements)
     }
 
-    fun toggleVisibility(token: Element?) {
-        if (token != null) {
-            token.isVisible = !token.isVisible
-            repaint()
-        }
+    fun toggleVisibility(token: Element, visibility: Boolean? = null) {
+        token.isVisible = visibility ?: !token.isVisible
+        repaint()
     }
 }

@@ -19,12 +19,16 @@ import javax.swing.border.EmptyBorder
  * This is a singleton.
  */
 object SelectPanel : JPanel() {
-    var selectedElement: Element? = null
+    var selectedElements = listOf<Element>()
         set(value) {
             field = value
 
-            if (selectedElement != null) {
-                sizeCombo.selectedItem = selectedElement!!.size.name
+            if (selectedElements.isNotEmpty()) {
+                if (selectedElements.size == 1) {
+                    sizeCombo.selectedItem = selectedElements[0].size.name
+                } else {
+
+                }
             } else {
                 sizeCombo.selectedItem = null
             }
@@ -56,13 +60,29 @@ object SelectPanel : JPanel() {
     private val visibilityButton = object : JButton() { //Toggles visibility on selected Token
         private val defaultText = "Visibilité"
 
+        private val conditionVisibility
+            get() = selectedElements.filter { it.isVisible }.size >= selectedElements.size / 2
+
+        private val contentText
+            get() = when {
+                selectedElements.isEmpty() -> "Masquer"
+                selectedElements.size == 1 -> if (selectedElements[0].isVisible) "Masquer" else "Afficher"
+                conditionVisibility -> "Masquer"
+                else -> "Afficher"
+            }
+
         init {
             text = defaultText
             preferredSize = Dimension(150, 40)
             addActionListener {
-                selectedElement?.let {
-                    ViewManager.toggleVisibility(it)
-                    this.text = if (it.isVisible) "Masquer" else "Afficher"
+                this.text = contentText
+                val visibility = when {
+                    selectedElements.size == 1 -> null
+                    selectedElements.isNotEmpty() -> !conditionVisibility
+                    else -> null
+                }
+                selectedElements.forEach {
+                    ViewManager.toggleVisibility(it, visibility)
                 }
             }
         }
@@ -72,7 +92,7 @@ object SelectPanel : JPanel() {
                 text = defaultText
                 isEnabled = false
             } else {
-                text = if (selectedElement?.isVisible == true) "Masquer" else "Afficher"
+                text = contentText
                 isEnabled = true
             }
         }
@@ -81,17 +101,15 @@ object SelectPanel : JPanel() {
     private val deleteButton = JButton("Supprimer").apply { //Deletes selected Token
         preferredSize = Dimension(150, 40)
         addActionListener {
-            selectedElement?.let {
-                ViewManager.removeToken(it)
-                ViewManager.repaint()
-            }
+            selectedElements.forEach(ViewManager::removeToken)
+            ViewManager.repaint()
         }
     }
 
     private val sizeCombo = object : JComboBox<String>(arrayOf("XS", "S", "M", "L", "XL", "XXL")) {
         init {
             addActionListener {
-                selectedElement?.let {
+                selectedElements.forEach {
                     if (selectedItem != it.size) {
                         when (this.selectedItem) {
                             "XS" -> it.size = Size.XS
@@ -177,23 +195,25 @@ object SelectPanel : JPanel() {
     override fun paintComponent(g: Graphics) {
         super.paintComponent(g)
 
-        with(selectedElement) {
-            g.color = if (this == null || this.isVisible) {
+        with(selectedElements) {
+            g.color = if (this.isEmpty() || this.all { it.isVisible }) {
                 Color.BLACK
             } else {
                 Color.BLUE
             }
             g.fillRect(15, 15, 110, 110)
 
-            if (this != null) {
+            if (this.isNotEmpty()) {
                 deleteButton.isEnabled = true
                 visibilityButton.initialize(false)
-                nameLabel.text = this.name
+                nameLabel.text = if (this.size == 1) this[0].name else "$size éléments sélectionnés"
 
-                g.drawImage(this.sprite.image, 20, 20, 100, 100, null)
+                if (this.size == 1) {
+                    g.drawImage(this[0].sprite.image, 20, 20, 100, 100, null)
 
-                lifeSlide.element = this
-                manaSlide.element = this
+                    lifeSlide.element = this[0]
+                    manaSlide.element = this[0]
+                }
             } else {
                 nameLabel.text = null
                 deleteButton.isEnabled = false

@@ -5,6 +5,8 @@ import jdr.exia.view.utils.DIMENSION_FRAME
 import java.awt.GraphicsEnvironment
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
+import java.awt.event.WindowAdapter
+import java.awt.event.WindowEvent
 import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.JDialog
@@ -86,6 +88,9 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
         this.contentPane = mapPanel
         this.addKeyListener(this)
         this.defaultCloseOperation = DO_NOTHING_ON_CLOSE
+        this.addWindowListener(object : WindowAdapter() {
+            override fun windowClosing(e: WindowEvent) = PlayerFrame.hide().also { MasterMenuBar.togglePlayerFrameMenuItem?.isSelected = false }
+        })
     }
 
     override fun setTitle(title: String) =

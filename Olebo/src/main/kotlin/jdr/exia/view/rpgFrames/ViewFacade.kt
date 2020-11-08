@@ -20,11 +20,7 @@ object ViewFacade {
     }
 
     fun setSelectedToken(vararg tokens: Element) {
-        SelectPanel.selectedElement = when (tokens.size) {
-            0 -> null
-            1 -> tokens[0]
-            else -> null
-        }
+        SelectPanel.selectedElements = tokens.toList()
         MasterFrame.mapPanel.selectedElements = tokens.toMutableList()
     }
 
@@ -56,7 +52,7 @@ object ViewFacade {
 
     fun unSelectElements() {
         MasterFrame.mapPanel.selectedElements = mutableListOf()
-        SelectPanel.selectedElement = null
+        SelectPanel.selectedElements = mutableListOf()
     }
 
     fun loadItems() {
