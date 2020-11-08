@@ -20,7 +20,7 @@ import javax.swing.JPanel
  */
 object MasterFrame : JFrame(), KeyListener, GameFrame {
     private var masterFramePanel = JPanel() // Main JPanel that contains other panels
-    val mapPanel = MapPanel() //this frame's mapPanel
+    val mapPanel = MapPanel(true) //this frame's mapPanel
     var selectPanel = SelectPanel // Will contain all info on selected Item
     var itemPanel = ItemPanel() // Will contain list of available items
 
@@ -33,8 +33,6 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
     }
 
     init {
-        /*val screens = GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices
-        this.setSize(screens[0].displayMode.width, screens[0].displayMode.height)*/
         this.extendedState = MAXIMIZED_BOTH
         this.size = DIMENSION_FRAME
         this.isFocusable = true
@@ -79,7 +77,6 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         masterFramePanel.add(mapPanel, mapConstraints)
         masterFramePanel.add(itemPanel, itemConstraints)
         masterFramePanel.add(selectPanel, selectConstraints)
-        mapPanel.isMasterMapPanel = true
         jMenuBar = MasterMenuBar
     }
 

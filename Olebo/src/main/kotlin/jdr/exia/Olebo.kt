@@ -7,11 +7,14 @@ import javax.swing.UIManager
 
 const val VERSION = "1.1.1-BETA"
 
+const val DEBUG = true
+
 fun main() {
-    checkForUpdate()
+    if (!DEBUG)
+        checkForUpdate()
     SwingUtilities.invokeLater {
         UIManager.setLookAndFeel(
-            UIManager.getSystemLookAndFeelClassName()
+                UIManager.getSystemLookAndFeelClassName()
         )
 
         HomeFrame().isVisible = true

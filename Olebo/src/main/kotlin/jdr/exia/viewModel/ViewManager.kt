@@ -6,9 +6,11 @@ import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Position
+import jdr.exia.view.rpgFrames.MasterFrame
 import jdr.exia.view.rpgFrames.MasterMenuBar
 import jdr.exia.view.rpgFrames.ViewFacade
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.awt.Rectangle
 
 /**
  * Manage MasterFrame and PlayerFrame
@@ -52,7 +54,7 @@ object ViewManager {
             ViewFacade.apply {
                 this.loadItems()
                 this.setMapBackground(activeScene!!.background)
-                this.setSelectedToken(null)
+                this.setSelectedToken()
                 this.actName = this@activeAct.name
                 repaint()
                 this.turnVisible()
@@ -69,9 +71,9 @@ object ViewManager {
         }
     }
 
-    private fun unSelectElement() {
+    private fun unSelectElements() {
         selectedElement = null
-        ViewFacade.unSelectElement()
+        ViewFacade.unSelectElements()
         repaint()
     }
 
@@ -97,10 +99,27 @@ object ViewManager {
     fun selectElement(x: Int, y: Int) { //cheks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
         selectedElement = getTokenFromXY(x, y)
         if (selectedElement != null) {
-            ViewFacade.setSelectedToken(selectedElement)
+            ViewFacade.setSelectedToken(selectedElement!!)
             repaint()
         } else {
-            unSelectElement()
+            unSelectElements()
+        }
+    }
+
+    fun selectElements(rec: Rectangle) {
+        val selectedElements = mutableListOf<Element>()
+
+        activeScene!!.elements.forEach {
+            if (rec.contains(MasterFrame.mapPanel.getRelativeRectangleOfToken(it))) {
+                selectedElements += it
+            }
+        }
+
+        if (selectedElements.isNotEmpty()) {
+            ViewFacade.setSelectedToken(*selectedElements.toTypedArray())
+            repaint()
+        } else {
+            unSelectElements()
         }
     }
 

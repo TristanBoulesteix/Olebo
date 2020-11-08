@@ -1,12 +1,12 @@
 package jdr.exia.model.element
 
-import jdr.exia.utils.CharacterException
 import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.utils.isCharacter
 import jdr.exia.model.utils.toBoolean
 import jdr.exia.model.utils.toInt
+import jdr.exia.utils.CharacterException
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.EntityID
@@ -91,7 +91,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         get() = Position(x, y)
         set(value) {
             transaction(DAO.database){
-                x = value.x;
+                x = value.x
                 y = value.y
             }
         }

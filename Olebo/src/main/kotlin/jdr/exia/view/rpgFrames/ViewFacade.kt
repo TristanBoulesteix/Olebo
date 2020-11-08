@@ -19,14 +19,16 @@ object ViewFacade {
         ViewManager.moveToken(x, y)
     }
 
-    fun selectToken(x: Int, y: Int) {
-        ViewManager.selectElement(x, y)
+    fun setSelectedToken(vararg tokens: Element) {
+        SelectPanel.selectedElement = when (tokens.size) {
+            0 -> null
+            1 -> tokens[0]
+            else -> null
+        }
+        MasterFrame.mapPanel.selectedElements = tokens.toMutableList()
     }
 
-    fun setSelectedToken(token: Element?) {
-        SelectPanel.selectedElement = token
-        MasterFrame.mapPanel.selectedElement = token
-    }
+    fun setSelectedToken(token: Element?) = if (token == null) setSelectedToken() else setSelectedToken(token)
 
     fun setMapBackground(imageName: String) { //Sets the MapPanels backGround
         MasterFrame.setMapBackground(imageName)
@@ -40,7 +42,6 @@ object ViewFacade {
         PlayerFrame.repaint()
     }
 
-
     fun turnVisible() { /*this method activates the Player and GM frames to initiate/start back an act	*/
         MasterFrame.isVisible = true
 
@@ -48,14 +49,13 @@ object ViewFacade {
         /*TODO: give master frame and player frame the objects relative to the current act*/
     }
 
-
     fun placeTokensOnMaps(tokens: MutableList<Element>) { //places tokens on both maps at corresponding points
         PlayerFrame.map = tokens
         MasterFrame.updateMap(tokens)
     }
 
-    fun unSelectElement() {
-        MasterFrame.mapPanel.selectedElement = null
+    fun unSelectElements() {
+        MasterFrame.mapPanel.selectedElements = mutableListOf()
         SelectPanel.selectedElement = null
     }
 
