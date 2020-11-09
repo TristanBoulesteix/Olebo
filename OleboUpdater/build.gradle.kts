@@ -22,7 +22,7 @@ dependencies {
 
 val jar by tasks.getting(Jar::class) {
     manifest {
-        attributes["Main-Class"] = "jdr.exia.updater.OleboUpdaterKt"
+        attributes["Main-Class"] = "OleboUpdaterKt"
     }
     from(configurations.compileClasspath.map { configuration ->
         configuration.asFileTree.fold(files().asFileTree) { collection, file ->

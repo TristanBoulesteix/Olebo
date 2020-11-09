@@ -30,9 +30,9 @@ dependencies {
 
 val jar by tasks.getting(Jar::class) {
     manifest {
-        attributes["Main-Class"] = "jdr.exia.OleboKt"
+        attributes["Main-Class"] = "OleboKt"
     }
-    from(configurations.compile.map { configuration ->
+    from(configurations.compileClasspath.map { configuration ->
         configuration.asFileTree.fold(files().asFileTree) { collection, file ->
             if (file.isDirectory) collection else collection.plus(zipTree(file))
         }
