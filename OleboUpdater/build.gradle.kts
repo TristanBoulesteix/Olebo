@@ -18,7 +18,6 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.apache.httpcomponents", "httpclient", "4.5.10")
     implementation("org.json","json", "20190722")
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.4.1")
 }
 
 val jar by tasks.getting(Jar::class) {
