@@ -3,7 +3,7 @@ package view.utils.components
 import model.dao.DAO
 import model.element.Element
 import model.utils.isCharacter
-import jdr.exia.view.utils.*
+import view.utils.*
 import view.utils.event.ClickListener
 import viewModel.pattern.observer.Observable
 import viewModel.pattern.observer.Observer

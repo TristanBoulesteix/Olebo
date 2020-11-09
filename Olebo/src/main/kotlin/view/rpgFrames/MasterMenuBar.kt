@@ -5,7 +5,7 @@ import model.act.Scene
 import model.dao.DAO
 import view.editor.elements.BlueprintDialog
 import view.homeFrame.HomeFrame
-import jdr.exia.view.utils.*
+import view.utils.*
 import view.utils.components.FileMenu
 import viewModel.ViewManager
 import org.jetbrains.exposed.sql.transactions.transaction
