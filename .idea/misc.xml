@@ -5,4 +5,5 @@
     <file type="web" url="file://$PROJECT_DIR$/Olebo" />
     <file type="web" url="file://$PROJECT_DIR$/OleboUpdater" />
   </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>

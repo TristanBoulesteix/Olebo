@@ -3,7 +3,7 @@ import view.homeFrame.HomeFrame
 import javax.swing.SwingUtilities
 import javax.swing.UIManager
 
-const val VERSION = "1.2.0-BETA"
+const val VERSION = "1.3.0-BETA"
 
 const val DEBUG = false
 
