@@ -15,7 +15,8 @@ import org.jetbrains.exposed.sql.transactions.transaction
 enum class Type(val type: TypeElement) {
     OBJECT(transaction(DAO.database) { TypeElement[1] }),
     PJ(transaction(DAO.database) { TypeElement[2] }),
-    PNJ(transaction(DAO.database) { TypeElement[3] });
+    PNJ(transaction(DAO.database) { TypeElement[3] }),
+    BASIC(transaction(DAO.database) { TypeElement[4] });
 
     /**
      * This class is the link between the enum and the databse
@@ -31,6 +32,11 @@ enum class Type(val type: TypeElement) {
          * @see model.element.Type
          */
         val typeElement
-            get() = if (this.name == "Object") OBJECT else if (this.name == "PJ") PJ else PNJ
+            get() = when(this.name) {
+                "Basic" -> BASIC
+                "PJ" -> PJ
+                "PNJ" -> PNJ
+                else -> OBJECT
+            }
     }
 }

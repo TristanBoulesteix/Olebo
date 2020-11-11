@@ -33,10 +33,11 @@ object DAO {
         TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
 
         transaction {
-            SchemaUtils.createMissingTablesAndColumns(ActTable, SceneTable, BlueprintTable, TypeTable, InstanceTable, SizeTable, SettingsTable)
-            TypeTable.initialize()
-            SizeTable.initialize()
-            SettingsTable.initialize()
+            SchemaUtils.createMissingTablesAndColumns(*tables)
+            tables.forEach {
+                if(it is Initializable)
+                    it.initialize()
+            }
         }
     }
 
