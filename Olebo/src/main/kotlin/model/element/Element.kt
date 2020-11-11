@@ -41,7 +41,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     }
 
     // Value stored into the database
-    private var blueprint by Blueprint referencedOn InstanceTable.idBlueprint
+    private val blueprint by Blueprint referencedOn InstanceTable.idBlueprint
     var scene by Scene referencedOn InstanceTable.idScene
 
     // Variables stored into the database
