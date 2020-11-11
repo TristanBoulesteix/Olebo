@@ -18,7 +18,7 @@ import javax.swing.event.DocumentListener
 
 /**
  * This panel is intended to contain the entire list of items that the Game master can use (and it does)
- * */
+ */
 class ItemPanel : JPanel() {
     companion object {
         private val dimensionElement = Dimension(Int.MAX_VALUE, 40)
@@ -97,8 +97,19 @@ class ItemPanel : JPanel() {
                 this.add(CustomTitlePanel("PNJ").apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.PNJ && (searchConstraint.isEmpty() || it.name.toString().contains(
+                    it.type.typeElement == Type.PNJ && (searchConstraint.isEmpty() || it.name.contains(
                         searchConstraint.toLowerCase()
+                    ))
+                }.forElse {
+                    this.add(CustomPanel(it))
+                } ?: this.add(EmptyField())
+
+                // Basic elements list
+                this.add(CustomTitlePanel("Éléments de base").apply { this.isEnabled = false })
+
+                ViewManager.items.filter {
+                    it.type.typeElement == Type.BASIC && (searchConstraint.isEmpty() || it.name.contains(
+                            searchConstraint.toLowerCase()
                     ))
                 }.forElse {
                     this.add(CustomPanel(it))
@@ -140,9 +151,12 @@ class ItemPanel : JPanel() {
 
             val label = JLabel().apply {
                 this.size = Dimension(40, 40)
-                val icon =
-                    ImageIO.read(File(element.sprite)).getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH)
-                this.icon = ImageIcon(icon)
+
+                val imageIo = if(element.type.typeElement == Type.BASIC)
+                    ImageIO.read(ItemPanel::class.java.classLoader.getResourceAsStream("sprites/${element.sprite}"))
+                else ImageIO.read(File(element.sprite))
+
+                this.icon = ImageIcon(imageIo.getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH))
             }
 
             this.add(label)
