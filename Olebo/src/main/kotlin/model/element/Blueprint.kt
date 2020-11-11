@@ -14,7 +14,8 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
         private val basicName = mapOf(
                 "@pointerTransparent" to "Pointeur transparent",
                 "@pointerBlue" to "Pointeur bleu",
-                "@pointerWhite" to "Pointeur blanc"
+                "@pointerWhite" to "Pointeur blanc",
+                "@pointerGreen" to "Pointeur vert"
         )
     }
 

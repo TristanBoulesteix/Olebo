@@ -37,6 +37,7 @@ object BlueprintTable : IntIdTable(), Initializable {
     val idType = reference("id_type", TypeTable)
 
     override fun initialize() {
+        // Pointers
         if (BlueprintTable.select((idType eq 4) and (name eq "@pointerTransparent") and (sprite eq "pointer_transparent.png")).count() <= 0) {
             BlueprintTable.insert {
                 it[name] = "@pointerTransparent"
@@ -57,6 +58,14 @@ object BlueprintTable : IntIdTable(), Initializable {
             BlueprintTable.insert {
                 it[name] = "@pointerWhite"
                 it[sprite] = "pointer_white.png"
+                it[idType] = EntityID(4, TypeTable)
+            }
+        }
+
+        if (BlueprintTable.select((idType eq 4) and (name eq "@pointerGreen") and (sprite eq "pointer_green.png")).count() <= 0) {
+            BlueprintTable.insert {
+                it[name] = "@pointerGreen"
+                it[sprite] = "pointer_green.png"
                 it[idType] = EntityID(4, TypeTable)
             }
         }
