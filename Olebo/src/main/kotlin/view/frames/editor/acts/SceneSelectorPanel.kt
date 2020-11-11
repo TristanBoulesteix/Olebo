@@ -1,4 +1,4 @@
-package view.editor.acts
+package view.frames.editor.acts
 
 import model.utils.getIcon
 import view.utils.components.ItemPanel

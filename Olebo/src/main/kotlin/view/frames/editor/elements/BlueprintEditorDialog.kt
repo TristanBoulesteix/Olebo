@@ -1,4 +1,4 @@
-package view.editor.elements
+package view.frames.editor.elements
 
 import viewModel.BlueprintData
 import view.utils.IntegerFilter

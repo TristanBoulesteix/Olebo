@@ -1,4 +1,4 @@
-package view.editor.elements
+package view.frames.editor.elements
 
 import viewModel.BlueprintManager
 import viewModel.pattern.observer.Action

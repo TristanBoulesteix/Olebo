@@ -1,4 +1,4 @@
-package view.homeFrame
+package view.frames.home
 
 import VERSION
 import view.utils.BORDER_BUTTONS

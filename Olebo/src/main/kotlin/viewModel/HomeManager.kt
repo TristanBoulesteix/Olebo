@@ -5,8 +5,8 @@ import model.dao.DAO
 import viewModel.pattern.observer.Action
 import viewModel.pattern.observer.Observable
 import viewModel.pattern.observer.Observer
-import view.editor.acts.ActEditorDialog
-import view.editor.elements.BlueprintDialog
+import view.frames.editor.acts.ActEditorDialog
+import view.frames.editor.elements.BlueprintDialog
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object HomeManager : Observable {

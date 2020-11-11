@@ -1,4 +1,4 @@
-package view.rpgFrames
+package view.frames.rpg
 
 import model.dao.DAO
 import model.element.Blueprint

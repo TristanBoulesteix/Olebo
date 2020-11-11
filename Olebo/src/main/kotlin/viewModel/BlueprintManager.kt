@@ -4,7 +4,7 @@ import model.dao.DAO
 import model.element.Blueprint
 import model.element.Type
 import model.utils.saveImg
-import view.editor.elements.BlueprintEditorDialog
+import view.frames.editor.elements.BlueprintEditorDialog
 import view.utils.showPopup
 import viewModel.pattern.observer.Action
 import viewModel.pattern.observer.Observable

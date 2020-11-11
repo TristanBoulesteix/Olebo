@@ -7,12 +7,12 @@ import model.utils.saveImg
 import viewModel.pattern.observer.Action
 import viewModel.pattern.observer.Observable
 import viewModel.pattern.observer.Observer
-import view.editor.acts.SceneEditorDialog
+import view.frames.editor.acts.SceneEditorDialog
 import view.utils.showPopup
 import org.jetbrains.exposed.sql.transactions.transaction
 
 /**
- * Manager to create an act (uses all classes in jdr.exia.view.editor)
+ * Manager to create an act (uses all classes in jdr.exia.view.frames.editor)
  */
 class ActCreatorManager : Observable {
     val tempScenes = mutableListOf<SceneData>()

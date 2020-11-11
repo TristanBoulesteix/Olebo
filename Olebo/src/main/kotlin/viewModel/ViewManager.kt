@@ -6,9 +6,9 @@ import model.dao.DAO
 import model.element.Blueprint
 import model.element.Element
 import model.element.Position
-import view.rpgFrames.MasterFrame
-import view.rpgFrames.MasterMenuBar
-import view.rpgFrames.ViewFacade
+import view.frames.rpg.MasterFrame
+import view.frames.rpg.MasterMenuBar
+import view.frames.rpg.ViewFacade
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
 

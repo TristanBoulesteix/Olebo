@@ -1,5 +1,5 @@
 import utils.checkForUpdate
-import view.homeFrame.HomeFrame
+import view.frames.home.HomeFrame
 import javax.swing.SwingUtilities
 import javax.swing.UIManager
 
