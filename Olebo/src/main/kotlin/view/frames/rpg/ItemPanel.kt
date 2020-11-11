@@ -160,7 +160,7 @@ class ItemPanel : JPanel() {
             }
 
             this.add(label)
-            this.add(JTextField(element.name).apply {
+            this.add(JTextField(element.realName).apply {
                 this.isEnabled = false
                 this.disabledTextColor = Color.BLACK
                 this.isFocusable = false

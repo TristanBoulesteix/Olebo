@@ -10,7 +10,13 @@ import java.io.File
 
 @Suppress("PropertyName")
 class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
-    companion object : EntityClass<Int, Blueprint>(BlueprintTable)
+    companion object : EntityClass<Int, Blueprint>(BlueprintTable) {
+        private val basicName = mapOf(
+                "@pointerTransparent" to "Pointeur transparent",
+                "@pointerBlue" to "Pointeur bleu",
+                "@pointerWhite" to "Pointeur blanc"
+        )
+    }
 
     var name by BlueprintTable.name
     var sprite by BlueprintTable.sprite
@@ -27,6 +33,9 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
         get() = if (type.typeElement == Type.PNJ || type.typeElement == Type.PJ) maxMana!! else throw Exception("Cet élément n'est pas un personnage !")
         set(value) = if (type.typeElement == Type.PNJ || type.typeElement == Type.PJ) maxMana = value
         else throw CharacterException(this::class, "MP")
+
+    val realName
+        get() = if(type.typeElement == Type.BASIC) basicName[name] ?: name else name
 
     override fun delete() {
         File(sprite).delete()
