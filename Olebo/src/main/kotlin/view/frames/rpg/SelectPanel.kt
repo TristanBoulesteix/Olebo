@@ -26,8 +26,6 @@ object SelectPanel : JPanel() {
             if (selectedElements.isNotEmpty()) {
                 if (selectedElements.size == 1) {
                     sizeCombo.selectedItem = selectedElements[0].size.name
-                } else {
-
                 }
             } else {
                 sizeCombo.selectedItem = null

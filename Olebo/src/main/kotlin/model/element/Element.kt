@@ -13,6 +13,7 @@ import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
+import javax.imageio.ImageIO
 import javax.swing.ImageIcon
 
 class Element(id: EntityID<Int>) : Entity<Int>(id) {
@@ -27,7 +28,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         fun createElement(b: Blueprint): Element {
             return transaction(DAO.database) {
                 val id = InstanceTable.insertAndGetId {
-                    if (b.type.typeElement != Type.OBJECT) {
+                    if (b.isCharacter()) {
                         it[currentHP] = b.HP
                         it[currentMP] = b.MP
                     }
@@ -54,9 +55,14 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
     // Value from the Blueprint
     val sprite
-        get() = transaction(DAO.database) { ImageIcon(blueprint.sprite) }
+        get() = transaction(DAO.database) {
+            if (blueprint.type.typeElement == Type.BASIC)
+                ImageIcon(ImageIO.read(Element::class.java.classLoader.getResourceAsStream("sprites/${blueprint.sprite}")))
+            else
+                ImageIcon(blueprint.sprite)
+        }
     val name
-        get() = transaction(DAO.database) { blueprint.name }
+        get() = transaction(DAO.database) { blueprint.realName }
     val maxHP
         get() = transaction(DAO.database) { blueprint.HP }
     val maxMana
@@ -68,10 +74,10 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     val hitBox
         get() = transaction(DAO.database) {
             Rectangle(
-                x,
-                y,
-                sizeElement.absoluteSizeValue,
-                sizeElement.absoluteSizeValue
+                    x,
+                    y,
+                    sizeElement.absoluteSizeValue,
+                    sizeElement.absoluteSizeValue
             )
         }
 
@@ -90,7 +96,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     var position
         get() = Position(x, y)
         set(value) {
-            transaction(DAO.database){
+            transaction(DAO.database) {
                 x = value.x
                 y = value.y
             }

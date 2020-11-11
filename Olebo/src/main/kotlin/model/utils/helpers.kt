@@ -1,5 +1,6 @@
 package model.utils
 
+import model.element.Blueprint
 import model.element.Element
 import model.element.Type
 
@@ -30,5 +31,14 @@ fun String?.toBoolean(): Boolean = this?.toLowerCase() == "true"
  * @return true if it's a character
  */
 fun Element?.isCharacter(): Boolean {
+    return this != null && (this.type.typeElement == Type.PNJ || this.type.typeElement == Type.PJ)
+}
+
+/**
+ * Check if blueprint is a PNJ or a PJ
+ *
+ * @return true if it's a character
+ */
+fun Blueprint?.isCharacter(): Boolean {
     return this != null && (this.type.typeElement == Type.PNJ || this.type.typeElement == Type.PJ)
 }
