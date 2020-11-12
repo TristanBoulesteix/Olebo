@@ -8,10 +8,11 @@ import java.awt.event.MouseListener
 import java.awt.event.MouseMotionAdapter
 import javax.swing.JPanel
 import javax.swing.SwingUtilities
+import kotlin.math.abs
 
-
-// This panel contains the map and all the objects placed within it
-
+/**
+ * This panel contains the map and all the objects placed within it
+ */
 class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseListener {
     var backGroundImage: Image? = null      //The background... Why are you reading this? Stop!! I said stop!!! You're still doing it, even when you had to scroll sideways... Ok i'm giving up, bye
     var tokens = mutableListOf<Element>() //These are all the tokens placed on  the current map
@@ -27,15 +28,21 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
                 private var start = Point()
 
                 override fun mouseMoved(me: MouseEvent) {
-                        start = me.point
-                        this@MapPanel.repaint()
+                    start = me.point
+                    this@MapPanel.repaint()
                 }
 
                 override fun mouseDragged(me: MouseEvent) {
                     if (SwingUtilities.isLeftMouseButton(me)) {
                         val end = me.point
-                        selectedArea = Rectangle(start,
-                                Dimension(end.x - start.x, end.y - start.y))
+
+                        selectedArea = Rectangle(
+                                start.x.coerceAtMost(end.x),
+                                start.y.coerceAtMost(end.y),
+                                abs(start.x - end.x),
+                                abs(start.y - end.y)
+                        )
+
                         this@MapPanel.repaint()
                     }
                 }
