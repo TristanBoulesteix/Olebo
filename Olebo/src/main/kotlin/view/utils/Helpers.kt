@@ -26,7 +26,7 @@ fun showConfirmMessage(parent: JComponent? = null, message: String, title: Strin
 
     val cancel = JButton("Annuler").apply {
         this.addActionListener {
-            SwingUtilities.getWindowAncestor(this).isVisible = false
+            SwingUtilities.getWindowAncestor(this)?.isVisible = false
         }
     }
 
