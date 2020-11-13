@@ -7,6 +7,7 @@ import view.utils.components.PlaceholderTextField
 import view.utils.event.ClickListener
 import viewModel.ViewManager
 import org.jetbrains.exposed.sql.transactions.transaction
+import view.utils.forElse
 import java.awt.*
 import java.awt.event.MouseEvent
 import java.io.File
@@ -117,8 +118,6 @@ class ItemPanel : JPanel() {
             }
         }
     }
-
-    private fun <T> List<T>.forElse(block: (T) -> Unit) = if (isEmpty()) null else forEach(block)
 
     /**
      * Name of the component
