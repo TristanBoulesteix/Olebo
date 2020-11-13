@@ -20,7 +20,7 @@ fun showConfirmMessage(parent: JComponent? = null, message: String, title: Strin
         this.isEnabled = false
         this.addActionListener {
             okAction()
-            SwingUtilities.getWindowAncestor(this).isVisible = false
+            SwingUtilities.getWindowAncestor(this)?.isVisible = false
         }
     }
 
