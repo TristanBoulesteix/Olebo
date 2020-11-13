@@ -10,6 +10,7 @@ import viewModel.pattern.observer.Observer
 import view.frames.editor.acts.SceneEditorDialog
 import view.utils.showPopup
 import org.jetbrains.exposed.sql.transactions.transaction
+import utils.forElse
 
 /**
  * Manager to create an act (uses all classes in jdr.exia.view.frames.editor)
@@ -148,8 +149,6 @@ fun MutableList<SceneData>.getArrayOfPairs(): Array<Pair<String, String>> {
         Pair(i.toString(), it.name)
     }.toTypedArray()
 }
-
-private fun <T> List<T>.forElse(block: (T) -> Unit) = if (isEmpty()) null else forEach(block)
 
 /**
  * All informations from a scene stored in a class

@@ -7,7 +7,7 @@ import view.utils.components.PlaceholderTextField
 import view.utils.event.ClickListener
 import viewModel.ViewManager
 import org.jetbrains.exposed.sql.transactions.transaction
-import view.utils.forElse
+import utils.forElse
 import java.awt.*
 import java.awt.event.MouseEvent
 import java.io.File
