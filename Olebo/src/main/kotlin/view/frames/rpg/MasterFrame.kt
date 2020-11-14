@@ -82,26 +82,18 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
     }
 
     // KeyListener section, to add Key bindings
-    override fun keyTyped(keyEvent: KeyEvent) {
-    }
+    override fun keyTyped(keyEvent: KeyEvent) = Unit
 
     override fun keyPressed(keyEvent: KeyEvent) {
         when (keyEvent.keyCode) {
-            KeyEvent.VK_UP -> {
-                ViewManager.selectUp()
-            }
-            KeyEvent.VK_DOWN -> {
-                ViewManager.selectDown()
-            }
-            KeyEvent.VK_RIGHT -> {
-
-            }
+            KeyEvent.VK_UP -> ViewManager.selectUp()
+            KeyEvent.VK_DOWN -> ViewManager.selectDown()
+            KeyEvent.VK_RIGHT -> ViewManager.rotateRight()
+            KeyEvent.VK_LEFT -> ViewManager.rotateLeft()
         }
     }
 
-    override fun keyReleased(keyEvent: KeyEvent) {
-
-    }
+    override fun keyReleased(keyEvent: KeyEvent) = Unit
 
     override fun updateMap(tokens: MutableList<Element>) {
         mapPanel.updateTokens(tokens)

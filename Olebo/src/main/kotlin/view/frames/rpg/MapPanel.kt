@@ -1,6 +1,7 @@
 package view.frames.rpg
 
 import model.element.Element
+import model.utils.emptyElementsList
 import viewModel.ViewManager
 import java.awt.*
 import java.awt.event.MouseEvent
@@ -15,8 +16,8 @@ import kotlin.math.abs
  */
 class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseListener {
     var backGroundImage: Image? = null      //The background... Why are you reading this? Stop!! I said stop!!! You're still doing it, even when you had to scroll sideways... Ok i'm giving up, bye
-    var tokens = mutableListOf<Element>() //These are all the tokens placed on  the current map
-    var selectedElements = mutableListOf<Element>()
+    var tokens = emptyElementsList() //These are all the tokens placed on  the current map
+    var selectedElements = emptyElementsList()
 
     var selectedArea: Rectangle? = null
 
@@ -150,13 +151,6 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
         selectedArea = null
     }
 
-    fun drawToken(token: Element, g: Graphics) { //draws a token with the adequate orientation TODO: implement rotation
-        when (token.orientation) {
-            0 -> drawTokenUp(token, g)
-        }
-
-    }
-
     fun getRelativeRectangleOfToken(token: Element) = Rectangle(
             relativeX(token.position.x),
             relativeY(token.position.y),
@@ -173,24 +167,8 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
                 null)
     }
 
-    private fun drawTokenRight(token: Element, g: Graphics) {
-        val g2d = g as Graphics2D
-        g2d.rotate(Math.toRadians(90.0))
-        val printX = token.y
-        val printY = 900 - token.x
-        g.drawImage(token.sprite.image,
-                0,
-                0,
-                relativeX(token.hitBox.width),
-                relativeY(token.hitBox.height),
-                null)
-        g2d.rotate(Math.toRadians(270.0))
-
-    }
-
-
     // Unused mouse methods
-    override fun mouseExited(p0: MouseEvent) {}
-    override fun mouseClicked(p0: MouseEvent) {}
-    override fun mouseEntered(p0: MouseEvent) {}
+    override fun mouseExited(p0: MouseEvent) = Unit
+    override fun mouseClicked(p0: MouseEvent) = Unit
+    override fun mouseEntered(p0: MouseEvent) = Unit
 }

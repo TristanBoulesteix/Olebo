@@ -24,7 +24,7 @@ object ViewFacade {
         MasterFrame.mapPanel.selectedElements = tokens.toMutableList()
     }
 
-    fun setSelectedToken(token: Element?) = if (token == null) setSelectedToken() else ViewFacade.setSelectedToken(token)
+    fun setSelectedToken(token: Element?) = if (token == null) setSelectedToken() else setSelectedToken(token)
 
     fun setMapBackground(imageName: String) { //Sets the MapPanels backGround
         MasterFrame.setMapBackground(imageName)

@@ -3,9 +3,11 @@ package viewModel
 import model.act.Act
 import model.act.Scene
 import model.dao.DAO
-import model.element.Blueprint
-import model.element.Element
-import model.element.Position
+import model.element.*
+import model.utils.Elements
+import model.utils.doIfContainsSingle
+import model.utils.emptyElementsList
+import model.utils.toElements
 import view.frames.rpg.MasterFrame
 import view.frames.rpg.MasterMenuBar
 import view.frames.rpg.ViewFacade
@@ -19,7 +21,7 @@ object ViewManager {
     private var activeAct: Act? = null
     private var activeScene: Scene? = null
 
-    private var selectedElement: Element? = null
+    private var selectedElements = emptyElementsList()
 
     /**
      * Get the list of all blueprints
@@ -35,7 +37,7 @@ object ViewManager {
     }
 
     fun removeToken(token: Element) { //removes given token from MutableList
-        selectedElement = null
+        selectedElements = emptyElementsList()
         ViewFacade.setSelectedToken(null)
         activeScene?.elements?.remove(token)
         transaction(DAO.database) { token.delete() }
@@ -63,16 +65,16 @@ object ViewManager {
     }
 
     fun moveToken(x: Int, y: Int) { //Changes a token's position without dropping it (a moved token stays selected) , intended for small steps
-        if (selectedElement != null) {
-            val newX = (x - (selectedElement!!.hitBox.width / 2))
-            val newY = (y - (selectedElement!!.hitBox.height / 2))
-            selectedElement!!.position = Position(newX, newY)
+        if (selectedElements.isNotEmpty() && selectedElements.size == 1) {
+            val newX = (x - (selectedElements[0].hitBox.width / 2))
+            val newY = (y - (selectedElements[0].hitBox.height / 2))
+            selectedElements[0].position = Position(newX, newY)
             repaint()
         }
     }
 
     private fun unSelectElements() {
-        selectedElement = null
+        selectedElements = emptyElementsList()
         ViewFacade.unSelectElements()
         repaint()
     }
@@ -97,9 +99,9 @@ object ViewManager {
     }
 
     fun selectElement(x: Int, y: Int) { //cheks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
-        selectedElement = getTokenFromXY(x, y)
-        if (selectedElement != null) {
-            ViewFacade.setSelectedToken(selectedElement!!)
+        selectedElements = getTokenFromXY(x, y)?.toElements() ?: emptyElementsList()
+        if (selectedElements.isNotEmpty()) {
+            ViewFacade.setSelectedToken(selectedElements[0])
             repaint()
         } else {
             unSelectElements()
@@ -107,7 +109,7 @@ object ViewManager {
     }
 
     fun selectElements(rec: Rectangle) {
-        val selectedElements = mutableListOf<Element>()
+        val selectedElements = emptyElementsList()
 
         activeScene!!.elements.forEach {
             if (rec.contains(MasterFrame.mapPanel.getRelativeRectangleOfToken(it))) {
@@ -121,27 +123,44 @@ object ViewManager {
         } else {
             unSelectElements()
         }
+
+        this.selectedElements = selectedElements
     }
 
-    fun selectUp() { //TODO: Bug, mais pas prioritaire
-        if (selectedElement == null && activeScene!!.elements.size > 0) {
-            selectedElement = activeScene!!.elements[0]
-        } else if (activeScene!!.elements.getOrNull(activeScene!!.elements.indexOf(selectedElement) + 1) != null) {
-            selectedElement = activeScene!!.elements[activeScene!!.elements.indexOf(selectedElement) + 1]
+    fun selectUp() = with(activeScene!!) {
+        selectedElements = if (selectedElements.isEmpty() && this.elements.size > 0) {
+            this.elements[0].toElements()
+        } else {
+            fun Int.plusOne(list: Elements) = if (this == list.size - 1) 0 else this + 1
+
+            selectedElements.doIfContainsSingle { element ->
+                if (this.elements.getOrNull(this.elements.indexOfFirst { it.id == element.id }.plusOne(this.elements)) != null) {
+                    this.elements[this.elements.indexOfFirst { it.id == element.id }.plusOne(this.elements)].toElements()
+                } else emptyElementsList()
+            } ?: emptyElementsList()
         }
-        ViewFacade.setSelectedToken(selectedElement)
+
+        ViewFacade.setSelectedToken(*selectedElements.toTypedArray())
         repaint()
     }
 
-    fun selectDown() { //TODO: Bug
-        if (selectedElement == null && activeScene!!.elements.size > 0) {
-            selectedElement = activeScene!!.elements[0]
-        } else if (activeScene!!.elements.getOrNull(activeScene!!.elements.indexOf(selectedElement) - 1) != null) {
-            println("je fonctionne")
-            selectedElement = activeScene!!.elements[activeScene!!.elements.indexOf(selectedElement) - 1]
+    fun selectDown() {
+        with(activeScene!!) {
+            selectedElements = if (selectedElements.isEmpty() && this.elements.size > 0) {
+                this.elements[0].toElements()
+            } else {
+                fun Int.minusOne(list: Elements) = if (this == 0) list.size - 1 else this - 1
+
+                selectedElements.doIfContainsSingle { element ->
+                    if (this.elements.getOrNull(this.elements.indexOfFirst { it.id == element.id }.minusOne(this.elements)) != null) {
+                        activeScene!!.elements[this.elements.indexOfFirst { it.id == element.id }.minusOne(this.elements)].toElements()
+                    } else emptyElementsList()
+                } ?: emptyElementsList()
+            }
+
+            ViewFacade.setSelectedToken(*selectedElements.toTypedArray())
+            repaint()
         }
-        ViewFacade.setSelectedToken(selectedElement)
-        repaint()
     }
 
     private fun updateTokens() { //Updates the tokens on the maps by repainting everything
@@ -152,4 +171,12 @@ object ViewManager {
         token.isVisible = visibility ?: !token.isVisible
         repaint()
     }
+
+    fun rotateRight() = selectedElements.forEach {
+        it.rotateRight()
+    }.also { repaint() }
+
+    fun rotateLeft() = selectedElements.forEach {
+        it.rotateLeft()
+    }.also { repaint() }
 }

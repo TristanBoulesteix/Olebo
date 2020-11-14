@@ -3,6 +3,10 @@ package model.utils
 import model.element.Blueprint
 import model.element.Element
 import model.element.Type
+import java.awt.Graphics
+import java.awt.geom.AffineTransform
+import java.awt.image.BufferedImage
+import javax.swing.ImageIcon
 
 /**
  * Convert an Int to the corresponding boolean
@@ -41,4 +45,23 @@ fun Element?.isCharacter(): Boolean {
  */
 fun Blueprint?.isCharacter(): Boolean {
     return this != null && (this.type.typeElement == Type.PNJ || this.type.typeElement == Type.PJ)
+}
+
+fun ImageIcon.rotate(degs: Double) = with(BufferedImage(this.iconWidth, this.iconHeight, BufferedImage.TYPE_INT_ARGB)) {
+    fun ImageIcon.toBufferedImage() = BufferedImage(
+            this.iconWidth,
+            this.iconHeight,
+            BufferedImage.TYPE_INT_ARGB).apply {
+        val g: Graphics = createGraphics()
+        paintIcon(null, g, 0, 0)
+        g.dispose()
+    }
+
+    createGraphics().apply {
+        val transform = AffineTransform()
+        transform.rotate(degs / 180 * Math.PI, (iconWidth / 2).toDouble(), (iconHeight / 2).toDouble())
+        drawRenderedImage(toBufferedImage(), transform)
+        dispose()
+    }
+    ImageIcon(this)
 }
