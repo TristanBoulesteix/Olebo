@@ -2,7 +2,6 @@ package view.utils
 
 import java.awt.Color
 import java.awt.Dimension
-import java.awt.Toolkit
 import java.awt.event.KeyEvent
 import javax.swing.BorderFactory
 import javax.swing.border.Border
@@ -17,10 +16,9 @@ val BACKGROUND_COLOR_ORANGE: Color = Color.ORANGE
 val BACKGROUND_COLOR_SELECT_PANEL: Color = Color.LIGHT_GRAY
 
 // Borders
-const val DEFAULT_BORDER_SIZE = 2
 val MARGIN_LEFT: Border = BorderFactory.createEmptyBorder(0, 10, 0, 0)
 val BORDER_BUTTONS: Border = BorderFactory.createEmptyBorder(15, 15, 15, 15)
 
 // Keys
-val CTRL = Toolkit.getDefaultToolkit().menuShortcutKeyMask
-val CTRLSHIFT = CTRL or KeyEvent.SHIFT_DOWN_MASK
+const val CTRL = KeyEvent.CTRL_DOWN_MASK
+const val CTRLSHIFT = CTRL or KeyEvent.SHIFT_DOWN_MASK

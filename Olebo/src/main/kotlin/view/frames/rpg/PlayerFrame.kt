@@ -1,6 +1,7 @@
-package view.rpgFrames
+package view.frames.rpg
 
 import model.element.Element
+import model.utils.emptyElementsList
 import view.utils.DIMENSION_FRAME
 import java.awt.GraphicsEnvironment
 import java.awt.event.KeyEvent
@@ -30,7 +31,7 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
                 field = value
             }
 
-        var map = mutableListOf<Element>()
+        var map = emptyElementsList()
             set(value) {
                 playerFrameInstance?.updateMap(value)
                 field = value

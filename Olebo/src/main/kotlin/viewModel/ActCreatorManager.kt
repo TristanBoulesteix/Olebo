@@ -7,12 +7,13 @@ import model.utils.saveImg
 import viewModel.pattern.observer.Action
 import viewModel.pattern.observer.Observable
 import viewModel.pattern.observer.Observer
-import view.editor.acts.SceneEditorDialog
+import view.frames.editor.acts.SceneEditorDialog
 import view.utils.showPopup
 import org.jetbrains.exposed.sql.transactions.transaction
+import utils.forElse
 
 /**
- * Manager to create an act (uses all classes in jdr.exia.view.editor)
+ * Manager to create an act (uses all classes in jdr.exia.view.frames.editor)
  */
 class ActCreatorManager : Observable {
     val tempScenes = mutableListOf<SceneData>()
@@ -148,8 +149,6 @@ fun MutableList<SceneData>.getArrayOfPairs(): Array<Pair<String, String>> {
         Pair(i.toString(), it.name)
     }.toTypedArray()
 }
-
-private fun <T> List<T>.forElse(block: (T) -> Unit) = if (isEmpty()) null else forEach(block)
 
 /**
  * All informations from a scene stored in a class

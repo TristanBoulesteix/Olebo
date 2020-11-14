@@ -1,4 +1,4 @@
-package view.rpgFrames
+package view.frames.rpg
 
 import model.element.Element
 import view.utils.DIMENSION_FRAME
@@ -20,8 +20,9 @@ import javax.swing.JPanel
  */
 object MasterFrame : JFrame(), KeyListener, GameFrame {
     private var masterFramePanel = JPanel() // Main JPanel that contains other panels
+
     val mapPanel = MapPanel(true) //this frame's mapPanel
-    var selectPanel = SelectPanel // Will contain all info on selected Item
+
     var itemPanel = ItemPanel() // Will contain list of available items
 
     override fun setMapBackground(imageName: String) { //set the background image for the mappanels
@@ -48,7 +49,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         itemPanel.setSize(this.width - 1280, this.height)
         itemPanel.background = Color.yellow
 
-        selectPanel.setSize(mapPanel.width, (this.height - mapPanel.height))
+        SelectPanel.setSize(mapPanel.width, (this.height - mapPanel.height))
 
         val mapConstraints = GridBagConstraints()
         val itemConstraints = GridBagConstraints()
@@ -76,32 +77,23 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
 
         masterFramePanel.add(mapPanel, mapConstraints)
         masterFramePanel.add(itemPanel, itemConstraints)
-        masterFramePanel.add(selectPanel, selectConstraints)
+        masterFramePanel.add(SelectPanel, selectConstraints)
         jMenuBar = MasterMenuBar
     }
 
     // KeyListener section, to add Key bindings
-    override fun keyTyped(keyEvent: KeyEvent) {
-    }
+    override fun keyTyped(keyEvent: KeyEvent) = Unit
 
     override fun keyPressed(keyEvent: KeyEvent) {
         when (keyEvent.keyCode) {
-/*            KeyEvent.VK_ESCAPE -> { //remove after testing is complete
-                dispose()
-                exitProcess(0)
-            }*/
-            KeyEvent.VK_UP -> {
-                ViewManager.selectUp()
-            }
-            KeyEvent.VK_DOWN -> {
-                ViewManager.selectDown()
-            }
+            KeyEvent.VK_UP -> ViewManager.selectUp()
+            KeyEvent.VK_DOWN -> ViewManager.selectDown()
+            KeyEvent.VK_RIGHT -> ViewManager.rotateRight()
+            KeyEvent.VK_LEFT -> ViewManager.rotateLeft()
         }
     }
 
-    override fun keyReleased(keyEvent: KeyEvent) {
-
-    }
+    override fun keyReleased(keyEvent: KeyEvent) = Unit
 
     override fun updateMap(tokens: MutableList<Element>) {
         mapPanel.updateTokens(tokens)

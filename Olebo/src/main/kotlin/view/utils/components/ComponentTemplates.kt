@@ -4,6 +4,7 @@ import model.dao.DAO
 import model.element.Element
 import model.utils.isCharacter
 import org.jetbrains.exposed.sql.transactions.transaction
+import utils.forElse
 import view.utils.*
 import view.utils.event.ClickListener
 import viewModel.pattern.observer.Observable
@@ -96,7 +97,7 @@ abstract class SelectorPanel : JPanel() {
             this.border = BorderFactory.createLineBorder(Color.BLACK)
             this.layout = BoxLayout(this, BoxLayout.Y_AXIS)
 
-            pairs.forElse {
+            pairs.toList().forElse {
                 this.add(builder(it.first.toInt(), it.second))
             } ?: this.add(JPanel().apply {
                 this.layout = GridBagLayout()
@@ -127,8 +128,6 @@ abstract class SelectorPanel : JPanel() {
         this.revalidate()
         this.repaint()
     }
-
-    private fun <T> Array<T>.forElse(block: (T) -> Unit) = if (isEmpty()) null else forEach(block)
 }
 
 /**

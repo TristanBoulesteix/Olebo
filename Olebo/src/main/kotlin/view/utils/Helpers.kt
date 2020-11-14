@@ -20,13 +20,13 @@ fun showConfirmMessage(parent: JComponent? = null, message: String, title: Strin
         this.isEnabled = false
         this.addActionListener {
             okAction()
-            SwingUtilities.getWindowAncestor(this).isVisible = false
+            SwingUtilities.getWindowAncestor(this)?.isVisible = false
         }
     }
 
     val cancel = JButton("Annuler").apply {
         this.addActionListener {
-            SwingUtilities.getWindowAncestor(this).isVisible = false
+            SwingUtilities.getWindowAncestor(this)?.isVisible = false
         }
     }
 
@@ -53,5 +53,3 @@ fun <T : JComponent> T.applyAndAppendTo(parent: JComponent, constraints: GridBag
     } ?: parent.add(this)
     return this
 }
-
-fun <T> Collection<T>.forElse(block: (T) -> Unit) = if (isEmpty()) null else forEach(block)

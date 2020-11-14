@@ -1,4 +1,4 @@
-package view.homeFrame
+package view.frames.home
 
 import viewModel.HomeManager
 import model.dao.DAO

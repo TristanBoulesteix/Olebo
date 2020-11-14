@@ -1,4 +1,4 @@
-package view.editor.acts
+package view.frames.editor.acts
 
 import viewModel.SceneData
 import view.utils.showPopup

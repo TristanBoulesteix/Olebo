@@ -1,15 +1,15 @@
-package view.rpgFrames
+package view.frames.rpg
 
 import model.act.Act
 import model.act.Scene
 import model.dao.DAO
-import view.editor.elements.BlueprintDialog
-import view.homeFrame.HomeFrame
+import view.frames.editor.elements.BlueprintDialog
+import view.frames.home.HomeFrame
 import view.utils.*
 import view.utils.components.FileMenu
 import viewModel.ViewManager
 import org.jetbrains.exposed.sql.transactions.transaction
-import view.utils.*
+import utils.forElse
 import java.awt.event.KeyEvent
 import javax.swing.*
 
@@ -47,6 +47,7 @@ object MasterMenuBar : JMenuBar() {
                         else PlayerFrame.hide()
                     }
                 }
+                this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_O, CTRL)
             }
 
             this.addSeparator()
