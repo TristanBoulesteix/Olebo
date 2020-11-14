@@ -47,6 +47,7 @@ object MasterMenuBar : JMenuBar() {
                         else PlayerFrame.hide()
                     }
                 }
+                this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_O, CTRL)
             }
 
             this.addSeparator()
