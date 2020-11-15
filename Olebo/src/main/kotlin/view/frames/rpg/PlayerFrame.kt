@@ -1,6 +1,5 @@
 package view.frames.rpg
 
-import model.element.Element
 import model.utils.Elements
 import model.utils.emptyElements
 import view.utils.DIMENSION_FRAME
@@ -94,6 +93,8 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
             override fun windowClosing(e: WindowEvent) = Companion.hide().also { MasterMenuBar.togglePlayerFrameMenuItem?.isSelected = false }
         })
     }
+
+    override fun reload() = repaint()
 
     override fun setTitle(title: String) =
             super.setTitle("Olebo - Fenêtre PJ - \"$title\"")

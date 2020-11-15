@@ -81,6 +81,12 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         jMenuBar = MasterMenuBar
     }
 
+    override fun reload() {
+        mapPanel.repaint()
+        itemPanel.reloadContent()
+        SelectPanel.reload()
+    }
+
     // KeyListener section, to add Key bindings
     override fun keyTyped(keyEvent: KeyEvent) = Unit
 

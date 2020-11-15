@@ -92,7 +92,7 @@ object ViewManager {
 
     fun repaint() {
         updateTokens()
-        ViewFacade.repaintFrames()
+        ViewFacade.reloadFrames()
     }
 
     fun selectElement(x: Int, y: Int) { //cheks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics

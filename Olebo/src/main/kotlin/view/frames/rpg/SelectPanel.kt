@@ -35,9 +35,9 @@ object SelectPanel : JPanel() {
 
     private val slidePanel: JPanel
 
-    private var lifeSlide = SlideStats(true)
+    private val lifeSlide = SlideStats(true)
 
-    private var manaSlide = SlideStats(false)
+    private val manaSlide = SlideStats(false)
 
     private val nameLabel = object : JLabel("Nom") {
         init {
@@ -221,6 +221,34 @@ object SelectPanel : JPanel() {
         this.background = BACKGROUND_COLOR_SELECT_PANEL
     }
 
+    fun reload() {
+        with(selectedElements) {
+            if (this.isNotEmpty()) {
+                rotateRightButton.isEnabled = true
+                rotateLeftButton.isEnabled = true
+                deleteButton.isEnabled = true
+                visibilityButton.initialize(false)
+                nameLabel.text = if (this.size == 1) this[0].name else "$size éléments sélectionnés"
+
+                if (this.size == 1) {
+                    lifeSlide.element = this[0]
+                    manaSlide.element = this[0]
+                }
+            } else {
+                nameLabel.text = null
+                rotateRightButton.isEnabled = false
+                rotateLeftButton.isEnabled = false
+                deleteButton.isEnabled = false
+                visibilityButton.initialize(true)
+
+                lifeSlide.element = null
+                manaSlide.element = null
+            }
+        }
+
+        repaint()
+    }
+
     override fun paintComponent(g: Graphics) {
         super.paintComponent(g)
 
@@ -232,35 +260,13 @@ object SelectPanel : JPanel() {
             }
             g.fillRect(15, 15, 110, 110)
 
-            if (this.isNotEmpty()) {
-                rotateRightButton.isEnabled = true
-                rotateLeftButton.isEnabled = true
-                deleteButton.isEnabled = true
-                visibilityButton.initialize(false)
-                nameLabel.text = if (this.size == 1) this[0].name else "$size éléments sélectionnés"
-
-                if (this.size == 1) {
-                    g.drawImage(this[0].sprite.image, 20, 20, 100, 100, null)
-
-                    lifeSlide.element = this[0]
-                    manaSlide.element = this[0]
-                }
+            if (this.size == 1) {
+                g.drawImage(this[0].sprite.image, 20, 20, 100, 100, null)
             } else {
-                nameLabel.text = null
-                rotateRightButton.isEnabled = false
-                rotateLeftButton.isEnabled = false
-                deleteButton.isEnabled = false
-                visibilityButton.initialize(true)
-
                 g.color = Color.WHITE
                 g.fillRect(20, 20, 100, 100)
-
-                lifeSlide.element = null
-                manaSlide.element = null
-
             }
         }
 
-        this.revalidate()
     }
 }
