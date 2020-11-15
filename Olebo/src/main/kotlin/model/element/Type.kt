@@ -17,7 +17,7 @@ enum class Type(val type: TypeElement) {
     PJ(transaction(DAO.database) { TypeElement[2] }),
     PNJ(transaction(DAO.database) { TypeElement[3] }),
     BASIC(transaction(DAO.database) { TypeElement[4] });
-    
+
     companion object {
         const val BASIC_NAME = "Éléments de base"
     }

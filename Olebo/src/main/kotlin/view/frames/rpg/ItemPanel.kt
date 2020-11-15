@@ -87,9 +87,7 @@ class ItemPanel : JPanel() {
                 this.add(CustomTitlePanel("PJ").apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.PJ && (searchConstraint.isEmpty() || it.name.toLowerCase().contains(
-                            searchConstraint.toLowerCase()
-                    ))
+                    it.type.typeElement == Type.PJ && (searchConstraint.isEmpty() || it.name.toLowerCase().contains(searchConstraint, true))
                 }.forElse {
                     this.add(CustomPanel(it))
                 } ?: this.add(EmptyField())
@@ -98,9 +96,7 @@ class ItemPanel : JPanel() {
                 this.add(CustomTitlePanel("PNJ").apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.PNJ && (searchConstraint.isEmpty() || it.name.contains(
-                            searchConstraint.toLowerCase()
-                    ))
+                    it.type.typeElement == Type.PNJ && (searchConstraint.isEmpty() || it.name.contains(searchConstraint, true))
                 }.forElse {
                     this.add(CustomPanel(it))
                 } ?: this.add(EmptyField())
@@ -109,9 +105,7 @@ class ItemPanel : JPanel() {
                 this.add(CustomTitlePanel(Type.BASIC_NAME).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.BASIC && (searchConstraint.isEmpty() || it.name.contains(
-                            searchConstraint.toLowerCase()
-                    ))
+                    it.type.typeElement == Type.BASIC && (searchConstraint.isEmpty() || it.realName.contains(searchConstraint, true))
                 }.forElse {
                     this.add(CustomPanel(it))
                 } ?: this.add(EmptyField())
