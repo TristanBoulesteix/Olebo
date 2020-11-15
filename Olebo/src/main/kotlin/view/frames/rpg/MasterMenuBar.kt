@@ -3,13 +3,16 @@ package view.frames.rpg
 import model.act.Act
 import model.act.Scene
 import model.dao.DAO
-import view.frames.editor.elements.BlueprintDialog
-import view.frames.home.HomeFrame
-import view.utils.*
-import view.utils.components.FileMenu
-import viewModel.ViewManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.forElse
+import view.frames.editor.elements.BlueprintDialog
+import view.frames.home.HomeFrame
+import view.utils.CTRL
+import view.utils.CTRLSHIFT
+import view.utils.applyAndAppendTo
+import view.utils.components.FileMenu
+import view.utils.showConfirmMessage
+import viewModel.ViewManager
 import java.awt.event.KeyEvent
 import javax.swing.*
 
@@ -88,15 +91,26 @@ object MasterMenuBar : JMenuBar() {
                     act.scenes.forEach {
                         if (it.id.value != act.sceneId) {
                             val itemMenu = JMenu(it.name).apply {
+                                if (it.elements.isNotEmpty()) {
+                                    JMenuItem("Tout importer").applyAndAppendTo(this) {
+                                        addActionListener { _ ->
+                                            it.elements.forEach { token ->
+                                                transaction(DAO.database) { Scene.moveElementToScene(token, Scene[act.sceneId]) }
+                                            }
+                                            ViewManager.repaint()
+                                        }
+                                    }
+
+                                    this.add(JSeparator())
+                                }
+
                                 it.elements.forElse { token ->
-                                    val item = JMenuItem(token.name + " (" + token.type.name + ")").apply {
+                                    JMenuItem(token.name + " (" + token.type.name + ")").applyAndAppendTo(this) {
                                         addActionListener {
                                             transaction(DAO.database) { Scene.moveElementToScene(token, Scene[act.sceneId]) }
                                             ViewManager.repaint()
                                         }
                                     }
-
-                                    this.add(item)
                                 } ?: { this.isEnabled = false }()
                             }
 
