@@ -12,15 +12,11 @@ import org.jetbrains.exposed.sql.transactions.transaction
  *
  * @param type A TypeElement object. It is the link between the enum and the database
  */
-enum class Type(val type: TypeElement) {
-    OBJECT(transaction(DAO.database) { TypeElement[1] }),
-    PJ(transaction(DAO.database) { TypeElement[2] }),
-    PNJ(transaction(DAO.database) { TypeElement[3] }),
-    BASIC(transaction(DAO.database) { TypeElement[4] });
-
-    companion object {
-        const val BASIC_NAME = "Éléments de base"
-    }
+enum class Type(val type: TypeElement, val typeName: String) {
+    OBJECT(transaction(DAO.database) { TypeElement[1] }, "Objet"),
+    PJ(transaction(DAO.database) { TypeElement[2] }, "PJ"),
+    PNJ(transaction(DAO.database) { TypeElement[3] }, "PNJ"),
+    BASIC(transaction(DAO.database) { TypeElement[4] }, "Élément de base");
 
     /**
      * This class is the link between the enum and the databse
@@ -31,7 +27,7 @@ enum class Type(val type: TypeElement) {
         private val actualName by TypeTable.name
 
         val name
-            get() = if(this.typeElement == BASIC) BASIC_NAME else actualName
+            get() = this.typeElement.typeName
 
         /**
          * Get the enum which is linked to the databse
