@@ -3,11 +3,11 @@ package view.frames.rpg
 import model.dao.DAO
 import model.element.Blueprint
 import model.element.Type
+import org.jetbrains.exposed.sql.transactions.transaction
+import utils.forElse
 import view.utils.components.PlaceholderTextField
 import view.utils.event.ClickListener
 import viewModel.ViewManager
-import org.jetbrains.exposed.sql.transactions.transaction
-import utils.forElse
 import java.awt.*
 import java.awt.event.MouseEvent
 import java.io.File
@@ -77,7 +77,7 @@ class ItemPanel : JPanel() {
 
                 ViewManager.items.filter {
                     it.type.typeElement == Type.OBJECT && (searchConstraint.isEmpty() || it.name.toLowerCase().contains(
-                        searchConstraint.toLowerCase()
+                            searchConstraint.toLowerCase()
                     ))
                 }.forElse {
                     this.add(CustomPanel(it))
@@ -87,9 +87,7 @@ class ItemPanel : JPanel() {
                 this.add(CustomTitlePanel("PJ").apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.PJ && (searchConstraint.isEmpty() || it.name.toLowerCase().contains(
-                        searchConstraint.toLowerCase()
-                    ))
+                    it.type.typeElement == Type.PJ && (searchConstraint.isEmpty() || it.name.toLowerCase().contains(searchConstraint, true))
                 }.forElse {
                     this.add(CustomPanel(it))
                 } ?: this.add(EmptyField())
@@ -98,20 +96,16 @@ class ItemPanel : JPanel() {
                 this.add(CustomTitlePanel("PNJ").apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.PNJ && (searchConstraint.isEmpty() || it.name.contains(
-                        searchConstraint.toLowerCase()
-                    ))
+                    it.type.typeElement == Type.PNJ && (searchConstraint.isEmpty() || it.name.contains(searchConstraint, true))
                 }.forElse {
                     this.add(CustomPanel(it))
                 } ?: this.add(EmptyField())
 
                 // Basic elements list
-                this.add(CustomTitlePanel("Éléments de base").apply { this.isEnabled = false })
+                this.add(CustomTitlePanel(Type.BASIC_NAME).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.BASIC && (searchConstraint.isEmpty() || it.name.contains(
-                            searchConstraint.toLowerCase()
-                    ))
+                    it.type.typeElement == Type.BASIC && (searchConstraint.isEmpty() || it.realName.contains(searchConstraint, true))
                 }.forElse {
                     this.add(CustomPanel(it))
                 } ?: this.add(EmptyField())
@@ -151,7 +145,7 @@ class ItemPanel : JPanel() {
             val label = JLabel().apply {
                 this.size = Dimension(40, 40)
 
-                val imageIo = if(element.type.typeElement == Type.BASIC)
+                val imageIo = if (element.type.typeElement == Type.BASIC)
                     ImageIO.read(ItemPanel::class.java.classLoader.getResourceAsStream("sprites/${element.sprite}"))
                 else ImageIO.read(File(element.sprite))
 

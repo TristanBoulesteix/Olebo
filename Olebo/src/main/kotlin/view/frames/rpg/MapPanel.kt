@@ -1,7 +1,8 @@
 package view.frames.rpg
 
 import model.element.Element
-import model.utils.emptyElementsList
+import model.utils.Elements
+import model.utils.emptyElements
 import viewModel.ViewManager
 import java.awt.*
 import java.awt.event.MouseEvent
@@ -16,8 +17,8 @@ import kotlin.math.abs
  */
 class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseListener {
     var backGroundImage: Image? = null      //The background... Why are you reading this? Stop!! I said stop!!! You're still doing it, even when you had to scroll sideways... Ok i'm giving up, bye
-    var tokens = emptyElementsList() //These are all the tokens placed on  the current map
-    var selectedElements = emptyElementsList()
+    var tokens = emptyElements() //These are all the tokens placed on  the current map
+    var selectedElements = emptyElements()
 
     var selectedArea: Rectangle? = null
 
@@ -67,7 +68,7 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
         return (((relativeY.toFloat() / this.height.toFloat())) * 900).toInt()
     }
 
-    fun updateTokens(tokens: MutableList<Element>) { //Gets the current token display up to date
+    fun updateTokens(tokens: Elements) { //Gets the current token display up to date
         this.tokens = tokens
     }
 

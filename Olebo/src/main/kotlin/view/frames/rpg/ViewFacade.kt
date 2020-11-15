@@ -30,11 +30,11 @@ object ViewFacade {
         MasterFrame.setMapBackground(imageName)
         PlayerFrame.mapBackground = imageName
         MasterMenuBar.initialize()
-        repaintFrames()
+        reloadFrames()
     }
 
-    fun repaintFrames() { //Repaints both frames simultaneously
-        MasterFrame.repaint()
+    fun reloadFrames() { //Repaints both frames simultaneously
+        MasterFrame.reload()
         PlayerFrame.repaint()
     }
 

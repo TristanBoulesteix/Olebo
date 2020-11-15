@@ -1,13 +1,14 @@
 package view.frames.rpg
 
-import model.element.Element
+import model.utils.Elements
 
-interface GameFrame { //this interface regroups all the methods that both PlayerFrame and MasterFrame need to have
-
-    fun updateMap(tokens: MutableList<Element>)
+/**
+ * This interface regroups all the methods that both PlayerFrame and MasterFrame need to have
+ */
+interface GameFrame {
+    fun updateMap(tokens: Elements)
 
     fun setMapBackground(imageName: String)
 
-
-
+    fun reload()
 }

@@ -3,6 +3,7 @@ package view.frames.rpg
 import model.element.Element
 import model.element.Size
 import view.utils.BACKGROUND_COLOR_SELECT_PANEL
+import view.utils.DIMENSION_BUTTON_DEFAULT
 import view.utils.applyAndAppendTo
 import view.utils.components.SlideStats
 import viewModel.ViewManager
@@ -34,9 +35,9 @@ object SelectPanel : JPanel() {
 
     private val slidePanel: JPanel
 
-    private var lifeSlide = SlideStats(true)
+    private val lifeSlide = SlideStats(true)
 
-    private var manaSlide = SlideStats(false)
+    private val manaSlide = SlideStats(false)
 
     private val nameLabel = object : JLabel("Nom") {
         init {
@@ -52,6 +53,20 @@ object SelectPanel : JPanel() {
                 this.isEnabled = true
                 super.setText(text)
             }
+        }
+    }
+
+    private val rotateRightButton = JButton("Pivoter vers la droite").apply {
+        preferredSize = DIMENSION_BUTTON_DEFAULT
+        addActionListener {
+            ViewManager.rotateRight()
+        }
+    }
+
+    private val rotateLeftButton = JButton("Pivoter vers la gauche").apply {
+        preferredSize = DIMENSION_BUTTON_DEFAULT
+        addActionListener {
+            ViewManager.rotateLeft()
         }
     }
 
@@ -71,7 +86,7 @@ object SelectPanel : JPanel() {
 
         init {
             text = defaultText
-            preferredSize = Dimension(150, 40)
+            preferredSize = DIMENSION_BUTTON_DEFAULT
             addActionListener {
                 this.text = contentText
                 val visibility = when {
@@ -97,7 +112,7 @@ object SelectPanel : JPanel() {
     }
 
     private val deleteButton = JButton("Supprimer").apply { //Deletes selected Token
-        preferredSize = Dimension(150, 40)
+        preferredSize = DIMENSION_BUTTON_DEFAULT
         addActionListener {
             selectedElements.forEach(ViewManager::removeToken)
             ViewManager.repaint()
@@ -155,24 +170,40 @@ object SelectPanel : JPanel() {
             this.anchor = GridBagConstraints.FIRST_LINE_START
         })
 
-        this.add(visibilityButton, GridBagConstraints().apply {
+        this.add(rotateRightButton, GridBagConstraints().apply {
             this.gridx = 1
             this.gridy = 0
-            this.weightx = 0.0
+            this.weightx = 0.5
+            this.insets = Insets(10, 10, 10, 10)
+            this.anchor = GridBagConstraints.FIRST_LINE_START
+        })
+
+        this.add(rotateLeftButton, GridBagConstraints().apply {
+            this.gridx = 1
+            this.gridy = 1
+            this.weightx = 0.5
+            this.insets = Insets(10, 10, 10, 10)
+            this.anchor = GridBagConstraints.FIRST_LINE_START
+        })
+
+        this.add(visibilityButton, GridBagConstraints().apply {
+            this.gridx = 2
+            this.gridy = 0
+            this.weightx = 0.5
             this.insets = Insets(10, 10, 10, 10)
             this.anchor = GridBagConstraints.FIRST_LINE_START
         })
 
         this.add(deleteButton, GridBagConstraints().apply {
-            this.gridx = 1
+            this.gridx = 2
             this.gridy = 1
-            this.weightx = 0.0
+            this.weightx = 0.5
             this.insets = Insets(10, 10, 10, 10)
             this.anchor = GridBagConstraints.FIRST_LINE_START
         })
 
         slidePanel = JPanel().applyAndAppendTo(this, GridBagConstraints().apply {
-            this.gridx = 2
+            this.gridx = 3
             this.gridy = 0
             this.gridheight = 2
             this.weightx = 1.0
@@ -190,6 +221,34 @@ object SelectPanel : JPanel() {
         this.background = BACKGROUND_COLOR_SELECT_PANEL
     }
 
+    fun reload() {
+        with(selectedElements) {
+            if (this.isNotEmpty()) {
+                rotateRightButton.isEnabled = true
+                rotateLeftButton.isEnabled = true
+                deleteButton.isEnabled = true
+                visibilityButton.initialize(false)
+                nameLabel.text = if (this.size == 1) this[0].name else "$size éléments sélectionnés"
+
+                if (this.size == 1) {
+                    lifeSlide.element = this[0]
+                    manaSlide.element = this[0]
+                }
+            } else {
+                nameLabel.text = null
+                rotateRightButton.isEnabled = false
+                rotateLeftButton.isEnabled = false
+                deleteButton.isEnabled = false
+                visibilityButton.initialize(true)
+
+                lifeSlide.element = null
+                manaSlide.element = null
+            }
+        }
+
+        repaint()
+    }
+
     override fun paintComponent(g: Graphics) {
         super.paintComponent(g)
 
@@ -201,31 +260,13 @@ object SelectPanel : JPanel() {
             }
             g.fillRect(15, 15, 110, 110)
 
-            if (this.isNotEmpty()) {
-                deleteButton.isEnabled = true
-                visibilityButton.initialize(false)
-                nameLabel.text = if (this.size == 1) this[0].name else "$size éléments sélectionnés"
-
-                if (this.size == 1) {
-                    g.drawImage(this[0].sprite.image, 20, 20, 100, 100, null)
-
-                    lifeSlide.element = this[0]
-                    manaSlide.element = this[0]
-                }
+            if (this.size == 1) {
+                g.drawImage(this[0].sprite.image, 20, 20, 100, 100, null)
             } else {
-                nameLabel.text = null
-                deleteButton.isEnabled = false
-                visibilityButton.initialize(true)
-
                 g.color = Color.WHITE
                 g.fillRect(20, 20, 100, 100)
-
-                lifeSlide.element = null
-                manaSlide.element = null
-
             }
         }
 
-        this.revalidate()
     }
 }

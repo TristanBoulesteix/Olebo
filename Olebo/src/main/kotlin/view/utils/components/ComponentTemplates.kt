@@ -308,9 +308,13 @@ class SlideStats(private val hp: Boolean, initialElement: Element? = null) : JPa
                 }
             }
 
+            fun removeListeners() = changeListeners.forEach {
+                removeChangeListener(it)
+            }
+
             override fun setEnabled(enabled: Boolean) {
                 if (element == null && !enabled) {
-                    removeChangeListener(eventAction)
+                    removeListeners()
                     maximum = 20
                     value = 0
                 } else {
@@ -322,8 +326,9 @@ class SlideStats(private val hp: Boolean, initialElement: Element? = null) : JPa
 
             override fun setMaximum(maximum: Int) {
                 labelTable = Hashtable(mapOf(maximum to JLabel("$maximum"))).also { it += basePositions }
-
+                removeListeners()
                 super.setMaximum(maximum)
+                addChangeListener(eventAction)
             }
         }
 

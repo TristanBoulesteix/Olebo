@@ -108,6 +108,8 @@ Temporary Items
 .idea/jarRepositories.xml
 .idea/kotlinc.xml
 .idea/compiler.xml
-.idea/jarRepositories.xml
 .idea/Olebo.iml
 .idea/inspectionProfiles/Project_Default.xml
+.idea/kotlinScripting.xml
+
+!Olebo/src/main/resources/updater/OleboUpdater.jar
