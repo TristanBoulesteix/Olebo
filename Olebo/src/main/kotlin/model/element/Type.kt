@@ -17,6 +17,10 @@ enum class Type(val type: TypeElement) {
     PJ(transaction(DAO.database) { TypeElement[2] }),
     PNJ(transaction(DAO.database) { TypeElement[3] }),
     BASIC(transaction(DAO.database) { TypeElement[4] });
+    
+    companion object {
+        const val BASIC_NAME = "Éléments de base"
+    }
 
     /**
      * This class is the link between the enum and the databse
@@ -24,7 +28,10 @@ enum class Type(val type: TypeElement) {
     class TypeElement(id: EntityID<Int>) : Entity<Int>(id) {
         companion object : EntityClass<Int, TypeElement>(TypeTable)
 
-        val name by TypeTable.name
+        private val actualName by TypeTable.name
+
+        val name
+            get() = if(this.typeElement == BASIC) BASIC_NAME else actualName
 
         /**
          * Get the enum which is linked to the databse
@@ -32,7 +39,7 @@ enum class Type(val type: TypeElement) {
          * @see model.element.Type
          */
         val typeElement
-            get() = when(this.name) {
+            get() = when(this.actualName) {
                 "Basic" -> BASIC
                 "PJ" -> PJ
                 "PNJ" -> PNJ
