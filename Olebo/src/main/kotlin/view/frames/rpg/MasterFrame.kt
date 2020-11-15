@@ -1,6 +1,5 @@
 package view.frames.rpg
 
-import model.element.Element
 import model.utils.Elements
 import view.utils.DIMENSION_FRAME
 import viewModel.ViewManager

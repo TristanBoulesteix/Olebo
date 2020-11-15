@@ -2,8 +2,6 @@ package view.frames.rpg
 
 import model.element.Element
 import model.element.Size
-import model.utils.Elements
-import model.utils.emptyElements
 import view.utils.BACKGROUND_COLOR_SELECT_PANEL
 import view.utils.DIMENSION_BUTTON_DEFAULT
 import view.utils.applyAndAppendTo
@@ -235,6 +233,8 @@ object SelectPanel : JPanel() {
             g.fillRect(15, 15, 110, 110)
 
             if (this.isNotEmpty()) {
+                rotateRightButton.isEnabled = true
+                rotateLeftButton.isEnabled = true
                 deleteButton.isEnabled = true
                 visibilityButton.initialize(false)
                 nameLabel.text = if (this.size == 1) this[0].name else "$size éléments sélectionnés"
@@ -247,6 +247,8 @@ object SelectPanel : JPanel() {
                 }
             } else {
                 nameLabel.text = null
+                rotateRightButton.isEnabled = false
+                rotateLeftButton.isEnabled = false
                 deleteButton.isEnabled = false
                 visibilityButton.initialize(true)
 
