@@ -55,15 +55,15 @@ object SelectPanel : JPanel() {
             }
         }
     }
-
-    private val rotateRightButton = JButton("Pivoter vers la droite").apply { //Deletes selected Token
+    
+    private val rotateRightButton = JButton("Pivoter vers la droite").apply {
         preferredSize = DIMENSION_BUTTON_DEFAULT
         addActionListener {
             ViewManager.rotateRight()
         }
     }
 
-    private val rotateLeftButton = JButton("Pivoter vers la gauche").apply { //Deletes selected Token
+    private val rotateLeftButton = JButton("Pivoter vers la gauche").apply {
         preferredSize = DIMENSION_BUTTON_DEFAULT
         addActionListener {
             ViewManager.rotateLeft()
