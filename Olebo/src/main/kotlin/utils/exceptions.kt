@@ -21,7 +21,7 @@ class CharacterException(kClass: KClass<*>, varName: String?) :
 class DatabaseException(e: Exception) : Exception(e) {
     init {
         JOptionPane.showMessageDialog(
-                FocusManager.getCurrentManager().activeWindow,
+                null,
                 "Une erreur s'est produite lors du chargement de la base de données. Impossible de lancer Olebo.",
                 "Erreur critique",
                 JOptionPane.ERROR_MESSAGE
