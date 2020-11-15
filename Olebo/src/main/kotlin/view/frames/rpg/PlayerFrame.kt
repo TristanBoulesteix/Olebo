@@ -1,7 +1,8 @@
 package view.frames.rpg
 
 import model.element.Element
-import model.utils.emptyElementsList
+import model.utils.Elements
+import model.utils.emptyElements
 import view.utils.DIMENSION_FRAME
 import java.awt.GraphicsEnvironment
 import java.awt.event.KeyEvent
@@ -31,7 +32,7 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
                 field = value
             }
 
-        var map = emptyElementsList()
+        var map = emptyElements()
             set(value) {
                 playerFrameInstance?.updateMap(value)
                 field = value
@@ -97,7 +98,7 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
     override fun setTitle(title: String) =
             super.setTitle("Olebo - Fenêtre PJ - \"$title\"")
 
-    override fun updateMap(tokens: MutableList<Element>) {
+    override fun updateMap(tokens: Elements) {
         mapPanel.updateTokens(tokens)
     }
 

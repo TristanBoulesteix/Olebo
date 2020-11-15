@@ -4,10 +4,7 @@ import model.act.Act
 import model.act.Scene
 import model.dao.DAO
 import model.element.*
-import model.utils.Elements
-import model.utils.doIfContainsSingle
-import model.utils.emptyElementsList
-import model.utils.toElements
+import model.utils.*
 import view.frames.rpg.MasterFrame
 import view.frames.rpg.MasterMenuBar
 import view.frames.rpg.ViewFacade
@@ -21,7 +18,7 @@ object ViewManager {
     private var activeAct: Act? = null
     private var activeScene: Scene? = null
 
-    private var selectedElements = emptyElementsList()
+    private var selectedElements = mutableEmptyElements()
 
     /**
      * Get the list of all blueprints
@@ -37,7 +34,7 @@ object ViewManager {
     }
 
     fun removeToken(token: Element) { //removes given token from MutableList
-        selectedElements = emptyElementsList()
+        selectedElements = mutableEmptyElements()
         ViewFacade.setSelectedToken(null)
         activeScene?.elements?.remove(token)
         transaction(DAO.database) { token.delete() }
@@ -74,7 +71,7 @@ object ViewManager {
     }
 
     private fun unSelectElements() {
-        selectedElements = emptyElementsList()
+        selectedElements = mutableEmptyElements()
         ViewFacade.unSelectElements()
         repaint()
     }
@@ -99,7 +96,7 @@ object ViewManager {
     }
 
     fun selectElement(x: Int, y: Int) { //cheks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
-        selectedElements = getTokenFromXY(x, y)?.toElements() ?: emptyElementsList()
+        selectedElements = getTokenFromXY(x, y)?.toElements() ?: mutableEmptyElements()
         if (selectedElements.isNotEmpty()) {
             ViewFacade.setSelectedToken(selectedElements[0])
             repaint()
@@ -109,7 +106,7 @@ object ViewManager {
     }
 
     fun selectElements(rec: Rectangle) {
-        val selectedElements = emptyElementsList()
+        val selectedElements = mutableEmptyElements()
 
         activeScene!!.elements.forEach {
             if (rec.contains(MasterFrame.mapPanel.getRelativeRectangleOfToken(it))) {
@@ -136,8 +133,8 @@ object ViewManager {
             selectedElements.doIfContainsSingle { element ->
                 if (this.elements.getOrNull(this.elements.indexOfFirst { it.id == element.id }.plusOne(this.elements)) != null) {
                     this.elements[this.elements.indexOfFirst { it.id == element.id }.plusOne(this.elements)].toElements()
-                } else emptyElementsList()
-            } ?: emptyElementsList()
+                } else mutableEmptyElements()
+            } ?: mutableEmptyElements()
         }
 
         ViewFacade.setSelectedToken(*selectedElements.toTypedArray())
@@ -154,8 +151,8 @@ object ViewManager {
                 selectedElements.doIfContainsSingle { element ->
                     if (this.elements.getOrNull(this.elements.indexOfFirst { it.id == element.id }.minusOne(this.elements)) != null) {
                         activeScene!!.elements[this.elements.indexOfFirst { it.id == element.id }.minusOne(this.elements)].toElements()
-                    } else emptyElementsList()
-                } ?: emptyElementsList()
+                    } else mutableEmptyElements()
+                } ?: mutableEmptyElements()
             }
 
             ViewFacade.setSelectedToken(*selectedElements.toTypedArray())

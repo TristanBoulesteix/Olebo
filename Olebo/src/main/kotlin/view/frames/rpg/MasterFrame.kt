@@ -1,6 +1,7 @@
 package view.frames.rpg
 
 import model.element.Element
+import model.utils.Elements
 import view.utils.DIMENSION_FRAME
 import viewModel.ViewManager
 import java.awt.Color
@@ -95,7 +96,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
 
     override fun keyReleased(keyEvent: KeyEvent) = Unit
 
-    override fun updateMap(tokens: MutableList<Element>) {
+    override fun updateMap(tokens: Elements) {
         mapPanel.updateTokens(tokens)
     }
 }

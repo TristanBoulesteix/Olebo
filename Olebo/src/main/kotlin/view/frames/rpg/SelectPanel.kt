@@ -2,6 +2,8 @@ package view.frames.rpg
 
 import model.element.Element
 import model.element.Size
+import model.utils.Elements
+import model.utils.emptyElements
 import view.utils.BACKGROUND_COLOR_SELECT_PANEL
 import view.utils.DIMENSION_BUTTON_DEFAULT
 import view.utils.applyAndAppendTo
@@ -55,7 +57,7 @@ object SelectPanel : JPanel() {
             }
         }
     }
-    
+
     private val rotateRightButton = JButton("Pivoter vers la droite").apply {
         preferredSize = DIMENSION_BUTTON_DEFAULT
         addActionListener {
