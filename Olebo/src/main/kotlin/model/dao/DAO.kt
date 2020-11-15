@@ -4,13 +4,14 @@ import model.act.Act
 import model.element.Blueprint
 import model.element.Type
 import model.utils.OLEBO_DIRECTORY
-import utils.MessageException
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
+import utils.DatabaseException
+import utils.MessageException
 import java.io.File
 import java.sql.Connection
 
@@ -23,21 +24,27 @@ object DAO {
     val database: Database
 
     init {
-        File(filePath).apply {
-            this.parentFile.mkdirs()
-            this.createNewFile()
-        }
-
-        database = Database.connect(url, "org.sqlite.JDBC")
-
-        TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
-
-        transaction {
-            SchemaUtils.createMissingTablesAndColumns(*tables)
-            tables.forEach {
-                if(it is Initializable)
-                    it.initialize()
+        database = try {
+            File(filePath).apply {
+                this.parentFile.mkdirs()
+                this.createNewFile()
             }
+
+            Database.connect(url, "org.sqlite.JDBC").also {
+                TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
+
+                transaction {
+                    SchemaUtils.createMissingTablesAndColumns(*tables)
+                    tables.forEach {
+                        if (it is Initializable)
+                            it.initialize()
+                    }
+                }
+            }
+
+
+        } catch (e: Exception) {
+            throw  DatabaseException(e)
         }
     }
 
