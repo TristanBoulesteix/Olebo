@@ -29,7 +29,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         mapPanel.backGroundImage = ImageIO.read(File(imageName))
     }
 
-    override fun setTitle(title: String?) {
+    override fun setTitle(title: String) {
         super.setTitle("Olebo - Fenêtre MJ - \"$title\"")
     }
 
