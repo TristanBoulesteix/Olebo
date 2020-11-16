@@ -135,6 +135,8 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         val previousPosition = this.position
 
         manager += object : Command() {
+            override val label = "Déplacer élément"
+
             override fun exec() {
                 this@Element.position = position
             }

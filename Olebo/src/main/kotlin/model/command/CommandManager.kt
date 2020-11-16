@@ -13,6 +13,9 @@ class CommandManager private constructor() {
 
     private var pointer = -1
 
+    val label
+        get() = stack.getOrNull(pointer)?.label ?: ""
+
     operator fun plusAssign(command: Command) {
         if (stack.size >= 1) {
             for (i in stack.size - 1 downTo pointer + 1) {
