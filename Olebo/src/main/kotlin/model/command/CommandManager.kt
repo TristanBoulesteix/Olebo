@@ -6,15 +6,18 @@ class CommandManager private constructor() {
 
         operator fun invoke(sceneId: Int) = managers[sceneId] ?: CommandManager().also { managers[sceneId] = it }
 
-        operator fun get(sceneId: Int) = managers[sceneId]
+        operator fun get(sceneId: Int?) = managers[sceneId]
     }
 
     private val stack = mutableListOf<Command>()
 
-    private var pointer = -1
+    val undoLabel
+        get() = stack.getOrNull(pointer)?.label
 
-    val label
-        get() = stack.getOrNull(pointer)?.label ?: ""
+    val redoLabel
+        get() = stack.getOrNull(pointer + 1)?.label
+
+    private var pointer = -1
 
     operator fun plusAssign(command: Command) {
         if (stack.size >= 1) {

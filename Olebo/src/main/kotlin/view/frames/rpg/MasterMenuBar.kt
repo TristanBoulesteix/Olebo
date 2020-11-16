@@ -21,6 +21,10 @@ import javax.swing.*
  * This is MasterFrame's menu bar (situated at the top)
  */
 object MasterMenuBar : JMenuBar() {
+    private var undoMenuItem: JMenuItem? = null
+
+    private var redoMenuItem: JMenuItem? = null
+
     var act: Act? = null
 
     var togglePlayerFrameMenuItem: JCheckBoxMenuItem? = null
@@ -32,25 +36,43 @@ object MasterMenuBar : JMenuBar() {
         this.add(FileMenu())
 
         JMenu("Outils").applyAndAppendTo(this) {
-            JMenuItem("Annuler").applyAndAppendTo(this) {
-                this.addActionListener {
-                    act?.let {
-                        CommandManager[it.sceneId]?.undo()
-                        ViewManager.repaint()
+            undoMenuItem = object : JMenuItem("Annuler") {
+                private val baseText = "Annuler"
+
+                override fun setText(text: String) = super.setText("$baseText ${if (text == "") "" else "($text)"}")
+
+                init {
+                    this.isEnabled = false
+                    this.addActionListener {
+                        act?.let {
+                            CommandManager[it.sceneId]?.undo()
+                            ViewManager.repaint()
+                        }
                     }
+                    this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Z, CTRL)
                 }
-                this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Z, CTRL)
             }
 
-            JMenuItem("Restaurer").applyAndAppendTo(this) {
-                this.addActionListener {
-                    act?.let {
-                        CommandManager[it.sceneId]?.redo()
-                        ViewManager.repaint()
+            this.add(undoMenuItem)
+
+            redoMenuItem = object : JMenuItem("Restaurer") {
+                private val baseText = "Restaurer"
+
+                override fun setText(text: String) = super.setText("$baseText ${if (text == "") "" else "($text)"}")
+
+                init {
+                    this.isEnabled = false
+                    this.addActionListener {
+                        act?.let {
+                            CommandManager[it.sceneId]?.redo()
+                            ViewManager.repaint()
+                        }
                     }
+                    this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Y, CTRL)
                 }
-                this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Y, CTRL)
             }
+
+            this.add(redoMenuItem)
         }
 
         JMenu("Fenêtres").applyAndAppendTo(this) {
@@ -169,6 +191,18 @@ object MasterMenuBar : JMenuBar() {
                 }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, CTRLSHIFT)
             }
+        }
+    }
+
+    fun reloadCommandItemLabel() = CommandManager[act?.sceneId]?.let { manager ->
+        undoMenuItem?.apply {
+            isEnabled = manager.undoLabel != null
+            text = manager.undoLabel ?: ""
+        }
+
+        redoMenuItem?.apply {
+            isEnabled = manager.redoLabel != null
+            text = manager.redoLabel ?: ""
         }
     }
 }
