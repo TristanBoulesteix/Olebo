@@ -41,6 +41,16 @@ object MasterMenuBar : JMenuBar() {
                 }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Z, CTRL)
             }
+
+            JMenuItem("Restaurer").applyAndAppendTo(this) {
+                this.addActionListener {
+                    act?.let {
+                        CommandManager[it.sceneId]?.redo()
+                        ViewManager.repaint()
+                    }
+                }
+                this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Y, CTRL)
+            }
         }
 
         JMenu("Fenêtres").applyAndAppendTo(this) {
