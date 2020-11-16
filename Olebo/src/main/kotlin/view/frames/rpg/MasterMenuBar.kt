@@ -2,6 +2,7 @@ package view.frames.rpg
 
 import model.act.Act
 import model.act.Scene
+import model.command.CommandManager
 import model.dao.DAO
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.forElse
@@ -29,6 +30,18 @@ object MasterMenuBar : JMenuBar() {
         this.removeAll()
 
         this.add(FileMenu())
+
+        JMenu("Outils").applyAndAppendTo(this) {
+            JMenuItem("Annuler").applyAndAppendTo(this) {
+                this.addActionListener {
+                    act?.let {
+                        CommandManager[it.sceneId]?.undo()
+                        ViewManager.repaint()
+                    }
+                }
+                this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Z, CTRL)
+            }
+        }
 
         JMenu("Fenêtres").applyAndAppendTo(this) {
             JMenuItem("Fermer scenario").applyAndAppendTo(this) {

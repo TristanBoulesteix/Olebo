@@ -1,6 +1,14 @@
 package model.command
 
-class CommandManager {
+class CommandManager private constructor() {
+    companion object {
+        private val managers = mutableMapOf<Int, CommandManager>()
+
+        operator fun invoke(sceneId: Int) = managers[sceneId] ?: CommandManager().also { managers[sceneId] = it }
+
+        operator fun get(sceneId: Int) = managers[sceneId]
+    }
+
     private val stack = mutableListOf<Command>()
 
     private var pointer = -1

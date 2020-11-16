@@ -49,7 +49,7 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
 
     private val elementIterable by Element referrersOn InstanceTable.idScene
 
-    val commandManager = CommandManager()
+    val commandManager = CommandManager(id.value)
 
     val elements by DelegateIterable { elementIterable }
     var name by SceneTable.name
