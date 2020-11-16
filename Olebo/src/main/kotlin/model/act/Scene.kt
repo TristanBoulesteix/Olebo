@@ -1,5 +1,6 @@
 package model.act
 
+import model.command.CommandManager
 import model.dao.DAO
 import model.dao.InstanceTable
 import model.dao.SceneTable
@@ -47,6 +48,8 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
     }
 
     private val elementIterable by Element referrersOn InstanceTable.idScene
+
+    val commandManager = CommandManager()
 
     val elements by DelegateIterable { elementIterable }
     var name by SceneTable.name

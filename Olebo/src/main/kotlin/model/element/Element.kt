@@ -1,6 +1,8 @@
 package model.element
 
 import model.act.Scene
+import model.command.Command
+import model.command.CommandManager
 import model.dao.DAO
 import model.dao.InstanceTable
 import model.utils.isCharacter
@@ -102,7 +104,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
     var position
         get() = Position(x, y)
-        set(value) {
+        private set(value) {
             transaction(DAO.database) {
                 x = value.x
                 y = value.y
@@ -125,5 +127,21 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
     fun rotateLeft() = transaction(DAO.database) {
         orientation = if (orientation <= 0.0) 270.0 else orientation - 90.0
+    }
+
+    // --- Command functions ---
+
+    fun changePosition(position: Position, manager: CommandManager) {
+        val previousPosition = this.position
+
+        manager += object : Command() {
+            override fun exec() {
+                this@Element.position = position
+            }
+
+            override fun cancelExec() {
+                this@Element.position = previousPosition
+            }
+        }
     }
 }

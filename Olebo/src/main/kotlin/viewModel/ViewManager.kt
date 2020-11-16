@@ -3,12 +3,17 @@ package viewModel
 import model.act.Act
 import model.act.Scene
 import model.dao.DAO
-import model.element.*
-import model.utils.*
+import model.element.Blueprint
+import model.element.Element
+import model.element.Position
+import model.utils.Elements
+import model.utils.doIfContainsSingle
+import model.utils.mutableEmptyElements
+import model.utils.toElements
+import org.jetbrains.exposed.sql.transactions.transaction
 import view.frames.rpg.MasterFrame
 import view.frames.rpg.MasterMenuBar
 import view.frames.rpg.ViewFacade
-import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
 
 /**
@@ -65,7 +70,7 @@ object ViewManager {
         if (selectedElements.isNotEmpty() && selectedElements.size == 1) {
             val newX = (x - (selectedElements[0].hitBox.width / 2))
             val newY = (y - (selectedElements[0].hitBox.height / 2))
-            selectedElements[0].position = Position(newX, newY)
+            selectedElements[0].changePosition(Position(newX, newY), activeScene!!.commandManager)
             repaint()
         }
     }
