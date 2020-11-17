@@ -92,7 +92,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
     var isVisible
         get() = transaction(DAO.database) { visible.toBoolean() }
-        set(value) {
+        private set(value) {
             transaction(DAO.database) { visible = value.toInt() }
         }
 
@@ -161,6 +161,22 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
                 override fun cancelExec() {
                     this@Element.size = previousSize
                 }
+            }
+        }
+    }
+
+    fun changeVisibility(visibility: Boolean, manager: CommandManager) {
+        val previousVisibility = this.isVisible
+
+        manager += object : Command() {
+            override val label = "Modifier la visibilité de l'élément"
+
+            override fun exec() {
+                this@Element.isVisible = visibility
+            }
+
+            override fun cancelExec() {
+                this@Element.isVisible = previousVisibility
             }
         }
     }

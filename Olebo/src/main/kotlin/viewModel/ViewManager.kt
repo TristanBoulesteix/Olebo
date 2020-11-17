@@ -6,10 +6,7 @@ import model.dao.DAO
 import model.element.Blueprint
 import model.element.Element
 import model.element.Position
-import model.utils.Elements
-import model.utils.doIfContainsSingle
-import model.utils.mutableEmptyElements
-import model.utils.toElements
+import model.utils.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import view.frames.rpg.MasterFrame
 import view.frames.rpg.MasterMenuBar
@@ -171,7 +168,7 @@ object ViewManager {
     }
 
     fun toggleVisibility(token: Element, visibility: Boolean? = null) {
-        token.isVisible = visibility ?: !token.isVisible
+        activeScene.callManager(visibility ?: !token.isVisible, token::changeVisibility)
         repaint()
     }
 
