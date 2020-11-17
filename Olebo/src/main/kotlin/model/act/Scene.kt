@@ -49,12 +49,17 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
 
     private val elementIterable by Element referrersOn InstanceTable.idScene
 
-    val commandManager = CommandManager(id.value)
+    val commandManager
+        get() = CommandManager[id.value]!!
 
     val elements by DelegateIterable { elementIterable }
     var name by SceneTable.name
     var background by SceneTable.background
     var idAct by SceneTable.idAct
+
+    init {
+        CommandManager(id.value)
+    }
 
     /**
      * Add an element to the scene as Instance

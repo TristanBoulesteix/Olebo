@@ -2,6 +2,7 @@ package view.frames.rpg
 
 import model.element.Element
 import model.element.Size
+import model.utils.callManager
 import view.utils.BACKGROUND_COLOR_SELECT_PANEL
 import view.utils.DIMENSION_BUTTON_DEFAULT
 import view.utils.applyAndAppendTo
@@ -124,14 +125,16 @@ object SelectPanel : JPanel() {
             addActionListener {
                 selectedElements.forEach {
                     if (selectedItem != it.size) {
-                        when (this.selectedItem) {
-                            "XS" -> it.size = Size.XS
-                            "S" -> it.size = Size.S
-                            "M" -> it.size = Size.M
-                            "L" -> it.size = Size.L
-                            "XL" -> it.size = Size.XL
-                            "XXL" -> it.size = Size.XXL
+                        val newSize = when (this.selectedItem) {
+                            "XS" -> Size.XS
+                            "S" -> Size.S
+                            "M" -> Size.M
+                            "L" -> Size.L
+                            "XL" -> Size.XL
+                            "XXL" -> Size.XXL
+                            else -> it.size
                         }
+                        ViewManager.activeScene.callManager(newSize, it::changeDimension)
                     }
                 }
                 ViewManager.repaint()

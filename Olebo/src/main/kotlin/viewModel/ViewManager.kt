@@ -21,7 +21,8 @@ import java.awt.Rectangle
  */
 object ViewManager {
     private var activeAct: Act? = null
-    private var activeScene: Scene? = null
+    var activeScene: Scene? = null
+        private set
 
     private var selectedElements = mutableEmptyElements()
 

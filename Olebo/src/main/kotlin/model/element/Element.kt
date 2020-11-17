@@ -98,7 +98,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
     var size
         get() = transaction(DAO.database) { sizeElement.sizeElement }
-        set(value) {
+        private set(value) {
             transaction(DAO.database) { sizeElement = value.size }
         }
 
@@ -143,6 +143,22 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
             override fun cancelExec() {
                 this@Element.position = previousPosition
+            }
+        }
+    }
+
+    fun changeDimension(size: Size, manager: CommandManager) {
+        val previousSize = this.size
+
+        manager += object : Command() {
+            override val label = "Redimensionner élément"
+
+            override fun exec() {
+                this@Element.size = size
+            }
+
+            override fun cancelExec() {
+                this@Element.size = previousSize
             }
         }
     }

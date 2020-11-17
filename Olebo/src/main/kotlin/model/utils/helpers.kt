@@ -1,5 +1,7 @@
 package model.utils
 
+import model.act.Scene
+import model.command.CommandManager
 import model.element.Blueprint
 import model.element.Element
 import model.element.Type
@@ -64,4 +66,8 @@ fun ImageIcon.rotate(degs: Double) = with(BufferedImage(this.iconWidth, this.ico
         dispose()
     }
     ImageIcon(this)
+}
+
+fun <T> Scene?.callManager(value: T, func: (T, CommandManager) -> Unit) = this?.let {scene ->
+    CommandManager[scene.id.value]?.let { func(value, it) }
 }
