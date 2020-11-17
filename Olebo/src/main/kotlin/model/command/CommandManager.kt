@@ -2,11 +2,16 @@ package model.command
 
 class CommandManager private constructor() {
     companion object {
-        private val managers = mutableMapOf<Int, CommandManager>()
+        private var managerInstance: Pair<Int, CommandManager>? = null
 
-        operator fun invoke(sceneId: Int) = managers[sceneId] ?: CommandManager().also { managers[sceneId] = it }
+        operator fun invoke(sceneId: Int): CommandManager {
+            managerInstance?.let {
+                if (it.first == sceneId)
+                    return it.second
+            }
 
-        operator fun get(sceneId: Int?) = managers[sceneId]
+            return CommandManager().also { managerInstance = sceneId to it }
+        }
     }
 
     private val stack = mutableListOf<Command>()

@@ -45,7 +45,7 @@ object MasterMenuBar : JMenuBar() {
                     this.isEnabled = false
                     this.addActionListener {
                         act?.let {
-                            CommandManager[it.sceneId]?.undo()
+                            CommandManager(it.sceneId).undo()
                             ViewManager.repaint()
                         }
                     }
@@ -64,7 +64,7 @@ object MasterMenuBar : JMenuBar() {
                     this.isEnabled = false
                     this.addActionListener {
                         act?.let {
-                            CommandManager[it.sceneId]?.redo()
+                            CommandManager(it.sceneId).redo()
                             ViewManager.repaint()
                         }
                     }
@@ -194,7 +194,7 @@ object MasterMenuBar : JMenuBar() {
         }
     }
 
-    fun reloadCommandItemLabel() = CommandManager[act?.sceneId]?.let { manager ->
+    fun reloadCommandItemLabel() = CommandManager(act?.sceneId ?: -1).let { manager ->
         undoMenuItem?.apply {
             isEnabled = manager.undoLabel != null
             text = manager.undoLabel ?: ""

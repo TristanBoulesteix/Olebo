@@ -69,5 +69,5 @@ fun ImageIcon.rotate(degs: Double) = with(BufferedImage(this.iconWidth, this.ico
 }
 
 fun <T> Scene?.callManager(value: T, func: (T, CommandManager) -> Unit) = this?.let {scene ->
-    CommandManager[scene.id.value]?.let { func(value, it) }
+    func(value, CommandManager(scene.id.value))
 }

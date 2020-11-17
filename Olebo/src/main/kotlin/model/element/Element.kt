@@ -148,17 +148,19 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     }
 
     fun changeDimension(size: Size, manager: CommandManager) {
-        val previousSize = this.size
+        if (this.size != size) {
+            val previousSize = this.size
 
-        manager += object : Command() {
-            override val label = "Redimensionner élément"
+            manager += object : Command() {
+                override val label = "Redimensionner élément"
 
-            override fun exec() {
-                this@Element.size = size
-            }
+                override fun exec() {
+                    this@Element.size = size
+                }
 
-            override fun cancelExec() {
-                this@Element.size = previousSize
+                override fun cancelExec() {
+                    this@Element.size = previousSize
+                }
             }
         }
     }
