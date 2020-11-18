@@ -121,17 +121,18 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         set(value) = if (this.isCharacter()) currentMP = value
         else throw CharacterException(this::class, "currentMana")
 
-    fun rotateRight() = transaction(DAO.database) {
+    private fun rotateRight() = transaction(DAO.database) {
         orientation = if (orientation >= 270.0) 0.0 else orientation + 90.0
     }
 
-    fun rotateLeft() = transaction(DAO.database) {
+    private fun rotateLeft() = transaction(DAO.database) {
+
         orientation = if (orientation <= 0.0) 270.0 else orientation - 90.0
     }
 
     // --- Command functions ---
 
-    fun changePosition(position: Position, manager: CommandManager) {
+    fun cmdPosition(position: Position, manager: CommandManager) {
         val previousPosition = this.position
 
         manager += object : Command() {
@@ -147,7 +148,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         }
     }
 
-    fun changeDimension(size: Size, manager: CommandManager) {
+    fun cmdDimension(size: Size, manager: CommandManager) {
         if (this.size != size) {
             val previousSize = this.size
 
@@ -165,7 +166,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         }
     }
 
-    fun changeVisibility(visibility: Boolean, manager: CommandManager) {
+    fun cmdVisibility(visibility: Boolean, manager: CommandManager) {
         val previousVisibility = this.isVisible
 
         manager += object : Command() {
@@ -177,6 +178,38 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
             override fun cancelExec() {
                 this@Element.isVisible = previousVisibility
+            }
+        }
+    }
+
+    fun cmdOrientationToRight(manager: CommandManager) {
+        val previousOrientation = this.orientation
+
+        manager += object : Command() {
+            override val label = "Rotation à droite"
+
+            override fun exec() {
+                this@Element.rotateRight()
+            }
+
+            override fun cancelExec() = transaction(DAO.database) {
+                this@Element.orientation = previousOrientation
+            }
+        }
+    }
+
+    fun cmdOrientationToLeft(manager: CommandManager) {
+        val previousOrientation = this.orientation
+
+        manager += object : Command() {
+            override val label = "Rotation à gauche"
+
+            override fun exec() {
+                this@Element.rotateLeft()
+            }
+
+            override fun cancelExec() = transaction(DAO.database) {
+                this@Element.orientation = previousOrientation
             }
         }
     }

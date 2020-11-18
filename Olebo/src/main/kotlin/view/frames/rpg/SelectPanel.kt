@@ -134,7 +134,7 @@ object SelectPanel : JPanel() {
                             "XXL" -> Size.XXL
                             else -> it.size
                         }
-                        ViewManager.activeScene.callManager(newSize, it::changeDimension)
+                        ViewManager.activeScene.callManager(newSize, it::cmdDimension)
                     }
                 }
                 ViewManager.repaint()
