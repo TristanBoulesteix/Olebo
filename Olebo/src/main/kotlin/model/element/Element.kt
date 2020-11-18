@@ -53,9 +53,9 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     private var currentMP by InstanceTable.currentMP
     private var orientation by InstanceTable.orientation
 
-    var x by InstanceTable.x
-    var y by InstanceTable.y
-    var sizeElement by Size.SizeElement referencedOn InstanceTable.idSize
+    private var x by InstanceTable.x
+    private var y by InstanceTable.y
+    private var sizeElement by Size.SizeElement referencedOn InstanceTable.idSize
 
 
     // Value from the Blueprint
