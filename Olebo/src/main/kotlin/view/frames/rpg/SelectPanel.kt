@@ -115,7 +115,7 @@ object SelectPanel : JPanel() {
     private val deleteButton = JButton("Supprimer").apply { //Deletes selected Token
         preferredSize = DIMENSION_BUTTON_DEFAULT
         addActionListener {
-            ViewManager.removeTokens(selectedElements)
+            selectedElements.forEach(ViewManager::removeToken)
             ViewManager.repaint()
         }
     }
@@ -134,7 +134,7 @@ object SelectPanel : JPanel() {
                             "XXL" -> Size.XXL
                             else -> it.size
                         }
-                        ViewManager.activeScene.callManager(newSize, it::cmdDimension)
+                        ViewManager.activeScene.callManager(newSize, it::changeDimension)
                     }
                 }
                 ViewManager.repaint()

@@ -36,13 +36,11 @@ object ViewManager {
         loadCurrentScene()
     }
 
-    fun removeTokens(token: List<Element>, keepTrack: Boolean = true) {
+    fun removeToken(token: Element) { //removes given token from MutableList
         selectedElements = mutableEmptyElements()
         ViewFacade.setSelectedToken(null)
-        token.forEach { activeScene?.elements?.remove(it) }
-        if (keepTrack)
-            activeScene.callManager(token, Element::cmdExistence)
-        else transaction(DAO.database) { token.forEach(Element::delete) }
+        activeScene?.elements?.remove(token)
+        transaction(DAO.database) { token.delete() }
         repaint()
     }
 
@@ -70,7 +68,7 @@ object ViewManager {
         if (selectedElements.isNotEmpty() && selectedElements.size == 1) {
             val newX = (x - (selectedElements[0].hitBox.width / 2))
             val newY = (y - (selectedElements[0].hitBox.height / 2))
-            selectedElements[0].cmdPosition(Position(newX, newY), activeScene!!.commandManager)
+            selectedElements[0].changePosition(Position(newX, newY), activeScene!!.commandManager)
             repaint()
         }
     }
@@ -170,7 +168,7 @@ object ViewManager {
     }
 
     fun toggleVisibility(token: Element, visibility: Boolean? = null) {
-        activeScene.callManager(visibility ?: !token.isVisible, token::cmdVisibility)
+        activeScene.callManager(visibility ?: !token.isVisible, token::changeVisibility)
         repaint()
     }
 

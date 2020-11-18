@@ -41,48 +41,6 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
                 Element[id]
             }
         }
-
-        // --- Command functions ---
-        private data class SavedExistence(val scene: Scene, val blueprint: Blueprint, val position: Position, val size: Size, val visibility: Boolean, val hp: Int?, val mana: Int?)
-
-        fun cmdExistence(elements: List<Element>, manager: CommandManager) {
-            if (elements.isNotEmpty())
-                transaction(DAO.database) {
-                    val savedExistences = elements.map {
-                        SavedExistence(it.scene, it.blueprint, it.position, it.size, it.isVisible, it.currentHP, it.currentMP)
-                    }
-
-                    manager += object : Command() {
-                        override val label = "Supprimer élément" + if (elements.size > 1) "s" else ""
-
-                        var existingElement = elements
-
-                        override fun exec() = transaction(DAO.database) {
-                            existingElement.forEach(Element::delete)
-                        }
-
-                        override fun cancelExec(): Unit = transaction(DAO.database) {
-                            val idElements = mutableListOf<EntityID<Int>>()
-
-                            savedExistences.forEach { existence ->
-                                idElements += InstanceTable.insertAndGetId {
-                                    it[idScene] = existence.scene.id.value
-                                    if (existence.blueprint.isCharacter()) {
-                                        it[currentHP] = existence.hp
-                                        it[currentMP] = existence.mana
-                                    }
-                                    it[idBlueprint] = existence.blueprint.id.value
-                                    it[visible] = existence.visibility.toInt()
-                                    it[idSize] = existence.size.size.id
-                                    it[x] = existence.position.x
-                                    it[y] = existence.position.y
-                                }
-                                existingElement = idElements.map { Element[it] }
-                            }
-                        }
-                    }
-                }
-        }
     }
 
     // Value stored into the database
@@ -173,7 +131,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
     // --- Command functions ---
 
-    fun cmdPosition(position: Position, manager: CommandManager) {
+    fun changePosition(position: Position, manager: CommandManager) {
         val previousPosition = this.position
 
         manager += object : Command() {
@@ -189,7 +147,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         }
     }
 
-    fun cmdDimension(size: Size, manager: CommandManager) {
+    fun changeDimension(size: Size, manager: CommandManager) {
         if (this.size != size) {
             val previousSize = this.size
 
@@ -207,7 +165,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         }
     }
 
-    fun cmdVisibility(visibility: Boolean, manager: CommandManager) {
+    fun changeVisibility(visibility: Boolean, manager: CommandManager) {
         val previousVisibility = this.isVisible
 
         manager += object : Command() {
