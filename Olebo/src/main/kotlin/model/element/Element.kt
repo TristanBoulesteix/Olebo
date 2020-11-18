@@ -53,7 +53,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
                     }
 
                     manager += object : Command() {
-                        override val label = "Modifier la visibilité de l'élément"
+                        override val label = "Supprimer élément" + if (elements.size > 1) "s" else ""
 
                         var existingElement = elements
 
