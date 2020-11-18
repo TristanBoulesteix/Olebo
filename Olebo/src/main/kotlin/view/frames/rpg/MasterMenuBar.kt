@@ -4,6 +4,7 @@ import model.act.Act
 import model.act.Scene
 import model.command.CommandManager
 import model.dao.DAO
+import model.utils.toElements
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.forElse
 import view.frames.editor.elements.BlueprintDialog
@@ -172,7 +173,7 @@ object MasterMenuBar : JMenuBar() {
 
             JMenuItem("Supprimer pion(s) selectionné(s)").applyAndAppendTo(this) {
                 this.addActionListener {
-                    SelectPanel.selectedElements.forEach(ViewManager::removeToken)
+                    ViewManager.removeTokens(SelectPanel.selectedElements)
                 }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0)
             }
@@ -182,8 +183,8 @@ object MasterMenuBar : JMenuBar() {
                     showConfirmMessage(this, "Voulez-vous vraiment supprimer tous les éléments du plateau ? Cette action est irréversible.", "Suppression") {
                         transaction(DAO.database) {
                             for (token in Scene[act!!.sceneId].elements) {
-                                ViewManager.removeToken(token)
-                                transaction(DAO.database) { token.delete() }
+                                ViewManager.removeTokens(token.toElements(), false)
+                                //transaction(DAO.database) { token.delete() }
                                 Thread.sleep(100)
                             }
                         }
