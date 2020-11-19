@@ -62,7 +62,7 @@ object MasterMenuBar : JMenuBar() {
                     for (scene in act!!.scenes) { //Pour chaque scene, on créé une option pour activer la scene
                         i++
                         if (scene.id.value == act!!.sceneId) {
-                            val item = JMenuItem("$i ${scene.name} (Active)")
+                            val item = JMenuItem("$i ${scene.name} (Active)").apply { isEnabled = false }
                             this.add(item)
                         } else {
                             val item = JMenuItem("$i ${scene.name}")
