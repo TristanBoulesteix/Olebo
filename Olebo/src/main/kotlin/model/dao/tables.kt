@@ -122,8 +122,6 @@ object SizeTable : IntIdTable(), Initializable {
     val size = varchar("Size", 10)
     val value = integer("Value")
 
-    val a = arrayOf(size to "10", value to 10)
-
     override fun initialize() {
         if (SizeTable.select((id eq 1) and (size eq "XS") and (value eq 30)).count() <= 0) {
             SizeTable.insert {
