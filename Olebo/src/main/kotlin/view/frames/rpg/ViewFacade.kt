@@ -34,6 +34,7 @@ object ViewFacade {
     }
 
     fun reloadFrames() { //Repaints both frames simultaneously
+        MasterMenuBar.reloadCommandItemLabel()
         MasterFrame.reload()
         PlayerFrame.repaint()
     }

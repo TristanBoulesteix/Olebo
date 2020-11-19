@@ -3,12 +3,14 @@ package viewModel
 import model.act.Act
 import model.act.Scene
 import model.dao.DAO
-import model.element.*
+import model.element.Blueprint
+import model.element.Element
+import model.element.Position
 import model.utils.*
+import org.jetbrains.exposed.sql.transactions.transaction
 import view.frames.rpg.MasterFrame
 import view.frames.rpg.MasterMenuBar
 import view.frames.rpg.ViewFacade
-import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
 
 /**
@@ -16,7 +18,8 @@ import java.awt.Rectangle
  */
 object ViewManager {
     private var activeAct: Act? = null
-    private var activeScene: Scene? = null
+    var activeScene: Scene? = null
+        private set
 
     private var selectedElements = mutableEmptyElements()
 
@@ -65,7 +68,7 @@ object ViewManager {
         if (selectedElements.isNotEmpty() && selectedElements.size == 1) {
             val newX = (x - (selectedElements[0].hitBox.width / 2))
             val newY = (y - (selectedElements[0].hitBox.height / 2))
-            selectedElements[0].position = Position(newX, newY)
+            selectedElements[0].cmdPosition(Position(newX, newY), activeScene!!.commandManager)
             repaint()
         }
     }
@@ -165,15 +168,15 @@ object ViewManager {
     }
 
     fun toggleVisibility(token: Element, visibility: Boolean? = null) {
-        token.isVisible = visibility ?: !token.isVisible
+        activeScene.callManager(visibility ?: !token.isVisible, token::cmdVisibility)
         repaint()
     }
 
     fun rotateRight() = selectedElements.forEach {
-        it.rotateRight()
+        activeScene.callManager(it::cmdOrientationToRight)
     }.also { repaint() }
 
     fun rotateLeft() = selectedElements.forEach {
-        it.rotateLeft()
+        activeScene.callManager(it::cmdOrientationToLeft)
     }.also { repaint() }
 }

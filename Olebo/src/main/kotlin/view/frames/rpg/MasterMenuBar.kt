@@ -2,6 +2,7 @@ package view.frames.rpg
 
 import model.act.Act
 import model.act.Scene
+import model.command.CommandManager
 import model.dao.DAO
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.forElse
@@ -20,6 +21,10 @@ import javax.swing.*
  * This is MasterFrame's menu bar (situated at the top)
  */
 object MasterMenuBar : JMenuBar() {
+    private var undoMenuItem: JMenuItem? = null
+
+    private var redoMenuItem: JMenuItem? = null
+
     var act: Act? = null
 
     var togglePlayerFrameMenuItem: JCheckBoxMenuItem? = null
@@ -29,6 +34,46 @@ object MasterMenuBar : JMenuBar() {
         this.removeAll()
 
         this.add(FileMenu())
+
+        JMenu("Outils").applyAndAppendTo(this) {
+            undoMenuItem = object : JMenuItem("Annuler") {
+                private val baseText = "Annuler"
+
+                override fun setText(text: String) = super.setText("$baseText ${if (text == "") "" else "($text)"}")
+
+                init {
+                    this.isEnabled = false
+                    this.addActionListener {
+                        act?.let {
+                            CommandManager(it.sceneId).undo()
+                            ViewManager.repaint()
+                        }
+                    }
+                    this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Z, CTRL)
+                }
+            }
+
+            this.add(undoMenuItem)
+
+            redoMenuItem = object : JMenuItem("Restaurer") {
+                private val baseText = "Restaurer"
+
+                override fun setText(text: String) = super.setText("$baseText ${if (text == "") "" else "($text)"}")
+
+                init {
+                    this.isEnabled = false
+                    this.addActionListener {
+                        act?.let {
+                            CommandManager(it.sceneId).redo()
+                            ViewManager.repaint()
+                        }
+                    }
+                    this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Y, CTRL)
+                }
+            }
+
+            this.add(redoMenuItem)
+        }
 
         JMenu("Fenêtres").applyAndAppendTo(this) {
             JMenuItem("Fermer scenario").applyAndAppendTo(this) {
@@ -146,6 +191,18 @@ object MasterMenuBar : JMenuBar() {
                 }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, CTRLSHIFT)
             }
+        }
+    }
+
+    fun reloadCommandItemLabel() = CommandManager(act?.sceneId ?: -1).let { manager ->
+        undoMenuItem?.apply {
+            isEnabled = manager.undoLabel != null
+            text = manager.undoLabel ?: ""
+        }
+
+        redoMenuItem?.apply {
+            isEnabled = manager.redoLabel != null
+            text = manager.redoLabel ?: ""
         }
     }
 }

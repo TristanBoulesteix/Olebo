@@ -1,6 +1,8 @@
 package model.element
 
 import model.act.Scene
+import model.command.Command
+import model.command.CommandManager
 import model.dao.DAO
 import model.dao.InstanceTable
 import model.utils.isCharacter
@@ -51,9 +53,9 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     private var currentMP by InstanceTable.currentMP
     private var orientation by InstanceTable.orientation
 
-    var x by InstanceTable.x
-    var y by InstanceTable.y
-    var sizeElement by Size.SizeElement referencedOn InstanceTable.idSize
+    private var x by InstanceTable.x
+    private var y by InstanceTable.y
+    private var sizeElement by Size.SizeElement referencedOn InstanceTable.idSize
 
 
     // Value from the Blueprint
@@ -90,19 +92,19 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
     var isVisible
         get() = transaction(DAO.database) { visible.toBoolean() }
-        set(value) {
+        private set(value) {
             transaction(DAO.database) { visible = value.toInt() }
         }
 
     var size
         get() = transaction(DAO.database) { sizeElement.sizeElement }
-        set(value) {
+        private set(value) {
             transaction(DAO.database) { sizeElement = value.size }
         }
 
     var position
         get() = Position(x, y)
-        set(value) {
+        private set(value) {
             transaction(DAO.database) {
                 x = value.x
                 y = value.y
@@ -119,11 +121,96 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         set(value) = if (this.isCharacter()) currentMP = value
         else throw CharacterException(this::class, "currentMana")
 
-    fun rotateRight() = transaction(DAO.database) {
+    private fun rotateRight() = transaction(DAO.database) {
         orientation = if (orientation >= 270.0) 0.0 else orientation + 90.0
     }
 
-    fun rotateLeft() = transaction(DAO.database) {
+    private fun rotateLeft() = transaction(DAO.database) {
+
         orientation = if (orientation <= 0.0) 270.0 else orientation - 90.0
+    }
+
+    // --- Command functions ---
+
+    fun cmdPosition(position: Position, manager: CommandManager) {
+        val previousPosition = this.position
+
+        manager += object : Command() {
+            override val label = "Déplacer élément"
+
+            override fun exec() {
+                this@Element.position = position
+            }
+
+            override fun cancelExec() {
+                this@Element.position = previousPosition
+            }
+        }
+    }
+
+    fun cmdDimension(size: Size, manager: CommandManager) {
+        if (this.size != size) {
+            val previousSize = this.size
+
+            manager += object : Command() {
+                override val label = "Redimensionner élément"
+
+                override fun exec() {
+                    this@Element.size = size
+                }
+
+                override fun cancelExec() {
+                    this@Element.size = previousSize
+                }
+            }
+        }
+    }
+
+    fun cmdVisibility(visibility: Boolean, manager: CommandManager) {
+        val previousVisibility = this.isVisible
+
+        manager += object : Command() {
+            override val label = "Modifier la visibilité de l'élément"
+
+            override fun exec() {
+                this@Element.isVisible = visibility
+            }
+
+            override fun cancelExec() {
+                this@Element.isVisible = previousVisibility
+            }
+        }
+    }
+
+    fun cmdOrientationToRight(manager: CommandManager) {
+        val previousOrientation = this.orientation
+
+        manager += object : Command() {
+            override val label = "Rotation à droite"
+
+            override fun exec() {
+                this@Element.rotateRight()
+            }
+
+            override fun cancelExec() = transaction(DAO.database) {
+                this@Element.orientation = previousOrientation
+            }
+        }
+    }
+
+    fun cmdOrientationToLeft(manager: CommandManager) {
+        val previousOrientation = this.orientation
+
+        manager += object : Command() {
+            override val label = "Rotation à gauche"
+
+            override fun exec() {
+                this@Element.rotateLeft()
+            }
+
+            override fun cancelExec() = transaction(DAO.database) {
+                this@Element.orientation = previousOrientation
+            }
+        }
     }
 }
