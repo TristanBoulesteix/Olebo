@@ -51,8 +51,8 @@ object ViewManager {
     }
 
     private fun loadCurrentScene() {
-        with(activeAct) activeAct@{
-            activeScene = this!!.scenes.findWithId(this@activeAct.sceneId)
+        with(activeAct!!) activeAct@{
+            activeScene = this.scenes.findWithId(this@activeAct.sceneId)
             ViewFacade.apply {
                 this.loadItems()
                 this.setMapBackground(activeScene!!.background)
