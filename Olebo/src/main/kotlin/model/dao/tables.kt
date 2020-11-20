@@ -114,6 +114,7 @@ object InstanceTable : IntIdTable() {
     val idSize = reference("ID_Size", SizeTable, onDelete = ReferenceOption.CASCADE).default(EntityID(2, SizeTable))
     val visible = integer("Visible").default(0)
     val orientation = double("Orientation").default(0.0)
+    val priority = long("priority").default(0)
     val idScene = integer("ID_Scene").references(SceneTable.id).default(0)
     val idBlueprint = integer("id_blueprint").references(BlueprintTable.id).default(0)
 }

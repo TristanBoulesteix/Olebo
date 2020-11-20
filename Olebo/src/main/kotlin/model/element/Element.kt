@@ -57,6 +57,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     private var y by InstanceTable.y
     private var sizeElement by Size.SizeElement referencedOn InstanceTable.idSize
 
+    var priority by InstanceTable.priority
 
     // Value from the Blueprint
     val sprite
@@ -121,6 +122,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         set(value) = if (this.isCharacter()) currentMP = value
         else throw CharacterException(this::class, "currentMana")
 
+    // --- General functions ---
     private fun rotateRight() = transaction(DAO.database) {
         orientation = if (orientation >= 270.0) 0.0 else orientation + 90.0
     }

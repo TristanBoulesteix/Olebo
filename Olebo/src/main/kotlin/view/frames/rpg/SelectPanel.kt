@@ -71,6 +71,20 @@ object SelectPanel : JPanel() {
         }
     }
 
+    private val priorityUpButton = JButton("Avancer").apply {
+        preferredSize = DIMENSION_BUTTON_DEFAULT
+        addActionListener {
+
+        }
+    }
+
+    private val priorityDownButton = JButton("Reculer").apply {
+        preferredSize = DIMENSION_BUTTON_DEFAULT
+        addActionListener {
+
+        }
+    }
+
     private val visibilityButton = object : JButton() { //Toggles visibility on selected Token
         private val defaultText = "Visibilité"
 
@@ -160,7 +174,7 @@ object SelectPanel : JPanel() {
         this.add(nameLabel, GridBagConstraints().apply {
             this.gridx = 0
             this.gridy = 0
-            this.weightx = 0.5
+            this.weightx = 1.0
             this.insets = Insets(10, 150, 10, 10)
             this.anchor = GridBagConstraints.FIRST_LINE_START
         })
@@ -168,7 +182,7 @@ object SelectPanel : JPanel() {
         this.add(sizeCombo, GridBagConstraints().apply {
             this.gridx = 0
             this.gridy = 1
-            this.weightx = 0.5
+            this.weightx = 1.0
             this.insets = Insets(10, 150, 10, 10)
             this.anchor = GridBagConstraints.FIRST_LINE_START
         })
@@ -177,7 +191,7 @@ object SelectPanel : JPanel() {
             this.gridx = 1
             this.gridy = 0
             this.weightx = 0.5
-            this.insets = Insets(10, 10, 10, 10)
+            this.insets = Insets(5, 5, 5, 5)
             this.anchor = GridBagConstraints.FIRST_LINE_START
         })
 
@@ -185,31 +199,47 @@ object SelectPanel : JPanel() {
             this.gridx = 1
             this.gridy = 1
             this.weightx = 0.5
-            this.insets = Insets(10, 10, 10, 10)
+            this.insets = Insets(5, 5, 5, 5)
+            this.anchor = GridBagConstraints.FIRST_LINE_START
+        })
+
+        this.add(priorityUpButton, GridBagConstraints().apply {
+            this.gridx = 2
+            this.gridy = 0
+            this.weightx = 0.5
+            this.insets = Insets(5, 5, 5, 5)
+            this.anchor = GridBagConstraints.FIRST_LINE_START
+        })
+
+        this.add(priorityDownButton, GridBagConstraints().apply {
+            this.gridx = 2
+            this.gridy = 1
+            this.weightx = 0.5
+            this.insets = Insets(5, 5, 5, 5)
             this.anchor = GridBagConstraints.FIRST_LINE_START
         })
 
         this.add(visibilityButton, GridBagConstraints().apply {
-            this.gridx = 2
+            this.gridx = 3
             this.gridy = 0
             this.weightx = 0.5
-            this.insets = Insets(10, 10, 10, 10)
+            this.insets = Insets(5, 5, 5, 5)
             this.anchor = GridBagConstraints.FIRST_LINE_START
         })
 
         this.add(deleteButton, GridBagConstraints().apply {
-            this.gridx = 2
+            this.gridx = 3
             this.gridy = 1
             this.weightx = 0.5
-            this.insets = Insets(10, 10, 10, 10)
+            this.insets = Insets(5, 5, 5, 5)
             this.anchor = GridBagConstraints.FIRST_LINE_START
         })
 
         slidePanel = JPanel().applyAndAppendTo(this, GridBagConstraints().apply {
-            this.gridx = 3
+            this.gridx = 4
             this.gridy = 0
             this.gridheight = 2
-            this.weightx = 1.0
+            this.weightx = 2.0
             this.insets = Insets(10, 10, 10, 10)
             this.anchor = GridBagConstraints.FIRST_LINE_START
             this.fill = GridBagConstraints.BOTH
