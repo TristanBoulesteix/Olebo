@@ -39,7 +39,7 @@ object ViewManager {
     fun removeToken(token: Element) { //removes given token from MutableList
         selectedElements = mutableEmptyElements()
         ViewFacade.setSelectedToken(null)
-        activeScene?.elements?.remove(token)
+        //activeScene?.elements?.remove(token)
         transaction(DAO.database) { token.delete() }
         repaint()
     }

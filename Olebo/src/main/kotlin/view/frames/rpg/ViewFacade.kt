@@ -46,7 +46,7 @@ object ViewFacade {
         /*TODO: give master frame and player frame the objects relative to the current act*/
     }
 
-    fun placeTokensOnMaps(tokens: MutableList<Element>) { //places tokens on both maps at corresponding points
+    fun placeTokensOnMaps(tokens: List<Element>) { //places tokens on both maps at corresponding points
         PlayerFrame.map = tokens
         MasterFrame.updateMap(tokens)
     }

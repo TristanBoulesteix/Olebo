@@ -2,7 +2,6 @@ package model.act
 
 import model.dao.ActTable
 import model.dao.SceneTable
-import model.utils.DelegateIterable
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.EntityID
@@ -13,7 +12,8 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
     private val scenesIterable by Scene referrersOn SceneTable.idAct
 
     var name by ActTable.name
-    val scenes by DelegateIterable { scenesIterable }
+    val scenes
+        get() = scenesIterable.toMutableList()
     var sceneId by ActTable.idScene
 
     override fun delete() {
