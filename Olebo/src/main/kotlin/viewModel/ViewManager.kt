@@ -179,4 +179,16 @@ object ViewManager {
     fun rotateLeft() = selectedElements.forEach {
         activeScene.callManager(it::cmdOrientationToLeft)
     }.also { repaint() }
+
+    fun zIndexUp() = transaction(DAO.database) {
+        selectedElements.forEach {
+            it.priority++
+        }
+    } .also { repaint() }
+
+    fun zIndexDown() = transaction(DAO.database) {
+        selectedElements.forEach {
+            it.priority--
+        }
+    } .also { repaint() }
 }

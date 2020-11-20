@@ -74,14 +74,14 @@ object SelectPanel : JPanel() {
     private val priorityUpButton = JButton("Avancer").apply {
         preferredSize = DIMENSION_BUTTON_DEFAULT
         addActionListener {
-
+            ViewManager.zIndexUp()
         }
     }
 
     private val priorityDownButton = JButton("Reculer").apply {
         preferredSize = DIMENSION_BUTTON_DEFAULT
         addActionListener {
-
+            ViewManager.zIndexDown()
         }
     }
 
@@ -257,9 +257,7 @@ object SelectPanel : JPanel() {
     fun reload() {
         with(selectedElements) {
             if (this.isNotEmpty()) {
-                rotateRightButton.isEnabled = true
-                rotateLeftButton.isEnabled = true
-                deleteButton.isEnabled = true
+                arrayOf(rotateRightButton, rotateLeftButton, deleteButton, priorityUpButton, priorityDownButton).forEach { it.isEnabled = true }
                 visibilityButton.initialize(false)
                 nameLabel.text = if (this.size == 1) this[0].name else "$size éléments sélectionnés"
 
@@ -269,9 +267,7 @@ object SelectPanel : JPanel() {
                 }
             } else {
                 nameLabel.text = null
-                rotateRightButton.isEnabled = false
-                rotateLeftButton.isEnabled = false
-                deleteButton.isEnabled = false
+                arrayOf(rotateRightButton, rotateLeftButton, deleteButton, priorityUpButton, priorityDownButton).forEach { it.isEnabled = false }
                 visibilityButton.initialize(true)
 
                 lifeSlide.element = null
