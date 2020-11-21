@@ -128,7 +128,7 @@ object ViewManager {
     }
 
     fun selectUp() = with(activeScene!!) {
-        selectedElements = if (selectedElements.isEmpty() && this.elements.size > 0) {
+        selectedElements = if (selectedElements.isEmpty() && this.elements.isNotEmpty()) {
             this.elements[0].toElements()
         } else {
             fun Int.plusOne(list: Elements) = if (this == list.size - 1) 0 else this + 1
@@ -146,7 +146,7 @@ object ViewManager {
 
     fun selectDown() {
         with(activeScene!!) {
-            selectedElements = if (selectedElements.isEmpty() && this.elements.size > 0) {
+            selectedElements = if (selectedElements.isEmpty() && this.elements.isNotEmpty()) {
                 this.elements[0].toElements()
             } else {
                 fun Int.minusOne(list: Elements) = if (this == 0) list.size - 1 else this - 1
@@ -184,11 +184,11 @@ object ViewManager {
         selectedElements.forEach {
             it.priority++
         }
-    } .also { repaint() }
+    }.also { repaint() }
 
     fun zIndexDown() = transaction(DAO.database) {
         selectedElements.forEach {
             it.priority--
         }
-    } .also { repaint() }
+    }.also { repaint() }
 }
