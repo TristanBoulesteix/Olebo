@@ -8,7 +8,7 @@ import model.element.Blueprint
 import model.element.Element
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
-import org.jetbrains.exposed.dao.EntityID
+import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.io.File
@@ -52,7 +52,7 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
         get() = CommandManager(id.value)
 
     val elements: List<Element>
-        get() = transaction(DAO.database) { elementIterable.toMutableList() }.sortedBy { it.priority }
+        get() = transaction(DAO.database) { elementIterable.toMutableList().sortedBy { it.priority } }
     var name by SceneTable.name
     var background by SceneTable.background
     var idAct by SceneTable.idAct

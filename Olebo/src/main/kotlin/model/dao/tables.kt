@@ -1,7 +1,7 @@
 package model.dao
 
-import org.jetbrains.exposed.dao.EntityID
-import org.jetbrains.exposed.dao.IntIdTable
+import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
@@ -12,7 +12,7 @@ import org.jetbrains.exposed.sql.select
  * List of all tables in the database
  * Put them in order of initialization
  */
-val tables by lazy { arrayOf(ActTable, SceneTable, TypeTable, BlueprintTable, InstanceTable, SizeTable, SettingsTable) }
+val tables by lazy { arrayOf(ActTable, SceneTable, TypeTable, BlueprintTable, PriorityTable, SizeTable, InstanceTable, SettingsTable) }
 
 interface Initializable {
     fun initialize()
@@ -106,6 +106,33 @@ object TypeTable : IntIdTable(), Initializable {
     }
 }
 
+object PriorityTable : IntIdTable(), Initializable {
+    val priority = varchar("priority", 10)
+
+    override fun initialize() {
+        if (PriorityTable.select((id eq 1) and (priority eq "LOW")).count() <= 0) {
+            PriorityTable.insert {
+                it[id] = EntityID(1, PriorityTable)
+                it[priority] = "LOW"
+            }
+        }
+
+        if (PriorityTable.select((id eq 2) and (priority eq "NORMAL")).count() <= 0) {
+            PriorityTable.insert {
+                it[id] = EntityID(2, PriorityTable)
+                it[priority] = "NORMAL"
+            }
+        }
+
+        if (PriorityTable.select((id eq 3) and (priority eq "HIGH")).count() <= 0) {
+            PriorityTable.insert {
+                it[id] = EntityID(3, PriorityTable)
+                it[priority] = "HIGH"
+            }
+        }
+    }
+}
+
 object InstanceTable : IntIdTable() {
     val currentHP = integer("current_HP").nullable()
     val currentMP = integer("current_MP").nullable()
@@ -114,7 +141,7 @@ object InstanceTable : IntIdTable() {
     val idSize = reference("ID_Size", SizeTable, onDelete = ReferenceOption.CASCADE).default(EntityID(2, SizeTable))
     val visible = integer("Visible").default(0)
     val orientation = double("Orientation").default(0.0)
-    val priority = long("priority").default(0)
+    val priority = reference("id_priority", PriorityTable, onDelete = ReferenceOption.CASCADE).default(EntityID(2, PriorityTable))
     val idScene = integer("ID_Scene").references(SceneTable.id).default(0)
     val idBlueprint = integer("id_blueprint").references(BlueprintTable.id).default(0)
 }
@@ -126,7 +153,7 @@ object SizeTable : IntIdTable(), Initializable {
     override fun initialize() {
         if (SizeTable.select((id eq 1) and (size eq "XS") and (value eq 30)).count() <= 0) {
             SizeTable.insert {
-                it[id] = EntityID(1, TypeTable)
+                it[id] = EntityID(1, SizeTable)
                 it[size] = "XS"
                 it[value] = 30
             }
@@ -134,7 +161,7 @@ object SizeTable : IntIdTable(), Initializable {
 
         if (SizeTable.select((id eq 2) and (size eq "S") and (value eq 60)).count() <= 0) {
             SizeTable.insert {
-                it[id] = EntityID(2, TypeTable)
+                it[id] = EntityID(2, SizeTable)
                 it[size] = "S"
                 it[value] = 60
             }
@@ -142,7 +169,7 @@ object SizeTable : IntIdTable(), Initializable {
 
         if (SizeTable.select((id eq 3) and (size eq "M") and (value eq 120)).count() <= 0) {
             SizeTable.insert {
-                it[id] = EntityID(3, TypeTable)
+                it[id] = EntityID(3, SizeTable)
                 it[size] = "M"
                 it[value] = 120
             }

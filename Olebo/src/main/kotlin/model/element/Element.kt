@@ -11,7 +11,7 @@ import model.utils.toBoolean
 import model.utils.toInt
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
-import org.jetbrains.exposed.dao.EntityID
+import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.CharacterException
@@ -56,8 +56,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     private var x by InstanceTable.x
     private var y by InstanceTable.y
     private var sizeElement by Size.SizeElement referencedOn InstanceTable.idSize
-
-    var priority by InstanceTable.priority
+    private var priorityElement by Priority.PriorityElement referencedOn InstanceTable.priority
 
     // Value from the Blueprint
     val sprite
@@ -103,6 +102,12 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             transaction(DAO.database) { sizeElement = value.size }
         }
 
+    var priority
+        get() = transaction(DAO.database) { priorityElement.priorityElement }
+        set(value) {
+            transaction(DAO.database) { priorityElement = value.priority }
+        }
+
     var position
         get() = Position(x, y)
         private set(value) {
@@ -128,7 +133,6 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     }
 
     private fun rotateLeft() = transaction(DAO.database) {
-
         orientation = if (orientation <= 0.0) 270.0 else orientation - 90.0
     }
 

@@ -6,6 +6,7 @@ import model.dao.DAO
 import model.element.Blueprint
 import model.element.Element
 import model.element.Position
+import model.element.Priority
 import model.utils.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import view.frames.rpg.MasterFrame
@@ -182,13 +183,13 @@ object ViewManager {
 
     fun zIndexUp() = transaction(DAO.database) {
         selectedElements.forEach {
-            it.priority++
+            it.priority = Priority.HIGH
         }
     }.also { repaint() }
 
     fun zIndexDown() = transaction(DAO.database) {
         selectedElements.forEach {
-            it.priority--
+            it.priority = Priority.LOW
         }
     }.also { repaint() }
 }

@@ -2,8 +2,8 @@ package model.dao
 
 import model.utils.toBoolean
 import org.jetbrains.exposed.dao.EntityClass
-import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.IntEntity
+import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class Settings(id: EntityID<Int>) : IntEntity(id) {

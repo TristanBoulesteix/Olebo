@@ -4,7 +4,7 @@ import model.dao.DAO
 import model.dao.SizeTable
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
-import org.jetbrains.exposed.dao.EntityID
+import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.transaction
 
 /**
@@ -29,7 +29,7 @@ enum class Size(val size: SizeElement) {
         /**
          * Get the enum which is linked to the databse
          *
-         * @see jdr.exia.model.element.Size
+         * @see model.element.Size
          */
         val sizeElement
             get() = valueOf(sizeName)

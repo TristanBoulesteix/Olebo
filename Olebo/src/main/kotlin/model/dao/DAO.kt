@@ -41,8 +41,6 @@ object DAO {
                     }
                 }
             }
-
-
         } catch (e: Exception) {
             throw  DatabaseException(e)
         }

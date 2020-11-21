@@ -4,7 +4,7 @@ import model.dao.DAO
 import model.dao.TypeTable
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
-import org.jetbrains.exposed.dao.EntityID
+import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.transaction
 
 /**
@@ -35,7 +35,7 @@ enum class Type(val type: TypeElement, val typeName: String) {
          * @see model.element.Type
          */
         val typeElement
-            get() = when(this.actualName) {
+            get() = when (this.actualName) {
                 "Basic" -> BASIC
                 "PJ" -> PJ
                 "PNJ" -> PNJ
