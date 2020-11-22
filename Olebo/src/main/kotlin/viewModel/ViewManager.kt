@@ -173,13 +173,9 @@ object ViewManager {
         repaint()
     }
 
-    fun rotateRight() = selectedElements.forEach {
-        activeScene.callManager(it::cmdOrientationToRight)
-    }.also { repaint() }
+    fun rotateRight() = activeScene.callManager(selectedElements, Element::cmdOrientationToRight).also { repaint() }
 
-    fun rotateLeft() = selectedElements.forEach {
-        activeScene.callManager(it::cmdOrientationToLeft)
-    }.also { repaint() }
+    fun rotateLeft() = activeScene.callManager(selectedElements, Element::cmdOrientationToLeft).also { repaint() }
 
     fun updatePriorityToken(priority: Priority) = selectedElements.forEach {
         it.priority = priority

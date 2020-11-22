@@ -20,17 +20,6 @@ import javax.swing.border.EmptyBorder
  */
 object SelectPanel : JPanel() {
     var selectedElements = listOf<Element>()
-        set(value) {
-            field = value
-
-            if (selectedElements.isNotEmpty()) {
-                if (selectedElements.size == 1) {
-                    sizeCombo.selectedItem = selectedElements[0].size.name
-                }
-            } else {
-                sizeCombo.selectedItem = null
-            }
-        }
 
     private val slidePanel: JPanel
 
@@ -124,32 +113,30 @@ object SelectPanel : JPanel() {
     private val sizeCombo = object : JComboBox<String>(arrayOf("XS", "S", "M", "L", "XL", "XXL")) {
         init {
             addActionListener { _ ->
-                selectedElements.forEach {
-                    if (selectedItem != it.size) {
-                        val newSize = when (this.selectedItem) {
-                            "XS" -> Size.XS
-                            "S" -> Size.S
-                            "M" -> Size.M
-                            "L" -> Size.L
-                            "XL" -> Size.XL
-                            "XXL" -> Size.XXL
-                            else -> it.size
-                        }
-                        ViewManager.activeScene.callManager(newSize, it::cmdDimension)
+                with(selectedElements.filter { it.size != selectedItem }) {
+                    val newSize = when (selectedItem) {
+                        "XS" -> Size.XS
+                        "S" -> Size.S
+                        "M" -> Size.M
+                        "L" -> Size.L
+                        "XL" -> Size.XL
+                        "XXL" -> Size.XXL
+                        else -> Size.DEFAULT
                     }
+                    ViewManager.activeScene.callManager(newSize, this, Element::cmdDimension)
                 }
                 ViewManager.repaint()
             }
             border = EmptyBorder(0, 0, 0, 0)
         }
 
-        override fun setSelectedItem(element: Any?) {
-            if (element == null) {
+        override fun setSelectedItem(selected: Any?) {
+            if (selected == null) {
                 this.isEnabled = false
                 super.setSelectedItem("S")
             } else {
                 this.isEnabled = true
-                super.setSelectedItem(element)
+                super.setSelectedItem(if (selected is List<*> && selected[0] is Element) (selected[0] as Element).size.name else if (selected is String) selected else "S")
             }
         }
     }
@@ -291,6 +278,8 @@ object SelectPanel : JPanel() {
                 visibilityButton.initialize(false)
                 nameLabel.text = if (this.size == 1) this[0].name else "$size éléments sélectionnés"
 
+                sizeCombo.selectedItem = this
+
                 if (this.size == 1) {
                     lifeSlide.element = this[0]
                     manaSlide.element = this[0]
@@ -307,6 +296,7 @@ object SelectPanel : JPanel() {
                 priorityRadioButtons.forEach { it.isSelected = false }
                 priorityInvisibleButton.isSelected = true
                 visibilityButton.initialize(true)
+                sizeCombo.selectedItem = null
 
                 lifeSlide.element = null
                 manaSlide.element = null

@@ -5,7 +5,9 @@ import model.command.Command
 import model.command.CommandManager
 import model.dao.DAO
 import model.dao.InstanceTable
-import model.utils.*
+import model.utils.Elements
+import model.utils.isCharacter
+import model.utils.rotate
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -44,23 +46,91 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         fun cmdVisiblity(visibility: Boolean, manager: CommandManager, elements: Elements) {
             val previousVisibilities = elements.map { it.isVisible }
 
-            val plr = if(elements.size == 1) "" else "s"
+            val plr = if (elements.size == 1) "" else "s"
 
             manager += object : Command() {
                 override val label = "Modifier la visiblité de$plr élément$plr"
 
                 override fun exec() {
                     elements.forEach {
-                        it.isVisible = visibility
+                        if (it.stillExist())
+                            it.isVisible = visibility
                     }
                 }
 
                 override fun cancelExec() {
                     elements.forEachIndexed { index, element ->
-                        element.isVisible = previousVisibilities[index]
+                        if (element.stillExist())
+                            element.isVisible = previousVisibilities[index]
                     }
                 }
             }
+        }
+
+        fun cmdOrientationToRight(manager: CommandManager, elements: Elements) {
+            val previousOrientation = elements.map { it.orientation }
+
+            manager += object : Command() {
+                override val label = "Rotation à droite"
+
+                override fun exec() {
+                    elements.forEach {
+                        if (it.stillExist())
+                            it.rotateRight()
+                    }
+                }
+
+                override fun cancelExec() = transaction(DAO.database) {
+                    elements.forEachIndexed { index, element ->
+                        if (element.stillExist())
+                            element.refresh()
+                        element.orientation = previousOrientation[index]
+                    }
+                }
+            }
+        }
+
+        fun cmdOrientationToLeft(manager: CommandManager, elements: Elements) {
+            val previousOrientation = elements.map { it.orientation }
+
+            manager += object : Command() {
+                override val label = "Rotation à gauche"
+
+                override fun exec() = elements.forEach {
+                    if (it.stillExist())
+                        it.rotateLeft()
+                }
+
+                override fun cancelExec() = transaction(DAO.database) {
+                    elements.forEachIndexed { index, element ->
+                        if (element.stillExist())
+                            element.orientation = previousOrientation[index]
+                    }
+                }
+            }
+        }
+
+        fun cmdDimension(size: Size, manager: CommandManager, elements: Elements) {
+            val elementsFiltered = elements.filter { it.size != size }
+
+            val previousSize = elementsFiltered.map { it.size }
+
+            val plr = if (elements.size == 1) "" else "s"
+
+            if (elementsFiltered.isNotEmpty())
+                manager += object : Command() {
+                    override val label = "Redimensionner élément$plr"
+
+                    override fun exec() = elementsFiltered.forEach {
+                        if (it.stillExist())
+                            it.size = size
+                    }
+
+                    override fun cancelExec() = elementsFiltered.forEachIndexed { index, element ->
+                        if (element.stillExist())
+                            element.size = previousSize[index]
+                    }
+                }
         }
     }
 
@@ -69,7 +139,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     var scene by Scene referencedOn InstanceTable.idScene
 
     // Variables stored into the database
-    private var visible by InstanceTable.visible
+    private var visibleValue by InstanceTable.visible
     private var currentHP by InstanceTable.currentHP
     private var currentMP by InstanceTable.currentMP
     private var orientation by InstanceTable.orientation
@@ -112,9 +182,9 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         }
 
     var isVisible
-        get() = transaction(DAO.database) { visible.toBoolean() }
+        get() = transaction(DAO.database) { visibleValue }
         private set(value) {
-            transaction(DAO.database) { visible = value.toInt() }
+            transaction(DAO.database) { visibleValue = value }
         }
 
     var size
@@ -170,58 +240,11 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             }
 
             override fun cancelExec() {
-                this@Element.position = previousPosition
+                if (stillExist())
+                    this@Element.position = previousPosition
             }
         }
     }
 
-    fun cmdDimension(size: Size, manager: CommandManager) {
-        if (this.size != size) {
-            val previousSize = this.size
-
-            manager += object : Command() {
-                override val label = "Redimensionner élément"
-
-                override fun exec() {
-                    this@Element.size = size
-                }
-
-                override fun cancelExec() {
-                    this@Element.size = previousSize
-                }
-            }
-        }
-    }
-
-    fun cmdOrientationToRight(manager: CommandManager) {
-        val previousOrientation = this.orientation
-
-        manager += object : Command() {
-            override val label = "Rotation à droite"
-
-            override fun exec() {
-                this@Element.rotateRight()
-            }
-
-            override fun cancelExec() = transaction(DAO.database) {
-                this@Element.orientation = previousOrientation
-            }
-        }
-    }
-
-    fun cmdOrientationToLeft(manager: CommandManager) {
-        val previousOrientation = this.orientation
-
-        manager += object : Command() {
-            override val label = "Rotation à gauche"
-
-            override fun exec() {
-                this@Element.rotateLeft()
-            }
-
-            override fun cancelExec() = transaction(DAO.database) {
-                this@Element.orientation = previousOrientation
-            }
-        }
-    }
+    private fun stillExist() = transaction(DAO.database) { Element.findById(this@Element.id) != null }
 }

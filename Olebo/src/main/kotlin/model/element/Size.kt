@@ -17,6 +17,10 @@ enum class Size(val size: SizeElement) {
     L(transaction(DAO.database) { SizeElement[4] }), XL(transaction(DAO.database) { SizeElement[5] }),
     XXL(transaction(DAO.database) { SizeElement[6] });
 
+    companion object {
+        val DEFAULT = S
+    }
+
     /**
      * This class is the link between the enum and the databse
      */
