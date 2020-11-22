@@ -43,13 +43,6 @@ class Settings(id: EntityID<Int>) : IntEntity(id) {
                 this@Companion[CURSOR_ENABLED] = value
             }
 
-        operator fun plusAssign(setting: Pair<String, Any?>) {
-            this.new {
-                this.name = setting.first
-                this.value = setting.second?.toString() ?: ""
-            }
-        }
-
         operator fun get(setting: String) = this.find { SettingsTable.name eq setting }.firstOrNull()?.value
 
         operator fun set(setting: String, value: Any?) {
@@ -57,6 +50,5 @@ class Settings(id: EntityID<Int>) : IntEntity(id) {
         }
     }
 
-    private var name by SettingsTable.name
     private var value by SettingsTable.value
 }
