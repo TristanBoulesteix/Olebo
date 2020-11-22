@@ -3,6 +3,7 @@ package view.frames.rpg
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import model.dao.Settings
 import model.element.Element
 import model.utils.Elements
 import model.utils.emptyElements
@@ -57,7 +58,8 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
         if (!isMasterMapPanel)
             GlobalScope.launch {
                 while (true) {
-                    repaint()
+                    if (Settings.cursorEnabled)
+                        repaint()
                     delay(75L)
                 }
             }

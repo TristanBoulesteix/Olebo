@@ -4,6 +4,7 @@ import model.act.Act
 import model.act.Scene
 import model.command.CommandManager
 import model.dao.DAO
+import model.dao.Settings
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.forElse
 import view.frames.editor.elements.BlueprintDialog
@@ -14,6 +15,7 @@ import view.utils.applyAndAppendTo
 import view.utils.components.FileMenu
 import view.utils.showConfirmMessage
 import viewModel.ViewManager
+import java.awt.event.ItemEvent
 import java.awt.event.KeyEvent
 import javax.swing.*
 
@@ -36,6 +38,15 @@ object MasterMenuBar : JMenuBar() {
         this.add(FileMenu())
 
         JMenu("Outils").applyAndAppendTo(this) {
+            JCheckBoxMenuItem("Activer le curseur joueur").applyAndAppendTo(this) {
+                this.isSelected = Settings.cursorEnabled
+                this.addItemListener {
+                    Settings.cursorEnabled = it.stateChange == ItemEvent.SELECTED
+                }
+            }
+
+            this.add(JSeparator())
+
             undoMenuItem = object : JMenuItem("Annuler") {
                 private val baseText = "Annuler"
 

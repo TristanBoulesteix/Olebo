@@ -1,5 +1,9 @@
 package model.dao
 
+import model.dao.SettingsTable.AUTO_UPDATE
+import model.dao.SettingsTable.BASE_VERSION
+import model.dao.SettingsTable.CURSOR_ENABLED
+import model.dao.SettingsTable.UPDATE_WARN
 import model.utils.toBoolean
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.IntEntity
@@ -10,27 +14,33 @@ class Settings(id: EntityID<Int>) : IntEntity(id) {
     companion object : EntityClass<Int, Settings>(SettingsTable) {
         var databaseVersion
             get() = transaction(DAO.database) {
-                this@Companion["baseVersion"]
+                this@Companion[BASE_VERSION]
                         ?: throw NullPointerException("Erreur de base de données ! Valeur manquante.")
             }
             set(value) {
                 transaction(DAO.database) {
-                    this@Companion["baseVersion"] = value
+                    this@Companion[BASE_VERSION] = value
                 }
             }
 
         var autoUpdate
-            get() = transaction(DAO.database) { this@Companion["autoUpdate"] }.toBoolean()
+            get() = transaction(DAO.database) { this@Companion[AUTO_UPDATE] }.toBoolean()
             set(value) {
                 transaction(DAO.database) {
-                    this@Companion["autoUpdate"] = value.toString()
+                    this@Companion[AUTO_UPDATE] = value
                 }
             }
 
         var updateWarn
-            get() = transaction(DAO.database) { this@Companion["updateWarn"] } ?: ""
+            get() = transaction(DAO.database) { this@Companion[UPDATE_WARN] } ?: ""
             set(value) = transaction(DAO.database) {
-                this@Companion["updateWarn"] = value
+                this@Companion[UPDATE_WARN] = value
+            }
+
+        var cursorEnabled
+            get() = transaction(DAO.database) { this@Companion[CURSOR_ENABLED].toBoolean() }
+            set(value) = transaction(DAO.database) {
+                this@Companion[CURSOR_ENABLED] = value
             }
 
         operator fun plusAssign(setting: Pair<String, Any?>) {

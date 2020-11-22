@@ -202,33 +202,44 @@ object SizeTable : IntIdTable(), Initializable {
 }
 
 object SettingsTable : IntIdTable(), Initializable {
+    const val BASE_VERSION = "baseVersion"
+    const val AUTO_UPDATE = "autoUpdate"
+    const val UPDATE_WARN = "updateWarn"
+    const val CURSOR_ENABLED = "cursorEnabled"
+
     val name = varchar("name", 255)
     val value = varchar("value", 255).default("")
 
     override fun initialize() {
-        if (SettingsTable.select((id eq 1) and (name eq "baseVersion")).count() <= 0) {
+        if (SettingsTable.select((id eq 1) and (name eq BASE_VERSION)).count() <= 0) {
             SettingsTable.insert {
                 it[id] = EntityID(1, SettingsTable)
-                it[name] = "baseVersion"
+                it[name] = BASE_VERSION
                 it[value] = "1.0.0"
             }
         }
 
-        if (SettingsTable.select((id eq 2) and (name eq "autoUpdate")).count() <= 0) {
+        if (SettingsTable.select((id eq 2) and (name eq AUTO_UPDATE)).count() <= 0) {
             SettingsTable.insert {
                 it[id] = EntityID(2, SettingsTable)
-                it[name] = "autoUpdate"
+                it[name] = AUTO_UPDATE
                 it[value] = true.toString()
             }
         }
 
-        val updateWarnCondition = name eq "updateWarn"
-
-        if (SettingsTable.select((id eq 3) and (updateWarnCondition)).count() <= 0) {
+        if (SettingsTable.select((id eq 3) and (name eq UPDATE_WARN)).count() <= 0) {
             SettingsTable.insert {
                 it[id] = EntityID(3, SettingsTable)
-                it[name] = "updateWarn"
+                it[name] = UPDATE_WARN
                 it[value] = ""
+            }
+        }
+
+        if (SettingsTable.select((id eq 4) and (name eq CURSOR_ENABLED)).count() <= 0) {
+            SettingsTable.insert {
+                it[id] = EntityID(4, SettingsTable)
+                it[name] = CURSOR_ENABLED
+                it[value] = true.toString()
             }
         }
     }
