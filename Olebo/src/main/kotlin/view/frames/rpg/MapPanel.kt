@@ -1,5 +1,8 @@
 package view.frames.rpg
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import model.element.Element
 import model.utils.Elements
 import model.utils.emptyElements
@@ -50,6 +53,14 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
                 }
             })
         addMouseListener(this)
+
+        if (!isMasterMapPanel)
+            GlobalScope.launch {
+                while (true) {
+                    repaint()
+                    delay(50L)
+                }
+            }
     }
 
     private fun relativeX(absoluteX: Int): Int { //translates an X coordinate in 1600:900px to proportional coords according to this window's size
@@ -71,6 +82,8 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
     fun updateTokens(tokens: Elements) { //Gets the current token display up to date
         this.tokens = tokens
     }
+
+    fun getAbsolutePoint(point: Point) = Point(absoluteX(point.x), absoluteY(point.y))
 
     override fun paintComponent(g: Graphics) {
         (g as Graphics2D).drawImage(
@@ -103,6 +116,12 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
             g.color = Color(255, 255, 255, 150)
             g.fill(selectedArea)
         }
+
+        if (!isMasterMapPanel)
+            with(ViewManager.cursorPoint) {
+                println(this)
+                g.fillOval(relativeX(this.x), relativeY(this.y), 10, 10)
+            }
     }
 
 

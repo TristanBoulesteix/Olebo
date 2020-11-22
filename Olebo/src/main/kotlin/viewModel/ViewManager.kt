@@ -12,6 +12,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import view.frames.rpg.MasterFrame
 import view.frames.rpg.MasterMenuBar
 import view.frames.rpg.ViewFacade
+import java.awt.Point
 import java.awt.Rectangle
 
 /**
@@ -23,6 +24,8 @@ object ViewManager {
         private set
 
     private var selectedElements = mutableEmptyElements()
+
+    var cursorPoint = Point()
 
     /**
      * Get the list of all blueprints
@@ -40,7 +43,6 @@ object ViewManager {
     fun removeToken(token: Element) { //removes given token from MutableList
         selectedElements = mutableEmptyElements()
         ViewFacade.setSelectedToken(null)
-        //activeScene?.elements?.remove(token)
         transaction(DAO.database) { token.delete() }
         repaint()
     }

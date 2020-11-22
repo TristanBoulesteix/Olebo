@@ -1,6 +1,7 @@
 package view.frames.rpg
 
 import model.element.Element
+import model.utils.Elements
 import viewModel.ViewManager
 
 /**
@@ -41,12 +42,10 @@ object ViewFacade {
 
     fun turnVisible() { /*this method activates the Player and GM frames to initiate/start back an act	*/
         MasterFrame.isVisible = true
-
-
         /*TODO: give master frame and player frame the objects relative to the current act*/
     }
 
-    fun placeTokensOnMaps(tokens: List<Element>) { //places tokens on both maps at corresponding points
+    fun placeTokensOnMaps(tokens: Elements) { //places tokens on both maps at corresponding points
         PlayerFrame.map = tokens
         MasterFrame.updateMap(tokens)
     }
