@@ -87,15 +87,18 @@ fun zipOleboDirectory(fileDestination: File) {
     ZipOutputStream(BufferedOutputStream(FileOutputStream(outputTempZip))).use { zos ->
         oleboDirectory.walkTopDown().forEach { file ->
             val zipFileName = file.absolutePath.removePrefix(oleboDirectory.absolutePath).removePrefix(File.separator)
-            if(zipFileName.isNotBlank()) {
-                val entry = ZipEntry( "$zipFileName${(if (file.isDirectory) "/" else "" )}")
+            if (zipFileName.isNotBlank() && file.nameWithoutExtension != "oleboUpdater") {
+                val entry = ZipEntry("$zipFileName${(if (file.isDirectory) "/" else "")}")
                 zos.putNextEntry(entry)
-                if (file.isFile && file != File(updaterPath)) {
+                if (file.isFile) {
                     file.inputStream().copyTo(zos)
                 }
             }
         }
     }
 
-    outputTempZip.copyTo(fileDestination, true)
+    if (fileDestination.exists())
+        fileDestination.deleteRecursively()
+
+    outputTempZip.copyRecursively(fileDestination)
 }
