@@ -98,9 +98,7 @@ object SelectPanel : JPanel() {
                     selectedElements.isNotEmpty() -> !conditionVisibility
                     else -> null
                 }
-                selectedElements.forEach {
-                    ViewManager.toggleVisibility(it, visibility)
-                }
+                ViewManager.toggleVisibility(selectedElements, visibility)
             }
         }
 

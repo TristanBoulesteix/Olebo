@@ -5,10 +5,7 @@ import model.command.Command
 import model.command.CommandManager
 import model.dao.DAO
 import model.dao.InstanceTable
-import model.utils.isCharacter
-import model.utils.rotate
-import model.utils.toBoolean
-import model.utils.toInt
+import model.utils.*
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -39,6 +36,30 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
                 }
 
                 Element[id]
+            }
+        }
+
+        // --- Command functions ---
+
+        fun cmdVisiblity(visibility: Boolean, manager: CommandManager, elements: Elements) {
+            val previousVisibilities = elements.map { it.isVisible }
+
+            val plr = if(elements.size == 1) "" else "s"
+
+            manager += object : Command() {
+                override val label = "Modifier la visiblité de$plr élément$plr"
+
+                override fun exec() {
+                    elements.forEach {
+                        it.isVisible = visibility
+                    }
+                }
+
+                override fun cancelExec() {
+                    elements.forEachIndexed { index, element ->
+                        element.isVisible = previousVisibilities[index]
+                    }
+                }
             }
         }
     }
@@ -168,22 +189,6 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
                 override fun cancelExec() {
                     this@Element.size = previousSize
                 }
-            }
-        }
-    }
-
-    fun cmdVisibility(visibility: Boolean, manager: CommandManager) {
-        val previousVisibility = this.isVisible
-
-        manager += object : Command() {
-            override val label = "Modifier la visibilité de l'élément"
-
-            override fun exec() {
-                this@Element.isVisible = visibility
-            }
-
-            override fun cancelExec() {
-                this@Element.isVisible = previousVisibility
             }
         }
     }
