@@ -119,7 +119,6 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
 
         if (!isMasterMapPanel)
             with(ViewManager.cursorPoint) {
-                println(this)
                 g.fillOval(relativeX(this.x), relativeY(this.y), 10, 10)
             }
     }
