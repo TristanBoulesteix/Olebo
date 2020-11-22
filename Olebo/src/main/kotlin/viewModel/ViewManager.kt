@@ -85,21 +85,20 @@ object ViewManager {
         repaint()
     }
 
-    private fun getTokenFromXY(x: Int, y: Int): Element? {//Receives a clicked point (x,y), returns the first soken found in the Tokens array, or null if none matched
-        activeScene!!.elements.forEach {
-            if (it.hitBox.contains(x, y)) {
-                return it
-            }
-        }
-        return null
-    }
+    /**
+     * Receives a clicked point (x,y), returns the first soken found in the Tokens array, or null if none matched
+     */
+    private fun getTokenFromXY(x: Int, y: Int) = activeScene!!.elements.filter { it.hitBox.contains(x, y) }.maxByOrNull { it.priority }
 
     fun repaint() {
         updateTokens()
         ViewFacade.reloadFrames()
     }
 
-    fun selectElement(x: Int, y: Int) { //cheks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
+    /**
+     * Checks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
+     */
+    fun selectElement(x: Int, y: Int) {
         selectedElements = getTokenFromXY(x, y)?.toElements() ?: mutableEmptyElements()
         if (selectedElements.isNotEmpty()) {
             ViewFacade.setSelectedToken(selectedElements[0])
