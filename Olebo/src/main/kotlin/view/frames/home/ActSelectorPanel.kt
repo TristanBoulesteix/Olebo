@@ -2,7 +2,7 @@ package view.frames.home
 
 import viewModel.HomeManager
 import model.dao.DAO
-import model.utils.getIcon
+import model.dao.getIcon
 import view.utils.components.ItemPanel
 import view.utils.components.SelectorPanel
 import view.utils.event.ClickListener

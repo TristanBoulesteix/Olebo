@@ -3,7 +3,6 @@ package model.dao
 import model.act.Act
 import model.element.Blueprint
 import model.element.Type
-import model.utils.OLEBO_DIRECTORY
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils

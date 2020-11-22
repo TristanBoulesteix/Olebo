@@ -1,13 +1,21 @@
-package model.utils
+package model.dao
 
 import main
+import java.io.BufferedOutputStream
 import java.io.File
+import java.io.FileOutputStream
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 import javax.swing.ImageIcon
 
 /**
  * Path to the Olebo directory
  */
 val OLEBO_DIRECTORY = "${appDatas}Olebo${File.separator}"
+
+val imgPath = OLEBO_DIRECTORY + "img${File.separator}"
+
+val updaterPath = "${OLEBO_DIRECTORY}oleboUpdater.jar"
 
 /**
  * Get icon from name in ressources
@@ -28,7 +36,7 @@ fun saveImg(path: String): String {
     val img = File.createTempFile(
             "img_",
             "_background.png",
-            File(OLEBO_DIRECTORY + "img${File.separator}").apply { this.mkdirs() }
+            File(imgPath).apply { this.mkdirs() }
     )
 
     File(path).copyTo(img, true)
@@ -61,7 +69,7 @@ val jarPath: String
 
 val oleboUpdater: String
     get() {
-        val jar = File("${OLEBO_DIRECTORY}oleboUpdater.jar")
+        val jar = File(updaterPath)
 
         ::main.javaClass.classLoader.getResourceAsStream("updater/OleboUpdater.jar")!!.use { input ->
             jar.outputStream().use { output ->
@@ -71,3 +79,23 @@ val oleboUpdater: String
 
         return jar.absolutePath
     }
+
+fun zipOleboDirectory(fileDestination: File) {
+    val oleboDirectory = File(OLEBO_DIRECTORY)
+    val outputTempZip = File.createTempFile("Olebo", ".olebo")
+
+    ZipOutputStream(BufferedOutputStream(FileOutputStream(outputTempZip))).use { zos ->
+        oleboDirectory.walkTopDown().forEach { file ->
+            val zipFileName = file.absolutePath.removePrefix(oleboDirectory.absolutePath).removePrefix(File.separator)
+            if(zipFileName.isNotBlank()) {
+                val entry = ZipEntry( "$zipFileName${(if (file.isDirectory) "/" else "" )}")
+                zos.putNextEntry(entry)
+                if (file.isFile && file != File(updaterPath)) {
+                    file.inputStream().copyTo(zos)
+                }
+            }
+        }
+    }
+
+    outputTempZip.copyTo(fileDestination, true)
+}

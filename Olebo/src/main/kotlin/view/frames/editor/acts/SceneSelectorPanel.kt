@@ -1,6 +1,6 @@
 package view.frames.editor.acts
 
-import model.utils.getIcon
+import model.dao.getIcon
 import view.utils.components.ItemPanel
 import view.utils.components.SelectorPanel
 import viewModel.ActCreatorManager

@@ -1,7 +1,7 @@
 package view.utils.factories
 
 import viewModel.BlueprintManager
-import model.utils.getIcon
+import model.dao.getIcon
 import view.utils.components.ItemPanel
 import java.awt.Color
 import javax.swing.BorderFactory

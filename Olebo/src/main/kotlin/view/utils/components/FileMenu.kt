@@ -2,6 +2,7 @@ package view.utils.components
 
 import VERSION
 import model.dao.Settings
+import model.dao.zipOleboDirectory
 import view.utils.CTRL
 import view.utils.applyAndAppendTo
 import java.awt.Component
@@ -17,6 +18,7 @@ import javax.swing.filechooser.FileNameExtensionFilter
 class FileMenu : JMenu("Ficher") {
     private companion object {
         const val SCREENSHOT = "Prendre une capture d'écran"
+        const val EXPORT = "Exporter les données"
     }
 
     init {
@@ -51,6 +53,34 @@ class FileMenu : JMenu("Ficher") {
             this.isSelected = Settings.autoUpdate
             this.addItemListener {
                 Settings.autoUpdate = it.stateChange == ItemEvent.SELECTED
+            }
+        }
+
+        this.addSeparator()
+
+        JMenuItem(EXPORT).applyAndAppendTo(this) {
+            this.addActionListener {
+                val parent = SwingUtilities.getWindowAncestor(this@FileMenu)
+                val extension = "olebo"
+                JFileChooser().apply {
+                    this.dialogTitle = EXPORT
+                    this.fileFilter = FileNameExtensionFilter("Olebo file", extension)
+                    if (this.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
+                        val fileToSave = if (this.selectedFile.extension == extension)
+                            this.selectedFile
+                        else
+                            File("${this.selectedFile.parentFile.absolutePath}${File.separator}${this.selectedFile.nameWithoutExtension}.$extension")
+
+                        val saveFile = {
+                            zipOleboDirectory(fileToSave)
+                        }
+
+                        if(fileToSave.exists()) {
+                            val result = JOptionPane.showConfirmDialog(null, "Ce fichier existe déjà, voulez-vous le remplacer ?", "Enregister sous", JOptionPane.YES_NO_OPTION)
+                            if(result == JOptionPane.YES_OPTION) saveFile()
+                        } else saveFile()
+                    }
+                }
             }
         }
 

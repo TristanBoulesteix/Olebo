@@ -3,7 +3,7 @@ package viewModel
 import model.act.Act
 import model.act.Scene
 import model.dao.DAO
-import model.utils.saveImg
+import model.dao.saveImg
 import viewModel.pattern.observer.Action
 import viewModel.pattern.observer.Observable
 import viewModel.pattern.observer.Observer

@@ -45,7 +45,7 @@ object MasterMenuBar : JMenuBar() {
                 }
             }
 
-            this.add(JSeparator())
+            this.addSeparator()
 
             undoMenuItem = object : JMenuItem("Annuler") {
                 private val baseText = "Annuler"
