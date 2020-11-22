@@ -20,7 +20,7 @@ import kotlin.math.abs
  */
 class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseListener {
     var backGroundImage: Image? = null      //The background... Why are you reading this? Stop!! I said stop!!! You're still doing it, even when you had to scroll sideways... Ok i'm giving up, bye
-    var tokens = emptyElements() //These are all the tokens placed on  the current map
+    private var tokens = emptyElements() //These are all the tokens placed on  the current map
     var selectedElements = emptyElements()
 
     var selectedArea: Rectangle? = null
@@ -58,7 +58,7 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
             GlobalScope.launch {
                 while (true) {
                     repaint()
-                    delay(50L)
+                    delay(75L)
                 }
             }
     }
@@ -119,7 +119,7 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
 
         if (!isMasterMapPanel)
             with(ViewManager.cursorPoint) {
-                g.fillOval(relativeX(this.x), relativeY(this.y), 10, 10)
+                g.fillOval(relativeX(this.x), relativeY(this.y), 20, 20)
             }
     }
 
