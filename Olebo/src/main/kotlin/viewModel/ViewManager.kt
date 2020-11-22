@@ -181,15 +181,7 @@ object ViewManager {
         activeScene.callManager(it::cmdOrientationToLeft)
     }.also { repaint() }
 
-    fun zIndexUp() = transaction(DAO.database) {
-        selectedElements.forEach {
-            it.priority = Priority.HIGH
-        }
-    }.also { repaint() }
-
-    fun zIndexDown() = transaction(DAO.database) {
-        selectedElements.forEach {
-            it.priority = Priority.LOW
-        }
+    fun updatePriorityToken(priority: Priority) = selectedElements.forEach {
+        it.priority = priority
     }.also { repaint() }
 }

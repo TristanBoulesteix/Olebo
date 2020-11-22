@@ -1,6 +1,7 @@
 package view.frames.rpg
 
 import model.element.Element
+import model.element.Priority
 import model.element.Size
 import model.utils.callManager
 import view.utils.BACKGROUND_COLOR_SELECT_PANEL
@@ -9,10 +10,7 @@ import view.utils.applyAndAppendTo
 import view.utils.components.SlideStats
 import viewModel.ViewManager
 import java.awt.*
-import javax.swing.JButton
-import javax.swing.JComboBox
-import javax.swing.JLabel
-import javax.swing.JPanel
+import javax.swing.*
 import javax.swing.border.EmptyBorder
 
 
@@ -71,19 +69,10 @@ object SelectPanel : JPanel() {
         }
     }
 
-    private val priorityUpButton = JButton("Avancer").apply {
-        preferredSize = DIMENSION_BUTTON_DEFAULT
-        addActionListener {
-            ViewManager.zIndexUp()
-        }
-    }
-
-    private val priorityDownButton = JButton("Reculer").apply {
-        preferredSize = DIMENSION_BUTTON_DEFAULT
-        addActionListener {
-            ViewManager.zIndexDown()
-        }
-    }
+    private val priorityHighButton: JRadioButton
+    private val priorityRegularButton: JRadioButton
+    private val priorityLowButton: JRadioButton
+    private val priorityInvisibleButton: JRadioButton
 
     private val visibilityButton = object : JButton() { //Toggles visibility on selected Token
         private val defaultText = "Visibilité"
@@ -171,74 +160,114 @@ object SelectPanel : JPanel() {
         this.layout = GridBagLayout()
         this.preferredSize = Dimension(500, 10)
 
+        val inset = Insets(5, 5, 5, 5)
+
         this.add(nameLabel, GridBagConstraints().apply {
             this.gridx = 0
             this.gridy = 0
             this.weightx = 1.0
             this.insets = Insets(10, 150, 10, 10)
-            this.anchor = GridBagConstraints.FIRST_LINE_START
+            this.anchor = GridBagConstraints.LINE_START
         })
 
         this.add(sizeCombo, GridBagConstraints().apply {
             this.gridx = 0
-            this.gridy = 1
+            this.gridy = 2
             this.weightx = 1.0
             this.insets = Insets(10, 150, 10, 10)
-            this.anchor = GridBagConstraints.FIRST_LINE_START
+            this.anchor = GridBagConstraints.LINE_START
         })
 
         this.add(rotateRightButton, GridBagConstraints().apply {
             this.gridx = 1
             this.gridy = 0
             this.weightx = 0.5
-            this.insets = Insets(5, 5, 5, 5)
-            this.anchor = GridBagConstraints.FIRST_LINE_START
+            this.insets = inset
+            this.anchor = GridBagConstraints.LINE_START
         })
 
         this.add(rotateLeftButton, GridBagConstraints().apply {
             this.gridx = 1
-            this.gridy = 1
+            this.gridy = 2
             this.weightx = 0.5
-            this.insets = Insets(5, 5, 5, 5)
-            this.anchor = GridBagConstraints.FIRST_LINE_START
+            this.insets = inset
+            this.anchor = GridBagConstraints.LINE_START
         })
 
-        this.add(priorityUpButton, GridBagConstraints().apply {
+        ButtonGroup().apply {
+            priorityHighButton = JRadioButton("Premier plan").apply {
+                this.addActionListener {
+                    ViewManager.updatePriorityToken(Priority.HIGH)
+                }
+            }
+            priorityRegularButton = JRadioButton("Défaut").apply {
+                this.addActionListener {
+                    ViewManager.updatePriorityToken(Priority.REGULAR)
+                }
+            }
+            priorityLowButton = JRadioButton("Arrière plan").apply {
+                this.addActionListener {
+                    ViewManager.updatePriorityToken(Priority.LOW)
+                }
+            }
+            priorityInvisibleButton = JRadioButton().apply {
+                this.isSelected = true
+            }
+
+            arrayOf(priorityHighButton, priorityRegularButton, priorityLowButton, priorityInvisibleButton).forEach {
+                this.add(it)
+                it.isEnabled = false
+                it.isOpaque = false
+            }
+        }
+
+        this.add(priorityHighButton, GridBagConstraints().apply {
             this.gridx = 2
             this.gridy = 0
             this.weightx = 0.5
-            this.insets = Insets(5, 5, 5, 5)
-            this.anchor = GridBagConstraints.FIRST_LINE_START
+            this.weighty = 1.0
+            this.insets = inset
+            this.anchor = GridBagConstraints.LINE_START
         })
 
-        this.add(priorityDownButton, GridBagConstraints().apply {
+        this.add(priorityRegularButton, GridBagConstraints().apply {
             this.gridx = 2
             this.gridy = 1
             this.weightx = 0.5
-            this.insets = Insets(5, 5, 5, 5)
-            this.anchor = GridBagConstraints.FIRST_LINE_START
+            this.weighty = 1.0
+            this.insets = inset
+            this.anchor = GridBagConstraints.LINE_START
+        })
+
+        this.add(priorityLowButton, GridBagConstraints().apply {
+            this.gridx = 2
+            this.gridy = 2
+            this.weightx = 0.5
+            this.weighty = 1.0
+            this.insets = inset
+            this.anchor = GridBagConstraints.LINE_START
         })
 
         this.add(visibilityButton, GridBagConstraints().apply {
             this.gridx = 3
             this.gridy = 0
             this.weightx = 0.5
-            this.insets = Insets(5, 5, 5, 5)
-            this.anchor = GridBagConstraints.FIRST_LINE_START
+            this.insets = inset
+            this.anchor = GridBagConstraints.LINE_START
         })
 
         this.add(deleteButton, GridBagConstraints().apply {
             this.gridx = 3
-            this.gridy = 1
+            this.gridy = 2
             this.weightx = 0.5
-            this.insets = Insets(5, 5, 5, 5)
-            this.anchor = GridBagConstraints.FIRST_LINE_START
+            this.insets = Insets(10, 10, 10, 10)
+            this.anchor = GridBagConstraints.LINE_START
         })
 
         slidePanel = JPanel().applyAndAppendTo(this, GridBagConstraints().apply {
             this.gridx = 4
             this.gridy = 0
-            this.gridheight = 2
+            this.gridheight = 3
             this.weightx = 2.0
             this.insets = Insets(10, 10, 10, 10)
             this.anchor = GridBagConstraints.FIRST_LINE_START
@@ -255,19 +284,30 @@ object SelectPanel : JPanel() {
     }
 
     fun reload() {
+        val priorityRadioButtons = arrayOf(priorityHighButton, priorityRegularButton, priorityLowButton)
+
         with(selectedElements) {
             if (this.isNotEmpty()) {
-                arrayOf(rotateRightButton, rotateLeftButton, deleteButton, priorityUpButton, priorityDownButton).forEach { it.isEnabled = true }
+                (arrayOf<AbstractButton>(rotateRightButton, rotateLeftButton, deleteButton) + priorityRadioButtons).forEach { it.isEnabled = true }
+
                 visibilityButton.initialize(false)
                 nameLabel.text = if (this.size == 1) this[0].name else "$size éléments sélectionnés"
 
                 if (this.size == 1) {
                     lifeSlide.element = this[0]
                     manaSlide.element = this[0]
+
+                    when (this[0].priority) {
+                        Priority.HIGH -> priorityHighButton
+                        Priority.REGULAR -> priorityRegularButton
+                        Priority.LOW -> priorityLowButton
+                    }.isSelected = true
                 }
             } else {
                 nameLabel.text = null
-                arrayOf(rotateRightButton, rotateLeftButton, deleteButton, priorityUpButton, priorityDownButton).forEach { it.isEnabled = false }
+                (arrayOf<AbstractButton>(rotateRightButton, rotateLeftButton, deleteButton) + priorityRadioButtons).forEach { it.isEnabled = false }
+                priorityRadioButtons.forEach { it.isSelected = false }
+                priorityInvisibleButton.isSelected = true
                 visibilityButton.initialize(true)
 
                 lifeSlide.element = null
