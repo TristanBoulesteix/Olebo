@@ -71,14 +71,10 @@ class FileMenu : JMenu("Ficher") {
                         else
                             File("${this.selectedFile.parentFile.absolutePath}${File.separator}${this.selectedFile.nameWithoutExtension}.$extension")
 
-                        val saveFile = {
-                            zipOleboDirectory(fileToSave)
-                        }
-
                         if(fileToSave.exists()) {
                             val result = JOptionPane.showConfirmDialog(null, "Ce fichier existe déjà, voulez-vous le remplacer ?", "Enregister sous", JOptionPane.YES_NO_OPTION)
-                            if(result == JOptionPane.YES_OPTION) saveFile()
-                        } else saveFile()
+                            if(result == JOptionPane.YES_OPTION) zipOleboDirectory(fileToSave)
+                        } else zipOleboDirectory(fileToSave)
                     }
                 }
             }
