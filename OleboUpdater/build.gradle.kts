@@ -2,11 +2,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     java
-    kotlin("jvm") version "1.4.10"
+    kotlin("jvm") version "1.4.20"
 }
 
-group = "jdr.exia.updater"
-version = "1.0.2"
+group = "jdr.exia"
+version = "1.1.0"
 
 repositories {
     mavenCentral()

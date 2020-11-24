@@ -8,6 +8,8 @@ import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
+import java.awt.event.MouseEvent
+import java.awt.event.MouseMotionAdapter
 import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.JFrame
@@ -29,7 +31,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         mapPanel.backGroundImage = ImageIO.read(File(imageName))
     }
 
-    override fun setTitle(title: String?) {
+    override fun setTitle(title: String) {
         super.setTitle("Olebo - Fenêtre MJ - \"$title\"")
     }
 
@@ -79,6 +81,12 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         masterFramePanel.add(itemPanel, itemConstraints)
         masterFramePanel.add(SelectPanel, selectConstraints)
         jMenuBar = MasterMenuBar
+
+        mapPanel.addMouseMotionListener(object : MouseMotionAdapter() {
+            override fun mouseMoved(me: MouseEvent) {
+                ViewManager.cursorPoint = mapPanel.getAbsolutePoint(me.point)
+            }
+        })
     }
 
     override fun reload() {
@@ -103,5 +111,10 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
 
     override fun updateMap(tokens: Elements) {
         mapPanel.updateTokens(tokens)
+    }
+
+    override fun dispose() {
+        PlayerFrame.hide()
+        super.dispose()
     }
 }

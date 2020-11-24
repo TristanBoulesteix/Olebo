@@ -1,5 +1,7 @@
 package model.utils
 
+import model.act.Scene
+import model.command.CommandManager
 import model.element.Blueprint
 import model.element.Element
 import model.element.Type
@@ -7,20 +9,6 @@ import java.awt.Graphics
 import java.awt.geom.AffineTransform
 import java.awt.image.BufferedImage
 import javax.swing.ImageIcon
-
-/**
- * Convert an Int to the corresponding boolean
- *
- * @return true if the value of the integer is not 0
- */
-fun Int.toBoolean() = this != 0
-
-/**
- * Convert a Boolean to the corresponding integer
- *
- * @return 1 if true
- */
-fun Boolean.toInt(): Int = if (this) 1 else 0
 
 /**
  * Convert a String to the corresponding boolean
@@ -64,4 +52,12 @@ fun ImageIcon.rotate(degs: Double) = with(BufferedImage(this.iconWidth, this.ico
         dispose()
     }
     ImageIcon(this)
+}
+
+fun Scene?.callManager(elements: Elements, func: (CommandManager, Elements) -> Unit) = this?.let { scene ->
+    func(CommandManager(scene.id.value), elements)
+}
+
+fun <T> Scene?.callManager(value: T, elements: Elements, func: (T, CommandManager, Elements) -> Unit) = this?.let { scene ->
+    func(value, CommandManager(scene.id.value), elements)
 }

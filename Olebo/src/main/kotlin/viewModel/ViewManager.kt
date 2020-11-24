@@ -3,12 +3,16 @@ package viewModel
 import model.act.Act
 import model.act.Scene
 import model.dao.DAO
-import model.element.*
+import model.element.Blueprint
+import model.element.Element
+import model.element.Position
+import model.element.Priority
 import model.utils.*
+import org.jetbrains.exposed.sql.transactions.transaction
 import view.frames.rpg.MasterFrame
 import view.frames.rpg.MasterMenuBar
 import view.frames.rpg.ViewFacade
-import org.jetbrains.exposed.sql.transactions.transaction
+import java.awt.Point
 import java.awt.Rectangle
 
 /**
@@ -16,9 +20,12 @@ import java.awt.Rectangle
  */
 object ViewManager {
     private var activeAct: Act? = null
-    private var activeScene: Scene? = null
+    var activeScene: Scene? = null
+        private set
 
     private var selectedElements = mutableEmptyElements()
+
+    var cursorPoint = Point()
 
     /**
      * Get the list of all blueprints
@@ -36,7 +43,6 @@ object ViewManager {
     fun removeToken(token: Element) { //removes given token from MutableList
         selectedElements = mutableEmptyElements()
         ViewFacade.setSelectedToken(null)
-        activeScene?.elements?.remove(token)
         transaction(DAO.database) { token.delete() }
         repaint()
     }
@@ -48,8 +54,8 @@ object ViewManager {
     }
 
     private fun loadCurrentScene() {
-        with(activeAct) activeAct@{
-            activeScene = this!!.scenes.findWithId(this@activeAct.sceneId)
+        with(activeAct!!) activeAct@{
+            activeScene = this.scenes.findWithId(this@activeAct.sceneId)
             ViewFacade.apply {
                 this.loadItems()
                 this.setMapBackground(activeScene!!.background)
@@ -65,7 +71,7 @@ object ViewManager {
         if (selectedElements.isNotEmpty() && selectedElements.size == 1) {
             val newX = (x - (selectedElements[0].hitBox.width / 2))
             val newY = (y - (selectedElements[0].hitBox.height / 2))
-            selectedElements[0].position = Position(newX, newY)
+            selectedElements[0].cmdPosition(Position(newX, newY), activeScene!!.commandManager)
             repaint()
         }
     }
@@ -81,21 +87,20 @@ object ViewManager {
         repaint()
     }
 
-    private fun getTokenFromXY(x: Int, y: Int): Element? {//Receives a clicked point (x,y), returns the first soken found in the Tokens array, or null if none matched
-        activeScene!!.elements.forEach {
-            if (it.hitBox.contains(x, y)) {
-                return it
-            }
-        }
-        return null
-    }
+    /**
+     * Receives a clicked point (x,y), returns the first soken found in the Tokens array, or null if none matched
+     */
+    private fun getTokenFromXY(x: Int, y: Int) = activeScene!!.elements.filter { it.hitBox.contains(x, y) }.maxByOrNull { it.priority }
 
     fun repaint() {
         updateTokens()
         ViewFacade.reloadFrames()
     }
 
-    fun selectElement(x: Int, y: Int) { //cheks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
+    /**
+     * Checks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
+     */
+    fun selectElement(x: Int, y: Int) {
         selectedElements = getTokenFromXY(x, y)?.toElements() ?: mutableEmptyElements()
         if (selectedElements.isNotEmpty()) {
             ViewFacade.setSelectedToken(selectedElements[0])
@@ -125,7 +130,7 @@ object ViewManager {
     }
 
     fun selectUp() = with(activeScene!!) {
-        selectedElements = if (selectedElements.isEmpty() && this.elements.size > 0) {
+        selectedElements = if (selectedElements.isEmpty() && this.elements.isNotEmpty()) {
             this.elements[0].toElements()
         } else {
             fun Int.plusOne(list: Elements) = if (this == list.size - 1) 0 else this + 1
@@ -143,7 +148,7 @@ object ViewManager {
 
     fun selectDown() {
         with(activeScene!!) {
-            selectedElements = if (selectedElements.isEmpty() && this.elements.size > 0) {
+            selectedElements = if (selectedElements.isEmpty() && this.elements.isNotEmpty()) {
                 this.elements[0].toElements()
             } else {
                 fun Int.minusOne(list: Elements) = if (this == 0) list.size - 1 else this - 1
@@ -164,16 +169,16 @@ object ViewManager {
         ViewFacade.placeTokensOnMaps(activeScene!!.elements)
     }
 
-    fun toggleVisibility(token: Element, visibility: Boolean? = null) {
-        token.isVisible = visibility ?: !token.isVisible
+    fun toggleVisibility(tokens: Elements, visibility: Boolean? = null) {
+        activeScene.callManager(visibility ?: if(tokens.size == 1) !tokens[0].isVisible else true, tokens, Element::cmdVisiblity)
         repaint()
     }
 
-    fun rotateRight() = selectedElements.forEach {
-        it.rotateRight()
-    }.also { repaint() }
+    fun rotateRight() = activeScene.callManager(selectedElements, Element::cmdOrientationToRight).also { repaint() }
 
-    fun rotateLeft() = selectedElements.forEach {
-        it.rotateLeft()
+    fun rotateLeft() = activeScene.callManager(selectedElements, Element::cmdOrientationToLeft).also { repaint() }
+
+    fun updatePriorityToken(priority: Priority) = selectedElements.forEach {
+        it.priority = priority
     }.also { repaint() }
 }

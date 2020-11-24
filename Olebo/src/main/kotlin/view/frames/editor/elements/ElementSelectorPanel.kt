@@ -3,7 +3,7 @@ package view.frames.editor.elements
 import model.dao.DAO
 import model.element.Blueprint
 import model.element.Type
-import model.utils.getIcon
+import model.dao.getIcon
 import view.utils.components.ItemPanel
 import view.utils.components.SelectorPanel
 import view.utils.factories.TitlePanel

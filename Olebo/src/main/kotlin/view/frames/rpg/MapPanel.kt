@@ -1,5 +1,9 @@
 package view.frames.rpg
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import model.dao.Settings
 import model.element.Element
 import model.utils.Elements
 import model.utils.emptyElements
@@ -17,14 +21,15 @@ import kotlin.math.abs
  */
 class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseListener {
     var backGroundImage: Image? = null      //The background... Why are you reading this? Stop!! I said stop!!! You're still doing it, even when you had to scroll sideways... Ok i'm giving up, bye
-    var tokens = emptyElements() //These are all the tokens placed on  the current map
+    private var tokens = emptyElements() //These are all the tokens placed on  the current map
     var selectedElements = emptyElements()
 
     var selectedArea: Rectangle? = null
 
     init {
         this.layout = GridBagLayout()
-        this.background = Color.blue
+        this.background = Color.WHITE
+        this.isOpaque = false
         if (isMasterMapPanel)
             this.addMouseMotionListener(object : MouseMotionAdapter() {
                 private var start = Point()
@@ -50,6 +55,15 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
                 }
             })
         addMouseListener(this)
+
+        if (!isMasterMapPanel)
+            GlobalScope.launch {
+                while (true) {
+                    if (Settings.cursorEnabled)
+                        repaint()
+                    delay(75L)
+                }
+            }
     }
 
     private fun relativeX(absoluteX: Int): Int { //translates an X coordinate in 1600:900px to proportional coords according to this window's size
@@ -71,6 +85,8 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
     fun updateTokens(tokens: Elements) { //Gets the current token display up to date
         this.tokens = tokens
     }
+
+    fun getAbsolutePoint(point: Point) = Point(absoluteX(point.x), absoluteY(point.y))
 
     override fun paintComponent(g: Graphics) {
         (g as Graphics2D).drawImage(
@@ -103,6 +119,11 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
             g.color = Color(255, 255, 255, 150)
             g.fill(selectedArea)
         }
+
+        if (!isMasterMapPanel)
+            with(ViewManager.cursorPoint) {
+                g.fillOval(relativeX(this.x), relativeY(this.y), 20, 20)
+            }
     }
 
 

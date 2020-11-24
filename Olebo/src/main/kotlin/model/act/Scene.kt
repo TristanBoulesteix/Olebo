@@ -1,14 +1,14 @@
 package model.act
 
+import model.command.CommandManager
 import model.dao.DAO
 import model.dao.InstanceTable
 import model.dao.SceneTable
 import model.element.Blueprint
 import model.element.Element
-import model.utils.DelegateIterable
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
-import org.jetbrains.exposed.dao.EntityID
+import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.io.File
@@ -48,7 +48,11 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
 
     private val elementIterable by Element referrersOn InstanceTable.idScene
 
-    val elements by DelegateIterable { elementIterable }
+    val commandManager
+        get() = CommandManager(id.value)
+
+    val elements: List<Element>
+        get() = transaction(DAO.database) { elementIterable.toMutableList().sortedBy { it.priority } }
     var name by SceneTable.name
     var background by SceneTable.background
     var idAct by SceneTable.idAct

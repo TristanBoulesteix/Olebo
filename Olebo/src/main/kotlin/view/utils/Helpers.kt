@@ -8,25 +8,25 @@ import javax.swing.*
 /**
  * Show a popup with a message
  */
-fun showPopup(message: String, parent: Component? = null) = JOptionPane.showMessageDialog(
+fun showPopup(message: String, parent: Component? = null, isError: Boolean = false) = JOptionPane.showMessageDialog(
         parent,
         message,
         "Attention !",
-        JOptionPane.INFORMATION_MESSAGE
+        if(!isError) JOptionPane.INFORMATION_MESSAGE else JOptionPane.ERROR_MESSAGE
 )
 
-fun showConfirmMessage(parent: JComponent? = null, message: String, title: String, okAction: () -> Unit) {
+fun showConfirmMessage(parent: Component? = null, message: String, title: String, okAction: () -> Unit) {
     val ok = JButton("Confirmer").apply {
         this.isEnabled = false
         this.addActionListener {
+            SwingUtilities.getWindowAncestor(this)?.dispose()
             okAction()
-            SwingUtilities.getWindowAncestor(this)?.isVisible = false
         }
     }
 
     val cancel = JButton("Annuler").apply {
         this.addActionListener {
-            SwingUtilities.getWindowAncestor(this)?.isVisible = false
+            SwingUtilities.getWindowAncestor(this)?.dispose()
         }
     }
 

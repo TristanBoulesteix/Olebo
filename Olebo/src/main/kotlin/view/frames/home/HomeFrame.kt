@@ -1,6 +1,7 @@
 package view.frames.home
 
 import VERSION
+import view.frames.rpg.MasterFrame
 import view.utils.BORDER_BUTTONS
 import view.utils.components.FileMenu
 import view.utils.components.JFrameTemplate
@@ -80,5 +81,10 @@ class HomeFrame : JFrameTemplate("Olebo - Version $VERSION") {
             Action.DISPOSE -> this.dispose()
             Action.REFRESH -> this.selectorPanel.refresh()
         }
+    }
+
+    override fun dispose() {
+        MasterFrame.dispose()
+        super.dispose()
     }
 }

@@ -2,14 +2,20 @@ package view.frames.rpg
 
 import model.act.Act
 import model.act.Scene
+import model.command.CommandManager
 import model.dao.DAO
-import view.frames.editor.elements.BlueprintDialog
-import view.frames.home.HomeFrame
-import view.utils.*
-import view.utils.components.FileMenu
-import viewModel.ViewManager
+import model.dao.Settings
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.forElse
+import view.frames.editor.elements.BlueprintDialog
+import view.frames.home.HomeFrame
+import view.utils.CTRL
+import view.utils.CTRLSHIFT
+import view.utils.applyAndAppendTo
+import view.utils.components.FileMenu
+import view.utils.showConfirmMessage
+import viewModel.ViewManager
+import java.awt.event.ItemEvent
 import java.awt.event.KeyEvent
 import javax.swing.*
 
@@ -17,6 +23,10 @@ import javax.swing.*
  * This is MasterFrame's menu bar (situated at the top)
  */
 object MasterMenuBar : JMenuBar() {
+    private var undoMenuItem: JMenuItem? = null
+
+    private var redoMenuItem: JMenuItem? = null
+
     var act: Act? = null
 
     var togglePlayerFrameMenuItem: JCheckBoxMenuItem? = null
@@ -26,6 +36,55 @@ object MasterMenuBar : JMenuBar() {
         this.removeAll()
 
         this.add(FileMenu())
+
+        JMenu("Outils").applyAndAppendTo(this) {
+            JCheckBoxMenuItem("Activer le curseur joueur").applyAndAppendTo(this) {
+                this.isSelected = Settings.cursorEnabled
+                this.addItemListener {
+                    Settings.cursorEnabled = it.stateChange == ItemEvent.SELECTED
+                }
+            }
+
+            this.addSeparator()
+
+            undoMenuItem = object : JMenuItem("Annuler") {
+                private val baseText = "Annuler"
+
+                override fun setText(text: String) = super.setText("$baseText ${if (text == "") "" else "($text)"}")
+
+                init {
+                    this.isEnabled = false
+                    this.addActionListener {
+                        act?.let {
+                            CommandManager(it.sceneId).undo()
+                            ViewManager.repaint()
+                        }
+                    }
+                    this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Z, CTRL)
+                }
+            }
+
+            this.add(undoMenuItem)
+
+            redoMenuItem = object : JMenuItem("Restaurer") {
+                private val baseText = "Restaurer"
+
+                override fun setText(text: String) = super.setText("$baseText ${if (text == "") "" else "($text)"}")
+
+                init {
+                    this.isEnabled = false
+                    this.addActionListener {
+                        act?.let {
+                            CommandManager(it.sceneId).redo()
+                            ViewManager.repaint()
+                        }
+                    }
+                    this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Y, CTRL)
+                }
+            }
+
+            this.add(redoMenuItem)
+        }
 
         JMenu("Fenêtres").applyAndAppendTo(this) {
             JMenuItem("Fermer scenario").applyAndAppendTo(this) {
@@ -59,7 +118,7 @@ object MasterMenuBar : JMenuBar() {
                     for (scene in act!!.scenes) { //Pour chaque scene, on créé une option pour activer la scene
                         i++
                         if (scene.id.value == act!!.sceneId) {
-                            val item = JMenuItem("$i ${scene.name} (Active)")
+                            val item = JMenuItem("$i ${scene.name} (Active)").apply { isEnabled = false }
                             this.add(item)
                         } else {
                             val item = JMenuItem("$i ${scene.name}")
@@ -88,15 +147,26 @@ object MasterMenuBar : JMenuBar() {
                     act.scenes.forEach {
                         if (it.id.value != act.sceneId) {
                             val itemMenu = JMenu(it.name).apply {
+                                if (it.elements.isNotEmpty()) {
+                                    JMenuItem("Tout importer").applyAndAppendTo(this) {
+                                        addActionListener { _ ->
+                                            it.elements.forEach { token ->
+                                                transaction(DAO.database) { Scene.moveElementToScene(token, Scene[act.sceneId]) }
+                                            }
+                                            ViewManager.repaint()
+                                        }
+                                    }
+
+                                    this.add(JSeparator())
+                                }
+
                                 it.elements.forElse { token ->
-                                    val item = JMenuItem(token.name + " (" + token.type.name + ")").apply {
+                                    JMenuItem(token.name + " (" + token.type.name + ")").applyAndAppendTo(this) {
                                         addActionListener {
                                             transaction(DAO.database) { Scene.moveElementToScene(token, Scene[act.sceneId]) }
                                             ViewManager.repaint()
                                         }
                                     }
-
-                                    this.add(item)
                                 } ?: { this.isEnabled = false }()
                             }
 
@@ -132,6 +202,18 @@ object MasterMenuBar : JMenuBar() {
                 }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, CTRLSHIFT)
             }
+        }
+    }
+
+    fun reloadCommandItemLabel() = CommandManager(act?.sceneId ?: -1).let { manager ->
+        undoMenuItem?.apply {
+            isEnabled = manager.undoLabel != null
+            text = manager.undoLabel ?: ""
+        }
+
+        redoMenuItem?.apply {
+            isEnabled = manager.redoLabel != null
+            text = manager.redoLabel ?: ""
         }
     }
 }

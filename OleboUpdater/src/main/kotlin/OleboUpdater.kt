@@ -6,7 +6,7 @@ import java.net.InetAddress
 import java.net.ServerSocket
 import kotlin.system.exitProcess
 
-const val VERSION = "1.0.2"
+const val VERSION = "1.1.0"
 
 fun main(args: Array<String>) {
     try {

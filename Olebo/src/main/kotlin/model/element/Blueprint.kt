@@ -5,7 +5,7 @@ import model.dao.BlueprintTable
 import model.dao.InstanceTable
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
-import org.jetbrains.exposed.dao.EntityID
+import org.jetbrains.exposed.dao.id.EntityID
 import java.io.File
 
 @Suppress("PropertyName")

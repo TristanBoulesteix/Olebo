@@ -2,8 +2,8 @@ package utils
 
 import VERSION
 import model.dao.Settings
-import model.utils.jarPath
-import model.utils.oleboUpdater
+import model.dao.jarPath
+import model.dao.oleboUpdater
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
