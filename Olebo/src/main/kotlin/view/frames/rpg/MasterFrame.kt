@@ -112,4 +112,9 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
     override fun updateMap(tokens: Elements) {
         mapPanel.updateTokens(tokens)
     }
+
+    override fun dispose() {
+        PlayerFrame.hide()
+        super.dispose()
+    }
 }
