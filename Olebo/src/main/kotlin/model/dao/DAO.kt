@@ -15,7 +15,8 @@ import java.io.File
 import java.sql.Connection
 
 object DAO {
-    private const val DATABASE_NAME = "database.db"
+    const val DATABASE_VERSION = 1
+    const val DATABASE_NAME = "database.db"
 
     private val filePath = OLEBO_DIRECTORY + "db${File.separator}$DATABASE_NAME"
     private val url = "jdbc:sqlite:$filePath"

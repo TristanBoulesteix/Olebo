@@ -14,7 +14,7 @@ class Settings(id: EntityID<Int>) : IntEntity(id) {
     companion object : EntityClass<Int, Settings>(SettingsTable) {
         var databaseVersion
             get() = transaction(DAO.database) {
-                this@Companion[BASE_VERSION]
+                this@Companion[BASE_VERSION]?.toIntOrNull()
                         ?: throw NullPointerException("Erreur de base de données ! Valeur manquante.")
             }
             set(value) {

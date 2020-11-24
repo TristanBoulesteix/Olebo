@@ -1,12 +1,17 @@
 package model.dao
 
 import main
+import utils.Result
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
 import javax.swing.ImageIcon
+
+
+const val OLEBO_MANIFEST_NAME = "manifest.o_manifest"
 
 /**
  * Path to the Olebo directory
@@ -80,18 +85,30 @@ val oleboUpdater: String
         return jar.absolutePath
     }
 
+enum class ZipError {
+    MISSING_FILES, DATABASE_HIGHER, EXCEPTION
+}
+
 fun zipOleboDirectory(fileDestination: File) {
     val oleboDirectory = File(OLEBO_DIRECTORY)
     val outputTempZip = File.createTempFile("Olebo", ".olebo")
 
     ZipOutputStream(BufferedOutputStream(FileOutputStream(outputTempZip))).use { zos ->
+        File.createTempFile("o_manifest_", null).apply {
+            this.writeText(DAO.DATABASE_VERSION.toString())
+            zos.putNextEntry(ZipEntry(OLEBO_MANIFEST_NAME))
+            this.inputStream().use { it.copyTo(zos) }
+        }
+
         oleboDirectory.walkTopDown().forEach { file ->
-            val zipFileName = file.absolutePath.removePrefix(oleboDirectory.absolutePath).removePrefix(File.separator)
+            val zipFileName = file.absolutePath.removePrefix(oleboDirectory.absolutePath).removePrefix(File.separator).replace('\\', '/')
+
             if (zipFileName.isNotBlank() && file.nameWithoutExtension != "oleboUpdater") {
                 val entry = ZipEntry("$zipFileName${(if (file.isDirectory) "/" else "")}")
+                entry.isDirectory
                 zos.putNextEntry(entry)
                 if (file.isFile) {
-                    file.inputStream().copyTo(zos)
+                    file.inputStream().use { it.copyTo(zos) }
                 }
             }
         }
@@ -101,4 +118,48 @@ fun zipOleboDirectory(fileDestination: File) {
         fileDestination.deleteRecursively()
 
     outputTempZip.copyRecursively(fileDestination)
+}
+
+fun loadOleboZipData(zipFile: File): Result<ZipError> = try {
+    ZipFile(zipFile).use { zip ->
+        with(zip.entries().asSequence().toList()) {
+            if (this.none { it.name == "db/${DAO.DATABASE_NAME}" } || this.none { it.name == OLEBO_MANIFEST_NAME })
+                return Result.Failed(ZipError.MISSING_FILES)
+
+            this.find { it.name == OLEBO_MANIFEST_NAME }?.let { entry ->
+                zip.getInputStream(entry).use { stream ->
+                    if (String(stream.readAllBytes()).toIntOrNull()?.let { it > DAO.DATABASE_VERSION } != false)
+                        return Result.Failed(ZipError.DATABASE_HIGHER)
+                }
+            }
+
+            File(OLEBO_DIRECTORY).let {
+                if (it.exists())
+                    it.deleteRecursively()
+                it.mkdirs()
+            }
+
+            this.forEach { entry ->
+                val fileString = entry.name.removeSuffix('/'.toString()).split('/').let { splitedName ->
+                    splitedName.dropLast(1).joinToString('/'.toString()).replace('/', File.separatorChar).let {
+                        OLEBO_DIRECTORY + it + (if (it.isNotBlank()) File.separator else "") + splitedName.last()
+                    }
+                }
+                if (entry.isDirectory) {
+                    File(fileString).mkdirs()
+                } else {
+                    zip.getInputStream(entry).use { input ->
+                        File(fileString).outputStream().use {
+                            input.copyTo(it)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    Result.Success()
+} catch (e: Exception) {
+    e.printStackTrace()
+    Result.Failed(ZipError.EXCEPTION)
 }

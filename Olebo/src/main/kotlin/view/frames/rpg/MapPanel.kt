@@ -28,7 +28,8 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
 
     init {
         this.layout = GridBagLayout()
-        this.background = Color.blue
+        this.background = Color.WHITE
+        this.isOpaque = false
         if (isMasterMapPanel)
             this.addMouseMotionListener(object : MouseMotionAdapter() {
                 private var start = Point()

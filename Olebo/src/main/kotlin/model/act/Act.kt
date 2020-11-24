@@ -1,10 +1,12 @@
 package model.act
 
 import model.dao.ActTable
+import model.dao.DAO
 import model.dao.SceneTable
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.sql.transactions.transaction
 
 class Act(id: EntityID<Int>) : Entity<Int>(id) {
     companion object : EntityClass<Int, Act>(ActTable)
@@ -13,7 +15,7 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
 
     var name by ActTable.name
     val scenes
-        get() = scenesIterable.toMutableList()
+        get() = transaction(DAO.database) { scenesIterable.toMutableList() }
     var sceneId by ActTable.idScene
 
     override fun delete() {

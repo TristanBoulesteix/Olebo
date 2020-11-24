@@ -2,11 +2,8 @@ package model.dao
 
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
-import org.jetbrains.exposed.sql.ReferenceOption
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
 
 /**
  * List of all tables in the database
@@ -211,12 +208,15 @@ object SettingsTable : IntIdTable(), Initializable {
     val value = varchar("value", 255).default("")
 
     override fun initialize() {
-        if (SettingsTable.select((id eq 1) and (name eq BASE_VERSION)).count() <= 0) {
+        val baseVersionWhere = (id eq 1) and (name eq BASE_VERSION)
+        if (SettingsTable.select(baseVersionWhere).count() <= 0) {
             SettingsTable.insert {
                 it[id] = EntityID(1, SettingsTable)
                 it[name] = BASE_VERSION
-                it[value] = "1.0.0"
+                it[value] = DAO.DATABASE_VERSION.toString()
             }
+        } else {
+            SettingsTable.update({ baseVersionWhere }) { it[value] = DAO.DATABASE_VERSION.toString() }
         }
 
         if (SettingsTable.select((id eq 2) and (name eq AUTO_UPDATE)).count() <= 0) {
