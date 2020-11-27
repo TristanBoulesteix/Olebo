@@ -128,7 +128,7 @@ fun loadOleboZipData(zipFile: File): Result<ZipError> = try {
 
             this.find { it.name == OLEBO_MANIFEST_NAME }?.let { entry ->
                 zip.getInputStream(entry).use { stream ->
-                    if (String(stream.readAllBytes()).toIntOrNull()?.let { it > DAO.DATABASE_VERSION } != false)
+                    if (String(stream.readBytes()).toIntOrNull()?.let { it > DAO.DATABASE_VERSION } != false)
                         return Result.Failed(ZipError.DATABASE_HIGHER)
                 }
             }
