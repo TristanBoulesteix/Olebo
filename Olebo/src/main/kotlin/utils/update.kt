@@ -1,6 +1,6 @@
 package utils
 
-import VERSION
+import OLEBO_VERSION
 import model.dao.Settings
 import model.dao.jarPath
 import model.dao.oleboUpdater
@@ -49,7 +49,7 @@ fun checkForUpdate() = GlobalScope.launch {
             })
         }
 
-        if (!release.isEmpty && release["tag_name"] != VERSION) {
+        if (!release.isEmpty && release["tag_name"] != OLEBO_VERSION) {
             if (Settings.autoUpdate) {
                 prepareUpdate()
             } else if (Settings.updateWarn != release["tag_name"]) {

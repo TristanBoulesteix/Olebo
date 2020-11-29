@@ -15,7 +15,7 @@ import java.io.File
 import java.sql.Connection
 
 object DAO {
-    const val DATABASE_VERSION = 1
+    const val DATABASE_VERSION = 2
     const val DATABASE_NAME = "database.db"
 
     private val filePath = OLEBO_DIRECTORY + "db${File.separator}$DATABASE_NAME"

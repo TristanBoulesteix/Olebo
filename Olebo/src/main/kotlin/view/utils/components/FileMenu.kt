@@ -1,6 +1,6 @@
 package view.utils.components
 
-import VERSION
+import OLEBO_VERSION
 import model.dao.Settings
 import model.dao.ZipError
 import model.dao.loadOleboZipData
@@ -126,7 +126,7 @@ class FileMenu : JMenu("Ficher") {
         JMenuItem("A propos").applyAndAppendTo(this) {
             this.addActionListener {
                 JOptionPane.showMessageDialog(null,
-                        "Olebo - Version de l'application : $VERSION - Version de la base de données : ${Settings.databaseVersion}",
+                        "Olebo - Version de l'application : $OLEBO_VERSION - Version de la base de données : ${Settings.databaseVersion}",
                         "A propos",
                         JOptionPane.INFORMATION_MESSAGE)
             }
