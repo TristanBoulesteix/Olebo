@@ -2,6 +2,7 @@ package model.dao
 
 import model.dao.SettingsTable.AUTO_UPDATE
 import model.dao.SettingsTable.BASE_VERSION
+import model.dao.SettingsTable.CURRENT_LANGUAGE
 import model.dao.SettingsTable.CURSOR_ENABLED
 import model.dao.SettingsTable.UPDATE_WARN
 import model.utils.toBoolean
@@ -9,13 +10,14 @@ import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.util.*
 
 class Settings(id: EntityID<Int>) : IntEntity(id) {
     companion object : EntityClass<Int, Settings>(SettingsTable) {
         var databaseVersion
             get() = transaction(DAO.database) {
                 this@Companion[BASE_VERSION]?.toIntOrNull()
-                        ?: throw NullPointerException("Erreur de base de données ! Valeur manquante.")
+                        ?: throw NullPointerException("Erreur de base de données ! Version de la base inconnue.")
             }
             set(value) {
                 transaction(DAO.database) {
@@ -41,6 +43,12 @@ class Settings(id: EntityID<Int>) : IntEntity(id) {
             get() = transaction(DAO.database) { this@Companion[CURSOR_ENABLED].toBoolean() }
             set(value) = transaction(DAO.database) {
                 this@Companion[CURSOR_ENABLED] = value
+            }
+
+        var language
+            get() = transaction(DAO.database) { Locale(this@Companion[CURRENT_LANGUAGE]) }
+            set(value) = transaction(DAO.database) {
+                this@Companion[CURSOR_ENABLED] = value.language
             }
 
         operator fun get(setting: String) = this.find { SettingsTable.name eq setting }.firstOrNull()?.value

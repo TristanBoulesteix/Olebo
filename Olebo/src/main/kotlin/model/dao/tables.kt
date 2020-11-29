@@ -4,6 +4,7 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import java.util.*
 
 /**
  * List of all tables in the database
@@ -203,6 +204,7 @@ object SettingsTable : IntIdTable(), Initializable {
     const val AUTO_UPDATE = "autoUpdate"
     const val UPDATE_WARN = "updateWarn"
     const val CURSOR_ENABLED = "cursorEnabled"
+    const val CURRENT_LANGUAGE = "current_language"
 
     val name = varchar("name", 255)
     val value = varchar("value", 255).default("")
@@ -240,6 +242,14 @@ object SettingsTable : IntIdTable(), Initializable {
                 it[id] = EntityID(4, SettingsTable)
                 it[name] = CURSOR_ENABLED
                 it[value] = true.toString()
+            }
+        }
+
+        if (SettingsTable.select((id eq 5) and (name eq CURRENT_LANGUAGE)).count() <= 0) {
+            SettingsTable.insert {
+                it[id] = EntityID(5, SettingsTable)
+                it[name] = CURRENT_LANGUAGE
+                it[value] = Locale.getDefault().language
             }
         }
     }
