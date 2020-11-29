@@ -7,6 +7,8 @@ import model.dao.loadOleboZipData
 import model.dao.zipOleboDirectory
 import model.internationalisation.Strings
 import model.internationalisation.Strings.Companion.STR_FILES
+import model.internationalisation.Strings.Companion.STR_FILE_ALREADY_EXIST
+import model.internationalisation.Strings.Companion.STR_SAVE_AS
 import model.internationalisation.Strings.Companion.STR_TAKE_SCREENSHOT
 import model.internationalisation.localCapitalize
 import utils.Result
@@ -53,7 +55,7 @@ class FileMenu : JMenu(Strings[STR_FILES].localCapitalize()) {
                         }
 
                         if (fileToSave.exists()) {
-                            val result = JOptionPane.showConfirmDialog(null, "Ce fichier existe déjà, voulez-vous le remplacer ?", "Enregister sous", JOptionPane.YES_NO_OPTION)
+                            val result = JOptionPane.showConfirmDialog(null, Strings[STR_FILE_ALREADY_EXIST].localCapitalize(), Strings[STR_SAVE_AS].localCapitalize(), JOptionPane.YES_NO_OPTION)
                             if (result == JOptionPane.YES_OPTION) saveImg()
                         } else saveImg()
                     }
