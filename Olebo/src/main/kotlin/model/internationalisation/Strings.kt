@@ -16,6 +16,8 @@ abstract class Strings : ListResourceBundle() {
 
         // -- Keys
         const val STR_VERSION = "version"
+        const val STR_FILES = "files"
+        const val STR_TAKE_SCREENSHOT = "take_screenshot"
     }
 
     abstract val contents: Map<String, String>

@@ -5,6 +5,10 @@ import model.dao.Settings
 import model.dao.ZipError
 import model.dao.loadOleboZipData
 import model.dao.zipOleboDirectory
+import model.internationalisation.Strings
+import model.internationalisation.Strings.Companion.STR_FILES
+import model.internationalisation.Strings.Companion.STR_TAKE_SCREENSHOT
+import model.internationalisation.localCapitalize
 import utils.Result
 import view.frames.home.HomeFrame
 import view.frames.rpg.MasterFrame
@@ -25,19 +29,18 @@ import javax.swing.*
 import javax.swing.filechooser.FileNameExtensionFilter
 
 
-class FileMenu : JMenu("Ficher") {
+class FileMenu : JMenu(Strings[STR_FILES].localCapitalize()) {
     private companion object {
-        const val SCREENSHOT = "Prendre une capture d'écran"
         const val EXPORT = "Exporter les données (ALPHA)"
         const val IMPORT = "Importer de nouvelles données (ALPHA)"
     }
 
     init {
-        JMenuItem(SCREENSHOT).applyAndAppendTo(this) {
+        JMenuItem(Strings[STR_TAKE_SCREENSHOT].localCapitalize()).applyAndAppendTo(this) {
             this.addActionListener {
                 val parent = SwingUtilities.getWindowAncestor(this@FileMenu)
                 JFileChooser().apply {
-                    this.dialogTitle = SCREENSHOT
+                    this.dialogTitle = Strings[STR_TAKE_SCREENSHOT].localCapitalize()
                     this.fileFilter = FileNameExtensionFilter("Image PNG", "png")
                     if (this.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
                         val fileToSave = if (this.selectedFile.extension == "png")
