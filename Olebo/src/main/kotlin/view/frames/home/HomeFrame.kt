@@ -1,8 +1,8 @@
 package view.frames.home
 
 import OLEBO_VERSION
+import model.internationalisation.STR_VERSION
 import model.internationalisation.Strings
-import model.internationalisation.Strings.Companion.STR_VERSION
 import model.internationalisation.localCapitalize
 import view.frames.rpg.MasterFrame
 import view.utils.BORDER_BUTTONS
