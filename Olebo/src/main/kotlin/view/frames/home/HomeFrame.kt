@@ -1,6 +1,8 @@
 package view.frames.home
 
 import OLEBO_VERSION
+import model.internationalisation.STR_ADD_ACT
+import model.internationalisation.STR_ELEMENTS
 import model.internationalisation.STR_VERSION
 import model.internationalisation.Strings
 import view.frames.rpg.MasterFrame
@@ -44,7 +46,7 @@ class HomeFrame : JFrameTemplate("Olebo - ${Strings[STR_VERSION]} $OLEBO_VERSION
             this.border = BorderFactory.createEmptyBorder(15, 0, 15, 0)
             this.layout = GridBagLayout()
 
-            val elementButton = JButton("Éléments").apply {
+            val elementButton = JButton(Strings[STR_ELEMENTS]).apply {
                 this.border = BORDER_BUTTONS
                 this.addActionListener {
                     HomeManager.openObjectEditorFrame()
@@ -57,7 +59,7 @@ class HomeFrame : JFrameTemplate("Olebo - ${Strings[STR_VERSION]} $OLEBO_VERSION
             }
             this.add(elementButton, cElementButton)
 
-            val actButton = JButton("Ajouter un scénario").apply {
+            val actButton = JButton(Strings[STR_ADD_ACT]).apply {
                 this.border = BORDER_BUTTONS
                 this.addActionListener {
                     HomeManager.openActCreatorFrame()

@@ -25,6 +25,8 @@ class StringsBundle_fr : Strings() {
             STR_ABOUT to "à propos",
             STR_APP_VERSION to "version de l'application :",
             STR_DATABASE_VERSION to "version de la base de données :",
+            STR_ELEMENTS to "Éléments",
+            STR_ADD_ACT to "Ajouter un scénario",
     )
 }
 
@@ -51,5 +53,7 @@ class StringsBundle : Strings() {
             STR_ABOUT to "about",
             STR_APP_VERSION to "app version:",
             STR_DATABASE_VERSION to "database version:",
+            STR_ELEMENTS to "elements",
+            STR_ADD_ACT to "new scenario",
     )
 }

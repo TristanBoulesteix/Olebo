@@ -17,6 +17,8 @@ const val STR_OLEBO_FILE = "olebo_file"
 const val STR_ABOUT = "about"
 const val STR_APP_VERSION = "app_version"
 const val STR_DATABASE_VERSION = "dtb_version"
+const val STR_ELEMENTS = "element"
+const val STR_ADD_ACT = "add_act"
 
 // -- Sentences
 
