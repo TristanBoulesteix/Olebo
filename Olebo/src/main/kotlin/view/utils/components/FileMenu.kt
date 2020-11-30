@@ -26,18 +26,13 @@ import javax.swing.*
 import javax.swing.filechooser.FileNameExtensionFilter
 
 
-class FileMenu : JMenu(Strings[STR_FILES].localCapitalize()) {
-    private companion object {
-        const val EXPORT = "Exporter les données (ALPHA)"
-        const val IMPORT = "Importer de nouvelles données (ALPHA)"
-    }
-
+class FileMenu : JMenu(Strings[STR_FILES]) {
     init {
-        JMenuItem(Strings[STR_TAKE_SCREENSHOT].localCapitalize()).applyAndAppendTo(this) {
+        JMenuItem(Strings[STR_TAKE_SCREENSHOT]).applyAndAppendTo(this) {
             this.addActionListener {
                 val parent = SwingUtilities.getWindowAncestor(this@FileMenu)
                 JFileChooser().apply {
-                    this.dialogTitle = Strings[STR_TAKE_SCREENSHOT].localCapitalize()
+                    this.dialogTitle = Strings[STR_TAKE_SCREENSHOT]
                     this.fileFilter = FileNameExtensionFilter("Image PNG", "png")
                     if (this.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
                         val fileToSave = if (this.selectedFile.extension == "png")
@@ -50,7 +45,7 @@ class FileMenu : JMenu(Strings[STR_FILES].localCapitalize()) {
                         }
 
                         if (fileToSave.exists()) {
-                            val result = JOptionPane.showConfirmDialog(null, Strings[STR_FILE_ALREADY_EXIST].localCapitalize(), Strings[STR_SAVE_AS].localCapitalize(), JOptionPane.YES_NO_OPTION)
+                            val result = JOptionPane.showConfirmDialog(null, Strings[STR_FILE_ALREADY_EXIST], Strings[STR_SAVE_AS], JOptionPane.YES_NO_OPTION)
                             if (result == JOptionPane.YES_OPTION) saveImg()
                         } else saveImg()
                     }
@@ -60,7 +55,7 @@ class FileMenu : JMenu(Strings[STR_FILES].localCapitalize()) {
             this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_P, CTRL)
         }
 
-        JCheckBoxMenuItem("Mises à jour automatiques").applyAndAppendTo(this) {
+        JCheckBoxMenuItem(Strings[STR_AUTO_UPDATE]).applyAndAppendTo(this) {
             this.isSelected = Settings.autoUpdate
             this.addItemListener {
                 Settings.autoUpdate = it.stateChange == ItemEvent.SELECTED
@@ -69,12 +64,12 @@ class FileMenu : JMenu(Strings[STR_FILES].localCapitalize()) {
 
         this.addSeparator()
 
-        JMenuItem(EXPORT).applyAndAppendTo(this) {
+        JMenuItem("${Strings[STR_EXPORT_DATA]} (ALPHA)").applyAndAppendTo(this) {
             this.addActionListener {
                 val parent = SwingUtilities.getWindowAncestor(this@FileMenu)
                 val extension = "olebo"
                 JFileChooser().apply {
-                    this.dialogTitle = EXPORT
+                    this.dialogTitle = Strings[STR_EXPORT_DATA]
                     this.fileFilter = FileNameExtensionFilter("Olebo file", extension)
                     if (this.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
                         val fileToSave = if (this.selectedFile.extension == extension)
@@ -83,7 +78,7 @@ class FileMenu : JMenu(Strings[STR_FILES].localCapitalize()) {
                             File("${this.selectedFile.parentFile.absolutePath}${File.separator}${this.selectedFile.nameWithoutExtension}.$extension")
 
                         if (fileToSave.exists()) {
-                            val result = JOptionPane.showConfirmDialog(null, "Ce fichier existe déjà, voulez-vous le remplacer ?", "Enregister sous", JOptionPane.YES_NO_OPTION)
+                            val result = JOptionPane.showConfirmDialog(null, Strings[STR_FILE_ALREADY_EXIST], Strings[STR_SAVE_AS], JOptionPane.YES_NO_OPTION)
                             if (result == JOptionPane.YES_OPTION) zipOleboDirectory(fileToSave)
                         } else zipOleboDirectory(fileToSave)
                     }
@@ -91,20 +86,19 @@ class FileMenu : JMenu(Strings[STR_FILES].localCapitalize()) {
             }
         }
 
-        JMenuItem(IMPORT).applyAndAppendTo(this) {
+        JMenuItem("${Strings[STR_IMPORT_DATA]} (ALPHA)").applyAndAppendTo(this) {
             this.addActionListener {
                 val parent = SwingUtilities.getWindowAncestor(this@FileMenu)
 
-                showConfirmMessage(parent, "Attention ! Cette action va effacer toutes les données actuellement sauvegardées. Êtes-vous sûr de continuer ?", IMPORT) {
-                    val extension = "olebo"
+                showConfirmMessage(parent, Strings[ST_WARNING_CONFIG_RESET], Strings[STR_IMPORT_DATA]) {
                     JFileChooser().apply {
-                        this.dialogTitle = IMPORT
-                        this.fileFilter = FileNameExtensionFilter("Olebo file", extension)
+                        this.dialogTitle = Strings[STR_IMPORT_DATA]
+                        this.fileFilter = FileNameExtensionFilter(Strings[STR_OLEBO_FILE], "olebo")
                         if (this.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
                             if (!this.selectedFile.isDirectory && this.selectedFile.exists()) {
                                 val result = loadOleboZipData(this.selectedFile)
                                 if (result is Result.Success) {
-                                    showPopup("La configuration a bien été importée. Olebo va s'actualiser.", parent)
+                                    showPopup(Strings[ST_CONFIGURATION_IMPORTED], parent)
                                     MasterFrame.isVisible = false
                                     PlayerFrame.hide()
                                     Frame.getFrames().forEach(Window::dispose)

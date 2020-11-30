@@ -3,7 +3,6 @@ package view.frames.home
 import OLEBO_VERSION
 import model.internationalisation.STR_VERSION
 import model.internationalisation.Strings
-import model.internationalisation.localCapitalize
 import view.frames.rpg.MasterFrame
 import view.utils.BORDER_BUTTONS
 import view.utils.components.FileMenu
@@ -26,7 +25,7 @@ import javax.swing.JPanel
  *
  * This frame will send the selected act to the Games Views
  */
-class HomeFrame : JFrameTemplate("Olebo - ${Strings[STR_VERSION].localCapitalize()} $OLEBO_VERSION") {
+class HomeFrame : JFrameTemplate("Olebo - ${Strings[STR_VERSION]} $OLEBO_VERSION") {
     override val observable: Observable = HomeManager
 
     private val selectorPanel = ActSelectorPanel()
