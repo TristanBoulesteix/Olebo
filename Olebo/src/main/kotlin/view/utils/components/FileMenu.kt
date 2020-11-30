@@ -104,9 +104,9 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
                                     Frame.getFrames().forEach(Window::dispose)
                                     HomeFrame().isVisible = true
                                 } else showPopup(when (result.value) {
-                                    ZipError.DATABASE_HIGHER -> "Ce fichier semble provenir d'une version ultérieur d'Olebo. Veuillez mettre à jour le logiciel pour importer le fichier."
-                                    ZipError.MISSING_FILES -> "Des fichiers de configuration sont manquants. Impossible d'importer les données."
-                                    else -> "Une erreur inconnue s'est produite. Le fichier peut être corrompu."
+                                    ZipError.DATABASE_HIGHER -> Strings[ST_WARNING_PREVIOUS_VERSION_FILE]
+                                    ZipError.MISSING_FILES -> Strings[ST_WARNING_MISSING_CONF_FILES]
+                                    else -> "${Strings[ST_UNKNOWN_ERROR]} ${Strings[ST_FILE_MAY_BE_CORRUPTED]}"
                                 }, parent, true)
                             }
                         }
@@ -117,11 +117,11 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
 
         this.addSeparator()
 
-        JMenuItem("A propos").applyAndAppendTo(this) {
+        JMenuItem(Strings[STR_ABOUT]).applyAndAppendTo(this) {
             this.addActionListener {
                 JOptionPane.showMessageDialog(null,
-                        "Olebo - Version de l'application : $OLEBO_VERSION - Version de la base de données : ${Settings.databaseVersion}",
-                        "A propos",
+                        "Olebo - ${Strings[STR_APP_VERSION]} $OLEBO_VERSION - ${Strings[STR_DATABASE_VERSION]} ${Settings.databaseVersion}",
+                        Strings[STR_ABOUT],
                         JOptionPane.INFORMATION_MESSAGE)
             }
             this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0)

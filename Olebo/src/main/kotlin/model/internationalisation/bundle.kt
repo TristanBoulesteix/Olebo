@@ -2,6 +2,9 @@
 
 package model.internationalisation
 
+/**
+ * French strings
+ */
 class StringsBundle_fr : Strings() {
     override val contents = mapOf(
             STR_VERSION to "version",
@@ -15,9 +18,19 @@ class StringsBundle_fr : Strings() {
             STR_OLEBO_FILE to "fichier Olebo",
             ST_WARNING_CONFIG_RESET to "Attention ! Cette action va effacer toutes les données actuellement sauvegardées. Êtes-vous sûr de continuer ?",
             ST_CONFIGURATION_IMPORTED to "La configuration a bien été importée. Olebo va s'actualiser.",
+            ST_WARNING_PREVIOUS_VERSION_FILE to "Ce fichier semble provenir d'une version ultérieur d'Olebo. Veuillez mettre à jour le logiciel pour importer le fichier.",
+            ST_WARNING_MISSING_CONF_FILES to "Des fichiers de configuration sont manquants. Impossible d'importer les données.",
+            ST_UNKNOWN_ERROR to "Une erreur inconnue s'est produite.",
+            ST_FILE_MAY_BE_CORRUPTED to "Le fichier peut être corrompu.",
+            STR_ABOUT to "à propos",
+            STR_APP_VERSION to "version de l'application :",
+            STR_DATABASE_VERSION to "version de la base de données :",
     )
 }
 
+/**
+ * Default strings (English strings)
+ */
 class StringsBundle : Strings() {
     override val contents = mapOf(
             STR_VERSION to "version",
@@ -31,5 +44,12 @@ class StringsBundle : Strings() {
             STR_OLEBO_FILE to "Olebo file",
             ST_WARNING_CONFIG_RESET to "Warning! This action will reset all data previously loaded. Do you want to continue?",
             ST_CONFIGURATION_IMPORTED to "The new configuaration was imported successfully. Olebo will reload.",
+            ST_WARNING_PREVIOUS_VERSION_FILE to "This file seems to come from a previous version of Olebo. Please, update the software to import this file.",
+            ST_WARNING_MISSING_CONF_FILES to "Some configuration files are missing. Unable to import data.",
+            ST_UNKNOWN_ERROR to "An unknown error has occured.",
+            ST_FILE_MAY_BE_CORRUPTED to "This file may be corrupted.",
+            STR_ABOUT to "about",
+            STR_APP_VERSION to "app version:",
+            STR_DATABASE_VERSION to "database version:",
     )
 }
