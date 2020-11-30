@@ -10,8 +10,8 @@ import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
 import javax.swing.ImageIcon
 
-
-const val OLEBO_MANIFEST_NAME = "manifest.o_manifest"
+const val OLEBO_MANIFEST_EXTENSION = "o_manifest"
+const val OLEBO_MANIFEST_NAME = "manifest.$OLEBO_MANIFEST_EXTENSION"
 
 /**
  * Path to the Olebo directory
@@ -103,9 +103,8 @@ fun zipOleboDirectory(fileDestination: File) {
         oleboDirectory.walkTopDown().forEach { file ->
             val zipFileName = file.absolutePath.removePrefix(oleboDirectory.absolutePath).removePrefix(File.separator).replace('\\', '/')
 
-            if (zipFileName.isNotBlank() && file.nameWithoutExtension != "oleboUpdater") {
+            if (zipFileName.isNotBlank() && file.nameWithoutExtension != "oleboUpdater" && file.extension != OLEBO_MANIFEST_EXTENSION) {
                 val entry = ZipEntry("$zipFileName${(if (file.isDirectory) "/" else "")}")
-                entry.isDirectory
                 zos.putNextEntry(entry)
                 if (file.isFile) {
                     file.inputStream().use { it.copyTo(zos) }
@@ -139,7 +138,7 @@ fun loadOleboZipData(zipFile: File): Result<ZipError> = try {
                 it.mkdirs()
             }
 
-            this.forEach { entry ->
+            this.filter { it.name != OLEBO_MANIFEST_NAME }.forEach { entry ->
                 val fileString = entry.name.removeSuffix('/'.toString()).split('/').let { splitedName ->
                     splitedName.dropLast(1).joinToString('/'.toString()).replace('/', File.separatorChar).let {
                         OLEBO_DIRECTORY + it + (if (it.isNotBlank()) File.separator else "") + splitedName.last()
