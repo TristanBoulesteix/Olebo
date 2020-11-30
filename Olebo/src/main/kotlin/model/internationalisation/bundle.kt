@@ -27,6 +27,10 @@ class StringsBundle_fr : Strings() {
             STR_DATABASE_VERSION to "version de la base de données :",
             STR_ELEMENTS to "Éléments",
             STR_ADD_ACT to "Ajouter un scénario",
+            STR_OBJECT_LIST to "liste des objets",
+            STR_OBJECTS to "Objets",
+            STR_PC to "PJ",
+            STR_NPC to "PNJ",
     )
 }
 
@@ -55,5 +59,9 @@ class StringsBundle : Strings() {
             STR_DATABASE_VERSION to "database version:",
             STR_ELEMENTS to "elements",
             STR_ADD_ACT to "new scenario",
+            STR_OBJECT_LIST to "Objects list",
+            STR_OBJECTS to "Objects",
+            STR_PC to "PC",
+            STR_NPC to "NPC",
     )
 }

@@ -19,6 +19,10 @@ const val STR_APP_VERSION = "app_version"
 const val STR_DATABASE_VERSION = "dtb_version"
 const val STR_ELEMENTS = "element"
 const val STR_ADD_ACT = "add_act"
+const val STR_OBJECT_LIST = "obj_list"
+const val STR_OBJECTS = "obj"
+const val STR_PC = "pc"
+const val STR_NPC = "npc"
 
 // -- Sentences
 
