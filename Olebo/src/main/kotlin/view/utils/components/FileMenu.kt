@@ -45,7 +45,7 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
                         }
 
                         if (fileToSave.exists()) {
-                            val result = JOptionPane.showConfirmDialog(null, Strings[STR_FILE_ALREADY_EXIST], Strings[STR_SAVE_AS], JOptionPane.YES_NO_OPTION)
+                            val result = JOptionPane.showConfirmDialog(null, Strings[ST_FILE_ALREADY_EXISTS], Strings[STR_SAVE_AS], JOptionPane.YES_NO_OPTION)
                             if (result == JOptionPane.YES_OPTION) saveImg()
                         } else saveImg()
                     }
@@ -78,7 +78,7 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
                             File("${this.selectedFile.parentFile.absolutePath}${File.separator}${this.selectedFile.nameWithoutExtension}.$extension")
 
                         if (fileToSave.exists()) {
-                            val result = JOptionPane.showConfirmDialog(null, Strings[STR_FILE_ALREADY_EXIST], Strings[STR_SAVE_AS], JOptionPane.YES_NO_OPTION)
+                            val result = JOptionPane.showConfirmDialog(null, Strings[ST_FILE_ALREADY_EXISTS], Strings[STR_SAVE_AS], JOptionPane.YES_NO_OPTION)
                             if (result == JOptionPane.YES_OPTION) zipOleboDirectory(fileToSave)
                         } else zipOleboDirectory(fileToSave)
                     }

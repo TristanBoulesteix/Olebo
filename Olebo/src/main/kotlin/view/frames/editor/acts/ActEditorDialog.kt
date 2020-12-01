@@ -57,7 +57,7 @@ class ActEditorDialog : JDialogTemplate(Strings[STR_NEW_ACT]) {
                     if (nameField.text.isNotEmpty() && this@ActEditorDialog.manager.tempScenes.isNotEmpty() && this@ActEditorDialog.manager.saveAct(nameField.text)) {
                         this@ActEditorDialog.dispose()
                     } else {
-                        showPopup(Strings[ST_ACT_ALREADY_EXIST], this@ActEditorDialog)
+                        showPopup(Strings[ST_ACT_ALREADY_EXISTS], this@ActEditorDialog)
                     }
                 }
                 this.border = BORDER_BUTTONS
