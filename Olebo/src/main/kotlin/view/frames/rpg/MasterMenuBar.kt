@@ -110,17 +110,14 @@ object MasterMenuBar : JMenuBar() {
 
             this.addSeparator()
 
-            JMenu("Choisir une Scene").applyAndAppendTo(this) {
-                if (act != null) {
-                    var i = 0
-
-                    for (scene in act!!.scenes) { //Pour chaque scene, on créé une option pour activer la scene
-                        i++
-                        if (scene.id.value == act!!.sceneId) {
-                            val item = JMenuItem("$i ${scene.name} (Active)").apply { isEnabled = false }
+            JMenu(Strings[STR_CHOOSE_SCENE]).applyAndAppendTo(this) {
+                act?.let {
+                    it.scenes.forEachIndexed { index, scene ->
+                        if (scene.id.value == it.sceneId) {
+                            val item = JMenuItem("${index + 1} ${scene.name} (${Strings[STR_IS_CURRENT_SCENE, StringStates.NORMAL]})").apply { isEnabled = false }
                             this.add(item)
                         } else {
-                            val item = JMenuItem("$i ${scene.name}")
+                            val item = JMenuItem("${index + 1} ${scene.name}")
                             item.addActionListener { transaction(DAO.database) { ViewManager.changeCurrentScene(scene.id.value) } }
                             this.add(item)
                         }
@@ -129,7 +126,7 @@ object MasterMenuBar : JMenuBar() {
             }
         }
 
-        JMenu("Pions").applyAndAppendTo(this) {
+        JMenu(Strings[STR_TOKENS]).applyAndAppendTo(this) {
             JMenuItem("Gèrer les Blueprints").applyAndAppendTo(this) {
                 addActionListener {
                     BlueprintDialog().isVisible = true

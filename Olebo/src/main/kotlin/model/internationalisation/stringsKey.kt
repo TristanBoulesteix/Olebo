@@ -47,6 +47,9 @@ const val STR_RESTORE = "restore"
 const val STR_WINDOW = "window"
 const val STR_CLOSE_ACT = "close_act"
 const val STR_TOGGLE_PLAYER_FRAME = "toggle_player_frame"
+const val STR_CHOOSE_SCENE = "choose_scene"
+const val STR_IS_CURRENT_SCENE = "current_scene"
+const val STR_TOKENS = "tokens"
 
 // -- Sentences
 

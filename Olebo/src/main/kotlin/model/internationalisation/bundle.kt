@@ -59,6 +59,9 @@ class StringsBundle_fr : Strings() {
             STR_WINDOW to "fenêtre",
             STR_CLOSE_ACT to "fermer scenario",
             STR_TOGGLE_PLAYER_FRAME to "fenetre joueurs ON/OFF",
+            STR_CHOOSE_SCENE to "choisir une scène",
+            STR_IS_CURRENT_SCENE to "actuelle",
+            STR_TOKENS to "pions",
     )
 }
 
@@ -119,5 +122,8 @@ class StringsBundle : Strings() {
             STR_WINDOW to "window",
             STR_CLOSE_ACT to "close this act",
             STR_TOGGLE_PLAYER_FRAME to "toggle Players window",
+            STR_CHOOSE_SCENE to "choose a scene",
+            STR_IS_CURRENT_SCENE to "current",
+            STR_TOKENS to "tokens",
     )
 }
