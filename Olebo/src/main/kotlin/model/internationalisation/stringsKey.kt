@@ -23,6 +23,9 @@ const val STR_OBJECT_LIST = "obj_list"
 const val STR_OBJECTS = "obj"
 const val STR_PC = "pc"
 const val STR_NPC = "npc"
+const val STR_NEW_ACT = "new_act"
+const val STR_NAME = "name"
+const val STR_CONFIRM = "confirm"
 
 // -- Sentences
 
@@ -32,3 +35,4 @@ const val ST_WARNING_PREVIOUS_VERSION_FILE = "warn_prev_file"
 const val ST_WARNING_MISSING_CONF_FILES = "missing_conf_files"
 const val ST_UNKNOWN_ERROR = "err_unknown"
 const val ST_FILE_MAY_BE_CORRUPTED = "file_corrupted"
+const val ST_ACT_ALREADY_EXIST = "act_already_exist"

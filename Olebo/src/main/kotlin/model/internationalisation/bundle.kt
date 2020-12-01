@@ -31,6 +31,10 @@ class StringsBundle_fr : Strings() {
             STR_OBJECTS to "Objets",
             STR_PC to "PJ",
             STR_NPC to "PNJ",
+            STR_NEW_ACT to "nouveau scénario",
+            STR_NAME to "nom",
+            STR_CONFIRM to "valider",
+            ST_ACT_ALREADY_EXIST to "Désolé, un scénario avec le même nom existe déjà ou les données du scénario sont invalides !",
     )
 }
 
@@ -63,5 +67,9 @@ class StringsBundle : Strings() {
             STR_OBJECTS to "Objects",
             STR_PC to "PC",
             STR_NPC to "NPC",
+            STR_NEW_ACT to "new scenario",
+            STR_NAME to "nom",
+            STR_CONFIRM to "confirm",
+            ST_ACT_ALREADY_EXIST to "Sorry, a scenario with this name already exist or the data entered are invalid.",
     )
 }
