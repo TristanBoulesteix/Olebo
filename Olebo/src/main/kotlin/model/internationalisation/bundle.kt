@@ -62,6 +62,13 @@ class StringsBundle_fr : Strings() {
             STR_CHOOSE_SCENE to "choisir une scène",
             STR_IS_CURRENT_SCENE to "actuelle",
             STR_TOKENS to "pions",
+            STR_MANAGE_BLUEPRINTS to "gèrer les modèles d'éléments",
+            STR_IMPORT_FROM_SCENE to "importer depuis une autre scène",
+            STR_IMPORT_ALL_ELEMENTS to "tout importer",
+            STR_DELETE_SELECTED_TOKENS to "supprimer pion(s) selectionné(s)",
+            STR_CLEAR_BOARD to "vider le plateau",
+            STR_DELETION to "suppression",
+            ST_CONFIRM_CLEAR_BOARD to "Voulez-vous vraiment supprimer tous les éléments du plateau ? Cette action est irréversible.",
     )
 }
 
@@ -125,5 +132,12 @@ class StringsBundle : Strings() {
             STR_CHOOSE_SCENE to "choose a scene",
             STR_IS_CURRENT_SCENE to "current",
             STR_TOKENS to "tokens",
+            STR_MANAGE_BLUEPRINTS to "manage blueprints",
+            STR_IMPORT_FROM_SCENE to "import from an other scene",
+            STR_IMPORT_ALL_ELEMENTS to "import all elements",
+            STR_DELETE_SELECTED_TOKENS to "delete selected token(s)",
+            STR_CLEAR_BOARD to "clear board",
+            STR_DELETION to "delete all elements",
+            ST_CONFIRM_CLEAR_BOARD to "Do you really want to remove all elements from the scene? This action is not cancelable.",
     )
 }

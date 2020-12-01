@@ -50,6 +50,12 @@ const val STR_TOGGLE_PLAYER_FRAME = "toggle_player_frame"
 const val STR_CHOOSE_SCENE = "choose_scene"
 const val STR_IS_CURRENT_SCENE = "current_scene"
 const val STR_TOKENS = "tokens"
+const val STR_MANAGE_BLUEPRINTS = "manage_blueprints"
+const val STR_IMPORT_FROM_SCENE = "import_from_scene"
+const val STR_IMPORT_ALL_ELEMENTS = "import_all_elements"
+const val STR_DELETE_SELECTED_TOKENS = "delete_selected"
+const val STR_CLEAR_BOARD = "clear_board"
+const val STR_DELETION = "delete_title"
 
 // -- Sentences
 
@@ -63,3 +69,4 @@ const val ST_ACT_ALREADY_EXISTS = "act_already_exists"
 const val ST_SCENE_ALREADY_EXISTS = "scene_already_exists"
 const val ST_FILE_ALREADY_EXISTS = "file_already_exists"
 const val ST_ELEMENT_ALREADY_EXISTS = "element_already_exists"
+const val ST_CONFIRM_CLEAR_BOARD = "confirm_clear_board"

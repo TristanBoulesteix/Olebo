@@ -127,7 +127,7 @@ object MasterMenuBar : JMenuBar() {
         }
 
         JMenu(Strings[STR_TOKENS]).applyAndAppendTo(this) {
-            JMenuItem("Gèrer les Blueprints").applyAndAppendTo(this) {
+            JMenuItem(Strings[STR_MANAGE_BLUEPRINTS]).applyAndAppendTo(this) {
                 addActionListener {
                     BlueprintDialog().isVisible = true
                     MasterFrame.itemPanel.reloadContent()
@@ -135,7 +135,7 @@ object MasterMenuBar : JMenuBar() {
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_B, CTRLSHIFT)
             }
 
-            JMenu("Importer depuis une autre scene").applyAndAppendTo(this) {
+            JMenu(Strings[STR_IMPORT_FROM_SCENE]).applyAndAppendTo(this) {
                 act?.let { act ->
                     if (act.scenes.size <= 1)
                         this.isEnabled = false
@@ -144,7 +144,7 @@ object MasterMenuBar : JMenuBar() {
                         if (it.id.value != act.sceneId) {
                             val itemMenu = JMenu(it.name).apply {
                                 if (it.elements.isNotEmpty()) {
-                                    JMenuItem("Tout importer").applyAndAppendTo(this) {
+                                    JMenuItem(Strings[STR_IMPORT_ALL_ELEMENTS]).applyAndAppendTo(this) {
                                         addActionListener { _ ->
                                             it.elements.forEach { token ->
                                                 transaction(DAO.database) { Scene.moveElementToScene(token, Scene[act.sceneId]) }
@@ -163,7 +163,9 @@ object MasterMenuBar : JMenuBar() {
                                             ViewManager.repaint()
                                         }
                                     }
-                                } ?: { this.isEnabled = false }()
+                                } ?: run {
+                                    isEnabled = false
+                                }
                             }
 
                             this.add(itemMenu)
@@ -177,16 +179,16 @@ object MasterMenuBar : JMenuBar() {
 
             this.addSeparator()
 
-            JMenuItem("Supprimer pion(s) selectionné(s)").applyAndAppendTo(this) {
+            JMenuItem(Strings[STR_DELETE_SELECTED_TOKENS]).applyAndAppendTo(this) {
                 this.addActionListener {
                     SelectPanel.selectedElements.forEach(ViewManager::removeToken)
                 }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0)
             }
 
-            JMenuItem("Vider le plateau").applyAndAppendTo(this) {
+            JMenuItem(Strings[STR_CLEAR_BOARD]).applyAndAppendTo(this) {
                 addActionListener {
-                    showConfirmMessage(this, "Voulez-vous vraiment supprimer tous les éléments du plateau ? Cette action est irréversible.", "Suppression") {
+                    showConfirmMessage(this, Strings[ST_CONFIRM_CLEAR_BOARD], Strings[STR_DELETION]) {
                         transaction(DAO.database) {
                             for (token in Scene[act!!.sceneId].elements) {
                                 ViewManager.removeToken(token)
