@@ -2,6 +2,8 @@ package view.utils.components
 
 import model.dao.DAO
 import model.element.Element
+import model.internationalisation.STR_NO_ELEMENT
+import model.internationalisation.Strings
 import model.utils.isCharacter
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.forElse
@@ -101,7 +103,7 @@ abstract class SelectorPanel : JPanel() {
                 this.add(builder(it.first.toInt(), it.second))
             } ?: this.add(JPanel().apply {
                 this.layout = GridBagLayout()
-                this.add(JLabel("Aucun élément").apply {
+                this.add(JLabel(Strings[STR_NO_ELEMENT]).apply {
                     this.font = Font("Tahoma", Font.BOLD, 20)
                 })
             })

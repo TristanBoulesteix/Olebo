@@ -70,7 +70,7 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
                 val extension = "olebo"
                 JFileChooser().apply {
                     this.dialogTitle = Strings[STR_EXPORT_DATA]
-                    this.fileFilter = FileNameExtensionFilter("Olebo file", extension)
+                    this.fileFilter = FileNameExtensionFilter(Strings[STR_OLEBO_FILE], extension)
                     if (this.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
                         val fileToSave = if (this.selectedFile.extension == extension)
                             this.selectedFile
