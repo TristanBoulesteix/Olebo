@@ -30,6 +30,12 @@ const val STR_CHANGE_SCENE = "change_scene"
 const val STR_NAME_OF_SCENE = "name_scene"
 const val STR_IMPORT_IMG = "import_img"
 const val STR_CANCEL = "cancel"
+const val STR_SCENES = "scenes"
+const val STR_NEW_ELEMENT = "new_element"
+const val STR_CHANGE_ELEMENT = "change_element"
+const val STR_NAME_OF_ELEMENT = "name_element"
+const val STR_MAX_HEALTH = "hp_max"
+const val STR_MAX_MANA = "mp_max"
 
 // -- Sentences
 
@@ -42,3 +48,4 @@ const val ST_FILE_MAY_BE_CORRUPTED = "file_corrupted"
 const val ST_ACT_ALREADY_EXISTS = "act_already_exists"
 const val ST_SCENE_ALREADY_EXISTS = "scene_already_exists"
 const val ST_FILE_ALREADY_EXISTS = "file_already_exists"
+const val ST_ELEMENT_ALREADY_EXISTS = "element_already_exists"

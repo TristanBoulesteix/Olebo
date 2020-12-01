@@ -41,6 +41,13 @@ class StringsBundle_fr : Strings() {
             STR_IMPORT_IMG to "importer une image",
             STR_CANCEL to "annuler",
             ST_ACT_ALREADY_EXISTS to "Une scène avec ce nom existe déjà ou le fichier sélectionné est invalide !",
+            STR_SCENES to "scènes",
+            STR_NEW_ELEMENT to "nouvel élément",
+            STR_CHANGE_ELEMENT to "modifier élément",
+            STR_NAME_OF_ELEMENT to "nom de l'élément :",
+            STR_MAX_HEALTH to "PV max :",
+            STR_MAX_MANA to "PM max :",
+            ST_ELEMENT_ALREADY_EXISTS to "Un élément avec ce nom existe déjà ou le fichier sélectionné est invalide !",
     )
 }
 
@@ -83,5 +90,12 @@ class StringsBundle : Strings() {
             STR_IMPORT_IMG to "import an image",
             STR_CANCEL to "annuler",
             ST_ACT_ALREADY_EXISTS to "A scene with this scene already exists or the selected file is invalid.",
+            STR_SCENES to "scenes",
+            STR_NEW_ELEMENT to "new element",
+            STR_CHANGE_ELEMENT to "update element",
+            STR_NAME_OF_ELEMENT to "name of the element:",
+            STR_MAX_HEALTH to "HP max:",
+            STR_MAX_MANA to "MP max:",
+            ST_ELEMENT_ALREADY_EXISTS to "An element with this scene already exists or the selected file is invalid.",
     )
 }

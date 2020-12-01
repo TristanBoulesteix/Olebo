@@ -1,6 +1,8 @@
 package view.frames.editor.acts
 
 import model.dao.getIcon
+import model.internationalisation.STR_SCENES
+import model.internationalisation.Strings
 import view.utils.components.ItemPanel
 import view.utils.components.SelectorPanel
 import viewModel.ActCreatorManager
@@ -31,7 +33,7 @@ class SceneSelectorPanel(private val controller: ActCreatorManager?) : SelectorP
         this.add(JPanel().apply {
             this.layout = GridBagLayout()
 
-            val titleItems = object : ItemPanel(0, "Scènes") {
+            val titleItems = object : ItemPanel(0, Strings[STR_SCENES]) {
                 init {
                     this.border = BorderFactory.createMatteBorder(2, 2, 0, 2, Color.BLACK)
                     this.add(
