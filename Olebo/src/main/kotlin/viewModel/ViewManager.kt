@@ -3,15 +3,14 @@ package viewModel
 import model.act.Act
 import model.act.Scene
 import model.dao.DAO
-import model.element.Blueprint
-import model.element.Element
-import model.element.Position
-import model.element.Priority
+import model.element.*
 import model.utils.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import view.frames.rpg.MasterFrame
 import view.frames.rpg.MasterMenuBar
 import view.frames.rpg.ViewFacade
+import view.utils.compareTo
+import java.awt.Dimension
 import java.awt.Point
 import java.awt.Rectangle
 
@@ -111,6 +110,9 @@ object ViewManager {
     }
 
     fun selectElements(rec: Rectangle) {
+        if(rec.size < Dimension(Size.XS.size.absoluteSizeValue, Size.XS.size.absoluteSizeValue))
+            return
+
         val selectedElements = mutableEmptyElements()
 
         activeScene!!.elements.forEach {
