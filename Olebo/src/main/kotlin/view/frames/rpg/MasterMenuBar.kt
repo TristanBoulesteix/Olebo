@@ -5,6 +5,7 @@ import model.act.Scene
 import model.command.CommandManager
 import model.dao.DAO
 import model.dao.Settings
+import model.internationalisation.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.forElse
 import view.frames.editor.elements.BlueprintDialog
@@ -37,8 +38,8 @@ object MasterMenuBar : JMenuBar() {
 
         this.add(FileMenu())
 
-        JMenu("Outils").applyAndAppendTo(this) {
-            JCheckBoxMenuItem("Activer le curseur joueur").applyAndAppendTo(this) {
+        JMenu(Strings[STR_TOOLS]).applyAndAppendTo(this) {
+            JCheckBoxMenuItem(Strings[STR_ENABLE_CURSOR]).applyAndAppendTo(this) {
                 this.isSelected = Settings.cursorEnabled
                 this.addItemListener {
                     Settings.cursorEnabled = it.stateChange == ItemEvent.SELECTED
@@ -47,8 +48,8 @@ object MasterMenuBar : JMenuBar() {
 
             this.addSeparator()
 
-            undoMenuItem = object : JMenuItem("Annuler") {
-                private val baseText = "Annuler"
+            undoMenuItem = object : JMenuItem(Strings[STR_CANCEL]) {
+                private val baseText = Strings[STR_CANCEL]
 
                 override fun setText(text: String) = super.setText("$baseText ${if (text == "") "" else "($text)"}")
 
@@ -66,10 +67,8 @@ object MasterMenuBar : JMenuBar() {
 
             this.add(undoMenuItem)
 
-            redoMenuItem = object : JMenuItem("Restaurer") {
-                private val baseText = "Restaurer"
-
-                override fun setText(text: String) = super.setText("$baseText ${if (text == "") "" else "($text)"}")
+            redoMenuItem = object : JMenuItem(Strings[STR_RESTORE]) {
+                override fun setText(text: String) = super.setText("${Strings[STR_RESTORE]} ${if (text == "") "" else "($text)"}")
 
                 init {
                     this.isEnabled = false
@@ -86,8 +85,8 @@ object MasterMenuBar : JMenuBar() {
             this.add(redoMenuItem)
         }
 
-        JMenu("Fenêtres").applyAndAppendTo(this) {
-            JMenuItem("Fermer scenario").applyAndAppendTo(this) {
+        JMenu(Strings[STR_WINDOW]).applyAndAppendTo(this) {
+            JMenuItem(Strings[STR_CLOSE_ACT]).applyAndAppendTo(this) {
                 this.addActionListener {
                     MasterFrame.isVisible = false
                     PlayerFrame.hide()
@@ -98,7 +97,7 @@ object MasterMenuBar : JMenuBar() {
 
             this.addSeparator()
 
-            togglePlayerFrameMenuItem = JCheckBoxMenuItem("Fenetre PJs ON/OFF").applyAndAppendTo(this) {
+            togglePlayerFrameMenuItem = JCheckBoxMenuItem(Strings[STR_TOGGLE_PLAYER_FRAME]).applyAndAppendTo(this) {
                 this.addActionListener { e ->
                     (e.source as AbstractButton).let {
                         if (it.isSelected)

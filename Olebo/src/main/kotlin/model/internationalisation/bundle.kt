@@ -48,6 +48,17 @@ class StringsBundle_fr : Strings() {
             STR_MAX_HEALTH to "PV max :",
             STR_MAX_MANA to "PM max :",
             ST_ELEMENT_ALREADY_EXISTS to "Un élément avec ce nom existe déjà ou le fichier sélectionné est invalide !",
+            STR_SEARCH to "rechercher",
+            STR_BASE_ELEMENTS to "éléments de base",
+            STR_NO_ELEMENT to "aucun élément",
+            STR_DM_TITLE_FRAME to "fenêtre MJ",
+            STR_PLAYER_TITLE_FRAME to "fenêtre joueurs",
+            STR_TOOLS to "outils",
+            STR_ENABLE_CURSOR to "activer le curseur joueurs",
+            STR_RESTORE to "restaurer",
+            STR_WINDOW to "fenêtre",
+            STR_CLOSE_ACT to "fermer scenario",
+            STR_TOGGLE_PLAYER_FRAME to "fenetre joueurs ON/OFF",
     )
 }
 
@@ -97,5 +108,16 @@ class StringsBundle : Strings() {
             STR_MAX_HEALTH to "HP max:",
             STR_MAX_MANA to "MP max:",
             ST_ELEMENT_ALREADY_EXISTS to "An element with this scene already exists or the selected file is invalid.",
+            STR_SEARCH to "search",
+            STR_BASE_ELEMENTS to "basic elements",
+            STR_NO_ELEMENT to "no element",
+            STR_DM_TITLE_FRAME to "DM window",
+            STR_PLAYER_TITLE_FRAME to "players window",
+            STR_TOOLS to "tools",
+            STR_ENABLE_CURSOR to "enable cursor on Players window",
+            STR_RESTORE to "restore",
+            STR_WINDOW to "window",
+            STR_CLOSE_ACT to "close this act",
+            STR_TOGGLE_PLAYER_FRAME to "toggle Players window",
     )
 }

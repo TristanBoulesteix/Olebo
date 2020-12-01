@@ -36,6 +36,17 @@ const val STR_CHANGE_ELEMENT = "change_element"
 const val STR_NAME_OF_ELEMENT = "name_element"
 const val STR_MAX_HEALTH = "hp_max"
 const val STR_MAX_MANA = "mp_max"
+const val STR_SEARCH = "search"
+const val STR_BASE_ELEMENTS = "base"
+const val STR_NO_ELEMENT = "no_element"
+const val STR_DM_TITLE_FRAME = "master_frame_title"
+const val STR_PLAYER_TITLE_FRAME = "player_frame_title"
+const val STR_TOOLS = "tools"
+const val STR_ENABLE_CURSOR = "enable_cursor"
+const val STR_RESTORE = "restore"
+const val STR_WINDOW = "window"
+const val STR_CLOSE_ACT = "close_act"
+const val STR_TOGGLE_PLAYER_FRAME = "toggle_player_frame"
 
 // -- Sentences
 

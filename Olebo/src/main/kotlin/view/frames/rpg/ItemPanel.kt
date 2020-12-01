@@ -3,6 +3,7 @@ package view.frames.rpg
 import model.dao.DAO
 import model.element.Blueprint
 import model.element.Type
+import model.internationalisation.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.forElse
 import view.utils.components.PlaceholderTextField
@@ -32,7 +33,7 @@ class ItemPanel : JPanel() {
     /**
      * Search field to find a specific blueprint
      */
-    private val searchField = PlaceholderTextField("Rechercher")
+    private val searchField = PlaceholderTextField(Strings[STR_SEARCH])
 
     /**
      * Event which trigger when the search field is modified
@@ -73,7 +74,7 @@ class ItemPanel : JPanel() {
                 this.updateUI()
 
                 // Object list
-                this.add(CustomTitlePanel("Objets").apply { this.isEnabled = false })
+                this.add(CustomTitlePanel(Strings[STR_OBJECTS]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
                     it.type.typeElement == Type.OBJECT && (searchConstraint.isEmpty() || it.name.toLowerCase().contains(
@@ -84,7 +85,7 @@ class ItemPanel : JPanel() {
                 } ?: this.add(EmptyField())
 
                 // PJ list
-                this.add(CustomTitlePanel("PJ").apply { this.isEnabled = false })
+                this.add(CustomTitlePanel(Strings[STR_PC]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
                     it.type.typeElement == Type.PJ && (searchConstraint.isEmpty() || it.name.toLowerCase().contains(searchConstraint, true))
@@ -93,7 +94,7 @@ class ItemPanel : JPanel() {
                 } ?: this.add(EmptyField())
 
                 // PNJ list
-                this.add(CustomTitlePanel("PNJ").apply { this.isEnabled = false })
+                this.add(CustomTitlePanel(Strings[STR_NPC]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
                     it.type.typeElement == Type.PNJ && (searchConstraint.isEmpty() || it.name.contains(searchConstraint, true))
@@ -102,7 +103,7 @@ class ItemPanel : JPanel() {
                 } ?: this.add(EmptyField())
 
                 // Basic elements list
-                this.add(CustomTitlePanel("Éléments de base").apply { this.isEnabled = false })
+                this.add(CustomTitlePanel(Strings[STR_BASE_ELEMENTS]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
                     it.type.typeElement == Type.BASIC && (searchConstraint.isEmpty() || it.realName.contains(searchConstraint, true))
@@ -167,7 +168,7 @@ class ItemPanel : JPanel() {
     /**
      * Class showing "Aucun élément" as JTextField
      */
-    class EmptyField : JTextField("Aucun élément") {
+    class EmptyField : JTextField(Strings[STR_NO_ELEMENT]) {
         init {
             this.isEnabled = false
             this.maximumSize = dimensionElement

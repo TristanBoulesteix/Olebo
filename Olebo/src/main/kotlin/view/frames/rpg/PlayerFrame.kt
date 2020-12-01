@@ -1,5 +1,7 @@
 package view.frames.rpg
 
+import model.internationalisation.STR_PLAYER_TITLE_FRAME
+import model.internationalisation.Strings
 import model.utils.Elements
 import model.utils.emptyElements
 import view.utils.DIMENSION_FRAME
@@ -25,7 +27,7 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
                 playerFrameInstance?.setMapBackground(value)
             }
 
-        var title = "Player"
+        var title = "\" \""
             set(value) {
                 playerFrameInstance?.title = value
                 field = value
@@ -96,8 +98,7 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
 
     override fun reload() = repaint()
 
-    override fun setTitle(title: String) =
-            super.setTitle("Olebo - Fenêtre PJ - \"$title\"")
+    override fun setTitle(title: String) = super.setTitle("Olebo - ${Strings[STR_PLAYER_TITLE_FRAME]} - \"$title\"")
 
     override fun updateMap(tokens: Elements) {
         mapPanel.updateTokens(tokens)
