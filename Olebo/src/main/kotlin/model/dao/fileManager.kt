@@ -30,7 +30,7 @@ val updaterPath = "${OLEBO_DIRECTORY}oleboUpdater.jar"
  * @param extension (optionnal) The extension of the picture. The defaut extension is ".png"
  */
 fun getIcon(name: String, controllerClass: Class<*>, extension: String = ".png"): ImageIcon =
-        ImageIcon(controllerClass.classLoader.getResource("icons/$name$extension"))
+    ImageIcon(controllerClass.classLoader.getResource("icons/$name$extension"))
 
 /**
  * Save a picture to img folder
@@ -39,9 +39,9 @@ fun getIcon(name: String, controllerClass: Class<*>, extension: String = ".png")
  */
 fun saveImg(path: String): String {
     val img = File.createTempFile(
-            "img_",
-            "_background.png",
-            File(imgPath).apply { this.mkdirs() }
+        "img_",
+        "_background.png",
+        File(imgPath).apply { this.mkdirs() }
     )
 
     File(path).copyTo(img, true)
@@ -101,7 +101,8 @@ fun zipOleboDirectory(fileDestination: File) {
         }
 
         oleboDirectory.walkTopDown().forEach { file ->
-            val zipFileName = file.absolutePath.removePrefix(oleboDirectory.absolutePath).removePrefix(File.separator).replace('\\', '/')
+            val zipFileName = file.absolutePath.removePrefix(oleboDirectory.absolutePath).removePrefix(File.separator)
+                .replace('\\', '/')
 
             if (zipFileName.isNotBlank() && file.nameWithoutExtension != "oleboUpdater" && file.extension != OLEBO_MANIFEST_EXTENSION) {
                 val entry = ZipEntry("$zipFileName${(if (file.isDirectory) "/" else "")}")

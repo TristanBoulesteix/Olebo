@@ -17,7 +17,7 @@ fun showPopup(message: String, parent: Component? = null, isError: Boolean = fal
     parent,
     message,
     Strings[STR_WARNING],
-    if(!isError) JOptionPane.INFORMATION_MESSAGE else JOptionPane.ERROR_MESSAGE
+    if (!isError) JOptionPane.INFORMATION_MESSAGE else JOptionPane.ERROR_MESSAGE
 )
 
 fun showConfirmMessage(parent: Component? = null, message: String, title: String, okAction: () -> Unit) {

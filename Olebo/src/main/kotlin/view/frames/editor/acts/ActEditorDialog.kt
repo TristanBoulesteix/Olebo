@@ -54,7 +54,10 @@ class ActEditorDialog : JDialogTemplate(Strings[STR_NEW_ACT]) {
             this.background = BACKGROUND_COLOR_LIGHT_BLUE
             this.add(JButton(Strings[STR_CONFIRM]).apply {
                 this.addActionListener {
-                    if (nameField.text.isNotEmpty() && this@ActEditorDialog.manager.tempScenes.isNotEmpty() && this@ActEditorDialog.manager.saveAct(nameField.text)) {
+                    if (nameField.text.isNotEmpty() && this@ActEditorDialog.manager.tempScenes.isNotEmpty() && this@ActEditorDialog.manager.saveAct(
+                            nameField.text
+                        )
+                    ) {
                         this@ActEditorDialog.dispose()
                     } else {
                         showPopup(Strings[ST_ACT_ALREADY_EXISTS], this@ActEditorDialog)
@@ -72,7 +75,7 @@ class ActEditorDialog : JDialogTemplate(Strings[STR_NEW_ACT]) {
      *
      * @param act The act to update
      */
-    fun fillWithAct(act: Act) : ActEditorDialog {
+    fun fillWithAct(act: Act): ActEditorDialog {
         this.nameField.text = act.name
         this.manager.updateAct(act.scenes, act.id.value)
         return this

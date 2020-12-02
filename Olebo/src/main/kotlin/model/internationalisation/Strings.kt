@@ -13,7 +13,7 @@ abstract class Strings : ListResourceBundle() {
         } catch (e: Exception) {
             key
         }.let {
-            when(state) {
+            when (state) {
                 StringStates.CAPITALIZE -> it.capitalize(Settings.language)
                 StringStates.NORMAL -> it
             }

@@ -274,10 +274,15 @@ object SelectPanel : JPanel() {
 
         with(selectedElements) {
             if (this.isNotEmpty()) {
-                (arrayOf<AbstractButton>(rotateRightButton, rotateLeftButton, deleteButton) + priorityRadioButtons).forEach { it.isEnabled = true }
+                (arrayOf<AbstractButton>(
+                    rotateRightButton,
+                    rotateLeftButton,
+                    deleteButton
+                ) + priorityRadioButtons).forEach { it.isEnabled = true }
 
                 visibilityButton.initialize(false)
-                nameLabel.text = if (this.size == 1) this[0].name else "$size ${Strings[STR_SELECTED_ELEMENTS, StringStates.NORMAL]}"
+                nameLabel.text =
+                    if (this.size == 1) this[0].name else "$size ${Strings[STR_SELECTED_ELEMENTS, StringStates.NORMAL]}"
 
                 sizeCombo.selectedItem = this
 
@@ -293,7 +298,11 @@ object SelectPanel : JPanel() {
                 }
             } else {
                 nameLabel.text = null
-                (arrayOf<AbstractButton>(rotateRightButton, rotateLeftButton, deleteButton) + priorityRadioButtons).forEach { it.isEnabled = false }
+                (arrayOf<AbstractButton>(
+                    rotateRightButton,
+                    rotateLeftButton,
+                    deleteButton
+                ) + priorityRadioButtons).forEach { it.isEnabled = false }
                 priorityRadioButtons.forEach { it.isSelected = false }
                 priorityInvisibleButton.isSelected = true
                 visibilityButton.initialize(true)

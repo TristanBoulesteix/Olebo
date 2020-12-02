@@ -78,7 +78,7 @@ class ItemPanel : JPanel() {
 
                 ViewManager.items.filter {
                     it.type.typeElement == Type.OBJECT && (searchConstraint.isEmpty() || it.name.toLowerCase().contains(
-                            searchConstraint.toLowerCase()
+                        searchConstraint.toLowerCase()
                     ))
                 }.forElse {
                     this.add(CustomPanel(it))
@@ -88,7 +88,8 @@ class ItemPanel : JPanel() {
                 this.add(CustomTitlePanel(Strings[STR_PC]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.PJ && (searchConstraint.isEmpty() || it.name.toLowerCase().contains(searchConstraint, true))
+                    it.type.typeElement == Type.PJ && (searchConstraint.isEmpty() || it.name.toLowerCase()
+                        .contains(searchConstraint, true))
                 }.forElse {
                     this.add(CustomPanel(it))
                 } ?: this.add(EmptyField())
@@ -97,7 +98,10 @@ class ItemPanel : JPanel() {
                 this.add(CustomTitlePanel(Strings[STR_NPC]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.PNJ && (searchConstraint.isEmpty() || it.name.contains(searchConstraint, true))
+                    it.type.typeElement == Type.PNJ && (searchConstraint.isEmpty() || it.name.contains(
+                        searchConstraint,
+                        true
+                    ))
                 }.forElse {
                     this.add(CustomPanel(it))
                 } ?: this.add(EmptyField())
@@ -106,7 +110,10 @@ class ItemPanel : JPanel() {
                 this.add(CustomTitlePanel(Strings[STR_BASE_ELEMENTS]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.BASIC && (searchConstraint.isEmpty() || it.realName.contains(searchConstraint, true))
+                    it.type.typeElement == Type.BASIC && (searchConstraint.isEmpty() || it.realName.contains(
+                        searchConstraint,
+                        true
+                    ))
                 }.forElse {
                     this.add(CustomPanel(it))
                 } ?: this.add(EmptyField())

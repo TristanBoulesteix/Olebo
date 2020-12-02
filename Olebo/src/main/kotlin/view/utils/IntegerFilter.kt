@@ -6,8 +6,10 @@ import javax.swing.text.DocumentFilter
 
 class IntegerFilter : DocumentFilter() {
     @Throws(BadLocationException::class)
-    override fun insertString(fb: FilterBypass, offset: Int, string: String,
-                              attr: AttributeSet) {
+    override fun insertString(
+        fb: FilterBypass, offset: Int, string: String,
+        attr: AttributeSet
+    ) {
         val doc = fb.document
         val sb = StringBuilder()
         sb.append(doc.getText(0, doc.length))
@@ -20,8 +22,10 @@ class IntegerFilter : DocumentFilter() {
     private fun test(text: String) = text.isEmpty() || text.toIntOrNull() != null
 
     @Throws(BadLocationException::class)
-    override fun replace(fb: FilterBypass, offset: Int, length: Int, text: String,
-                         attrs: AttributeSet?) {
+    override fun replace(
+        fb: FilterBypass, offset: Int, length: Int, text: String,
+        attrs: AttributeSet?
+    ) {
         val doc = fb.document
         val sb = StringBuilder()
         sb.append(doc.getText(0, doc.length))

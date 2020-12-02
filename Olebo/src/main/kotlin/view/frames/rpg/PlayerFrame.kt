@@ -57,8 +57,8 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
                         for (screen in screens) {
                             if (MasterFrame.graphicsConfiguration.device != screen) {
                                 this.setSize(
-                                        screen.displayMode.width,
-                                        screen.displayMode.height
+                                    screen.displayMode.width,
+                                    screen.displayMode.height
                                 )  //Sets the frame's size as exactly the size of the screen.
                                 this.isUndecorated = true
                                 this.isResizable = false
@@ -92,7 +92,8 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
         this.addKeyListener(this)
         this.defaultCloseOperation = DO_NOTHING_ON_CLOSE
         this.addWindowListener(object : WindowAdapter() {
-            override fun windowClosing(e: WindowEvent) = Companion.hide().also { MasterMenuBar.togglePlayerFrameMenuItem?.isSelected = false }
+            override fun windowClosing(e: WindowEvent) =
+                Companion.hide().also { MasterMenuBar.togglePlayerFrameMenuItem?.isSelected = false }
         })
     }
 

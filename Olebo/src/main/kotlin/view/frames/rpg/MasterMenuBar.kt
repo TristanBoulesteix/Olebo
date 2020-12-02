@@ -68,7 +68,8 @@ object MasterMenuBar : JMenuBar() {
             this.add(undoMenuItem)
 
             redoMenuItem = object : JMenuItem(Strings[STR_RESTORE]) {
-                override fun setText(text: String) = super.setText("${Strings[STR_RESTORE]} ${if (text == "") "" else "($text)"}")
+                override fun setText(text: String) =
+                    super.setText("${Strings[STR_RESTORE]} ${if (text == "") "" else "($text)"}")
 
                 init {
                     this.isEnabled = false
@@ -114,7 +115,10 @@ object MasterMenuBar : JMenuBar() {
                 act?.let {
                     it.scenes.forEachIndexed { index, scene ->
                         if (scene.id.value == it.sceneId) {
-                            val item = JMenuItem("${index + 1} ${scene.name} (${Strings[STR_IS_CURRENT_SCENE, StringStates.NORMAL]})").apply { isEnabled = false }
+                            val item =
+                                JMenuItem("${index + 1} ${scene.name} (${Strings[STR_IS_CURRENT_SCENE, StringStates.NORMAL]})").apply {
+                                    isEnabled = false
+                                }
                             this.add(item)
                         } else {
                             val item = JMenuItem("${index + 1} ${scene.name}")
@@ -147,7 +151,12 @@ object MasterMenuBar : JMenuBar() {
                                     JMenuItem(Strings[STR_IMPORT_ALL_ELEMENTS]).applyAndAppendTo(this) {
                                         addActionListener { _ ->
                                             it.elements.forEach { token ->
-                                                transaction(DAO.database) { Scene.moveElementToScene(token, Scene[act.sceneId]) }
+                                                transaction(DAO.database) {
+                                                    Scene.moveElementToScene(
+                                                        token,
+                                                        Scene[act.sceneId]
+                                                    )
+                                                }
                                             }
                                             ViewManager.repaint()
                                         }
@@ -159,7 +168,12 @@ object MasterMenuBar : JMenuBar() {
                                 it.elements.forElse { token ->
                                     JMenuItem(token.name + " (" + token.type.name + ")").applyAndAppendTo(this) {
                                         addActionListener {
-                                            transaction(DAO.database) { Scene.moveElementToScene(token, Scene[act.sceneId]) }
+                                            transaction(DAO.database) {
+                                                Scene.moveElementToScene(
+                                                    token,
+                                                    Scene[act.sceneId]
+                                                )
+                                            }
                                             ViewManager.repaint()
                                         }
                                     }

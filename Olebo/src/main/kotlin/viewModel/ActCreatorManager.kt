@@ -28,7 +28,8 @@ class ActCreatorManager : Observable {
      * Save or create an act into the database.
      */
     fun saveAct(actName: String): Boolean {
-        if (DAO.getActsList().map { if (it.first != idAct.toString()) it.second else "" }.contains(actName)) return false
+        if (DAO.getActsList().map { if (it.first != idAct.toString()) it.second else "" }
+                .contains(actName)) return false
 
         if (idAct == 0) {
             fun createScenes(idCurrentAct: Int): MutableList<Scene> {
@@ -62,7 +63,7 @@ class ActCreatorManager : Observable {
                     this.name = actName
 
                     this.scenes.forEach { scene ->
-                        if(!tempScenes.map { it.id ?: -1 }.contains(scene.id.value)) {
+                        if (!tempScenes.map { it.id ?: -1 }.contains(scene.id.value)) {
                             scene.delete()
                         }
                     }

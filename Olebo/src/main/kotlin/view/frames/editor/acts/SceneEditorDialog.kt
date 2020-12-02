@@ -79,7 +79,9 @@ class SceneEditorDialog(private val scene: SceneData? = null) : JDialog() {
         })
 
         this.add(JPanel().apply {
-            this.add(JButton(Strings[STR_CONFIRM]).addAction { this@SceneEditorDialog.isVisible = false; canceled = false })
+            this.add(JButton(Strings[STR_CONFIRM]).addAction {
+                this@SceneEditorDialog.isVisible = false; canceled = false
+            })
             this.add(JButton(Strings[STR_CANCEL]).addAction { this@SceneEditorDialog.isVisible = false })
             this.border = BorderFactory.createEmptyBorder(10, 0, 0, 0)
         }, GridBagConstraints().apply {

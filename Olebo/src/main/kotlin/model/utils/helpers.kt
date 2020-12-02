@@ -37,9 +37,10 @@ fun Blueprint?.isCharacter(): Boolean {
 
 fun ImageIcon.rotate(degs: Double) = with(BufferedImage(this.iconWidth, this.iconHeight, BufferedImage.TYPE_INT_ARGB)) {
     fun ImageIcon.toBufferedImage() = BufferedImage(
-            this.iconWidth,
-            this.iconHeight,
-            BufferedImage.TYPE_INT_ARGB).apply {
+        this.iconWidth,
+        this.iconHeight,
+        BufferedImage.TYPE_INT_ARGB
+    ).apply {
         val g: Graphics = createGraphics()
         paintIcon(null, g, 0, 0)
         g.dispose()
@@ -58,6 +59,7 @@ fun Scene?.callManager(elements: Elements, func: (CommandManager, Elements) -> U
     func(CommandManager(scene.id.value), elements)
 }
 
-fun <T> Scene?.callManager(value: T, elements: Elements, func: (T, CommandManager, Elements) -> Unit) = this?.let { scene ->
-    func(value, CommandManager(scene.id.value), elements)
-}
+fun <T> Scene?.callManager(value: T, elements: Elements, func: (T, CommandManager, Elements) -> Unit) =
+    this?.let { scene ->
+        func(value, CommandManager(scene.id.value), elements)
+    }

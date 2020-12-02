@@ -20,7 +20,8 @@ import kotlin.math.abs
  * This panel contains the map and all the objects placed within it
  */
 class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseListener {
-    var backGroundImage: Image? = null      //The background... Why are you reading this? Stop!! I said stop!!! You're still doing it, even when you had to scroll sideways... Ok i'm giving up, bye
+    var backGroundImage: Image? =
+        null      //The background... Why are you reading this? Stop!! I said stop!!! You're still doing it, even when you had to scroll sideways... Ok i'm giving up, bye
     private var tokens = emptyElements() //These are all the tokens placed on  the current map
     var selectedElements = emptyElements()
 
@@ -43,10 +44,10 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
                         val end = me.point
 
                         selectedArea = Rectangle(
-                                start.x.coerceAtMost(end.x),
-                                start.y.coerceAtMost(end.y),
-                                abs(start.x - end.x),
-                                abs(start.y - end.y)
+                            start.x.coerceAtMost(end.x),
+                            start.y.coerceAtMost(end.y),
+                            abs(start.x - end.x),
+                            abs(start.y - end.y)
                         )
 
                         this@MapPanel.repaint()
@@ -89,12 +90,12 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
 
     override fun paintComponent(g: Graphics) {
         (g as Graphics2D).drawImage(
-                backGroundImage,
-                0,
-                0,
-                this.width,
-                this.height,
-                null
+            backGroundImage,
+            0,
+            0,
+            this.width,
+            this.height,
+            null
         )
 
         for (token in tokens) //Display every token one by one
@@ -131,21 +132,24 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
         g.setPaintMode()
         selectedElements.forEach {
             g.drawRect( //Draws a 1 pixel thick rectangle
-                    relativeX(it.position.x) - 4,
-                    relativeY(it.position.y) - 4,
-                    relativeX(it.hitBox.width) + 8,
-                    relativeY(it.hitBox.height) + 8
+                relativeX(it.position.x) - 4,
+                relativeY(it.position.y) - 4,
+                relativeX(it.hitBox.width) + 8,
+                relativeY(it.hitBox.height) + 8
             )
         }
     }
 
-    private fun drawInvisibleMarker(token: Element, g: Graphics) {//Draws a blue rectangle to signify the GM that a token is invisible to the player
+    private fun drawInvisibleMarker(
+        token: Element,
+        g: Graphics
+    ) {//Draws a blue rectangle to signify the GM that a token is invisible to the player
         g.color = Color.BLUE
         g.drawRect( //Draws a 1 pixel thick rectangle
-                (relativeX(token.position.x) - 3),
-                (relativeY(token.position.y) - 3),
-                (relativeX(token.hitBox.width) + 6),
-                (relativeY(token.hitBox.height) + 6)
+            (relativeX(token.position.x) - 3),
+            (relativeY(token.position.y) - 3),
+            (relativeX(token.hitBox.width) + 6),
+            (relativeY(token.hitBox.height) + 6)
         )
     }
 
@@ -173,19 +177,21 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
     }
 
     fun getRelativeRectangleOfToken(token: Element) = Rectangle(
-            relativeX(token.position.x),
-            relativeY(token.position.y),
-            relativeX(token.hitBox.width),
-            relativeY(token.hitBox.height)
+        relativeX(token.position.x),
+        relativeY(token.position.y),
+        relativeX(token.hitBox.width),
+        relativeY(token.hitBox.height)
     )
 
     private fun drawTokenUp(token: Element, g: Graphics) {
-        g.drawImage(token.sprite.image,
-                relativeX(token.position.x),
-                relativeY(token.position.y),
-                relativeX(token.hitBox.width),
-                relativeY(token.hitBox.height),
-                null)
+        g.drawImage(
+            token.sprite.image,
+            relativeX(token.position.x),
+            relativeY(token.position.y),
+            relativeX(token.hitBox.width),
+            relativeY(token.hitBox.height),
+            null
+        )
     }
 
     // Unused mouse methods

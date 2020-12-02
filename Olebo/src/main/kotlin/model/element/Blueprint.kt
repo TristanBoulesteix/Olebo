@@ -30,7 +30,7 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
         else throw CharacterException(this::class, "MP")
 
     val realName
-        get() = if(type.typeElement == Type.BASIC) Strings[name] else name
+        get() = if (type.typeElement == Type.BASIC) Strings[name] else name
 
     override fun delete() {
         File(sprite).delete()

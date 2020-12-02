@@ -66,7 +66,10 @@ object ViewManager {
         }
     }
 
-    fun moveToken(x: Int, y: Int) { //Changes a token's position without dropping it (a moved token stays selected) , intended for small steps
+    fun moveToken(
+        x: Int,
+        y: Int
+    ) { //Changes a token's position without dropping it (a moved token stays selected) , intended for small steps
         if (selectedElements.isNotEmpty() && selectedElements.size == 1) {
             val newX = (x - (selectedElements[0].hitBox.width / 2))
             val newY = (y - (selectedElements[0].hitBox.height / 2))
@@ -89,7 +92,8 @@ object ViewManager {
     /**
      * Receives a clicked point (x,y), returns the first soken found in the Tokens array, or null if none matched
      */
-    private fun getTokenFromXY(x: Int, y: Int) = activeScene!!.elements.filter { it.hitBox.contains(x, y) }.maxByOrNull { it.priority }
+    private fun getTokenFromXY(x: Int, y: Int) =
+        activeScene!!.elements.filter { it.hitBox.contains(x, y) }.maxByOrNull { it.priority }
 
     fun repaint() {
         updateTokens()
@@ -110,7 +114,7 @@ object ViewManager {
     }
 
     fun selectElements(rec: Rectangle) {
-        if(rec.size < Dimension(Size.XS.size.absoluteSizeValue, Size.XS.size.absoluteSizeValue))
+        if (rec.size < Dimension(Size.XS.size.absoluteSizeValue, Size.XS.size.absoluteSizeValue))
             return
 
         val selectedElements = mutableEmptyElements()
@@ -138,8 +142,10 @@ object ViewManager {
             fun Int.plusOne(list: Elements) = if (this == list.size - 1) 0 else this + 1
 
             selectedElements.doIfContainsSingle { element ->
-                if (this.elements.getOrNull(this.elements.indexOfFirst { it.id == element.id }.plusOne(this.elements)) != null) {
-                    this.elements[this.elements.indexOfFirst { it.id == element.id }.plusOne(this.elements)].toElements()
+                if (this.elements.getOrNull(this.elements.indexOfFirst { it.id == element.id }
+                        .plusOne(this.elements)) != null) {
+                    this.elements[this.elements.indexOfFirst { it.id == element.id }
+                        .plusOne(this.elements)].toElements()
                 } else mutableEmptyElements()
             } ?: mutableEmptyElements()
         }
@@ -156,8 +162,10 @@ object ViewManager {
                 fun Int.minusOne(list: Elements) = if (this == 0) list.size - 1 else this - 1
 
                 selectedElements.doIfContainsSingle { element ->
-                    if (this.elements.getOrNull(this.elements.indexOfFirst { it.id == element.id }.minusOne(this.elements)) != null) {
-                        activeScene!!.elements[this.elements.indexOfFirst { it.id == element.id }.minusOne(this.elements)].toElements()
+                    if (this.elements.getOrNull(this.elements.indexOfFirst { it.id == element.id }
+                            .minusOne(this.elements)) != null) {
+                        activeScene!!.elements[this.elements.indexOfFirst { it.id == element.id }
+                            .minusOne(this.elements)].toElements()
                     } else mutableEmptyElements()
                 } ?: mutableEmptyElements()
             }
@@ -172,7 +180,11 @@ object ViewManager {
     }
 
     fun toggleVisibility(tokens: Elements, visibility: Boolean? = null) {
-        activeScene.callManager(visibility ?: if(tokens.size == 1) !tokens[0].isVisible else true, tokens, Element::cmdVisiblity)
+        activeScene.callManager(
+            visibility ?: if (tokens.size == 1) !tokens[0].isVisible else true,
+            tokens,
+            Element::cmdVisiblity
+        )
         repaint()
     }
 

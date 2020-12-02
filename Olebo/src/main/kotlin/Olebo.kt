@@ -12,7 +12,7 @@ fun main() {
         checkForUpdate()
     SwingUtilities.invokeLater {
         UIManager.setLookAndFeel(
-                UIManager.getSystemLookAndFeelClassName()
+            UIManager.getSystemLookAndFeelClassName()
         )
 
         HomeFrame().isVisible = true

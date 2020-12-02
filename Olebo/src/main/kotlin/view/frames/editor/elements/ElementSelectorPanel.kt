@@ -1,15 +1,15 @@
 package view.frames.editor.elements
 
 import model.dao.DAO
+import model.dao.getIcon
 import model.element.Blueprint
 import model.element.Type
-import model.dao.getIcon
+import org.jetbrains.exposed.sql.transactions.transaction
 import view.utils.components.ItemPanel
 import view.utils.components.SelectorPanel
 import view.utils.factories.TitlePanel
 import view.utils.factories.buildTitleItemPanel
 import viewModel.BlueprintManager
-import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.BorderLayout
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout

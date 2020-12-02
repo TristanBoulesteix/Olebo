@@ -122,4 +122,10 @@ class BlueprintManager : Observable {
 /**
  * All informations from a blueprint stored in a class
  */
-data class BlueprintData(val name: String, val img: String, val mana: Int? = null, val life: Int? = null, val id: Int? = null)
+data class BlueprintData(
+    val name: String,
+    val img: String,
+    val mana: Int? = null,
+    val life: Int? = null,
+    val id: Int? = null
+)

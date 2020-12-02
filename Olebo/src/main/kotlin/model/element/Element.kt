@@ -171,10 +171,10 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     val hitBox
         get() = transaction(DAO.database) {
             Rectangle(
-                    x,
-                    y,
-                    sizeElement.absoluteSizeValue,
-                    sizeElement.absoluteSizeValue
+                x,
+                y,
+                sizeElement.absoluteSizeValue,
+                sizeElement.absoluteSizeValue
             )
         }
 

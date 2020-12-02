@@ -20,7 +20,7 @@ class Settings(id: EntityID<Int>) : IntEntity(id) {
         var databaseVersion
             get() = transaction(DAO.database) {
                 this@Companion[BASE_VERSION]?.toIntOrNull()
-                        ?: throw MessageException(Strings[ST_UNKNOWN_DATABASE_VERSION])
+                    ?: throw MessageException(Strings[ST_UNKNOWN_DATABASE_VERSION])
             }
             set(value) {
                 transaction(DAO.database) {

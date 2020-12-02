@@ -2,12 +2,12 @@ package viewModel
 
 import model.act.Act
 import model.dao.DAO
+import org.jetbrains.exposed.sql.transactions.transaction
+import view.frames.editor.acts.ActEditorDialog
+import view.frames.editor.elements.BlueprintDialog
 import viewModel.pattern.observer.Action
 import viewModel.pattern.observer.Observable
 import viewModel.pattern.observer.Observer
-import view.frames.editor.acts.ActEditorDialog
-import view.frames.editor.elements.BlueprintDialog
-import org.jetbrains.exposed.sql.transactions.transaction
 
 object HomeManager : Observable {
     override var observer: Observer? = null

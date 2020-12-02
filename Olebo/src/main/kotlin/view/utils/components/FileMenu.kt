@@ -45,7 +45,12 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
                         }
 
                         if (fileToSave.exists()) {
-                            val result = JOptionPane.showConfirmDialog(null, Strings[ST_FILE_ALREADY_EXISTS], Strings[STR_SAVE_AS], JOptionPane.YES_NO_OPTION)
+                            val result = JOptionPane.showConfirmDialog(
+                                null,
+                                Strings[ST_FILE_ALREADY_EXISTS],
+                                Strings[STR_SAVE_AS],
+                                JOptionPane.YES_NO_OPTION
+                            )
                             if (result == JOptionPane.YES_OPTION) saveImg()
                         } else saveImg()
                     }
@@ -78,7 +83,12 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
                             File("${this.selectedFile.parentFile.absolutePath}${File.separator}${this.selectedFile.nameWithoutExtension}.$extension")
 
                         if (fileToSave.exists()) {
-                            val result = JOptionPane.showConfirmDialog(null, Strings[ST_FILE_ALREADY_EXISTS], Strings[STR_SAVE_AS], JOptionPane.YES_NO_OPTION)
+                            val result = JOptionPane.showConfirmDialog(
+                                null,
+                                Strings[ST_FILE_ALREADY_EXISTS],
+                                Strings[STR_SAVE_AS],
+                                JOptionPane.YES_NO_OPTION
+                            )
                             if (result == JOptionPane.YES_OPTION) zipOleboDirectory(fileToSave)
                         } else zipOleboDirectory(fileToSave)
                     }
@@ -103,11 +113,13 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
                                     PlayerFrame.hide()
                                     Frame.getFrames().forEach(Window::dispose)
                                     HomeFrame().isVisible = true
-                                } else showPopup(when (result.value) {
-                                    ZipError.DATABASE_HIGHER -> Strings[ST_WARNING_PREVIOUS_VERSION_FILE]
-                                    ZipError.MISSING_FILES -> Strings[ST_WARNING_MISSING_CONF_FILES]
-                                    else -> "${Strings[ST_UNKNOWN_ERROR]} ${Strings[ST_FILE_MAY_BE_CORRUPTED]}"
-                                }, parent, true)
+                                } else showPopup(
+                                    when (result.value) {
+                                        ZipError.DATABASE_HIGHER -> Strings[ST_WARNING_PREVIOUS_VERSION_FILE]
+                                        ZipError.MISSING_FILES -> Strings[ST_WARNING_MISSING_CONF_FILES]
+                                        else -> "${Strings[ST_UNKNOWN_ERROR]} ${Strings[ST_FILE_MAY_BE_CORRUPTED]}"
+                                    }, parent, true
+                                )
                             }
                         }
                     }
@@ -119,10 +131,12 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
 
         JMenuItem(Strings[STR_ABOUT]).applyAndAppendTo(this) {
             this.addActionListener {
-                JOptionPane.showMessageDialog(null,
-                        "Olebo - ${Strings[STR_APP_VERSION]} $OLEBO_VERSION - ${Strings[STR_DATABASE_VERSION]} ${Settings.databaseVersion}",
-                        Strings[STR_ABOUT],
-                        JOptionPane.INFORMATION_MESSAGE)
+                JOptionPane.showMessageDialog(
+                    null,
+                    "Olebo - ${Strings[STR_APP_VERSION]} $OLEBO_VERSION - ${Strings[STR_DATABASE_VERSION]} ${Settings.databaseVersion}",
+                    Strings[STR_ABOUT],
+                    JOptionPane.INFORMATION_MESSAGE
+                )
             }
             this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0)
         }
@@ -130,9 +144,9 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
 
     private fun getScreenShot(component: Component): BufferedImage {
         val image = BufferedImage(
-                component.bounds.width,
-                component.bounds.height,
-                BufferedImage.TYPE_INT_RGB
+            component.bounds.width,
+            component.bounds.height,
+            BufferedImage.TYPE_INT_RGB
         )
 
         component.paint(image.graphics)

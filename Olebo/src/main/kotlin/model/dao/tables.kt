@@ -10,7 +10,18 @@ import java.util.*
  * List of all tables in the database
  * Put them in order of initialization
  */
-val tables by lazy { arrayOf(ActTable, SceneTable, TypeTable, BlueprintTable, PriorityTable, SizeTable, InstanceTable, SettingsTable) }
+val tables by lazy {
+    arrayOf(
+        ActTable,
+        SceneTable,
+        TypeTable,
+        BlueprintTable,
+        PriorityTable,
+        SizeTable,
+        InstanceTable,
+        SettingsTable
+    )
+}
 
 interface Initializable {
     fun initialize()
@@ -36,7 +47,9 @@ object BlueprintTable : IntIdTable(), Initializable {
 
     override fun initialize() {
         // Pointers
-        if (BlueprintTable.select((idType eq 4) and (name eq "@pointerTransparent") and (sprite eq "pointer_transparent.png")).count() <= 0) {
+        if (BlueprintTable.select((idType eq 4) and (name eq "@pointerTransparent") and (sprite eq "pointer_transparent.png"))
+                .count() <= 0
+        ) {
             BlueprintTable.insert {
                 it[name] = "@pointerTransparent"
                 it[sprite] = "pointer_transparent.png"
@@ -44,7 +57,9 @@ object BlueprintTable : IntIdTable(), Initializable {
             }
         }
 
-        if (BlueprintTable.select((idType eq 4) and (name eq "@pointerBlue") and (sprite eq "pointer_blue.png")).count() <= 0) {
+        if (BlueprintTable.select((idType eq 4) and (name eq "@pointerBlue") and (sprite eq "pointer_blue.png"))
+                .count() <= 0
+        ) {
             BlueprintTable.insert {
                 it[name] = "@pointerBlue"
                 it[sprite] = "pointer_blue.png"
@@ -52,7 +67,9 @@ object BlueprintTable : IntIdTable(), Initializable {
             }
         }
 
-        if (BlueprintTable.select((idType eq 4) and (name eq "@pointerWhite") and (sprite eq "pointer_white.png")).count() <= 0) {
+        if (BlueprintTable.select((idType eq 4) and (name eq "@pointerWhite") and (sprite eq "pointer_white.png"))
+                .count() <= 0
+        ) {
             BlueprintTable.insert {
                 it[name] = "@pointerWhite"
                 it[sprite] = "pointer_white.png"
@@ -60,7 +77,9 @@ object BlueprintTable : IntIdTable(), Initializable {
             }
         }
 
-        if (BlueprintTable.select((idType eq 4) and (name eq "@pointerGreen") and (sprite eq "pointer_green.png")).count() <= 0) {
+        if (BlueprintTable.select((idType eq 4) and (name eq "@pointerGreen") and (sprite eq "pointer_green.png"))
+                .count() <= 0
+        ) {
             BlueprintTable.insert {
                 it[name] = "@pointerGreen"
                 it[sprite] = "pointer_green.png"
@@ -139,7 +158,8 @@ object InstanceTable : IntIdTable() {
     val idSize = reference("ID_Size", SizeTable, onDelete = ReferenceOption.CASCADE).default(EntityID(2, SizeTable))
     val visible = bool("Visible").default(false)
     val orientation = double("Orientation").default(0.0)
-    val priority = reference("id_priority", PriorityTable, onDelete = ReferenceOption.CASCADE).default(EntityID(2, PriorityTable))
+    val priority =
+        reference("id_priority", PriorityTable, onDelete = ReferenceOption.CASCADE).default(EntityID(2, PriorityTable))
     val idScene = integer("ID_Scene").references(SceneTable.id).default(0)
     val idBlueprint = integer("id_blueprint").references(BlueprintTable.id).default(0)
 }
