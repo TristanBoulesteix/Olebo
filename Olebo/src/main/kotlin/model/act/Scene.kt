@@ -71,19 +71,6 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
         }
     }
 
-    /**
-     * Move all elements from the current scene to a new one
-     *
-     * @param scene The new scene
-     */
-    fun moveElementsToScene(scene: Scene) {
-        transaction(DAO.database) {
-            elementIterable.forEach {
-                it.scene = scene
-            }
-        }
-    }
-
     override fun delete() {
         File(background).delete()
         super.delete()
