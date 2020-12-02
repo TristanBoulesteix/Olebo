@@ -5,11 +5,14 @@ import model.dao.SettingsTable.BASE_VERSION
 import model.dao.SettingsTable.CURRENT_LANGUAGE
 import model.dao.SettingsTable.CURSOR_ENABLED
 import model.dao.SettingsTable.UPDATE_WARN
+import model.internationalisation.ST_UNKNOWN_DATABASE_VERSION
+import model.internationalisation.Strings
 import model.utils.toBoolean
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.transaction
+import utils.MessageException
 import java.util.*
 
 class Settings(id: EntityID<Int>) : IntEntity(id) {
@@ -17,7 +20,7 @@ class Settings(id: EntityID<Int>) : IntEntity(id) {
         var databaseVersion
             get() = transaction(DAO.database) {
                 this@Companion[BASE_VERSION]?.toIntOrNull()
-                        ?: throw NullPointerException("Erreur de base de données ! Version de la base inconnue.")
+                        ?: throw MessageException(Strings[ST_UNKNOWN_DATABASE_VERSION])
             }
             set(value) {
                 transaction(DAO.database) {

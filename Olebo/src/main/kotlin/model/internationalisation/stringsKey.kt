@@ -76,6 +76,10 @@ const val STR_UPDATE_AVAILABLE = "update_available"
 const val STR_YES = "yes"
 const val STR_NO = "no"
 const val STR_PREPARE_UPDATE = "prepare_update"
+const val STR_TRANSPARENT_POINTER = "@pointerTransparent"
+const val STR_BLUE_POINTER = "@pointerBlue"
+const val STR_WHITE_POINTER = "@pointerWhite"
+const val STR_GREEN_POINTER = "@pointerGreen"
 
 // -- Sentences
 
@@ -96,3 +100,5 @@ const val ST_ERROR_LOADING_DATABASE = "error_load_database"
 const val ST_NEW_VERSION_AVAILABLE = "new_version_available"
 const val ST_UPDATE_WILL_START_AT_SHUTDOWN = "update_is_running"
 const val ST_NEVER_ASK_UPDATE = "no_never_ask_update"
+const val ST_ERROR_ACT_NOT_EXISTS = "error_act"
+const val ST_UNKNOWN_DATABASE_VERSION = "unknown_database_version"

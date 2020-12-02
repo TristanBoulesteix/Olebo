@@ -3,6 +3,8 @@ package model.dao
 import model.act.Act
 import model.element.Blueprint
 import model.element.Type
+import model.internationalisation.ST_ERROR_ACT_NOT_EXISTS
+import model.internationalisation.Strings
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -21,29 +23,25 @@ object DAO {
     private val filePath = OLEBO_DIRECTORY + "db${File.separator}$DATABASE_NAME"
     private val url = "jdbc:sqlite:$filePath"
 
-    val database: Database
+    val database: Database = try {
+        File(filePath).apply {
+            this.parentFile.mkdirs()
+            this.createNewFile()
+        }
 
-    init {
-        database = try {
-            File(filePath).apply {
-                this.parentFile.mkdirs()
-                this.createNewFile()
-            }
+        Database.connect(url, "org.sqlite.JDBC").also {
+            TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
 
-            Database.connect(url, "org.sqlite.JDBC").also {
-                TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
-
-                transaction {
-                    SchemaUtils.createMissingTablesAndColumns(*tables)
-                    tables.forEach {
-                        if (it is Initializable)
-                            it.initialize()
-                    }
+            transaction {
+                SchemaUtils.createMissingTablesAndColumns(*tables)
+                tables.forEach {
+                    if (it is Initializable)
+                        it.initialize()
                 }
             }
-        } catch (e: Exception) {
-            throw  DatabaseException(e)
         }
+    } catch (e: Exception) {
+        throw  DatabaseException(e)
     }
 
     /**
@@ -64,7 +62,7 @@ object DAO {
      */
     fun getActWithId(idAct: Int): Act {
         return transaction {
-            Act.findById(idAct) ?: throw MessageException("Error ! This act doesn't exist.")
+            Act.findById(idAct) ?: throw MessageException(Strings[ST_ERROR_ACT_NOT_EXISTS])
         }
     }
 

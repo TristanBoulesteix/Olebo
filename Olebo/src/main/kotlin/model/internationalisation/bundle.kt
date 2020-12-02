@@ -95,6 +95,12 @@ class StringsBundle_fr : Strings() {
         STR_PREPARE_UPDATE to "préparation de la mise à jour",
         ST_UPDATE_WILL_START_AT_SHUTDOWN to "La mise à jour aura lieu lors de la fermeture de l'application.",
         ST_NEVER_ASK_UPDATE to "Non, ne plus demander pour cette version",
+        ST_ERROR_ACT_NOT_EXISTS to "Erreur. Ce scénario ne semble pas exister.",
+        ST_UNKNOWN_DATABASE_VERSION to "Erreur de base de données ! Version de la base inconnue.",
+        STR_TRANSPARENT_POINTER to "pointeur transparent",
+        STR_WHITE_POINTER to "pointeur blanc",
+        STR_BLUE_POINTER to "pointeur bleu",
+        STR_GREEN_POINTER to "pointeur vert",
     )
 }
 
@@ -191,5 +197,11 @@ class StringsBundle : Strings() {
         STR_PREPARE_UPDATE to "preparation of the update",
         ST_UPDATE_WILL_START_AT_SHUTDOWN to "The update will run when Olebo will be closed.",
         ST_NEVER_ASK_UPDATE to "No, never ask again for this version",
+        ST_ERROR_ACT_NOT_EXISTS to "Error. This scenario doesn't seem to exist.",
+        ST_UNKNOWN_DATABASE_VERSION to "Database error ! Unknown database version.",
+        STR_TRANSPARENT_POINTER to "transparent pointer",
+        STR_WHITE_POINTER to "white pointer",
+        STR_BLUE_POINTER to "blue pointer",
+        STR_GREEN_POINTER to "green pointer",
     )
 }
