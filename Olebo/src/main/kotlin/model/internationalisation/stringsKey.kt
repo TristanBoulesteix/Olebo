@@ -18,8 +18,8 @@ const val STR_APP_VERSION = "app_version"
 const val STR_DATABASE_VERSION = "dtb_version"
 const val STR_ELEMENTS = "element"
 const val STR_ADD_ACT = "add_act"
-const val STR_OBJECT_LIST = "obj_list"
-const val STR_OBJECTS = "obj"
+const val STR_OBJECT_LIST = "objects_list"
+const val STR_OBJECTS = "objects"
 const val STR_PC = "pc"
 const val STR_NPC = "npc"
 const val STR_NEW_ACT = "new_act"
@@ -83,6 +83,7 @@ const val STR_GREEN_POINTER = "@pointerGreen"
 const val STR_RESIZE_ELEMENT = "resize_element"
 const val STR_RESIZE_ELEMENT_PLR = "resize_element_plr"
 const val STR_MOVE_ELEMENT = "move_element"
+const val STR_OBJECT = "object"
 
 // -- Sentences
 

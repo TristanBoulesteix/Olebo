@@ -106,6 +106,7 @@ class StringsBundle_fr : Strings() {
         STR_RESIZE_ELEMENT to "redimensionner un élément",
         STR_RESIZE_ELEMENT_PLR to "redimensionner des éléments",
         STR_MOVE_ELEMENT to "déplacer un élément",
+        STR_OBJECT to "objet",
     )
 }
 
@@ -213,5 +214,6 @@ class StringsBundle : Strings() {
         STR_RESIZE_ELEMENT to "resize an element",
         STR_RESIZE_ELEMENT_PLR to "resize elements",
         STR_MOVE_ELEMENT to "move an element",
+        STR_OBJECT to "object",
     )
 }
