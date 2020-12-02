@@ -101,6 +101,11 @@ class StringsBundle_fr : Strings() {
         STR_WHITE_POINTER to "pointeur blanc",
         STR_BLUE_POINTER to "pointeur bleu",
         STR_GREEN_POINTER to "pointeur vert",
+        ST_CHANGE_VISIBILITY to "Modifier la visiblité de l'élément",
+        ST_CHANGE_VISIBILITY_PLR to "Modifier la visiblité des éléments",
+        STR_RESIZE_ELEMENT to "redimensionner un élément",
+        STR_RESIZE_ELEMENT_PLR to "redimensionner des éléments",
+        STR_MOVE_ELEMENT to "déplacer un élément",
     )
 }
 
@@ -203,5 +208,10 @@ class StringsBundle : Strings() {
         STR_WHITE_POINTER to "white pointer",
         STR_BLUE_POINTER to "blue pointer",
         STR_GREEN_POINTER to "green pointer",
+        ST_CHANGE_VISIBILITY to "Change visibility of an element",
+        ST_CHANGE_VISIBILITY_PLR to "Change visibility of elements",
+        STR_RESIZE_ELEMENT to "resize an element",
+        STR_RESIZE_ELEMENT_PLR to "resize elements",
+        STR_MOVE_ELEMENT to "move an element",
     )
 }

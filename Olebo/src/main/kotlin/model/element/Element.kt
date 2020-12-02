@@ -5,6 +5,7 @@ import model.command.Command
 import model.command.CommandManager
 import model.dao.DAO
 import model.dao.InstanceTable
+import model.internationalisation.*
 import model.utils.Elements
 import model.utils.isCharacter
 import model.utils.rotate
@@ -46,10 +47,8 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         fun cmdVisiblity(visibility: Boolean, manager: CommandManager, elements: Elements) {
             val previousVisibilities = elements.map { it.isVisible }
 
-            val plr = if (elements.size == 1) "" else "s"
-
             manager += object : Command() {
-                override val label = "Modifier la visiblité de$plr élément$plr"
+                override val label by StringDelegate(if (elements.size == 1) ST_CHANGE_VISIBILITY else ST_CHANGE_VISIBILITY_PLR)
 
                 override fun exec() {
                     elements.forEach {
@@ -71,7 +70,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             val previousOrientation = elements.map { it.orientation }
 
             manager += object : Command() {
-                override val label = "Rotation à droite"
+                override val label by StringDelegate(STR_ROTATE_TO_RIGHT)
 
                 override fun exec() {
                     elements.forEach {
@@ -94,7 +93,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             val previousOrientation = elements.map { it.orientation }
 
             manager += object : Command() {
-                override val label = "Rotation à gauche"
+                override val label by StringDelegate(STR_ROTATE_TO_LEFT)
 
                 override fun exec() = elements.forEach {
                     if (it.stillExist())
@@ -115,11 +114,9 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
             val previousSize = elementsFiltered.map { it.size }
 
-            val plr = if (elements.size == 1) "" else "s"
-
             if (elementsFiltered.isNotEmpty())
                 manager += object : Command() {
-                    override val label = "Redimensionner élément$plr"
+                    override val label by StringDelegate(if (elements.size == 1) STR_RESIZE_ELEMENT else STR_RESIZE_ELEMENT_PLR)
 
                     override fun exec() = elementsFiltered.forEach {
                         if (it.stillExist())
@@ -233,7 +230,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         val previousPosition = this.position
 
         manager += object : Command() {
-            override val label = "Déplacer élément"
+            override val label by StringDelegate(STR_MOVE_ELEMENT)
 
             override fun exec() {
                 this@Element.position = position

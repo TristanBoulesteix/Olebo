@@ -80,6 +80,9 @@ const val STR_TRANSPARENT_POINTER = "@pointerTransparent"
 const val STR_BLUE_POINTER = "@pointerBlue"
 const val STR_WHITE_POINTER = "@pointerWhite"
 const val STR_GREEN_POINTER = "@pointerGreen"
+const val STR_RESIZE_ELEMENT = "resize_element"
+const val STR_RESIZE_ELEMENT_PLR = "resize_element_plr"
+const val STR_MOVE_ELEMENT = "move_element"
 
 // -- Sentences
 
@@ -102,3 +105,5 @@ const val ST_UPDATE_WILL_START_AT_SHUTDOWN = "update_is_running"
 const val ST_NEVER_ASK_UPDATE = "no_never_ask_update"
 const val ST_ERROR_ACT_NOT_EXISTS = "error_act"
 const val ST_UNKNOWN_DATABASE_VERSION = "unknown_database_version"
+const val ST_CHANGE_VISIBILITY = "change_visiblity"
+const val ST_CHANGE_VISIBILITY_PLR = "change_visiblity_plr"
