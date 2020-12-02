@@ -97,7 +97,7 @@ class SceneEditorDialog(private val scene: SceneData? = null) : JDialog() {
             SceneData(nameField.text, selectedFile.absolutePath, scene?.id)
         } else if (!canceled) {
             this.canceled = true
-            showPopup(Strings[ST_SCENE_ALREADY_EXISTS], this)
+            showPopup(Strings[ST_SCENE_ALREADY_EXISTS_OR_INVALID], this)
             return this.showDialog()
         } else null
     }

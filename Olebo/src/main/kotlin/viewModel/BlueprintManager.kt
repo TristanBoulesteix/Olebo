@@ -1,15 +1,18 @@
 package viewModel
 
 import model.dao.DAO
+import model.dao.saveImg
 import model.element.Blueprint
 import model.element.Type
-import model.dao.saveImg
+import model.internationalisation.STR_IMG
+import model.internationalisation.ST_ELEMENT_ALREADY_EXISTS
+import model.internationalisation.Strings
+import org.jetbrains.exposed.sql.transactions.transaction
 import view.frames.editor.elements.BlueprintEditorDialog
 import view.utils.showPopup
 import viewModel.pattern.observer.Action
 import viewModel.pattern.observer.Observable
 import viewModel.pattern.observer.Observer
-import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Component
 import java.io.File
 import javax.imageio.ImageIO
@@ -46,7 +49,7 @@ class BlueprintManager : Observable {
             if (isNameValid()) {
                 getBlueprintWithId(id).name = name
             } else {
-                showPopup("Désolé. Un objet avec le même nom existe déjà")
+                showPopup(Strings[ST_ELEMENT_ALREADY_EXISTS])
             }
         }
 
@@ -66,7 +69,7 @@ class BlueprintManager : Observable {
             val file = JFileChooser().apply {
                 this.currentDirectory = File(System.getProperty("user.home"))
                 this.addChoosableFileFilter(
-                    FileNameExtensionFilter("Images", *ImageIO.getReaderFileSuffixes())
+                    FileNameExtensionFilter(Strings[STR_IMG], *ImageIO.getReaderFileSuffixes())
                 )
                 this.isAcceptAllFileFilterUsed = false
             }

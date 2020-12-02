@@ -45,8 +45,12 @@ class Settings(id: EntityID<Int>) : IntEntity(id) {
                 this@Companion[CURSOR_ENABLED] = value
             }
 
-        var language
-            get() = transaction(DAO.database) { Locale(this@Companion[CURRENT_LANGUAGE]) }
+        var language: Locale
+            get() = try {
+                transaction(DAO.database) { Locale(this@Companion[CURRENT_LANGUAGE]) }
+            } catch (e: Exception) {
+                Locale.getDefault()
+            }
             set(value) = transaction(DAO.database) {
                 this@Companion[CURSOR_ENABLED] = value.language
             }

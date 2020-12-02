@@ -4,13 +4,15 @@ import model.act.Act
 import model.act.Scene
 import model.dao.DAO
 import model.dao.saveImg
+import model.internationalisation.ST_SCENE_ALREADY_EXISTS
+import model.internationalisation.Strings
+import org.jetbrains.exposed.sql.transactions.transaction
+import utils.forElse
+import view.frames.editor.acts.SceneEditorDialog
+import view.utils.showPopup
 import viewModel.pattern.observer.Action
 import viewModel.pattern.observer.Observable
 import viewModel.pattern.observer.Observer
-import view.frames.editor.acts.SceneEditorDialog
-import view.utils.showPopup
-import org.jetbrains.exposed.sql.transactions.transaction
-import utils.forElse
 
 /**
  * Manager to create an act (uses all classes in jdr.exia.view.frames.editor)
@@ -92,7 +94,7 @@ class ActCreatorManager : Observable {
     fun createNewScene(@Suppress("UNUSED_PARAMETER") id: Int) {
         SceneEditorDialog().showDialog()?.let {
             if (tempScenes.map { map -> map.name }.contains(it.name)) {
-                showPopup("Une scène avec le même nom existe déjà !")
+                showPopup(Strings[ST_SCENE_ALREADY_EXISTS])
                 createNewScene(0)
             } else {
                 tempScenes += it
@@ -109,7 +111,7 @@ class ActCreatorManager : Observable {
             if (tempScenes.map { map ->
                     if (tempScenes[index].name == map.name) "" else map.name
                 }.contains(it.name)) {
-                showPopup("Une scène avec le même nom existe déjà !")
+                showPopup(Strings[ST_SCENE_ALREADY_EXISTS])
                 updateNewScene(index)
             } else {
                 tempScenes[index] = it

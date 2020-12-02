@@ -146,7 +146,7 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
             )
         } else if (!canceled) {
             this.canceled = true
-            showPopup(Strings[ST_ELEMENT_ALREADY_EXISTS], this)
+            showPopup(Strings[ST_ELEMENT_ALREADY_EXISTS_OR_INVALID], this)
             return this.showDialog()
         } else null
     }
