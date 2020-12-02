@@ -1,8 +1,9 @@
 package view.frames.editor.elements
 
-import viewModel.BlueprintData
+import model.internationalisation.*
 import view.utils.IntegerFilter
 import view.utils.showPopup
+import viewModel.BlueprintData
 import java.awt.Dimension
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
@@ -58,7 +59,7 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
             return this
         }
 
-        this.title = if (blueprint == null) "Nouvel élément" else "Modification de l'élément"
+        this.title = if (blueprint == null) Strings[STR_NEW_ELEMENT] else Strings[STR_CHANGE_ELEMENT]
         this.modalityType = ModalityType.APPLICATION_MODAL
         this.size = Dimension(400, 300)
         this.defaultCloseOperation = DO_NOTHING_ON_CLOSE
@@ -68,7 +69,7 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
 
         this.add(JPanel().apply {
             this.preferredSize = Dimension(220, 60)
-            this.add(JLabel("Nom de l'élément :"))
+            this.add(JLabel(Strings[STR_NAME_OF_ELEMENT]))
             this.add(nameField)
         }, GridBagConstraints().apply {
             this.gridx = 0
@@ -78,7 +79,7 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
         if (type != TypeElement.OBJECT) {
             this.add(JPanel().apply {
                 this.preferredSize = Dimension(220, 60)
-                this.add(JLabel("PV max :"))
+                this.add(JLabel(Strings[STR_MAX_HEALTH]))
                 this.add(lifeField)
             }, GridBagConstraints().apply {
                 this.gridx = 0
@@ -87,7 +88,7 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
 
             this.add(JPanel().apply {
                 this.preferredSize = Dimension(220, 60)
-                this.add(JLabel("PM max :"))
+                this.add(JLabel(Strings[STR_MAX_MANA]))
                 this.add(manaField)
             }, GridBagConstraints().apply {
                 this.gridx = 0
@@ -95,7 +96,7 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
             })
         }
 
-        this.add(JButton("Importer une image").apply {
+        this.add(JButton(Strings[STR_IMPORT_IMG]).apply {
             this.toolTipText = if (blueprint != null) {
                 selectedFile = File(blueprint.img)
                 selectedFile.name
@@ -121,8 +122,8 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
         })
 
         this.add(JPanel().apply {
-            this.add(JButton("Valider").addAction { this@BlueprintEditorDialog.isVisible = false; canceled = false })
-            this.add(JButton("Annuler").addAction { this@BlueprintEditorDialog.isVisible = false })
+            this.add(JButton(Strings[STR_CONFIRM]).addAction { this@BlueprintEditorDialog.isVisible = false; canceled = false })
+            this.add(JButton(Strings[STR_CANCEL]).addAction { this@BlueprintEditorDialog.isVisible = false })
             this.border = BorderFactory.createEmptyBorder(10, 0, 0, 0)
         }, GridBagConstraints().apply {
             this.gridx = 0
@@ -145,7 +146,7 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
             )
         } else if (!canceled) {
             this.canceled = true
-            showPopup("Le nom existe déjà ou le fichier sélectionné est invalide !", this)
+            showPopup(Strings[ST_ELEMENT_ALREADY_EXISTS_OR_INVALID], this)
             return this.showDialog()
         } else null
     }

@@ -1,5 +1,9 @@
 package utils
 
+import model.internationalisation.STR_CRITICAL_ERROR
+import model.internationalisation.STR_ERROR
+import model.internationalisation.ST_ERROR_LOADING_DATABASE
+import model.internationalisation.Strings
 import javax.swing.FocusManager
 import javax.swing.JOptionPane
 import kotlin.reflect.KClass
@@ -9,7 +13,7 @@ class MessageException(message: String) : Exception(message) {
         JOptionPane.showMessageDialog(
             FocusManager.getCurrentManager().activeWindow,
             message,
-            "Error",
+            Strings[STR_ERROR],
             JOptionPane.ERROR_MESSAGE
         )
     }
@@ -22,8 +26,8 @@ class DatabaseException(e: Exception) : Exception(e) {
     init {
         JOptionPane.showMessageDialog(
                 null,
-                "Une erreur s'est produite lors du chargement de la base de données. Impossible de lancer Olebo.",
-                "Erreur critique",
+                Strings[ST_ERROR_LOADING_DATABASE],
+                Strings[STR_CRITICAL_ERROR],
                 JOptionPane.ERROR_MESSAGE
         )
     }

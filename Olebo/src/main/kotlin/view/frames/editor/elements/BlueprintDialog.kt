@@ -1,9 +1,10 @@
 package view.frames.editor.elements
 
-import viewModel.BlueprintManager
-import viewModel.pattern.observer.Action
+import model.internationalisation.*
 import view.utils.BACKGROUND_COLOR_ORANGE
 import view.utils.components.JDialogTemplate
+import viewModel.BlueprintManager
+import viewModel.pattern.observer.Action
 import java.awt.BorderLayout
 import java.awt.Font
 import java.awt.GridBagConstraints
@@ -15,17 +16,17 @@ import javax.swing.JComboBox
 import javax.swing.JPanel
 import model.element.Type as TypeBlueprint
 
-class BlueprintDialog : JDialogTemplate("Liste des objets") {
+class BlueprintDialog : JDialogTemplate(Strings[STR_OBJECT_LIST]) {
     private val manager = BlueprintManager()
     override val observable = manager
 
-    private val comboType = JComboBox(arrayOf("Objets", "PJ", "PNJ")).apply {
+    private val comboType = JComboBox(arrayOf(Strings[STR_OBJECTS], Strings[STR_PC], Strings[STR_NPC])).apply {
         this.font = Font("Tahoma", Font.BOLD, 20)
         this.addActionListener {
             when (this.selectedItem) {
-                "Objets" -> manager.type = TypeBlueprint.OBJECT
-                "PJ" -> manager.type = TypeBlueprint.PJ
-                "PNJ" -> manager.type = TypeBlueprint.PNJ
+                Strings[STR_OBJECTS] -> manager.type = TypeBlueprint.OBJECT
+                Strings[STR_PC] -> manager.type = TypeBlueprint.PJ
+                Strings[STR_NPC] -> manager.type = TypeBlueprint.PNJ
             }
         }
     }

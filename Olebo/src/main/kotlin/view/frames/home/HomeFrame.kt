@@ -1,6 +1,10 @@
 package view.frames.home
 
-import VERSION
+import OLEBO_VERSION
+import model.internationalisation.STR_ADD_ACT
+import model.internationalisation.STR_ELEMENTS
+import model.internationalisation.STR_VERSION
+import model.internationalisation.Strings
 import view.frames.rpg.MasterFrame
 import view.utils.BORDER_BUTTONS
 import view.utils.components.FileMenu
@@ -23,7 +27,7 @@ import javax.swing.JPanel
  *
  * This frame will send the selected act to the Games Views
  */
-class HomeFrame : JFrameTemplate("Olebo - Version $VERSION") {
+class HomeFrame : JFrameTemplate("Olebo - ${Strings[STR_VERSION]} $OLEBO_VERSION") {
     override val observable: Observable = HomeManager
 
     private val selectorPanel = ActSelectorPanel()
@@ -42,7 +46,7 @@ class HomeFrame : JFrameTemplate("Olebo - Version $VERSION") {
             this.border = BorderFactory.createEmptyBorder(15, 0, 15, 0)
             this.layout = GridBagLayout()
 
-            val elementButton = JButton("Éléments").apply {
+            val elementButton = JButton(Strings[STR_ELEMENTS]).apply {
                 this.border = BORDER_BUTTONS
                 this.addActionListener {
                     HomeManager.openObjectEditorFrame()
@@ -55,7 +59,7 @@ class HomeFrame : JFrameTemplate("Olebo - Version $VERSION") {
             }
             this.add(elementButton, cElementButton)
 
-            val actButton = JButton("Ajouter un scénario").apply {
+            val actButton = JButton(Strings[STR_ADD_ACT]).apply {
                 this.border = BORDER_BUTTONS
                 this.addActionListener {
                     HomeManager.openActCreatorFrame()

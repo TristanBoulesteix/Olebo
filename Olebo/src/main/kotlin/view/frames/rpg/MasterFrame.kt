@@ -1,5 +1,7 @@
 package view.frames.rpg
 
+import model.internationalisation.STR_DM_TITLE_FRAME
+import model.internationalisation.Strings
 import model.utils.Elements
 import view.utils.DIMENSION_FRAME
 import viewModel.ViewManager
@@ -32,7 +34,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
     }
 
     override fun setTitle(title: String) {
-        super.setTitle("Olebo - Fenêtre MJ - \"$title\"")
+        super.setTitle("Olebo - ${Strings[STR_DM_TITLE_FRAME]} - \"$title\"")
     }
 
     init {

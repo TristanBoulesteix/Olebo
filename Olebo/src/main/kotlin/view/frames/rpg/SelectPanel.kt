@@ -3,6 +3,7 @@ package view.frames.rpg
 import model.element.Element
 import model.element.Priority
 import model.element.Size
+import model.internationalisation.*
 import model.utils.callManager
 import view.utils.BACKGROUND_COLOR_SELECT_PANEL
 import view.utils.DIMENSION_BUTTON_DEFAULT
@@ -27,7 +28,7 @@ object SelectPanel : JPanel() {
 
     private val manaSlide = SlideStats(false)
 
-    private val nameLabel = object : JLabel("Nom") {
+    private val nameLabel = object : JLabel(Strings[STR_NAME]) {
         init {
             horizontalTextPosition = CENTER
             border = EmptyBorder(20, 0, 0, 0)
@@ -36,7 +37,7 @@ object SelectPanel : JPanel() {
         override fun setText(text: String?) {
             if (text == null) {
                 this.isEnabled = false
-                super.setText("Nom")
+                super.setText(Strings[STR_NAME])
             } else {
                 this.isEnabled = true
                 super.setText(text)
@@ -44,14 +45,14 @@ object SelectPanel : JPanel() {
         }
     }
 
-    private val rotateRightButton = JButton("Pivoter vers la droite").apply {
+    private val rotateRightButton = JButton(Strings[STR_ROTATE_TO_RIGHT]).apply {
         preferredSize = DIMENSION_BUTTON_DEFAULT
         addActionListener {
             ViewManager.rotateRight()
         }
     }
 
-    private val rotateLeftButton = JButton("Pivoter vers la gauche").apply {
+    private val rotateLeftButton = JButton(Strings[STR_ROTATE_TO_LEFT]).apply {
         preferredSize = DIMENSION_BUTTON_DEFAULT
         addActionListener {
             ViewManager.rotateLeft()
@@ -64,17 +65,17 @@ object SelectPanel : JPanel() {
     private val priorityInvisibleButton: JRadioButton
 
     private val visibilityButton = object : JButton() { //Toggles visibility on selected Token
-        private val defaultText = "Visibilité"
+        private val defaultText by StringDelegate(STR_VISIBILITY)
 
         private val conditionVisibility
             get() = selectedElements.filter { it.isVisible }.size >= selectedElements.size / 2
 
         private val contentText
             get() = when {
-                selectedElements.isEmpty() -> "Masquer"
-                selectedElements.size == 1 -> if (selectedElements[0].isVisible) "Masquer" else "Afficher"
-                conditionVisibility -> "Masquer"
-                else -> "Afficher"
+                selectedElements.isEmpty() -> Strings[STR_HIDE]
+                selectedElements.size == 1 -> if (selectedElements[0].isVisible) Strings[STR_HIDE] else Strings[STR_SHOW]
+                conditionVisibility -> Strings[STR_HIDE]
+                else -> Strings[STR_SHOW]
             }
 
         init {
@@ -102,7 +103,7 @@ object SelectPanel : JPanel() {
         }
     }
 
-    private val deleteButton = JButton("Supprimer").apply { //Deletes selected Token
+    private val deleteButton = JButton(Strings[STR_DELETE]).apply { //Deletes selected Token
         preferredSize = DIMENSION_BUTTON_DEFAULT
         addActionListener {
             selectedElements.forEach(ViewManager::removeToken)
@@ -180,17 +181,17 @@ object SelectPanel : JPanel() {
         })
 
         ButtonGroup().apply {
-            priorityHighButton = JRadioButton("Premier plan").apply {
+            priorityHighButton = JRadioButton(Strings[STR_FOREGROUND]).apply {
                 this.addActionListener {
                     ViewManager.updatePriorityToken(Priority.HIGH)
                 }
             }
-            priorityRegularButton = JRadioButton("Défaut").apply {
+            priorityRegularButton = JRadioButton(Strings[STR_DEFAULT]).apply {
                 this.addActionListener {
                     ViewManager.updatePriorityToken(Priority.REGULAR)
                 }
             }
-            priorityLowButton = JRadioButton("Arrière plan").apply {
+            priorityLowButton = JRadioButton(Strings[STR_BACKGROUND]).apply {
                 this.addActionListener {
                     ViewManager.updatePriorityToken(Priority.LOW)
                 }
@@ -276,7 +277,7 @@ object SelectPanel : JPanel() {
                 (arrayOf<AbstractButton>(rotateRightButton, rotateLeftButton, deleteButton) + priorityRadioButtons).forEach { it.isEnabled = true }
 
                 visibilityButton.initialize(false)
-                nameLabel.text = if (this.size == 1) this[0].name else "$size éléments sélectionnés"
+                nameLabel.text = if (this.size == 1) this[0].name else "$size ${Strings[STR_SELECTED_ELEMENTS, StringStates.NORMAL]}"
 
                 sizeCombo.selectedItem = this
 

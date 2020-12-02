@@ -5,6 +5,7 @@ import model.act.Scene
 import model.command.CommandManager
 import model.dao.DAO
 import model.dao.Settings
+import model.internationalisation.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.forElse
 import view.frames.editor.elements.BlueprintDialog
@@ -37,8 +38,8 @@ object MasterMenuBar : JMenuBar() {
 
         this.add(FileMenu())
 
-        JMenu("Outils").applyAndAppendTo(this) {
-            JCheckBoxMenuItem("Activer le curseur joueur").applyAndAppendTo(this) {
+        JMenu(Strings[STR_TOOLS]).applyAndAppendTo(this) {
+            JCheckBoxMenuItem(Strings[STR_ENABLE_CURSOR]).applyAndAppendTo(this) {
                 this.isSelected = Settings.cursorEnabled
                 this.addItemListener {
                     Settings.cursorEnabled = it.stateChange == ItemEvent.SELECTED
@@ -47,8 +48,8 @@ object MasterMenuBar : JMenuBar() {
 
             this.addSeparator()
 
-            undoMenuItem = object : JMenuItem("Annuler") {
-                private val baseText = "Annuler"
+            undoMenuItem = object : JMenuItem(Strings[STR_CANCEL]) {
+                private val baseText = Strings[STR_CANCEL]
 
                 override fun setText(text: String) = super.setText("$baseText ${if (text == "") "" else "($text)"}")
 
@@ -66,10 +67,8 @@ object MasterMenuBar : JMenuBar() {
 
             this.add(undoMenuItem)
 
-            redoMenuItem = object : JMenuItem("Restaurer") {
-                private val baseText = "Restaurer"
-
-                override fun setText(text: String) = super.setText("$baseText ${if (text == "") "" else "($text)"}")
+            redoMenuItem = object : JMenuItem(Strings[STR_RESTORE]) {
+                override fun setText(text: String) = super.setText("${Strings[STR_RESTORE]} ${if (text == "") "" else "($text)"}")
 
                 init {
                     this.isEnabled = false
@@ -86,8 +85,8 @@ object MasterMenuBar : JMenuBar() {
             this.add(redoMenuItem)
         }
 
-        JMenu("Fenêtres").applyAndAppendTo(this) {
-            JMenuItem("Fermer scenario").applyAndAppendTo(this) {
+        JMenu(Strings[STR_WINDOW]).applyAndAppendTo(this) {
+            JMenuItem(Strings[STR_CLOSE_ACT]).applyAndAppendTo(this) {
                 this.addActionListener {
                     MasterFrame.isVisible = false
                     PlayerFrame.hide()
@@ -98,7 +97,7 @@ object MasterMenuBar : JMenuBar() {
 
             this.addSeparator()
 
-            togglePlayerFrameMenuItem = JCheckBoxMenuItem("Fenetre PJs ON/OFF").applyAndAppendTo(this) {
+            togglePlayerFrameMenuItem = JCheckBoxMenuItem(Strings[STR_TOGGLE_PLAYER_FRAME]).applyAndAppendTo(this) {
                 this.addActionListener { e ->
                     (e.source as AbstractButton).let {
                         if (it.isSelected)
@@ -111,17 +110,14 @@ object MasterMenuBar : JMenuBar() {
 
             this.addSeparator()
 
-            JMenu("Choisir une Scene").applyAndAppendTo(this) {
-                if (act != null) {
-                    var i = 0
-
-                    for (scene in act!!.scenes) { //Pour chaque scene, on créé une option pour activer la scene
-                        i++
-                        if (scene.id.value == act!!.sceneId) {
-                            val item = JMenuItem("$i ${scene.name} (Active)").apply { isEnabled = false }
+            JMenu(Strings[STR_CHOOSE_SCENE]).applyAndAppendTo(this) {
+                act?.let {
+                    it.scenes.forEachIndexed { index, scene ->
+                        if (scene.id.value == it.sceneId) {
+                            val item = JMenuItem("${index + 1} ${scene.name} (${Strings[STR_IS_CURRENT_SCENE, StringStates.NORMAL]})").apply { isEnabled = false }
                             this.add(item)
                         } else {
-                            val item = JMenuItem("$i ${scene.name}")
+                            val item = JMenuItem("${index + 1} ${scene.name}")
                             item.addActionListener { transaction(DAO.database) { ViewManager.changeCurrentScene(scene.id.value) } }
                             this.add(item)
                         }
@@ -130,8 +126,8 @@ object MasterMenuBar : JMenuBar() {
             }
         }
 
-        JMenu("Pions").applyAndAppendTo(this) {
-            JMenuItem("Gèrer les Blueprints").applyAndAppendTo(this) {
+        JMenu(Strings[STR_TOKENS]).applyAndAppendTo(this) {
+            JMenuItem(Strings[STR_MANAGE_BLUEPRINTS]).applyAndAppendTo(this) {
                 addActionListener {
                     BlueprintDialog().isVisible = true
                     MasterFrame.itemPanel.reloadContent()
@@ -139,7 +135,7 @@ object MasterMenuBar : JMenuBar() {
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_B, CTRLSHIFT)
             }
 
-            JMenu("Importer depuis une autre scene").applyAndAppendTo(this) {
+            JMenu(Strings[STR_IMPORT_FROM_SCENE]).applyAndAppendTo(this) {
                 act?.let { act ->
                     if (act.scenes.size <= 1)
                         this.isEnabled = false
@@ -148,7 +144,7 @@ object MasterMenuBar : JMenuBar() {
                         if (it.id.value != act.sceneId) {
                             val itemMenu = JMenu(it.name).apply {
                                 if (it.elements.isNotEmpty()) {
-                                    JMenuItem("Tout importer").applyAndAppendTo(this) {
+                                    JMenuItem(Strings[STR_IMPORT_ALL_ELEMENTS]).applyAndAppendTo(this) {
                                         addActionListener { _ ->
                                             it.elements.forEach { token ->
                                                 transaction(DAO.database) { Scene.moveElementToScene(token, Scene[act.sceneId]) }
@@ -167,7 +163,9 @@ object MasterMenuBar : JMenuBar() {
                                             ViewManager.repaint()
                                         }
                                     }
-                                } ?: { this.isEnabled = false }()
+                                } ?: run {
+                                    isEnabled = false
+                                }
                             }
 
                             this.add(itemMenu)
@@ -181,16 +179,16 @@ object MasterMenuBar : JMenuBar() {
 
             this.addSeparator()
 
-            JMenuItem("Supprimer pion(s) selectionné(s)").applyAndAppendTo(this) {
+            JMenuItem(Strings[STR_DELETE_SELECTED_TOKENS]).applyAndAppendTo(this) {
                 this.addActionListener {
                     SelectPanel.selectedElements.forEach(ViewManager::removeToken)
                 }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0)
             }
 
-            JMenuItem("Vider le plateau").applyAndAppendTo(this) {
+            JMenuItem(Strings[STR_CLEAR_BOARD]).applyAndAppendTo(this) {
                 addActionListener {
-                    showConfirmMessage(this, "Voulez-vous vraiment supprimer tous les éléments du plateau ? Cette action est irréversible.", "Suppression") {
+                    showConfirmMessage(this, Strings[ST_CONFIRM_CLEAR_BOARD], Strings[STR_DELETION]) {
                         transaction(DAO.database) {
                             for (token in Scene[act!!.sceneId].elements) {
                                 ViewManager.removeToken(token)

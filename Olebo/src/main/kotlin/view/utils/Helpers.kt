@@ -1,5 +1,9 @@
 package view.utils
 
+import model.internationalisation.STR_CANCEL
+import model.internationalisation.STR_CONFIRM
+import model.internationalisation.STR_WARNING
+import model.internationalisation.Strings
 import java.awt.Component
 import java.awt.Dimension
 import java.awt.GridBagConstraints
@@ -12,12 +16,12 @@ import javax.swing.*
 fun showPopup(message: String, parent: Component? = null, isError: Boolean = false) = JOptionPane.showMessageDialog(
     parent,
     message,
-    "Attention !",
-    if (!isError) JOptionPane.INFORMATION_MESSAGE else JOptionPane.ERROR_MESSAGE
+    Strings[STR_WARNING],
+    if(!isError) JOptionPane.INFORMATION_MESSAGE else JOptionPane.ERROR_MESSAGE
 )
 
 fun showConfirmMessage(parent: Component? = null, message: String, title: String, okAction: () -> Unit) {
-    val ok = JButton("Confirmer").apply {
+    val ok = JButton(Strings[STR_CONFIRM]).apply {
         this.isEnabled = false
         this.addActionListener {
             SwingUtilities.getWindowAncestor(this)?.dispose()
@@ -25,7 +29,7 @@ fun showConfirmMessage(parent: Component? = null, message: String, title: String
         }
     }
 
-    val cancel = JButton("Annuler").apply {
+    val cancel = JButton(Strings[STR_CANCEL]).apply {
         this.addActionListener {
             SwingUtilities.getWindowAncestor(this)?.dispose()
         }

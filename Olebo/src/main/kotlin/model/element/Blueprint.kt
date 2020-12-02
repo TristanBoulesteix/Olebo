@@ -1,23 +1,17 @@
 package model.element
 
-import utils.CharacterException
 import model.dao.BlueprintTable
 import model.dao.InstanceTable
+import model.internationalisation.Strings
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
+import utils.CharacterException
 import java.io.File
 
 @Suppress("PropertyName")
 class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
-    companion object : EntityClass<Int, Blueprint>(BlueprintTable) {
-        private val basicName = mapOf(
-                "@pointerTransparent" to "Pointeur transparent",
-                "@pointerBlue" to "Pointeur bleu",
-                "@pointerWhite" to "Pointeur blanc",
-                "@pointerGreen" to "Pointeur vert"
-        )
-    }
+    companion object : EntityClass<Int, Blueprint>(BlueprintTable)
 
     var name by BlueprintTable.name
     var sprite by BlueprintTable.sprite
@@ -36,7 +30,7 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
         else throw CharacterException(this::class, "MP")
 
     val realName
-        get() = if(type.typeElement == Type.BASIC) basicName[name] ?: name else name
+        get() = if(type.typeElement == Type.BASIC) Strings[name] else name
 
     override fun delete() {
         File(sprite).delete()
