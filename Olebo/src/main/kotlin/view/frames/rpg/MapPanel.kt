@@ -36,7 +36,6 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
 
                 override fun mouseMoved(me: MouseEvent) {
                     start = me.point
-                    this@MapPanel.repaint()
                 }
 
                 override fun mouseDragged(me: MouseEvent) {
