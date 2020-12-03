@@ -11,7 +11,7 @@ import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import javax.swing.*
 
-class OptionDialog(parent: JFrame?) : JDialog(parent, true) {
+class OptionDialog(parent: JFrame?) : JDialog(parent, "Options", true) {
     private val comboLanguage = JComboBox(arrayOf("fr", "en")).apply {
         this.preferredSize = Dimension(100, 25)
     }
@@ -25,14 +25,26 @@ class OptionDialog(parent: JFrame?) : JDialog(parent, true) {
 
         JPanel().applyAndAppendTo(
             this,
-            gridBagConstraintsOf(0, 0, fill = GridBagConstraints.HORIZONTAL, weightx = 1.0)
+            gridBagConstraintsOf(
+                0,
+                0,
+                fill = GridBagConstraints.HORIZONTAL,
+                weightx = 1.0,
+                anchor = GridBagConstraints.NORTHWEST,
+                weighty = 1.0
+            )
         ) {
-            this.preferredSize = Dimension(220, 60)
             this.layout = GridBagLayout()
             this.border = BorderFactory.createTitledBorder("Général")
 
-            this.add(LabeledItem("Langue du logiciel", comboLanguage), gridBagConstraintsOf(0, 0, fill = GridBagConstraints.HORIZONTAL, weightx = 1.0))
-            JCheckBoxMenuItem(Strings[STR_AUTO_UPDATE]).applyAndAppendTo(this, gridBagConstraintsOf(0, 1, fill = GridBagConstraints.HORIZONTAL, weightx = 1.0)) {
+            this.add(
+                LabeledItem("Langue du logiciel", comboLanguage),
+                gridBagConstraintsOf(0, 0, weightx = 1.0, anchor = GridBagConstraints.LINE_START)
+            )
+            JCheckBox(Strings[STR_AUTO_UPDATE]).applyAndAppendTo(
+                this,
+                gridBagConstraintsOf(0, 1, weightx = 1.0, anchor = GridBagConstraints.LINE_START)
+            ) {
                 this.isSelected = Settings.autoUpdate
                 this.addItemListener {
 
@@ -42,7 +54,14 @@ class OptionDialog(parent: JFrame?) : JDialog(parent, true) {
 
         JPanel().applyAndAppendTo(
             this,
-            gridBagConstraintsOf(0, 1, fill = GridBagConstraints.HORIZONTAL, weightx = 1.0)
+            gridBagConstraintsOf(
+                0,
+                1,
+                fill = GridBagConstraints.HORIZONTAL,
+                weightx = 1.0,
+                weighty = 1.0,
+                anchor = GridBagConstraints.NORTHWEST
+            )
         ) {
             this.preferredSize = Dimension(220, 60)
             this.layout = GridBagLayout()
