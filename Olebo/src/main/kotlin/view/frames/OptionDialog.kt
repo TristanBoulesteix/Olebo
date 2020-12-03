@@ -17,7 +17,7 @@ class OptionDialog(parent: JFrame?) : JDialog(parent, "Options", true) {
     }
 
     init {
-        this.size = Dimension(550, 270)
+        this.size = Dimension(500, 250)
         this.setLocationRelativeTo(null)
         this.isResizable = true
         this.layout = GridBagLayout()
@@ -67,6 +67,19 @@ class OptionDialog(parent: JFrame?) : JDialog(parent, "Options", true) {
             this.border = BorderFactory.createTitledBorder("Apparence")
 
             this.add(LabeledItem("cursor", JTextField("")), gridBagConstraintsOf(0, 0, weightx = 1.0, anchor = GridBagConstraints.LINE_START))
+        }
+
+        JPanel().applyAndAppendTo(this, gridBagConstraintsOf(
+            0,
+            2,
+            fill = GridBagConstraints.BOTH,
+            weightx = 1.0,
+            weighty = 1.0,
+            anchor = GridBagConstraints.SOUTH
+        )) {
+            this.add(JButton("Enregistrer"))
+            this.add(JButton("Annuler"))
+            this.add(JButton("Rétablir les paramètres par défauts"))
         }
     }
 }
