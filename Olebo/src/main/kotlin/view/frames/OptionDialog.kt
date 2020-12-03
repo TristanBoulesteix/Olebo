@@ -28,7 +28,7 @@ class OptionDialog(parent: JFrame?) : JDialog(parent, "Options", true) {
             gridBagConstraintsOf(
                 0,
                 0,
-                fill = GridBagConstraints.HORIZONTAL,
+                fill = GridBagConstraints.BOTH,
                 weightx = 1.0,
                 anchor = GridBagConstraints.NORTHWEST,
                 weighty = 1.0
@@ -38,7 +38,7 @@ class OptionDialog(parent: JFrame?) : JDialog(parent, "Options", true) {
             this.border = BorderFactory.createTitledBorder("Général")
 
             this.add(
-                LabeledItem("Langue du logiciel", comboLanguage),
+                LabeledItem("Langue du logiciel :", comboLanguage),
                 gridBagConstraintsOf(0, 0, weightx = 1.0, anchor = GridBagConstraints.LINE_START)
             )
             JCheckBox(Strings[STR_AUTO_UPDATE]).applyAndAppendTo(
@@ -57,17 +57,16 @@ class OptionDialog(parent: JFrame?) : JDialog(parent, "Options", true) {
             gridBagConstraintsOf(
                 0,
                 1,
-                fill = GridBagConstraints.HORIZONTAL,
+                fill = GridBagConstraints.BOTH,
                 weightx = 1.0,
                 weighty = 1.0,
                 anchor = GridBagConstraints.NORTHWEST
             )
         ) {
-            this.preferredSize = Dimension(220, 60)
             this.layout = GridBagLayout()
             this.border = BorderFactory.createTitledBorder("Apparence")
 
-            this.add(LabeledItem("toto", JTextField("toto")))
+            this.add(LabeledItem("cursor", JTextField("")), gridBagConstraintsOf(0, 0, weightx = 1.0, anchor = GridBagConstraints.LINE_START))
         }
     }
 }
