@@ -54,7 +54,7 @@ fun showConfirmMessage(parent: Component? = null, message: String, title: String
 
 fun <T : Container> T.applyAndAppendTo(
     parent: Container,
-    constraints: GridBagConstraints? = null,
+    constraints: Any? = null,
     block: T.() -> Unit
 ): T {
     this.apply(block)
@@ -69,6 +69,11 @@ private val Dimension.area
 
 operator fun Dimension.compareTo(dimension: Dimension) = this.area.compareTo(dimension.area)
 
+/**
+ * [GridBagConstraints] builder
+ *
+ * @return The [GridBagConstraints] built with the parameters
+ */
 fun gridBagConstraintsOf(
     gridx: Int? = null,
     gridy: Int? = null,
