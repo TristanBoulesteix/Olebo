@@ -9,6 +9,7 @@ import view.utils.BACKGROUND_COLOR_SELECT_PANEL
 import view.utils.DIMENSION_BUTTON_DEFAULT
 import view.utils.applyAndAppendTo
 import view.utils.components.SlideStats
+import view.utils.gridBagConstraintsOf
 import viewModel.ViewManager
 import java.awt.*
 import javax.swing.*
@@ -148,37 +149,45 @@ object SelectPanel : JPanel() {
 
         val inset = Insets(5, 5, 5, 5)
 
-        this.add(nameLabel, GridBagConstraints().apply {
-            this.gridx = 0
-            this.gridy = 0
-            this.weightx = 1.0
-            this.insets = Insets(10, 150, 10, 10)
-            this.anchor = GridBagConstraints.LINE_START
-        })
+        this.add(
+            nameLabel, gridBagConstraintsOf(
+                0,
+                0,
+                weightx = 1.0,
+                insets = Insets(10, 150, 10, 10),
+                anchor = GridBagConstraints.LINE_START
+            )
+        )
 
-        this.add(sizeCombo, GridBagConstraints().apply {
-            this.gridx = 0
-            this.gridy = 2
-            this.weightx = 1.0
-            this.insets = Insets(10, 150, 10, 10)
-            this.anchor = GridBagConstraints.LINE_START
-        })
+        this.add(
+            sizeCombo, gridBagConstraintsOf(
+                0,
+                2,
+                weightx = 1.0,
+                insets = Insets(10, 150, 10, 10),
+                anchor = GridBagConstraints.LINE_START
+            )
+        )
 
-        this.add(rotateRightButton, GridBagConstraints().apply {
-            this.gridx = 1
-            this.gridy = 0
-            this.weightx = 0.5
-            this.insets = inset
-            this.anchor = GridBagConstraints.LINE_START
-        })
+        this.add(
+            rotateRightButton, gridBagConstraintsOf(
+                1,
+                0,
+                weightx = .5,
+                insets = inset,
+                anchor = GridBagConstraints.LINE_START
+            )
+        )
 
-        this.add(rotateLeftButton, GridBagConstraints().apply {
-            this.gridx = 1
-            this.gridy = 2
-            this.weightx = 0.5
-            this.insets = inset
-            this.anchor = GridBagConstraints.LINE_START
-        })
+        this.add(
+            rotateLeftButton, gridBagConstraintsOf(
+                1,
+                2,
+                weightx = .5,
+                insets = inset,
+                anchor = GridBagConstraints.LINE_START
+            )
+        )
 
         ButtonGroup().apply {
             priorityHighButton = JRadioButton(Strings[STR_FOREGROUND]).apply {
@@ -207,58 +216,70 @@ object SelectPanel : JPanel() {
             }
         }
 
-        this.add(priorityHighButton, GridBagConstraints().apply {
-            this.gridx = 2
-            this.gridy = 0
-            this.weightx = 0.5
-            this.weighty = 1.0
-            this.insets = inset
-            this.anchor = GridBagConstraints.LINE_START
-        })
+        this.add(
+            priorityHighButton, gridBagConstraintsOf(
+                2,
+                0,
+                weightx = .5,
+                weighty = 1.0,
+                insets = inset,
+                anchor = GridBagConstraints.LINE_START
+            )
+        )
 
-        this.add(priorityRegularButton, GridBagConstraints().apply {
-            this.gridx = 2
-            this.gridy = 1
-            this.weightx = 0.5
-            this.weighty = 1.0
-            this.insets = inset
-            this.anchor = GridBagConstraints.LINE_START
-        })
+        this.add(
+            priorityRegularButton, gridBagConstraintsOf(
+                2,
+                1,
+                weightx = .5,
+                weighty = 1.0,
+                insets = inset,
+                anchor = GridBagConstraints.LINE_START
+            )
+        )
 
-        this.add(priorityLowButton, GridBagConstraints().apply {
-            this.gridx = 2
-            this.gridy = 2
-            this.weightx = 0.5
-            this.weighty = 1.0
-            this.insets = inset
-            this.anchor = GridBagConstraints.LINE_START
-        })
+        this.add(
+            priorityLowButton, gridBagConstraintsOf(
+                2,
+                2,
+                weightx = .5,
+                weighty = 1.0,
+                insets = inset,
+                anchor = GridBagConstraints.LINE_START
+            )
+        )
 
-        this.add(visibilityButton, GridBagConstraints().apply {
-            this.gridx = 3
-            this.gridy = 0
-            this.weightx = 0.5
-            this.insets = inset
-            this.anchor = GridBagConstraints.LINE_START
-        })
+        this.add(
+            visibilityButton, gridBagConstraintsOf(
+                3,
+                0,
+                weightx = .5,
+                insets = inset,
+                anchor = GridBagConstraints.LINE_START
+            )
+        )
 
-        this.add(deleteButton, GridBagConstraints().apply {
-            this.gridx = 3
-            this.gridy = 2
-            this.weightx = 0.5
-            this.insets = Insets(10, 10, 10, 10)
-            this.anchor = GridBagConstraints.LINE_START
-        })
+        this.add(
+            deleteButton, gridBagConstraintsOf(
+                3,
+                2,
+                weightx = .5,
+                insets = Insets(10, 10, 10, 10),
+                anchor = GridBagConstraints.LINE_START
+            )
+        )
 
-        slidePanel = JPanel().applyAndAppendTo(this, GridBagConstraints().apply {
-            this.gridx = 4
-            this.gridy = 0
-            this.gridheight = 3
-            this.weightx = 2.0
-            this.insets = Insets(10, 10, 10, 10)
-            this.anchor = GridBagConstraints.FIRST_LINE_START
-            this.fill = GridBagConstraints.BOTH
-        }) {
+        slidePanel = JPanel().applyAndAppendTo(
+            this, gridBagConstraintsOf(
+                4,
+                0,
+                gridHeight = 3,
+                weightx = 2.0,
+                insets = Insets(10, 10, 10, 10),
+                anchor = GridBagConstraints.FIRST_LINE_START,
+                fill = GridBagConstraints.BOTH
+            )
+        ) {
             isOpaque = false
             layout = GridLayout(2, 1)
 

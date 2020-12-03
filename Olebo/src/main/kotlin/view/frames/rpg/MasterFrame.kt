@@ -4,6 +4,7 @@ import model.internationalisation.STR_DM_TITLE_FRAME
 import model.internationalisation.Strings
 import model.utils.Elements
 import view.utils.DIMENSION_FRAME
+import view.utils.gridBagConstraintsOf
 import viewModel.ViewManager
 import java.awt.Color
 import java.awt.GridBagConstraints
@@ -55,29 +56,29 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
 
         SelectPanel.setSize(mapPanel.width, (this.height - mapPanel.height))
 
-        val mapConstraints = GridBagConstraints()
-        val itemConstraints = GridBagConstraints()
-        val selectConstraints = GridBagConstraints()
-
-        itemConstraints.gridx = 0
-        itemConstraints.gridy = 0
-        itemConstraints.gridheight = 2
-        itemConstraints.weightx = 1.0
-        itemConstraints.weighty = 2.0
-        itemConstraints.fill = GridBagConstraints.BOTH
-
-        selectConstraints.gridx = 1
-        selectConstraints.gridy = 1
-        selectConstraints.weightx = 0.5
-        selectConstraints.weighty = 1.0
-        selectConstraints.gridwidth = GridBagConstraints.REMAINDER
-        selectConstraints.fill = GridBagConstraints.BOTH
-
-        mapConstraints.gridx = 3
-        mapConstraints.gridy = 0
-        mapConstraints.weightx = 3.0
-        mapConstraints.weighty = 7.0
-        mapConstraints.fill = GridBagConstraints.BOTH
+        val itemConstraints = gridBagConstraintsOf(
+            gridx = 0,
+            gridy = 0,
+            gridHeight = 2,
+            weightx = 1.0,
+            weighty = 2.0,
+            fill = GridBagConstraints.BOTH
+        )
+        val selectConstraints = gridBagConstraintsOf(
+            gridx = 1,
+            gridy = 1,
+            gridWidth = GridBagConstraints.REMAINDER,
+            weightx = 0.5,
+            weighty = 1.0,
+            fill = GridBagConstraints.BOTH
+        )
+        val mapConstraints = gridBagConstraintsOf(
+            gridx = 3,
+            gridy = 0,
+            weightx = 3.0,
+            weighty = 7.0,
+            fill = GridBagConstraints.BOTH
+        )
 
         masterFramePanel.add(mapPanel, mapConstraints)
         masterFramePanel.add(itemPanel, itemConstraints)

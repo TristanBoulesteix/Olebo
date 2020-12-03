@@ -2,18 +2,14 @@ package view.frames.editor.acts
 
 import model.act.Act
 import model.internationalisation.*
-import view.utils.BACKGROUND_COLOR_LIGHT_BLUE
-import view.utils.BACKGROUND_COLOR_ORANGE
-import view.utils.BORDER_BUTTONS
+import view.utils.*
 import view.utils.components.JDialogTemplate
 import view.utils.components.PlaceholderTextField
-import view.utils.showPopup
 import viewModel.ActCreatorManager
 import viewModel.pattern.observer.Action
 import java.awt.BorderLayout
 import java.awt.BorderLayout.*
 import java.awt.GridBagConstraints
-import java.awt.GridBagConstraints.BOTH
 import java.awt.GridBagLayout
 import javax.swing.BorderFactory
 import javax.swing.JButton
@@ -38,10 +34,7 @@ class ActEditorDialog : JDialogTemplate(Strings[STR_NEW_ACT]) {
             this.border = BorderFactory.createEmptyBorder(15, 10, 15, 10)
             this.layout = GridBagLayout()
 
-            this.add(nameField, GridBagConstraints().apply {
-                this.weightx = 1.0
-                this.fill = BOTH
-            })
+            this.add(nameField, gridBagConstraintsOf(weightx = 1.0, fill = GridBagConstraints.BOTH))
 
             this.background = BACKGROUND_COLOR_ORANGE
         }, NORTH)

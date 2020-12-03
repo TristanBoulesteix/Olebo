@@ -7,6 +7,7 @@ import model.dao.loadOleboZipData
 import model.dao.zipOleboDirectory
 import model.internationalisation.*
 import utils.Result
+import view.frames.OptionDialog
 import view.frames.home.HomeFrame
 import view.frames.rpg.MasterFrame
 import view.frames.rpg.PlayerFrame
@@ -28,46 +29,6 @@ import javax.swing.filechooser.FileNameExtensionFilter
 
 class FileMenu : JMenu(Strings[STR_FILES]) {
     init {
-        JMenuItem(Strings[STR_TAKE_SCREENSHOT]).applyAndAppendTo(this) {
-            this.addActionListener {
-                val parent = SwingUtilities.getWindowAncestor(this@FileMenu)
-                JFileChooser().apply {
-                    this.dialogTitle = Strings[STR_TAKE_SCREENSHOT]
-                    this.fileFilter = FileNameExtensionFilter("Image PNG", "png")
-                    if (this.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
-                        val fileToSave = if (this.selectedFile.extension == "png")
-                            this.selectedFile
-                        else
-                            File("${this.selectedFile.parentFile.absolutePath}${File.separator}${this.selectedFile.nameWithoutExtension}.png")
-
-                        val saveImg = {
-                            ImageIO.write(getScreenShot(parent), "png", fileToSave)
-                        }
-
-                        if (fileToSave.exists()) {
-                            val result = JOptionPane.showConfirmDialog(
-                                null,
-                                Strings[ST_FILE_ALREADY_EXISTS],
-                                Strings[STR_SAVE_AS],
-                                JOptionPane.YES_NO_OPTION
-                            )
-                            if (result == JOptionPane.YES_OPTION) saveImg()
-                        } else saveImg()
-                    }
-                }
-            }
-
-            this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_P, CTRL)
-        }
-
-        JCheckBoxMenuItem(Strings[STR_AUTO_UPDATE]).applyAndAppendTo(this) {
-            this.isSelected = Settings.autoUpdate
-            this.addItemListener {
-                Settings.autoUpdate = it.stateChange == ItemEvent.SELECTED
-            }
-        }
-
-        this.addSeparator()
 
         JMenuItem("${Strings[STR_EXPORT_DATA]} (ALPHA)").applyAndAppendTo(this) {
             this.addActionListener {
@@ -128,6 +89,51 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
         }
 
         this.addSeparator()
+
+        JMenuItem("Options").applyAndAppendTo(this) {
+            this.addActionListener {
+                OptionDialog(null).isVisible = true
+            }
+        }
+
+        JCheckBoxMenuItem(Strings[STR_AUTO_UPDATE]).applyAndAppendTo(this) {
+            this.isSelected = Settings.autoUpdate
+            this.addItemListener {
+                Settings.autoUpdate = it.stateChange == ItemEvent.SELECTED
+            }
+        }
+
+        JMenuItem(Strings[STR_TAKE_SCREENSHOT]).applyAndAppendTo(this) {
+            this.addActionListener {
+                val parent = SwingUtilities.getWindowAncestor(this@FileMenu)
+                JFileChooser().apply {
+                    this.dialogTitle = Strings[STR_TAKE_SCREENSHOT]
+                    this.fileFilter = FileNameExtensionFilter("Image PNG", "png")
+                    if (this.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
+                        val fileToSave = if (this.selectedFile.extension == "png")
+                            this.selectedFile
+                        else
+                            File("${this.selectedFile.parentFile.absolutePath}${File.separator}${this.selectedFile.nameWithoutExtension}.png")
+
+                        val saveImg = {
+                            ImageIO.write(getScreenShot(parent), "png", fileToSave)
+                        }
+
+                        if (fileToSave.exists()) {
+                            val result = JOptionPane.showConfirmDialog(
+                                null,
+                                Strings[ST_FILE_ALREADY_EXISTS],
+                                Strings[STR_SAVE_AS],
+                                JOptionPane.YES_NO_OPTION
+                            )
+                            if (result == JOptionPane.YES_OPTION) saveImg()
+                        } else saveImg()
+                    }
+                }
+            }
+
+            this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_P, CTRL)
+        }
 
         JMenuItem(Strings[STR_ABOUT]).applyAndAppendTo(this) {
             this.addActionListener {

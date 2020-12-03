@@ -9,13 +9,13 @@ import view.frames.rpg.MasterFrame
 import view.utils.BORDER_BUTTONS
 import view.utils.components.FileMenu
 import view.utils.components.JFrameTemplate
+import view.utils.gridBagConstraintsOf
 import viewModel.HomeManager
 import viewModel.pattern.observer.Action
 import viewModel.pattern.observer.Observable
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.NORTH
 import java.awt.Color
-import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import javax.swing.BorderFactory
 import javax.swing.JButton
@@ -52,12 +52,8 @@ class HomeFrame : JFrameTemplate("Olebo - ${Strings[STR_VERSION]} $OLEBO_VERSION
                     HomeManager.openObjectEditorFrame()
                 }
             }
-            val cElementButton = GridBagConstraints().apply {
-                this.gridx = 0
-                this.gridy = 0
-                this.weightx = .5
-            }
-            this.add(elementButton, cElementButton)
+
+            this.add(elementButton, gridBagConstraintsOf(gridx = 0, gridy = 0, weightx = .5))
 
             val actButton = JButton(Strings[STR_ADD_ACT]).apply {
                 this.border = BORDER_BUTTONS
@@ -65,12 +61,8 @@ class HomeFrame : JFrameTemplate("Olebo - ${Strings[STR_VERSION]} $OLEBO_VERSION
                     HomeManager.openActCreatorFrame()
                 }
             }
-            val cActButton = GridBagConstraints().apply {
-                this.gridx = 1
-                this.gridy = 0
-                this.weightx = .5
-            }
-            this.add(actButton, cActButton)
+
+            this.add(actButton, gridBagConstraintsOf(gridx = 1, gridy = 0, weightx = .5))
 
             this.background = Color.ORANGE
         }, NORTH)

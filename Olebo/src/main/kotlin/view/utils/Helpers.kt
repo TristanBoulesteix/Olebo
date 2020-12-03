@@ -4,11 +4,12 @@ import model.internationalisation.STR_CANCEL
 import model.internationalisation.STR_CONFIRM
 import model.internationalisation.STR_WARNING
 import model.internationalisation.Strings
-import java.awt.Component
-import java.awt.Dimension
-import java.awt.GridBagConstraints
+import java.awt.*
 import java.awt.event.ItemEvent
-import javax.swing.*
+import javax.swing.JButton
+import javax.swing.JCheckBox
+import javax.swing.JOptionPane
+import javax.swing.SwingUtilities
 
 /**
  * Show a popup with a message
@@ -51,8 +52,8 @@ fun showConfirmMessage(parent: Component? = null, message: String, title: String
     )
 }
 
-fun <T : JComponent> T.applyAndAppendTo(
-    parent: JComponent,
+fun <T : Container> T.applyAndAppendTo(
+    parent: Container,
     constraints: GridBagConstraints? = null,
     block: T.() -> Unit
 ): T {
@@ -67,3 +68,25 @@ private val Dimension.area
     get() = width * height
 
 operator fun Dimension.compareTo(dimension: Dimension) = this.area.compareTo(dimension.area)
+
+fun gridBagConstraintsOf(
+    gridx: Int? = null,
+    gridy: Int? = null,
+    gridHeight: Int? = null,
+    gridWidth: Int? = null,
+    weightx: Double? = null,
+    weighty: Double? = null,
+    fill: Int = GridBagConstraints.NONE,
+    anchor: Int = GridBagConstraints.CENTER,
+    insets: Insets? = null
+) = GridBagConstraints().apply {
+    gridx?.let { this.gridx = it }
+    gridy?.let { this.gridy = it }
+    gridHeight?.let { this.gridheight = it }
+    gridWidth?.let { this.gridwidth = it }
+    weightx?.let { this.weightx = it }
+    weighty?.let { this.weighty = it }
+    this.fill = fill
+    this.anchor = anchor
+    insets?.let { this.insets = it }
+}

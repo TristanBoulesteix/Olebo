@@ -1,10 +1,10 @@
 package view.frames.editor.acts
 
 import model.internationalisation.*
+import view.utils.gridBagConstraintsOf
 import view.utils.showPopup
 import viewModel.SceneData
 import java.awt.Dimension
-import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.io.File
 import javax.imageio.ImageIO
@@ -48,10 +48,7 @@ class SceneEditorDialog(private val scene: SceneData? = null) : JDialog() {
             this.preferredSize = Dimension(220, 60)
             this.add(JLabel(Strings[STR_NAME_OF_SCENE]))
             this.add(nameField)
-        }, GridBagConstraints().apply {
-            this.gridx = 0
-            this.gridy = 0
-        })
+        }, gridBagConstraintsOf(0,0))
 
         this.add(JButton(Strings[STR_IMPORT_IMG]).apply {
             this.toolTipText = if (scene != null) {
@@ -73,10 +70,7 @@ class SceneEditorDialog(private val scene: SceneData? = null) : JDialog() {
                     this.toolTipText = selectedFile.name
                 }
             }
-        }, GridBagConstraints().apply {
-            this.gridx = 0
-            this.gridy = 1
-        })
+        }, gridBagConstraintsOf(0,1))
 
         this.add(JPanel().apply {
             this.add(JButton(Strings[STR_CONFIRM]).addAction {
@@ -84,10 +78,7 @@ class SceneEditorDialog(private val scene: SceneData? = null) : JDialog() {
             })
             this.add(JButton(Strings[STR_CANCEL]).addAction { this@SceneEditorDialog.isVisible = false })
             this.border = BorderFactory.createEmptyBorder(10, 0, 0, 0)
-        }, GridBagConstraints().apply {
-            this.gridx = 0
-            this.gridy = 2
-        })
+        }, gridBagConstraintsOf(0,2))
     }
 
     /**

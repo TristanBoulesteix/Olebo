@@ -154,11 +154,10 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
 
     protected val namePanel = JPanel().apply {
         this.layout = GridBagLayout()
-        this.add(nameLabel, GridBagConstraints().apply {
-            this.anchor = GridBagConstraints.WEST
-            this.fill = GridBagConstraints.BOTH
-            this.weightx = 1.0
-        })
+        this.add(
+            nameLabel,
+            gridBagConstraintsOf(anchor = GridBagConstraints.WEST, fill = GridBagConstraints.BOTH, weightx = 1.0)
+        )
     }
 
     init {
@@ -221,11 +220,7 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
 
                     override fun focusGained(e: FocusEvent?) {}
                 })
-            }, GridBagConstraints().apply {
-                this.fill = GridBagConstraints.BOTH
-                this.weightx = 1.0
-                this.weighty = 1.0
-            })
+            }, gridBagConstraintsOf(fill = GridBagConstraints.BOTH, weightx = 1.0, weighty = 1.0))
         }
     }
 }
@@ -336,20 +331,24 @@ class SlideStats(private val hp: Boolean, initialElement: Element? = null) : JPa
             }
         }
 
-        this.add(label, GridBagConstraints().apply {
-            this.anchor = GridBagConstraints.LINE_START
-            this.gridx = 0
-            this.gridy = 0
-            this.insets = Insets(2, 0, 0, 0)
-        })
+        this.add(
+            label, gridBagConstraintsOf(
+                anchor = GridBagConstraints.LINE_START,
+                gridx = 0,
+                gridy = 0,
+                insets = Insets(2, 0, 0, 0)
+            )
+        )
 
-        this.add(slider, GridBagConstraints().apply {
-            this.anchor = GridBagConstraints.LAST_LINE_END
-            this.gridx = 1
-            this.gridy = 0
-            this.fill = GridBagConstraints.BOTH
-            this.weightx = 1.toDouble()
-        })
+        this.add(
+            slider, gridBagConstraintsOf(
+                anchor = GridBagConstraints.LAST_LINE_END,
+                gridx = 1,
+                gridy = 0,
+                fill = GridBagConstraints.BOTH,
+                weightx = 1.0
+            )
+        )
 
         element = initialElement
     }
@@ -357,5 +356,12 @@ class SlideStats(private val hp: Boolean, initialElement: Element? = null) : JPa
     private fun JComponent.applyStyle() {
         background = BACKGROUND_COLOR_SELECT_PANEL
         isOpaque = false
+    }
+}
+
+class LabeledItem(label: String, component: Component) : JPanel() {
+    init {
+        this.add(JLabel(label))
+        this.add(component)
     }
 }

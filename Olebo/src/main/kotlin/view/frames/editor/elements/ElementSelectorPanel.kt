@@ -9,6 +9,7 @@ import view.utils.components.ItemPanel
 import view.utils.components.SelectorPanel
 import view.utils.factories.TitlePanel
 import view.utils.factories.buildTitleItemPanel
+import view.utils.gridBagConstraintsOf
 import viewModel.BlueprintManager
 import java.awt.BorderLayout
 import java.awt.GridBagConstraints
@@ -32,12 +33,13 @@ class ElementSelectorPanel(private val controller: BlueprintManager?) :
     }
 
     private val titlePanel = JPanel()
-    private val cTitleItem = GridBagConstraints().apply {
-        this.fill = GridBagConstraints.BOTH
-        this.weightx = 1.0
-        this.gridx = 0
-        this.gridy = 0
-    }
+    private val cTitleItem
+        get() = gridBagConstraintsOf(
+            fill = GridBagConstraints.BOTH,
+            weightx = 1.0,
+            gridx = 0,
+            gridy = 0
+        )
 
     private var titleContentPanel: TitlePanel
 

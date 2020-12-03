@@ -3,6 +3,7 @@ package view.frames.editor.elements
 import model.internationalisation.*
 import view.utils.BACKGROUND_COLOR_ORANGE
 import view.utils.components.JDialogTemplate
+import view.utils.gridBagConstraintsOf
 import viewModel.BlueprintManager
 import viewModel.pattern.observer.Action
 import java.awt.BorderLayout
@@ -51,10 +52,7 @@ class BlueprintDialog : JDialogTemplate(Strings[STR_OBJECT_LIST]) {
             this.border = BorderFactory.createEmptyBorder(15, 10, 15, 10)
             this.layout = GridBagLayout()
 
-            this.add(comboType, GridBagConstraints().apply {
-                this.weightx = 1.0
-                this.fill = GridBagConstraints.BOTH
-            })
+            this.add(comboType, gridBagConstraintsOf(fill = GridBagConstraints.BOTH, weightx = 1.0))
 
             this.background = BACKGROUND_COLOR_ORANGE
         }, BorderLayout.NORTH)

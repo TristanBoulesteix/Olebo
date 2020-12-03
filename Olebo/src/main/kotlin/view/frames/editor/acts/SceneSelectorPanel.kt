@@ -5,13 +5,13 @@ import model.internationalisation.STR_SCENES
 import model.internationalisation.Strings
 import view.utils.components.ItemPanel
 import view.utils.components.SelectorPanel
+import view.utils.gridBagConstraintsOf
 import viewModel.ActCreatorManager
 import viewModel.HomeManager
 import viewModel.getArrayOfPairs
 import java.awt.BorderLayout.NORTH
 import java.awt.Color
 import java.awt.GridBagConstraints
-import java.awt.GridBagConstraints.BOTH
 import java.awt.GridBagLayout
 import javax.swing.BorderFactory
 import javax.swing.JPanel
@@ -44,12 +44,8 @@ class SceneSelectorPanel(private val controller: ActCreatorManager?) : SelectorP
                     )
                 }
             }
-            val cTitleItem = GridBagConstraints().apply {
-                this.fill = BOTH
-                this.weightx = 1.0
-            }
 
-            this.add(titleItems, cTitleItem)
+            this.add(titleItems, gridBagConstraintsOf(fill = GridBagConstraints.BOTH, weightx = 1.0))
             this.revalidate()
         }, NORTH)
         this.refresh()

@@ -2,10 +2,10 @@ package view.frames.editor.elements
 
 import model.internationalisation.*
 import view.utils.IntegerFilter
+import view.utils.gridBagConstraintsOf
 import view.utils.showPopup
 import viewModel.BlueprintData
 import java.awt.Dimension
-import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.io.File
 import javax.imageio.ImageIO
@@ -71,29 +71,20 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
             this.preferredSize = Dimension(220, 60)
             this.add(JLabel(Strings[STR_NAME_OF_ELEMENT]))
             this.add(nameField)
-        }, GridBagConstraints().apply {
-            this.gridx = 0
-            this.gridy = 0
-        })
+        }, gridBagConstraintsOf(0, 0))
 
         if (type != TypeElement.OBJECT) {
             this.add(JPanel().apply {
                 this.preferredSize = Dimension(220, 60)
                 this.add(JLabel(Strings[STR_MAX_HEALTH]))
                 this.add(lifeField)
-            }, GridBagConstraints().apply {
-                this.gridx = 0
-                this.gridy = 1
-            })
+            }, gridBagConstraintsOf(0, 1))
 
             this.add(JPanel().apply {
                 this.preferredSize = Dimension(220, 60)
                 this.add(JLabel(Strings[STR_MAX_MANA]))
                 this.add(manaField)
-            }, GridBagConstraints().apply {
-                this.gridx = 0
-                this.gridy = 2
-            })
+            }, gridBagConstraintsOf(0, 2))
         }
 
         this.add(JButton(Strings[STR_IMPORT_IMG]).apply {
@@ -116,21 +107,23 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
                     this.toolTipText = selectedFile.name
                 }
             }
-        }, GridBagConstraints().apply {
-            this.gridx = 0
-            this.gridy = if (type == TypeElement.OBJECT) 1 else 3
-        })
+        }, gridBagConstraintsOf(
+            gridx = 0,
+            gridy = if (type == TypeElement.OBJECT) 1 else 3
+        ))
 
-        this.add(JPanel().apply {
-            this.add(JButton(Strings[STR_CONFIRM]).addAction {
-                this@BlueprintEditorDialog.isVisible = false; canceled = false
-            })
-            this.add(JButton(Strings[STR_CANCEL]).addAction { this@BlueprintEditorDialog.isVisible = false })
-            this.border = BorderFactory.createEmptyBorder(10, 0, 0, 0)
-        }, GridBagConstraints().apply {
-            this.gridx = 0
-            this.gridy = if (type == TypeElement.OBJECT) 2 else 4
-        })
+        this.add(
+            JPanel().apply {
+                this.add(JButton(Strings[STR_CONFIRM]).addAction {
+                    this@BlueprintEditorDialog.isVisible = false; canceled = false
+                })
+                this.add(JButton(Strings[STR_CANCEL]).addAction { this@BlueprintEditorDialog.isVisible = false })
+                this.border = BorderFactory.createEmptyBorder(10, 0, 0, 0)
+            }, gridBagConstraintsOf(
+                gridx = 0,
+                gridy = if (type == TypeElement.OBJECT) 2 else 4
+            )
+        )
     }
 
     /**
