@@ -3,15 +3,17 @@ package view.frames
 import model.dao.Settings
 import model.dao.internationalisation.STR_AUTO_UPDATE
 import model.dao.internationalisation.Strings
+import view.frames.home.HomeFrame
 import view.utils.applyAndAppendTo
 import view.utils.components.LabeledItem
 import view.utils.gridBagConstraintsOf
 import java.awt.Dimension
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
+import java.awt.Window
 import javax.swing.*
 
-class OptionDialog(parent: JFrame?) : JDialog(parent, "Options", true) {
+class OptionDialog(parent: Window) : JDialog(parent as? JFrame, "Options", true) {
     private val comboLanguageItems =
         Strings.availableLocales.map { it.getDisplayLanguage(it).capitalize(Settings.language) }.toTypedArray()
 
@@ -97,7 +99,9 @@ class OptionDialog(parent: JFrame?) : JDialog(parent, "Options", true) {
         ) {
             JButton("Enregistrer").applyAndAppendTo(this) {
                 addActionListener {
-                    Settings.language = Strings.availableLocales[comboLanguage.selectedIndex]
+                    Settings.updateLanguage(Strings.availableLocales[comboLanguage.selectedIndex]) {
+                        (owner as HomeFrame).repaint()
+                    }
                     dispose()
                 }
             }

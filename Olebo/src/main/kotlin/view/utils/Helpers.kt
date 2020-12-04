@@ -4,6 +4,7 @@ import model.dao.internationalisation.STR_CANCEL
 import model.dao.internationalisation.STR_CONFIRM
 import model.dao.internationalisation.STR_WARNING
 import model.dao.internationalisation.Strings
+import utils.MessageException
 import java.awt.*
 import java.awt.event.ItemEvent
 import javax.swing.JButton
@@ -95,3 +96,6 @@ fun gridBagConstraintsOf(
     this.anchor = anchor
     insets?.let { this.insets = it }
 }
+
+val Component.windowAncestor: Window
+    get() = SwingUtilities.getWindowAncestor(this) ?: throw MessageException("")

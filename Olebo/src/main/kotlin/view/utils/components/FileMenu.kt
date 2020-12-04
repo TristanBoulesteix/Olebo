@@ -11,10 +11,7 @@ import view.frames.OptionDialog
 import view.frames.home.HomeFrame
 import view.frames.rpg.MasterFrame
 import view.frames.rpg.PlayerFrame
-import view.utils.CTRL
-import view.utils.applyAndAppendTo
-import view.utils.showConfirmMessage
-import view.utils.showPopup
+import view.utils.*
 import java.awt.Component
 import java.awt.Frame
 import java.awt.Window
@@ -92,7 +89,7 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
 
         JMenuItem("Options").applyAndAppendTo(this) {
             this.addActionListener {
-                OptionDialog(null).isVisible = true
+                OptionDialog(this@FileMenu.windowAncestor).isVisible = true
             }
         }
 
@@ -105,7 +102,7 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
 
         JMenuItem(Strings[STR_TAKE_SCREENSHOT]).applyAndAppendTo(this) {
             this.addActionListener {
-                val parent = SwingUtilities.getWindowAncestor(this@FileMenu)
+                val parent = this@FileMenu.windowAncestor
                 JFileChooser().apply {
                     this.dialogTitle = Strings[STR_TAKE_SCREENSHOT]
                     this.fileFilter = FileNameExtensionFilter("Image PNG", "png")
