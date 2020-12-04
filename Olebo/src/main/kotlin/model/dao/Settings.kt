@@ -55,7 +55,7 @@ class Settings(id: EntityID<Int>) : IntEntity(id) {
                 Locale.getDefault()
             }
             set(value) = transaction(DAO.database) {
-                this@Companion[CURSOR_ENABLED] = value.language
+                this@Companion[CURRENT_LANGUAGE] = value.language
             }
 
         operator fun get(setting: String) = this.find { SettingsTable.name eq setting }.firstOrNull()?.value

@@ -12,13 +12,20 @@ import java.awt.GridBagLayout
 import javax.swing.*
 
 class OptionDialog(parent: JFrame?) : JDialog(parent, "Options", true) {
+    private val comboLanguageItems =
+        Strings.availableLocales.map { it.getDisplayLanguage(it).capitalize(Settings.language) }.toTypedArray()
+
     private val comboLanguage =
         JComboBox<String>().apply {
-            val items =
-                Strings.availableLocales.map { it.getDisplayLanguage(it).capitalize(Settings.language) }.toTypedArray()
-            items.forEach(this::addItem)
+            comboLanguageItems.forEach(this::addItem)
             this.selectedItem =
-                items.find { it.equals(Settings.language.getDisplayLanguage(Settings.language), ignoreCase = true) } ?: items[0]
+                comboLanguageItems.find {
+                    it.equals(
+                        Settings.language.getDisplayLanguage(Settings.language),
+                        ignoreCase = true
+                    )
+                }
+                    ?: comboLanguageItems[0]
             this.preferredSize = Dimension(100, 25)
         }
 
@@ -88,12 +95,19 @@ class OptionDialog(parent: JFrame?) : JDialog(parent, "Options", true) {
                 anchor = GridBagConstraints.SOUTH
             )
         ) {
-            this.add(JButton("Enregistrer"))
+            JButton("Enregistrer").applyAndAppendTo(this) {
+                addActionListener {
+                    Settings.language = Strings.availableLocales[comboLanguage.selectedIndex]
+                    dispose()
+                }
+            }
+
             JButton("Annuler").applyAndAppendTo(this) {
                 addActionListener {
                     dispose()
                 }
             }
+
             this.add(JButton("Rétablir les paramètres par défauts"))
         }
     }

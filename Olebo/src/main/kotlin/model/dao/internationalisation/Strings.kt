@@ -5,10 +5,14 @@ import java.util.*
 
 abstract class Strings : ListResourceBundle() {
     companion object {
-        private val langBundle
-            get() = ResourceBundle.getBundle(StringsBundle::class.java.canonicalName!!, Settings.language)
-
         val availableLocales = listOf(Locale.ENGLISH, Locale.FRENCH)
+
+        private val langBundle
+            get() = ResourceBundle.getBundle(
+                StringsBundle::class.java.canonicalName,
+                Settings.language,
+                Control.getNoFallbackControl(Control.FORMAT_DEFAULT)
+            )
 
         operator fun get(key: String, state: StringStates = StringStates.CAPITALIZE): String = try {
             langBundle.getString(key)
