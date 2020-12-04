@@ -3,14 +3,10 @@ package view.frames
 import model.dao.Settings
 import model.dao.internationalisation.STR_AUTO_UPDATE
 import model.dao.internationalisation.Strings
-import view.frames.home.HomeFrame
 import view.utils.applyAndAppendTo
 import view.utils.components.LabeledItem
 import view.utils.gridBagConstraintsOf
-import java.awt.Dimension
-import java.awt.GridBagConstraints
-import java.awt.GridBagLayout
-import java.awt.Window
+import java.awt.*
 import javax.swing.*
 
 class OptionDialog(parent: Window) : JDialog(parent as? JFrame, "Options", true) {
@@ -20,16 +16,20 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, "Options", true)
     private val comboLanguage =
         JComboBox<String>().apply {
             comboLanguageItems.forEach(this::addItem)
-            this.selectedItem =
-                comboLanguageItems.find {
-                    it.equals(
-                        Settings.language.getDisplayLanguage(Settings.language),
-                        ignoreCase = true
-                    )
-                }
-                    ?: comboLanguageItems[0]
+            val itemSelectedBase = comboLanguageItems.find {
+                it.equals(
+                    Settings.language.getDisplayLanguage(Settings.language),
+                    ignoreCase = true
+                )
+            } ?: comboLanguageItems[0]
+            this.selectedItem = itemSelectedBase
             this.preferredSize = Dimension(100, 25)
+            this.addActionListener {
+                languageChangeRestartLabel.isVisible = selectedItem != itemSelectedBase
+            }
         }
+
+    private val languageChangeRestartLabel: JLabel
 
     init {
         this.size = Dimension(500, 250)
@@ -87,10 +87,25 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, "Options", true)
             )
         }
 
+        languageChangeRestartLabel =
+            JLabel("Le changement de langue sera effectif au prochain redémarrage de Olebo.").applyAndAppendTo(
+                this, gridBagConstraintsOf(
+                    0,
+                    2,
+                    fill = GridBagConstraints.BOTH,
+                    weightx = 1.0,
+                    weighty = 1.0,
+                    anchor = GridBagConstraints.NORTHWEST
+                )
+            ) {
+                this.foreground = Color.RED
+                this.isVisible = false
+            }
+
         JPanel().applyAndAppendTo(
             this, gridBagConstraintsOf(
                 0,
-                2,
+                3,
                 fill = GridBagConstraints.BOTH,
                 weightx = 1.0,
                 weighty = 1.0,
@@ -99,9 +114,7 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, "Options", true)
         ) {
             JButton("Enregistrer").applyAndAppendTo(this) {
                 addActionListener {
-                    Settings.updateLanguage(Strings.availableLocales[comboLanguage.selectedIndex]) {
-                        (owner as HomeFrame).repaint()
-                    }
+                    Settings.language = Strings.availableLocales[comboLanguage.selectedIndex]
                     dispose()
                 }
             }

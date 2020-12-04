@@ -10,7 +10,7 @@ abstract class Strings : ListResourceBundle() {
         private val langBundle
             get() = ResourceBundle.getBundle(
                 StringsBundle::class.java.canonicalName,
-                Settings.language,
+                Settings.activeLanguage,
                 Control.getNoFallbackControl(Control.FORMAT_DEFAULT)
             )
 
@@ -20,7 +20,7 @@ abstract class Strings : ListResourceBundle() {
             key
         }.let {
             when (state) {
-                StringStates.CAPITALIZE -> it.capitalize(Settings.language)
+                StringStates.CAPITALIZE -> it.capitalize(Settings.activeLanguage)
                 StringStates.NORMAL -> it
             }
         }

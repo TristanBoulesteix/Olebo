@@ -54,16 +54,11 @@ class Settings(id: EntityID<Int>) : IntEntity(id) {
             } catch (e: Exception) {
                 Locale.getDefault()
             }
-            private set(value) = transaction(DAO.database) {
+            set(value) = transaction(DAO.database) {
                 this@Companion[CURRENT_LANGUAGE] = value.language
             }
 
-        fun updateLanguage(locale: Locale, actionIfSet: () -> Unit) {
-            if(language != locale) {
-                language = locale
-                actionIfSet()
-            }
-        }
+        val activeLanguage = language
 
         operator fun get(setting: String) = this.find { SettingsTable.name eq setting }.firstOrNull()?.value
 
