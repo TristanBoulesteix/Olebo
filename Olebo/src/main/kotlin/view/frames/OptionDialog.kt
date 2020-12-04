@@ -12,7 +12,7 @@ import java.awt.GridBagLayout
 import javax.swing.*
 
 class OptionDialog(parent: JFrame?) : JDialog(parent, "Options", true) {
-    private val comboLanguage = JComboBox(arrayOf("fr", "en")).apply {
+    private val comboLanguage = JComboBox(Strings.availableLocales.map { it.key }.toTypedArray()).apply {
         this.preferredSize = Dimension(100, 25)
     }
 
@@ -66,19 +66,28 @@ class OptionDialog(parent: JFrame?) : JDialog(parent, "Options", true) {
             this.layout = GridBagLayout()
             this.border = BorderFactory.createTitledBorder("Apparence")
 
-            this.add(LabeledItem("cursor", JTextField("")), gridBagConstraintsOf(0, 0, weightx = 1.0, anchor = GridBagConstraints.LINE_START))
+            this.add(
+                LabeledItem("cursor", JTextField("")),
+                gridBagConstraintsOf(0, 0, weightx = 1.0, anchor = GridBagConstraints.LINE_START)
+            )
         }
 
-        JPanel().applyAndAppendTo(this, gridBagConstraintsOf(
-            0,
-            2,
-            fill = GridBagConstraints.BOTH,
-            weightx = 1.0,
-            weighty = 1.0,
-            anchor = GridBagConstraints.SOUTH
-        )) {
+        JPanel().applyAndAppendTo(
+            this, gridBagConstraintsOf(
+                0,
+                2,
+                fill = GridBagConstraints.BOTH,
+                weightx = 1.0,
+                weighty = 1.0,
+                anchor = GridBagConstraints.SOUTH
+            )
+        ) {
             this.add(JButton("Enregistrer"))
-            this.add(JButton("Annuler"))
+            JButton("Annuler").applyAndAppendTo(this) {
+                addActionListener {
+                    dispose()
+                }
+            }
             this.add(JButton("Rétablir les paramètres par défauts"))
         }
     }
