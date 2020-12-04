@@ -12,9 +12,15 @@ import java.awt.GridBagLayout
 import javax.swing.*
 
 class OptionDialog(parent: JFrame?) : JDialog(parent, "Options", true) {
-    private val comboLanguage = JComboBox(Strings.availableLocales.map { it.key }.toTypedArray()).apply {
-        this.preferredSize = Dimension(100, 25)
-    }
+    private val comboLanguage =
+        JComboBox<String>().apply {
+            val items =
+                Strings.availableLocales.map { it.getDisplayLanguage(it).capitalize(Settings.language) }.toTypedArray()
+            items.forEach(this::addItem)
+            this.selectedItem =
+                items.find { it.equals(Settings.language.getDisplayLanguage(Settings.language), ignoreCase = true) } ?: items[0]
+            this.preferredSize = Dimension(100, 25)
+        }
 
     init {
         this.size = Dimension(500, 250)
