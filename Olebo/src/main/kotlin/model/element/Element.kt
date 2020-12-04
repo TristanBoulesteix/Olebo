@@ -5,7 +5,7 @@ import model.command.Command
 import model.command.CommandManager
 import model.dao.DAO
 import model.dao.InstanceTable
-import model.internationalisation.*
+import model.dao.internationalisation.*
 import model.utils.Elements
 import model.utils.isCharacter
 import model.utils.rotate

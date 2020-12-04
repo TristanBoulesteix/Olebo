@@ -1,6 +1,6 @@
 package view.frames.editor.elements
 
-import model.internationalisation.*
+import model.dao.internationalisation.*
 import view.utils.IntegerFilter
 import view.utils.gridBagConstraintsOf
 import view.utils.showPopup

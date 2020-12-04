@@ -1,9 +1,9 @@
 package view.utils
 
-import model.internationalisation.STR_CANCEL
-import model.internationalisation.STR_CONFIRM
-import model.internationalisation.STR_WARNING
-import model.internationalisation.Strings
+import model.dao.internationalisation.STR_CANCEL
+import model.dao.internationalisation.STR_CONFIRM
+import model.dao.internationalisation.STR_WARNING
+import model.dao.internationalisation.Strings
 import java.awt.*
 import java.awt.event.ItemEvent
 import javax.swing.JButton

@@ -2,8 +2,8 @@ package view.utils.components
 
 import model.dao.DAO
 import model.element.Element
-import model.internationalisation.STR_NO_ELEMENT
-import model.internationalisation.Strings
+import model.dao.internationalisation.STR_NO_ELEMENT
+import model.dao.internationalisation.Strings
 import model.utils.isCharacter
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.forElse

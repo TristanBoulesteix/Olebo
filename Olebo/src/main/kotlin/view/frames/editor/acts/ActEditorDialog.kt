@@ -1,7 +1,7 @@
 package view.frames.editor.acts
 
 import model.act.Act
-import model.internationalisation.*
+import model.dao.internationalisation.*
 import view.utils.*
 import view.utils.components.JDialogTemplate
 import view.utils.components.PlaceholderTextField

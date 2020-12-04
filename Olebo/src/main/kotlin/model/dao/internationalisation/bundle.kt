@@ -1,6 +1,6 @@
 @file:Suppress("unused", "ClassName")
 
-package model.internationalisation
+package model.dao.internationalisation
 
 /**
  * French strings

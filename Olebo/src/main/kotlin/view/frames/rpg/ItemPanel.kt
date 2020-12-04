@@ -3,7 +3,7 @@ package view.frames.rpg
 import model.dao.DAO
 import model.element.Blueprint
 import model.element.Type
-import model.internationalisation.*
+import model.dao.internationalisation.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.forElse
 import view.utils.components.PlaceholderTextField

@@ -1,6 +1,6 @@
 package view.frames.editor.acts
 
-import model.internationalisation.*
+import model.dao.internationalisation.*
 import view.utils.gridBagConstraintsOf
 import view.utils.showPopup
 import viewModel.SceneData

@@ -1,7 +1,7 @@
 package view.utils.factories
 
 import model.dao.getIcon
-import model.internationalisation.*
+import model.dao.internationalisation.*
 import view.utils.components.ItemPanel
 import viewModel.BlueprintManager
 import java.awt.Color

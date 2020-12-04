@@ -1,10 +1,10 @@
 package view.frames.home
 
 import OLEBO_VERSION
-import model.internationalisation.STR_ADD_ACT
-import model.internationalisation.STR_ELEMENTS
-import model.internationalisation.STR_VERSION
-import model.internationalisation.Strings
+import model.dao.internationalisation.STR_ADD_ACT
+import model.dao.internationalisation.STR_ELEMENTS
+import model.dao.internationalisation.STR_VERSION
+import model.dao.internationalisation.Strings
 import view.frames.rpg.MasterFrame
 import view.utils.BORDER_BUTTONS
 import view.utils.components.FileMenu

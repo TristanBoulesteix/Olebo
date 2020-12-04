@@ -5,7 +5,7 @@ import model.act.Scene
 import model.command.CommandManager
 import model.dao.DAO
 import model.dao.Settings
-import model.internationalisation.*
+import model.dao.internationalisation.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.forElse
 import view.frames.editor.elements.BlueprintDialog

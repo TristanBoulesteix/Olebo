@@ -5,8 +5,8 @@ import model.dao.SettingsTable.BASE_VERSION
 import model.dao.SettingsTable.CURRENT_LANGUAGE
 import model.dao.SettingsTable.CURSOR_ENABLED
 import model.dao.SettingsTable.UPDATE_WARN
-import model.internationalisation.ST_UNKNOWN_DATABASE_VERSION
-import model.internationalisation.Strings
+import model.dao.internationalisation.ST_UNKNOWN_DATABASE_VERSION
+import model.dao.internationalisation.Strings
 import model.utils.toBoolean
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.IntEntity

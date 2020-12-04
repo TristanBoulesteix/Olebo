@@ -1,4 +1,4 @@
-package model.internationalisation
+package model.dao.internationalisation
 
 // Values whose keys are prefixed by STR are plain strings that should be formated.
 // Those prefixed by ST are sentences already formated

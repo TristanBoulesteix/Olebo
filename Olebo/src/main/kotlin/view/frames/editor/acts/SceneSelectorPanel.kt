@@ -1,8 +1,8 @@
 package view.frames.editor.acts
 
 import model.dao.getIcon
-import model.internationalisation.STR_SCENES
-import model.internationalisation.Strings
+import model.dao.internationalisation.STR_SCENES
+import model.dao.internationalisation.Strings
 import view.utils.components.ItemPanel
 import view.utils.components.SelectorPanel
 import view.utils.gridBagConstraintsOf

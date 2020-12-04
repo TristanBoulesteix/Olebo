@@ -1,6 +1,6 @@
 package view.frames.editor.elements
 
-import model.internationalisation.*
+import model.dao.internationalisation.*
 import view.utils.BACKGROUND_COLOR_ORANGE
 import view.utils.components.JDialogTemplate
 import view.utils.gridBagConstraintsOf

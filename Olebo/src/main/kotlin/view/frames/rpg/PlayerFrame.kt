@@ -1,7 +1,7 @@
 package view.frames.rpg
 
-import model.internationalisation.STR_PLAYER_TITLE_FRAME
-import model.internationalisation.Strings
+import model.dao.internationalisation.STR_PLAYER_TITLE_FRAME
+import model.dao.internationalisation.Strings
 import model.utils.Elements
 import model.utils.emptyElements
 import view.utils.DIMENSION_FRAME

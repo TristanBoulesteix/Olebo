@@ -2,7 +2,7 @@ package model.element
 
 import model.dao.DAO
 import model.dao.TypeTable
-import model.internationalisation.*
+import model.dao.internationalisation.*
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID

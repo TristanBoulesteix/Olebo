@@ -1,8 +1,8 @@
 package view.frames
 
 import model.dao.Settings
-import model.internationalisation.STR_AUTO_UPDATE
-import model.internationalisation.Strings
+import model.dao.internationalisation.STR_AUTO_UPDATE
+import model.dao.internationalisation.Strings
 import view.utils.applyAndAppendTo
 import view.utils.components.LabeledItem
 import view.utils.gridBagConstraintsOf

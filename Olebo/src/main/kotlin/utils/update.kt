@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 import model.dao.Settings
 import model.dao.jarPath
 import model.dao.oleboUpdater
-import model.internationalisation.*
+import model.dao.internationalisation.*
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.util.EntityUtils

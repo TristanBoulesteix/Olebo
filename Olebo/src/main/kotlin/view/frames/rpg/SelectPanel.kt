@@ -3,7 +3,7 @@ package view.frames.rpg
 import model.element.Element
 import model.element.Priority
 import model.element.Size
-import model.internationalisation.*
+import model.dao.internationalisation.*
 import model.utils.callManager
 import view.utils.BACKGROUND_COLOR_SELECT_PANEL
 import view.utils.DIMENSION_BUTTON_DEFAULT

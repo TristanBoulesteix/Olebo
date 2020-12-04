@@ -3,8 +3,8 @@ package model.dao
 import model.act.Act
 import model.element.Blueprint
 import model.element.Type
-import model.internationalisation.ST_ERROR_ACT_NOT_EXISTS
-import model.internationalisation.Strings
+import model.dao.internationalisation.ST_ERROR_ACT_NOT_EXISTS
+import model.dao.internationalisation.Strings
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils

@@ -1,9 +1,9 @@
 package utils
 
-import model.internationalisation.STR_CRITICAL_ERROR
-import model.internationalisation.STR_ERROR
-import model.internationalisation.ST_ERROR_LOADING_DATABASE
-import model.internationalisation.Strings
+import model.dao.internationalisation.STR_CRITICAL_ERROR
+import model.dao.internationalisation.STR_ERROR
+import model.dao.internationalisation.ST_ERROR_LOADING_DATABASE
+import model.dao.internationalisation.Strings
 import javax.swing.FocusManager
 import javax.swing.JOptionPane
 import kotlin.reflect.KClass
