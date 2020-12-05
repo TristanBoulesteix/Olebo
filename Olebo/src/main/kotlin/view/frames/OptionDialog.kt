@@ -8,6 +8,7 @@ import view.utils.applyAndAppendTo
 import view.utils.components.LabeledItem
 import view.utils.gridBagConstraintsOf
 import java.awt.*
+import java.awt.event.ItemEvent
 import javax.swing.*
 
 class OptionDialog(parent: Window) : JDialog(parent as? JFrame, "Options", true) {
@@ -118,7 +119,9 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, "Options", true)
                 addActionListener {
                     Settings.language = Strings.availableLocales[comboLanguage.selectedIndex]
                     Settings.autoUpdate = checkBoxAutoUpdate.isSelected
-                    Settings.cursorColor = comboColorCursor.selectedCursorColor
+                    comboColorCursor.selectedCursorColor?.let {
+                        Settings.cursorColor = it
+                    }
                     dispose()
                 }
             }
@@ -133,24 +136,30 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, "Options", true)
         }
     }
 
-    private class ComboColorCursor : JComboBox<String>() {
+    private inner class ComboColorCursor : JComboBox<String>() {
+        private val custom = "Custom"
+
         private val comboColorItems = listOf(
             CursorColor.BLACK_WHITE,
             CursorColor.WHITE_BLACK,
             CursorColor.PURPLE
         )
 
-        lateinit var selectedCursorColor: CursorColor
+        var selectedCursorColor: CursorColor? = null
 
         init {
             comboColorItems.map { it.name }.forEach(this::addItem)
-            this.addItem("Custom")
-            this.selectedItem = comboColorItems.find { it.name == Settings.cursorColor.name }?.name ?: "Custom"
+            this.addItem(custom)
+            this.selectedItem = comboColorItems.find { it.name == Settings.cursorColor.name }?.name ?: custom
+            this.addItemListener { actionEvent ->
+                if (actionEvent.stateChange == ItemEvent.SELECTED)
+                    selectedCursorColor =
+                        comboColorItems.find { it.name == actionEvent.item } ?: selectColor()?.let {
+                            CursorColor.CUSTOM(it)
+                        } ?: selectedCursorColor
+            }
         }
 
-        override fun setSelectedItem(anObject: Any) {
-            selectedCursorColor = comboColorItems.find { it.name == anObject } ?: CursorColor.CUSTOM(Color.RED)
-            super.setSelectedItem(anObject)
-        }
+        private fun selectColor(): Color? = JColorChooser.showDialog(this@OptionDialog, "Title", Color.WHITE)
     }
 }
