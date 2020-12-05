@@ -1,6 +1,6 @@
 package model.dao.internationalisation
 
-import model.dao.Settings
+import model.dao.option.Settings
 import java.util.*
 
 abstract class Strings : ListResourceBundle() {

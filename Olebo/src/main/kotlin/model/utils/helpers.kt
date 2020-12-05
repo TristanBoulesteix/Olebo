@@ -2,6 +2,7 @@ package model.utils
 
 import model.act.Scene
 import model.command.CommandManager
+import model.dao.option.Color
 import model.element.Blueprint
 import model.element.Element
 import model.element.Type
@@ -9,6 +10,7 @@ import java.awt.Graphics
 import java.awt.geom.AffineTransform
 import java.awt.image.BufferedImage
 import javax.swing.ImageIcon
+import java.awt.Color as JColor
 
 /**
  * Convert a String to the corresponding boolean
@@ -63,3 +65,7 @@ fun <T> Scene?.callManager(value: T, elements: Elements, func: (T, CommandManage
     this?.let { scene ->
         func(value, CommandManager(scene.id.value), elements)
     }
+
+fun JColor.toColor() = this.let { Color(it.red, it.blue, it.green) }
+
+fun Color.toJColor() = this.let { JColor(it.r, it.g, it.b) }

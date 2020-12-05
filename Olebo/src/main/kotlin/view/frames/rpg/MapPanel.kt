@@ -3,7 +3,7 @@ package view.frames.rpg
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import model.dao.Settings
+import model.dao.option.Settings
 import model.element.Element
 import model.utils.Elements
 import model.utils.emptyElements

@@ -1,8 +1,9 @@
 package view.frames
 
-import model.dao.Settings
 import model.dao.internationalisation.STR_AUTO_UPDATE
 import model.dao.internationalisation.Strings
+import model.dao.option.CursorColor
+import model.dao.option.Settings
 import view.utils.applyAndAppendTo
 import view.utils.components.LabeledItem
 import view.utils.gridBagConstraintsOf
@@ -28,6 +29,12 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, "Options", true)
                 languageChangeRestartLabel.isVisible = selectedItem != itemSelectedBase
             }
         }
+
+    private val checkBoxAutoUpdate = JCheckBox(Strings[STR_AUTO_UPDATE]).apply {
+        this.isSelected = Settings.autoUpdate
+    }
+
+    private val comboColorCursor = ComboColorCursor()
 
     private val languageChangeRestartLabel: JLabel
 
@@ -56,15 +63,10 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, "Options", true)
                 LabeledItem("Langue du logiciel :", comboLanguage),
                 gridBagConstraintsOf(0, 0, weightx = 1.0, anchor = GridBagConstraints.LINE_START)
             )
-            JCheckBox(Strings[STR_AUTO_UPDATE]).applyAndAppendTo(
-                this,
+            this.add(
+                checkBoxAutoUpdate,
                 gridBagConstraintsOf(0, 1, weightx = 1.0, anchor = GridBagConstraints.LINE_START)
-            ) {
-                this.isSelected = Settings.autoUpdate
-                this.addItemListener {
-
-                }
-            }
+            )
         }
 
         JPanel().applyAndAppendTo(
@@ -82,7 +84,7 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, "Options", true)
             this.border = BorderFactory.createTitledBorder("Apparence")
 
             this.add(
-                LabeledItem("cursor", JTextField("")),
+                LabeledItem("Couleur du curseur", comboColorCursor),
                 gridBagConstraintsOf(0, 0, weightx = 1.0, anchor = GridBagConstraints.LINE_START)
             )
         }
@@ -115,6 +117,8 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, "Options", true)
             JButton("Enregistrer").applyAndAppendTo(this) {
                 addActionListener {
                     Settings.language = Strings.availableLocales[comboLanguage.selectedIndex]
+                    Settings.autoUpdate = checkBoxAutoUpdate.isSelected
+                    Settings.cursorColor = comboColorCursor.selectedCursorColor
                     dispose()
                 }
             }
@@ -126,6 +130,27 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, "Options", true)
             }
 
             this.add(JButton("Rétablir les paramètres par défauts"))
+        }
+    }
+
+    private class ComboColorCursor : JComboBox<String>() {
+        private val comboColorItems = listOf(
+            CursorColor.BLACK_WHITE,
+            CursorColor.WHITE_BLACK,
+            CursorColor.PURPLE
+        )
+
+        lateinit var selectedCursorColor: CursorColor
+
+        init {
+            comboColorItems.map { it.name }.forEach(this::addItem)
+            this.addItem("Custom")
+            this.selectedItem = comboColorItems.find { it.name == Settings.cursorColor.name }?.name ?: "Custom"
+        }
+
+        override fun setSelectedItem(anObject: Any) {
+            selectedCursorColor = comboColorItems.find { it.name == anObject } ?: CursorColor.CUSTOM(Color.RED)
+            super.setSelectedItem(anObject)
         }
     }
 }

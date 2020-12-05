@@ -1,5 +1,6 @@
 package model.dao
 
+import model.dao.option.CursorColor
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
@@ -225,6 +226,7 @@ object SettingsTable : IntIdTable(), Initializable {
     const val UPDATE_WARN = "updateWarn"
     const val CURSOR_ENABLED = "cursorEnabled"
     const val CURRENT_LANGUAGE = "current_language"
+    const val CURSOR_COLOR = "cursor_color"
 
     val name = varchar("name", 255)
     val value = varchar("value", 255).default("")
@@ -270,6 +272,14 @@ object SettingsTable : IntIdTable(), Initializable {
                 it[id] = EntityID(5, SettingsTable)
                 it[name] = CURRENT_LANGUAGE
                 it[value] = Locale.getDefault().language
+            }
+        }
+
+        if (SettingsTable.select((id eq 6) and (name eq CURSOR_COLOR)).count() <= 0) {
+            SettingsTable.insert {
+                it[id] = EntityID(6, SettingsTable)
+                it[name] = CURSOR_COLOR
+                it[value] = CursorColor.PURPLE.encode()
             }
         }
     }

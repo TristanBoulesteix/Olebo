@@ -5,7 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import model.dao.Settings
+import model.dao.option.Settings
 import model.dao.jarPath
 import model.dao.oleboUpdater
 import model.dao.internationalisation.*

@@ -1,9 +1,9 @@
 package view.utils.components
 
 import model.dao.DAO
-import model.element.Element
 import model.dao.internationalisation.STR_NO_ELEMENT
 import model.dao.internationalisation.Strings
+import model.element.Element
 import model.utils.isCharacter
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.forElse
@@ -359,7 +359,7 @@ class SlideStats(private val hp: Boolean, initialElement: Element? = null) : JPa
     }
 }
 
-class LabeledItem(label: String, component: Component) : JPanel() {
+class LabeledItem<T: Component>(label: String, val component: T) : JPanel() {
     init {
         this.add(JLabel(label))
         this.add(component)

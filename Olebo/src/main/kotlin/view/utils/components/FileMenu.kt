@@ -1,7 +1,7 @@
 package view.utils.components
 
 import OLEBO_VERSION
-import model.dao.Settings
+import model.dao.option.Settings
 import model.dao.ZipError
 import model.dao.internationalisation.*
 import model.dao.loadOleboZipData
@@ -15,7 +15,6 @@ import view.utils.*
 import java.awt.Component
 import java.awt.Frame
 import java.awt.Window
-import java.awt.event.ItemEvent
 import java.awt.event.KeyEvent
 import java.awt.image.BufferedImage
 import java.io.File
@@ -26,7 +25,6 @@ import javax.swing.filechooser.FileNameExtensionFilter
 
 class FileMenu : JMenu(Strings[STR_FILES]) {
     init {
-
         JMenuItem("${Strings[STR_EXPORT_DATA]} (ALPHA)").applyAndAppendTo(this) {
             this.addActionListener {
                 val parent = SwingUtilities.getWindowAncestor(this@FileMenu)
@@ -90,13 +88,6 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
         JMenuItem("Options").applyAndAppendTo(this) {
             this.addActionListener {
                 OptionDialog(this@FileMenu.windowAncestor).isVisible = true
-            }
-        }
-
-        JCheckBoxMenuItem(Strings[STR_AUTO_UPDATE]).applyAndAppendTo(this) {
-            this.isSelected = Settings.autoUpdate
-            this.addItemListener {
-                Settings.autoUpdate = it.stateChange == ItemEvent.SELECTED
             }
         }
 

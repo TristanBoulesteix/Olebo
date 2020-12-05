@@ -1,8 +1,11 @@
-package model.dao
+package model.dao.option
 
+import model.dao.DAO
+import model.dao.SettingsTable
 import model.dao.SettingsTable.AUTO_UPDATE
 import model.dao.SettingsTable.BASE_VERSION
 import model.dao.SettingsTable.CURRENT_LANGUAGE
+import model.dao.SettingsTable.CURSOR_COLOR
 import model.dao.SettingsTable.CURSOR_ENABLED
 import model.dao.SettingsTable.UPDATE_WARN
 import model.dao.internationalisation.ST_UNKNOWN_DATABASE_VERSION
@@ -60,6 +63,13 @@ class Settings(id: EntityID<Int>) : IntEntity(id) {
 
         val activeLanguage = language
 
+        var cursorColor
+            get() = transaction(DAO.database) {
+                CursorColor[this@Companion[CURSOR_COLOR]!!]
+            }
+            set(value) = transaction(DAO.database) {
+                this@Companion[CURSOR_COLOR] = value.encode()
+            }
         operator fun get(setting: String) = this.find { SettingsTable.name eq setting }.firstOrNull()?.value
 
         operator fun set(setting: String, value: Any?) {
