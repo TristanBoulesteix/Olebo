@@ -139,27 +139,51 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, "Options", true)
     private inner class ComboColorCursor : JComboBox<String>() {
         private val custom = "Custom"
 
+        private val customLabel
+            get() = when (selectedCursorColor) {
+                null -> Settings.cursorColor.let {
+                    if (it is CursorColor.CUSTOM) custom + " " + it.contentCursorColor.toString() else custom
+                }
+                is CursorColor.CUSTOM -> custom + " " + selectedCursorColor!!.contentCursorColor.toString()
+                else -> custom
+            }
+
         private val comboColorItems = listOf(
             CursorColor.BLACK_WHITE,
             CursorColor.WHITE_BLACK,
             CursorColor.PURPLE
         )
 
+        private var isRefreshing = false
+
         var selectedCursorColor: CursorColor? = null
 
+
         init {
-            comboColorItems.map { it.name }.forEach(this::addItem)
-            this.addItem(custom)
-            this.selectedItem = comboColorItems.find { it.name == Settings.cursorColor.name }?.name ?: custom
+            this.refreshItems(Settings.cursorColor)
             this.addItemListener { actionEvent ->
-                if (actionEvent.stateChange == ItemEvent.SELECTED)
+                if (!isRefreshing && actionEvent.stateChange == ItemEvent.SELECTED) {
                     selectedCursorColor =
                         comboColorItems.find { it.name == actionEvent.item } ?: selectColor()?.let {
                             CursorColor.CUSTOM(it)
                         } ?: selectedCursorColor
+                    selectedCursorColor?.let {
+                        this.refreshItems(it)
+                    }
+
+                }
             }
         }
 
         private fun selectColor(): Color? = JColorChooser.showDialog(this@OptionDialog, "Title", Color.WHITE)
+
+        private fun refreshItems(cursorColor: CursorColor) {
+            isRefreshing = true
+            this.removeAllItems()
+            comboColorItems.map { it.name }.forEach(this::addItem)
+            this.addItem(customLabel)
+            this.selectedItem = comboColorItems.find { it.name == cursorColor.name }?.name ?: customLabel
+            isRefreshing = false
+        }
     }
 }
