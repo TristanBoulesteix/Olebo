@@ -83,10 +83,10 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
             )
         ) {
             this.layout = GridBagLayout()
-            this.border = BorderFactory.createTitledBorder("Apparence")
+            this.border = BorderFactory.createTitledBorder(Strings[STR_LOOK_AND_FEEL])
 
             this.add(
-                LabeledItem("Couleur du curseur", comboColorCursor),
+                LabeledItem(Strings[STR_CURSOR_COLOR_LABEL], comboColorCursor),
                 gridBagConstraintsOf(0, 0, weightx = 1.0, anchor = GridBagConstraints.LINE_START)
             )
         }
@@ -129,7 +129,7 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
                 }
             }
 
-            JButton("Annuler").applyAndAppendTo(this) {
+            JButton(Strings[STR_CANCEL]).applyAndAppendTo(this) {
                 addActionListener {
                     dispose()
                 }

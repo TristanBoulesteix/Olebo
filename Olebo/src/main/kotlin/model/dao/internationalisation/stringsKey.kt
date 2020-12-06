@@ -87,6 +87,8 @@ const val STR_OBJECT = "object"
 const val STR_OPTIONS = "options"
 const val STR_GENERAL = "general"
 const val STR_SOFTWARE_LANGUAGE_LABEL = "software_language_lbl"
+const val STR_LOOK_AND_FEEL = "look_and_feel"
+const val STR_CURSOR_COLOR_LABEL = "cursor_color_lbl"
 
 // -- Sentences
 

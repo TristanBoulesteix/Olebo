@@ -110,6 +110,8 @@ class StringsBundle : Strings() {
         STR_OPTIONS to "options",
         STR_GENERAL to "general",
         STR_SOFTWARE_LANGUAGE_LABEL to "language:",
+        STR_LOOK_AND_FEEL to "look and feel",
+        STR_CURSOR_COLOR_LABEL to "cursor color:",
     )
 }
 
@@ -221,5 +223,7 @@ class StringsBundle_fr : Strings() {
         STR_OPTIONS to "options",
         STR_GENERAL to "général",
         STR_SOFTWARE_LANGUAGE_LABEL to "langue :",
+        STR_LOOK_AND_FEEL to "apparence",
+        STR_CURSOR_COLOR_LABEL to "couleur du curseur :",
     )
 }
