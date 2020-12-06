@@ -66,6 +66,12 @@ fun <T> Scene?.callManager(value: T, elements: Elements, func: (T, CommandManage
         func(value, CommandManager(scene.id.value), elements)
     }
 
+/**
+ * Convert a [java.awt.Color] to a [Color]
+ */
 fun JColor.toColor() = this.let { Color(it.red, it.green, it.blue) }
 
+/**
+ * Convert a [Color] to a [java.awt.Color]
+ */
 fun Color.toJColor() = this.let { JColor(it.r, it.g, it.b) }

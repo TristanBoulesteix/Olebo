@@ -7,6 +7,11 @@ import kotlinx.serialization.json.Json
 import model.utils.toColor
 import java.awt.Color as JColor
 
+/**
+ * Used to serialize [java.awt.Color] and put them into the database.
+ *
+ * This class is meant to be used as data of [CursorColor].
+ */
 @Serializable
 data class Color(val r: Int, val g: Int, val b: Int) {
     override fun toString() = "(r = $r, g = $g, b = $b)"
