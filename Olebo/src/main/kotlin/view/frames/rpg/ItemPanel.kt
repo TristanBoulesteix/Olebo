@@ -1,11 +1,12 @@
 package view.frames.rpg
 
 import model.dao.DAO
+import model.dao.internationalisation.*
 import model.element.Blueprint
 import model.element.Type
-import model.dao.internationalisation.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.forElse
+import view.frames.Reloadable
 import view.utils.components.PlaceholderTextField
 import view.utils.event.ClickListener
 import viewModel.ViewManager
@@ -21,7 +22,7 @@ import javax.swing.event.DocumentListener
 /**
  * This panel is intended to contain the entire list of items that the Game master can use (and it does)
  */
-class ItemPanel : JPanel() {
+class ItemPanel : JPanel(), Reloadable {
     companion object {
         private val dimensionElement = Dimension(Int.MAX_VALUE, 40)
     }
@@ -47,7 +48,7 @@ class ItemPanel : JPanel() {
 
         fun warn() {
             searchConstraint = searchField.text
-            reloadContent()
+            reload()
         }
     }
 
@@ -63,10 +64,7 @@ class ItemPanel : JPanel() {
         this.add(JScrollPane(itemsView), BorderLayout.CENTER)
     }
 
-    /**
-     * Reload content depending on searchConstraint
-     */
-    fun reloadContent() {
+    override fun reload() {
         transaction(DAO.database) {
             with(itemsView) {
                 // Remove previous components

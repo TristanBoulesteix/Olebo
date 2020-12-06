@@ -56,6 +56,6 @@ object ViewFacade {
     }
 
     fun loadItems() {
-        MasterFrame.itemPanel.reloadContent()
+        MasterFrame.itemPanel.reload()
     }
 }

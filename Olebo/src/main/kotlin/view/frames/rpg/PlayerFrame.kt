@@ -4,6 +4,7 @@ import model.dao.internationalisation.STR_PLAYER_TITLE_FRAME
 import model.dao.internationalisation.Strings
 import model.utils.Elements
 import model.utils.emptyElements
+import view.frames.Reloadable
 import view.utils.DIMENSION_FRAME
 import java.awt.GraphicsEnvironment
 import java.awt.event.KeyEvent
@@ -18,7 +19,7 @@ import javax.swing.JDialog
  * PlayerFrame is the Frame the Players can see, it shares its content with MasterFrame
  */
 class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
-    companion object {
+    companion object : Reloadable {
         private var playerFrameInstance: PlayerFrame? = null
 
         var mapBackground: String = ""
@@ -82,7 +83,9 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
             playerFrameInstance = null
         }
 
-        fun repaint() = playerFrameInstance?.repaint()
+        override fun reload() {
+            playerFrameInstance?.reload()
+        }
     }
 
     private val mapPanel = MapPanel()

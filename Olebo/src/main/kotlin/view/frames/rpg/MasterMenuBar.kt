@@ -134,7 +134,7 @@ object MasterMenuBar : JMenuBar() {
             JMenuItem(Strings[STR_MANAGE_BLUEPRINTS]).applyAndAppendTo(this) {
                 addActionListener {
                     BlueprintDialog().isVisible = true
-                    MasterFrame.itemPanel.reloadContent()
+                    MasterFrame.itemPanel.reload()
                 }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_B, CTRLSHIFT)
             }

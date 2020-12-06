@@ -94,7 +94,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
 
     override fun reload() {
         mapPanel.repaint()
-        itemPanel.reloadContent()
+        itemPanel.reload()
         SelectPanel.reload()
     }
 
