@@ -72,7 +72,6 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
                                         x *= scaleX.toInt()
                                         y *= scaleY.toInt()
                                     }
-
                                 }
                                 break
                             }
