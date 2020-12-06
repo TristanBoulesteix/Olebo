@@ -34,13 +34,23 @@ object ViewFacade {
         reloadFrames()
     }
 
-    fun reloadFrames() { //Repaints both frames simultaneously
+    /**
+     * Repaints both frames simultaneously
+     */
+    fun reloadFrames() {
         MasterMenuBar.reloadCommandItemLabel()
         MasterFrame.reload()
-        PlayerFrame.repaint()
+        PlayerFrame.reload()
     }
 
-    fun turnVisible() { /*this method activates the Player and GM frames to initiate/start back an act	*/
+    fun updateCursorOnPlayerFrame() {
+
+    }
+
+    /**
+     * This method activates the [PlayerFrame] and [MasterFrame] to initiate/start back an Act]
+     */
+    fun turnVisible() {
         MasterFrame.isVisible = true
         /*TODO: give master frame and player frame the objects relative to the current act*/
     }

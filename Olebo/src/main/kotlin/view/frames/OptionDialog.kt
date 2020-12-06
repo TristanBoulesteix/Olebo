@@ -4,6 +4,8 @@ import model.dao.internationalisation.STR_AUTO_UPDATE
 import model.dao.internationalisation.Strings
 import model.dao.option.CursorColor
 import model.dao.option.Settings
+import view.frames.rpg.MasterFrame
+import view.frames.rpg.ViewFacade
 import view.utils.applyAndAppendTo
 import view.utils.components.LabeledItem
 import view.utils.gridBagConstraintsOf
@@ -121,6 +123,8 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, "Options", true)
                     Settings.autoUpdate = checkBoxAutoUpdate.isSelected
                     comboColorCursor.selectedCursorColor?.let {
                         Settings.cursorColor = it
+                        if(owner is MasterFrame)
+                            ViewFacade.updateCursorOnPlayerFrame()
                     }
                     dispose()
                 }

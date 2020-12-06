@@ -7,6 +7,7 @@ import model.dao.option.Settings
 import model.element.Element
 import model.utils.Elements
 import model.utils.emptyElements
+import model.utils.toJColor
 import view.utils.drawCircleWithCenterCoordinates
 import view.utils.fillCircleWithCenterCoordinates
 import viewModel.ViewManager
@@ -21,7 +22,7 @@ import kotlin.math.abs
 /**
  * This panel contains the map and all the objects placed within it
  */
-class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseListener {
+class MapPanel(private val parentGameFrame: GameFrame) : JPanel(), MouseListener {
     var backGroundImage: Image? =
         null      //The background... Why are you reading this? Stop!! I said stop!!! You're still doing it, even when you had to scroll sideways... Ok i'm giving up, bye
     private var tokens = emptyElements() //These are all the tokens placed on  the current map
@@ -29,11 +30,15 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
 
     var selectedArea: Rectangle? = null
 
+    val cursorColor: Color
+
+    val borderCursorColor: Color
+
     init {
         this.layout = GridBagLayout()
         this.background = Color.WHITE
         this.isOpaque = false
-        if (isMasterMapPanel)
+        if (parentGameFrame is MasterFrame)
             this.addMouseMotionListener(object : MouseMotionAdapter() {
                 private var start = Point()
 
@@ -58,7 +63,7 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
             })
         addMouseListener(this)
 
-        if (!isMasterMapPanel)
+        if (parentGameFrame is PlayerFrame)
             GlobalScope.launch {
                 while (true) {
                     if (Settings.cursorEnabled)
@@ -66,6 +71,11 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
                     delay(75L)
                 }
             }
+
+        Settings.cursorColor.let {
+            cursorColor = it.contentCursorColor.toJColor()
+            borderCursorColor = it.borderCursorColor.toJColor()
+        }
     }
 
     private fun relativeX(absoluteX: Int): Int { //translates an X coordinate in 1600:900px to proportional coords according to this window's size
@@ -102,16 +112,16 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
 
         for (token in tokens) //Display every token one by one
         {
-            if ((!isMasterMapPanel) && !(token.isVisible)) { //Do NOTHING
+            if ((parentGameFrame is PlayerFrame) && !(token.isVisible)) { //Do NOTHING
             } //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
             else {
-                if ((isMasterMapPanel) && !(token.isVisible)) {
+                if ((parentGameFrame is PlayerFrame) && !(token.isVisible)) {
                     drawInvisibleMarker(token, g)
                 }
                 drawTokenUp(token, g)
             }
         }
-        if (selectedElements.isNotEmpty() && this.isMasterMapPanel) {
+        if (selectedElements.isNotEmpty() && parentGameFrame is MasterFrame) {
             drawSelectedMarker(g)
         }
 
@@ -122,11 +132,11 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
             g.fill(selectedArea)
         }
 
-        if (!isMasterMapPanel)
+        if (parentGameFrame is PlayerFrame)
             with(ViewManager.cursorPoint) {
-                g.color = Color.WHITE
+                g.color = cursorColor
                 g.fillCircleWithCenterCoordinates(relativeX(this.x), relativeY(this.y), 15)
-                g.color = Color.BLACK
+                g.color = borderCursorColor
                 g.drawCircleWithCenterCoordinates(relativeX(this.x), relativeY(this.y), 15)
             }
     }
@@ -159,7 +169,7 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
     }
 
     override fun mousePressed(p0: MouseEvent) {  /* Reacts to the user's click and calls the corresponding function */
-        if (isMasterMapPanel) {
+        if (parentGameFrame is MasterFrame) {
             selectedArea = null
 
             val clickedX = absoluteX(p0.x)

@@ -26,7 +26,7 @@ import javax.swing.JPanel
 object MasterFrame : JFrame(), KeyListener, GameFrame {
     private var masterFramePanel = JPanel() // Main JPanel that contains other panels
 
-    val mapPanel = MapPanel(true) //this frame's mapPanel
+    val mapPanel = MapPanel(this) //this frame's mapPanel
 
     var itemPanel = ItemPanel() // Will contain list of available items
 

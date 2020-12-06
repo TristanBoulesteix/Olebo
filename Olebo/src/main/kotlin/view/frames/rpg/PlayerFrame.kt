@@ -67,8 +67,11 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
                                 this.pack()
                                 screen.fullScreenWindow = this
                                 this.location = screen.defaultConfiguration.bounds.location.apply {
-                                    x *= screen.defaultConfiguration.defaultTransform.scaleX.toInt()
-                                    y *= screen.defaultConfiguration.defaultTransform.scaleY.toInt()
+                                    with(screen.defaultConfiguration.defaultTransform) {
+                                        x *= scaleX.toInt()
+                                        y *= scaleY.toInt()
+                                    }
+
                                 }
                                 break
                             }
@@ -88,7 +91,7 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
         }
     }
 
-    private val mapPanel = MapPanel()
+    private val mapPanel = MapPanel(this)
 
     init {
         this.contentPane = mapPanel
@@ -112,8 +115,7 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
         mapPanel.backGroundImage = ImageIO.read(File(imageName))
     }
 
-    override fun keyTyped(p0: KeyEvent) {
-    }
+    override fun keyTyped(p0: KeyEvent) = Unit
 
     override fun keyPressed(p0: KeyEvent) {
         if (p0.keyCode == KeyEvent.VK_ESCAPE) {
@@ -122,7 +124,5 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
         }
     }
 
-    override fun keyReleased(p0: KeyEvent) {
-    }
-
+    override fun keyReleased(p0: KeyEvent) = Unit
 }
