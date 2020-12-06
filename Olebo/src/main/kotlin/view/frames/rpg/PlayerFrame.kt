@@ -6,6 +6,7 @@ import model.utils.Elements
 import model.utils.emptyElements
 import view.frames.Reloadable
 import view.utils.DIMENSION_FRAME
+import java.awt.Color
 import java.awt.GraphicsEnvironment
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
@@ -79,6 +80,11 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
                     }
                 }
             }
+        }
+
+        fun updateCursor(contentColor: Color, borderColor: Color) {
+            playerFrameInstance?.mapPanel?.cursorColor = contentColor
+            playerFrameInstance?.mapPanel?.borderCursorColor = borderColor
         }
 
         fun hide() {

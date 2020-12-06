@@ -1,7 +1,9 @@
 package view.frames.rpg
 
+import model.dao.option.Settings
 import model.element.Element
 import model.utils.Elements
+import model.utils.toJColor
 import viewModel.ViewManager
 
 /**
@@ -44,7 +46,9 @@ object ViewFacade {
     }
 
     fun updateCursorOnPlayerFrame() {
-
+        Settings.cursorColor.let {
+            PlayerFrame.updateCursor(it.contentCursorColor.toJColor(), it.borderCursorColor.toJColor())
+        }
     }
 
     /**

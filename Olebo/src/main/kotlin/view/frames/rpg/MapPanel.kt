@@ -30,9 +30,9 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel(), MouseListener
 
     var selectedArea: Rectangle? = null
 
-    val cursorColor: Color
+    var cursorColor: Color
 
-    val borderCursorColor: Color
+    var borderCursorColor: Color
 
     init {
         this.layout = GridBagLayout()
