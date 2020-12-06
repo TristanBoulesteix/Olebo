@@ -4,13 +4,13 @@ import model.dao.internationalisation.STR_AUTO_UPDATE
 import model.dao.internationalisation.Strings
 import model.dao.option.CursorColor
 import model.dao.option.Settings
+import model.utils.toJColor
 import view.frames.rpg.MasterFrame
 import view.frames.rpg.ViewFacade
 import view.utils.applyAndAppendTo
 import view.utils.components.LabeledItem
 import view.utils.gridBagConstraintsOf
 import java.awt.*
-import java.awt.event.ItemEvent
 import javax.swing.*
 
 class OptionDialog(parent: Window) : JDialog(parent as? JFrame, "Options", true) {
@@ -123,7 +123,7 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, "Options", true)
                     Settings.autoUpdate = checkBoxAutoUpdate.isSelected
                     comboColorCursor.selectedCursorColor?.let {
                         Settings.cursorColor = it
-                        if(owner is MasterFrame)
+                        if (owner is MasterFrame)
                             ViewFacade.updateCursorOnPlayerFrame()
                     }
                     dispose()
@@ -146,9 +146,9 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, "Options", true)
         private val customLabel
             get() = when (selectedCursorColor) {
                 null -> Settings.cursorColor.let {
-                    if (it is CursorColor.CUSTOM) custom + " " + it.contentCursorColor.toString() else custom
+                    if (it is CursorColor.Custom) custom + " " + it.contentCursorColor.toString() else custom
                 }
-                is CursorColor.CUSTOM -> custom + " " + selectedCursorColor!!.contentCursorColor.toString()
+                is CursorColor.Custom -> custom + " " + selectedCursorColor!!.contentCursorColor.toString()
                 else -> custom
             }
 
@@ -165,29 +165,40 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, "Options", true)
 
         init {
             this.refreshItems(Settings.cursorColor)
-            this.addItemListener { actionEvent ->
-                if (!isRefreshing && actionEvent.stateChange == ItemEvent.SELECTED) {
+            this.addActionListener {
+                if (!isRefreshing) {
+                    val colorInSettings = Settings.cursorColor
+
+                    val selectedJColor: Color = when {
+                        selectedCursorColor == null && colorInSettings is CursorColor.Custom -> colorInSettings.contentCursorColor.toJColor()
+                        selectedCursorColor is CursorColor.Custom -> selectedCursorColor!!.contentCursorColor.toJColor()
+                        else -> Color.WHITE
+                    }
+
                     selectedCursorColor =
-                        comboColorItems.find { it.name == actionEvent.item } ?: selectColor()?.let {
-                            CursorColor.CUSTOM(it)
-                        } ?: selectedCursorColor
+                        comboColorItems.find { it.name == selectedItem }
+                            ?: selectColor(selectedJColor)?.let {
+                                CursorColor.Custom(it)
+                            } ?: selectedCursorColor
                     selectedCursorColor?.let {
                         this.refreshItems(it)
                     }
-
                 }
             }
         }
 
-        private fun selectColor(): Color? = JColorChooser.showDialog(this@OptionDialog, "Title", Color.WHITE)
+        private fun selectColor(color: Color): Color? = JColorChooser.showDialog(this@OptionDialog, "Title", color)
 
         private fun refreshItems(cursorColor: CursorColor) {
             isRefreshing = true
             this.removeAllItems()
             comboColorItems.map { it.name }.forEach(this::addItem)
             this.addItem(customLabel)
-            this.selectedItem = comboColorItems.find { it.name == cursorColor.name }?.name ?: customLabel
+            this.selectedItem = selectedItemFromCursorColor(cursorColor.name)?.name ?: customLabel
             isRefreshing = false
         }
+
+        private fun selectedItemFromCursorColor(cursorColorName: String) =
+            comboColorItems.find { it.name == cursorColorName }
     }
 }

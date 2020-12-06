@@ -8,7 +8,9 @@ import model.utils.toColor
 import java.awt.Color as JColor
 
 @Serializable
-data class Color(val r: Int, val g: Int, val b: Int)
+data class Color(val r: Int, val g: Int, val b: Int) {
+    override fun toString() = "(r = $r, g = $g, b = $b)"
+}
 
 @Suppress("ClassName")
 @Serializable
@@ -41,7 +43,7 @@ sealed class CursorColor(
 
     @Suppress("CanBeParameter")
     @Serializable
-    class CUSTOM(private val customColor: Color) : CursorColor("Custom", customColor, customColor) {
+    class Custom(private val customColor: Color) : CursorColor("Custom", customColor, customColor) {
         constructor(color: JColor) : this(color.toColor())
     }
 
