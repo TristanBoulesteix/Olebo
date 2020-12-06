@@ -14,7 +14,7 @@ class StringsBundle : Strings() {
         STR_SAVE_AS to "save as",
         STR_EXPORT_DATA to "export data",
         STR_IMPORT_DATA to "import data",
-        STR_AUTO_UPDATE to "mises à jour automatiques",
+        STR_AUTO_UPDATE to "automatic updates",
         STR_OLEBO_FILE to "Olebo file",
         ST_WARNING_CONFIG_RESET to "Warning! This action will reset all data previously loaded. Do you want to continue?",
         ST_CONFIGURATION_IMPORTED to "The new configuaration was imported successfully. Olebo will reload.",
