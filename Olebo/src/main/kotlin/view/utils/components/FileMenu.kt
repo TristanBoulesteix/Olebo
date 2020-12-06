@@ -1,10 +1,10 @@
 package view.utils.components
 
 import OLEBO_VERSION
-import model.dao.option.Settings
 import model.dao.ZipError
 import model.dao.internationalisation.*
 import model.dao.loadOleboZipData
+import model.dao.option.Settings
 import model.dao.zipOleboDirectory
 import utils.Result
 import view.frames.OptionDialog
@@ -85,7 +85,7 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
 
         this.addSeparator()
 
-        JMenuItem("Options").applyAndAppendTo(this) {
+        JMenuItem(Strings[STR_OPTIONS]).applyAndAppendTo(this) {
             this.addActionListener {
                 OptionDialog(this@FileMenu.windowAncestor).isVisible = true
             }

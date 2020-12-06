@@ -84,6 +84,9 @@ const val STR_RESIZE_ELEMENT = "resize_element"
 const val STR_RESIZE_ELEMENT_PLR = "resize_element_plr"
 const val STR_MOVE_ELEMENT = "move_element"
 const val STR_OBJECT = "object"
+const val STR_OPTIONS = "options"
+const val STR_GENERAL = "general"
+const val STR_SOFTWARE_LANGUAGE_LABEL = "software_language_lbl"
 
 // -- Sentences
 

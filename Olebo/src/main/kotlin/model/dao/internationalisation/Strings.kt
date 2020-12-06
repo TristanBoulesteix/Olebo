@@ -3,6 +3,9 @@ package model.dao.internationalisation
 import model.dao.option.Settings
 import java.util.*
 
+/**
+ * Parent class of Bundles which contains translations of all the Strings of Olebo. They are retrieved with the get operator.
+ */
 abstract class Strings : ListResourceBundle() {
     companion object {
         val availableLocales = listOf(Locale.ENGLISH, Locale.FRENCH)

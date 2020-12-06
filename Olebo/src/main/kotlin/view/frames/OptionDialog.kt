@@ -1,7 +1,6 @@
 package view.frames
 
-import model.dao.internationalisation.STR_AUTO_UPDATE
-import model.dao.internationalisation.Strings
+import model.dao.internationalisation.*
 import model.dao.option.CursorColor
 import model.dao.option.Settings
 import model.utils.toJColor
@@ -13,7 +12,7 @@ import view.utils.gridBagConstraintsOf
 import java.awt.*
 import javax.swing.*
 
-class OptionDialog(parent: Window) : JDialog(parent as? JFrame, "Options", true) {
+class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTIONS], true) {
     private val comboLanguageItems =
         Strings.availableLocales.map { it.getDisplayLanguage(it).capitalize(Settings.language) }.toTypedArray()
 
@@ -60,10 +59,10 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, "Options", true)
             )
         ) {
             this.layout = GridBagLayout()
-            this.border = BorderFactory.createTitledBorder("Général")
+            this.border = BorderFactory.createTitledBorder(Strings[STR_GENERAL])
 
             this.add(
-                LabeledItem("Langue du logiciel :", comboLanguage),
+                LabeledItem(Strings[STR_SOFTWARE_LANGUAGE_LABEL], comboLanguage),
                 gridBagConstraintsOf(0, 0, weightx = 1.0, anchor = GridBagConstraints.LINE_START)
             )
             this.add(

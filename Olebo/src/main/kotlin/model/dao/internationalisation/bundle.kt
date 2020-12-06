@@ -107,6 +107,9 @@ class StringsBundle : Strings() {
         STR_RESIZE_ELEMENT_PLR to "resize elements",
         STR_MOVE_ELEMENT to "move an element",
         STR_OBJECT to "object",
+        STR_OPTIONS to "options",
+        STR_GENERAL to "general",
+        STR_SOFTWARE_LANGUAGE_LABEL to "language:",
     )
 }
 
@@ -215,5 +218,8 @@ class StringsBundle_fr : Strings() {
         STR_RESIZE_ELEMENT_PLR to "redimensionner des éléments",
         STR_MOVE_ELEMENT to "déplacer un élément",
         STR_OBJECT to "objet",
+        STR_OPTIONS to "options",
+        STR_GENERAL to "général",
+        STR_SOFTWARE_LANGUAGE_LABEL to "langue :",
     )
 }
