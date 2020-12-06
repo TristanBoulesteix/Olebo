@@ -99,3 +99,13 @@ fun gridBagConstraintsOf(
 
 val Component.windowAncestor: Window
     get() = SwingUtilities.getWindowAncestor(this) ?: throw MessageException("")
+
+fun Graphics.fillCircleWithCenterCoordinates(x: Int, y: Int, radius: Int) =
+    fillOval(x - radius, y - radius, radius * 2, radius * 2)
+
+fun Graphics2D.drawCircleWithCenterCoordinates(x: Int, y: Int, radius: Int) {
+    val previousStroke = this.stroke
+    this.stroke = BasicStroke(3F)
+    this.drawOval(x - radius, y - radius, radius * 2, radius * 2)
+    this.stroke = previousStroke
+}

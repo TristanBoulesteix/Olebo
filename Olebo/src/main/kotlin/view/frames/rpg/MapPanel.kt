@@ -7,6 +7,8 @@ import model.dao.option.Settings
 import model.element.Element
 import model.utils.Elements
 import model.utils.emptyElements
+import view.utils.drawCircleWithCenterCoordinates
+import view.utils.fillCircleWithCenterCoordinates
 import viewModel.ViewManager
 import java.awt.*
 import java.awt.event.MouseEvent
@@ -122,7 +124,10 @@ class MapPanel(private val isMasterMapPanel: Boolean = false) : JPanel(), MouseL
 
         if (!isMasterMapPanel)
             with(ViewManager.cursorPoint) {
-                g.fillOval(relativeX(this.x), relativeY(this.y), 20, 20)
+                g.color = Color.WHITE
+                g.fillCircleWithCenterCoordinates(relativeX(this.x), relativeY(this.y), 15)
+                g.color = Color.BLACK
+                g.drawCircleWithCenterCoordinates(relativeX(this.x), relativeY(this.y), 15)
             }
     }
 
