@@ -39,7 +39,7 @@ class StringsBundle : Strings() {
         STR_CHANGE_SCENE to "modify scene",
         STR_NAME_OF_SCENE to "name of the scene:",
         STR_IMPORT_IMG to "import an image",
-        STR_CANCEL to "annuler",
+        STR_CANCEL to "cancel",
         ST_ACT_ALREADY_EXISTS to "A scene with this scene already exists or the selected file is invalid.",
         STR_SCENES to "scenes",
         STR_NEW_ELEMENT to "new element",
