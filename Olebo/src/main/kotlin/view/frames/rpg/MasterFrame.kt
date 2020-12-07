@@ -120,4 +120,9 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
         PlayerFrame.hide()
         super.dispose()
     }
+
+    override fun requestFocus() {
+        this.toFront()
+        super.requestFocus()
+    }
 }

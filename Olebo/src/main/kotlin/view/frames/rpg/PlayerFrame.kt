@@ -8,6 +8,7 @@ import view.frames.Reloadable
 import view.utils.DIMENSION_FRAME
 import java.awt.Color
 import java.awt.GraphicsEnvironment
+import java.awt.Window
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import java.awt.event.WindowAdapter
@@ -19,7 +20,7 @@ import javax.swing.JDialog
 /**
  * PlayerFrame is the Frame the Players can see, it shares its content with MasterFrame
  */
-class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
+class PlayerFrame private constructor() : JDialog(null as Window?), GameFrame, KeyListener {
     companion object : Reloadable {
         private var playerFrameInstance: PlayerFrame? = null
 
@@ -41,7 +42,9 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
                 field = value
             }
 
-        fun show() {
+        fun toggle(isVisble: Boolean) = if (isVisble) show() else hide()
+
+        private fun show() {
             playerFrameInstance = PlayerFrame().apply {
                 this.title = Companion.title
                 this.setMapBackground(mapBackground)
@@ -54,7 +57,7 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
                         this.preferredSize = DIMENSION_FRAME
                         this.pack()
                         this.setLocationRelativeTo(null)
-                        isVisible = true
+                        this.isVisible = true
                     } else { //If 2 screens are present, we display the player frame in fullscreen on the 2nd screen
                         for (screen in screens) {
                             if (MasterFrame.graphicsConfiguration.device != screen) {

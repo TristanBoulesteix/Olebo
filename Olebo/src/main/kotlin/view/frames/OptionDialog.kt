@@ -36,6 +36,10 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
         this.isSelected = Settings.autoUpdate
     }
 
+    private val checkBoxPlayerFrameOpenedByDefault = JCheckBox(Strings[STR_PLAYERFRAME_OPENED]).apply {
+        this.isSelected = Settings.playerFrameOpenedByDefault
+    }
+
     private val comboColorCursor = ComboColorCursor()
 
     private val languageChangeRestartLabel: JLabel
@@ -86,8 +90,13 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
             this.border = BorderFactory.createTitledBorder(Strings[STR_LOOK_AND_FEEL])
 
             this.add(
-                LabeledItem(Strings[STR_CURSOR_COLOR_LABEL], comboColorCursor),
+                checkBoxPlayerFrameOpenedByDefault,
                 gridBagConstraintsOf(0, 0, weightx = 1.0, anchor = GridBagConstraints.LINE_START)
+            )
+
+            this.add(
+                LabeledItem(Strings[STR_CURSOR_COLOR_LABEL], comboColorCursor),
+                gridBagConstraintsOf(0, 1, weightx = 1.0, anchor = GridBagConstraints.LINE_START)
             )
         }
 
@@ -120,6 +129,7 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
                 addActionListener {
                     Settings.language = Strings.availableLocales[comboLanguage.selectedIndex]
                     Settings.autoUpdate = checkBoxAutoUpdate.isSelected
+                    Settings.playerFrameOpenedByDefault = checkBoxPlayerFrameOpenedByDefault.isSelected
                     comboColorCursor.selectedCursorColor?.let {
                         Settings.cursorColor = it
                         if (owner is MasterFrame)
@@ -186,7 +196,7 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
             }
         }
 
-        private fun selectColor(color: Color): Color? = JColorChooser.showDialog(this@OptionDialog, "Title", color)
+        private fun selectColor(color: Color): Color? = JColorChooser.showDialog(this@OptionDialog, Strings[STR_SELECT_COLOR], color)
 
         private fun refreshItems(cursorColor: CursorColor) {
             isRefreshing = true

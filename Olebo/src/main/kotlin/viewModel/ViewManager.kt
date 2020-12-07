@@ -3,11 +3,13 @@ package viewModel
 import model.act.Act
 import model.act.Scene
 import model.dao.DAO
+import model.dao.option.Settings
 import model.element.*
 import model.utils.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import view.frames.rpg.MasterFrame
 import view.frames.rpg.MasterMenuBar
+import view.frames.rpg.PlayerFrame
 import view.frames.rpg.ViewFacade
 import view.utils.compareTo
 import java.awt.Dimension
@@ -37,6 +39,8 @@ object ViewManager {
         MasterMenuBar.act = act
         MasterMenuBar.initialize()
         loadCurrentScene()
+        PlayerFrame.toggle(Settings.playerFrameOpenedByDefault)
+        MasterFrame.requestFocus()
     }
 
     fun removeToken(token: Element) { //removes given token from MutableList
@@ -54,7 +58,7 @@ object ViewManager {
 
     private fun loadCurrentScene() {
         with(activeAct!!) activeAct@{
-            activeScene = this.scenes.findWithId(this@activeAct.sceneId)
+            activeScene = this.scenes.findWithId(this.sceneId)
             ViewFacade.apply {
                 this.loadItems()
                 this.setMapBackground(activeScene!!.background)

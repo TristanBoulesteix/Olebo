@@ -227,6 +227,7 @@ object SettingsTable : IntIdTable(), Initializable {
     const val CURSOR_ENABLED = "cursorEnabled"
     const val CURRENT_LANGUAGE = "current_language"
     const val CURSOR_COLOR = "cursor_color"
+    const val PLAYER_FRAME_ENABLED = "PlayerFrame_enabled"
 
     val name = varchar("name", 255)
     val value = varchar("value", 255).default("")
@@ -280,6 +281,14 @@ object SettingsTable : IntIdTable(), Initializable {
                 it[id] = EntityID(6, SettingsTable)
                 it[name] = CURSOR_COLOR
                 it[value] = CursorColor.PURPLE.encode()
+            }
+        }
+
+        if (SettingsTable.select((id eq 7) and (name eq PLAYER_FRAME_ENABLED)).count() <= 0) {
+            SettingsTable.insert {
+                it[id] = EntityID(7, SettingsTable)
+                it[name] = PLAYER_FRAME_ENABLED
+                it[value] = false.toString()
             }
         }
     }

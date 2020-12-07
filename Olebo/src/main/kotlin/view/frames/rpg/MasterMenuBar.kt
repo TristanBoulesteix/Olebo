@@ -4,8 +4,8 @@ import model.act.Act
 import model.act.Scene
 import model.command.CommandManager
 import model.dao.DAO
-import model.dao.option.Settings
 import model.dao.internationalisation.*
+import model.dao.option.Settings
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.forElse
 import view.frames.editor.elements.BlueprintDialog
@@ -99,12 +99,10 @@ object MasterMenuBar : JMenuBar() {
             this.addSeparator()
 
             togglePlayerFrameMenuItem = JCheckBoxMenuItem(Strings[STR_TOGGLE_PLAYER_FRAME]).applyAndAppendTo(this) {
+                this.isSelected = Settings.playerFrameOpenedByDefault
                 this.addActionListener { e ->
-                    (e.source as AbstractButton).let {
-                        if (it.isSelected)
-                            PlayerFrame.show()
-                        else PlayerFrame.hide()
-                    }
+                    PlayerFrame.toggle((e.source as AbstractButton).isSelected)
+                    MasterFrame.requestFocus()
                 }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_O, CTRL)
             }

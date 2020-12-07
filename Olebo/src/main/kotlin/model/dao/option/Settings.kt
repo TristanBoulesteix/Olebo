@@ -7,6 +7,7 @@ import model.dao.SettingsTable.BASE_VERSION
 import model.dao.SettingsTable.CURRENT_LANGUAGE
 import model.dao.SettingsTable.CURSOR_COLOR
 import model.dao.SettingsTable.CURSOR_ENABLED
+import model.dao.SettingsTable.PLAYER_FRAME_ENABLED
 import model.dao.SettingsTable.UPDATE_WARN
 import model.dao.internationalisation.ST_UNKNOWN_DATABASE_VERSION
 import model.dao.internationalisation.Strings
@@ -70,6 +71,13 @@ class Settings(id: EntityID<Int>) : IntEntity(id) {
             set(value) = transaction(DAO.database) {
                 this@Companion[CURSOR_COLOR] = value.encode()
             }
+
+        var playerFrameOpenedByDefault
+            get() = transaction(DAO.database) { this@Companion[PLAYER_FRAME_ENABLED].toBoolean() }
+            set(value) = transaction(DAO.database) {
+                this@Companion[PLAYER_FRAME_ENABLED] = value
+            }
+
         operator fun get(setting: String) = this.find { SettingsTable.name eq setting }.firstOrNull()?.value
 
         operator fun set(setting: String, value: Any?) {
