@@ -23,8 +23,8 @@ import kotlin.math.abs
  * This panel contains the map and all the objects placed within it
  */
 class MapPanel(private val parentGameFrame: GameFrame) : JPanel(), MouseListener {
-    var backGroundImage: Image? =
-        null      //The background... Why are you reading this? Stop!! I said stop!!! You're still doing it, even when you had to scroll sideways... Ok i'm giving up, bye
+    //The background... Why are you reading this? Stop!! I said stop!!! You're still doing it, even when you had to scroll sideways... Ok i'm giving up, bye
+    var backGroundImage: Image? = null
     private var tokens = emptyElements() //These are all the tokens placed on  the current map
     var selectedElements = emptyElements()
 
