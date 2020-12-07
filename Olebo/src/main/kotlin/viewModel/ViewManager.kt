@@ -26,7 +26,7 @@ object ViewManager {
 
     private var selectedElements = mutableEmptyElements()
 
-    var cursorPoint = Point()
+    var cursorPoint: Point? = null
 
     /**
      * Get the list of all blueprints

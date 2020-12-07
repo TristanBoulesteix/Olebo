@@ -133,11 +133,11 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel(), MouseListener
         }
 
         if (parentGameFrame is PlayerFrame)
-            with(ViewManager.cursorPoint) {
+            ViewManager.cursorPoint?.let {
                 g.color = cursorColor
-                g.fillCircleWithCenterCoordinates(relativeX(this.x), relativeY(this.y), 15)
+                g.fillCircleWithCenterCoordinates(relativeX(it.x), relativeY(it.y), 15)
                 g.color = borderCursorColor
-                g.drawCircleWithCenterCoordinates(relativeX(this.x), relativeY(this.y), 15)
+                g.drawCircleWithCenterCoordinates(relativeX(it.x), relativeY(it.y), 15)
             }
     }
 
