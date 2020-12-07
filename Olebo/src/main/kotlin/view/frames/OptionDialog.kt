@@ -92,7 +92,7 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
         }
 
         languageChangeRestartLabel =
-            JLabel("Le changement de langue sera effectif au prochain redémarrage de Olebo.").applyAndAppendTo(
+            JLabel(Strings[ST_LANGUAGE_CHANGE_ON_RESTART]).applyAndAppendTo(
                 this, gridBagConstraintsOf(
                     0,
                     2,
@@ -116,7 +116,7 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
                 anchor = GridBagConstraints.SOUTH
             )
         ) {
-            JButton("Enregistrer").applyAndAppendTo(this) {
+            JButton(Strings[STR_SAVE]).applyAndAppendTo(this) {
                 addActionListener {
                     Settings.language = Strings.availableLocales[comboLanguage.selectedIndex]
                     Settings.autoUpdate = checkBoxAutoUpdate.isSelected
@@ -135,12 +135,12 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
                 }
             }
 
-            this.add(JButton("Rétablir les paramètres par défauts"))
+            this.add(JButton(Strings[STR_RESTORE_DEFAULTS_OPTIONS]))
         }
     }
 
     private inner class ComboColorCursor : JComboBox<String>() {
-        private val custom = "Custom"
+        private val custom by StringDelegate(STR_CUSTOM_COLOR)
 
         private val customLabel
             get() = when (selectedCursorColor) {

@@ -89,6 +89,12 @@ const val STR_GENERAL = "general"
 const val STR_SOFTWARE_LANGUAGE_LABEL = "software_language_lbl"
 const val STR_LOOK_AND_FEEL = "look_and_feel"
 const val STR_CURSOR_COLOR_LABEL = "cursor_color_lbl"
+const val STR_SAVE = "save"
+const val STR_RESTORE_DEFAULTS_OPTIONS = "restore_options"
+const val STR_CUSTOM_COLOR = "custom_color"
+const val STR_PURPLE = "purple"
+const val STR_WHITE_WITH_BLACK_BORDER = "white_black"
+const val STR_BLACK_WITH_WHITE_BORDER = "black_white"
 
 // -- Sentences
 
@@ -113,3 +119,4 @@ const val ST_ERROR_ACT_NOT_EXISTS = "error_act"
 const val ST_UNKNOWN_DATABASE_VERSION = "unknown_database_version"
 const val ST_CHANGE_VISIBILITY = "change_visiblity"
 const val ST_CHANGE_VISIBILITY_PLR = "change_visiblity_plr"
+const val ST_LANGUAGE_CHANGE_ON_RESTART = "change_language_restart"

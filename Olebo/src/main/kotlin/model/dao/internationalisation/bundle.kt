@@ -112,6 +112,13 @@ class StringsBundle : Strings() {
         STR_SOFTWARE_LANGUAGE_LABEL to "language:",
         STR_LOOK_AND_FEEL to "look and feel",
         STR_CURSOR_COLOR_LABEL to "cursor color:",
+        ST_LANGUAGE_CHANGE_ON_RESTART to "Language changes will apply at the next restart.",
+        STR_SAVE to "save",
+        STR_RESTORE_DEFAULTS_OPTIONS to "restore default settings",
+        STR_CUSTOM_COLOR to "custom color",
+        STR_PURPLE to "purple",
+        STR_WHITE_WITH_BLACK_BORDER to "white with black border",
+        STR_BLACK_WITH_WHITE_BORDER to "black with white border",
     )
 }
 
@@ -225,5 +232,12 @@ class StringsBundle_fr : Strings() {
         STR_SOFTWARE_LANGUAGE_LABEL to "langue :",
         STR_LOOK_AND_FEEL to "apparence",
         STR_CURSOR_COLOR_LABEL to "couleur du curseur :",
+        ST_LANGUAGE_CHANGE_ON_RESTART to "Le changement de langue sera effectif au prochain redémarrage de Olebo.",
+        STR_SAVE to "enregistrer",
+        STR_RESTORE_DEFAULTS_OPTIONS to "rétablir les paramètres par défauts",
+        STR_CUSTOM_COLOR to "couleur personnalisée",
+        STR_PURPLE to "violet",
+        STR_WHITE_WITH_BLACK_BORDER to "blanc avec une bordure noire",
+        STR_BLACK_WITH_WHITE_BORDER to "noir avec une bordure blanche",
     )
 }
