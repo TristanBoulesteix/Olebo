@@ -121,6 +121,7 @@ class StringsBundle : Strings() {
         STR_BLACK_WITH_WHITE_BORDER to "black with white border",
         STR_SELECT_COLOR to "pick a color",
         STR_PLAYERFRAME_OPENED to "automatically open the players window",
+        STR_DOUBLE_CLICK_OPEN_ACT to "double click to open the scenario",
     )
 }
 
@@ -243,5 +244,6 @@ class StringsBundle_fr : Strings() {
         STR_BLACK_WITH_WHITE_BORDER to "noir avec une bordure blanche",
         STR_SELECT_COLOR to "choisissez une couleur",
         STR_PLAYERFRAME_OPENED to "ouvrir automatiquement la fenêtre joueurs",
+        STR_DOUBLE_CLICK_OPEN_ACT to "double cliquez pour ouvir le scénario",
     )
 }

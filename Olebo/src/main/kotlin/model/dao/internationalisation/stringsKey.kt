@@ -97,6 +97,7 @@ const val STR_WHITE_WITH_BLACK_BORDER = "white_black"
 const val STR_BLACK_WITH_WHITE_BORDER = "black_white"
 const val STR_SELECT_COLOR = "select_color"
 const val STR_PLAYERFRAME_OPENED = "PlayrFrame_opened"
+const val STR_DOUBLE_CLICK_OPEN_ACT = "double_click_act"
 
 // -- Sentences
 
