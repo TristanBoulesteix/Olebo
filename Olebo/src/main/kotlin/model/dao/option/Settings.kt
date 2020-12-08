@@ -62,7 +62,7 @@ class Settings(id: EntityID<Int>) : IntEntity(id) {
                 this@Companion[CURRENT_LANGUAGE] = value.language
             }
 
-        val activeLanguage = language
+        val activeLanguage by lazy { language }
 
         var cursorColor
             get() = transaction(DAO.database) {

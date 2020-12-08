@@ -1,6 +1,5 @@
 package model.dao
 
-import model.dao.option.CursorColor
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
@@ -228,6 +227,7 @@ object SettingsTable : IntIdTable(), Initializable {
     const val CURRENT_LANGUAGE = "current_language"
     const val CURSOR_COLOR = "cursor_color"
     const val PLAYER_FRAME_ENABLED = "PlayerFrame_enabled"
+    const val DEFAULT_ELEMENT_VISIBILITY = "default_element_visibility"
 
     val name = varchar("name", 255)
     val value = varchar("value", 255).default("")
@@ -244,51 +244,21 @@ object SettingsTable : IntIdTable(), Initializable {
             SettingsTable.update({ baseVersionWhere }) { it[value] = DAO.DATABASE_VERSION.toString() }
         }
 
-        if (SettingsTable.select((id eq 2) and (name eq AUTO_UPDATE)).count() <= 0) {
-            SettingsTable.insert {
-                it[id] = EntityID(2, SettingsTable)
-                it[name] = AUTO_UPDATE
-                it[value] = true.toString()
-            }
-        }
+        insertOptionIfNotExists(2, AUTO_UPDATE, true)
+        insertOptionIfNotExists(3, UPDATE_WARN, "")
+        insertOptionIfNotExists(4, CURSOR_ENABLED, true)
+        insertOptionIfNotExists(5, CURRENT_LANGUAGE, Locale.getDefault().language)
+        insertOptionIfNotExists(6, CURSOR_COLOR, "")
+        insertOptionIfNotExists(7, PLAYER_FRAME_ENABLED, false)
+        insertOptionIfNotExists(8, DEFAULT_ELEMENT_VISIBILITY, false)
+    }
 
-        if (SettingsTable.select((id eq 3) and (name eq UPDATE_WARN)).count() <= 0) {
+    private fun insertOptionIfNotExists(id: Int, name: String, value: Any) {
+        if (SettingsTable.select((SettingsTable.id eq id) and (SettingsTable.name eq name)).count() <= 0) {
             SettingsTable.insert {
-                it[id] = EntityID(3, SettingsTable)
-                it[name] = UPDATE_WARN
-                it[value] = ""
-            }
-        }
-
-        if (SettingsTable.select((id eq 4) and (name eq CURSOR_ENABLED)).count() <= 0) {
-            SettingsTable.insert {
-                it[id] = EntityID(4, SettingsTable)
-                it[name] = CURSOR_ENABLED
-                it[value] = true.toString()
-            }
-        }
-
-        if (SettingsTable.select((id eq 5) and (name eq CURRENT_LANGUAGE)).count() <= 0) {
-            SettingsTable.insert {
-                it[id] = EntityID(5, SettingsTable)
-                it[name] = CURRENT_LANGUAGE
-                it[value] = Locale.getDefault().language
-            }
-        }
-
-        if (SettingsTable.select((id eq 6) and (name eq CURSOR_COLOR)).count() <= 0) {
-            SettingsTable.insert {
-                it[id] = EntityID(6, SettingsTable)
-                it[name] = CURSOR_COLOR
-                it[value] = CursorColor.PURPLE.encode()
-            }
-        }
-
-        if (SettingsTable.select((id eq 7) and (name eq PLAYER_FRAME_ENABLED)).count() <= 0) {
-            SettingsTable.insert {
-                it[id] = EntityID(7, SettingsTable)
-                it[name] = PLAYER_FRAME_ENABLED
-                it[value] = false.toString()
+                it[SettingsTable.id] = EntityID(id, SettingsTable)
+                it[SettingsTable.name] = name
+                it[SettingsTable.value] = value.toString()
             }
         }
     }
