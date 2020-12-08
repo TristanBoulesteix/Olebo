@@ -196,7 +196,8 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
             }
         }
 
-        private fun selectColor(color: Color): Color? = JColorChooser.showDialog(this@OptionDialog, Strings[STR_SELECT_COLOR], color)
+        private fun selectColor(color: Color): Color? =
+            JColorChooser.showDialog(this@OptionDialog, Strings[STR_SELECT_COLOR], color)
 
         private fun refreshItems(cursorColor: CursorColor) {
             isRefreshing = true
