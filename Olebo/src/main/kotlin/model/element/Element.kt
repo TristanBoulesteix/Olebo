@@ -6,6 +6,7 @@ import model.command.CommandManager
 import model.dao.DAO
 import model.dao.InstanceTable
 import model.dao.internationalisation.*
+import model.dao.option.Settings
 import model.utils.Elements
 import model.utils.isCharacter
 import model.utils.rotate
@@ -36,6 +37,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
                         it[currentMP] = b.MP
                     }
                     it[idBlueprint] = b.id.value
+                    it[visible] = Settings.defaultElementVisibility
                 }
 
                 Element[id]

@@ -42,6 +42,10 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
 
     private val comboColorCursor = ComboColorCursor()
 
+    private val checkboxVisibilityElement = JCheckBox(Strings[STR_DEFAULT_ELEMENT_VISIBILITY]).apply {
+        this.isSelected = Settings.defaultElementVisibility
+    }
+
     private val languageChangeRestartLabel: JLabel
 
     init {
@@ -98,6 +102,11 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
                 LabeledItem(Strings[STR_CURSOR_COLOR_LABEL], comboColorCursor),
                 gridBagConstraintsOf(0, 1, weightx = 1.0, anchor = GridBagConstraints.LINE_START)
             )
+
+            this.add(
+                checkboxVisibilityElement,
+                gridBagConstraintsOf(0, 2, weightx = 1.0, anchor = GridBagConstraints.LINE_START)
+            )
         }
 
         languageChangeRestartLabel =
@@ -135,6 +144,7 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
                         if (owner is MasterFrame)
                             ViewFacade.updateCursorOnPlayerFrame()
                     }
+                    Settings.defaultElementVisibility = checkboxVisibilityElement.isSelected
                     dispose()
                 }
             }

@@ -7,6 +7,7 @@ import model.dao.SettingsTable.BASE_VERSION
 import model.dao.SettingsTable.CURRENT_LANGUAGE
 import model.dao.SettingsTable.CURSOR_COLOR
 import model.dao.SettingsTable.CURSOR_ENABLED
+import model.dao.SettingsTable.DEFAULT_ELEMENT_VISIBILITY
 import model.dao.SettingsTable.PLAYER_FRAME_ENABLED
 import model.dao.SettingsTable.UPDATE_WARN
 import model.dao.internationalisation.ST_UNKNOWN_DATABASE_VERSION
@@ -76,6 +77,12 @@ class Settings(id: EntityID<Int>) : IntEntity(id) {
             get() = transaction(DAO.database) { this@Companion[PLAYER_FRAME_ENABLED].toBoolean() }
             set(value) = transaction(DAO.database) {
                 this@Companion[PLAYER_FRAME_ENABLED] = value
+            }
+
+        var defaultElementVisibility
+            get() = transaction(DAO.database) { this@Companion[DEFAULT_ELEMENT_VISIBILITY].toBoolean() }
+            set(value) = transaction(DAO.database) {
+                this@Companion[DEFAULT_ELEMENT_VISIBILITY] = value
             }
 
         operator fun get(setting: String) = this.find { SettingsTable.name eq setting }.firstOrNull()?.value
