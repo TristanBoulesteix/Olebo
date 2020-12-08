@@ -11,8 +11,6 @@ import view.frames.rpg.MasterFrame
 import view.frames.rpg.MasterMenuBar
 import view.frames.rpg.PlayerFrame
 import view.frames.rpg.ViewFacade
-import view.utils.compareTo
-import java.awt.Dimension
 import java.awt.Point
 import java.awt.Rectangle
 
@@ -118,9 +116,6 @@ object ViewManager {
     }
 
     fun selectElements(rec: Rectangle) {
-        if (rec.size < Dimension(Size.XS.size.absoluteSizeValue, Size.XS.size.absoluteSizeValue))
-            return
-
         val selectedElements = mutableEmptyElements()
 
         activeScene!!.elements.forEach {

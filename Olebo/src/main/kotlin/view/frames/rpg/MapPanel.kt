@@ -5,9 +5,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import model.dao.option.Settings
 import model.element.Element
+import model.element.Size
 import model.utils.Elements
 import model.utils.emptyElements
 import model.utils.toJColor
+import view.utils.compareTo
 import view.utils.drawCircleWithCenterCoordinates
 import view.utils.fillCircleWithCenterCoordinates
 import viewModel.ViewManager
@@ -186,7 +188,9 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel(), MouseListener
 
     override fun mouseReleased(p0: MouseEvent) {
         selectedArea?.let {
-            ViewManager.selectElements(it)
+            if (it.size >= Dimension(Size.XS.size.absoluteSizeValue, Size.XS.size.absoluteSizeValue))
+                ViewManager.selectElements(it)
+            else repaint()
         }
         selectedArea = null
     }
