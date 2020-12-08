@@ -179,9 +179,9 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel(), MouseListener
 
             when (p0.button) //  left button: 1, middle button: 2, Right click: 3
             {
-                1 -> ViewManager.selectElement(clickedX, clickedY) //Left click
-                2 -> ViewFacade.moveToken(clickedX, clickedY)   //Middle button
-                3 -> ViewFacade.moveToken(clickedX, clickedY)   //Right click
+                MouseEvent.BUTTON1 -> ViewManager.selectElement(clickedX, clickedY) //Left click
+                MouseEvent.BUTTON2 -> ViewFacade.moveToken(clickedX, clickedY)   //Middle button
+                MouseEvent.BUTTON3 -> ViewFacade.moveToken(clickedX, clickedY)   //Right click
             }
         }
     } //Actions to take when the mouse is clicked
