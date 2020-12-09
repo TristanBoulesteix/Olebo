@@ -105,7 +105,7 @@ class ItemPanel : JPanel(), Reloadable {
                 } ?: this.add(EmptyField())
 
                 // Basic elements list
-                this.add(CustomTitlePanel(Strings[STR_BASE_ELEMENTS]).apply { this.isEnabled = false })
+                this.add(CustomTitlePanel(Strings[STR_BASE_ELEMENT_PLR]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
                     it.type.typeElement == Type.BASIC && (searchConstraint.isEmpty() || it.realName.contains(
