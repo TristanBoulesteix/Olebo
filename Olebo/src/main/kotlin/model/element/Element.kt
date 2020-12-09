@@ -131,6 +131,24 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
                     }
                 }
         }
+
+        fun cmdDelete(manager: CommandManager, elements: Elements) {
+            manager += object : Command() {
+                override val label by StringDelegate(STR_DELETE_SELECTED_TOKENS)
+
+                override fun exec() = transaction(DAO.database) {
+                    elements.forEach {
+                        it.isDeleted = true
+                    }
+                }
+
+                override fun cancelExec() = transaction(DAO.database) {
+                    elements.forEach {
+                        it.isDeleted = false
+                    }
+                }
+            }
+        }
     }
 
     // Value stored into the database
@@ -147,6 +165,8 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     private var y by InstanceTable.y
     private var sizeElement by Size.SizeElement referencedOn InstanceTable.idSize
     private var priorityElement by Priority.PriorityElement referencedOn InstanceTable.priority
+
+    var isDeleted by InstanceTable.deleted
 
     // Value from the Blueprint
     val sprite

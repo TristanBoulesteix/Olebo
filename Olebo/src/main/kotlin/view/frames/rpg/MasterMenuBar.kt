@@ -6,6 +6,7 @@ import model.command.CommandManager
 import model.dao.DAO
 import model.dao.internationalisation.*
 import model.dao.option.Settings
+import model.utils.toElements
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.forElse
 import view.frames.editor.elements.BlueprintDialog
@@ -193,7 +194,7 @@ object MasterMenuBar : JMenuBar() {
 
             JMenuItem(Strings[STR_DELETE_SELECTED_TOKENS]).applyAndAppendTo(this) {
                 this.addActionListener {
-                    SelectPanel.selectedElements.forEach(ViewManager::removeToken)
+                    ViewManager.removeElements(SelectPanel.selectedElements)
                 }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0)
             }
@@ -203,7 +204,7 @@ object MasterMenuBar : JMenuBar() {
                     showConfirmMessage(this, Strings[ST_CONFIRM_CLEAR_BOARD], Strings[STR_DELETION]) {
                         transaction(DAO.database) {
                             for (token in Scene[act!!.sceneId].elements) {
-                                ViewManager.removeToken(token)
+                                ViewManager.removeElements(token.toElements())
                                 transaction(DAO.database) { token.delete() }
                                 Thread.sleep(100)
                             }

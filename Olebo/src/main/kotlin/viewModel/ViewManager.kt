@@ -2,11 +2,9 @@ package viewModel
 
 import model.act.Act
 import model.act.Scene
-import model.dao.DAO
 import model.dao.option.Settings
 import model.element.*
 import model.utils.*
-import org.jetbrains.exposed.sql.transactions.transaction
 import view.frames.rpg.MasterFrame
 import view.frames.rpg.MasterMenuBar
 import view.frames.rpg.PlayerFrame
@@ -41,10 +39,10 @@ object ViewManager {
         MasterFrame.requestFocus()
     }
 
-    fun removeToken(token: Element) { //removes given token from MutableList
+    fun removeElements(elements: Elements) { //removes given token from MutableList
         selectedElements = mutableEmptyElements()
         ViewFacade.setSelectedToken(null)
-        transaction(DAO.database) { token.delete() }
+        activeScene.callManager(elements, Element::cmdDelete)
         repaint()
     }
 

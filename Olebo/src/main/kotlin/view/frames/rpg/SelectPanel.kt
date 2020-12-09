@@ -1,9 +1,9 @@
 package view.frames.rpg
 
+import model.dao.internationalisation.*
 import model.element.Element
 import model.element.Priority
 import model.element.Size
-import model.dao.internationalisation.*
 import model.utils.callManager
 import view.utils.BACKGROUND_COLOR_SELECT_PANEL
 import view.utils.DIMENSION_BUTTON_DEFAULT
@@ -107,7 +107,7 @@ object SelectPanel : JPanel() {
     private val deleteButton = JButton(Strings[STR_DELETE]).apply { //Deletes selected Token
         preferredSize = DIMENSION_BUTTON_DEFAULT
         addActionListener {
-            selectedElements.forEach(ViewManager::removeToken)
+            ViewManager.removeElements(selectedElements)
             ViewManager.repaint()
         }
     }

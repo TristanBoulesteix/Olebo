@@ -162,6 +162,7 @@ object InstanceTable : IntIdTable() {
         reference("id_priority", PriorityTable, onDelete = ReferenceOption.CASCADE).default(EntityID(2, PriorityTable))
     val idScene = integer("ID_Scene").references(SceneTable.id).default(0)
     val idBlueprint = integer("id_blueprint").references(BlueprintTable.id).default(0)
+    val deleted = bool("deleted").default(false)
 }
 
 object SizeTable : IntIdTable(), Initializable {

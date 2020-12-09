@@ -52,7 +52,7 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
         get() = CommandManager(id.value)
 
     val elements: List<Element>
-        get() = transaction(DAO.database) { elementIterable.toMutableList().sortedBy { it.priority } }
+        get() = transaction(DAO.database) { elementIterable.toMutableList().filter { !it.isDeleted }.sortedBy { it.priority } }
     var name by SceneTable.name
     var background by SceneTable.background
     var idAct by SceneTable.idAct
