@@ -49,10 +49,11 @@ object MasterMenuBar : JMenuBar() {
 
             this.addSeparator()
 
-            undoMenuItem = object : JMenuItem(Strings[STR_CANCEL]) {
+            undoMenuItem = object : JMenuItem() {
                 private val baseText = Strings[STR_CANCEL]
 
-                override fun setText(text: String) = super.setText("$baseText ${if (text == "") "" else "($text)"}")
+                override fun setText(text: String) =
+                    super.setText("$baseText ${if (text == "") "" else "($text)"}")
 
                 init {
                     this.isEnabled = false
@@ -68,7 +69,7 @@ object MasterMenuBar : JMenuBar() {
 
             this.add(undoMenuItem)
 
-            redoMenuItem = object : JMenuItem(Strings[STR_RESTORE]) {
+            redoMenuItem = object : JMenuItem() {
                 override fun setText(text: String) =
                     super.setText("${Strings[STR_RESTORE]} ${if (text == "") "" else "($text)"}")
 
@@ -158,6 +159,8 @@ object MasterMenuBar : JMenuBar() {
                                                 }
                                             }
                                             ViewManager.repaint()
+                                            initialize()
+                                            reloadCommandItemLabel()
                                         }
                                     }
 

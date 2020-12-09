@@ -31,7 +31,7 @@ sealed class CursorColor(
         operator fun get(key: String) = try {
             Json.decodeFromString<CursorColor>(key)
         } catch (e: Exception) {
-            PURPLE
+            RED
         }
     }
 
