@@ -1,6 +1,7 @@
 package view.frames.editor.acts
 
 import model.dao.internationalisation.*
+import view.utils.applyAndAppendTo
 import view.utils.gridBagConstraintsOf
 import view.utils.showPopup
 import viewModel.SceneData
@@ -31,11 +32,6 @@ class SceneEditorDialog(private val scene: SceneData? = null) : JDialog() {
     private var canceled = true
 
     init {
-        fun <T : JButton> T.addAction(action: () -> Unit): T {
-            this.addActionListener { action() }
-            return this
-        }
-
         this.title = if (scene == null) Strings[STR_NEW_SCENE] else Strings[STR_CHANGE_SCENE]
         this.modalityType = ModalityType.APPLICATION_MODAL
         this.size = Dimension(400, 400)
@@ -48,7 +44,7 @@ class SceneEditorDialog(private val scene: SceneData? = null) : JDialog() {
             this.preferredSize = Dimension(220, 60)
             this.add(JLabel(Strings[STR_NAME_OF_SCENE]))
             this.add(nameField)
-        }, gridBagConstraintsOf(0,0))
+        }, gridBagConstraintsOf(0, 0))
 
         this.add(JButton(Strings[STR_IMPORT_IMG]).apply {
             this.toolTipText = if (scene != null) {
@@ -70,16 +66,18 @@ class SceneEditorDialog(private val scene: SceneData? = null) : JDialog() {
                     this.toolTipText = selectedFile.name
                 }
             }
-        }, gridBagConstraintsOf(0,1))
+        }, gridBagConstraintsOf(0, 1))
 
         this.add(JPanel().apply {
-            this.add(JButton(Strings[STR_CONFIRM]).addAction {
-                dispose()
-                canceled = false
-            })
-            this.add(JButton(Strings[STR_CANCEL]).addAction { dispose() })
+            JButton(Strings[STR_CONFIRM]).applyAndAppendTo(this) {
+                addActionListener {
+                    dispose()
+                    canceled = false
+                }
+            }
+            JButton(Strings[STR_CANCEL]).applyAndAppendTo(this) { addActionListener { dispose() } }
             this.border = BorderFactory.createEmptyBorder(10, 0, 0, 0)
-        }, gridBagConstraintsOf(0,2))
+        }, gridBagConstraintsOf(0, 2))
     }
 
     /**

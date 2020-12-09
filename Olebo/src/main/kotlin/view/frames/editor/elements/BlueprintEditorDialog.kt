@@ -2,6 +2,7 @@ package view.frames.editor.elements
 
 import model.dao.internationalisation.*
 import view.utils.IntegerFilter
+import view.utils.applyAndAppendTo
 import view.utils.gridBagConstraintsOf
 import view.utils.showPopup
 import viewModel.BlueprintData
@@ -54,11 +55,6 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
     private var canceled = true
 
     init {
-        fun <T : JButton> T.addAction(action: () -> Unit): T {
-            this.addActionListener { action() }
-            return this
-        }
-
         this.title = if (blueprint == null) Strings[STR_NEW_ELEMENT] else Strings[STR_CHANGE_ELEMENT]
         this.modalityType = ModalityType.APPLICATION_MODAL
         this.size = Dimension(400, 300)
@@ -87,37 +83,44 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
             }, gridBagConstraintsOf(0, 2))
         }
 
-        this.add(JButton(Strings[STR_IMPORT_IMG]).apply {
-            this.toolTipText = if (blueprint != null) {
-                selectedFile = File(blueprint.img)
-                selectedFile.name
-            } else null
-            this.addActionListener {
-                val file = JFileChooser().apply {
-                    this.currentDirectory = File(System.getProperty("user.home"))
-                    this.addChoosableFileFilter(
-                        FileNameExtensionFilter("Images", *ImageIO.getReaderFileSuffixes())
-                    )
-                    this.isAcceptAllFileFilterUsed = false
-                }
-                val result = file.showSaveDialog(this@BlueprintEditorDialog)
+        this.add(
+            JButton(Strings[STR_IMPORT_IMG]).apply {
+                this.toolTipText = if (blueprint != null) {
+                    selectedFile = File(blueprint.img)
+                    selectedFile.name
+                } else null
+                this.addActionListener {
+                    val file = JFileChooser().apply {
+                        this.currentDirectory = File(System.getProperty("user.home"))
+                        this.addChoosableFileFilter(
+                            FileNameExtensionFilter("Images", *ImageIO.getReaderFileSuffixes())
+                        )
+                        this.isAcceptAllFileFilterUsed = false
+                    }
+                    val result = file.showSaveDialog(this@BlueprintEditorDialog)
 
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    selectedFile = file.selectedFile
-                    this.toolTipText = selectedFile.name
+                    if (result == JFileChooser.APPROVE_OPTION) {
+                        selectedFile = file.selectedFile
+                        this.toolTipText = selectedFile.name
+                    }
                 }
-            }
-        }, gridBagConstraintsOf(
-            gridx = 0,
-            gridy = if (type == TypeElement.OBJECT) 1 else 3
-        ))
+            }, gridBagConstraintsOf(
+                gridx = 0,
+                gridy = if (type == TypeElement.OBJECT) 1 else 3
+            )
+        )
 
         this.add(
             JPanel().apply {
-                this.add(JButton(Strings[STR_CONFIRM]).addAction {
-                    this@BlueprintEditorDialog.isVisible = false; canceled = false
-                })
-                this.add(JButton(Strings[STR_CANCEL]).addAction { this@BlueprintEditorDialog.isVisible = false })
+                JButton(Strings[STR_CONFIRM]).applyAndAppendTo(this) {
+                    addActionListener {
+                        canceled = false
+                        this@BlueprintEditorDialog.dispose()
+                    }
+                }
+                JButton(Strings[STR_CANCEL]).applyAndAppendTo(this) {
+                    addActionListener { this@BlueprintEditorDialog.dispose() }
+                }
                 this.border = BorderFactory.createEmptyBorder(10, 0, 0, 0)
             }, gridBagConstraintsOf(
                 gridx = 0,
