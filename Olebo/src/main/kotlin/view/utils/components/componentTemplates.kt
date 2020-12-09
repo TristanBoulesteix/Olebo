@@ -359,9 +359,10 @@ class SlideStats(private val hp: Boolean, initialElement: Element? = null) : JPa
     }
 }
 
-class LabeledItem<T: Component>(label: String, val component: T) : JPanel() {
+class LabeledItem<T : Component>(label: String, component: T) : JPanel() {
     init {
-        this.add(JLabel(label))
-        this.add(component)
+        this.layout = GridBagLayout()
+        this.add(JLabel(label), gridBagConstraintsOf(0, 0))
+        this.add(component, gridBagConstraintsOf(1, 0))
     }
 }
