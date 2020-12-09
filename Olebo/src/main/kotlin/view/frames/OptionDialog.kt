@@ -172,9 +172,11 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
             }
 
         private val comboColorItems = listOf(
+            CursorColor.YELLOW,
             CursorColor.BLACK_WHITE,
             CursorColor.WHITE_BLACK,
-            CursorColor.PURPLE
+            CursorColor.PURPLE,
+            CursorColor.RED,
         )
 
         private var isRefreshing = false

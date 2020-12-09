@@ -123,6 +123,8 @@ class StringsBundle : Strings() {
         STR_PLAYERFRAME_OPENED to "automatically open the players window",
         STR_DOUBLE_CLICK_OPEN_ACT to "double click to open the scenario",
         STR_DEFAULT_ELEMENT_VISIBILITY to "tokens visible for players by default",
+        STR_YELLOW to "yellow",
+        STR_RED to "red",
     )
 }
 
@@ -247,5 +249,7 @@ class StringsBundle_fr : Strings() {
         STR_PLAYERFRAME_OPENED to "ouvrir automatiquement la fenêtre joueurs",
         STR_DOUBLE_CLICK_OPEN_ACT to "double cliquez pour ouvir le scénario",
         STR_DEFAULT_ELEMENT_VISIBILITY to "éléments visibles pour les joueurs par défaut",
+        STR_YELLOW to "jaune",
+        STR_RED to "rouge",
     )
 }

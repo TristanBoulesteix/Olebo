@@ -1,5 +1,6 @@
 package model.dao.option
 
+import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -19,6 +20,7 @@ data class Color(val r: Int, val g: Int, val b: Int) {
 }
 
 @Suppress("ClassName")
+@Polymorphic
 @Serializable
 sealed class CursorColor(
     val name: String,
@@ -29,22 +31,32 @@ sealed class CursorColor(
         operator fun get(key: String) = try {
             Json.decodeFromString<CursorColor>(key)
         } catch (e: Exception) {
-            BLACK_WHITE
+            PURPLE
         }
     }
 
-    @Serializable
-    object BLACK_WHITE : CursorColor(Strings[STR_BLACK_WITH_WHITE_BORDER], JColor.BLACK.toColor(), JColor.WHITE.toColor())
+    constructor(name: String, color: Color) : this(name, color, color)
 
     @Serializable
-    object WHITE_BLACK : CursorColor(Strings[STR_WHITE_WITH_BLACK_BORDER], JColor.WHITE.toColor(), JColor.BLACK.toColor())
+    object BLACK_WHITE :
+        CursorColor(Strings[STR_BLACK_WITH_WHITE_BORDER], JColor.BLACK.toColor(), JColor.WHITE.toColor())
 
     @Serializable
-    object PURPLE : CursorColor(Strings[STR_PURPLE], JColor(168, 50, 143).toColor(), JColor(168, 50, 143).toColor())
+    object WHITE_BLACK :
+        CursorColor(Strings[STR_WHITE_WITH_BLACK_BORDER], JColor.WHITE.toColor(), JColor.BLACK.toColor())
+
+    @Serializable
+    object PURPLE : CursorColor(Strings[STR_PURPLE], JColor(168, 50, 143).toColor())
+
+    @Serializable
+    object YELLOW : CursorColor(Strings[STR_YELLOW], JColor.YELLOW.toColor())
+
+    @Serializable
+    object RED : CursorColor(Strings[STR_RED], JColor.RED.toColor())
 
     @Suppress("CanBeParameter")
     @Serializable
-    class Custom(private val customColor: Color) : CursorColor(Strings[STR_CUSTOM_COLOR], customColor, customColor) {
+    class Custom(private val customColor: Color) : CursorColor(Strings[STR_CUSTOM_COLOR], customColor) {
         constructor(color: JColor) : this(color.toColor())
     }
 
