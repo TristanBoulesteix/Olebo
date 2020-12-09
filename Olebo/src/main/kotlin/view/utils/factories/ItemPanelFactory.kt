@@ -1,8 +1,9 @@
 package view.utils.factories
 
-import viewModel.BlueprintManager
 import model.dao.getIcon
+import model.dao.internationalisation.*
 import view.utils.components.ItemPanel
+import viewModel.BlueprintManager
 import java.awt.Color
 import javax.swing.BorderFactory
 
@@ -20,9 +21,9 @@ class ObjectTitlePanel(name: String, manager: BlueprintManager) : TitlePanel(nam
 
 class CharacterTitlePanel(name: String, manager: BlueprintManager) : TitlePanel(name) {
     init {
-        this.add(SquareLabel("PV", { _, _ -> println("toto") }, isEditable = false))
-        this.add(SquareLabel("PM", isEditable = false))
-        this.add(SquareLabel("Img", isEditable = false))
+        this.add(SquareLabel(Strings[STR_HP], isEditable = false))
+        this.add(SquareLabel(Strings[STR_MP], isEditable = false))
+        this.add(SquareLabel(Strings[STR_IMG], isEditable = false))
         this.add(SquareLabel(getIcon("create_icon", this.javaClass), manager::createBlueprint))
     }
 }
@@ -30,7 +31,7 @@ class CharacterTitlePanel(name: String, manager: BlueprintManager) : TitlePanel(
 fun buildTitleItemPanel(manager: BlueprintManager): TitlePanel {
     return with(manager.type) {
         if (this == model.element.Type.OBJECT) {
-            ObjectTitlePanel("Objects", manager)
+            ObjectTitlePanel(Strings[STR_OBJECTS], manager)
         } else {
             CharacterTitlePanel(this.name, manager)
         }

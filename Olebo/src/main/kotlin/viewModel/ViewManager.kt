@@ -2,15 +2,12 @@ package viewModel
 
 import model.act.Act
 import model.act.Scene
-import model.dao.DAO
-import model.element.Blueprint
-import model.element.Element
-import model.element.Position
-import model.element.Priority
+import model.dao.option.Settings
+import model.element.*
 import model.utils.*
-import org.jetbrains.exposed.sql.transactions.transaction
 import view.frames.rpg.MasterFrame
 import view.frames.rpg.MasterMenuBar
+import view.frames.rpg.PlayerFrame
 import view.frames.rpg.ViewFacade
 import java.awt.Point
 import java.awt.Rectangle
@@ -25,7 +22,7 @@ object ViewManager {
 
     private var selectedElements = mutableEmptyElements()
 
-    var cursorPoint = Point()
+    var cursorPoint: Point? = null
 
     /**
      * Get the list of all blueprints
@@ -38,12 +35,14 @@ object ViewManager {
         MasterMenuBar.act = act
         MasterMenuBar.initialize()
         loadCurrentScene()
+        PlayerFrame.toggle(Settings.playerFrameOpenedByDefault)
+        MasterFrame.requestFocus()
     }
 
-    fun removeToken(token: Element) { //removes given token from MutableList
+    fun removeElements(elements: Elements) { //removes given token from MutableList
         selectedElements = mutableEmptyElements()
         ViewFacade.setSelectedToken(null)
-        transaction(DAO.database) { token.delete() }
+        activeScene.callManager(elements, Element::cmdDelete)
         repaint()
     }
 
@@ -55,7 +54,7 @@ object ViewManager {
 
     private fun loadCurrentScene() {
         with(activeAct!!) activeAct@{
-            activeScene = this.scenes.findWithId(this@activeAct.sceneId)
+            activeScene = this.scenes.findWithId(this.sceneId)
             ViewFacade.apply {
                 this.loadItems()
                 this.setMapBackground(activeScene!!.background)
@@ -67,7 +66,10 @@ object ViewManager {
         }
     }
 
-    fun moveToken(x: Int, y: Int) { //Changes a token's position without dropping it (a moved token stays selected) , intended for small steps
+    fun moveToken(
+        x: Int,
+        y: Int
+    ) { //Changes a token's position without dropping it (a moved token stays selected) , intended for small steps
         if (selectedElements.isNotEmpty() && selectedElements.size == 1) {
             val newX = (x - (selectedElements[0].hitBox.width / 2))
             val newY = (y - (selectedElements[0].hitBox.height / 2))
@@ -90,7 +92,8 @@ object ViewManager {
     /**
      * Receives a clicked point (x,y), returns the first soken found in the Tokens array, or null if none matched
      */
-    private fun getTokenFromXY(x: Int, y: Int) = activeScene!!.elements.filter { it.hitBox.contains(x, y) }.maxByOrNull { it.priority }
+    private fun getTokenFromXY(x: Int, y: Int) =
+        activeScene!!.elements.filter { it.hitBox.contains(x, y) }.maxByOrNull { it.priority }
 
     fun repaint() {
         updateTokens()
@@ -136,8 +139,10 @@ object ViewManager {
             fun Int.plusOne(list: Elements) = if (this == list.size - 1) 0 else this + 1
 
             selectedElements.doIfContainsSingle { element ->
-                if (this.elements.getOrNull(this.elements.indexOfFirst { it.id == element.id }.plusOne(this.elements)) != null) {
-                    this.elements[this.elements.indexOfFirst { it.id == element.id }.plusOne(this.elements)].toElements()
+                if (this.elements.getOrNull(this.elements.indexOfFirst { it.id == element.id }
+                        .plusOne(this.elements)) != null) {
+                    this.elements[this.elements.indexOfFirst { it.id == element.id }
+                        .plusOne(this.elements)].toElements()
                 } else mutableEmptyElements()
             } ?: mutableEmptyElements()
         }
@@ -154,8 +159,10 @@ object ViewManager {
                 fun Int.minusOne(list: Elements) = if (this == 0) list.size - 1 else this - 1
 
                 selectedElements.doIfContainsSingle { element ->
-                    if (this.elements.getOrNull(this.elements.indexOfFirst { it.id == element.id }.minusOne(this.elements)) != null) {
-                        activeScene!!.elements[this.elements.indexOfFirst { it.id == element.id }.minusOne(this.elements)].toElements()
+                    if (this.elements.getOrNull(this.elements.indexOfFirst { it.id == element.id }
+                            .minusOne(this.elements)) != null) {
+                        activeScene!!.elements[this.elements.indexOfFirst { it.id == element.id }
+                            .minusOne(this.elements)].toElements()
                     } else mutableEmptyElements()
                 } ?: mutableEmptyElements()
             }
@@ -170,7 +177,11 @@ object ViewManager {
     }
 
     fun toggleVisibility(tokens: Elements, visibility: Boolean? = null) {
-        activeScene.callManager(visibility ?: if(tokens.size == 1) !tokens[0].isVisible else true, tokens, Element::cmdVisiblity)
+        activeScene.callManager(
+            visibility ?: if (tokens.size == 1) !tokens[0].isVisible else true,
+            tokens,
+            Element::cmdVisiblity
+        )
         repaint()
     }
 

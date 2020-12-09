@@ -1,7 +1,9 @@
 package view.frames.rpg
 
+import model.dao.option.Settings
 import model.element.Element
 import model.utils.Elements
+import model.utils.toJColor
 import viewModel.ViewManager
 
 /**
@@ -34,13 +36,25 @@ object ViewFacade {
         reloadFrames()
     }
 
-    fun reloadFrames() { //Repaints both frames simultaneously
+    /**
+     * Repaints both frames simultaneously
+     */
+    fun reloadFrames() {
         MasterMenuBar.reloadCommandItemLabel()
         MasterFrame.reload()
-        PlayerFrame.repaint()
+        PlayerFrame.reload()
     }
 
-    fun turnVisible() { /*this method activates the Player and GM frames to initiate/start back an act	*/
+    fun updateCursorOnPlayerFrame() {
+        Settings.cursorColor.let {
+            PlayerFrame.updateCursor(it.contentCursorColor.toJColor(), it.borderCursorColor.toJColor())
+        }
+    }
+
+    /**
+     * This method activates the [PlayerFrame] and [MasterFrame] to initiate/start back an Act]
+     */
+    fun turnVisible() {
         MasterFrame.isVisible = true
         /*TODO: give master frame and player frame the objects relative to the current act*/
     }
@@ -56,6 +70,6 @@ object ViewFacade {
     }
 
     fun loadItems() {
-        MasterFrame.itemPanel.reloadContent()
+        MasterFrame.itemPanel.reload()
     }
 }

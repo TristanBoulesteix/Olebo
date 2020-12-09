@@ -1,7 +1,10 @@
 package model.dao
 
 import model.act.Act
+import model.dao.internationalisation.ST_ERROR_ACT_NOT_EXISTS
+import model.dao.internationalisation.Strings
 import model.element.Blueprint
+import model.element.Element
 import model.element.Type
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.sql.Database
@@ -15,35 +18,33 @@ import java.io.File
 import java.sql.Connection
 
 object DAO {
-    const val DATABASE_VERSION = 1
+    const val DATABASE_VERSION = 3
     const val DATABASE_NAME = "database.db"
 
     private val filePath = OLEBO_DIRECTORY + "db${File.separator}$DATABASE_NAME"
     private val url = "jdbc:sqlite:$filePath"
 
-    val database: Database
-
-    init {
-        database = try {
-            File(filePath).apply {
-                this.parentFile.mkdirs()
-                this.createNewFile()
-            }
-
-            Database.connect(url, "org.sqlite.JDBC").also {
-                TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
-
-                transaction {
-                    SchemaUtils.createMissingTablesAndColumns(*tables)
-                    tables.forEach {
-                        if (it is Initializable)
-                            it.initialize()
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            throw  DatabaseException(e)
+    val database: Database = try {
+        File(filePath).apply {
+            this.parentFile.mkdirs()
+            this.createNewFile()
         }
+
+        Database.connect(url, "org.sqlite.JDBC").also {
+            TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
+
+            transaction {
+                SchemaUtils.createMissingTablesAndColumns(*tables)
+                tables.forEach {
+                    if (it is Initializable)
+                        it.initialize()
+                }
+                // Delete all elements that where removed from scenes
+                Element.find { InstanceTable.deleted eq true }.forEach(Element::delete)
+            }
+        }
+    } catch (e: Exception) {
+        throw  DatabaseException(e)
     }
 
     /**
@@ -64,7 +65,7 @@ object DAO {
      */
     fun getActWithId(idAct: Int): Act {
         return transaction {
-            Act.findById(idAct) ?: throw MessageException("Error ! This act doesn't exist.")
+            Act.findById(idAct) ?: throw MessageException(Strings[ST_ERROR_ACT_NOT_EXISTS])
         }
     }
 

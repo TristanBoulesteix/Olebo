@@ -1,9 +1,11 @@
 package view.frames.editor.acts
 
-import viewModel.SceneData
+import model.dao.internationalisation.*
+import view.utils.applyAndAppendTo
+import view.utils.gridBagConstraintsOf
 import view.utils.showPopup
+import viewModel.SceneData
 import java.awt.Dimension
-import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.io.File
 import javax.imageio.ImageIO
@@ -30,12 +32,7 @@ class SceneEditorDialog(private val scene: SceneData? = null) : JDialog() {
     private var canceled = true
 
     init {
-        fun <T : JButton> T.addAction(action: () -> Unit): T {
-            this.addActionListener { action() }
-            return this
-        }
-
-        this.title = if (scene == null) "Nouvelle scène" else "Modification de la scène"
+        this.title = if (scene == null) Strings[STR_NEW_SCENE] else Strings[STR_CHANGE_SCENE]
         this.modalityType = ModalityType.APPLICATION_MODAL
         this.size = Dimension(400, 400)
         this.defaultCloseOperation = DO_NOTHING_ON_CLOSE
@@ -45,14 +42,11 @@ class SceneEditorDialog(private val scene: SceneData? = null) : JDialog() {
 
         this.add(JPanel().apply {
             this.preferredSize = Dimension(220, 60)
-            this.add(JLabel("Nom de la scène :"))
+            this.add(JLabel(Strings[STR_NAME_OF_SCENE]))
             this.add(nameField)
-        }, GridBagConstraints().apply {
-            this.gridx = 0
-            this.gridy = 0
-        })
+        }, gridBagConstraintsOf(0, 0))
 
-        this.add(JButton("Importer une image").apply {
+        this.add(JButton(Strings[STR_IMPORT_IMG]).apply {
             this.toolTipText = if (scene != null) {
                 selectedFile = File(scene.img)
                 selectedFile.name
@@ -72,19 +66,18 @@ class SceneEditorDialog(private val scene: SceneData? = null) : JDialog() {
                     this.toolTipText = selectedFile.name
                 }
             }
-        }, GridBagConstraints().apply {
-            this.gridx = 0
-            this.gridy = 1
-        })
+        }, gridBagConstraintsOf(0, 1))
 
         this.add(JPanel().apply {
-            this.add(JButton("Valider").addAction { this@SceneEditorDialog.isVisible = false; canceled = false })
-            this.add(JButton("Annuler").addAction { this@SceneEditorDialog.isVisible = false })
+            JButton(Strings[STR_CONFIRM]).applyAndAppendTo(this) {
+                addActionListener {
+                    dispose()
+                    canceled = false
+                }
+            }
+            JButton(Strings[STR_CANCEL]).applyAndAppendTo(this) { addActionListener { dispose() } }
             this.border = BorderFactory.createEmptyBorder(10, 0, 0, 0)
-        }, GridBagConstraints().apply {
-            this.gridx = 0
-            this.gridy = 2
-        })
+        }, gridBagConstraintsOf(0, 2))
     }
 
     /**
@@ -96,7 +89,7 @@ class SceneEditorDialog(private val scene: SceneData? = null) : JDialog() {
             SceneData(nameField.text, selectedFile.absolutePath, scene?.id)
         } else if (!canceled) {
             this.canceled = true
-            showPopup("Le nom existe déjà ou le fichier sélectionné est invalide !", this)
+            showPopup(Strings[ST_SCENE_ALREADY_EXISTS_OR_INVALID], this)
             return this.showDialog()
         } else null
     }

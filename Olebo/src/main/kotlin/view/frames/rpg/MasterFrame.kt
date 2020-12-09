@@ -1,15 +1,15 @@
 package view.frames.rpg
 
+import model.dao.internationalisation.STR_DM_TITLE_FRAME
+import model.dao.internationalisation.Strings
 import model.utils.Elements
 import view.utils.DIMENSION_FRAME
+import view.utils.gridBagConstraintsOf
 import viewModel.ViewManager
 import java.awt.Color
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
-import java.awt.event.KeyEvent
-import java.awt.event.KeyListener
-import java.awt.event.MouseEvent
-import java.awt.event.MouseMotionAdapter
+import java.awt.event.*
 import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.JFrame
@@ -23,7 +23,7 @@ import javax.swing.JPanel
 object MasterFrame : JFrame(), KeyListener, GameFrame {
     private var masterFramePanel = JPanel() // Main JPanel that contains other panels
 
-    val mapPanel = MapPanel(true) //this frame's mapPanel
+    val mapPanel = MapPanel(this) //this frame's mapPanel
 
     var itemPanel = ItemPanel() // Will contain list of available items
 
@@ -32,7 +32,7 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
     }
 
     override fun setTitle(title: String) {
-        super.setTitle("Olebo - Fenêtre MJ - \"$title\"")
+        super.setTitle("Olebo - ${Strings[STR_DM_TITLE_FRAME]} - \"$title\"")
     }
 
     init {
@@ -53,29 +53,29 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
 
         SelectPanel.setSize(mapPanel.width, (this.height - mapPanel.height))
 
-        val mapConstraints = GridBagConstraints()
-        val itemConstraints = GridBagConstraints()
-        val selectConstraints = GridBagConstraints()
-
-        itemConstraints.gridx = 0
-        itemConstraints.gridy = 0
-        itemConstraints.gridheight = 2
-        itemConstraints.weightx = 1.0
-        itemConstraints.weighty = 2.0
-        itemConstraints.fill = GridBagConstraints.BOTH
-
-        selectConstraints.gridx = 1
-        selectConstraints.gridy = 1
-        selectConstraints.weightx = 0.5
-        selectConstraints.weighty = 1.0
-        selectConstraints.gridwidth = GridBagConstraints.REMAINDER
-        selectConstraints.fill = GridBagConstraints.BOTH
-
-        mapConstraints.gridx = 3
-        mapConstraints.gridy = 0
-        mapConstraints.weightx = 3.0
-        mapConstraints.weighty = 7.0
-        mapConstraints.fill = GridBagConstraints.BOTH
+        val itemConstraints = gridBagConstraintsOf(
+            gridx = 0,
+            gridy = 0,
+            gridHeight = 2,
+            weightx = 1.0,
+            weighty = 2.0,
+            fill = GridBagConstraints.BOTH
+        )
+        val selectConstraints = gridBagConstraintsOf(
+            gridx = 1,
+            gridy = 1,
+            gridWidth = GridBagConstraints.REMAINDER,
+            weightx = 0.5,
+            weighty = 1.0,
+            fill = GridBagConstraints.BOTH
+        )
+        val mapConstraints = gridBagConstraintsOf(
+            gridx = 3,
+            gridy = 0,
+            weightx = 3.0,
+            weighty = 7.0,
+            fill = GridBagConstraints.BOTH
+        )
 
         masterFramePanel.add(mapPanel, mapConstraints)
         masterFramePanel.add(itemPanel, itemConstraints)
@@ -87,11 +87,16 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
                 ViewManager.cursorPoint = mapPanel.getAbsolutePoint(me.point)
             }
         })
+        mapPanel.addMouseListener(object : MouseAdapter() {
+            override fun mouseExited(me: MouseEvent) {
+                ViewManager.cursorPoint = null
+            }
+        })
     }
 
     override fun reload() {
         mapPanel.repaint()
-        itemPanel.reloadContent()
+        itemPanel.reload()
         SelectPanel.reload()
     }
 
@@ -116,5 +121,10 @@ object MasterFrame : JFrame(), KeyListener, GameFrame {
     override fun dispose() {
         PlayerFrame.hide()
         super.dispose()
+    }
+
+    override fun requestFocus() {
+        this.toFront()
+        super.requestFocus()
     }
 }

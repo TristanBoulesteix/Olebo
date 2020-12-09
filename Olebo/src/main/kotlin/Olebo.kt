@@ -3,7 +3,7 @@ import view.frames.home.HomeFrame
 import javax.swing.SwingUtilities
 import javax.swing.UIManager
 
-const val VERSION = "1.4.1-BETA"
+const val OLEBO_VERSION = "1.5.0-BETA"
 
 const val DEBUG = false
 
@@ -12,7 +12,7 @@ fun main() {
         checkForUpdate()
     SwingUtilities.invokeLater {
         UIManager.setLookAndFeel(
-                UIManager.getSystemLookAndFeelClassName()
+            UIManager.getSystemLookAndFeelClassName()
         )
 
         HomeFrame().isVisible = true

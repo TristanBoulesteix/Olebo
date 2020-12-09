@@ -4,13 +4,15 @@ import model.act.Act
 import model.act.Scene
 import model.dao.DAO
 import model.dao.saveImg
+import model.dao.internationalisation.ST_SCENE_ALREADY_EXISTS
+import model.dao.internationalisation.Strings
+import org.jetbrains.exposed.sql.transactions.transaction
+import utils.forElse
+import view.frames.editor.acts.SceneEditorDialog
+import view.utils.showPopup
 import viewModel.pattern.observer.Action
 import viewModel.pattern.observer.Observable
 import viewModel.pattern.observer.Observer
-import view.frames.editor.acts.SceneEditorDialog
-import view.utils.showPopup
-import org.jetbrains.exposed.sql.transactions.transaction
-import utils.forElse
 
 /**
  * Manager to create an act (uses all classes in jdr.exia.view.frames.editor)
@@ -26,7 +28,8 @@ class ActCreatorManager : Observable {
      * Save or create an act into the database.
      */
     fun saveAct(actName: String): Boolean {
-        if (DAO.getActsList().map { if (it.first != idAct.toString()) it.second else "" }.contains(actName)) return false
+        if (DAO.getActsList().map { if (it.first != idAct.toString()) it.second else "" }
+                .contains(actName)) return false
 
         if (idAct == 0) {
             fun createScenes(idCurrentAct: Int): MutableList<Scene> {
@@ -60,7 +63,7 @@ class ActCreatorManager : Observable {
                     this.name = actName
 
                     this.scenes.forEach { scene ->
-                        if(!tempScenes.map { it.id ?: -1 }.contains(scene.id.value)) {
+                        if (!tempScenes.map { it.id ?: -1 }.contains(scene.id.value)) {
                             scene.delete()
                         }
                     }
@@ -92,7 +95,7 @@ class ActCreatorManager : Observable {
     fun createNewScene(@Suppress("UNUSED_PARAMETER") id: Int) {
         SceneEditorDialog().showDialog()?.let {
             if (tempScenes.map { map -> map.name }.contains(it.name)) {
-                showPopup("Une scène avec le même nom existe déjà !")
+                showPopup(Strings[ST_SCENE_ALREADY_EXISTS])
                 createNewScene(0)
             } else {
                 tempScenes += it
@@ -109,7 +112,7 @@ class ActCreatorManager : Observable {
             if (tempScenes.map { map ->
                     if (tempScenes[index].name == map.name) "" else map.name
                 }.contains(it.name)) {
-                showPopup("Une scène avec le même nom existe déjà !")
+                showPopup(Strings[ST_SCENE_ALREADY_EXISTS])
                 updateNewScene(index)
             } else {
                 tempScenes[index] = it

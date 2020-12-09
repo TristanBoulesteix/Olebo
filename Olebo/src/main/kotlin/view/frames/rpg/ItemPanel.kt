@@ -1,10 +1,12 @@
 package view.frames.rpg
 
 import model.dao.DAO
+import model.dao.internationalisation.*
 import model.element.Blueprint
 import model.element.Type
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.forElse
+import view.frames.Reloadable
 import view.utils.components.PlaceholderTextField
 import view.utils.event.ClickListener
 import viewModel.ViewManager
@@ -20,7 +22,7 @@ import javax.swing.event.DocumentListener
 /**
  * This panel is intended to contain the entire list of items that the Game master can use (and it does)
  */
-class ItemPanel : JPanel() {
+class ItemPanel : JPanel(), Reloadable {
     companion object {
         private val dimensionElement = Dimension(Int.MAX_VALUE, 40)
     }
@@ -32,7 +34,7 @@ class ItemPanel : JPanel() {
     /**
      * Search field to find a specific blueprint
      */
-    private val searchField = PlaceholderTextField("Rechercher")
+    private val searchField = PlaceholderTextField(Strings[STR_SEARCH])
 
     /**
      * Event which trigger when the search field is modified
@@ -46,7 +48,7 @@ class ItemPanel : JPanel() {
 
         fun warn() {
             searchConstraint = searchField.text
-            reloadContent()
+            reload()
         }
     }
 
@@ -62,10 +64,7 @@ class ItemPanel : JPanel() {
         this.add(JScrollPane(itemsView), BorderLayout.CENTER)
     }
 
-    /**
-     * Reload content depending on searchConstraint
-     */
-    fun reloadContent() {
+    override fun reload() {
         transaction(DAO.database) {
             with(itemsView) {
                 // Remove previous components
@@ -73,39 +72,46 @@ class ItemPanel : JPanel() {
                 this.updateUI()
 
                 // Object list
-                this.add(CustomTitlePanel("Objets").apply { this.isEnabled = false })
+                this.add(CustomTitlePanel(Strings[STR_OBJECTS]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
                     it.type.typeElement == Type.OBJECT && (searchConstraint.isEmpty() || it.name.toLowerCase().contains(
-                            searchConstraint.toLowerCase()
+                        searchConstraint.toLowerCase()
                     ))
                 }.forElse {
                     this.add(CustomPanel(it))
                 } ?: this.add(EmptyField())
 
                 // PJ list
-                this.add(CustomTitlePanel("PJ").apply { this.isEnabled = false })
+                this.add(CustomTitlePanel(Strings[STR_PC]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.PJ && (searchConstraint.isEmpty() || it.name.toLowerCase().contains(searchConstraint, true))
+                    it.type.typeElement == Type.PJ && (searchConstraint.isEmpty() || it.name.toLowerCase()
+                        .contains(searchConstraint, true))
                 }.forElse {
                     this.add(CustomPanel(it))
                 } ?: this.add(EmptyField())
 
                 // PNJ list
-                this.add(CustomTitlePanel("PNJ").apply { this.isEnabled = false })
+                this.add(CustomTitlePanel(Strings[STR_NPC]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.PNJ && (searchConstraint.isEmpty() || it.name.contains(searchConstraint, true))
+                    it.type.typeElement == Type.PNJ && (searchConstraint.isEmpty() || it.name.contains(
+                        searchConstraint,
+                        true
+                    ))
                 }.forElse {
                     this.add(CustomPanel(it))
                 } ?: this.add(EmptyField())
 
                 // Basic elements list
-                this.add(CustomTitlePanel("Éléments de base").apply { this.isEnabled = false })
+                this.add(CustomTitlePanel(Strings[STR_BASE_ELEMENT_PLR]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.BASIC && (searchConstraint.isEmpty() || it.realName.contains(searchConstraint, true))
+                    it.type.typeElement == Type.BASIC && (searchConstraint.isEmpty() || it.realName.contains(
+                        searchConstraint,
+                        true
+                    ))
                 }.forElse {
                     this.add(CustomPanel(it))
                 } ?: this.add(EmptyField())
@@ -167,7 +173,7 @@ class ItemPanel : JPanel() {
     /**
      * Class showing "Aucun élément" as JTextField
      */
-    class EmptyField : JTextField("Aucun élément") {
+    class EmptyField : JTextField(Strings[STR_NO_ELEMENT]) {
         init {
             this.isEnabled = false
             this.maximumSize = dimensionElement

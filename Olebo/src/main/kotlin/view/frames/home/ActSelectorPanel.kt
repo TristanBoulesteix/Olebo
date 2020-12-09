@@ -1,11 +1,13 @@
 package view.frames.home
 
-import viewModel.HomeManager
 import model.dao.DAO
 import model.dao.getIcon
+import model.dao.internationalisation.STR_DOUBLE_CLICK_OPEN_ACT
+import model.dao.internationalisation.Strings
 import view.utils.components.ItemPanel
 import view.utils.components.SelectorPanel
 import view.utils.event.ClickListener
+import viewModel.HomeManager
 import java.awt.event.MouseEvent
 
 /**
@@ -20,13 +22,15 @@ class ActSelectorPanel : SelectorPanel() {
     }
 
     /**
-     * This panel display an Act 
+     * This panel display an Act
      */
     @Suppress("ProtectedInFinal")
     protected class ActPanel(id: Int, name: String) : ItemPanel(id, name), ClickListener {
         init {
-            this.namePanel.addMouseListener(this)
-            this.nameLabel.addMouseListener(this)
+            listOf(nameLabel, namePanel).forEach {
+                it.addMouseListener(this)
+                it.toolTipText = Strings[STR_DOUBLE_CLICK_OPEN_ACT]
+            }
             this.nameLabel.isEnabled = false
 
             this.add(SquareLabel(getIcon("edit_icon", HomeManager.javaClass), HomeManager::updateAct))

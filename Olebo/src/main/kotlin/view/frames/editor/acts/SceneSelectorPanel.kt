@@ -1,15 +1,17 @@
 package view.frames.editor.acts
 
 import model.dao.getIcon
+import model.dao.internationalisation.STR_SCENES
+import model.dao.internationalisation.Strings
 import view.utils.components.ItemPanel
 import view.utils.components.SelectorPanel
+import view.utils.gridBagConstraintsOf
 import viewModel.ActCreatorManager
 import viewModel.HomeManager
 import viewModel.getArrayOfPairs
 import java.awt.BorderLayout.NORTH
 import java.awt.Color
 import java.awt.GridBagConstraints
-import java.awt.GridBagConstraints.BOTH
 import java.awt.GridBagLayout
 import javax.swing.BorderFactory
 import javax.swing.JPanel
@@ -31,7 +33,7 @@ class SceneSelectorPanel(private val controller: ActCreatorManager?) : SelectorP
         this.add(JPanel().apply {
             this.layout = GridBagLayout()
 
-            val titleItems = object : ItemPanel(0, "Scènes") {
+            val titleItems = object : ItemPanel(0, Strings[STR_SCENES]) {
                 init {
                     this.border = BorderFactory.createMatteBorder(2, 2, 0, 2, Color.BLACK)
                     this.add(
@@ -42,12 +44,8 @@ class SceneSelectorPanel(private val controller: ActCreatorManager?) : SelectorP
                     )
                 }
             }
-            val cTitleItem = GridBagConstraints().apply {
-                this.fill = BOTH
-                this.weightx = 1.0
-            }
 
-            this.add(titleItems, cTitleItem)
+            this.add(titleItems, gridBagConstraintsOf(fill = GridBagConstraints.BOTH, weightx = 1.0))
             this.revalidate()
         }, NORTH)
         this.refresh()

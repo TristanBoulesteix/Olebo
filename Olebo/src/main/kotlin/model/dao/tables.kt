@@ -4,12 +4,24 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import java.util.*
 
 /**
  * List of all tables in the database
  * Put them in order of initialization
  */
-val tables by lazy { arrayOf(ActTable, SceneTable, TypeTable, BlueprintTable, PriorityTable, SizeTable, InstanceTable, SettingsTable) }
+val tables by lazy {
+    arrayOf(
+        ActTable,
+        SceneTable,
+        TypeTable,
+        BlueprintTable,
+        PriorityTable,
+        SizeTable,
+        InstanceTable,
+        SettingsTable
+    )
+}
 
 interface Initializable {
     fun initialize()
@@ -35,7 +47,9 @@ object BlueprintTable : IntIdTable(), Initializable {
 
     override fun initialize() {
         // Pointers
-        if (BlueprintTable.select((idType eq 4) and (name eq "@pointerTransparent") and (sprite eq "pointer_transparent.png")).count() <= 0) {
+        if (BlueprintTable.select((idType eq 4) and (name eq "@pointerTransparent") and (sprite eq "pointer_transparent.png"))
+                .count() <= 0
+        ) {
             BlueprintTable.insert {
                 it[name] = "@pointerTransparent"
                 it[sprite] = "pointer_transparent.png"
@@ -43,7 +57,9 @@ object BlueprintTable : IntIdTable(), Initializable {
             }
         }
 
-        if (BlueprintTable.select((idType eq 4) and (name eq "@pointerBlue") and (sprite eq "pointer_blue.png")).count() <= 0) {
+        if (BlueprintTable.select((idType eq 4) and (name eq "@pointerBlue") and (sprite eq "pointer_blue.png"))
+                .count() <= 0
+        ) {
             BlueprintTable.insert {
                 it[name] = "@pointerBlue"
                 it[sprite] = "pointer_blue.png"
@@ -51,7 +67,9 @@ object BlueprintTable : IntIdTable(), Initializable {
             }
         }
 
-        if (BlueprintTable.select((idType eq 4) and (name eq "@pointerWhite") and (sprite eq "pointer_white.png")).count() <= 0) {
+        if (BlueprintTable.select((idType eq 4) and (name eq "@pointerWhite") and (sprite eq "pointer_white.png"))
+                .count() <= 0
+        ) {
             BlueprintTable.insert {
                 it[name] = "@pointerWhite"
                 it[sprite] = "pointer_white.png"
@@ -59,7 +77,9 @@ object BlueprintTable : IntIdTable(), Initializable {
             }
         }
 
-        if (BlueprintTable.select((idType eq 4) and (name eq "@pointerGreen") and (sprite eq "pointer_green.png")).count() <= 0) {
+        if (BlueprintTable.select((idType eq 4) and (name eq "@pointerGreen") and (sprite eq "pointer_green.png"))
+                .count() <= 0
+        ) {
             BlueprintTable.insert {
                 it[name] = "@pointerGreen"
                 it[sprite] = "pointer_green.png"
@@ -138,9 +158,11 @@ object InstanceTable : IntIdTable() {
     val idSize = reference("ID_Size", SizeTable, onDelete = ReferenceOption.CASCADE).default(EntityID(2, SizeTable))
     val visible = bool("Visible").default(false)
     val orientation = double("Orientation").default(0.0)
-    val priority = reference("id_priority", PriorityTable, onDelete = ReferenceOption.CASCADE).default(EntityID(2, PriorityTable))
+    val priority =
+        reference("id_priority", PriorityTable, onDelete = ReferenceOption.CASCADE).default(EntityID(2, PriorityTable))
     val idScene = integer("ID_Scene").references(SceneTable.id).default(0)
     val idBlueprint = integer("id_blueprint").references(BlueprintTable.id).default(0)
+    val deleted = bool("deleted").default(false)
 }
 
 object SizeTable : IntIdTable(), Initializable {
@@ -203,6 +225,10 @@ object SettingsTable : IntIdTable(), Initializable {
     const val AUTO_UPDATE = "autoUpdate"
     const val UPDATE_WARN = "updateWarn"
     const val CURSOR_ENABLED = "cursorEnabled"
+    const val CURRENT_LANGUAGE = "current_language"
+    const val CURSOR_COLOR = "cursor_color"
+    const val PLAYER_FRAME_ENABLED = "PlayerFrame_enabled"
+    const val DEFAULT_ELEMENT_VISIBILITY = "default_element_visibility"
 
     val name = varchar("name", 255)
     val value = varchar("value", 255).default("")
@@ -219,27 +245,21 @@ object SettingsTable : IntIdTable(), Initializable {
             SettingsTable.update({ baseVersionWhere }) { it[value] = DAO.DATABASE_VERSION.toString() }
         }
 
-        if (SettingsTable.select((id eq 2) and (name eq AUTO_UPDATE)).count() <= 0) {
-            SettingsTable.insert {
-                it[id] = EntityID(2, SettingsTable)
-                it[name] = AUTO_UPDATE
-                it[value] = true.toString()
-            }
-        }
+        insertOptionIfNotExists(2, AUTO_UPDATE, true)
+        insertOptionIfNotExists(3, UPDATE_WARN, "")
+        insertOptionIfNotExists(4, CURSOR_ENABLED, true)
+        insertOptionIfNotExists(5, CURRENT_LANGUAGE, Locale.getDefault().language)
+        insertOptionIfNotExists(6, CURSOR_COLOR, "")
+        insertOptionIfNotExists(7, PLAYER_FRAME_ENABLED, false)
+        insertOptionIfNotExists(8, DEFAULT_ELEMENT_VISIBILITY, false)
+    }
 
-        if (SettingsTable.select((id eq 3) and (name eq UPDATE_WARN)).count() <= 0) {
+    private fun insertOptionIfNotExists(id: Int, name: String, value: Any) {
+        if (SettingsTable.select((SettingsTable.id eq id) and (SettingsTable.name eq name)).count() <= 0) {
             SettingsTable.insert {
-                it[id] = EntityID(3, SettingsTable)
-                it[name] = UPDATE_WARN
-                it[value] = ""
-            }
-        }
-
-        if (SettingsTable.select((id eq 4) and (name eq CURSOR_ENABLED)).count() <= 0) {
-            SettingsTable.insert {
-                it[id] = EntityID(4, SettingsTable)
-                it[name] = CURSOR_ENABLED
-                it[value] = true.toString()
+                it[SettingsTable.id] = EntityID(id, SettingsTable)
+                it[SettingsTable.name] = name
+                it[SettingsTable.value] = value.toString()
             }
         }
     }

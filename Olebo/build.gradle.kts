@@ -3,10 +3,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     java
     kotlin("jvm") version "1.4.20"
+    kotlin("plugin.serialization") version "1.4.20"
 }
 
 group = "jdr.exia"
-version = "1.4.1-BETA"
+version = "1.5.0-BETA"
 
 repositories {
     mavenCentral()
@@ -30,6 +31,7 @@ dependencies {
     implementation("org.jetbrains.kotlin", "kotlin-reflect", "1.4.0")
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.4.1")
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-swing", "1.4.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
 }
 
 val jar by tasks.getting(Jar::class) {

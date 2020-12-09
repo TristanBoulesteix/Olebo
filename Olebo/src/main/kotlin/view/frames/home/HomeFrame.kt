@@ -1,17 +1,21 @@
 package view.frames.home
 
-import VERSION
+import OLEBO_VERSION
+import model.dao.internationalisation.STR_ADD_ACT
+import model.dao.internationalisation.STR_ELEMENTS
+import model.dao.internationalisation.STR_VERSION
+import model.dao.internationalisation.Strings
 import view.frames.rpg.MasterFrame
 import view.utils.BORDER_BUTTONS
 import view.utils.components.FileMenu
 import view.utils.components.JFrameTemplate
+import view.utils.gridBagConstraintsOf
 import viewModel.HomeManager
 import viewModel.pattern.observer.Action
 import viewModel.pattern.observer.Observable
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.NORTH
 import java.awt.Color
-import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import javax.swing.BorderFactory
 import javax.swing.JButton
@@ -23,7 +27,7 @@ import javax.swing.JPanel
  *
  * This frame will send the selected act to the Games Views
  */
-class HomeFrame : JFrameTemplate("Olebo - Version $VERSION") {
+class HomeFrame : JFrameTemplate("Olebo - ${Strings[STR_VERSION]} $OLEBO_VERSION") {
     override val observable: Observable = HomeManager
 
     private val selectorPanel = ActSelectorPanel()
@@ -42,31 +46,23 @@ class HomeFrame : JFrameTemplate("Olebo - Version $VERSION") {
             this.border = BorderFactory.createEmptyBorder(15, 0, 15, 0)
             this.layout = GridBagLayout()
 
-            val elementButton = JButton("Éléments").apply {
+            val elementButton = JButton(Strings[STR_ELEMENTS]).apply {
                 this.border = BORDER_BUTTONS
                 this.addActionListener {
                     HomeManager.openObjectEditorFrame()
                 }
             }
-            val cElementButton = GridBagConstraints().apply {
-                this.gridx = 0
-                this.gridy = 0
-                this.weightx = .5
-            }
-            this.add(elementButton, cElementButton)
 
-            val actButton = JButton("Ajouter un scénario").apply {
+            this.add(elementButton, gridBagConstraintsOf(gridx = 0, gridy = 0, weightx = .5))
+
+            val actButton = JButton(Strings[STR_ADD_ACT]).apply {
                 this.border = BORDER_BUTTONS
                 this.addActionListener {
                     HomeManager.openActCreatorFrame()
                 }
             }
-            val cActButton = GridBagConstraints().apply {
-                this.gridx = 1
-                this.gridy = 0
-                this.weightx = .5
-            }
-            this.add(actButton, cActButton)
+
+            this.add(actButton, gridBagConstraintsOf(gridx = 1, gridy = 0, weightx = .5))
 
             this.background = Color.ORANGE
         }, NORTH)

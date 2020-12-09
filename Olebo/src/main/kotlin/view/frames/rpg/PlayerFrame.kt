@@ -1,9 +1,14 @@
 package view.frames.rpg
 
+import model.dao.internationalisation.STR_PLAYER_TITLE_FRAME
+import model.dao.internationalisation.Strings
 import model.utils.Elements
 import model.utils.emptyElements
+import view.frames.Reloadable
 import view.utils.DIMENSION_FRAME
+import java.awt.Color
 import java.awt.GraphicsEnvironment
+import java.awt.Window
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import java.awt.event.WindowAdapter
@@ -15,8 +20,8 @@ import javax.swing.JDialog
 /**
  * PlayerFrame is the Frame the Players can see, it shares its content with MasterFrame
  */
-class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
-    companion object {
+class PlayerFrame private constructor() : JDialog(null as Window?), GameFrame, KeyListener {
+    companion object : Reloadable {
         private var playerFrameInstance: PlayerFrame? = null
 
         var mapBackground: String = ""
@@ -25,7 +30,7 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
                 playerFrameInstance?.setMapBackground(value)
             }
 
-        var title = "Player"
+        var title = "\" \""
             set(value) {
                 playerFrameInstance?.title = value
                 field = value
@@ -37,7 +42,9 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
                 field = value
             }
 
-        fun show() {
+        fun toggle(isVisble: Boolean) = if (isVisble) show() else hide()
+
+        private fun show() {
             playerFrameInstance = PlayerFrame().apply {
                 this.title = Companion.title
                 this.setMapBackground(mapBackground)
@@ -50,13 +57,13 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
                         this.preferredSize = DIMENSION_FRAME
                         this.pack()
                         this.setLocationRelativeTo(null)
-                        isVisible = true
+                        this.isVisible = true
                     } else { //If 2 screens are present, we display the player frame in fullscreen on the 2nd screen
                         for (screen in screens) {
                             if (MasterFrame.graphicsConfiguration.device != screen) {
                                 this.setSize(
-                                        screen.displayMode.width,
-                                        screen.displayMode.height
+                                    screen.displayMode.width,
+                                    screen.displayMode.height
                                 )  //Sets the frame's size as exactly the size of the screen.
                                 this.isUndecorated = true
                                 this.isResizable = false
@@ -64,8 +71,10 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
                                 this.pack()
                                 screen.fullScreenWindow = this
                                 this.location = screen.defaultConfiguration.bounds.location.apply {
-                                    x *= screen.defaultConfiguration.defaultTransform.scaleX.toInt()
-                                    y *= screen.defaultConfiguration.defaultTransform.scaleY.toInt()
+                                    with(screen.defaultConfiguration.defaultTransform) {
+                                        x *= scaleX.toInt()
+                                        y *= scaleY.toInt()
+                                    }
                                 }
                                 break
                             }
@@ -75,29 +84,36 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
             }
         }
 
+        fun updateCursor(contentColor: Color, borderColor: Color) {
+            playerFrameInstance?.mapPanel?.cursorColor = contentColor
+            playerFrameInstance?.mapPanel?.borderCursorColor = borderColor
+        }
+
         fun hide() {
             playerFrameInstance?.dispose()
             playerFrameInstance = null
         }
 
-        fun repaint() = playerFrameInstance?.repaint()
+        override fun reload() {
+            playerFrameInstance?.reload()
+        }
     }
 
-    private val mapPanel = MapPanel()
+    private val mapPanel = MapPanel(this)
 
     init {
         this.contentPane = mapPanel
         this.addKeyListener(this)
         this.defaultCloseOperation = DO_NOTHING_ON_CLOSE
         this.addWindowListener(object : WindowAdapter() {
-            override fun windowClosing(e: WindowEvent) = Companion.hide().also { MasterMenuBar.togglePlayerFrameMenuItem?.isSelected = false }
+            override fun windowClosing(e: WindowEvent) =
+                Companion.hide().also { MasterMenuBar.togglePlayerFrameMenuItem?.isSelected = false }
         })
     }
 
     override fun reload() = repaint()
 
-    override fun setTitle(title: String) =
-            super.setTitle("Olebo - Fenêtre PJ - \"$title\"")
+    override fun setTitle(title: String) = super.setTitle("Olebo - ${Strings[STR_PLAYER_TITLE_FRAME]} - \"$title\"")
 
     override fun updateMap(tokens: Elements) {
         mapPanel.updateTokens(tokens)
@@ -107,8 +123,7 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
         mapPanel.backGroundImage = ImageIO.read(File(imageName))
     }
 
-    override fun keyTyped(p0: KeyEvent) {
-    }
+    override fun keyTyped(p0: KeyEvent) = Unit
 
     override fun keyPressed(p0: KeyEvent) {
         if (p0.keyCode == KeyEvent.VK_ESCAPE) {
@@ -117,7 +132,5 @@ class PlayerFrame private constructor() : JDialog(), GameFrame, KeyListener {
         }
     }
 
-    override fun keyReleased(p0: KeyEvent) {
-    }
-
+    override fun keyReleased(p0: KeyEvent) = Unit
 }

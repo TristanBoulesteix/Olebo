@@ -5,6 +5,8 @@ import model.command.Command
 import model.command.CommandManager
 import model.dao.DAO
 import model.dao.InstanceTable
+import model.dao.internationalisation.*
+import model.dao.option.Settings
 import model.utils.Elements
 import model.utils.isCharacter
 import model.utils.rotate
@@ -35,6 +37,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
                         it[currentMP] = b.MP
                     }
                     it[idBlueprint] = b.id.value
+                    it[visible] = Settings.defaultElementVisibility
                 }
 
                 Element[id]
@@ -46,10 +49,8 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         fun cmdVisiblity(visibility: Boolean, manager: CommandManager, elements: Elements) {
             val previousVisibilities = elements.map { it.isVisible }
 
-            val plr = if (elements.size == 1) "" else "s"
-
             manager += object : Command() {
-                override val label = "Modifier la visiblité de$plr élément$plr"
+                override val label by StringDelegate(if (elements.size == 1) ST_CHANGE_VISIBILITY else ST_CHANGE_VISIBILITY_PLR)
 
                 override fun exec() {
                     elements.forEach {
@@ -71,7 +72,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             val previousOrientation = elements.map { it.orientation }
 
             manager += object : Command() {
-                override val label = "Rotation à droite"
+                override val label by StringDelegate(STR_ROTATE_TO_RIGHT)
 
                 override fun exec() {
                     elements.forEach {
@@ -94,7 +95,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             val previousOrientation = elements.map { it.orientation }
 
             manager += object : Command() {
-                override val label = "Rotation à gauche"
+                override val label by StringDelegate(STR_ROTATE_TO_LEFT)
 
                 override fun exec() = elements.forEach {
                     if (it.stillExist())
@@ -115,11 +116,9 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
             val previousSize = elementsFiltered.map { it.size }
 
-            val plr = if (elements.size == 1) "" else "s"
-
             if (elementsFiltered.isNotEmpty())
                 manager += object : Command() {
-                    override val label = "Redimensionner élément$plr"
+                    override val label by StringDelegate(if (elements.size == 1) STR_RESIZE_ELEMENT else STR_RESIZE_ELEMENT_PLR)
 
                     override fun exec() = elementsFiltered.forEach {
                         if (it.stillExist())
@@ -131,6 +130,24 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
                             element.size = previousSize[index]
                     }
                 }
+        }
+
+        fun cmdDelete(manager: CommandManager, elements: Elements) {
+            manager += object : Command() {
+                override val label by StringDelegate(STR_DELETE_SELECTED_TOKENS)
+
+                override fun exec() = transaction(DAO.database) {
+                    elements.forEach {
+                        it.isDeleted = true
+                    }
+                }
+
+                override fun cancelExec() = transaction(DAO.database) {
+                    elements.forEach {
+                        it.isDeleted = false
+                    }
+                }
+            }
         }
     }
 
@@ -148,6 +165,8 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     private var y by InstanceTable.y
     private var sizeElement by Size.SizeElement referencedOn InstanceTable.idSize
     private var priorityElement by Priority.PriorityElement referencedOn InstanceTable.priority
+
+    var isDeleted by InstanceTable.deleted
 
     // Value from the Blueprint
     val sprite
@@ -174,10 +193,10 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     val hitBox
         get() = transaction(DAO.database) {
             Rectangle(
-                    x,
-                    y,
-                    sizeElement.absoluteSizeValue,
-                    sizeElement.absoluteSizeValue
+                x,
+                y,
+                sizeElement.absoluteSizeValue,
+                sizeElement.absoluteSizeValue
             )
         }
 
@@ -233,7 +252,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         val previousPosition = this.position
 
         manager += object : Command() {
-            override val label = "Déplacer élément"
+            override val label by StringDelegate(STR_MOVE_ELEMENT)
 
             override fun exec() {
                 this@Element.position = position

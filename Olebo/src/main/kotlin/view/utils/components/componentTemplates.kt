@@ -1,6 +1,8 @@
 package view.utils.components
 
 import model.dao.DAO
+import model.dao.internationalisation.STR_NO_ELEMENT
+import model.dao.internationalisation.Strings
 import model.element.Element
 import model.utils.isCharacter
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -23,7 +25,7 @@ import javax.swing.text.PlainDocument
  * Template of all JFrame's menu templates
  */
 abstract class JFrameTemplate(title: String) : JFrame(),
-        Observer {
+    Observer {
     protected abstract val observable: Observable
 
     init {
@@ -47,7 +49,7 @@ abstract class JFrameTemplate(title: String) : JFrame(),
  * It is similar to JFrameTemplate because I didn't find a public common parent to JDialog and JFrame.
  */
 abstract class JDialogTemplate(title: String, modal: Boolean = true) : JDialog(),
-        Observer {
+    Observer {
     protected abstract val observable: Observable
 
     init {
@@ -63,9 +65,9 @@ abstract class JDialogTemplate(title: String, modal: Boolean = true) : JDialog()
     override fun createRootPane(): JRootPane {
         return super.createRootPane().apply {
             this.registerKeyboardAction(
-                    { this@JDialogTemplate.dispose() },
-                    KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW
+                { this@JDialogTemplate.dispose() },
+                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW
             )
         }
     }
@@ -101,7 +103,7 @@ abstract class SelectorPanel : JPanel() {
                 this.add(builder(it.first.toInt(), it.second))
             } ?: this.add(JPanel().apply {
                 this.layout = GridBagLayout()
-                this.add(JLabel("Aucun élément").apply {
+                this.add(JLabel(Strings[STR_NO_ELEMENT]).apply {
                     this.font = Font("Tahoma", Font.BOLD, 20)
                 })
             })
@@ -152,11 +154,10 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
 
     protected val namePanel = JPanel().apply {
         this.layout = GridBagLayout()
-        this.add(nameLabel, GridBagConstraints().apply {
-            this.anchor = GridBagConstraints.WEST
-            this.fill = GridBagConstraints.BOTH
-            this.weightx = 1.0
-        })
+        this.add(
+            nameLabel,
+            gridBagConstraintsOf(anchor = GridBagConstraints.WEST, fill = GridBagConstraints.BOTH, weightx = 1.0)
+        )
     }
 
     init {
@@ -171,7 +172,7 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
      * Label that act like a button.
      */
     protected inner class SquareLabel(icon: ImageIcon, action: (Int) -> Unit) :
-            JLabel(icon, CENTER) {
+        JLabel(icon, CENTER) {
 
         private val listener = object : ClickListener {
             override fun mouseClicked(e: MouseEvent?) {
@@ -187,17 +188,17 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
         }
 
         constructor(img: String, action: (Int) -> Unit) : this(
-                ImageIcon(
-                        ImageIO.read(File(img)).getScaledInstance(
-                                DIMENSION_SQUARE.width, DIMENSION_SQUARE.height, Image.SCALE_SMOOTH
-                        )
-                ), action
+            ImageIcon(
+                ImageIO.read(File(img)).getScaledInstance(
+                    DIMENSION_SQUARE.width, DIMENSION_SQUARE.height, Image.SCALE_SMOOTH
+                )
+            ), action
         )
 
         constructor(
-                text: String,
-                action: ((Int, String) -> Unit)? = null,
-                isEditable: Boolean = true
+            text: String,
+            action: ((Int, String) -> Unit)? = null,
+            isEditable: Boolean = true
         ) : this(ImageIcon(), { }) {
             this.removeMouseListener(listener)
             this.layout = GridBagLayout()
@@ -219,11 +220,7 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
 
                     override fun focusGained(e: FocusEvent?) {}
                 })
-            }, GridBagConstraints().apply {
-                this.fill = GridBagConstraints.BOTH
-                this.weightx = 1.0
-                this.weighty = 1.0
-            })
+            }, gridBagConstraintsOf(fill = GridBagConstraints.BOTH, weightx = 1.0, weighty = 1.0))
         }
     }
 }
@@ -280,10 +277,12 @@ class SlideStats(private val hp: Boolean, initialElement: Element? = null) : JPa
         }
 
         slider = object : JSlider() {
-            private val basePositions = Hashtable(mapOf(
+            private val basePositions = Hashtable(
+                mapOf(
                     -20 to JLabel("-20"),
                     0 to JLabel("0")
-            ))
+                )
+            )
 
             init {
                 applyStyle()
@@ -332,20 +331,24 @@ class SlideStats(private val hp: Boolean, initialElement: Element? = null) : JPa
             }
         }
 
-        this.add(label, GridBagConstraints().apply {
-            this.anchor = GridBagConstraints.LINE_START
-            this.gridx = 0
-            this.gridy = 0
-            this.insets = Insets(2, 0, 0, 0)
-        })
+        this.add(
+            label, gridBagConstraintsOf(
+                anchor = GridBagConstraints.LINE_START,
+                gridx = 0,
+                gridy = 0,
+                insets = Insets(2, 0, 0, 0)
+            )
+        )
 
-        this.add(slider, GridBagConstraints().apply {
-            this.anchor = GridBagConstraints.LAST_LINE_END
-            this.gridx = 1
-            this.gridy = 0
-            this.fill = GridBagConstraints.BOTH
-            this.weightx = 1.toDouble()
-        })
+        this.add(
+            slider, gridBagConstraintsOf(
+                anchor = GridBagConstraints.LAST_LINE_END,
+                gridx = 1,
+                gridy = 0,
+                fill = GridBagConstraints.BOTH,
+                weightx = 1.0
+            )
+        )
 
         element = initialElement
     }
@@ -353,5 +356,13 @@ class SlideStats(private val hp: Boolean, initialElement: Element? = null) : JPa
     private fun JComponent.applyStyle() {
         background = BACKGROUND_COLOR_SELECT_PANEL
         isOpaque = false
+    }
+}
+
+class LabeledItem<T : Component>(label: String, component: T) : JPanel() {
+    init {
+        this.layout = GridBagLayout()
+        this.add(JLabel(label), gridBagConstraintsOf(0, 0))
+        this.add(component, gridBagConstraintsOf(1, 0))
     }
 }
