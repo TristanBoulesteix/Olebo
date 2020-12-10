@@ -113,3 +113,5 @@ Temporary Items
 .idea/kotlinScripting.xml
 
 !Olebo/src/main/resources/updater/OleboUpdater.jar
+# Ignore Gradle build output directory
+build

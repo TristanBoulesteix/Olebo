@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "jdr.exia"
-version = "1.5.0-BETA"
+version = "1.6.0-BETA"
 
 repositories {
     mavenCentral()
@@ -43,10 +43,6 @@ val jar by tasks.getting(Jar::class) {
             if (file.isDirectory) collection else collection.plus(zipTree(file))
         }
     })
-}
-
-tasks.named<Wrapper>("wrapper") {
-    distributionType = Wrapper.DistributionType.ALL
 }
 
 configure<JavaPluginConvention> {

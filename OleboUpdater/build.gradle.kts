@@ -31,10 +31,6 @@ val jar by tasks.getting(Jar::class) {
     })
 }
 
-tasks.named<Wrapper>("wrapper") {
-    distributionType = Wrapper.DistributionType.ALL
-}
-
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8
 }
