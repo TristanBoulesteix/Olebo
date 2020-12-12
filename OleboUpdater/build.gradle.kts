@@ -1,8 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    application
     java
-    kotlin("jvm") version "1.4.20"
+    kotlin("jvm")
 }
 
 group = "jdr.exia"
@@ -20,15 +21,20 @@ dependencies {
     implementation("org.json","json", "20190722")
 }
 
+val main = "OleboUpdaterKt"
+
 val jar by tasks.getting(Jar::class) {
     manifest {
-        attributes["Main-Class"] = "OleboUpdaterKt"
+        attributes["Main-Class"] = main
     }
     from(configurations.compileClasspath.map { configuration ->
         configuration.asFileTree.fold(files().asFileTree) { collection, file ->
             if (file.isDirectory) collection else collection.plus(zipTree(file))
         }
     })
+    doLast {
+       archiveFile.get().asFile.copyTo(project(":Olebo").file("src/main/resources/updater/OleboUpdater.jar"), true)
+    }
 }
 
 configure<JavaPluginConvention> {
@@ -37,4 +43,8 @@ configure<JavaPluginConvention> {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+application {
+    mainClassName = main
 }

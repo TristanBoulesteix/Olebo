@@ -1,8 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    application
     java
-    kotlin("jvm") version "1.4.20"
+    kotlin("jvm")
     kotlin("plugin.serialization") version "1.4.20"
 }
 
@@ -34,15 +35,22 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
 }
 
+val main = "OleboKt"
+
 val jar by tasks.getting(Jar::class) {
     manifest {
-        attributes["Main-Class"] = "OleboKt"
+        attributes["Main-Class"] = main
     }
     from(configurations.compileClasspath.map { configuration ->
         configuration.asFileTree.fold(files().asFileTree) { collection, file ->
             if (file.isDirectory) collection else collection.plus(zipTree(file))
         }
     })
+    dependsOn(":OleboUpdater:build")
+}
+
+val run by tasks.getting(JavaExec::class) {
+    dependsOn(":OleboUpdater:build")
 }
 
 configure<JavaPluginConvention> {
@@ -51,4 +59,8 @@ configure<JavaPluginConvention> {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+application {
+    mainClassName = main
 }
