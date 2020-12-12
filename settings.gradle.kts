@@ -8,4 +8,4 @@
  */
 
 rootProject.name = "Olebo"
-include("OleboUpdater", "Olebo")
+include("OleboUpdater", "Olebo", "Localization")
