@@ -19,9 +19,7 @@ repositories {
 val exposedVersion = "0.25.1"
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
     testImplementation("junit", "junit", "4.12")
-    implementation(project(":Localization","default"))
     implementation("org.xerial", "sqlite-jdbc", "3.28.0")
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
