@@ -1,6 +1,7 @@
 package view.frames.editor.elements
 
-import model.dao.internationalisation.*
+import model.dao.localization.*
+
 import view.utils.IntegerFilter
 import view.utils.applyAndAppendTo
 import view.utils.gridBagConstraintsOf

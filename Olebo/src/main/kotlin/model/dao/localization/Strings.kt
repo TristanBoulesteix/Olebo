@@ -1,4 +1,4 @@
-package model.dao.internationalisation
+package model.dao.localization
 
 import model.dao.option.Settings
 import java.util.*

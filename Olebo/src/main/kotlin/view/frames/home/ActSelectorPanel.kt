@@ -2,8 +2,8 @@ package view.frames.home
 
 import model.dao.DAO
 import model.dao.getIcon
-import model.dao.internationalisation.STR_DOUBLE_CLICK_OPEN_ACT
-import model.dao.internationalisation.Strings
+import model.dao.localization.STR_DOUBLE_CLICK_OPEN_ACT
+import model.dao.localization.Strings
 import view.utils.components.ItemPanel
 import view.utils.components.SelectorPanel
 import view.utils.event.ClickListener

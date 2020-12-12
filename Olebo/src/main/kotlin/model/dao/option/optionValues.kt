@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import model.dao.internationalisation.*
+import model.dao.localization.*
 import model.utils.toColor
 import java.awt.Color as JColor
 

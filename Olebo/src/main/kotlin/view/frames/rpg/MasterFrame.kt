@@ -1,7 +1,7 @@
 package view.frames.rpg
 
-import model.dao.internationalisation.STR_DM_TITLE_FRAME
-import model.dao.internationalisation.Strings
+import model.dao.localization.STR_DM_TITLE_FRAME
+import model.dao.localization.Strings
 import model.utils.Elements
 import view.utils.DIMENSION_FRAME
 import view.utils.gridBagConstraintsOf

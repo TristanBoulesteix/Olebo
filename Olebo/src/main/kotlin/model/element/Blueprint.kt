@@ -2,7 +2,7 @@ package model.element
 
 import model.dao.BlueprintTable
 import model.dao.InstanceTable
-import model.dao.internationalisation.Strings
+import model.dao.localization.Strings
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID

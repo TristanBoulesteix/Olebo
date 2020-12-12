@@ -10,8 +10,8 @@ import model.dao.SettingsTable.CURSOR_ENABLED
 import model.dao.SettingsTable.DEFAULT_ELEMENT_VISIBILITY
 import model.dao.SettingsTable.PLAYER_FRAME_ENABLED
 import model.dao.SettingsTable.UPDATE_WARN
-import model.dao.internationalisation.ST_UNKNOWN_DATABASE_VERSION
-import model.dao.internationalisation.Strings
+import model.dao.localization.ST_UNKNOWN_DATABASE_VERSION
+import model.dao.localization.Strings
 import model.utils.toBoolean
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.IntEntity

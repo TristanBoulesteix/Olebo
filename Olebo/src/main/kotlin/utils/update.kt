@@ -5,10 +5,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import model.dao.option.Settings
 import model.dao.jarPath
+import model.dao.localization.*
 import model.dao.oleboUpdater
-import model.dao.internationalisation.*
+import model.dao.option.Settings
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.util.EntityUtils

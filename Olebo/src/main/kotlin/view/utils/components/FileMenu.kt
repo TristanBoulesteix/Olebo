@@ -2,8 +2,9 @@ package view.utils.components
 
 import OLEBO_VERSION
 import model.dao.ZipError
-import model.dao.internationalisation.*
 import model.dao.loadOleboZipData
+import model.dao.localization.*
+
 import model.dao.option.Settings
 import model.dao.zipOleboDirectory
 import utils.Result

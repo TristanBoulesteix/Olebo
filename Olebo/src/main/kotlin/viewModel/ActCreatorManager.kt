@@ -3,9 +3,9 @@ package viewModel
 import model.act.Act
 import model.act.Scene
 import model.dao.DAO
+import model.dao.localization.ST_SCENE_ALREADY_EXISTS
+import model.dao.localization.Strings
 import model.dao.saveImg
-import model.dao.internationalisation.ST_SCENE_ALREADY_EXISTS
-import model.dao.internationalisation.Strings
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.forElse
 import view.frames.editor.acts.SceneEditorDialog

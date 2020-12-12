@@ -1,6 +1,6 @@
 package view.frames.rpg
 
-import model.dao.internationalisation.*
+import model.dao.localization.*
 import model.element.Element
 import model.element.Priority
 import model.element.Size

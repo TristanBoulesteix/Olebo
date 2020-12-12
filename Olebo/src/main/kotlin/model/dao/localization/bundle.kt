@@ -1,6 +1,6 @@
 @file:Suppress("unused", "ClassName")
 
-package model.dao.internationalisation
+package model.dao.localization
 
 /**
  * Default strings (English strings)

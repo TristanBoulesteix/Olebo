@@ -11,7 +11,6 @@ subprojects {
 
     dependencies {
         implementation(kotlin("stdlib-jdk8"))
-        implementation(project(":Localization","default"))
     }
 }
 

@@ -4,7 +4,7 @@ import model.act.Act
 import model.act.Scene
 import model.command.CommandManager
 import model.dao.DAO
-import model.dao.internationalisation.*
+import model.dao.localization.*
 import model.dao.option.Settings
 import model.utils.toElements
 import org.jetbrains.exposed.sql.transactions.transaction

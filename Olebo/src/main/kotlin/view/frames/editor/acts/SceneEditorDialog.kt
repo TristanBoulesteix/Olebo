@@ -1,6 +1,7 @@
 package view.frames.editor.acts
 
-import model.dao.internationalisation.*
+import model.dao.localization.*
+
 import view.utils.applyAndAppendTo
 import view.utils.gridBagConstraintsOf
 import view.utils.showPopup

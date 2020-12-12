@@ -1,7 +1,7 @@
 package view.frames.rpg
 
 import model.dao.DAO
-import model.dao.internationalisation.*
+import model.dao.localization.*
 import model.element.Blueprint
 import model.element.Type
 import org.jetbrains.exposed.sql.transactions.transaction

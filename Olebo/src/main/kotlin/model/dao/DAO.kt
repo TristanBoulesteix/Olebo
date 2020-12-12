@@ -1,8 +1,8 @@
 package model.dao
 
 import model.act.Act
-import model.dao.internationalisation.ST_ERROR_ACT_NOT_EXISTS
-import model.dao.internationalisation.Strings
+import model.dao.localization.ST_ERROR_ACT_NOT_EXISTS
+import model.dao.localization.Strings
 import model.element.Blueprint
 import model.element.Element
 import model.element.Type

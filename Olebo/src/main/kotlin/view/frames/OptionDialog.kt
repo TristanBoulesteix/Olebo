@@ -1,6 +1,7 @@
 package view.frames
 
-import model.dao.internationalisation.*
+import model.dao.localization.*
+
 import model.dao.option.CursorColor
 import model.dao.option.Settings
 import model.utils.toJColor

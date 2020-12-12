@@ -1,12 +1,12 @@
 package viewModel
 
 import model.dao.DAO
+import model.dao.localization.STR_IMG
+import model.dao.localization.ST_ELEMENT_ALREADY_EXISTS
+import model.dao.localization.Strings
 import model.dao.saveImg
 import model.element.Blueprint
 import model.element.Type
-import model.dao.internationalisation.STR_IMG
-import model.dao.internationalisation.ST_ELEMENT_ALREADY_EXISTS
-import model.dao.internationalisation.Strings
 import org.jetbrains.exposed.sql.transactions.transaction
 import view.frames.editor.elements.BlueprintEditorDialog
 import view.utils.showPopup

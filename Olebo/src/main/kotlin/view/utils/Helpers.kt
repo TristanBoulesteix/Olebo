@@ -1,9 +1,9 @@
 package view.utils
 
-import model.dao.internationalisation.STR_CANCEL
-import model.dao.internationalisation.STR_CONFIRM
-import model.dao.internationalisation.STR_WARNING
-import model.dao.internationalisation.Strings
+import model.dao.localization.STR_CANCEL
+import model.dao.localization.STR_CONFIRM
+import model.dao.localization.STR_WARNING
+import model.dao.localization.Strings
 import utils.MessageException
 import java.awt.*
 import java.awt.event.ItemEvent
