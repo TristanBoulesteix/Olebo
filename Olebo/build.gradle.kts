@@ -38,6 +38,7 @@ dependencies {
 val main = "OleboKt"
 
 val jar by tasks.getting(Jar::class) {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     manifest {
         attributes["Main-Class"] = main
     }

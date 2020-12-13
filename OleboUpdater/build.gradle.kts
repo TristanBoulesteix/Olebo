@@ -23,6 +23,7 @@ dependencies {
 val main = "updater.OleboUpdaterKt"
 
 val jar by tasks.getting(Jar::class) {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     manifest {
         attributes["Main-Class"] = main
     }
