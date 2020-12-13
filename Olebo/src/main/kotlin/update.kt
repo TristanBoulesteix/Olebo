@@ -1,6 +1,3 @@
-package utils
-
-import OLEBO_VERSION
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -45,7 +42,7 @@ fun checkForUpdate() = GlobalScope.launch {
             Runtime.getRuntime().addShutdownHook(Thread {
                 if ((auto && Settings.autoUpdate) || !auto) {
                     val url = ((release["assets"] as JSONArray)[0] as JSONObject)["browser_download_url"] as String
-                    Runtime.getRuntime().exec("java -jar $oleboUpdater $url $jarPath")
+                    Runtime.getRuntime().exec("java -jar $oleboUpdater $url $jarPath ${Settings.language.language}")
                 }
             })
         }

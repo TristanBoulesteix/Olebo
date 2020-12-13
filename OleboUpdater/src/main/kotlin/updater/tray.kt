@@ -1,3 +1,8 @@
+package updater
+
+import model.dao.localization.STR_CANCEL_UPDATE
+import model.dao.localization.ST_OLEBO_IS_UPDATING
+import model.dao.localization.Strings
 import java.awt.*
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
@@ -14,9 +19,9 @@ private val trayIcon by lazy {
     val image = BufferedImage(icon.iconWidth, icon.iconHeight, BufferedImage.TYPE_INT_RGB)
     icon.paintIcon(null, image.graphics, 0, 0)
 
-    val trayIcon = TrayIcon(image, "Olebo updater").apply {
+    val trayIcon = TrayIcon(image, "Olebo Updater").apply {
         this.isImageAutoSize = true
-        this.toolTip = "Olebo updater is running"
+        this.toolTip = Strings[ST_OLEBO_IS_UPDATING]
         popupMenu = PopupMenu().apply {
             add(menuItem)
         }
@@ -45,7 +50,7 @@ fun notify(title: String, message: String?, messageType: TrayIcon.MessageType = 
         trayIcon.displayMessage(title, message, messageType)
 }
 
-class MenuItem : java.awt.MenuItem("Annuler la mise à jour") {
+class MenuItem : java.awt.MenuItem(Strings[STR_CANCEL_UPDATE]) {
     var isSafeToStop = true
         set(value) {
             this.isEnabled = value

@@ -1,41 +1,54 @@
+package updater
+
+import model.dao.localization.*
 import java.awt.TrayIcon
 import java.io.File
 import java.io.InputStream
 import java.net.BindException
 import java.net.InetAddress
 import java.net.ServerSocket
+import java.util.*
 import kotlin.system.exitProcess
 
-const val VERSION = "1.1.0"
+const val UPDATER_VERSION = "1.1.0"
 
-fun main(args: Array<String>) {
+var locale: Locale = Locale.ENGLISH
+
+fun main(vararg args: String) {
+    Strings(::locale)
+
     try {
         ServerSocket(9999, 0, InetAddress.getByName(null))
     } catch (b: BindException) {
         exitProcess(-2)
     }.apply {
         if (args.size == 1) {
-            println(VERSION)
+            println(UPDATER_VERSION)
             return
         }
 
-        if (args.size != 2) exitProcess(-1)
+        if (args.size !in 2..3) exitProcess(-1)
+
+        if(args.size == 3) {
+            locale = Locale(args[2])
+            Strings(::locale)
+        }
 
         try {
             HttpUpdater().use {
-                notify("Olebo est en train de se mettre à jour", "N'éteignez pas votre ordinateur")
+                notify(Strings[ST_OLEBO_IS_UPDATING], Strings[ST_NOT_TURN_OFF])
                 update(it.getDownloadedFile(args[0]), File(args[1]))
             }
-            notify("Olebo a bien été mis à jour", null)
+            notify(Strings[ST_UPDATE_SUCCESS], null)
         } catch (e: Exception) {
             e.printStackTrace()
-            notify("Impossible de mettre à jour Olebo", "Veuillez réessayer ultérieurement", TrayIcon.MessageType.ERROR)
+            notify(Strings[ST_UPDATE_FAILED], Strings[ST_UPDATE_TRY_AGAIN], TrayIcon.MessageType.ERROR)
 
             Thread.sleep(3000)
             exitProcess(-1)
         }
 
-        Thread.sleep(2000)
+        Thread.sleep(5000)
         exitProcess(0)
     }
 }

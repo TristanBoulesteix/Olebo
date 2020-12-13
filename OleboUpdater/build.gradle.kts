@@ -1,7 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    application
     java
     kotlin("jvm")
 }
@@ -21,7 +20,7 @@ dependencies {
     implementation(project(":Localization","default"))
 }
 
-val main = "OleboUpdaterKt"
+val main = "updater.OleboUpdaterKt"
 
 val jar by tasks.getting(Jar::class) {
     manifest {
@@ -43,8 +42,4 @@ configure<JavaPluginConvention> {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
-}
-
-application {
-    mainClassName = main
 }

@@ -126,6 +126,12 @@ class StringsBundle : Strings() {
         STR_DEFAULT_ELEMENT_VISIBILITY to "tokens visible for players by default",
         STR_YELLOW to "yellow",
         STR_RED to "red",
+        ST_OLEBO_IS_UPDATING to "Olebo is updating.",
+        ST_NOT_TURN_OFF to "Don't turn off your computer.",
+        ST_UPDATE_SUCCESS to "Olebo is successfully updated.",
+        ST_UPDATE_FAILED to "The update of Olebo has failed.",
+        ST_UPDATE_TRY_AGAIN to "Please, try again later.",
+        STR_CANCEL_UPDATE to "cancel update",
     )
 }
 
@@ -253,5 +259,11 @@ class StringsBundle_fr : Strings() {
         STR_DEFAULT_ELEMENT_VISIBILITY to "éléments visibles pour les joueurs par défaut",
         STR_YELLOW to "jaune",
         STR_RED to "rouge",
+        ST_OLEBO_IS_UPDATING to "Olebo est en train de se mettre à jour.",
+        ST_NOT_TURN_OFF to "N'éteignez pas votre ordinateur.",
+        ST_UPDATE_SUCCESS to "Olebo a bien été mis à jour.",
+        ST_UPDATE_FAILED to "Impossible de mettre à jour Olebo.",
+        ST_UPDATE_TRY_AGAIN to "Veuillez réessayer ultérieurement.",
+        STR_CANCEL_UPDATE to "annuler la mise à jour",
     )
 }

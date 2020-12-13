@@ -102,6 +102,7 @@ const val STR_DOUBLE_CLICK_OPEN_ACT = "double_click_act"
 const val STR_DEFAULT_ELEMENT_VISIBILITY = "default_element_visibility"
 const val STR_YELLOW = "yellow"
 const val STR_RED = "red"
+const val STR_CANCEL_UPDATE = "cancel_update"
 
 // -- Sentences
 
@@ -127,3 +128,8 @@ const val ST_UNKNOWN_DATABASE_VERSION = "unknown_database_version"
 const val ST_CHANGE_VISIBILITY = "change_visiblity"
 const val ST_CHANGE_VISIBILITY_PLR = "change_visiblity_plr"
 const val ST_LANGUAGE_CHANGE_ON_RESTART = "change_language_restart"
+const val ST_OLEBO_IS_UPDATING = "olebo_is_updating"
+const val ST_NOT_TURN_OFF = "dont_turn_off_computer"
+const val ST_UPDATE_SUCCESS = "update_success"
+const val ST_UPDATE_FAILED = "update_failed"
+const val ST_UPDATE_TRY_AGAIN = "update_try_again"
