@@ -19,7 +19,7 @@ dependencies {
     implementation(project(":Localization","default"))
 }
 
-val main = "updater.OleboUpdaterKt"
+val main = "jdr.exia.updater.OleboUpdaterKt"
 
 val jar by tasks.getting(Jar::class) {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
