@@ -1,6 +1,6 @@
 package jdr.exia.updater
 
-import OLEBO_VERSION
+import jdr.exia.OLEBO_VERSION
 import jdr.exia.localization.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

@@ -1,3 +1,5 @@
+package jdr.exia
+
 import jdr.exia.localization.Strings
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.updater.checkForUpdate

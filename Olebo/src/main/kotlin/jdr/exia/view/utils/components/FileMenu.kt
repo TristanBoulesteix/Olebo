@@ -1,6 +1,6 @@
 package jdr.exia.view.utils.components
 
-import OLEBO_VERSION
+import jdr.exia.OLEBO_VERSION
 import jdr.exia.localization.*
 import jdr.exia.model.dao.ZipError
 import jdr.exia.model.dao.loadOleboZipData

@@ -1,6 +1,6 @@
 package jdr.exia.view.frames.home
 
-import OLEBO_VERSION
+import jdr.exia.OLEBO_VERSION
 import jdr.exia.localization.STR_ADD_ACT
 import jdr.exia.localization.STR_ELEMENTS
 import jdr.exia.localization.STR_VERSION
