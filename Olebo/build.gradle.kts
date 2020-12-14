@@ -7,7 +7,6 @@ plugins {
     kotlin("plugin.serialization") version "1.4.20"
 }
 
-group = "jdr.exia"
 version = "1.6.0-BETA"
 
 repositories {

@@ -6,6 +6,10 @@ repositories {
     mavenCentral()
 }
 
+allprojects {
+    group = "jdr.exia"
+}
+
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
 
