@@ -1,5 +1,6 @@
 import jdr.exia.localization.Strings
 import jdr.exia.model.dao.option.Settings
+import jdr.exia.updater.checkForUpdate
 import jdr.exia.view.frames.home.HomeFrame
 import javax.swing.SwingUtilities
 import javax.swing.UIManager

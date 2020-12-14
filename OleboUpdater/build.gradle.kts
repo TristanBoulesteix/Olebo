@@ -17,6 +17,7 @@ dependencies {
     implementation("org.apache.httpcomponents", "httpclient", "4.5.10")
     implementation("org.json","json", "20190722")
     implementation(project(":Localization","default"))
+    implementation(project(":CommonModule","default"))
 }
 
 val main = "jdr.exia.updater.OleboUpdaterKt"
