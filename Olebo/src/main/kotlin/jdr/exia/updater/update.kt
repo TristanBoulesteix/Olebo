@@ -2,23 +2,25 @@ package jdr.exia.updater
 
 import jdr.exia.OLEBO_VERSION
 import jdr.exia.localization.*
+import jdr.exia.model.dao.jarPath
+import jdr.exia.model.dao.oleboUpdater
+import jdr.exia.model.dao.option.Settings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import jdr.exia.model.dao.jarPath
-import jdr.exia.model.dao.oleboUpdater
-import jdr.exia.model.dao.option.Settings
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.util.EntityUtils
-import org.json.JSONArray
-import org.json.JSONObject
 import javax.swing.JOptionPane
 
 private const val URL = "https://api.github.com/repos/TristanBoulesteix/Olebo/releases"
 
-private val lastRelease: JSONObject
+private val lastRelease: JsonObject
     get() = try {
         val request = HttpGet(URL)
 
@@ -29,11 +31,11 @@ private val lastRelease: JSONObject
                 // Get HttpResponse Status
                 //println(response.statusLine.toString())
                 val result = EntityUtils.toString(response.entity)
-                (JSONArray(result).first() as JSONObject)
+                Json.parseToJsonElement(result).jsonArray.first().jsonObject
             }
         }
     } catch (e: Exception) {
-        JSONObject()
+        JsonObject(emptyMap())
     }
 
 /**
@@ -44,16 +46,16 @@ fun checkForUpdate() = GlobalScope.launch {
         fun prepareUpdate(auto: Boolean = true) {
             Runtime.getRuntime().addShutdownHook(Thread {
                 if ((auto && Settings.autoUpdate) || !auto) {
-                    val url = ((release["assets"] as JSONArray)[0] as JSONObject)["browser_download_url"] as String
+                    val url = release["assets"]!!.jsonArray[0].jsonObject["browser_download_url"].toString()
                     Runtime.getRuntime().exec("java -jar $oleboUpdater $url $jarPath ${Settings.language.language}")
                 }
             })
         }
 
-        if (!release.isEmpty && release["tag_name"] != OLEBO_VERSION) {
+        if (!release.isEmpty() && release["tag_name"].toString() != OLEBO_VERSION) {
             if (Settings.autoUpdate) {
                 prepareUpdate()
-            } else if (Settings.updateWarn != release["tag_name"]) {
+            } else if (Settings.updateWarn != release["tag_name"].toString()) {
                 withContext(Dispatchers.Main) {
                     val result = JOptionPane.showOptionDialog(
                         null,
