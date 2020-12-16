@@ -1,6 +1,9 @@
 package jdr.exia.updater
 
+import jdr.exia.defaultLocale
 import jdr.exia.localization.*
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import java.awt.TrayIcon
 import java.io.File
 import java.io.InputStream
@@ -12,7 +15,7 @@ import kotlin.system.exitProcess
 
 const val UPDATER_VERSION = "1.2.0"
 
-var locale: Locale = Locale.ENGLISH
+var locale: Locale = defaultLocale
 
 fun main(vararg args: String) {
     Strings(::locale)
@@ -29,8 +32,9 @@ fun main(vararg args: String) {
 
         if (args.size !in 2..3) exitProcess(-1)
 
-        if(args.size == 3) {
-            locale = Locale(args[2])
+        if (args.size == 3) {
+            val options = Json.decodeFromString<UpdateOptions>(args[2])
+            locale = Locale(options.localeCode)
             Strings(::locale)
         }
 

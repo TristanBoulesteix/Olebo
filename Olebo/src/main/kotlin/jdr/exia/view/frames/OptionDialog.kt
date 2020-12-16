@@ -1,6 +1,8 @@
 package jdr.exia.view.frames
 
-import jdr.exia.localization.*import jdr.exia.model.dao.option.CursorColor
+import jdr.exia.availableLocales
+import jdr.exia.localization.*
+import jdr.exia.model.dao.option.CursorColor
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.utils.toJColor
 import jdr.exia.view.frames.rpg.MasterFrame
@@ -13,7 +15,7 @@ import javax.swing.*
 
 class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTIONS], true) {
     private val comboLanguageItems =
-        Strings.availableLocales.map { it.getDisplayLanguage(it).capitalize(Settings.language) }.toTypedArray()
+        availableLocales.map { it.getDisplayLanguage(it).capitalize(Settings.language) }.toTypedArray()
 
     private val comboLanguage =
         JComboBox<String>().apply {
@@ -135,7 +137,7 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
         ) {
             JButton(Strings[STR_SAVE]).applyAndAppendTo(this) {
                 addActionListener {
-                    Settings.language = Strings.availableLocales[comboLanguage.selectedIndex]
+                    Settings.language = availableLocales[comboLanguage.selectedIndex]
                     Settings.autoUpdate = checkBoxAutoUpdate.isSelected
                     Settings.playerFrameOpenedByDefault = checkBoxPlayerFrameOpenedByDefault.isSelected
                     comboColorCursor.selectedCursorColor?.let {

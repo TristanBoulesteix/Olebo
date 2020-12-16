@@ -1,5 +1,6 @@
 package jdr.exia.localization
 
+import jdr.exia.defaultLocale
 import java.util.*
 import kotlin.reflect.KProperty0
 
@@ -11,11 +12,7 @@ abstract class Strings : ListResourceBundle() {
      * The invoke() method of the companion object need to be called in order to initialize the right locale to use
      */
     companion object {
-        val availableLocales = listOf(Locale.ENGLISH, Locale.FRENCH)
-
-        private val defaultLocale = availableLocales[0]
-
-        private var localeHandler = LocaleHandler(this::defaultLocale)
+        private var localeHandler = LocaleHandler(::defaultLocale)
 
         /**
          * To set a default locale, this method need to be called by the main module
