@@ -4,7 +4,6 @@ plugins {
     application
     java
     kotlin("jvm")
-    kotlin("plugin.serialization") version "1.4.20"
 }
 
 version = "1.6.0-BETA"
@@ -30,12 +29,11 @@ dependencies {
     implementation("org.apache.httpcomponents", "httpclient", "4.5.10")
     implementation("org.json", "json", "20190722")
     implementation("org.jetbrains.kotlin", "kotlin-reflect", "1.4.0")
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.4.1")
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-swing", "1.4.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.4.2")
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-swing", "1.4.2")
 }
 
-val main = "OleboKt"
+val main = "jdr.exia.OleboKt"
 
 val jar by tasks.getting(Jar::class) {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE

@@ -1,9 +1,11 @@
 plugins {
     kotlin("jvm") version "1.4.20"
+    kotlin("plugin.serialization") version "1.4.10" apply false
 }
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 allprojects {
@@ -12,9 +14,11 @@ allprojects {
 
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
 
     dependencies {
         implementation(kotlin("stdlib-jdk8"))
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
     }
 }
 
