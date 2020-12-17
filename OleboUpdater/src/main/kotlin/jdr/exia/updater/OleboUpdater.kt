@@ -15,11 +15,9 @@ import kotlin.system.exitProcess
 
 const val UPDATER_VERSION = "1.2.0"
 
-var locale: Locale = defaultLocale
+var locale = defaultLocale
 
 fun main(vararg args: String) {
-    Strings(::locale)
-
     try {
         ServerSocket(9999, 0, InetAddress.getByName(null))
     } catch (b: BindException) {
@@ -30,30 +28,31 @@ fun main(vararg args: String) {
             return
         }
 
-        if (args.size !in 2..3) exitProcess(-1)
+        if (args.size != 3) exitProcess(-1)
 
-        if (args.size == 3) {
-            val options = Json.decodeFromString<UpdateOptions>(args[2])
-            locale = Locale(options.localeCode)
-            Strings(::locale)
-        }
+        val options = Json.decodeFromString<UpdateOptions>(args[2])
+        locale = Locale(options.localeCode)
+        Strings(::locale)
 
-        try {
+
+        val returnCode = try {
             HttpUpdater().use {
                 notify(Strings[ST_OLEBO_IS_UPDATING], Strings[ST_NOT_TURN_OFF])
                 update(it.getDownloadedFile(args[0]), File(args[1]))
             }
             notify(Strings[ST_UPDATE_SUCCESS], null)
+            0
         } catch (e: Exception) {
             e.printStackTrace()
             notify(Strings[ST_UPDATE_FAILED], Strings[ST_UPDATE_TRY_AGAIN], TrayIcon.MessageType.ERROR)
-
-            Thread.sleep(3000)
-            exitProcess(-1)
+            -1
         }
 
+        if (options.restart)
+            runJar(args[1])
+
         Thread.sleep(5000)
-        exitProcess(0)
+        exitProcess(returnCode)
     }
 }
 

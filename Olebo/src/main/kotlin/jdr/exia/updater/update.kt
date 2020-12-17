@@ -5,7 +5,6 @@ import jdr.exia.localization.*
 import jdr.exia.model.dao.jarPath
 import jdr.exia.model.dao.oleboUpdater
 import jdr.exia.model.dao.option.Settings
-import jdr.exia.utils.encodeQuotes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -18,6 +17,7 @@ import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.util.EntityUtils
 import javax.swing.JOptionPane
+import kotlin.system.exitProcess
 
 private const val URL = "https://api.github.com/repos/TristanBoulesteix/Olebo/releases"
 
@@ -48,7 +48,12 @@ fun checkForUpdate() = GlobalScope.launch {
             Runtime.getRuntime().addShutdownHook(Thread {
                 if ((auto && Settings.autoUpdate) || !auto) {
                     val url = release["assets"]!!.jsonArray[0].jsonObject["browser_download_url"].toString()
-                    Runtime.getRuntime().exec("java -jar $oleboUpdater $url $jarPath ${UpdateOptions(localeCode = Settings.language.language).toString().encodeQuotes()}")
+                    runJar(
+                        oleboUpdater, url, jarPath, UpdateOptions(
+                            !auto,
+                            Settings.language.language
+                        ).toQuotedString()
+                    )
                 }
             })
         }
@@ -69,13 +74,14 @@ fun checkForUpdate() = GlobalScope.launch {
                         Strings[STR_NO]
                     )
                     if (result == JOptionPane.YES_OPTION) {
-                        prepareUpdate(false)
                         JOptionPane.showMessageDialog(
                             null,
-                            Strings[ST_UPDATE_WILL_START_AT_SHUTDOWN],
+                            Strings[ST_UPDATE_OLEBO_RESTART],
                             Strings[STR_PREPARE_UPDATE],
                             JOptionPane.INFORMATION_MESSAGE
                         )
+                        prepareUpdate(false)
+                        exitProcess(0)
                     } else if (result == JOptionPane.CANCEL_OPTION) {
                         Settings.updateWarn = release["tag_name"].toString()
                     }
