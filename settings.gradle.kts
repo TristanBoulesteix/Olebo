@@ -9,5 +9,4 @@
 
 rootProject.name = "Olebo"
 include("OleboUpdater", "Olebo")
-include("Localization")
 include("CommonModule")

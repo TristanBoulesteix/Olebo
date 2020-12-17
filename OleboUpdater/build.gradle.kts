@@ -15,7 +15,6 @@ repositories {
 
 dependencies {
     implementation("org.apache.httpcomponents", "httpclient", "4.5.10")
-    implementation(project(":Localization","default"))
     implementation(project(":CommonModule","default"))
 }
 
