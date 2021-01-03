@@ -112,36 +112,7 @@ object SelectPanel : JPanel() {
         }
     }
 
-    private val sizeCombo = object : JComboBox<String>(arrayOf("XS", "S", "M", "L", "XL", "XXL")) {
-        init {
-            addActionListener { _ ->
-                with(selectedElements.filter { it.size != selectedItem }) {
-                    val newSize = when (selectedItem) {
-                        "XS" -> Size.XS
-                        "S" -> Size.S
-                        "M" -> Size.M
-                        "L" -> Size.L
-                        "XL" -> Size.XL
-                        "XXL" -> Size.XXL
-                        else -> Size.DEFAULT
-                    }
-                    ViewManager.activeScene.callManager(newSize, this, Element::cmdDimension)
-                }
-                ViewManager.repaint()
-            }
-            border = EmptyBorder(0, 0, 0, 0)
-        }
-
-        override fun setSelectedItem(selected: Any?) {
-            if (selected == null) {
-                this.isEnabled = false
-                super.setSelectedItem("S")
-            } else {
-                this.isEnabled = true
-                super.setSelectedItem(if (selected is List<*> && selected[0] is Element) (selected[0] as Element).size.name else if (selected is String) selected else "S")
-            }
-        }
-    }
+    private lateinit var sizeCombo: JComboBox<String>
 
     init {
         this.layout = GridBagLayout()
@@ -153,16 +124,6 @@ object SelectPanel : JPanel() {
             nameLabel, gridBagConstraintsOf(
                 0,
                 0,
-                weightx = 1.0,
-                insets = Insets(10, 150, 10, 10),
-                anchor = GridBagConstraints.LINE_START
-            )
-        )
-
-        this.add(
-            sizeCombo, gridBagConstraintsOf(
-                0,
-                2,
                 weightx = 1.0,
                 insets = Insets(10, 150, 10, 10),
                 anchor = GridBagConstraints.LINE_START
@@ -305,7 +266,17 @@ object SelectPanel : JPanel() {
                 nameLabel.text =
                     if (this.size == 1) this[0].name else "$size ${Strings[STR_SELECTED_ELEMENTS, StringStates.NORMAL]}"
 
-                sizeCombo.selectedItem = this
+                sizeCombo = SizeCombo(this)
+
+                this@SelectPanel.add(
+                    sizeCombo, gridBagConstraintsOf(
+                        0,
+                        2,
+                        weightx = 1.0,
+                        insets = Insets(10, 150, 10, 10),
+                        anchor = GridBagConstraints.LINE_START
+                    )
+                )
 
                 if (this.size == 1) {
                     lifeSlide.element = this[0]
@@ -327,7 +298,9 @@ object SelectPanel : JPanel() {
                 priorityRadioButtons.forEach { it.isSelected = false }
                 priorityInvisibleButton.isSelected = true
                 visibilityButton.initialize(true)
-                sizeCombo.selectedItem = null
+
+
+                sizeCombo = SizeCombo()
 
                 lifeSlide.element = null
                 manaSlide.element = null
@@ -356,5 +329,38 @@ object SelectPanel : JPanel() {
             }
         }
 
+    }
+
+    private class SizeCombo(item: Any? = null) : JComboBox<String>(arrayOf("XS", "S", "M", "L", "XL", "XXL")) {
+        init {
+            selectedItem = item
+
+            addActionListener { _ ->
+                with(selectedElements.filter { it.size != selectedItem }) {
+                    val newSize = when (selectedItem) {
+                        "XS" -> Size.XS
+                        "S" -> Size.S
+                        "M" -> Size.M
+                        "L" -> Size.L
+                        "XL" -> Size.XL
+                        "XXL" -> Size.XXL
+                        else -> Size.DEFAULT
+                    }
+                    ViewManager.activeScene.callManager(newSize, this, Element::cmdDimension)
+                }
+                ViewManager.repaint()
+            }
+            border = EmptyBorder(0, 0, 0, 0)
+        }
+
+        override fun setSelectedItem(selected: Any?) {
+            if (selected == null) {
+                this.isEnabled = false
+                super.setSelectedItem("S")
+            } else {
+                this.isEnabled = true
+                super.setSelectedItem(if (selected is List<*> && selected[0] is Element) (selected[0] as Element).size.name else if (selected is String) selected else "S")
+            }
+        }
     }
 }
