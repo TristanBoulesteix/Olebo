@@ -8,7 +8,7 @@ import jdr.exia.model.utils.toJColor
 import jdr.exia.view.frames.rpg.MasterFrame
 import jdr.exia.view.frames.rpg.ViewFacade
 import jdr.exia.view.utils.applyAndAppendTo
-import jdr.exia.view.utils.components.LabeledItem
+import jdr.exia.view.utils.components.templates.LabeledItem
 import jdr.exia.view.utils.gridBagConstraintsOf
 import java.awt.*
 import javax.swing.*

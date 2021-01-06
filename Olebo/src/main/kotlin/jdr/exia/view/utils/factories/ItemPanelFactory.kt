@@ -2,7 +2,7 @@ package jdr.exia.view.utils.factories
 
 import jdr.exia.localization.*
 import jdr.exia.model.dao.getIcon
-import jdr.exia.view.utils.components.ItemPanel
+import jdr.exia.view.utils.components.templates.ItemPanel
 import jdr.exia.viewModel.BlueprintManager
 import java.awt.Color
 import javax.swing.BorderFactory

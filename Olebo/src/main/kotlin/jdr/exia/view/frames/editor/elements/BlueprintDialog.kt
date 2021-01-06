@@ -2,7 +2,7 @@ package jdr.exia.view.frames.editor.elements
 
 import jdr.exia.localization.*
 import jdr.exia.view.utils.BACKGROUND_COLOR_ORANGE
-import jdr.exia.view.utils.components.JDialogTemplate
+import jdr.exia.view.utils.components.templates.JDialogTemplate
 import jdr.exia.view.utils.gridBagConstraintsOf
 import jdr.exia.viewModel.BlueprintManager
 import jdr.exia.viewModel.pattern.observer.Action

@@ -8,7 +8,7 @@ import jdr.exia.localization.Strings
 import jdr.exia.view.frames.rpg.MasterFrame
 import jdr.exia.view.utils.BORDER_BUTTONS
 import jdr.exia.view.utils.components.FileMenu
-import jdr.exia.view.utils.components.JFrameTemplate
+import jdr.exia.view.utils.components.templates.JFrameTemplate
 import jdr.exia.view.utils.gridBagConstraintsOf
 import jdr.exia.viewModel.HomeManager
 import jdr.exia.viewModel.pattern.observer.Action

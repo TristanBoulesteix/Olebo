@@ -4,8 +4,8 @@ import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.getIcon
 import jdr.exia.localization.STR_DOUBLE_CLICK_OPEN_ACT
 import jdr.exia.localization.Strings
-import jdr.exia.view.utils.components.ItemPanel
-import jdr.exia.view.utils.components.SelectorPanel
+import jdr.exia.view.utils.components.templates.ItemPanel
+import jdr.exia.view.utils.components.templates.SelectorPanel
 import jdr.exia.view.utils.event.ClickListener
 import jdr.exia.viewModel.HomeManager
 import java.awt.event.MouseEvent

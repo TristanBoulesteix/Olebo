@@ -5,8 +5,8 @@ import jdr.exia.model.dao.getIcon
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
 import org.jetbrains.exposed.sql.transactions.transaction
-import jdr.exia.view.utils.components.ItemPanel
-import jdr.exia.view.utils.components.SelectorPanel
+import jdr.exia.view.utils.components.templates.ItemPanel
+import jdr.exia.view.utils.components.templates.SelectorPanel
 import jdr.exia.view.utils.factories.TitlePanel
 import jdr.exia.view.utils.factories.buildTitleItemPanel
 import jdr.exia.view.utils.gridBagConstraintsOf

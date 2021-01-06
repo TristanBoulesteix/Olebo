@@ -10,8 +10,8 @@ import jdr.exia.model.utils.emptyElements
 import jdr.exia.view.utils.BACKGROUND_COLOR_SELECT_PANEL
 import jdr.exia.view.utils.DIMENSION_BUTTON_DEFAULT
 import jdr.exia.view.utils.applyAndAppendTo
-import jdr.exia.view.utils.components.ComboSelectPanel
-import jdr.exia.view.utils.components.SlideStats
+import jdr.exia.view.utils.components.templates.ComboSelectPanel
+import jdr.exia.view.utils.components.templates.SlideStats
 import jdr.exia.view.utils.gridBagConstraintsOf
 import jdr.exia.viewModel.ViewManager
 import java.awt.*

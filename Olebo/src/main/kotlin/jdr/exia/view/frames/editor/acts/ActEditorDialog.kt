@@ -3,7 +3,7 @@ package jdr.exia.view.frames.editor.acts
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.view.utils.*
-import jdr.exia.view.utils.components.JDialogTemplate
+import jdr.exia.view.utils.components.templates.JDialogTemplate
 import jdr.exia.view.utils.components.PlaceholderTextField
 import jdr.exia.viewModel.ActCreatorManager
 import jdr.exia.viewModel.pattern.observer.Action
