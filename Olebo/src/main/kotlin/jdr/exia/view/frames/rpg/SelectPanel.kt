@@ -27,17 +27,16 @@ import javax.swing.border.EmptyBorder
  * This is a singleton.
  */
 object SelectPanel : JPanel() {
-    private val defaultInsets = Insets(5, 5, 5, 5)
+    private val defaultLeftInsets = Insets(10, 150, 10, 10)
 
-    var selectedElements = emptyElements()
+    private val leftPanel = object : JPanel() {
+        init {
+            this.layout = GridBagLayout()
+            this.isOpaque = false
+        }
+    }
 
-    private val slidePanel: JPanel
-
-    private val lifeSlide = SlideStats(true)
-
-    private val manaSlide = SlideStats(false)
-
-    private val nameLabel = object : JLabel(Strings[STR_NAME]) {
+    private val nameLabel = object : JLabel() {
         init {
             horizontalTextPosition = CENTER
             border = EmptyBorder(20, 0, 0, 0)
@@ -54,6 +53,36 @@ object SelectPanel : JPanel() {
         }
     }
 
+    private var sizeCombo = SizeCombo()
+        set(combo) {
+            this.remove(sizeCombo)
+            leftPanel.add(
+                combo, gridBagConstraintsOf(
+                    0,
+                    2,
+                    weightx = 1.0,
+                    insets = defaultLeftInsets,
+                    anchor = GridBagConstraints.LINE_START
+                )
+            )
+            field = combo
+        }
+
+    private var priorityCombo = PriorityCombo()
+        set(combo) {
+            this.remove(priorityCombo)
+            leftPanel.add(
+                combo, gridBagConstraintsOf(
+                    0,
+                    3,
+                    weightx = 1.0,
+                    insets = defaultLeftInsets,
+                    anchor = GridBagConstraints.LINE_START
+                )
+            )
+            field = combo
+        }
+
     private val rotateRightButton = JButton(Strings[STR_ROTATE_TO_RIGHT]).apply {
         preferredSize = DIMENSION_BUTTON_DEFAULT
         addActionListener {
@@ -67,21 +96,6 @@ object SelectPanel : JPanel() {
             ViewManager.rotateLeft()
         }
     }
-
-    private var priorityCombo = PriorityCombo()
-        set(combo) {
-            this.remove(priorityCombo)
-            this.add(
-                combo, gridBagConstraintsOf(
-                    2,
-                    0,
-                    weightx = 1.0,
-                    insets = Insets(10, 150, 10, 10),
-                    anchor = GridBagConstraints.LINE_START
-                )
-            )
-            field = combo
-        }
 
     private val visibilityButton = object : JButton() { //Toggles visibility on selected Token
         private val defaultText by StringDelegate(STR_VISIBILITY)
@@ -131,32 +145,38 @@ object SelectPanel : JPanel() {
         }
     }
 
-    private var sizeCombo = SizeCombo()
-        set(combo) {
-            this.remove(sizeCombo)
-            this.add(
-                combo, gridBagConstraintsOf(
-                    0,
-                    2,
-                    weightx = 1.0,
-                    insets = Insets(10, 150, 10, 10),
-                    anchor = GridBagConstraints.LINE_START
-                )
-            )
-            field = combo
-        }
+    private val slidePanel: JPanel
 
+    private val lifeSlide = SlideStats(true)
+
+    private val manaSlide = SlideStats(false)
+
+    var selectedElements = emptyElements()
 
     init {
+        val insets = Insets(5, 5, 5, 5)
+
         this.layout = GridBagLayout()
         this.preferredSize = Dimension(500, 10)
 
         this.add(
+            leftPanel, gridBagConstraintsOf(
+                0,
+                0,
+                weightx = 1.0,
+                insets = defaultLeftInsets,
+                anchor = GridBagConstraints.LINE_START,
+                fill = GridBagConstraints.VERTICAL,
+                gridHeight = 3
+            )
+        )
+
+        leftPanel.add(
             nameLabel, gridBagConstraintsOf(
                 0,
                 0,
                 weightx = 1.0,
-                insets = Insets(10, 150, 10, 10),
+                insets = defaultLeftInsets,
                 anchor = GridBagConstraints.LINE_START
             )
         )
@@ -166,7 +186,7 @@ object SelectPanel : JPanel() {
                 1,
                 0,
                 weightx = .5,
-                insets = defaultInsets,
+                insets = insets,
                 anchor = GridBagConstraints.LINE_START
             )
         )
@@ -176,7 +196,7 @@ object SelectPanel : JPanel() {
                 1,
                 2,
                 weightx = .5,
-                insets = defaultInsets,
+                insets = insets,
                 anchor = GridBagConstraints.LINE_START
             )
         )
@@ -186,7 +206,7 @@ object SelectPanel : JPanel() {
                 3,
                 0,
                 weightx = .5,
-                insets = defaultInsets,
+                insets = insets,
                 anchor = GridBagConstraints.LINE_START
             )
         )

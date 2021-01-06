@@ -104,7 +104,7 @@ object ViewManager {
      * Checks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
      */
     fun selectElement(x: Int, y: Int) {
-        selectedElements = getTokenFromXY(x, y)?.toElements() ?: mutableEmptyElements()
+        selectedElements = getTokenFromXY(x, y)?.toElements()?.toMutableList() ?: mutableEmptyElements()
         if (selectedElements.isNotEmpty()) {
             ViewFacade.setSelectedToken(selectedElements[0])
             repaint()
@@ -134,7 +134,7 @@ object ViewManager {
 
     fun selectUp() = with(activeScene!!) {
         selectedElements = if (selectedElements.isEmpty() && this.elements.isNotEmpty()) {
-            this.elements[0].toElements()
+            this.elements[0].toElements().toMutableList()
         } else {
             fun Int.plusOne(list: Elements) = if (this == list.size - 1) 0 else this + 1
 
@@ -142,7 +142,7 @@ object ViewManager {
                 if (this.elements.getOrNull(this.elements.indexOfFirst { it.id == element.id }
                         .plusOne(this.elements)) != null) {
                     this.elements[this.elements.indexOfFirst { it.id == element.id }
-                        .plusOne(this.elements)].toElements()
+                        .plusOne(this.elements)].toElements().toMutableList()
                 } else mutableEmptyElements()
             } ?: mutableEmptyElements()
         }
@@ -154,7 +154,7 @@ object ViewManager {
     fun selectDown() {
         with(activeScene!!) {
             selectedElements = if (selectedElements.isEmpty() && this.elements.isNotEmpty()) {
-                this.elements[0].toElements()
+                this.elements[0].toElements().toMutableList()
             } else {
                 fun Int.minusOne(list: Elements) = if (this == 0) list.size - 1 else this - 1
 
@@ -162,7 +162,7 @@ object ViewManager {
                     if (this.elements.getOrNull(this.elements.indexOfFirst { it.id == element.id }
                             .minusOne(this.elements)) != null) {
                         activeScene!!.elements[this.elements.indexOfFirst { it.id == element.id }
-                            .minusOne(this.elements)].toElements()
+                            .minusOne(this.elements)].toElements().toMutableList()
                     } else mutableEmptyElements()
                 } ?: mutableEmptyElements()
             }
