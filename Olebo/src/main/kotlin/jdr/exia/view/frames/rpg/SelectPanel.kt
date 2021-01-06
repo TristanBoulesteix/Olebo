@@ -4,15 +4,21 @@ import jdr.exia.localization.*
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Priority
 import jdr.exia.model.element.Size
+import jdr.exia.model.utils.Elements
 import jdr.exia.model.utils.callManager
+import jdr.exia.model.utils.emptyElements
 import jdr.exia.view.utils.BACKGROUND_COLOR_SELECT_PANEL
 import jdr.exia.view.utils.DIMENSION_BUTTON_DEFAULT
 import jdr.exia.view.utils.applyAndAppendTo
+import jdr.exia.view.utils.components.ComboSelectPanel
 import jdr.exia.view.utils.components.SlideStats
 import jdr.exia.view.utils.gridBagConstraintsOf
 import jdr.exia.viewModel.ViewManager
 import java.awt.*
-import javax.swing.*
+import javax.swing.AbstractButton
+import javax.swing.JButton
+import javax.swing.JLabel
+import javax.swing.JPanel
 import javax.swing.border.EmptyBorder
 
 
@@ -21,7 +27,9 @@ import javax.swing.border.EmptyBorder
  * This is a singleton.
  */
 object SelectPanel : JPanel() {
-    var selectedElements = listOf<Element>()
+    private val defaultInsets = Insets(5, 5, 5, 5)
+
+    var selectedElements = emptyElements()
 
     private val slidePanel: JPanel
 
@@ -60,10 +68,20 @@ object SelectPanel : JPanel() {
         }
     }
 
-    private val priorityHighButton: JRadioButton
-    private val priorityRegularButton: JRadioButton
-    private val priorityLowButton: JRadioButton
-    private val priorityInvisibleButton: JRadioButton
+    private var priorityCombo = PriorityCombo()
+        set(combo) {
+            this.remove(priorityCombo)
+            this.add(
+                combo, gridBagConstraintsOf(
+                    2,
+                    0,
+                    weightx = 1.0,
+                    insets = Insets(10, 150, 10, 10),
+                    anchor = GridBagConstraints.LINE_START
+                )
+            )
+            field = combo
+        }
 
     private val visibilityButton = object : JButton() { //Toggles visibility on selected Token
         private val defaultText by StringDelegate(STR_VISIBILITY)
@@ -104,6 +122,7 @@ object SelectPanel : JPanel() {
         }
     }
 
+
     private val deleteButton = JButton(Strings[STR_DELETE]).apply { //Deletes selected Token
         preferredSize = DIMENSION_BUTTON_DEFAULT
         addActionListener {
@@ -112,13 +131,25 @@ object SelectPanel : JPanel() {
         }
     }
 
-    private lateinit var sizeCombo: JComboBox<String>
+    private var sizeCombo = SizeCombo()
+        set(combo) {
+            this.remove(sizeCombo)
+            this.add(
+                combo, gridBagConstraintsOf(
+                    0,
+                    2,
+                    weightx = 1.0,
+                    insets = Insets(10, 150, 10, 10),
+                    anchor = GridBagConstraints.LINE_START
+                )
+            )
+            field = combo
+        }
+
 
     init {
         this.layout = GridBagLayout()
         this.preferredSize = Dimension(500, 10)
-
-        val inset = Insets(5, 5, 5, 5)
 
         this.add(
             nameLabel, gridBagConstraintsOf(
@@ -135,7 +166,7 @@ object SelectPanel : JPanel() {
                 1,
                 0,
                 weightx = .5,
-                insets = inset,
+                insets = defaultInsets,
                 anchor = GridBagConstraints.LINE_START
             )
         )
@@ -145,67 +176,7 @@ object SelectPanel : JPanel() {
                 1,
                 2,
                 weightx = .5,
-                insets = inset,
-                anchor = GridBagConstraints.LINE_START
-            )
-        )
-
-        ButtonGroup().apply {
-            priorityHighButton = JRadioButton(Strings[STR_FOREGROUND]).apply {
-                this.addActionListener {
-                    ViewManager.updatePriorityToken(Priority.HIGH)
-                }
-            }
-            priorityRegularButton = JRadioButton(Strings[STR_DEFAULT]).apply {
-                this.addActionListener {
-                    ViewManager.updatePriorityToken(Priority.REGULAR)
-                }
-            }
-            priorityLowButton = JRadioButton(Strings[STR_BACKGROUND]).apply {
-                this.addActionListener {
-                    ViewManager.updatePriorityToken(Priority.LOW)
-                }
-            }
-            priorityInvisibleButton = JRadioButton().apply {
-                this.isSelected = true
-            }
-
-            arrayOf(priorityHighButton, priorityRegularButton, priorityLowButton, priorityInvisibleButton).forEach {
-                this.add(it)
-                it.isEnabled = false
-                it.isOpaque = false
-            }
-        }
-
-        this.add(
-            priorityHighButton, gridBagConstraintsOf(
-                2,
-                0,
-                weightx = .5,
-                weighty = 1.0,
-                insets = inset,
-                anchor = GridBagConstraints.LINE_START
-            )
-        )
-
-        this.add(
-            priorityRegularButton, gridBagConstraintsOf(
-                2,
-                1,
-                weightx = .5,
-                weighty = 1.0,
-                insets = inset,
-                anchor = GridBagConstraints.LINE_START
-            )
-        )
-
-        this.add(
-            priorityLowButton, gridBagConstraintsOf(
-                2,
-                2,
-                weightx = .5,
-                weighty = 1.0,
-                insets = inset,
+                insets = defaultInsets,
                 anchor = GridBagConstraints.LINE_START
             )
         )
@@ -215,7 +186,7 @@ object SelectPanel : JPanel() {
                 3,
                 0,
                 weightx = .5,
-                insets = inset,
+                insets = defaultInsets,
                 anchor = GridBagConstraints.LINE_START
             )
         )
@@ -252,51 +223,28 @@ object SelectPanel : JPanel() {
     }
 
     fun reload() {
-        val priorityRadioButtons = arrayOf(priorityHighButton, priorityRegularButton, priorityLowButton)
-
         with(selectedElements) {
             if (this.isNotEmpty()) {
-                (arrayOf<AbstractButton>(
-                    rotateRightButton,
-                    rotateLeftButton,
-                    deleteButton
-                ) + priorityRadioButtons).forEach { it.isEnabled = true }
+                arrayOf(rotateRightButton, rotateLeftButton, deleteButton).forEach { it.isEnabled = true }
 
                 visibilityButton.initialize(false)
                 nameLabel.text =
                     if (this.size == 1) this[0].name else "$size ${Strings[STR_SELECTED_ELEMENTS, StringStates.NORMAL]}"
 
-                sizeCombo = SizeCombo(this)
+                priorityCombo = PriorityCombo(this)
 
-                this@SelectPanel.add(
-                    sizeCombo, gridBagConstraintsOf(
-                        0,
-                        2,
-                        weightx = 1.0,
-                        insets = Insets(10, 150, 10, 10),
-                        anchor = GridBagConstraints.LINE_START
-                    )
-                )
+                sizeCombo = SizeCombo(this)
 
                 if (this.size == 1) {
                     lifeSlide.element = this[0]
                     manaSlide.element = this[0]
-
-                    when (this[0].priority) {
-                        Priority.HIGH -> priorityHighButton
-                        Priority.REGULAR -> priorityRegularButton
-                        Priority.LOW -> priorityLowButton
-                    }.isSelected = true
                 }
             } else {
                 nameLabel.text = null
-                (arrayOf<AbstractButton>(
-                    rotateRightButton,
-                    rotateLeftButton,
-                    deleteButton
-                ) + priorityRadioButtons).forEach { it.isEnabled = false }
-                priorityRadioButtons.forEach { it.isSelected = false }
-                priorityInvisibleButton.isSelected = true
+                arrayOf<AbstractButton>(rotateRightButton, rotateLeftButton, deleteButton).forEach {
+                    it.isEnabled = false
+                }
+                priorityCombo = PriorityCombo(this)
                 visibilityButton.initialize(true)
 
 
@@ -308,6 +256,7 @@ object SelectPanel : JPanel() {
         }
 
         repaint()
+        revalidate()
     }
 
     override fun paintComponent(g: Graphics) {
@@ -328,13 +277,11 @@ object SelectPanel : JPanel() {
                 g.fillRect(20, 20, 100, 100)
             }
         }
-
     }
 
-    private class SizeCombo(item: Any? = null) : JComboBox<String>(arrayOf("XS", "S", "M", "L", "XL", "XXL")) {
+    private class SizeCombo(items: Elements? = null) :
+        ComboSelectPanel(arrayOf("XS", "S", "M", "L", "XL", "XXL"), items) {
         init {
-            selectedItem = item
-
             addActionListener { _ ->
                 with(selectedElements.filter { it.size != selectedItem }) {
                     val newSize = when (selectedItem) {
@@ -350,16 +297,36 @@ object SelectPanel : JPanel() {
                 }
                 ViewManager.repaint()
             }
-            border = EmptyBorder(0, 0, 0, 0)
         }
 
         override fun setSelectedItem(selected: Any?) {
-            if (selected == null) {
-                this.isEnabled = false
-                super.setSelectedItem("S")
-            } else {
-                this.isEnabled = true
-                super.setSelectedItem(if (selected is List<*> && selected[0] is Element) (selected[0] as Element).size.name else if (selected is String) selected else "S")
+            this.toSelect = selected.doIfElement("S") {
+                it.size.name
+            }
+        }
+    }
+
+    private class PriorityCombo(items: Elements? = null) :
+        ComboSelectPanel(arrayOf(Strings[STR_FOREGROUND], Strings[STR_DEFAULT], Strings[STR_DEFAULT]), items) {
+        init {
+            addActionListener {
+                val newPriority = when (selectedItem) {
+                    Strings[STR_BACKGROUND] -> Priority.LOW
+                    Strings[STR_FOREGROUND] -> Priority.HIGH
+                    else -> Priority.REGULAR
+                }
+
+                ViewManager.updatePriorityToken(newPriority)
+            }
+        }
+
+        override fun setSelectedItem(selected: Any?) {
+            this.toSelect = selected.doIfElement(Strings[STR_DEFAULT]) {
+                when (it.priority) {
+                    Priority.HIGH -> Strings[STR_FOREGROUND]
+                    Priority.LOW -> Strings[STR_BACKGROUND]
+                    Priority.REGULAR -> Strings[STR_DEFAULT]
+                }
             }
         }
     }

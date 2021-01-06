@@ -1,16 +1,17 @@
 package jdr.exia.view.utils.components
 
-import jdr.exia.model.dao.DAO
 import jdr.exia.localization.STR_NO_ELEMENT
 import jdr.exia.localization.Strings
+import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Element
+import jdr.exia.model.utils.Elements
 import jdr.exia.model.utils.isCharacter
-import org.jetbrains.exposed.sql.transactions.transaction
 import jdr.exia.utils.forElse
 import jdr.exia.view.utils.*
 import jdr.exia.view.utils.event.ClickListener
 import jdr.exia.viewModel.pattern.observer.Observable
 import jdr.exia.viewModel.pattern.observer.Observer
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.*
 import java.awt.event.*
 import java.io.File
@@ -365,4 +366,30 @@ class LabeledItem<T : Component>(label: String, component: T) : JPanel() {
         this.add(JLabel(label), gridBagConstraintsOf(0, 0))
         this.add(component, gridBagConstraintsOf(1, 0))
     }
+}
+
+abstract class ComboSelectPanel(items: Array<String>, elements: Elements?) : JComboBox<String>(items) {
+    init {
+        selectedItem = elements
+        border = EmptyBorder(0, 0, 0, 0)
+    }
+
+    abstract override fun setSelectedItem(selected: Any?)
+
+    protected var toSelect: Any?
+        get() = selectedItem
+        set(value) = super.setSelectedItem(value)
+
+    protected fun Any?.doIfElement(default: String, actionReturn: (Element) -> String) =
+        if (this is String) {
+            isEnabled = false
+            this
+        } else if (this == null || this !is List<*> || this.isEmpty() || this[0] !is Element) {
+            isEnabled = false
+            default
+        } else {
+            isEnabled = true
+            actionReturn(this[0] as Element)
+        }
+
 }
