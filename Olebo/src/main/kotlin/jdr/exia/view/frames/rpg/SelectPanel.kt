@@ -38,8 +38,8 @@ object SelectPanel : JPanel() {
 
     private val nameLabel = object : JLabel() {
         init {
-            horizontalTextPosition = CENTER
-            border = EmptyBorder(20, 0, 0, 0)
+            horizontalTextPosition = LEFT
+            border = EmptyBorder(0, 0, 0, 0)
         }
 
         override fun setText(text: String?) {
@@ -163,7 +163,7 @@ object SelectPanel : JPanel() {
             leftPanel, gridBagConstraintsOf(
                 0,
                 0,
-                weightx = 1.0,
+                weightx = .5,
                 insets = defaultLeftInsets,
                 anchor = GridBagConstraints.LINE_START,
                 fill = GridBagConstraints.VERTICAL,
@@ -288,13 +288,13 @@ object SelectPanel : JPanel() {
             } else {
                 Color.BLUE
             }
-            g.fillRect(15, 15, 110, 110)
+            g.fillRect(15, 30, 110, 110)
 
             if (this.size == 1) {
-                g.drawImage(this[0].sprite.image, 20, 20, 100, 100, null)
+                g.drawImage(this[0].sprite.image, 20, 30, 100, 100, null)
             } else {
                 g.color = Color.WHITE
-                g.fillRect(20, 20, 100, 100)
+                g.fillRect(20, 35, 100, 100)
             }
         }
     }
