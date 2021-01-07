@@ -9,10 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.*
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.util.EntityUtils
@@ -58,10 +55,10 @@ fun checkForUpdate() = GlobalScope.launch {
             })
         }
 
-        if (!release.isEmpty() && release["tag_name"].toString() != OLEBO_VERSION) {
+        if (!release.isEmpty() && release["tag_name"]!!.jsonPrimitive.content != OLEBO_VERSION) {
             if (Settings.autoUpdate) {
                 prepareUpdate()
-            } else if (Settings.updateWarn != release["tag_name"].toString()) {
+            } else if (Settings.updateWarn != release["tag_name"]?.jsonPrimitive?.content) {
                 withContext(Dispatchers.Main) {
                     val result = JOptionPane.showOptionDialog(
                         null,
@@ -83,7 +80,7 @@ fun checkForUpdate() = GlobalScope.launch {
                         prepareUpdate(false)
                         exitProcess(0)
                     } else if (result == JOptionPane.CANCEL_OPTION) {
-                        Settings.updateWarn = release["tag_name"].toString()
+                        Settings.updateWarn = release["tag_name"]!!.jsonPrimitive.content
                     }
                 }
             }

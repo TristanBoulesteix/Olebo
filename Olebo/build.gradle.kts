@@ -6,7 +6,7 @@ plugins {
     kotlin("jvm")
 }
 
-version = "1.6.0-BETA"
+version = "1.6.1-BETA"
 
 repositories {
     mavenCentral()
