@@ -2,11 +2,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     java
-    kotlin("jvm") version "1.4.20"
+    kotlin("jvm")
 }
 
-group = "jdr.exia"
-version = "1.1.0"
+version = "1.2.0"
 
 repositories {
     mavenCentral()
@@ -15,24 +14,25 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
     implementation("org.apache.httpcomponents", "httpclient", "4.5.10")
-    implementation("org.json","json", "20190722")
+    implementation(project(":CommonModule","default"))
 }
 
+val main = "jdr.exia.updater.OleboUpdaterKt"
+
 val jar by tasks.getting(Jar::class) {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     manifest {
-        attributes["Main-Class"] = "OleboUpdaterKt"
+        attributes["Main-Class"] = main
     }
     from(configurations.compileClasspath.map { configuration ->
         configuration.asFileTree.fold(files().asFileTree) { collection, file ->
             if (file.isDirectory) collection else collection.plus(zipTree(file))
         }
     })
-}
-
-tasks.named<Wrapper>("wrapper") {
-    distributionType = Wrapper.DistributionType.ALL
+    doLast {
+       archiveFile.get().asFile.copyTo(project(":Olebo").file("src/main/resources/updater/OleboUpdater.jar"), true)
+    }
 }
 
 configure<JavaPluginConvention> {

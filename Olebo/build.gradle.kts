@@ -1,13 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    application
     java
-    kotlin("jvm") version "1.4.20"
-    kotlin("plugin.serialization") version "1.4.20"
+    kotlin("jvm")
 }
 
-group = "jdr.exia"
-version = "1.5.1-BETA"
+version = "1.6.1-BETA"
 
 repositories {
     mavenCentral()
@@ -18,35 +17,37 @@ repositories {
 val exposedVersion = "0.25.1"
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
     testImplementation("junit", "junit", "4.12")
     implementation("org.xerial", "sqlite-jdbc", "3.28.0")
+    implementation(project(":CommonModule","default"))
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
     implementation("org.slf4j", "slf4j-api", "1.7.25")
     implementation("org.slf4j", "slf4j-simple", "1.7.25")
     implementation("org.apache.httpcomponents", "httpclient", "4.5.10")
-    implementation("org.json", "json", "20190722")
     implementation("org.jetbrains.kotlin", "kotlin-reflect", "1.4.0")
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.4.1")
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-swing", "1.4.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.4.2")
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-swing", "1.4.2")
 }
 
+val main = "jdr.exia.OleboKt"
+
 val jar by tasks.getting(Jar::class) {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     manifest {
-        attributes["Main-Class"] = "OleboKt"
+        attributes["Main-Class"] = main
     }
     from(configurations.compileClasspath.map { configuration ->
         configuration.asFileTree.fold(files().asFileTree) { collection, file ->
             if (file.isDirectory) collection else collection.plus(zipTree(file))
         }
     })
+    dependsOn(":OleboUpdater:build")
 }
 
-tasks.named<Wrapper>("wrapper") {
-    distributionType = Wrapper.DistributionType.ALL
+val run by tasks.getting(JavaExec::class) {
+    dependsOn(":OleboUpdater:build")
 }
 
 configure<JavaPluginConvention> {
@@ -55,4 +56,8 @@ configure<JavaPluginConvention> {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+application {
+    mainClassName = main
 }
