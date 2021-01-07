@@ -54,7 +54,7 @@ object SelectPanel : JPanel() {
 
     private var sizeCombo = SizeCombo()
         set(combo) {
-            this.remove(field)
+            leftPanel.remove(field)
             leftPanel.add(
                 combo, gridBagConstraintsOf(
                     0,
@@ -69,7 +69,7 @@ object SelectPanel : JPanel() {
 
     private var priorityCombo = PriorityCombo()
         set(combo) {
-            this.remove(field)
+            leftPanel.remove(field)
             leftPanel.add(
                 combo, gridBagConstraintsOf(
                     0,
