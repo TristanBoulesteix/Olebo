@@ -49,13 +49,14 @@ class StatsLabel(private val isHP: Boolean, private var maxValue: Int = 0, value
     var element: Element? = null
         set(value) {
             field?.let {
-                transaction(DAO.database) {
-                    if (isHP) {
-                        it.currentHealth = extractValue(statsField.text)
-                    } else {
-                        it.currentMana = extractValue(statsField.text)
+                if (it.stillExist())
+                    transaction(DAO.database) {
+                        if (isHP) {
+                            it.currentHealth = extractValue(statsField.text)
+                        } else {
+                            it.currentMana = extractValue(statsField.text)
+                        }
                     }
-                }
             }
 
             val stat = if (value == null) {

@@ -10,12 +10,12 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.utils.Elements
 import jdr.exia.model.utils.isCharacter
 import jdr.exia.model.utils.rotate
+import jdr.exia.utils.CharacterException
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.transactions.transaction
-import jdr.exia.utils.CharacterException
 import java.awt.Rectangle
 import javax.imageio.ImageIO
 import javax.swing.ImageIcon
@@ -265,5 +265,5 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         }
     }
 
-    private fun stillExist() = transaction(DAO.database) { Element.findById(this@Element.id) != null }
+    fun stillExist() = transaction(DAO.database) { Element.findById(this@Element.id) != null }
 }

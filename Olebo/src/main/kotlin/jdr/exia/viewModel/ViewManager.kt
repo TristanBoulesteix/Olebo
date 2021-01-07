@@ -52,6 +52,11 @@ object ViewManager {
         repaint()
     }
 
+    fun unselectAllElements() {
+        selectedElements = mutableEmptyElements()
+        ViewFacade.setSelectedToken(null)
+    }
+
     private fun loadCurrentScene() {
         with(activeAct!!) activeAct@{
             activeScene = this.scenes.findWithId(this.sceneId)

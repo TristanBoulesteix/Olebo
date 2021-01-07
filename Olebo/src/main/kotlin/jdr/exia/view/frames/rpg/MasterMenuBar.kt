@@ -7,7 +7,6 @@ import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.utils.toElements
-import org.jetbrains.exposed.sql.transactions.transaction
 import jdr.exia.utils.forElse
 import jdr.exia.view.frames.editor.elements.BlueprintDialog
 import jdr.exia.view.frames.home.HomeFrame
@@ -17,6 +16,7 @@ import jdr.exia.view.utils.applyAndAppendTo
 import jdr.exia.view.utils.components.FileMenu
 import jdr.exia.view.utils.showConfirmMessage
 import jdr.exia.viewModel.ViewManager
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.event.ItemEvent
 import java.awt.event.KeyEvent
 import javax.swing.*
@@ -134,7 +134,8 @@ object MasterMenuBar : JMenuBar() {
             JMenuItem(Strings[STR_MANAGE_BLUEPRINTS]).applyAndAppendTo(this) {
                 addActionListener {
                     BlueprintDialog().isVisible = true
-                    MasterFrame.itemPanel.reload()
+                    ViewManager.unselectAllElements()
+                    ViewManager.repaint()
                 }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_B, CTRLSHIFT)
             }
