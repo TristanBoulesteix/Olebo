@@ -1,18 +1,18 @@
 package jdr.exia.viewModel
 
-import jdr.exia.model.dao.DAO
 import jdr.exia.localization.STR_IMG
 import jdr.exia.localization.ST_ELEMENT_ALREADY_EXISTS
 import jdr.exia.localization.Strings
+import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.saveImg
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
-import org.jetbrains.exposed.sql.transactions.transaction
 import jdr.exia.view.frames.editor.elements.BlueprintEditorDialog
 import jdr.exia.view.utils.showPopup
 import jdr.exia.viewModel.pattern.observer.Action
 import jdr.exia.viewModel.pattern.observer.Observable
 import jdr.exia.viewModel.pattern.observer.Observer
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Component
 import java.io.File
 import javax.imageio.ImageIO
@@ -90,13 +90,13 @@ class BlueprintManager : Observable {
 
     fun saveMana(id: Int, text: String) {
         transaction(DAO.database) {
-            Blueprint[id].MP = text.toInt()
+            Blueprint[id].MP = text.toIntOrNull() ?: 0
         }
     }
 
     fun saveLife(id: Int, text: String) {
         transaction(DAO.database) {
-            Blueprint[id].HP = text.toInt()
+            Blueprint[id].HP = text.toIntOrNull() ?: 0
         }
     }
 

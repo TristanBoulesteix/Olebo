@@ -17,7 +17,7 @@ class IntegerFilter : DocumentFilter() {
         }
     }
 
-    private fun test(text: String) = text.isEmpty() || text.toIntOrNull() != null
+    private fun test(text: String) = text.isEmpty() || text.toIntOrNull() != null || text == "-"
 
     override fun replace(
         fb: FilterBypass, offset: Int, length: Int, text: String,

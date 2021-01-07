@@ -1,6 +1,7 @@
 package jdr.exia.view.utils.components.templates
 
 import jdr.exia.view.utils.IntegerFilter
+import jdr.exia.view.utils.applyAndAppendTo
 import jdr.exia.view.utils.event.ClickListener
 import jdr.exia.view.utils.gridBagConstraintsOf
 import java.awt.*
@@ -83,7 +84,10 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
             this.removeMouseListener(listener)
             this.layout = GridBagLayout()
 
-            this.add(JTextField(text).apply {
+            JTextField(text).applyAndAppendTo(
+                this,
+                gridBagConstraintsOf(fill = GridBagConstraints.BOTH, weightx = 1.0, weighty = 1.0)
+            ) {
                 this.isOpaque = false
                 this.isEnabled = isEditable
                 (this.document as PlainDocument).documentFilter = IntegerFilter()
@@ -93,14 +97,14 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
                     override fun focusLost(e: FocusEvent) {
                         if (!e.isTemporary) {
                             if (action != null) {
-                                action(id, this@apply.text)
+                                action(id, this@applyAndAppendTo.text)
                             }
                         }
                     }
 
                     override fun focusGained(e: FocusEvent?) {}
                 })
-            }, gridBagConstraintsOf(fill = GridBagConstraints.BOTH, weightx = 1.0, weighty = 1.0))
+            }
         }
     }
 }

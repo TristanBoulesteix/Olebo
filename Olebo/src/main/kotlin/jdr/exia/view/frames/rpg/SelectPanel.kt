@@ -9,9 +9,8 @@ import jdr.exia.model.utils.callManager
 import jdr.exia.model.utils.emptyElements
 import jdr.exia.view.utils.BACKGROUND_COLOR_SELECT_PANEL
 import jdr.exia.view.utils.DIMENSION_BUTTON_DEFAULT
-import jdr.exia.view.utils.applyAndAppendTo
 import jdr.exia.view.utils.components.templates.ComboSelectPanel
-import jdr.exia.view.utils.components.templates.SlideStats
+import jdr.exia.view.utils.components.templates.StatsLabel
 import jdr.exia.view.utils.gridBagConstraintsOf
 import jdr.exia.viewModel.ViewManager
 import java.awt.*
@@ -145,11 +144,9 @@ object SelectPanel : JPanel() {
         }
     }
 
-    private val slidePanel: JPanel
+    private val lifeSlide = StatsLabel(true)
 
-    private val lifeSlide = SlideStats(true)
-
-    private val manaSlide = SlideStats(false)
+    private val manaSlide = StatsLabel(false)
 
     var selectedElements = emptyElements()
 
@@ -221,23 +218,25 @@ object SelectPanel : JPanel() {
             )
         )
 
-        slidePanel = JPanel().applyAndAppendTo(
-            this, gridBagConstraintsOf(
+        this.add(
+            lifeSlide, gridBagConstraintsOf(
                 4,
                 0,
-                gridHeight = 3,
-                weightx = 2.0,
+                weightx = .5,
                 insets = Insets(10, 10, 10, 10),
-                anchor = GridBagConstraints.FIRST_LINE_START,
-                fill = GridBagConstraints.BOTH
+                anchor = GridBagConstraints.LINE_START
             )
-        ) {
-            isOpaque = false
-            layout = GridLayout(2, 1)
+        )
 
-            add(lifeSlide)
-            add(manaSlide)
-        }
+        this.add(
+            manaSlide, gridBagConstraintsOf(
+                4,
+                2,
+                weightx = .5,
+                insets = Insets(10, 10, 10, 10),
+                anchor = GridBagConstraints.LINE_START
+            )
+        )
 
         this.background = BACKGROUND_COLOR_SELECT_PANEL
     }
