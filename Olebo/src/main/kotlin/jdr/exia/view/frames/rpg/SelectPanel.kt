@@ -54,7 +54,7 @@ object SelectPanel : JPanel() {
 
     private var sizeCombo = SizeCombo()
         set(combo) {
-            this.remove(sizeCombo)
+            this.remove(field)
             leftPanel.add(
                 combo, gridBagConstraintsOf(
                     0,
@@ -69,7 +69,7 @@ object SelectPanel : JPanel() {
 
     private var priorityCombo = PriorityCombo()
         set(combo) {
-            this.remove(priorityCombo)
+            this.remove(field)
             leftPanel.add(
                 combo, gridBagConstraintsOf(
                     0,
@@ -144,9 +144,9 @@ object SelectPanel : JPanel() {
         }
     }
 
-    private val lifeSlide = StatsLabel(true)
+    private val lifeField = StatsLabel(true)
 
-    private val manaSlide = StatsLabel(false)
+    private val manaField = StatsLabel(false)
 
     var selectedElements = emptyElements()
 
@@ -219,7 +219,7 @@ object SelectPanel : JPanel() {
         )
 
         this.add(
-            lifeSlide, gridBagConstraintsOf(
+            lifeField, gridBagConstraintsOf(
                 4,
                 0,
                 weightx = .5,
@@ -229,7 +229,7 @@ object SelectPanel : JPanel() {
         )
 
         this.add(
-            manaSlide, gridBagConstraintsOf(
+            manaField, gridBagConstraintsOf(
                 4,
                 2,
                 weightx = .5,
@@ -251,31 +251,34 @@ object SelectPanel : JPanel() {
                     if (this.size == 1) this[0].name else "$size ${Strings[STR_SELECTED_ELEMENTS, StringStates.NORMAL]}"
 
                 priorityCombo = PriorityCombo(this)
-
                 sizeCombo = SizeCombo(this)
 
                 if (this.size == 1) {
-                    lifeSlide.element = this[0]
-                    manaSlide.element = this[0]
+                    lifeField.element = this[0]
+                    manaField.element = this[0]
                 }
             } else {
                 nameLabel.text = null
+
                 arrayOf<AbstractButton>(rotateRightButton, rotateLeftButton, deleteButton).forEach {
                     it.isEnabled = false
                 }
+
                 priorityCombo = PriorityCombo(this)
+                sizeCombo = SizeCombo(this)
+
                 visibilityButton.initialize(true)
 
 
                 sizeCombo = SizeCombo()
 
-                lifeSlide.element = null
-                manaSlide.element = null
+                lifeField.element = null
+                manaField.element = null
             }
         }
 
-        repaint()
         revalidate()
+        repaint()
     }
 
     override fun paintComponent(g: Graphics) {
