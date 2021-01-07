@@ -117,7 +117,7 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel(), MouseListener
             if ((parentGameFrame is PlayerFrame) && !(token.isVisible)) { //Do NOTHING
             } //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
             else {
-                if ((parentGameFrame is PlayerFrame) && !(token.isVisible)) {
+                if ((parentGameFrame is MasterFrame) && !(token.isVisible)) {
                     drawInvisibleMarker(token, g)
                 }
                 drawTokenUp(token, g)
