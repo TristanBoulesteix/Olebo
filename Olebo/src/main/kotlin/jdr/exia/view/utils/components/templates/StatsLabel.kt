@@ -6,7 +6,7 @@ import jdr.exia.localization.Strings
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Element
 import jdr.exia.view.utils.IntegerFilter
-import jdr.exia.view.utils.event.FocusLostListener
+import jdr.exia.view.utils.event.addFocusLostListener
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Font
 import javax.swing.JLabel
@@ -20,7 +20,7 @@ class StatsLabel(private val isHP: Boolean, private var maxValue: Int = 0, value
     private val statsField = JTextField(value.toString(), 4).apply {
         font = fontSize
         (document as AbstractDocument).documentFilter = IntegerFilter()
-        addFocusListener(FocusLostListener {
+        addFocusLostListener {
             element?.let {
                 transaction(DAO.database) {
                     if (isHP) {
@@ -30,7 +30,7 @@ class StatsLabel(private val isHP: Boolean, private var maxValue: Int = 0, value
                     }
                 }
             }
-        })
+        }
         this.isEnabled = false
     }
 

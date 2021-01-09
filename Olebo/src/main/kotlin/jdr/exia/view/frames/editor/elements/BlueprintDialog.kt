@@ -2,7 +2,9 @@ package jdr.exia.view.frames.editor.elements
 
 import jdr.exia.localization.*
 import jdr.exia.view.utils.BACKGROUND_COLOR_ORANGE
+import jdr.exia.view.utils.applyAndAppendTo
 import jdr.exia.view.utils.components.templates.JDialogTemplate
+import jdr.exia.view.utils.event.addClickListener
 import jdr.exia.view.utils.gridBagConstraintsOf
 import jdr.exia.viewModel.BlueprintManager
 import jdr.exia.viewModel.pattern.observer.Action
@@ -10,8 +12,6 @@ import java.awt.BorderLayout
 import java.awt.Font
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
-import java.awt.event.MouseAdapter
-import java.awt.event.MouseEvent
 import javax.swing.BorderFactory
 import javax.swing.JComboBox
 import javax.swing.JPanel
@@ -41,21 +41,16 @@ class BlueprintDialog : JDialogTemplate(Strings[STR_OBJECT_LIST]) {
         this.defaultCloseOperation = DISPOSE_ON_CLOSE
         this.contentPane.isFocusable = true
 
-        this.addMouseListener(object : MouseAdapter() {
-            override fun mouseClicked(e: MouseEvent?) {
-                super.mouseClicked(e)
-                requestFocusInWindow()
-            }
-        })
+        this.addClickListener { requestFocusInWindow() }
 
-        this.add(JPanel().apply {
+        JPanel().applyAndAppendTo(this, BorderLayout.NORTH) {
             this.border = BorderFactory.createEmptyBorder(15, 10, 15, 10)
             this.layout = GridBagLayout()
 
             this.add(comboType, gridBagConstraintsOf(fill = GridBagConstraints.BOTH, weightx = 1.0))
 
             this.background = BACKGROUND_COLOR_ORANGE
-        }, BorderLayout.NORTH)
+        }
 
         this.add(panel, BorderLayout.CENTER)
     }

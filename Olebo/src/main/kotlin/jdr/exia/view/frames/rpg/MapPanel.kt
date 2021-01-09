@@ -1,8 +1,5 @@
 package jdr.exia.view.frames.rpg
 
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Size
@@ -11,11 +8,15 @@ import jdr.exia.model.utils.emptyElements
 import jdr.exia.model.utils.toJColor
 import jdr.exia.view.utils.compareTo
 import jdr.exia.view.utils.drawCircleWithCenterCoordinates
+import jdr.exia.view.utils.event.addMousePressedListener
+import jdr.exia.view.utils.event.addMouseReleasedListener
 import jdr.exia.view.utils.fillCircleWithCenterCoordinates
 import jdr.exia.viewModel.ViewManager
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.awt.*
 import java.awt.event.MouseEvent
-import java.awt.event.MouseListener
 import java.awt.event.MouseMotionAdapter
 import javax.swing.JPanel
 import javax.swing.SwingUtilities
@@ -24,7 +25,7 @@ import kotlin.math.abs
 /**
  * This panel contains the map and all the objects placed within it
  */
-class MapPanel(private val parentGameFrame: GameFrame) : JPanel(), MouseListener {
+class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
     //The background... Why are you reading this? Stop!! I said stop!!! You're still doing it, even when you had to scroll sideways... Ok i'm giving up, bye
     var backGroundImage: Image? = null
     private var tokens = emptyElements() //These are all the tokens placed on  the current map
@@ -63,7 +64,32 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel(), MouseListener
                     }
                 }
             })
-        addMouseListener(this)
+
+        // Reacts to the user's click and calls the corresponding function
+        addMousePressedListener {
+            if (parentGameFrame is MasterFrame) {
+                selectedArea = null
+
+                val clickedX = absoluteX(it.x)
+                val clickedY = absoluteY(it.y)
+
+                when (it.button) //  left button: 1, middle button: 2, Right click: 3
+                {
+                    MouseEvent.BUTTON1 -> ViewManager.selectElement(clickedX, clickedY) //Left click
+                    MouseEvent.BUTTON2 -> ViewFacade.moveToken(clickedX, clickedY)   //Middle button
+                    MouseEvent.BUTTON3 -> ViewFacade.moveToken(clickedX, clickedY)   //Right click
+                }
+            }
+        }
+
+        addMouseReleasedListener {
+            selectedArea?.let {
+                if (it.size >= Dimension(Size.XS.size.absoluteSizeValue, Size.XS.size.absoluteSizeValue))
+                    ViewManager.selectElements(it)
+                else repaint()
+            }
+            selectedArea = null
+        }
 
         if (parentGameFrame is PlayerFrame)
             GlobalScope.launch {
@@ -170,31 +196,6 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel(), MouseListener
         )
     }
 
-    override fun mousePressed(p0: MouseEvent) {  /* Reacts to the user's click and calls the corresponding function */
-        if (parentGameFrame is MasterFrame) {
-            selectedArea = null
-
-            val clickedX = absoluteX(p0.x)
-            val clickedY = absoluteY(p0.y)
-
-            when (p0.button) //  left button: 1, middle button: 2, Right click: 3
-            {
-                MouseEvent.BUTTON1 -> ViewManager.selectElement(clickedX, clickedY) //Left click
-                MouseEvent.BUTTON2 -> ViewFacade.moveToken(clickedX, clickedY)   //Middle button
-                MouseEvent.BUTTON3 -> ViewFacade.moveToken(clickedX, clickedY)   //Right click
-            }
-        }
-    } //Actions to take when the mouse is clicked
-
-    override fun mouseReleased(p0: MouseEvent) {
-        selectedArea?.let {
-            if (it.size >= Dimension(Size.XS.size.absoluteSizeValue, Size.XS.size.absoluteSizeValue))
-                ViewManager.selectElements(it)
-            else repaint()
-        }
-        selectedArea = null
-    }
-
     fun getRelativeRectangleOfToken(token: Element) = Rectangle(
         relativeX(token.position.x),
         relativeY(token.position.y),
@@ -212,9 +213,4 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel(), MouseListener
             null
         )
     }
-
-    // Unused mouse methods
-    override fun mouseExited(p0: MouseEvent) = Unit
-    override fun mouseClicked(p0: MouseEvent) = Unit
-    override fun mouseEntered(p0: MouseEvent) = Unit
 }

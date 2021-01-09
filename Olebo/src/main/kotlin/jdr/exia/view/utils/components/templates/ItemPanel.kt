@@ -3,10 +3,9 @@ package jdr.exia.view.utils.components.templates
 import jdr.exia.view.utils.IntegerFilter
 import jdr.exia.view.utils.applyAndAppendTo
 import jdr.exia.view.utils.event.ClickListener
-import jdr.exia.view.utils.event.FocusLostListener
+import jdr.exia.view.utils.event.addFocusLostListener
 import jdr.exia.view.utils.gridBagConstraintsOf
 import java.awt.*
-import java.awt.event.MouseEvent
 import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.*
@@ -54,11 +53,7 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
     protected inner class SquareLabel(icon: ImageIcon, action: (Int) -> Unit) :
         JLabel(icon, CENTER) {
 
-        private val listener = object : ClickListener {
-            override fun mouseClicked(e: MouseEvent?) {
-                action(id)
-            }
-        }
+        private val listener = ClickListener { action(id) }
 
         init {
             this.preferredSize = DIMENSION_SQUARE
@@ -92,13 +87,13 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
                 (this.document as PlainDocument).documentFilter = IntegerFilter()
                 this.font = Font("Tahoma", Font.BOLD, 18)
                 this.horizontalAlignment = JTextField.CENTER
-                this.addFocusListener(FocusLostListener {
+                this.addFocusLostListener {
                     if (!it.isTemporary) {
                         if (action != null) {
                             action(id, this@applyAndAppendTo.text)
                         }
                     }
-                })
+                }
             }
         }
     }
