@@ -23,6 +23,7 @@ import javax.swing.border.EmptyBorder
 
 /**
  * Contains all this info regarding the item selected by the Game Master.
+ *
  * This is a singleton.
  */
 object SelectPanel : JPanel() {
