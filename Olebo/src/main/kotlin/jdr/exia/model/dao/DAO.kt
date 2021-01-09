@@ -1,24 +1,30 @@
 package jdr.exia.model.dao
 
-import jdr.exia.model.act.Act
 import jdr.exia.localization.ST_ERROR_ACT_NOT_EXISTS
 import jdr.exia.localization.Strings
+import jdr.exia.model.act.Act
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Type
+import jdr.exia.utils.DatabaseException
+import jdr.exia.utils.MessageException
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
-import jdr.exia.utils.DatabaseException
-import jdr.exia.utils.MessageException
 import java.io.File
 import java.sql.Connection
 
 object DAO {
+    /**
+     * Version of the database
+     *
+     * Must be incremented each time the database structure is modified
+     */
     const val DATABASE_VERSION = 3
+
     const val DATABASE_NAME = "database.db"
 
     private val filePath = OLEBO_DIRECTORY + "db${File.separator}$DATABASE_NAME"
