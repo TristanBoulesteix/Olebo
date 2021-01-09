@@ -6,10 +6,9 @@ import jdr.exia.localization.Strings
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Element
 import jdr.exia.view.utils.IntegerFilter
+import jdr.exia.view.utils.event.FocusLostListener
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Font
-import java.awt.event.FocusEvent
-import java.awt.event.FocusListener
 import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.JTextField
@@ -21,20 +20,16 @@ class StatsLabel(private val isHP: Boolean, private var maxValue: Int = 0, value
     private val statsField = JTextField(value.toString(), 4).apply {
         font = fontSize
         (document as AbstractDocument).documentFilter = IntegerFilter()
-        addFocusListener(object : FocusListener {
-            override fun focusLost(e: FocusEvent) {
-                element?.let {
-                    transaction(DAO.database) {
-                        if (isHP) {
-                            it.currentHealth = extractValue(this@apply.text)
-                        } else {
-                            it.currentMana = extractValue(this@apply.text)
-                        }
+        addFocusListener(FocusLostListener {
+            element?.let {
+                transaction(DAO.database) {
+                    if (isHP) {
+                        it.currentHealth = extractValue(this@apply.text)
+                    } else {
+                        it.currentMana = extractValue(this@apply.text)
                     }
                 }
             }
-
-            override fun focusGained(e: FocusEvent) = Unit
         })
         this.isEnabled = false
     }

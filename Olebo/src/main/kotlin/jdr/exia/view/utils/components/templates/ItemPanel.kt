@@ -3,10 +3,9 @@ package jdr.exia.view.utils.components.templates
 import jdr.exia.view.utils.IntegerFilter
 import jdr.exia.view.utils.applyAndAppendTo
 import jdr.exia.view.utils.event.ClickListener
+import jdr.exia.view.utils.event.FocusLostListener
 import jdr.exia.view.utils.gridBagConstraintsOf
 import java.awt.*
-import java.awt.event.FocusEvent
-import java.awt.event.FocusListener
 import java.awt.event.MouseEvent
 import java.io.File
 import javax.imageio.ImageIO
@@ -93,16 +92,12 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
                 (this.document as PlainDocument).documentFilter = IntegerFilter()
                 this.font = Font("Tahoma", Font.BOLD, 18)
                 this.horizontalAlignment = JTextField.CENTER
-                this.addFocusListener(object : FocusListener {
-                    override fun focusLost(e: FocusEvent) {
-                        if (!e.isTemporary) {
-                            if (action != null) {
-                                action(id, this@applyAndAppendTo.text)
-                            }
+                this.addFocusListener(FocusLostListener {
+                    if (!it.isTemporary) {
+                        if (action != null) {
+                            action(id, this@applyAndAppendTo.text)
                         }
                     }
-
-                    override fun focusGained(e: FocusEvent?) {}
                 })
             }
         }
