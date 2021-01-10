@@ -61,7 +61,7 @@ fun Scene?.callManager(elements: Elements, func: (CommandManager, Elements) -> U
     func(CommandManager(scene.id.value), elements)
 }
 
-fun <T> Scene?.callManager(value: T, elements: Elements, func: (T, CommandManager, Elements) -> Unit) =
+inline fun <T> Scene?.callManager(value: T, elements: Elements, func: (T, CommandManager, Elements) -> Unit) =
     this?.let { scene ->
         func(value, CommandManager(scene.id.value), elements)
     }

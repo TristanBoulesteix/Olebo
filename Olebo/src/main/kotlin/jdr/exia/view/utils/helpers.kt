@@ -22,7 +22,7 @@ fun showPopup(message: String, parent: Component? = null, isError: Boolean = fal
     if (!isError) JOptionPane.INFORMATION_MESSAGE else JOptionPane.ERROR_MESSAGE
 )
 
-fun showConfirmMessage(parent: Component? = null, message: String, title: String, okAction: () -> Unit) {
+inline fun showConfirmMessage(parent: Component? = null, message: String, title: String, crossinline okAction: () -> Unit) {
     val ok = JButton(Strings[STR_CONFIRM]).apply {
         this.isEnabled = false
         this.addActionListener {
@@ -53,7 +53,7 @@ fun showConfirmMessage(parent: Component? = null, message: String, title: String
     )
 }
 
-fun <T : Container> T.applyAndAppendTo(
+inline fun <T : Container> T.applyAndAppendTo(
     parent: Container,
     constraints: Any? = null,
     block: T.() -> Unit
