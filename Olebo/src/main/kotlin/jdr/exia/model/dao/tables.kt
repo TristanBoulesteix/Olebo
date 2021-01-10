@@ -163,6 +163,7 @@ object InstanceTable : IntIdTable() {
     val idScene = integer("ID_Scene").references(SceneTable.id).default(0)
     val idBlueprint = integer("id_blueprint").references(BlueprintTable.id).default(0)
     val deleted = bool("deleted").default(false)
+    val alias = varchar("alias",255).default("")
 }
 
 object SizeTable : IntIdTable(), Initializable {
