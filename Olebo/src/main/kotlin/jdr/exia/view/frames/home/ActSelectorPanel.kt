@@ -6,7 +6,7 @@ import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.getIcon
 import jdr.exia.view.utils.components.templates.ItemPanel
 import jdr.exia.view.utils.components.templates.SelectorPanel
-import jdr.exia.view.utils.event.addClickListener
+import jdr.exia.view.utils.event.addDoubleClickListener
 import jdr.exia.viewModel.HomeManager
 
 /**
@@ -27,9 +27,7 @@ class ActSelectorPanel : SelectorPanel() {
     protected class ActPanel(id: Int, name: String) : ItemPanel(id, name) {
         init {
             listOf(nameLabel, namePanel).forEach {
-                it.addClickListener { e ->
-                    if (e.clickCount == 2) HomeManager.launchAct(id)
-                }
+                it.addDoubleClickListener { HomeManager.launchAct(id) }
                 it.toolTipText = Strings[STR_DOUBLE_CLICK_OPEN_ACT]
             }
             this.nameLabel.isEnabled = false
