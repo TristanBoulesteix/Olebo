@@ -17,7 +17,7 @@ abstract class ComboSelectPanel(items: Array<String>, elements: Elements?) : JCo
         get() = selectedItem
         set(value) = super.setSelectedItem(value)
 
-    protected fun Any?.doIfElement(default: String, actionReturn: (Element) -> String) =
+    protected inline fun Any?.doIfElement(default: String, actionReturn: (Element) -> String) =
         if (this is String) {
             isEnabled = false
             this
