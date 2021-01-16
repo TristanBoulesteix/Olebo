@@ -31,7 +31,7 @@ object SelectPanel : JPanel() {
 
     private val leftPanel = object : JPanel() {
         init {
-            this.layout = GridBagLayout()
+            this.layout = GridLayout(3, 0)
             this.isOpaque = false
         }
     }
@@ -156,6 +156,7 @@ object SelectPanel : JPanel() {
 
         this.layout = GridBagLayout()
         this.preferredSize = Dimension(500, 10)
+        this.isFocusable = true
 
         this.add(
             leftPanel, gridBagConstraintsOf(
