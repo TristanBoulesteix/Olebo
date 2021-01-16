@@ -163,7 +163,7 @@ object InstanceTable : IntIdTable() {
     val idScene = integer("ID_Scene").references(SceneTable.id).default(0)
     val idBlueprint = integer("id_blueprint").references(BlueprintTable.id).default(0)
     val deleted = bool("deleted").default(false)
-    val alias = varchar("alias",255).default("")
+    val alias = varchar("alias", 255).default("")
 }
 
 object SizeTable : IntIdTable(), Initializable {
@@ -230,6 +230,7 @@ object SettingsTable : IntIdTable(), Initializable {
     const val CURSOR_COLOR = "cursor_color"
     const val PLAYER_FRAME_ENABLED = "PlayerFrame_enabled"
     const val DEFAULT_ELEMENT_VISIBILITY = "default_element_visibility"
+    const val LABEL_ENABLED = "label_enabled"
 
     val name = varchar("name", 255)
     val value = varchar("value", 255).default("")
@@ -253,6 +254,7 @@ object SettingsTable : IntIdTable(), Initializable {
         insertOptionIfNotExists(6, CURSOR_COLOR, "")
         insertOptionIfNotExists(7, PLAYER_FRAME_ENABLED, false)
         insertOptionIfNotExists(8, DEFAULT_ELEMENT_VISIBILITY, false)
+        insertOptionIfNotExists(9, LABEL_ENABLED, false)
     }
 
     private fun insertOptionIfNotExists(id: Int, name: String, value: Any) {

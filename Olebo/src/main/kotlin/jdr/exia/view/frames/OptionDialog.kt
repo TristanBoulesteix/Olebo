@@ -47,6 +47,10 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
         this.isSelected = Settings.defaultElementVisibility
     }
 
+    private val checkboxLabelEnabled = JCheckBox(Strings[STR_LABEL_ENABLED]).apply {
+        this.isSelected = Settings.isLabelEnabled
+    }
+
     private val languageChangeRestartLabel: JLabel
 
     init {
@@ -108,6 +112,11 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
                 checkboxVisibilityElement,
                 gridBagConstraintsOf(0, 2, weightx = 1.0, anchor = GridBagConstraints.LINE_START)
             )
+
+            this.add(
+                checkboxLabelEnabled,
+                gridBagConstraintsOf(0, 3, weightx = 1.0, anchor = GridBagConstraints.LINE_START)
+            )
         }
 
         languageChangeRestartLabel =
@@ -137,6 +146,7 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
         ) {
             JButton(Strings[STR_SAVE]).applyAndAppendTo(this) {
                 addActionListener {
+                    // Save option selected to the database
                     Settings.language = availableLocales[comboLanguage.selectedIndex]
                     Settings.autoUpdate = checkBoxAutoUpdate.isSelected
                     Settings.playerFrameOpenedByDefault = checkBoxPlayerFrameOpenedByDefault.isSelected
@@ -146,6 +156,9 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
                             ViewFacade.updateCursorOnPlayerFrame()
                     }
                     Settings.defaultElementVisibility = checkboxVisibilityElement.isSelected
+                    Settings.isLabelEnabled = checkboxLabelEnabled.isSelected
+
+                    // Close the Options dialog
                     dispose()
                 }
             }

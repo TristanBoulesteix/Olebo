@@ -14,11 +14,7 @@ import jdr.exia.view.utils.components.templates.StatsLabel
 import jdr.exia.view.utils.gridBagConstraintsOf
 import jdr.exia.viewModel.ViewManager
 import java.awt.*
-import javax.swing.AbstractButton
-import javax.swing.JButton
-import javax.swing.JLabel
-import javax.swing.JPanel
-import javax.swing.border.EmptyBorder
+import javax.swing.*
 
 
 /**
@@ -36,10 +32,9 @@ object SelectPanel : JPanel() {
         }
     }
 
-    private val nameLabel = object : JLabel() {
+    private val blueprintNameLabel = object : JLabel() {
         init {
             horizontalTextPosition = LEFT
-            border = EmptyBorder(0, 0, 0, 0)
         }
 
         override fun setText(text: String?) {
@@ -52,6 +47,8 @@ object SelectPanel : JPanel() {
             }
         }
     }
+
+    private val nameLabel = JTextField()
 
     private var sizeCombo = SizeCombo()
         set(combo) {
@@ -156,7 +153,6 @@ object SelectPanel : JPanel() {
 
         this.layout = GridBagLayout()
         this.preferredSize = Dimension(500, 10)
-        this.isFocusable = true
 
         this.add(
             leftPanel, gridBagConstraintsOf(
@@ -171,7 +167,7 @@ object SelectPanel : JPanel() {
         )
 
         leftPanel.add(
-            nameLabel, gridBagConstraintsOf(
+            blueprintNameLabel, gridBagConstraintsOf(
                 0,
                 0,
                 weightx = 1.0,
@@ -249,7 +245,7 @@ object SelectPanel : JPanel() {
                 arrayOf(rotateRightButton, rotateLeftButton, deleteButton).forEach { it.isEnabled = true }
 
                 visibilityButton.initialize(false)
-                nameLabel.text =
+                blueprintNameLabel.text =
                     if (this.size == 1) this[0].name else "$size ${Strings[STR_SELECTED_ELEMENTS, StringStates.NORMAL]}"
 
                 priorityCombo = PriorityCombo(this)
@@ -260,7 +256,7 @@ object SelectPanel : JPanel() {
                     manaField.element = this[0]
                 }
             } else {
-                nameLabel.text = null
+                blueprintNameLabel.text = null
 
                 arrayOf<AbstractButton>(rotateRightButton, rotateLeftButton, deleteButton).forEach {
                     it.isEnabled = false

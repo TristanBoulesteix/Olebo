@@ -103,6 +103,7 @@ const val STR_DEFAULT_ELEMENT_VISIBILITY = "default_element_visibility"
 const val STR_YELLOW = "yellow"
 const val STR_RED = "red"
 const val STR_CANCEL_UPDATE = "cancel_update"
+const val STR_LABEL_ENABLED = "label_enabled"
 
 // -- Sentences
 
