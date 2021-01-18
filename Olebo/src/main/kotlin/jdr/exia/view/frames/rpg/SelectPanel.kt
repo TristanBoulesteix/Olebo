@@ -52,7 +52,7 @@ object SelectPanel : JPanel() {
         }
     }
 
-    private val nameLabel = object : JTextField(Strings[STR_LABEL]) {
+    private val nameLabel = object : JTextField() {
         init {
             this.isEnabled = false
         }
