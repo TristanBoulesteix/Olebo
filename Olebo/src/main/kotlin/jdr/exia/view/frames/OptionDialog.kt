@@ -156,7 +156,11 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
                             ViewFacade.updateCursorOnPlayerFrame()
                     }
                     Settings.defaultElementVisibility = checkboxVisibilityElement.isSelected
-                    Settings.isLabelEnabled = checkboxLabelEnabled.isSelected
+                    checkboxLabelEnabled.isSelected.let {
+                        Settings.isLabelEnabled = it
+                        if (owner is MasterFrame)
+                            ViewFacade.reloadSelectPanel()
+                    }
 
                     // Close the Options dialog
                     dispose()

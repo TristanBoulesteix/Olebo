@@ -51,6 +51,8 @@ object ViewFacade {
         }
     }
 
+    fun reloadSelectPanel() = SelectPanel.reload()
+
     /**
      * This method activates the [PlayerFrame] and [MasterFrame] to initiate/start back an Act]
      */
