@@ -265,6 +265,9 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
     fun stillExist() = transaction(DAO.database) { Element.findById(this@Element.id) != null }
 
+    /**
+     * Set a value using a transaction with the default database
+     */
     private fun <T> transaction(get: () -> T): ReadOnlyProperty<Element, T> =
         ReadOnlyProperty { _, _ -> transaction(DAO.database) { get() } }
 }
