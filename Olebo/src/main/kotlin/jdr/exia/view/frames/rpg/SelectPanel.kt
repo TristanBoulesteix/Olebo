@@ -52,8 +52,16 @@ object SelectPanel : JPanel() {
         }
     }
 
-    private val nameLabel = JTextField("label").apply {
-        isEnabled = false
+    private val nameLabel = object : JTextField(Strings[STR_LABEL]) {
+        init {
+            this.isEnabled = false
+        }
+
+        override fun setEnabled(enabled: Boolean) {
+            if (!enabled)
+                this.text = Strings[STR_LABEL]
+            super.setEnabled(enabled)
+        }
     }
 
     private var sizeCombo = SizeCombo()
@@ -241,6 +249,9 @@ object SelectPanel : JPanel() {
 
     fun reload() {
         with(selectedElements) {
+            initilializeComboInOrder(this)
+            nameLabel.isEnabled = false
+
             if (this.isNotEmpty()) {
                 arrayOf(rotateRightButton, rotateLeftButton, deleteButton).forEach { it.isEnabled = true }
 
@@ -248,11 +259,13 @@ object SelectPanel : JPanel() {
                 blueprintNameLabel.text =
                     if (this.size == 1) this[0].name else "$size ${Strings[STR_SELECTED_ELEMENTS, StringStates.NORMAL]}"
 
-                initilializeComboInOrder(this)
-
                 if (this.size == 1) {
                     lifeField.element = this[0]
                     manaField.element = this[0]
+                    nameLabel.let {
+                        it.text = this[0].name
+                        it.isEnabled = true
+                    }
                 }
             } else {
                 blueprintNameLabel.text = null
@@ -260,8 +273,6 @@ object SelectPanel : JPanel() {
                 arrayOf(rotateRightButton, rotateLeftButton, deleteButton).forEach {
                     it.isEnabled = false
                 }
-
-                initilializeComboInOrder(this)
 
                 visibilityButton.initialize(true)
 

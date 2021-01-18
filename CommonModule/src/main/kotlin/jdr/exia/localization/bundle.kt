@@ -133,6 +133,7 @@ class StringsBundle : Strings() {
         ST_UPDATE_TRY_AGAIN to "Please, try again later.",
         STR_CANCEL_UPDATE to "cancel update",
         STR_LABEL_ENABLED to "enable custom label for elements",
+        STR_LABEL to "label",
     )
 }
 
@@ -267,5 +268,6 @@ class StringsBundle_fr : Strings() {
         ST_UPDATE_TRY_AGAIN to "Veuillez réessayer ultérieurement.",
         STR_CANCEL_UPDATE to "annuler la mise à jour",
         STR_LABEL_ENABLED to "activer les labels personnalisés pour les éléments",
+        STR_LABEL to "label",
     )
 }

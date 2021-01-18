@@ -104,6 +104,7 @@ const val STR_YELLOW = "yellow"
 const val STR_RED = "red"
 const val STR_CANCEL_UPDATE = "cancel_update"
 const val STR_LABEL_ENABLED = "label_enabled"
+const val STR_LABEL = "label"
 
 // -- Sentences
 
