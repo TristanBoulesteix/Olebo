@@ -39,6 +39,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
                     }
                     it[idBlueprint] = b.id.value
                     it[visible] = Settings.defaultElementVisibility
+                    it[alias] = b.realName
                 }
 
                 Element[id]

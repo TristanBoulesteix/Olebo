@@ -1,6 +1,7 @@
 package jdr.exia.view.frames.rpg
 
 import jdr.exia.localization.*
+import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Priority
@@ -10,15 +11,17 @@ import jdr.exia.model.utils.callManager
 import jdr.exia.model.utils.emptyElements
 import jdr.exia.view.utils.BACKGROUND_COLOR_SELECT_PANEL
 import jdr.exia.view.utils.DIMENSION_BUTTON_DEFAULT
+import jdr.exia.view.utils.components.PlaceholderTextField
 import jdr.exia.view.utils.components.templates.ComboSelectPanel
 import jdr.exia.view.utils.components.templates.StatsLabel
+import jdr.exia.view.utils.event.addFocusLostListener
 import jdr.exia.view.utils.gridBagConstraintsOf
 import jdr.exia.viewModel.ViewManager
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.*
 import javax.swing.JButton
 import javax.swing.JLabel
 import javax.swing.JPanel
-import javax.swing.JTextField
 
 
 /**
@@ -52,15 +55,13 @@ object SelectPanel : JPanel() {
         }
     }
 
-    private val nameLabel = object : JTextField() {
-        init {
-            this.isEnabled = false
-        }
-
-        override fun setEnabled(enabled: Boolean) {
-            if (!enabled)
-                this.text = Strings[STR_LABEL]
-            super.setEnabled(enabled)
+    private val nameLabel = PlaceholderTextField(Strings[STR_LABEL]).apply {
+        this.isEnabled = false
+        this.font = Font(this.font.name, Font.PLAIN, 10)
+        this.addFocusLostListener {
+            if (selectedElements.size == 1) {
+                transaction(DAO.database) { selectedElements[0].alias = text }
+            }
         }
     }
 
@@ -263,7 +264,7 @@ object SelectPanel : JPanel() {
                     lifeField.element = this[0]
                     manaField.element = this[0]
                     nameLabel.let {
-                        it.text = this[0].name
+                        it.text = transaction(DAO.database) { this@with[0].alias }
                         it.isEnabled = true
                     }
                 }

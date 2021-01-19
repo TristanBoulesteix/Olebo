@@ -25,6 +25,9 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
     var HP by statsDelegate(::maxLife)
     var MP by statsDelegate(::maxMana)
 
+    /**
+     * Name the has to be displayed to the user
+     */
     val realName
         get() = if (type.typeElement == Type.BASIC) Strings[name] else name
 
