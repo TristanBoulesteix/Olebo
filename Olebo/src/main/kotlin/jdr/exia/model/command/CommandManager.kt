@@ -1,6 +1,6 @@
 package jdr.exia.model.command
 
-class CommandManager private constructor() {
+class CommandManager private constructor() : MutableList<Command> by mutableListOf() {
     companion object {
         private var managerInstance: Pair<Int, CommandManager>? = null
 
@@ -14,39 +14,37 @@ class CommandManager private constructor() {
         }
     }
 
-    private val stack = mutableListOf<Command>()
-
     val undoLabel
-        get() = stack.getOrNull(pointer)?.label
+        get() = getOrNull(pointer)?.label
 
     val redoLabel
-        get() = stack.getOrNull(pointer + 1)?.label
+        get() = getOrNull(pointer + 1)?.label
 
     private var pointer = -1
 
     operator fun plusAssign(command: Command) {
-        if (stack.size >= 1) {
-            for (i in stack.size - 1 downTo pointer + 1) {
-                stack.removeAt(i)
+        if (size >= 1) {
+            for (i in size - 1 downTo pointer + 1) {
+                removeAt(i)
             }
         }
 
         command.exec()
 
-        stack += command
+        add(command)
 
         pointer++
     }
 
     fun undo() {
-        stack[pointer].cancelExec()
+        this[pointer].cancelExec()
         pointer--
     }
 
     fun redo() {
-        if (pointer == stack.size - 1)
+        if (pointer == this.size - 1)
             return
         pointer++
-        stack[pointer].exec()
+        this[pointer].exec()
     }
 }
