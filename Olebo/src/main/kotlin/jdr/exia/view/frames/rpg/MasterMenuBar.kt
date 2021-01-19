@@ -198,7 +198,7 @@ object MasterMenuBar : JMenuBar() {
 
             JMenuItem(Strings[STR_DELETE_SELECTED_TOKENS]).applyAndAppendTo(this) {
                 this.addActionListener {
-                    ViewManager.removeElements(SelectPanel.selectedElements)
+                    ViewManager.removeSelectedElements()
                 }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0)
             }

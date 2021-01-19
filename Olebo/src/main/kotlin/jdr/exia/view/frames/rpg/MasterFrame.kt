@@ -3,6 +3,7 @@ package jdr.exia.view.frames.rpg
 import jdr.exia.localization.STR_DM_TITLE_FRAME
 import jdr.exia.localization.Strings
 import jdr.exia.model.utils.Elements
+import jdr.exia.model.utils.emptyElements
 import jdr.exia.view.utils.DIMENSION_FRAME
 import jdr.exia.view.utils.event.addKeyPressedListener
 import jdr.exia.view.utils.gridBagConstraintsOf
@@ -25,11 +26,29 @@ import javax.swing.JPanel
  * this is a singleton
  */
 object MasterFrame : JFrame(), GameFrame {
-    private var masterFramePanel = JPanel() // Main JPanel that contains other panels
+    /**
+     * Main [JPanel] that contains other panels
+     */
+    private var masterFramePanel = JPanel()
 
-    val mapPanel = MapPanel(this) //this frame's mapPanel
+    /**
+     * this [MasterFrame] frame's mapPanel
+     */
+    val mapPanel = MapPanel(this)
 
-    var itemPanel = ItemPanel() // Will contain list of available items
+    /**
+     * Will contain list of available items
+     */
+    var itemPanel = ItemPanel()
+
+    var selectPanel = SelectPanel()
+
+    var selectedElements: Elements = emptyElements()
+        set(value) {
+            selectPanel.selectedElements = value.toList()
+            mapPanel.selectedElements = value.toMutableList()
+            field = value
+        }
 
     override fun setMapBackground(imageName: String) { //set the background image for the mappanels
         mapPanel.backGroundImage = ImageIO.read(File(imageName))
@@ -62,7 +81,7 @@ object MasterFrame : JFrame(), GameFrame {
         itemPanel.setSize(this.width - 1280, this.height)
         itemPanel.background = Color.yellow
 
-        SelectPanel.setSize(mapPanel.width, (this.height - mapPanel.height))
+        selectPanel.setSize(mapPanel.width, (this.height - mapPanel.height))
 
         val itemConstraints = gridBagConstraintsOf(
             gridx = 0,
@@ -90,7 +109,7 @@ object MasterFrame : JFrame(), GameFrame {
 
         masterFramePanel.add(mapPanel, mapConstraints)
         masterFramePanel.add(itemPanel, itemConstraints)
-        masterFramePanel.add(SelectPanel, selectConstraints)
+        masterFramePanel.add(selectPanel, selectConstraints)
         jMenuBar = MasterMenuBar
 
         mapPanel.addMouseMotionListener(object : MouseMotionAdapter() {
@@ -108,7 +127,7 @@ object MasterFrame : JFrame(), GameFrame {
     override fun reload() {
         mapPanel.repaint()
         itemPanel.reload()
-        SelectPanel.reload()
+        selectPanel.reload()
     }
 
     override fun updateMap(tokens: Elements) {

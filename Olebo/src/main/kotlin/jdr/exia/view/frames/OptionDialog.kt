@@ -159,7 +159,7 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
                     checkboxLabelEnabled.isSelected.let {
                         Settings.isLabelEnabled = it
                         if (owner is MasterFrame)
-                            ViewFacade.reloadSelectPanel()
+                            ViewFacade.reloadFrames()
                     }
 
                     // Close the Options dialog

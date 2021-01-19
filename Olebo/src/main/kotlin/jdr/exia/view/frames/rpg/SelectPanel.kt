@@ -29,7 +29,7 @@ import javax.swing.JPanel
  *
  * This is a singleton.
  */
-object SelectPanel : JPanel() {
+class SelectPanel : JPanel() {
     private val defaultLeftInsets = Insets(10, 150, 10, 10)
 
     private val leftPanel = object : JPanel() {
@@ -341,7 +341,7 @@ object SelectPanel : JPanel() {
         sizeCombo = SizeCombo(element)
     }
 
-    private class SizeCombo(items: Elements? = null) :
+    private inner class SizeCombo(items: Elements? = null) :
         ComboSelectPanel(arrayOf("XS", "S", "M", "L", "XL", "XXL"), items) {
         init {
             addActionListener { _ ->

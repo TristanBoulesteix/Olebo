@@ -3,6 +3,7 @@ package jdr.exia.view.frames.rpg
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
 import jdr.exia.model.utils.Elements
+import jdr.exia.model.utils.emptyElements
 import jdr.exia.model.utils.toJColor
 import jdr.exia.viewModel.ViewManager
 
@@ -23,8 +24,7 @@ object ViewFacade {
     }
 
     fun setSelectedToken(vararg tokens: Element) {
-        SelectPanel.selectedElements = tokens.toList()
-        MasterFrame.mapPanel.selectedElements = tokens.toMutableList()
+        MasterFrame.selectedElements = tokens.toMutableList()
     }
 
     fun setSelectedToken(token: Element?) = if (token == null) setSelectedToken() else setSelectedToken(token)
@@ -51,8 +51,6 @@ object ViewFacade {
         }
     }
 
-    fun reloadSelectPanel() = SelectPanel.reload()
-
     /**
      * This method activates the [PlayerFrame] and [MasterFrame] to initiate/start back an Act]
      */
@@ -67,8 +65,7 @@ object ViewFacade {
     }
 
     fun unSelectElements() {
-        MasterFrame.mapPanel.selectedElements = mutableListOf()
-        SelectPanel.selectedElements = mutableListOf()
+        MasterFrame.selectedElements = emptyElements()
     }
 
     fun loadItems() {

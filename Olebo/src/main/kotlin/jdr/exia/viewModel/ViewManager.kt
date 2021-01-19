@@ -39,6 +39,8 @@ object ViewManager {
         MasterFrame.requestFocus()
     }
 
+    fun removeSelectedElements() = removeElements(selectedElements)
+
     fun removeElements(elements: Elements) { //removes given token from MutableList
         selectedElements = mutableEmptyElements()
         ViewFacade.setSelectedToken(null)
