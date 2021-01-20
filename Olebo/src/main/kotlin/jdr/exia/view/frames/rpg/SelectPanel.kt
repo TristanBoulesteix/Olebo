@@ -369,7 +369,7 @@ class SelectPanel : JPanel() {
     }
 
     private class PriorityCombo(items: Elements? = null) :
-        ComboSelectPanel(arrayOf(Strings[STR_FOREGROUND], Strings[STR_DEFAULT], Strings[STR_DEFAULT]), items) {
+        ComboSelectPanel(arrayOf(Strings[STR_FOREGROUND], Strings[STR_DEFAULT], Strings[STR_BACKGROUND]), items) {
         init {
             addActionListener {
                 val newPriority = when (selectedItem) {
