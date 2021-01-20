@@ -199,4 +199,6 @@ object ViewManager {
     fun updatePriorityToken(priority: Priority) = selectedElements.forEach {
         it.priority = priority
     }.also { repaint() }
+
+    fun updateSizeToken(size: Size) = activeScene.callManager(size, selectedElements, Element::cmdDimension).also { repaint() }
 }

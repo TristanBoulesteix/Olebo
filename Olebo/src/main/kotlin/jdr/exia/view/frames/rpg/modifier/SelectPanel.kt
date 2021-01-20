@@ -3,12 +3,10 @@ package jdr.exia.view.frames.rpg
 import jdr.exia.localization.*
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.option.Settings
-import jdr.exia.model.element.Element
-import jdr.exia.model.element.Priority
-import jdr.exia.model.element.Size
 import jdr.exia.model.utils.Elements
-import jdr.exia.model.utils.callManager
 import jdr.exia.model.utils.emptyElements
+import jdr.exia.view.frames.rpg.modifier.PriorityCombo
+import jdr.exia.view.frames.rpg.modifier.SizeCombo
 import jdr.exia.view.utils.BACKGROUND_COLOR_SELECT_PANEL
 import jdr.exia.view.utils.DIMENSION_BUTTON_DEFAULT
 import jdr.exia.view.utils.components.PlaceholderTextField
@@ -339,57 +337,5 @@ class SelectPanel : JPanel() {
 
         priorityCombo = PriorityCombo(element)
         sizeCombo = SizeCombo(element)
-    }
-
-    private inner class SizeCombo(items: Elements? = null) :
-        ComboSelectPanel(arrayOf("XS", "S", "M", "L", "XL", "XXL"), items) {
-        init {
-            addActionListener { _ ->
-                with(selectedElements.filter { it.size != selectedItem }) {
-                    val newSize = when (selectedItem) {
-                        "XS" -> Size.XS
-                        "S" -> Size.S
-                        "M" -> Size.M
-                        "L" -> Size.L
-                        "XL" -> Size.XL
-                        "XXL" -> Size.XXL
-                        else -> Size.DEFAULT
-                    }
-                    ViewManager.activeScene.callManager(newSize, this, Element::cmdDimension)
-                }
-                ViewManager.repaint()
-            }
-        }
-
-        override fun setSelectedItem(selected: Any?) {
-            this.toSelect = selected.doIfElement("S") {
-                it.size.name
-            }
-        }
-    }
-
-    private class PriorityCombo(items: Elements? = null) :
-        ComboSelectPanel(arrayOf(Strings[STR_FOREGROUND], Strings[STR_DEFAULT], Strings[STR_BACKGROUND]), items) {
-        init {
-            addActionListener {
-                val newPriority = when (selectedItem) {
-                    Strings[STR_BACKGROUND] -> Priority.LOW
-                    Strings[STR_FOREGROUND] -> Priority.HIGH
-                    else -> Priority.REGULAR
-                }
-
-                ViewManager.updatePriorityToken(newPriority)
-            }
-        }
-
-        override fun setSelectedItem(selected: Any?) {
-            this.toSelect = selected.doIfElement(Strings[STR_DEFAULT]) {
-                when (it.priority) {
-                    Priority.HIGH -> Strings[STR_FOREGROUND]
-                    Priority.LOW -> Strings[STR_BACKGROUND]
-                    Priority.REGULAR -> Strings[STR_DEFAULT]
-                }
-            }
-        }
     }
 }
