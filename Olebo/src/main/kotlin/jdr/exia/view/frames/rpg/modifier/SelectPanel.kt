@@ -1,24 +1,17 @@
-package jdr.exia.view.frames.rpg
+package jdr.exia.view.frames.rpg.modifier
 
 import jdr.exia.localization.*
 import jdr.exia.model.dao.DAO
-import jdr.exia.model.dao.option.Settings
-import jdr.exia.model.utils.Elements
 import jdr.exia.model.utils.emptyElements
-import jdr.exia.view.frames.rpg.modifier.PriorityCombo
-import jdr.exia.view.frames.rpg.modifier.SizeCombo
 import jdr.exia.view.utils.BACKGROUND_COLOR_SELECT_PANEL
+import jdr.exia.view.utils.DEFAULT_INSET
 import jdr.exia.view.utils.DIMENSION_BUTTON_DEFAULT
-import jdr.exia.view.utils.components.PlaceholderTextField
-import jdr.exia.view.utils.components.templates.ComboSelectPanel
 import jdr.exia.view.utils.components.templates.StatsLabel
-import jdr.exia.view.utils.event.addFocusLostListener
 import jdr.exia.view.utils.gridBagConstraintsOf
 import jdr.exia.viewModel.ViewManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.*
 import javax.swing.JButton
-import javax.swing.JLabel
 import javax.swing.JPanel
 
 
@@ -28,74 +21,7 @@ import javax.swing.JPanel
  * This is a singleton.
  */
 class SelectPanel : JPanel() {
-    private val defaultLeftInsets = Insets(10, 150, 10, 10)
-
-    private val leftPanel = object : JPanel() {
-        init {
-            this.layout = GridBagLayout()
-            this.isOpaque = false
-        }
-    }
-
-    private val blueprintNameLabel = object : JLabel() {
-        init {
-            horizontalTextPosition = LEFT
-        }
-
-        override fun setText(text: String?) {
-            if (text == null) {
-                this.isEnabled = false
-                super.setText(Strings[STR_NAME])
-            } else {
-                this.isEnabled = true
-                super.setText(text)
-            }
-        }
-    }
-
-    private val nameLabel = PlaceholderTextField(Strings[STR_LABEL]).apply {
-        this.isEnabled = false
-        this.font = Font(this.font.name, Font.PLAIN, 10)
-        this.addFocusLostListener {
-            if (selectedElements.size == 1) {
-                transaction(DAO.database) { selectedElements[0].alias = text }
-            }
-        }
-    }
-
-    private var sizeCombo = SizeCombo()
-        set(combo) {
-            leftPanel.remove(field)
-            leftPanel.add(
-                combo,
-                gridBagConstraintsOf(
-                    0,
-                    if (Settings.isLabelEnabled) 3 else 2,
-                    weightx = 1.0,
-                    insets = defaultLeftInsets,
-                    anchor = GridBagConstraints.LINE_START,
-                    fill = GridBagConstraints.HORIZONTAL
-                )
-            )
-            field = combo
-        }
-
-    private var priorityCombo = PriorityCombo()
-        set(combo) {
-            leftPanel.remove(field)
-            leftPanel.add(
-                combo,
-                gridBagConstraintsOf(
-                    0,
-                    if (Settings.isLabelEnabled) 4 else 3,
-                    weightx = 1.0,
-                    insets = defaultLeftInsets,
-                    anchor = GridBagConstraints.LINE_START,
-                    fill = GridBagConstraints.HORIZONTAL
-                )
-            )
-            field = combo
-        }
+    private val sidePanel = SideDataPanel()
 
     private val rotateRightButton = JButton(Strings[STR_ROTATE_TO_RIGHT]).apply {
         preferredSize = DIMENSION_BUTTON_DEFAULT
@@ -172,11 +98,11 @@ class SelectPanel : JPanel() {
         this.preferredSize = Dimension(500, 10)
 
         this.add(
-            leftPanel, gridBagConstraintsOf(
+            sidePanel, gridBagConstraintsOf(
                 0,
                 0,
                 weightx = .5,
-                insets = defaultLeftInsets,
+                insets = DEFAULT_INSET,
                 anchor = GridBagConstraints.LINE_START,
                 fill = GridBagConstraints.VERTICAL,
                 gridHeight = 3
@@ -248,35 +174,35 @@ class SelectPanel : JPanel() {
 
     fun reload() {
         with(selectedElements) {
-            initilializeComboInOrder(this)
-            nameLabel.isEnabled = false
+
+            sidePanel.priorityCombo = PriorityCombo(this)
+            sidePanel.sizeCombo = SizeCombo(this)
+
+            sidePanel.nameLabel.isEnabled = false
 
             if (this.isNotEmpty()) {
                 arrayOf(rotateRightButton, rotateLeftButton, deleteButton).forEach { it.isEnabled = true }
 
                 visibilityButton.initialize(false)
-                blueprintNameLabel.text =
+                sidePanel.blueprintNameLabel.text =
                     if (this.size == 1) this[0].name else "$size ${Strings[STR_SELECTED_ELEMENTS, StringStates.NORMAL]}"
 
                 if (this.size == 1) {
                     lifeField.element = this[0]
                     manaField.element = this[0]
-                    nameLabel.let {
+                    sidePanel.nameLabel.let {
                         it.text = transaction(DAO.database) { this@with[0].alias }
                         it.isEnabled = true
                     }
                 }
             } else {
-                blueprintNameLabel.text = null
+                sidePanel.blueprintNameLabel.text = null
 
                 arrayOf(rotateRightButton, rotateLeftButton, deleteButton).forEach {
                     it.isEnabled = false
                 }
 
                 visibilityButton.initialize(true)
-
-
-                sizeCombo = SizeCombo()
 
                 lifeField.element = null
                 manaField.element = null
@@ -305,37 +231,5 @@ class SelectPanel : JPanel() {
                 g.fillRect(20, 35, 100, 100)
             }
         }
-    }
-
-    /**
-     * This function initialize the [ComboSelectPanel] in the right order. It is preferable to use this function instead of the constructor of the [ComboSelectPanel].
-     */
-    private fun initilializeComboInOrder(element: Elements?) {
-        leftPanel.removeAll()
-        leftPanel.add(
-            blueprintNameLabel, gridBagConstraintsOf(
-                0,
-                0,
-                weightx = 1.0,
-                insets = defaultLeftInsets,
-                anchor = GridBagConstraints.LINE_START,
-                fill = GridBagConstraints.HORIZONTAL
-            )
-        )
-
-        if (Settings.isLabelEnabled)
-            leftPanel.add(
-                nameLabel, gridBagConstraintsOf(
-                    0,
-                    1,
-                    weightx = 1.0,
-                    insets = defaultLeftInsets,
-                    anchor = GridBagConstraints.LINE_START,
-                    fill = GridBagConstraints.HORIZONTAL
-                )
-            )
-
-        priorityCombo = PriorityCombo(element)
-        sizeCombo = SizeCombo(element)
     }
 }

@@ -2,6 +2,7 @@ package jdr.exia.view.utils
 
 import java.awt.Color
 import java.awt.Dimension
+import java.awt.Insets
 import java.awt.event.KeyEvent
 import javax.swing.BorderFactory
 import javax.swing.border.Border
@@ -23,3 +24,6 @@ val BORDER_BUTTONS: Border = BorderFactory.createEmptyBorder(15, 15, 15, 15)
 // Keys
 const val CTRL = KeyEvent.CTRL_DOWN_MASK
 const val CTRLSHIFT = CTRL or KeyEvent.SHIFT_DOWN_MASK
+
+// Insets
+val DEFAULT_INSET = Insets(10, 150, 10, 10)

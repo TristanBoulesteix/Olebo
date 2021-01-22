@@ -4,6 +4,7 @@ import jdr.exia.localization.STR_DM_TITLE_FRAME
 import jdr.exia.localization.Strings
 import jdr.exia.model.utils.Elements
 import jdr.exia.model.utils.emptyElements
+import jdr.exia.view.frames.rpg.modifier.SelectPanel
 import jdr.exia.view.utils.DIMENSION_FRAME
 import jdr.exia.view.utils.event.addKeyPressedListener
 import jdr.exia.view.utils.gridBagConstraintsOf
