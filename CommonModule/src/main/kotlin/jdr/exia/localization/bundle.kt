@@ -134,6 +134,9 @@ class StringsBundle : Strings() {
         STR_CANCEL_UPDATE to "cancel update",
         STR_LABEL_ENABLED to "enable custom label for elements",
         STR_LABEL to "label",
+        STR_SIZE_COMBO_TOOLTIP to "set the size of the element",
+        STR_PRIORITY_COMBO_TOOLTIP to "set the priority level of the element",
+        STR_LABEL_TOOLTIP to "add a custom label to the element",
     )
 }
 
@@ -269,5 +272,8 @@ class StringsBundle_fr : Strings() {
         STR_CANCEL_UPDATE to "annuler la mise à jour",
         STR_LABEL_ENABLED to "activer les labels personnalisés pour les éléments",
         STR_LABEL to "label",
+        STR_SIZE_COMBO_TOOLTIP to "change la taille de l'élément",
+        STR_PRIORITY_COMBO_TOOLTIP to "change le niveau de prorité de l'élément",
+        STR_LABEL_TOOLTIP to "ajoute un label personalisé à l'élément",
     )
 }

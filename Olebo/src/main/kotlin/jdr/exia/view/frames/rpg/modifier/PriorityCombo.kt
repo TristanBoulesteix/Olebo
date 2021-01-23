@@ -1,16 +1,13 @@
 package jdr.exia.view.frames.rpg.modifier
 
-import jdr.exia.localization.STR_BACKGROUND
-import jdr.exia.localization.STR_DEFAULT
-import jdr.exia.localization.STR_FOREGROUND
-import jdr.exia.localization.Strings
+import jdr.exia.localization.*
 import jdr.exia.model.element.Priority
 import jdr.exia.model.utils.Elements
 import jdr.exia.view.utils.components.templates.ComboSelectPanel
 import jdr.exia.viewModel.ViewManager
 
 class PriorityCombo(items: Elements? = null) :
-    ComboSelectPanel(arrayOf(Strings[STR_FOREGROUND], Strings[STR_DEFAULT], Strings[STR_BACKGROUND]), items) {
+    ComboSelectPanel(arrayOf(Strings[STR_FOREGROUND], Strings[STR_DEFAULT], Strings[STR_BACKGROUND]), items, STR_PRIORITY_COMBO_TOOLTIP) {
     init {
         addActionListener {
             val newPriority = when (selectedItem) {

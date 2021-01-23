@@ -1,14 +1,16 @@
 package jdr.exia.view.utils.components.templates
 
+import jdr.exia.localization.Strings
 import jdr.exia.model.element.Element
 import jdr.exia.model.utils.Elements
 import javax.swing.JComboBox
 import javax.swing.border.EmptyBorder
 
-abstract class ComboSelectPanel(items: Array<String>, elements: Elements?) : JComboBox<String>(items) {
+abstract class ComboSelectPanel(items: Array<String>, elements: Elements?, tooltipKey : String) : JComboBox<String>(items) {
     init {
         selectedItem = elements
         border = EmptyBorder(0, 0, 0, 0)
+        toolTipText = Strings[tooltipKey]
     }
 
     abstract override fun setSelectedItem(selected: Any?)

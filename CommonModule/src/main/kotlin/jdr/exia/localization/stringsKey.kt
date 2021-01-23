@@ -105,6 +105,9 @@ const val STR_RED = "red"
 const val STR_CANCEL_UPDATE = "cancel_update"
 const val STR_LABEL_ENABLED = "label_enabled"
 const val STR_LABEL = "label"
+const val STR_SIZE_COMBO_TOOLTIP = "size_tooltip"
+const val STR_PRIORITY_COMBO_TOOLTIP = "priority_tooltip"
+const val STR_LABEL_TOOLTIP = "label_tooltip"
 
 // -- Sentences
 

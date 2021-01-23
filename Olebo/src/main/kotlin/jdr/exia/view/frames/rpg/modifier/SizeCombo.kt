@@ -1,12 +1,13 @@
 package jdr.exia.view.frames.rpg.modifier
 
+import jdr.exia.localization.STR_SIZE_COMBO_TOOLTIP
 import jdr.exia.model.element.Size
 import jdr.exia.model.utils.Elements
 import jdr.exia.view.utils.components.templates.ComboSelectPanel
 import jdr.exia.viewModel.ViewManager
 
 class SizeCombo(items: Elements? = null) :
-    ComboSelectPanel(arrayOf("XS", "S", "M", "L", "XL", "XXL"), items) {
+    ComboSelectPanel(arrayOf("XS", "S", "M", "L", "XL", "XXL"), items, STR_SIZE_COMBO_TOOLTIP) {
     init {
         addActionListener {
             val newSize = when (selectedItem) {

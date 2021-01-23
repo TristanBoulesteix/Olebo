@@ -1,6 +1,7 @@
 package jdr.exia.view.frames.rpg.modifier
 
 import jdr.exia.localization.STR_LABEL
+import jdr.exia.localization.STR_LABEL_TOOLTIP
 import jdr.exia.localization.STR_NAME
 import jdr.exia.localization.Strings
 import jdr.exia.model.dao.option.Settings
@@ -23,7 +24,6 @@ class SideDataPanel : JPanel(), Reloadable {
     val blueprintNameLabel = object : JLabel() {
         init {
             this.horizontalTextPosition = LEFT
-            this.preferredSize = Dimension(200, 20)
         }
 
         override fun setText(text: String?) {
@@ -40,7 +40,8 @@ class SideDataPanel : JPanel(), Reloadable {
     val nameLabel = PlaceholderTextField(Strings[STR_LABEL]).apply {
         this.isEnabled = false
         this.font = Font(this.font.name, Font.PLAIN, 10)
-        this.preferredSize = Dimension(100, 20)
+        this.preferredSize = Dimension(80, this.preferredSize.height)
+        this.toolTipText = Strings[STR_LABEL_TOOLTIP]
         this.addFocusLostListener {
             /*if (selectedElements.size == 1) {
                 transaction(DAO.database) { selectedElements[0].alias = text }
