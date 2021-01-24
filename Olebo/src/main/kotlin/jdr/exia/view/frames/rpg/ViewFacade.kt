@@ -56,7 +56,6 @@ object ViewFacade {
      */
     fun turnVisible() {
         MasterFrame.isVisible = true
-        /*TODO: give master frame and player frame the objects relative to the current act*/
     }
 
     fun placeTokensOnMaps(tokens: Elements) { //places tokens on both maps at corresponding points
