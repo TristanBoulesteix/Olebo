@@ -129,6 +129,7 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
     fun getAbsolutePoint(point: Point) = Point(absoluteX(point.x), absoluteY(point.y))
 
     override fun paintComponent(g: Graphics) {
+        // Draw background image
         (g as Graphics2D).drawImage(
             backGroundImage,
             0,
@@ -143,16 +144,19 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
             if ((parentGameFrame is PlayerFrame) && !(token.isVisible)) { //Do NOTHING
             } //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
             else {
+                // Draw token and visiblity indicator
                 if ((parentGameFrame is MasterFrame) && !(token.isVisible)) {
                     drawInvisibleMarker(token, g)
                 }
                 drawTokenUp(token, g)
             }
         }
+        // Draw selection indicator
         if (selectedElements.isNotEmpty() && parentGameFrame is MasterFrame) {
             drawSelectedMarker(g)
         }
 
+        // Draw select area
         if (selectedArea != null) {
             g.color = Color.RED
             g.draw(selectedArea)
@@ -160,6 +164,7 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
             g.fill(selectedArea)
         }
 
+        // Draw cursor
         if (parentGameFrame is PlayerFrame)
             ViewManager.cursorPoint?.let {
                 g.color = cursorColor
