@@ -26,11 +26,11 @@ val updaterPath = "${OLEBO_DIRECTORY}oleboUpdater.jar"
  * Get icon from name in ressources
  *
  * @param name The name of the ressource
- * @param controllerClass The class of the controller
+ * @param clazz The class of the controller / the object which the ressource
  * @param extension (optionnal) The extension of the picture. The defaut extension is ".png"
  */
-fun getIcon(name: String, controllerClass: Class<*>, extension: String = ".png"): ImageIcon =
-    ImageIcon(controllerClass.classLoader.getResource("icons/$name$extension"))
+fun getIcon(name: String, clazz: Class<*>, extension: String = ".png"): ImageIcon =
+    ImageIcon(clazz.classLoader.getResource("icons/$name$extension"))
 
 /**
  * Save a picture to img folder

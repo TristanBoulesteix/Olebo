@@ -10,6 +10,7 @@ import jdr.exia.view.utils.DEFAULT_INSET
 import jdr.exia.view.utils.components.templates.ComboSelectPanel
 import jdr.exia.view.utils.components.templates.PlaceholderTextField
 import jdr.exia.view.utils.components.templates.ValidableField
+import jdr.exia.view.utils.event.addFocusGainedListener
 import jdr.exia.view.utils.gridBagConstraintsOf
 import jdr.exia.viewModel.ViewManager
 import java.awt.Dimension
@@ -39,9 +40,12 @@ class SideDataPanel : JPanel(), Reloadable {
     }
 
     private val nameLabel = PlaceholderTextField(Strings[STR_LABEL]).apply {
-        this.font = Font(this.font.name, Font.PLAIN, 10)
+        this.font = Font(this.font.name, Font.PLAIN, 18)
         this.preferredSize = Dimension(80, this.preferredSize.height)
         this.toolTipText = Strings[STR_LABEL_TOOLTIP]
+        this.addFocusGainedListener {
+            this.selectAll()
+        }
     }
 
     val nameLabelPanel = ValidableField(nameLabel) { _, text ->

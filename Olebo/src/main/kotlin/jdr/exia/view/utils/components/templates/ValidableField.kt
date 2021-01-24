@@ -1,5 +1,6 @@
 package jdr.exia.view.utils.components.templates
 
+import jdr.exia.model.dao.getIcon
 import java.awt.FlowLayout
 import java.awt.event.ActionEvent
 import javax.swing.JButton
@@ -8,7 +9,7 @@ import javax.swing.JTextField
 
 class ValidableField(private val field: JTextField, onClick: (ActionEvent, String) -> Unit) :
     JPanel(FlowLayout(FlowLayout.CENTER, 0, 0)) {
-    private val validationButton = JButton("X").apply {
+    private val validationButton = JButton(getIcon("confirm_icon", this.javaClass)).apply {
         addActionListener {
             onClick(it, this@ValidableField.text)
         }
@@ -27,7 +28,7 @@ class ValidableField(private val field: JTextField, onClick: (ActionEvent, Strin
         validationButton.isEnabled = enabled
 
         if (!enabled)
-            field.text = ""
+            text = ""
 
         super.setEnabled(enabled)
     }
