@@ -96,7 +96,7 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
                 while (true) {
                     if (Settings.cursorEnabled)
                         repaint()
-                    delay(75L)
+                    delay(70L)
                 }
             }
 
@@ -165,7 +165,7 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
         }
 
         // Draw cursor
-        if (parentGameFrame is PlayerFrame)
+        if (parentGameFrame is PlayerFrame && Settings.cursorEnabled)
             ViewManager.cursorPoint?.let {
                 g.color = cursorColor
                 g.fillCircleWithCenterCoordinates(relativeX(it.x), relativeY(it.y), 15)
