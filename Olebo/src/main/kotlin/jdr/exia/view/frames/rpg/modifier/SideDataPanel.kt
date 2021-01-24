@@ -7,6 +7,7 @@ import jdr.exia.localization.Strings
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.view.frames.Reloadable
 import jdr.exia.view.utils.DEFAULT_INSET
+import jdr.exia.view.utils.components.filter.MaxCharFilter
 import jdr.exia.view.utils.components.templates.ComboSelectPanel
 import jdr.exia.view.utils.components.templates.PlaceholderTextField
 import jdr.exia.view.utils.components.templates.ValidableField
@@ -19,6 +20,7 @@ import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import javax.swing.JLabel
 import javax.swing.JPanel
+import javax.swing.text.AbstractDocument
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -40,12 +42,13 @@ class SideDataPanel : JPanel(), Reloadable {
     }
 
     private val nameLabel = PlaceholderTextField(Strings[STR_LABEL]).apply {
-        this.font = Font(this.font.name, Font.PLAIN, 18)
-        this.preferredSize = Dimension(80, this.preferredSize.height)
+        this.font = Font(this.font.name, Font.PLAIN, 15)
+        this.preferredSize = Dimension(110, this.preferredSize.height)
         this.toolTipText = Strings[STR_LABEL_TOOLTIP]
         this.addFocusGainedListener {
             this.selectAll()
         }
+        (this.document as AbstractDocument).documentFilter = MaxCharFilter(14)
     }
 
     val nameLabelPanel = ValidableField(nameLabel) { _, text ->

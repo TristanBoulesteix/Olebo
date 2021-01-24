@@ -6,7 +6,7 @@ import jdr.exia.localization.Strings
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Element
 import jdr.exia.model.utils.isCharacter
-import jdr.exia.view.utils.IntegerFilter
+import jdr.exia.view.utils.components.filter.IntegerFilter
 import jdr.exia.view.utils.event.addFocusLostListener
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Font
