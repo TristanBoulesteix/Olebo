@@ -12,11 +12,11 @@ const val OLEBO_VERSION = "1.7.0-BETA"
 const val DEBUG = false
 
 fun main() {
-    Strings(Settings.Companion::activeLanguage)
-
-    if (!DEBUG)
-        checkForUpdate()
     SwingUtilities.invokeLater {
+        Strings(Settings.Companion::activeLanguage)
+
+        if (!DEBUG)
+            checkForUpdate()
         UIManager.setLookAndFeel(
             UIManager.getSystemLookAndFeelClassName()
         )
