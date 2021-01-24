@@ -2,6 +2,7 @@ package jdr.exia.viewModel
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
+import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.*
 import jdr.exia.model.utils.*
@@ -9,6 +10,7 @@ import jdr.exia.view.frames.rpg.MasterFrame
 import jdr.exia.view.frames.rpg.MasterMenuBar
 import jdr.exia.view.frames.rpg.PlayerFrame
 import jdr.exia.view.frames.rpg.ViewFacade
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Point
 import java.awt.Rectangle
 
@@ -200,5 +202,9 @@ object ViewManager {
         it.priority = priority
     }.also { repaint() }
 
-    fun updateSizeToken(size: Size) = activeScene.callManager(size, selectedElements, Element::cmdDimension).also { repaint() }
+    fun updateSizeToken(size: Size) =
+        activeScene.callManager(size, selectedElements, Element::cmdDimension).also { repaint() }
+
+    fun updateLabel(label: String) =
+        selectedElements.forEach { transaction(DAO.database) { it.alias = label } }.also { repaint() }
 }

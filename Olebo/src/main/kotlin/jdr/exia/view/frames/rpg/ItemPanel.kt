@@ -6,7 +6,7 @@ import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
 import jdr.exia.utils.forElse
 import jdr.exia.view.frames.Reloadable
-import jdr.exia.view.utils.components.PlaceholderTextField
+import jdr.exia.view.utils.components.templates.PlaceholderTextField
 import jdr.exia.view.utils.event.ClickListener
 import jdr.exia.view.utils.event.addClickListener
 import jdr.exia.viewModel.ViewManager

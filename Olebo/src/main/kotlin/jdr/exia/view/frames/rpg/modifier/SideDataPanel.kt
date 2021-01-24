@@ -7,10 +7,11 @@ import jdr.exia.localization.Strings
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.view.frames.Reloadable
 import jdr.exia.view.utils.DEFAULT_INSET
-import jdr.exia.view.utils.components.PlaceholderTextField
 import jdr.exia.view.utils.components.templates.ComboSelectPanel
-import jdr.exia.view.utils.event.addFocusLostListener
+import jdr.exia.view.utils.components.templates.PlaceholderTextField
+import jdr.exia.view.utils.components.templates.ValidableField
 import jdr.exia.view.utils.gridBagConstraintsOf
+import jdr.exia.viewModel.ViewManager
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.GridBagConstraints
@@ -37,16 +38,16 @@ class SideDataPanel : JPanel(), Reloadable {
         }
     }
 
-    val nameLabel = PlaceholderTextField(Strings[STR_LABEL]).apply {
-        this.isEnabled = false
+    private val nameLabel = PlaceholderTextField(Strings[STR_LABEL]).apply {
         this.font = Font(this.font.name, Font.PLAIN, 10)
         this.preferredSize = Dimension(80, this.preferredSize.height)
         this.toolTipText = Strings[STR_LABEL_TOOLTIP]
-        this.addFocusLostListener {
-            /*if (selectedElements.size == 1) {
-                transaction(DAO.database) { selectedElements[0].alias = text }
-            }*/
-        }
+    }
+
+    val nameLabelPanel = ValidableField(nameLabel) { _, text ->
+        ViewManager.updateLabel(text)
+    }.apply {
+        this.isEnabled = false
     }
 
     var sizeCombo by reloadLayoutAfterSet(SizeCombo())
@@ -56,7 +57,7 @@ class SideDataPanel : JPanel(), Reloadable {
     init {
         this.layout = GridBagLayout()
         this.isOpaque = false
-        this.initLayout()
+        this.reload()
     }
 
     private fun initLayout() {
@@ -80,7 +81,7 @@ class SideDataPanel : JPanel(), Reloadable {
         )
 
         this.add(
-            nameLabel, gridBagConstraintsOf(
+            nameLabelPanel, gridBagConstraintsOf(
                 0,
                 1,
                 weightx = 1.0,
