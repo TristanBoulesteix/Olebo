@@ -148,7 +148,7 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
                 if ((parentGameFrame is MasterFrame) && !(token.isVisible)) {
                     drawInvisibleMarker(token, g)
                 }
-                drawTokenUp(token, g)
+                drawToken(token, g)
             }
         }
         // Draw selection indicator
@@ -208,7 +208,7 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
         relativeY(token.hitBox.height)
     )
 
-    private fun drawTokenUp(token: Element, g: Graphics) {
+    private fun drawToken(token: Element, g: Graphics) {
         g.drawImage(
             token.sprite.image,
             relativeX(token.position.x),
