@@ -10,6 +10,7 @@ import jdr.exia.view.frames.rpg.MasterFrame
 import jdr.exia.view.frames.rpg.MasterMenuBar
 import jdr.exia.view.frames.rpg.PlayerFrame
 import jdr.exia.view.frames.rpg.ViewFacade
+import jdr.exia.view.utils.getTokenFromPoint
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Point
 import java.awt.Rectangle
@@ -98,12 +99,6 @@ object ViewManager {
         repaint()
     }
 
-    /**
-     * Receives a clicked point (x,y), returns the first soken found in the Tokens array, or null if none matched
-     */
-    private fun getTokenFromXY(x: Int, y: Int) =
-        activeScene!!.elements.filter { it.hitBox.contains(x, y) }.maxByOrNull { it.priority }
-
     fun repaint() {
         updateTokens()
         ViewFacade.reloadFrames()
@@ -113,7 +108,8 @@ object ViewManager {
      * Checks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
      */
     fun selectElement(x: Int, y: Int) {
-        selectedElements = getTokenFromXY(x, y)?.toElements()?.toMutableList() ?: mutableEmptyElements()
+        selectedElements = activeScene!!.elements.getTokenFromPoint(Point(x, y))?.toElements()?.toMutableList()
+            ?: mutableEmptyElements()
         if (selectedElements.isNotEmpty()) {
             ViewFacade.setSelectedToken(selectedElements[0])
             repaint()

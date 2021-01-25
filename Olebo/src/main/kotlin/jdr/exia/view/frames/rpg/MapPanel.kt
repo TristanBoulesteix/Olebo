@@ -6,11 +6,9 @@ import jdr.exia.model.element.Size
 import jdr.exia.model.utils.Elements
 import jdr.exia.model.utils.emptyElements
 import jdr.exia.model.utils.toJColor
-import jdr.exia.view.utils.compareTo
-import jdr.exia.view.utils.drawCircleWithCenterCoordinates
+import jdr.exia.view.utils.*
 import jdr.exia.view.utils.event.addMousePressedListener
 import jdr.exia.view.utils.event.addMouseReleasedListener
-import jdr.exia.view.utils.fillCircleWithCenterCoordinates
 import jdr.exia.viewModel.ViewManager
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -20,6 +18,7 @@ import java.awt.event.MouseEvent
 import java.awt.event.MouseMotionAdapter
 import javax.swing.JPanel
 import javax.swing.SwingUtilities
+import javax.swing.ToolTipManager
 import kotlin.math.abs
 
 /**
@@ -41,44 +40,56 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
         this.layout = GridBagLayout()
         this.background = Color.WHITE
         this.isOpaque = false
+
         if (parentGameFrame is MasterFrame)
-            this.addMouseMotionListener(object : MouseMotionAdapter() {
-                private var start = Point()
+            initializeForMaster()
+        else
+            initializeForPlayer()
 
-                override fun mouseMoved(me: MouseEvent) {
-                    start = me.point
+        Settings.cursorColor.let {
+            cursorColor = it.contentCursorColor.toJColor()
+            borderCursorColor = it.borderCursorColor.toJColor()
+        }
+    }
+
+    /**
+     * init only for [MasterFrame]
+     */
+    private fun initializeForMaster() {
+        this.addMouseMotionListener(object : MouseMotionAdapter() {
+            private var start = Point()
+
+            override fun mouseMoved(me: MouseEvent) {
+                start = me.point
+            }
+
+            override fun mouseDragged(me: MouseEvent) {
+                if (SwingUtilities.isLeftMouseButton(me)) {
+                    val end = me.point
+
+                    selectedArea = Rectangle(
+                        start.x.coerceAtMost(end.x),
+                        start.y.coerceAtMost(end.y),
+                        abs(start.x - end.x),
+                        abs(start.y - end.y)
+                    )
+
+                    this@MapPanel.repaint()
                 }
+            }
+        })
 
-                override fun mouseDragged(me: MouseEvent) {
-                    if (SwingUtilities.isLeftMouseButton(me)) {
-                        val end = me.point
-
-                        selectedArea = Rectangle(
-                            start.x.coerceAtMost(end.x),
-                            start.y.coerceAtMost(end.y),
-                            abs(start.x - end.x),
-                            abs(start.y - end.y)
-                        )
-
-                        this@MapPanel.repaint()
-                    }
-                }
-            })
-
-        // Reacts to the user's click and calls the corresponding function
         addMousePressedListener {
-            if (parentGameFrame is MasterFrame) {
-                selectedArea = null
+            selectedArea = null
 
-                val clickedX = absoluteX(it.x)
-                val clickedY = absoluteY(it.y)
+            val clickedX = absoluteX(it.x)
+            val clickedY = absoluteY(it.y)
 
-                when (it.button) //  left button: 1, middle button: 2, Right click: 3
-                {
-                    MouseEvent.BUTTON1 -> ViewManager.selectElement(clickedX, clickedY) //Left click
-                    MouseEvent.BUTTON2 -> ViewFacade.moveToken(clickedX, clickedY)   //Middle button
-                    MouseEvent.BUTTON3 -> ViewFacade.moveToken(clickedX, clickedY)   //Right click
-                }
+            when (it.button) //  left button: 1, middle button: 2, Right click: 3
+            {
+                MouseEvent.BUTTON1 -> ViewManager.selectElement(clickedX, clickedY) //Left click
+                MouseEvent.BUTTON2 -> ViewFacade.moveToken(clickedX, clickedY)   //Middle button
+                MouseEvent.BUTTON3 -> ViewFacade.moveToken(clickedX, clickedY)   //Right click
             }
         }
 
@@ -91,18 +102,19 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
             selectedArea = null
         }
 
-        if (parentGameFrame is PlayerFrame)
-            GlobalScope.launch {
-                while (true) {
-                    if (Settings.cursorEnabled)
-                        repaint()
-                    delay(70L)
-                }
-            }
+        ToolTipManager.sharedInstance().registerComponent(this)
+    }
 
-        Settings.cursorColor.let {
-            cursorColor = it.contentCursorColor.toJColor()
-            borderCursorColor = it.borderCursorColor.toJColor()
+    /**
+     * init only for [PlayerFrame]
+     */
+    private fun initializeForPlayer() {
+        GlobalScope.launch {
+            while (true) {
+                if (Settings.cursorEnabled)
+                    repaint()
+                delay(70L)
+            }
         }
     }
 
@@ -217,5 +229,12 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
             relativeY(token.hitBox.height),
             null
         )
+    }
+
+    /**
+     * Show alias on mouse hover
+     */
+    override fun getToolTipText() = (mousePosition).let {
+        tokens.getTokenFromPoint(getAbsolutePoint(it))?.alias
     }
 }
