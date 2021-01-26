@@ -133,11 +133,7 @@ fun loadOleboZipData(zipFile: File): Result<ZipError> = try {
                 }
             }
 
-            File(OLEBO_DIRECTORY).let {
-                if (it.exists())
-                    it.deleteRecursively()
-                it.mkdirs()
-            }
+            reset()
 
             this.filter { it.name != OLEBO_MANIFEST_NAME }.forEach { entry ->
                 val fileString = entry.name.removeSuffix('/'.toString()).split('/').let { splitedName ->
@@ -162,4 +158,10 @@ fun loadOleboZipData(zipFile: File): Result<ZipError> = try {
 } catch (e: Exception) {
     e.printStackTrace()
     Result.Failed(ZipError.EXCEPTION)
+}
+
+fun reset() = File(OLEBO_DIRECTORY).let {
+    if (it.exists())
+        it.deleteRecursively()
+    it.mkdirs()
 }

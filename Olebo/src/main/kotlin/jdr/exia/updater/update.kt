@@ -87,3 +87,12 @@ fun checkForUpdate() = GlobalScope.launch {
         }
     }
 }
+
+/**
+ * Update Olebo without prompt and restart it
+ */
+fun forceUpdateAndRestart(exitCode: Int = 0): Nothing {
+    val url = lastRelease["assets"]!!.jsonArray[0].jsonObject["browser_download_url"].toString()
+    runJar(oleboUpdater, url, jarPath, UpdateOptions(true).toQuotedString())
+    exitProcess(exitCode)
+}

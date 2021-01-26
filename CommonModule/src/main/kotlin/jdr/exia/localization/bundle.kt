@@ -137,6 +137,11 @@ class StringsBundle : Strings() {
         STR_SIZE_COMBO_TOOLTIP to "set the size of the element",
         STR_PRIORITY_COMBO_TOOLTIP to "set the priority level of the element",
         STR_LABEL_TOOLTIP to "add a custom label to the element",
+        STR_DB_VERSION_MISMATCH to "error during database initialization",
+        ST_DB_VERSION_MISMATCH_MESSAGE to "The database on this computer come is from a later version of Olebo. To lose the data, please update the application or reset it.",
+        STR_EXIT to "exit",
+        STR_UPDATE to "update",
+        STR_RESET to "reset",
     )
 }
 
@@ -275,5 +280,10 @@ class StringsBundle_fr : Strings() {
         STR_SIZE_COMBO_TOOLTIP to "change la taille de l'élément",
         STR_PRIORITY_COMBO_TOOLTIP to "change le niveau de prorité de l'élément",
         STR_LABEL_TOOLTIP to "ajoute un label personalisé à l'élément",
+        STR_DB_VERSION_MISMATCH to "erreur d'initialisation de la base de données",
+        ST_DB_VERSION_MISMATCH_MESSAGE to "La base de données sur cet ordinateur provient d'une version ultérieur de Olebo. Pour pouvoir charger ces données, veuillez mettre à jour l'application ou la réinitialiser.",
+        STR_EXIT to "quitter",
+        STR_UPDATE to "mettre à jour",
+        STR_RESET to "réinitialiser",
     )
 }

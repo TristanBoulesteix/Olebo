@@ -13,7 +13,7 @@ import jdr.exia.view.utils.gridBagConstraintsOf
 import java.awt.*
 import javax.swing.*
 
-class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTIONS], true) {
+class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPTIONS], true) {
     private val comboLanguageItems =
         availableLocales.map { it.getDisplayLanguage(it).capitalize(Settings.language) }.toTypedArray()
 

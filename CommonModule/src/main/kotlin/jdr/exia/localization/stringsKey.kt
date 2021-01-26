@@ -108,6 +108,10 @@ const val STR_LABEL = "label"
 const val STR_SIZE_COMBO_TOOLTIP = "size_tooltip"
 const val STR_PRIORITY_COMBO_TOOLTIP = "priority_tooltip"
 const val STR_LABEL_TOOLTIP = "label_tooltip"
+const val STR_DB_VERSION_MISMATCH = "db_mismatch"
+const val STR_EXIT = "exit"
+const val STR_UPDATE = "update"
+const val STR_RESET = "reset"
 
 // -- Sentences
 
@@ -138,3 +142,4 @@ const val ST_NOT_TURN_OFF = "dont_turn_off_computer"
 const val ST_UPDATE_SUCCESS = "update_success"
 const val ST_UPDATE_FAILED = "update_failed"
 const val ST_UPDATE_TRY_AGAIN = "update_try_again"
+const val ST_DB_VERSION_MISMATCH_MESSAGE = "db_mismatch_message"
