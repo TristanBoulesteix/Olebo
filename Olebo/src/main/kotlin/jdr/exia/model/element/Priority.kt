@@ -8,9 +8,9 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.transaction
 
 enum class Priority(val priority: PriorityElement) {
-    LOW(transaction(DAO.database) { PriorityElement[1] }),
-    REGULAR(transaction(DAO.database) { PriorityElement[2] }),
-    HIGH(transaction(DAO.database) { PriorityElement[3] });
+    LOW(transaction { PriorityElement[1] }),
+    REGULAR(transaction { PriorityElement[2] }),
+    HIGH(transaction { PriorityElement[3] });
 
     class PriorityElement(id: EntityID<Int>) : Entity<Int>(id) {
         companion object : EntityClass<Int, PriorityElement>(PriorityTable)

@@ -13,9 +13,9 @@ import org.jetbrains.exposed.sql.transactions.transaction
  * @param size A SizeElement object. It is the link between the enum and the database
  */
 enum class Size(val size: SizeElement) {
-    XS(transaction(DAO.database) { SizeElement[1] }), S(transaction(DAO.database) { SizeElement[2] }), M(transaction(DAO.database) { SizeElement[3] }),
-    L(transaction(DAO.database) { SizeElement[4] }), XL(transaction(DAO.database) { SizeElement[5] }),
-    XXL(transaction(DAO.database) { SizeElement[6] });
+    XS(transaction { SizeElement[1] }), S(transaction { SizeElement[2] }), M(transaction { SizeElement[3] }),
+    L(transaction { SizeElement[4] }), XL(transaction { SizeElement[5] }),
+    XXL(transaction { SizeElement[6] });
 
     companion object {
         val DEFAULT = S

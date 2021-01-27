@@ -24,71 +24,71 @@ import java.util.*
 class Settings(id: EntityID<Int>) : IntEntity(id) {
     companion object : EntityClass<Int, Settings>(SettingsTable) {
         var databaseVersion
-            get() = transaction(DAO.database) {
+            get() = transaction {
                 this@Companion[BASE_VERSION]?.toIntOrNull()
                     ?: throw MessageException(Strings[ST_UNKNOWN_DATABASE_VERSION])
             }
             set(value) {
-                transaction(DAO.database) {
+                transaction {
                     this@Companion[BASE_VERSION] = value
                 }
             }
 
         var autoUpdate
-            get() = transaction(DAO.database) { this@Companion[AUTO_UPDATE] }.toBoolean()
+            get() = transaction { this@Companion[AUTO_UPDATE] }.toBoolean()
             set(value) {
-                transaction(DAO.database) {
+                transaction {
                     this@Companion[AUTO_UPDATE] = value
                 }
             }
 
         var updateWarn
-            get() = transaction(DAO.database) { this@Companion[UPDATE_WARN] } ?: ""
-            set(value) = transaction(DAO.database) {
+            get() = transaction { this@Companion[UPDATE_WARN] } ?: ""
+            set(value) = transaction {
                 this@Companion[UPDATE_WARN] = value
             }
 
         var cursorEnabled
-            get() = transaction(DAO.database) { this@Companion[CURSOR_ENABLED].toBoolean() }
-            set(value) = transaction(DAO.database) {
+            get() = transaction { this@Companion[CURSOR_ENABLED].toBoolean() }
+            set(value) = transaction {
                 this@Companion[CURSOR_ENABLED] = value
             }
 
         var language: Locale
             get() = try {
-                transaction(DAO.database) { Locale(this@Companion[CURRENT_LANGUAGE]) }
+                transaction { Locale(this@Companion[CURRENT_LANGUAGE]) }
             } catch (e: Exception) {
                 Locale.getDefault()
             }
-            set(value) = transaction(DAO.database) {
+            set(value) = transaction {
                 this@Companion[CURRENT_LANGUAGE] = value.language
             }
 
         val activeLanguage by lazy { language }
 
         var cursorColor
-            get() = transaction(DAO.database) {
+            get() = transaction {
                 CursorColor[this@Companion[CURSOR_COLOR]!!]
             }
-            set(value) = transaction(DAO.database) {
+            set(value) = transaction {
                 this@Companion[CURSOR_COLOR] = value.encode()
             }
 
         var playerFrameOpenedByDefault
-            get() = transaction(DAO.database) { this@Companion[PLAYER_FRAME_ENABLED].toBoolean() }
-            set(value) = transaction(DAO.database) {
+            get() = transaction { this@Companion[PLAYER_FRAME_ENABLED].toBoolean() }
+            set(value) = transaction {
                 this@Companion[PLAYER_FRAME_ENABLED] = value
             }
 
         var defaultElementVisibility
-            get() = transaction(DAO.database) { this@Companion[DEFAULT_ELEMENT_VISIBILITY].toBoolean() }
-            set(value) = transaction(DAO.database) {
+            get() = transaction { this@Companion[DEFAULT_ELEMENT_VISIBILITY].toBoolean() }
+            set(value) = transaction {
                 this@Companion[DEFAULT_ELEMENT_VISIBILITY] = value
             }
 
         var isLabelEnabled
-            get() = transaction(DAO.database) { this@Companion[LABEL_ENABLED].toBoolean() }
-            set(value) = transaction(DAO.database) {
+            get() = transaction { this@Companion[LABEL_ENABLED].toBoolean() }
+            set(value) = transaction {
                 this@Companion[LABEL_ENABLED] = value
             }
 

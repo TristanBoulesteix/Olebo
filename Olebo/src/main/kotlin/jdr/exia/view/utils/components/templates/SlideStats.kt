@@ -82,7 +82,7 @@ class SlideStats(private val hp: Boolean, initialElement: Element? = null) : JPa
                 paintTicks = true
 
                 eventAction = ChangeListener {
-                    transaction(DAO.database) {
+                    transaction {
                         element?.let {
                             if (hp) it.currentHealth = value else it.currentMana = value
                             label.text = if (hp)

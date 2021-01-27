@@ -23,7 +23,7 @@ class StatsLabel(private val isHP: Boolean, private var maxValue: Int = 0, value
         (document as AbstractDocument).documentFilter = IntegerFilter()
         addFocusLostListener {
             if(element.isCharacter()) {
-                transaction(DAO.database) {
+                transaction {
                     if (isHP) {
                         element?.currentHealth = extractValue(this@apply.text)
                     } else {
@@ -47,7 +47,7 @@ class StatsLabel(private val isHP: Boolean, private var maxValue: Int = 0, value
         set(value) {
             field?.let {
                 if (it.stillExist() && it.isCharacter())
-                    transaction(DAO.database) {
+                    transaction {
                         if (isHP) {
                             it.currentHealth = extractValue(statsField.text)
                         } else {

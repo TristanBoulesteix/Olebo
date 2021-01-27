@@ -15,7 +15,7 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
 
     var name by ActTable.name
     val scenes
-        get() = transaction(DAO.database) { scenesIterable.toMutableList() }
+        get() = transaction { scenesIterable.toMutableList() }
     var sceneId by ActTable.idScene
 
     override fun delete() {

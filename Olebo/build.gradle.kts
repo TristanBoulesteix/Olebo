@@ -6,7 +6,7 @@ plugins {
     kotlin("jvm")
 }
 
-version = "1.7.0-BETA"
+version = "1.8.0-BETA"
 
 repositories {
     mavenCentral()
@@ -14,7 +14,7 @@ repositories {
     jcenter()
 }
 
-val exposedVersion = "0.25.1"
+val exposedVersion = "0.29.1"
 
 dependencies {
     testImplementation("junit", "junit", "4.12")

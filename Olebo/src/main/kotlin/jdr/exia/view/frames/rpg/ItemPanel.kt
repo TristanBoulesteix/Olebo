@@ -65,7 +65,7 @@ class ItemPanel : JPanel(), Reloadable {
     }
 
     override fun reload() {
-        transaction(DAO.database) {
+        transaction {
             with(itemsView) {
                 // Remove previous components
                 this.removeAll()

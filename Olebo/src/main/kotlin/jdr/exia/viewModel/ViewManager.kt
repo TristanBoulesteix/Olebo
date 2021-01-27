@@ -202,5 +202,5 @@ object ViewManager {
         activeScene.callManager(size, selectedElements, Element::cmdDimension).also { repaint() }
 
     fun updateLabel(label: String) =
-        selectedElements.forEach { transaction(DAO.database) { it.alias = label } }.also { repaint() }
+        selectedElements.forEach { transaction { it.alias = label } }.also { repaint() }
 }

@@ -97,8 +97,8 @@ class ElementSelectorPanel(private val controller: BlueprintManager?) :
                 }
             }
 
-            this.add(SquareLabel(transaction(DAO.database) { Blueprint[id].HP.toString() }, controller!!::saveLife))
-            this.add(SquareLabel(transaction(DAO.database) { Blueprint[id].MP.toString() }, controller::saveMana))
+            this.add(SquareLabel(transaction { Blueprint[id].HP.toString() }, controller!!::saveLife))
+            this.add(SquareLabel(transaction { Blueprint[id].MP.toString() }, controller::saveMana))
             this.add(SquareLabel(controller.getBlueprintWithId(id).sprite, controller::updateIcon))
             this.add(SquareLabel(getIcon("delete_icon", controller.javaClass), controller::deleteElement))
         }

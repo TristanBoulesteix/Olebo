@@ -122,7 +122,7 @@ object MasterMenuBar : JMenuBar() {
                             this.add(item)
                         } else {
                             val item = JMenuItem("${index + 1} ${scene.name}")
-                            item.addActionListener { transaction(DAO.database) { ViewManager.changeCurrentScene(scene.id.value) } }
+                            item.addActionListener { transaction { ViewManager.changeCurrentScene(scene.id.value) } }
                             this.add(item)
                         }
                     }
@@ -152,7 +152,7 @@ object MasterMenuBar : JMenuBar() {
                                     JMenuItem(Strings[STR_IMPORT_ALL_ELEMENTS]).applyAndAppendTo(this) {
                                         addActionListener { _ ->
                                             it.elements.forEach { token ->
-                                                transaction(DAO.database) {
+                                                transaction {
                                                     Scene.moveElementToScene(
                                                         token,
                                                         Scene[act.sceneId]
@@ -171,7 +171,7 @@ object MasterMenuBar : JMenuBar() {
                                 it.elements.forElse { token ->
                                     JMenuItem(token.name + " (" + token.type.name + ")").applyAndAppendTo(this) {
                                         addActionListener {
-                                            transaction(DAO.database) {
+                                            transaction {
                                                 Scene.moveElementToScene(
                                                     token,
                                                     Scene[act.sceneId]
@@ -206,10 +206,10 @@ object MasterMenuBar : JMenuBar() {
             JMenuItem(Strings[STR_CLEAR_BOARD]).applyAndAppendTo(this) {
                 addActionListener {
                     showConfirmMessage(this, Strings[ST_CONFIRM_CLEAR_BOARD], Strings[STR_DELETION]) {
-                        transaction(DAO.database) {
+                        transaction {
                             for (token in Scene[act!!.sceneId].elements) {
                                 ViewManager.removeElements(token.toElements())
-                                transaction(DAO.database) { token.delete() }
+                                transaction { token.delete() }
                                 Thread.sleep(100)
                             }
                         }

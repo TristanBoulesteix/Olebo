@@ -191,7 +191,7 @@ class SelectPanel : JPanel() {
                     lifeField.element = this[0]
                     manaField.element = this[0]
                     sidePanel.nameLabelPanel.let {
-                        it.text = transaction(DAO.database) { this@with[0].alias }
+                        it.text = transaction { this@with[0].alias }
                         it.isEnabled = true
                     }
                 }

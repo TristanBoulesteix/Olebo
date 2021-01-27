@@ -48,7 +48,7 @@ class ActCreatorManager : Observable {
                 return scenes
             }
 
-            transaction(DAO.database) {
+            transaction {
                 Act.new {
                     this.name = actName
                 }.apply {
@@ -58,7 +58,7 @@ class ActCreatorManager : Observable {
                 }
             }
         } else {
-            transaction(DAO.database) {
+            transaction {
                 with(Act[idAct]) {
                     this.name = actName
 

@@ -20,7 +20,7 @@ object HomeManager : Observable {
     fun launchAct(id: Int) {
         notifyObserver(Action.DISPOSE)
 
-        transaction(DAO.database) {
+        transaction {
             ViewManager.initializeAct(Act[id])
         }
     }

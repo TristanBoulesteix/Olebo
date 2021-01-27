@@ -40,7 +40,7 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
          * @param scene The destination scene
          */
         fun moveElementToScene(element: Element, scene: Scene) {
-            transaction(DAO.database) {
+            transaction {
                 element.scene = scene
             }
         }
@@ -52,7 +52,7 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
         get() = CommandManager(id.value)
 
     val elements: List<Element>
-        get() = transaction(DAO.database) {
+        get() = transaction {
             elementIterable.toMutableList().filter { !it.isDeleted }.sortedBy { it.priority }
         }
     var name by SceneTable.name

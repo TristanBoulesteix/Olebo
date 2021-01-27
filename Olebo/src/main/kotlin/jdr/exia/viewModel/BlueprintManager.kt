@@ -31,7 +31,7 @@ class BlueprintManager : Observable {
 
     override var observer: Observer? = null
 
-    fun getBlueprintWithId(id: Int) = transaction(DAO.database) {
+    fun getBlueprintWithId(id: Int) = transaction {
         elements.find { it.id.value == id }!!
     }
 
@@ -45,7 +45,7 @@ class BlueprintManager : Observable {
             return true
         }
 
-        transaction(DAO.database) {
+        transaction {
             if (isNameValid()) {
                 getBlueprintWithId(id).name = name
             } else {
@@ -57,7 +57,7 @@ class BlueprintManager : Observable {
     }
 
     fun deleteElement(id: Int) {
-        transaction(DAO.database) {
+        transaction {
             Blueprint[id].delete()
         }
 
@@ -65,7 +65,7 @@ class BlueprintManager : Observable {
     }
 
     fun updateIcon(id: Int) {
-        transaction(DAO.database) {
+        transaction {
             val file = JFileChooser().apply {
                 this.currentDirectory = File(System.getProperty("user.home"))
                 this.addChoosableFileFilter(
@@ -89,19 +89,19 @@ class BlueprintManager : Observable {
     }
 
     fun saveMana(id: Int, text: String) {
-        transaction(DAO.database) {
+        transaction {
             Blueprint[id].MP = text.toIntOrNull() ?: 0
         }
     }
 
     fun saveLife(id: Int, text: String) {
-        transaction(DAO.database) {
+        transaction {
             Blueprint[id].HP = text.toIntOrNull() ?: 0
         }
     }
 
     fun createBlueprint(@Suppress("UNUSED_PARAMETER") id: Int?) {
-        transaction(DAO.database) {
+        transaction {
             BlueprintEditorDialog(type).showDialog()?.let { map ->
                 Blueprint.new {
                     this.type = this@BlueprintManager.type.type
