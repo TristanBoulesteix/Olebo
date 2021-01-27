@@ -2,12 +2,12 @@ package jdr.exia.viewModel
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.dao.DAO
-import org.jetbrains.exposed.sql.transactions.transaction
 import jdr.exia.view.frames.editor.acts.ActEditorDialog
 import jdr.exia.view.frames.editor.elements.BlueprintDialog
 import jdr.exia.viewModel.pattern.observer.Action
 import jdr.exia.viewModel.pattern.observer.Observable
 import jdr.exia.viewModel.pattern.observer.Observer
+import org.jetbrains.exposed.sql.transactions.transaction
 
 object HomeManager : Observable {
     override var observer: Observer? = null

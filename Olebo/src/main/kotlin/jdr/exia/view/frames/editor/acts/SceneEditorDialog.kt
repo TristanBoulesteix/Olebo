@@ -1,6 +1,7 @@
 package jdr.exia.view.frames.editor.acts
 
-import jdr.exia.localization.*import jdr.exia.view.utils.applyAndAppendTo
+import jdr.exia.localization.*
+import jdr.exia.view.utils.applyAndAppendTo
 import jdr.exia.view.utils.gridBagConstraintsOf
 import jdr.exia.view.utils.showPopup
 import jdr.exia.viewModel.SceneData

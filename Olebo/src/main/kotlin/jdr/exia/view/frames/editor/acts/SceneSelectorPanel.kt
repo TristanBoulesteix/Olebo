@@ -1,8 +1,8 @@
 package jdr.exia.view.frames.editor.acts
 
-import jdr.exia.model.dao.getIcon
 import jdr.exia.localization.STR_SCENES
 import jdr.exia.localization.Strings
+import jdr.exia.model.dao.getIcon
 import jdr.exia.view.utils.components.templates.ItemPanel
 import jdr.exia.view.utils.components.templates.SelectorPanel
 import jdr.exia.view.utils.gridBagConstraintsOf

@@ -1,6 +1,5 @@
 package jdr.exia.view.frames.editor.elements
 
-import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.getIcon
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type

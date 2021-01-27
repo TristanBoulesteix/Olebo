@@ -2,7 +2,6 @@ package jdr.exia.model.dao.option
 
 import jdr.exia.localization.ST_UNKNOWN_DATABASE_VERSION
 import jdr.exia.localization.Strings
-import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.SettingsTable
 import jdr.exia.model.dao.SettingsTable.AUTO_UPDATE
 import jdr.exia.model.dao.SettingsTable.BASE_VERSION

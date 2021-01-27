@@ -4,7 +4,6 @@ import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.command.CommandManager
-import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.utils.toElements
 import jdr.exia.utils.forElse

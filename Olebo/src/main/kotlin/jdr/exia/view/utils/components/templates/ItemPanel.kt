@@ -1,7 +1,7 @@
 package jdr.exia.view.utils.components.templates
 
-import jdr.exia.view.utils.components.filter.IntegerFilter
 import jdr.exia.view.utils.applyAndAppendTo
+import jdr.exia.view.utils.components.filter.IntegerFilter
 import jdr.exia.view.utils.event.ClickListener
 import jdr.exia.view.utils.event.addFocusLostListener
 import jdr.exia.view.utils.gridBagConstraintsOf

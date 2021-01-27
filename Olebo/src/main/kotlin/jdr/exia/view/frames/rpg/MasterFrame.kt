@@ -42,7 +42,7 @@ object MasterFrame : JFrame(), GameFrame {
      */
     var itemPanel = ItemPanel()
 
-    var selectPanel = SelectPanel()
+    private var selectPanel = SelectPanel()
 
     var selectedElements: Elements = emptyElements()
         set(value) {

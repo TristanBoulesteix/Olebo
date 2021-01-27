@@ -18,7 +18,6 @@ val BACKGROUND_COLOR_ORANGE: Color = Color.ORANGE
 val BACKGROUND_COLOR_SELECT_PANEL: Color = Color.LIGHT_GRAY
 
 // Borders
-val MARGIN_LEFT: Border = BorderFactory.createEmptyBorder(0, 10, 0, 0)
 val BORDER_BUTTONS: Border = BorderFactory.createEmptyBorder(15, 15, 15, 15)
 
 // Keys

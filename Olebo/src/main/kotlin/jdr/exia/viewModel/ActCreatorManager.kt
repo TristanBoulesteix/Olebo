@@ -1,18 +1,18 @@
 package jdr.exia.viewModel
 
+import jdr.exia.localization.ST_SCENE_ALREADY_EXISTS
+import jdr.exia.localization.Strings
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.DAO
-import jdr.exia.localization.ST_SCENE_ALREADY_EXISTS
-import jdr.exia.localization.Strings
 import jdr.exia.model.dao.saveImg
-import org.jetbrains.exposed.sql.transactions.transaction
 import jdr.exia.utils.forElse
 import jdr.exia.view.frames.editor.acts.SceneEditorDialog
 import jdr.exia.view.utils.showPopup
 import jdr.exia.viewModel.pattern.observer.Action
 import jdr.exia.viewModel.pattern.observer.Observable
 import jdr.exia.viewModel.pattern.observer.Observer
+import org.jetbrains.exposed.sql.transactions.transaction
 
 /**
  * Manager to create an act (uses all classes in jdr.exia.jdr.exia.view.frames.editor)

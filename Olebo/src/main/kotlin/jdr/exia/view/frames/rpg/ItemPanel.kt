@@ -1,7 +1,6 @@
 package jdr.exia.view.frames.rpg
 
 import jdr.exia.localization.*
-import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
 import jdr.exia.utils.forElse

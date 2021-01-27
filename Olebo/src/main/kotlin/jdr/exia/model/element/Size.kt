@@ -1,6 +1,5 @@
 package jdr.exia.model.element
 
-import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.SizeTable
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
@@ -33,7 +32,7 @@ enum class Size(val size: SizeElement) {
         /**
          * Get the enum which is linked to the databse
          *
-         * @see model.element.Size
+         * @see [Size]
          */
         val sizeElement
             get() = valueOf(sizeName)

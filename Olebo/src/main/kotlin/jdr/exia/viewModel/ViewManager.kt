@@ -2,7 +2,6 @@ package jdr.exia.viewModel
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
-import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.*
 import jdr.exia.model.utils.*
@@ -20,8 +19,7 @@ import java.awt.Rectangle
  */
 object ViewManager {
     private var activeAct: Act? = null
-    var activeScene: Scene? = null
-        private set
+    private var activeScene: Scene? = null
 
     private var selectedElements = mutableEmptyElements()
 

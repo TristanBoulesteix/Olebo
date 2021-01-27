@@ -138,8 +138,10 @@ class BlueprintEditorDialog(private val type: TypeElement, private val blueprint
             BlueprintData(
                 nameField.text,
                 selectedFile.absolutePath,
-                if (type != TypeElement.OBJECT) manaField.text.let { if(it == "-") 0.toString() else it }.toInt() else null,
-                if (type != TypeElement.OBJECT) lifeField.text.let { if(it == "-") 0.toString() else it }.toInt() else null,
+                if (type != TypeElement.OBJECT) manaField.text.let { if (it == "-") 0.toString() else it }
+                    .toInt() else null,
+                if (type != TypeElement.OBJECT) lifeField.text.let { if (it == "-") 0.toString() else it }
+                    .toInt() else null,
                 blueprint?.id
             )
         } else if (!canceled) {

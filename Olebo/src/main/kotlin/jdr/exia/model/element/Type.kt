@@ -1,7 +1,6 @@
 package jdr.exia.model.element
 
 import jdr.exia.localization.*
-import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.TypeTable
 import jdr.exia.model.element.Type.TypeElement
 import org.jetbrains.exposed.dao.Entity

@@ -3,7 +3,6 @@ package jdr.exia.view.utils.components.templates
 import jdr.exia.localization.STR_HP
 import jdr.exia.localization.STR_MP
 import jdr.exia.localization.Strings
-import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Element
 import jdr.exia.model.utils.isCharacter
 import jdr.exia.view.utils.components.filter.IntegerFilter
@@ -22,7 +21,7 @@ class StatsLabel(private val isHP: Boolean, private var maxValue: Int = 0, value
         font = fontSize
         (document as AbstractDocument).documentFilter = IntegerFilter()
         addFocusLostListener {
-            if(element.isCharacter()) {
+            if (element.isCharacter()) {
                 transaction {
                     if (isHP) {
                         element?.currentHealth = extractValue(this@apply.text)

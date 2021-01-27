@@ -1,7 +1,6 @@
 package jdr.exia.view.frames.rpg.modifier
 
 import jdr.exia.localization.*
-import jdr.exia.model.dao.DAO
 import jdr.exia.model.utils.emptyElements
 import jdr.exia.view.utils.BACKGROUND_COLOR_SELECT_PANEL
 import jdr.exia.view.utils.DEFAULT_INSET

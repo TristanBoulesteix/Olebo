@@ -7,7 +7,11 @@ import jdr.exia.view.utils.components.templates.ComboSelectPanel
 import jdr.exia.viewModel.ViewManager
 
 class PriorityCombo(items: Elements? = null) :
-    ComboSelectPanel(arrayOf(Strings[STR_FOREGROUND], Strings[STR_DEFAULT], Strings[STR_BACKGROUND]), items, STR_PRIORITY_COMBO_TOOLTIP) {
+    ComboSelectPanel(
+        arrayOf(Strings[STR_FOREGROUND], Strings[STR_DEFAULT], Strings[STR_BACKGROUND]),
+        items,
+        STR_PRIORITY_COMBO_TOOLTIP
+    ) {
     init {
         addActionListener {
             val newPriority = when (selectedItem) {

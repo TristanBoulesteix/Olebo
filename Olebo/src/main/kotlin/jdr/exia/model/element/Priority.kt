@@ -1,6 +1,5 @@
 package jdr.exia.model.element
 
-import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.PriorityTable
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
