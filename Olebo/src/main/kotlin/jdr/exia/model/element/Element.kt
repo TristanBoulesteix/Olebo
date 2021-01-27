@@ -19,6 +19,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
 import javax.imageio.ImageIO
 import javax.swing.ImageIcon
+import kotlin.properties.ReadOnlyProperty
 
 class Element(id: EntityID<Int>) : Entity<Int>(id) {
     companion object : EntityClass<Int, Element>(InstanceTable) {
@@ -166,32 +167,29 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     private var sizeElement by Size.SizeElement referencedOn InstanceTable.idSize
     private var priorityElement by Priority.PriorityElement referencedOn InstanceTable.priority
 
+    var alias by InstanceTable.alias
     var isDeleted by InstanceTable.deleted
 
     // Value from the Blueprint
-    val sprite
-        get() = transaction(DAO.database) {
-            if (blueprint.type.typeElement == Type.BASIC)
+    val sprite by transaction {
+            if (blueprint.type.typeElement == Type.BASIC) {
                 ImageIcon(ImageIO.read(Element::class.java.classLoader.getResourceAsStream("sprites/${blueprint.sprite}")))
-            else
+            }
+            else {
                 ImageIcon(blueprint.sprite)
-        }.rotate(orientation)
+            }.rotate(orientation)
+        }
 
-    val name
-        get() = transaction(DAO.database) { blueprint.realName }
+    val name by transaction { blueprint.realName }
 
-    val maxHP
-        get() = transaction(DAO.database) { blueprint.HP }
+    val maxHP by transaction { blueprint.HP }
 
-    val maxMana
-        get() = transaction(DAO.database) { blueprint.MP }
+    val maxMana by transaction { blueprint.MP }
 
-    val type
-        get() = transaction(DAO.database) { blueprint.type }
+    val type by transaction { blueprint.type }
 
     // Custom getters / setters / variables / values
-    val hitBox
-        get() = transaction(DAO.database) {
+    val hitBox by transaction {
             Rectangle(
                 x,
                 y,
@@ -266,4 +264,10 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     }
 
     fun stillExist() = transaction(DAO.database) { Element.findById(this@Element.id) != null }
+
+    /**
+     * Set a value using a transaction with the default database
+     */
+    private fun <T> transaction(get: () -> T): ReadOnlyProperty<Element, T> =
+        ReadOnlyProperty { _, _ -> transaction(DAO.database) { get() } }
 }

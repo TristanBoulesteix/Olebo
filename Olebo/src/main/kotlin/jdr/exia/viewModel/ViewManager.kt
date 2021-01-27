@@ -2,6 +2,7 @@ package jdr.exia.viewModel
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
+import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.*
 import jdr.exia.model.utils.*
@@ -9,6 +10,8 @@ import jdr.exia.view.frames.rpg.MasterFrame
 import jdr.exia.view.frames.rpg.MasterMenuBar
 import jdr.exia.view.frames.rpg.PlayerFrame
 import jdr.exia.view.frames.rpg.ViewFacade
+import jdr.exia.view.utils.getTokenFromPoint
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Point
 import java.awt.Rectangle
 
@@ -38,6 +41,8 @@ object ViewManager {
         PlayerFrame.toggle(Settings.playerFrameOpenedByDefault)
         MasterFrame.requestFocus()
     }
+
+    fun removeSelectedElements() = removeElements(selectedElements)
 
     fun removeElements(elements: Elements) { //removes given token from MutableList
         selectedElements = mutableEmptyElements()
@@ -94,12 +99,6 @@ object ViewManager {
         repaint()
     }
 
-    /**
-     * Receives a clicked point (x,y), returns the first soken found in the Tokens array, or null if none matched
-     */
-    private fun getTokenFromXY(x: Int, y: Int) =
-        activeScene!!.elements.filter { it.hitBox.contains(x, y) }.maxByOrNull { it.priority }
-
     fun repaint() {
         updateTokens()
         ViewFacade.reloadFrames()
@@ -109,7 +108,8 @@ object ViewManager {
      * Checks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
      */
     fun selectElement(x: Int, y: Int) {
-        selectedElements = getTokenFromXY(x, y)?.toElements()?.toMutableList() ?: mutableEmptyElements()
+        selectedElements = activeScene!!.elements.getTokenFromPoint(Point(x, y))?.toElements()?.toMutableList()
+            ?: mutableEmptyElements()
         if (selectedElements.isNotEmpty()) {
             ViewFacade.setSelectedToken(selectedElements[0])
             repaint()
@@ -197,4 +197,10 @@ object ViewManager {
     fun updatePriorityToken(priority: Priority) = selectedElements.forEach {
         it.priority = priority
     }.also { repaint() }
+
+    fun updateSizeToken(size: Size) =
+        activeScene.callManager(size, selectedElements, Element::cmdDimension).also { repaint() }
+
+    fun updateLabel(label: String) =
+        selectedElements.forEach { transaction(DAO.database) { it.alias = label } }.also { repaint() }
 }

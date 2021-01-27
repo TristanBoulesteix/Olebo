@@ -1,7 +1,8 @@
 package jdr.exia.view.frames.editor.elements
 
-import jdr.exia.localization.*import jdr.exia.view.utils.IntegerFilter
+import jdr.exia.localization.*
 import jdr.exia.view.utils.applyAndAppendTo
+import jdr.exia.view.utils.components.filter.IntegerFilter
 import jdr.exia.view.utils.gridBagConstraintsOf
 import jdr.exia.view.utils.showPopup
 import jdr.exia.viewModel.BlueprintData

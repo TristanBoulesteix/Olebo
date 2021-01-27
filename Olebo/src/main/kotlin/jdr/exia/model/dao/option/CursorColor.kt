@@ -1,12 +1,12 @@
 package jdr.exia.model.dao.option
 
 import jdr.exia.localization.*
+import jdr.exia.model.utils.toColor
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import jdr.exia.model.utils.toColor
 import java.awt.Color as JColor
 
 /**

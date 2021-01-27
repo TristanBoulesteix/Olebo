@@ -12,6 +12,6 @@ fun emptyElements(): Elements = emptyList()
 
 fun Element.toElements(): Elements = listOf(this)
 
-fun <R> Elements.doIfContainsSingle(action: (Element) -> R): R? {
+inline fun <R> Elements.doIfContainsSingle(action: (Element) -> R): R? {
     return if (size == 1) action(this[0]) else null
 }

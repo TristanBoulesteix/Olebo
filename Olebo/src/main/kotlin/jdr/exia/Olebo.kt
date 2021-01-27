@@ -7,16 +7,16 @@ import jdr.exia.view.frames.home.HomeFrame
 import javax.swing.SwingUtilities
 import javax.swing.UIManager
 
-const val OLEBO_VERSION = "1.6.1-BETA"
+const val OLEBO_VERSION = "1.7.0-BETA"
 
 const val DEBUG = false
 
 fun main() {
-    Strings(Settings.Companion::activeLanguage)
-
-    if (!DEBUG)
-        checkForUpdate()
     SwingUtilities.invokeLater {
+        Strings(Settings.Companion::activeLanguage)
+
+        if (!DEBUG)
+            checkForUpdate()
         UIManager.setLookAndFeel(
             UIManager.getSystemLookAndFeelClassName()
         )

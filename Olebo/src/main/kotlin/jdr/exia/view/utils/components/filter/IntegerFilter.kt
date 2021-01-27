@@ -1,4 +1,4 @@
-package jdr.exia.view.utils
+package jdr.exia.view.utils.components.filter
 
 import javax.swing.text.AttributeSet
 import javax.swing.text.DocumentFilter

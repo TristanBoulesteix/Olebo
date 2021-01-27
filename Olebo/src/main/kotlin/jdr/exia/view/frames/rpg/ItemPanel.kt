@@ -4,14 +4,14 @@ import jdr.exia.localization.*
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
-import org.jetbrains.exposed.sql.transactions.transaction
 import jdr.exia.utils.forElse
 import jdr.exia.view.frames.Reloadable
-import jdr.exia.view.utils.components.PlaceholderTextField
+import jdr.exia.view.utils.components.templates.PlaceholderTextField
 import jdr.exia.view.utils.event.ClickListener
+import jdr.exia.view.utils.event.addClickListener
 import jdr.exia.viewModel.ViewManager
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.*
-import java.awt.event.MouseEvent
 import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.*
@@ -137,11 +137,7 @@ class ItemPanel : JPanel(), Reloadable {
      * Icon of the component
      */
     private class CustomPanel(element: Blueprint) : JPanel() {
-        private val eventListener = object : ClickListener {
-            override fun mouseClicked(e: MouseEvent?) {
-                ViewManager.addToken(element)
-            }
-        }
+        private val eventListener = ClickListener { ViewManager.addToken(element) }
 
         init {
             this.maximumSize = dimensionElement
@@ -163,10 +159,10 @@ class ItemPanel : JPanel(), Reloadable {
                 this.isEnabled = false
                 this.disabledTextColor = Color.BLACK
                 this.isFocusable = false
-                this.addMouseListener(eventListener)
+                this.addClickListener(eventListener)
             })
 
-            this.addMouseListener(eventListener)
+            this.addClickListener(eventListener)
         }
     }
 

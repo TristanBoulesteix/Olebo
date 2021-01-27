@@ -1,4 +1,4 @@
-package jdr.exia.view.utils.components
+package jdr.exia.view.utils.components.templates
 
 import java.awt.Font
 import java.awt.Graphics
@@ -19,17 +19,15 @@ class PlaceholderTextField(private var placeholder: String) : JTextField() {
 
         if (placeholder.isEmpty() || text.isNotEmpty()) return
 
-        (pG as Graphics2D).apply {
-            this.setRenderingHint(
-                RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON
-            )
-            this.color = disabledTextColor
-            this.drawString(
-                placeholder, insets.left, pG.getFontMetrics()
-                    .maxAscent + insets.top
-            )
-        }
+        (pG as Graphics2D).setRenderingHint(
+            RenderingHints.KEY_ANTIALIASING,
+            RenderingHints.VALUE_ANTIALIAS_ON
+        )
+        pG.color = disabledTextColor
+        pG.drawString(
+            placeholder, insets.left, pG.getFontMetrics()
+                .maxAscent + insets.top
+        )
     }
 }
 

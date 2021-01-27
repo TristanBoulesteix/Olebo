@@ -27,12 +27,11 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
     init {
         JMenuItem("${Strings[STR_EXPORT_DATA]} (ALPHA)").applyAndAppendTo(this) {
             this.addActionListener {
-                val parent = SwingUtilities.getWindowAncestor(this@FileMenu)
                 val extension = "olebo"
                 JFileChooser().apply {
                     this.dialogTitle = Strings[STR_EXPORT_DATA]
                     this.fileFilter = FileNameExtensionFilter(Strings[STR_OLEBO_FILE], extension)
-                    if (this.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
+                    if (this.showSaveDialog(this@FileMenu.windowAncestor) == JFileChooser.APPROVE_OPTION) {
                         val fileToSave = if (this.selectedFile.extension == extension)
                             this.selectedFile
                         else
@@ -54,17 +53,19 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
 
         JMenuItem("${Strings[STR_IMPORT_DATA]} (ALPHA)").applyAndAppendTo(this) {
             this.addActionListener {
-                val parent = SwingUtilities.getWindowAncestor(this@FileMenu)
-
-                showConfirmMessage(parent, Strings[ST_WARNING_CONFIG_RESET], Strings[STR_IMPORT_DATA]) {
+                showConfirmMessage(
+                    this@FileMenu.windowAncestor,
+                    Strings[ST_WARNING_CONFIG_RESET],
+                    Strings[STR_IMPORT_DATA]
+                ) {
                     JFileChooser().apply {
                         this.dialogTitle = Strings[STR_IMPORT_DATA]
                         this.fileFilter = FileNameExtensionFilter(Strings[STR_OLEBO_FILE], "olebo")
-                        if (this.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
+                        if (this.showOpenDialog(this@FileMenu.windowAncestor) == JFileChooser.APPROVE_OPTION) {
                             if (!this.selectedFile.isDirectory && this.selectedFile.exists()) {
                                 val result = loadOleboZipData(this.selectedFile)
                                 if (result is Result.Success) {
-                                    showPopup(Strings[ST_CONFIGURATION_IMPORTED], parent)
+                                    showPopup(Strings[ST_CONFIGURATION_IMPORTED], this@FileMenu.windowAncestor)
                                     MasterFrame.isVisible = false
                                     PlayerFrame.hide()
                                     Frame.getFrames().forEach(Window::dispose)
@@ -74,7 +75,7 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
                                         ZipError.DATABASE_HIGHER -> Strings[ST_WARNING_PREVIOUS_VERSION_FILE]
                                         ZipError.MISSING_FILES -> Strings[ST_WARNING_MISSING_CONF_FILES]
                                         else -> "${Strings[ST_UNKNOWN_ERROR]} ${Strings[ST_FILE_MAY_BE_CORRUPTED]}"
-                                    }, parent, true
+                                    }, this@FileMenu.windowAncestor, true
                                 )
                             }
                         }
@@ -104,7 +105,8 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
                             File("${this.selectedFile.parentFile.absolutePath}${File.separator}${this.selectedFile.nameWithoutExtension}.png")
 
                         val saveImg = {
-                            ImageIO.write(getScreenShot(parent), "png", fileToSave)
+                            if (parent != null)
+                                ImageIO.write(getScreenShot(parent), "png", fileToSave)
                         }
 
                         if (fileToSave.exists()) {

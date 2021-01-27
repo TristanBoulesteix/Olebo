@@ -4,7 +4,7 @@ import jdr.exia.localization.STR_CANCEL
 import jdr.exia.localization.STR_CONFIRM
 import jdr.exia.localization.STR_WARNING
 import jdr.exia.localization.Strings
-import jdr.exia.utils.MessageException
+import jdr.exia.model.utils.Elements
 import java.awt.*
 import java.awt.event.ItemEvent
 import javax.swing.JButton
@@ -22,18 +22,23 @@ fun showPopup(message: String, parent: Component? = null, isError: Boolean = fal
     if (!isError) JOptionPane.INFORMATION_MESSAGE else JOptionPane.ERROR_MESSAGE
 )
 
-fun showConfirmMessage(parent: Component? = null, message: String, title: String, okAction: () -> Unit) {
+inline fun showConfirmMessage(
+    parent: Component? = null,
+    message: String,
+    title: String,
+    crossinline okAction: () -> Unit
+) {
     val ok = JButton(Strings[STR_CONFIRM]).apply {
         this.isEnabled = false
         this.addActionListener {
-            SwingUtilities.getWindowAncestor(this)?.dispose()
+            windowAncestor?.dispose()
             okAction()
         }
     }
 
     val cancel = JButton(Strings[STR_CANCEL]).apply {
         this.addActionListener {
-            SwingUtilities.getWindowAncestor(this)?.dispose()
+            windowAncestor?.dispose()
         }
     }
 
@@ -53,7 +58,7 @@ fun showConfirmMessage(parent: Component? = null, message: String, title: String
     )
 }
 
-fun <T : Container> T.applyAndAppendTo(
+inline fun <T : Container> T.applyAndAppendTo(
     parent: Container,
     constraints: Any? = null,
     block: T.() -> Unit
@@ -66,7 +71,7 @@ fun <T : Container> T.applyAndAppendTo(
 }
 
 private val Dimension.area
-    get() = width * height
+    inline get() = width * height
 
 operator fun Dimension.compareTo(dimension: Dimension) = this.area.compareTo(dimension.area)
 
@@ -97,8 +102,8 @@ fun gridBagConstraintsOf(
     insets?.let { this.insets = it }
 }
 
-val Component.windowAncestor: Window
-    get() = SwingUtilities.getWindowAncestor(this) ?: throw MessageException("")
+val Component.windowAncestor: Window?
+    inline get() = SwingUtilities.getWindowAncestor(this)
 
 fun Graphics.fillCircleWithCenterCoordinates(x: Int, y: Int, radius: Int) =
     fillOval(x - radius, y - radius, radius * 2, radius * 2)
@@ -108,4 +113,12 @@ fun Graphics2D.drawCircleWithCenterCoordinates(x: Int, y: Int, radius: Int) {
     this.stroke = BasicStroke(3F)
     this.drawOval(x - radius, y - radius, radius * 2, radius * 2)
     this.stroke = previousStroke
+}
+
+operator fun Point.component1() = this.x
+
+operator fun Point.component2() = this.y
+
+fun Elements.getTokenFromPoint(point: Point) = point.let { (x, y) ->
+    this.filter { it.hitBox.contains(x, y) }.maxByOrNull { it.priority }
 }

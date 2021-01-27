@@ -4,12 +4,11 @@ import jdr.exia.localization.STR_NO_ELEMENT
 import jdr.exia.localization.Strings
 import jdr.exia.utils.forElse
 import jdr.exia.view.utils.BACKGROUND_COLOR_LIGHT_BLUE
+import jdr.exia.view.utils.event.addClickListener
 import java.awt.BorderLayout
 import java.awt.Color
 import java.awt.Font
 import java.awt.GridBagLayout
-import java.awt.event.MouseAdapter
-import java.awt.event.MouseEvent
 import javax.swing.*
 import javax.swing.border.EmptyBorder
 
@@ -43,12 +42,7 @@ abstract class SelectorPanel : JPanel() {
                 })
             })
 
-            this.addMouseListener(object : MouseAdapter() {
-                override fun mouseClicked(e: MouseEvent?) {
-                    super.mouseClicked(e)
-                    requestFocusInWindow()
-                }
-            })
+            this.addClickListener { requestFocusInWindow() }
         }
 
         (layout as BorderLayout).getLayoutComponent(BorderLayout.CENTER)?.let {

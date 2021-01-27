@@ -19,12 +19,62 @@ val tables by lazy {
         PriorityTable,
         SizeTable,
         InstanceTable,
-        SettingsTable
     )
 }
 
 interface Initializable {
     fun initialize()
+}
+
+/**
+ * Table where user settings are stored. This table must be initialized before the others in order to check database version
+ */
+object SettingsTable : IntIdTable(), Initializable {
+    const val BASE_VERSION = "baseVersion"
+    const val AUTO_UPDATE = "autoUpdate"
+    const val UPDATE_WARN = "updateWarn"
+    const val CURSOR_ENABLED = "cursorEnabled"
+    const val CURRENT_LANGUAGE = "current_language"
+    const val CURSOR_COLOR = "cursor_color"
+    const val PLAYER_FRAME_ENABLED = "PlayerFrame_enabled"
+    const val DEFAULT_ELEMENT_VISIBILITY = "default_element_visibility"
+    const val LABEL_ENABLED = "label_enabled"
+
+    val name = varchar("name", 255)
+    val value = varchar("value", 255).default("")
+
+    val baseVersionWhere = (id eq 1) and (name eq BASE_VERSION)
+
+    override fun initialize() {
+        if (SettingsTable.select(baseVersionWhere).count() <= 0) {
+            SettingsTable.insert {
+                it[id] = EntityID(1, SettingsTable)
+                it[name] = BASE_VERSION
+                it[value] = DAO.DATABASE_VERSION.toString()
+            }
+        } else {
+            SettingsTable.update({ baseVersionWhere }) { it[value] = DAO.DATABASE_VERSION.toString() }
+        }
+
+        insertOptionIfNotExists(2, AUTO_UPDATE, true)
+        insertOptionIfNotExists(3, UPDATE_WARN, "")
+        insertOptionIfNotExists(4, CURSOR_ENABLED, true)
+        insertOptionIfNotExists(5, CURRENT_LANGUAGE, Locale.getDefault().language)
+        insertOptionIfNotExists(6, CURSOR_COLOR, "")
+        insertOptionIfNotExists(7, PLAYER_FRAME_ENABLED, false)
+        insertOptionIfNotExists(8, DEFAULT_ELEMENT_VISIBILITY, false)
+        insertOptionIfNotExists(9, LABEL_ENABLED, false)
+    }
+
+    private fun insertOptionIfNotExists(id: Int, name: String, value: Any) {
+        if (SettingsTable.select((SettingsTable.id eq id) and (SettingsTable.name eq name)).count() <= 0) {
+            SettingsTable.insert {
+                it[SettingsTable.id] = EntityID(id, SettingsTable)
+                it[SettingsTable.name] = name
+                it[SettingsTable.value] = value.toString()
+            }
+        }
+    }
 }
 
 object ActTable : IntIdTable() {
@@ -163,6 +213,7 @@ object InstanceTable : IntIdTable() {
     val idScene = integer("ID_Scene").references(SceneTable.id).default(0)
     val idBlueprint = integer("id_blueprint").references(BlueprintTable.id).default(0)
     val deleted = bool("deleted").default(false)
+    val alias = varchar("alias", 255).default("")
 }
 
 object SizeTable : IntIdTable(), Initializable {
@@ -215,51 +266,6 @@ object SizeTable : IntIdTable(), Initializable {
                 it[id] = EntityID(6, TypeTable)
                 it[size] = "XXL"
                 it[value] = 400
-            }
-        }
-    }
-}
-
-object SettingsTable : IntIdTable(), Initializable {
-    const val BASE_VERSION = "baseVersion"
-    const val AUTO_UPDATE = "autoUpdate"
-    const val UPDATE_WARN = "updateWarn"
-    const val CURSOR_ENABLED = "cursorEnabled"
-    const val CURRENT_LANGUAGE = "current_language"
-    const val CURSOR_COLOR = "cursor_color"
-    const val PLAYER_FRAME_ENABLED = "PlayerFrame_enabled"
-    const val DEFAULT_ELEMENT_VISIBILITY = "default_element_visibility"
-
-    val name = varchar("name", 255)
-    val value = varchar("value", 255).default("")
-
-    override fun initialize() {
-        val baseVersionWhere = (id eq 1) and (name eq BASE_VERSION)
-        if (SettingsTable.select(baseVersionWhere).count() <= 0) {
-            SettingsTable.insert {
-                it[id] = EntityID(1, SettingsTable)
-                it[name] = BASE_VERSION
-                it[value] = DAO.DATABASE_VERSION.toString()
-            }
-        } else {
-            SettingsTable.update({ baseVersionWhere }) { it[value] = DAO.DATABASE_VERSION.toString() }
-        }
-
-        insertOptionIfNotExists(2, AUTO_UPDATE, true)
-        insertOptionIfNotExists(3, UPDATE_WARN, "")
-        insertOptionIfNotExists(4, CURSOR_ENABLED, true)
-        insertOptionIfNotExists(5, CURRENT_LANGUAGE, Locale.getDefault().language)
-        insertOptionIfNotExists(6, CURSOR_COLOR, "")
-        insertOptionIfNotExists(7, PLAYER_FRAME_ENABLED, false)
-        insertOptionIfNotExists(8, DEFAULT_ELEMENT_VISIBILITY, false)
-    }
-
-    private fun insertOptionIfNotExists(id: Int, name: String, value: Any) {
-        if (SettingsTable.select((SettingsTable.id eq id) and (SettingsTable.name eq name)).count() <= 0) {
-            SettingsTable.insert {
-                it[SettingsTable.id] = EntityID(id, SettingsTable)
-                it[SettingsTable.name] = name
-                it[SettingsTable.value] = value.toString()
             }
         }
     }

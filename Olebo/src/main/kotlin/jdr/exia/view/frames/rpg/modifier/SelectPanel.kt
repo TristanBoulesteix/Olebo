@@ -1,86 +1,27 @@
-package jdr.exia.view.frames.rpg
+package jdr.exia.view.frames.rpg.modifier
 
 import jdr.exia.localization.*
-import jdr.exia.model.element.Element
-import jdr.exia.model.element.Priority
-import jdr.exia.model.element.Size
-import jdr.exia.model.utils.Elements
-import jdr.exia.model.utils.callManager
+import jdr.exia.model.dao.DAO
 import jdr.exia.model.utils.emptyElements
 import jdr.exia.view.utils.BACKGROUND_COLOR_SELECT_PANEL
+import jdr.exia.view.utils.DEFAULT_INSET
 import jdr.exia.view.utils.DIMENSION_BUTTON_DEFAULT
-import jdr.exia.view.utils.components.templates.ComboSelectPanel
 import jdr.exia.view.utils.components.templates.StatsLabel
 import jdr.exia.view.utils.gridBagConstraintsOf
 import jdr.exia.viewModel.ViewManager
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.*
-import javax.swing.AbstractButton
 import javax.swing.JButton
-import javax.swing.JLabel
 import javax.swing.JPanel
-import javax.swing.border.EmptyBorder
 
 
 /**
  * Contains all this info regarding the item selected by the Game Master.
+ *
  * This is a singleton.
  */
-object SelectPanel : JPanel() {
-    private val defaultLeftInsets = Insets(10, 150, 10, 10)
-
-    private val leftPanel = object : JPanel() {
-        init {
-            this.layout = GridBagLayout()
-            this.isOpaque = false
-        }
-    }
-
-    private val nameLabel = object : JLabel() {
-        init {
-            horizontalTextPosition = LEFT
-            border = EmptyBorder(0, 0, 0, 0)
-        }
-
-        override fun setText(text: String?) {
-            if (text == null) {
-                this.isEnabled = false
-                super.setText(Strings[STR_NAME])
-            } else {
-                this.isEnabled = true
-                super.setText(text)
-            }
-        }
-    }
-
-    private var sizeCombo = SizeCombo()
-        set(combo) {
-            leftPanel.remove(field)
-            leftPanel.add(
-                combo, gridBagConstraintsOf(
-                    0,
-                    2,
-                    weightx = 1.0,
-                    insets = defaultLeftInsets,
-                    anchor = GridBagConstraints.LINE_START
-                )
-            )
-            field = combo
-        }
-
-    private var priorityCombo = PriorityCombo()
-        set(combo) {
-            leftPanel.remove(field)
-            leftPanel.add(
-                combo, gridBagConstraintsOf(
-                    0,
-                    3,
-                    weightx = 1.0,
-                    insets = defaultLeftInsets,
-                    anchor = GridBagConstraints.LINE_START
-                )
-            )
-            field = combo
-        }
+class SelectPanel : JPanel() {
+    private val sidePanel = SideDataPanel()
 
     private val rotateRightButton = JButton(Strings[STR_ROTATE_TO_RIGHT]).apply {
         preferredSize = DIMENSION_BUTTON_DEFAULT
@@ -157,24 +98,14 @@ object SelectPanel : JPanel() {
         this.preferredSize = Dimension(500, 10)
 
         this.add(
-            leftPanel, gridBagConstraintsOf(
+            sidePanel, gridBagConstraintsOf(
                 0,
                 0,
                 weightx = .5,
-                insets = defaultLeftInsets,
+                insets = DEFAULT_INSET,
                 anchor = GridBagConstraints.LINE_START,
                 fill = GridBagConstraints.VERTICAL,
                 gridHeight = 3
-            )
-        )
-
-        leftPanel.add(
-            nameLabel, gridBagConstraintsOf(
-                0,
-                0,
-                weightx = 1.0,
-                insets = defaultLeftInsets,
-                anchor = GridBagConstraints.LINE_START
             )
         )
 
@@ -243,40 +174,42 @@ object SelectPanel : JPanel() {
 
     fun reload() {
         with(selectedElements) {
+
+            sidePanel.priorityCombo = PriorityCombo(this)
+            sidePanel.sizeCombo = SizeCombo(this)
+
+            sidePanel.nameLabelPanel.isEnabled = false
+
             if (this.isNotEmpty()) {
                 arrayOf(rotateRightButton, rotateLeftButton, deleteButton).forEach { it.isEnabled = true }
 
                 visibilityButton.initialize(false)
-                nameLabel.text =
+                sidePanel.blueprintNameLabel.text =
                     if (this.size == 1) this[0].name else "$size ${Strings[STR_SELECTED_ELEMENTS, StringStates.NORMAL]}"
-
-                priorityCombo = PriorityCombo(this)
-                sizeCombo = SizeCombo(this)
 
                 if (this.size == 1) {
                     lifeField.element = this[0]
                     manaField.element = this[0]
+                    sidePanel.nameLabelPanel.let {
+                        it.text = transaction(DAO.database) { this@with[0].alias }
+                        it.isEnabled = true
+                    }
                 }
             } else {
-                nameLabel.text = null
+                sidePanel.blueprintNameLabel.text = null
 
-                arrayOf<AbstractButton>(rotateRightButton, rotateLeftButton, deleteButton).forEach {
+                arrayOf(rotateRightButton, rotateLeftButton, deleteButton).forEach {
                     it.isEnabled = false
                 }
 
-                priorityCombo = PriorityCombo(this)
-                sizeCombo = SizeCombo(this)
-
                 visibilityButton.initialize(true)
-
-
-                sizeCombo = SizeCombo()
 
                 lifeField.element = null
                 manaField.element = null
             }
         }
 
+        sidePanel.reload()
         revalidate()
         repaint()
     }
@@ -297,58 +230,6 @@ object SelectPanel : JPanel() {
             } else {
                 g.color = Color.WHITE
                 g.fillRect(20, 35, 100, 100)
-            }
-        }
-    }
-
-    private class SizeCombo(items: Elements? = null) :
-        ComboSelectPanel(arrayOf("XS", "S", "M", "L", "XL", "XXL"), items) {
-        init {
-            addActionListener { _ ->
-                with(selectedElements.filter { it.size != selectedItem }) {
-                    val newSize = when (selectedItem) {
-                        "XS" -> Size.XS
-                        "S" -> Size.S
-                        "M" -> Size.M
-                        "L" -> Size.L
-                        "XL" -> Size.XL
-                        "XXL" -> Size.XXL
-                        else -> Size.DEFAULT
-                    }
-                    ViewManager.activeScene.callManager(newSize, this, Element::cmdDimension)
-                }
-                ViewManager.repaint()
-            }
-        }
-
-        override fun setSelectedItem(selected: Any?) {
-            this.toSelect = selected.doIfElement("S") {
-                it.size.name
-            }
-        }
-    }
-
-    private class PriorityCombo(items: Elements? = null) :
-        ComboSelectPanel(arrayOf(Strings[STR_FOREGROUND], Strings[STR_DEFAULT], Strings[STR_DEFAULT]), items) {
-        init {
-            addActionListener {
-                val newPriority = when (selectedItem) {
-                    Strings[STR_BACKGROUND] -> Priority.LOW
-                    Strings[STR_FOREGROUND] -> Priority.HIGH
-                    else -> Priority.REGULAR
-                }
-
-                ViewManager.updatePriorityToken(newPriority)
-            }
-        }
-
-        override fun setSelectedItem(selected: Any?) {
-            this.toSelect = selected.doIfElement(Strings[STR_DEFAULT]) {
-                when (it.priority) {
-                    Priority.HIGH -> Strings[STR_FOREGROUND]
-                    Priority.LOW -> Strings[STR_BACKGROUND]
-                    Priority.REGULAR -> Strings[STR_DEFAULT]
-                }
             }
         }
     }

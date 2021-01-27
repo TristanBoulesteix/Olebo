@@ -13,7 +13,7 @@ import jdr.exia.view.utils.gridBagConstraintsOf
 import java.awt.*
 import javax.swing.*
 
-class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTIONS], true) {
+class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPTIONS], true) {
     private val comboLanguageItems =
         availableLocales.map { it.getDisplayLanguage(it).capitalize(Settings.language) }.toTypedArray()
 
@@ -45,6 +45,10 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
 
     private val checkboxVisibilityElement = JCheckBox(Strings[STR_DEFAULT_ELEMENT_VISIBILITY]).apply {
         this.isSelected = Settings.defaultElementVisibility
+    }
+
+    private val checkboxLabelEnabled = JCheckBox(Strings[STR_LABEL_ENABLED]).apply {
+        this.isSelected = Settings.isLabelEnabled
     }
 
     private val languageChangeRestartLabel: JLabel
@@ -108,6 +112,11 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
                 checkboxVisibilityElement,
                 gridBagConstraintsOf(0, 2, weightx = 1.0, anchor = GridBagConstraints.LINE_START)
             )
+
+            this.add(
+                checkboxLabelEnabled,
+                gridBagConstraintsOf(0, 3, weightx = 1.0, anchor = GridBagConstraints.LINE_START)
+            )
         }
 
         languageChangeRestartLabel =
@@ -137,6 +146,7 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
         ) {
             JButton(Strings[STR_SAVE]).applyAndAppendTo(this) {
                 addActionListener {
+                    // Save option selected to the database
                     Settings.language = availableLocales[comboLanguage.selectedIndex]
                     Settings.autoUpdate = checkBoxAutoUpdate.isSelected
                     Settings.playerFrameOpenedByDefault = checkBoxPlayerFrameOpenedByDefault.isSelected
@@ -146,6 +156,13 @@ class OptionDialog(parent: Window) : JDialog(parent as? JFrame, Strings[STR_OPTI
                             ViewFacade.updateCursorOnPlayerFrame()
                     }
                     Settings.defaultElementVisibility = checkboxVisibilityElement.isSelected
+                    checkboxLabelEnabled.isSelected.let {
+                        Settings.isLabelEnabled = it
+                        if (owner is MasterFrame)
+                            ViewFacade.reloadFrames()
+                    }
+
+                    // Close the Options dialog
                     dispose()
                 }
             }
