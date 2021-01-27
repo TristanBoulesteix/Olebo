@@ -85,11 +85,9 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
             val clickedX = absoluteX(it.x)
             val clickedY = absoluteY(it.y)
 
-            when (it.button) //  left button: 1, middle button: 2, Right click: 3
-            {
-                MouseEvent.BUTTON1 -> ViewManager.selectElement(clickedX, clickedY) //Left click
-                MouseEvent.BUTTON2 -> ViewFacade.moveToken(clickedX, clickedY)   //Middle button
-                MouseEvent.BUTTON3 -> ViewFacade.moveToken(clickedX, clickedY)   //Right click
+            when (it.button) {
+                MouseEvent.BUTTON1 -> ViewManager.selectElement(clickedX, clickedY) // Left click
+                MouseEvent.BUTTON2, MouseEvent.BUTTON3 -> ViewFacade.moveToken(clickedX, clickedY)   // Other buttons
             }
         }
 
