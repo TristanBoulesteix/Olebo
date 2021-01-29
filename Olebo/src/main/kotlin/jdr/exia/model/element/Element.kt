@@ -131,6 +131,25 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
                 }
         }
 
+        fun cmdPosition(positions: List<Position>, manager: CommandManager, elements: Elements) {
+            assert(positions.size == elements.size) { "Error: Positions does not match elements number." }
+
+            val previousPosition = elements.map { it.position }
+
+            manager += object : Command() {
+                override val label by StringDelegate(STR_MOVE_ELEMENT)
+
+                override fun exec() = elements.forEachIndexed { index, element ->
+                    element.position = positions[index]
+                }
+
+                override fun cancelExec() = elements.forEachIndexed { index, element ->
+                    if (element.stillExist())
+                        element.position = previousPosition[index]
+                }
+            }
+        }
+
         fun cmdDelete(manager: CommandManager, elements: Elements) {
             manager += object : Command() {
                 override val label by StringDelegate(STR_DELETE_SELECTED_TOKENS)

@@ -57,7 +57,7 @@ fun ImageIcon.rotate(degs: Double) = with(BufferedImage(this.iconWidth, this.ico
     ImageIcon(this)
 }
 
-fun Scene?.callManager(elements: Elements, func: (CommandManager, Elements) -> Unit) = this?.let { scene ->
+inline fun Scene?.callManager(elements: Elements, func: (CommandManager, Elements) -> Unit) = this?.let { scene ->
     func(CommandManager(scene.id.value), elements)
 }
 

@@ -4,6 +4,8 @@ import jdr.exia.localization.STR_CANCEL
 import jdr.exia.localization.STR_CONFIRM
 import jdr.exia.localization.STR_WARNING
 import jdr.exia.localization.Strings
+import jdr.exia.model.element.Element
+import jdr.exia.model.element.Position
 import jdr.exia.model.utils.Elements
 import java.awt.*
 import java.awt.event.ItemEvent
@@ -122,3 +124,12 @@ operator fun Point.component2() = this.y
 fun Elements.getTokenFromPoint(point: Point) = point.let { (x, y) ->
     this.filter { it.hitBox.contains(x, y) }.maxByOrNull { it.priority }
 }
+
+/**
+ * Get position of hitbox from coordinate clicked
+ */
+fun Element.positionOf(x: Int, y: Int) = Position(x - hitBox.width / 2, y - hitBox.height / 2)
+
+operator fun Dimension.component1() = this.width
+
+operator fun Dimension.component2() = this.height

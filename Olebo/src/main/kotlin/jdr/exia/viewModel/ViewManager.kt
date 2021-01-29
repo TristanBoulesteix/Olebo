@@ -10,6 +10,7 @@ import jdr.exia.view.frames.rpg.MasterMenuBar
 import jdr.exia.view.frames.rpg.PlayerFrame
 import jdr.exia.view.frames.rpg.ViewFacade
 import jdr.exia.view.utils.getTokenFromPoint
+import jdr.exia.view.utils.positionOf
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Point
 import java.awt.Rectangle
@@ -74,14 +75,22 @@ object ViewManager {
         }
     }
 
-    fun moveToken(
-        x: Int,
-        y: Int
-    ) { //Changes a token's position without dropping it (a moved token stays selected) , intended for small steps
-        if (selectedElements.isNotEmpty() && selectedElements.size == 1) {
-            val newX = (x - (selectedElements[0].hitBox.width / 2))
-            val newY = (y - (selectedElements[0].hitBox.height / 2))
-            selectedElements[0].cmdPosition(Position(newX, newY), activeScene!!.commandManager)
+    /**
+     * Changes a token's position without dropping it (a moved token stays selected), intended for small steps
+     */
+    fun moveToken(x: Int, y: Int) {
+        if (selectedElements.isNotEmpty()) {
+            if (selectedElements.size == 1) {
+                selectedElements[0].cmdPosition(selectedElements[0].positionOf(x, y), activeScene!!.commandManager)
+            } else {
+                val newPosition = mutableListOf<Position>()
+
+                selectedElements.forEach {
+                    newPosition += it.positionOf(x, y)
+                }
+
+                activeScene.callManager(newPosition, selectedElements, Element::cmdPosition)
+            }
             repaint()
         }
     }
