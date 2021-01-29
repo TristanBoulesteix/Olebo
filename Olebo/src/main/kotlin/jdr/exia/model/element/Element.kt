@@ -137,7 +137,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             val previousPosition = elements.map { it.position }
 
             manager += object : Command() {
-                override val label by StringDelegate(STR_MOVE_ELEMENT)
+                override val label by StringDelegate(STR_MOVE_ELEMENTS)
 
                 override fun exec() = elements.forEachIndexed { index, element ->
                     element.position = positions[index]
