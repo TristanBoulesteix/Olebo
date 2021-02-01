@@ -133,3 +133,6 @@ fun Element.positionOf(x: Int, y: Int) = Position(x - hitBox.width / 2, y - hitB
 operator fun Dimension.component1() = this.width
 
 operator fun Dimension.component2() = this.height
+
+val screens: Array<GraphicsDevice>
+    get() = GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices

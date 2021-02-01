@@ -6,8 +6,8 @@ import jdr.exia.model.utils.Elements
 import jdr.exia.model.utils.emptyElements
 import jdr.exia.view.frames.Reloadable
 import jdr.exia.view.utils.DIMENSION_FRAME
+import jdr.exia.view.utils.screens
 import java.awt.Color
-import java.awt.GraphicsEnvironment
 import java.awt.Window
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
@@ -49,35 +49,32 @@ class PlayerFrame private constructor() : JDialog(null as Window?), GameFrame, K
                 this.title = Companion.title
                 this.setMapBackground(mapBackground)
                 this.updateMap(map)
-                GraphicsEnvironment.getLocalGraphicsEnvironment().let { ge ->
-                    val screens = ge.screenDevices
-                    if (screens.size == 1) { //If there is only 1 screen, we display both frames there
-                        this.isUndecorated = false
-                        this.isResizable = true
-                        this.preferredSize = DIMENSION_FRAME
-                        this.pack()
-                        this.setLocationRelativeTo(null)
-                        this.isVisible = true
-                    } else { //If 2 screens are present, we display the player frame in fullscreen on the 2nd screen
-                        for (screen in screens) {
-                            if (MasterFrame.graphicsConfiguration.device != screen) {
-                                this.setSize(
-                                    screen.displayMode.width,
-                                    screen.displayMode.height
-                                )  //Sets the frame's size as exactly the size of the screen.
-                                this.isUndecorated = true
-                                this.isResizable = false
+                if (screens.size == 1) { //If there is only 1 screen, we display both frames there
+                    this.isUndecorated = false
+                    this.isResizable = true
+                    this.preferredSize = DIMENSION_FRAME
+                    this.pack()
+                    this.setLocationRelativeTo(null)
+                    this.isVisible = true
+                } else { //If 2 screens are present, we display the player frame in fullscreen on the 2nd screen
+                    for (screen in screens) {
+                        if (MasterFrame.graphicsConfiguration.device != screen) {
+                            this.setSize(
+                                screen.displayMode.width,
+                                screen.displayMode.height
+                            )  //Sets the frame's size as exactly the size of the screen.
+                            this.isUndecorated = true
+                            this.isResizable = false
 
-                                this.pack()
-                                screen.fullScreenWindow = this
-                                this.location = screen.defaultConfiguration.bounds.location.apply {
-                                    with(screen.defaultConfiguration.defaultTransform) {
-                                        x *= scaleX.toInt()
-                                        y *= scaleY.toInt()
-                                    }
+                            this.pack()
+                            screen.fullScreenWindow = this
+                            this.location = screen.defaultConfiguration.bounds.location.apply {
+                                with(screen.defaultConfiguration.defaultTransform) {
+                                    x *= scaleX.toInt()
+                                    y *= scaleY.toInt()
                                 }
-                                break
                             }
+                            break
                         }
                     }
                 }

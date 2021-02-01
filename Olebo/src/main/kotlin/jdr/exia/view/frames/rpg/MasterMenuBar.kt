@@ -9,11 +9,8 @@ import jdr.exia.model.utils.toElements
 import jdr.exia.utils.forElse
 import jdr.exia.view.frames.editor.elements.BlueprintDialog
 import jdr.exia.view.frames.home.HomeFrame
-import jdr.exia.view.utils.CTRL
-import jdr.exia.view.utils.CTRLSHIFT
-import jdr.exia.view.utils.applyAndAppendTo
+import jdr.exia.view.utils.*
 import jdr.exia.view.utils.components.FileMenu
-import jdr.exia.view.utils.showConfirmMessage
 import jdr.exia.viewModel.ViewManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.event.ItemEvent
@@ -103,7 +100,9 @@ object MasterMenuBar : JMenuBar() {
                 this.isSelected = Settings.playerFrameOpenedByDefault
                 this.addActionListener { e ->
                     PlayerFrame.toggle((e.source as AbstractButton).isSelected)
-                    MasterFrame.requestFocus()
+
+                    if (screens.size > 1)
+                        MasterFrame.requestFocus()
                 }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_O, CTRL)
             }
