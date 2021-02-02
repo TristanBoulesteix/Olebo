@@ -81,7 +81,7 @@ object ViewManager {
     fun moveToken(x: Int, y: Int) {
         if (selectedElements.isNotEmpty()) {
             if (selectedElements.size == 1) {
-                selectedElements[0].cmdPosition(selectedElements[0].positionOf(x, y), activeScene!!.commandManager)
+                selectedElements.first().cmdPosition(selectedElements.first().positionOf(x, y), activeScene!!.commandManager)
             } else {
                 val newPosition = mutableListOf<Position>()
 
