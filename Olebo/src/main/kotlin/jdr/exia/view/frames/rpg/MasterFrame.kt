@@ -10,6 +10,7 @@ import jdr.exia.view.utils.event.addKeyPressedListener
 import jdr.exia.view.utils.gridBagConstraintsOf
 import jdr.exia.viewModel.ViewManager
 import java.awt.Color
+import java.awt.Dimension
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.awt.event.KeyEvent
@@ -72,15 +73,19 @@ object MasterFrame : JFrame(), GameFrame {
             }
         }
         this.defaultCloseOperation = EXIT_ON_CLOSE
-        masterFramePanel.size = this.size
-        masterFramePanel.background = Color.GRAY
-        masterFramePanel.layout = GridBagLayout()
+        masterFramePanel.apply {
+            size = this.size
+            background = Color.GRAY
+            layout = GridBagLayout()
+        }
         contentPane = masterFramePanel
 
         mapPanel.setSize(1280, 720)
 
-        itemPanel.setSize(this.width - 1280, this.height)
-        itemPanel.background = Color.yellow
+        itemPanel.apply {
+            size = Dimension(this.width - 1280, this.height)
+            background = Color.yellow
+        }
 
         selectPanel.setSize(mapPanel.width, (this.height - mapPanel.height))
 

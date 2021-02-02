@@ -80,15 +80,15 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
         })
 
         addMousePressedListener {
-            selectedArea = null
-
             val clickedX = absoluteX(it.x)
             val clickedY = absoluteY(it.y)
 
             when (it.button) {
                 MouseEvent.BUTTON1 -> ViewManager.selectElement(clickedX, clickedY) // Left click
-                MouseEvent.BUTTON2, MouseEvent.BUTTON3 -> ViewFacade.moveToken(clickedX, clickedY)   // Other buttons
+                MouseEvent.BUTTON2, MouseEvent.BUTTON3 -> ViewManager.moveToken(clickedX, clickedY)   // Other buttons
             }
+
+            selectedArea = null
         }
 
         addMouseReleasedListener {

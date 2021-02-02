@@ -285,5 +285,8 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         }
     }
 
+    /**
+     * Check if the element still exists in the database
+     */
     fun stillExist() = transaction { Element.findById(this@Element.id) != null }
 }

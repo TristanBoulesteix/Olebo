@@ -5,7 +5,6 @@ import jdr.exia.model.element.Element
 import jdr.exia.model.utils.Elements
 import jdr.exia.model.utils.emptyElements
 import jdr.exia.model.utils.toJColor
-import jdr.exia.viewModel.ViewManager
 
 /**
  * ViewManager is View's facade
@@ -18,10 +17,6 @@ object ViewFacade {
             PlayerFrame.title = value
             field = value
         }
-
-    fun moveToken(x: Int, y: Int) {
-        ViewManager.moveToken(x, y)
-    }
 
     fun setSelectedToken(vararg tokens: Element) {
         MasterFrame.selectedElements = tokens.toMutableList()
