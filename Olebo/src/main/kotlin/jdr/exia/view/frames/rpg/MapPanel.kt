@@ -4,10 +4,12 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Size
 import jdr.exia.model.utils.Elements
+import jdr.exia.model.utils.Position
 import jdr.exia.model.utils.emptyElements
 import jdr.exia.model.utils.toJColor
 import jdr.exia.view.utils.*
-import jdr.exia.view.utils.event.addMousePressedListener
+import jdr.exia.view.utils.event.addMouseExitedListener
+import jdr.exia.view.utils.event.addMouseMovedListener
 import jdr.exia.view.utils.event.addMouseReleasedListener
 import jdr.exia.viewModel.ViewManager
 import kotlinx.coroutines.GlobalScope
@@ -30,7 +32,7 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
     private var tokens = emptyElements() //These are all the tokens placed on  the current map
     var selectedElements = emptyElements()
 
-    var selectedArea: Rectangle? = null
+    private var selectedArea: Rectangle? = null
 
     var cursorColor: Color
 
@@ -56,9 +58,10 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
      * init only for [MasterFrame]
      */
     private fun initializeForMaster() {
-        this.addMouseMotionListener(object : MouseMotionAdapter() {
-            private var start = Point()
+        var start = Point()
+        var movePosition: Position? = null
 
+        this.addMouseMotionListener(object : MouseMotionAdapter() {
             override fun mouseMoved(me: MouseEvent) {
                 start = me.point
             }
@@ -67,37 +70,54 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
                 if (SwingUtilities.isLeftMouseButton(me)) {
                     val end = me.point
 
-                    selectedArea = Rectangle(
-                        start.x.coerceAtMost(end.x),
-                        start.y.coerceAtMost(end.y),
-                        abs(start.x - end.x),
-                        abs(start.y - end.y)
-                    )
+                    if (ViewManager.positionHasElement(Position(start).absolutePosition)) {
+                        movePosition = Position(end)
+                        selectedArea = null
+                    } else {
+                        movePosition = null
+                        selectedArea = Rectangle(
+                            start.x.coerceAtMost(end.x),
+                            start.y.coerceAtMost(end.y),
+                            abs(start.x - end.x),
+                            abs(start.y - end.y)
+                        )
 
-                    this@MapPanel.repaint()
+                        this@MapPanel.repaint()
+                    }
                 }
             }
         })
 
-        addMousePressedListener {
-            val clickedX = absoluteX(it.x)
-            val clickedY = absoluteY(it.y)
+        addMouseReleasedListener { me ->
+            val clickedPosition = Position(me.point).absolutePosition
 
-            when (it.button) {
-                MouseEvent.BUTTON1 -> ViewManager.selectElement(clickedX, clickedY) // Left click
-                MouseEvent.BUTTON2, MouseEvent.BUTTON3 -> ViewManager.moveToken(clickedX, clickedY)   // Other buttons
+            when (me.button) {
+                MouseEvent.BUTTON1 -> if (movePosition == null && selectedArea == null) ViewManager.selectElement(
+                    clickedPosition
+                ) // Left click
+                MouseEvent.BUTTON2, MouseEvent.BUTTON3 -> ViewManager.moveTokens(clickedPosition)   // Other buttons
             }
 
-            selectedArea = null
-        }
-
-        addMouseReleasedListener {
             selectedArea?.let {
                 if (it.size >= Dimension(Size.XS.size.absoluteSizeValue, Size.XS.size.absoluteSizeValue))
                     ViewManager.selectElements(it)
                 else repaint()
+                selectedArea = null
             }
-            selectedArea = null
+
+            movePosition?.absolutePosition?.let {
+                ViewManager.moveTokens(it, Position(start).absolutePosition)
+                start = movePosition!!.toPoint()
+                movePosition = null
+            }
+        }
+
+        addMouseMovedListener { me ->
+            ViewManager.cursorPosition = Position(me.point).absolutePosition
+        }
+
+        addMouseExitedListener {
+            ViewManager.cursorPosition = null
         }
 
         ToolTipManager.sharedInstance().registerComponent(this)
@@ -136,7 +156,8 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
         this.tokens = tokens
     }
 
-    fun getAbsolutePoint(point: Point) = Point(absoluteX(point.x), absoluteY(point.y))
+    val Position.absolutePosition
+        get() = Position(absoluteX(x), absoluteY(y))
 
     override fun paintComponent(g: Graphics) {
         // Draw background image
@@ -176,7 +197,7 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
 
         // Draw cursor
         if (parentGameFrame is PlayerFrame && Settings.cursorEnabled)
-            ViewManager.cursorPoint?.let {
+            ViewManager.cursorPosition?.let {
                 g.color = cursorColor
                 g.fillCircleWithCenterCoordinates(relativeX(it.x), relativeY(it.y), 15)
                 g.color = borderCursorColor
@@ -233,6 +254,6 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
      * Show alias on mouse hover
      */
     override fun getToolTipText() = mousePosition?.let {
-        if (Settings.isLabelEnabled) tokens.getTokenFromPoint(getAbsolutePoint(it))?.alias else null
+        if (Settings.isLabelEnabled) tokens.getTokenFromPosition(Position(it).absolutePosition)?.alias else null
     }
 }

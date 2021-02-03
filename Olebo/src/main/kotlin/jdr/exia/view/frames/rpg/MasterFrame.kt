@@ -14,9 +14,6 @@ import java.awt.Dimension
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.awt.event.KeyEvent
-import java.awt.event.MouseAdapter
-import java.awt.event.MouseEvent
-import java.awt.event.MouseMotionAdapter
 import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.JFrame
@@ -117,17 +114,6 @@ object MasterFrame : JFrame(), GameFrame {
         masterFramePanel.add(itemPanel, itemConstraints)
         masterFramePanel.add(selectPanel, selectConstraints)
         jMenuBar = MasterMenuBar
-
-        mapPanel.addMouseMotionListener(object : MouseMotionAdapter() {
-            override fun mouseMoved(me: MouseEvent) {
-                ViewManager.cursorPoint = mapPanel.getAbsolutePoint(me.point)
-            }
-        })
-        mapPanel.addMouseListener(object : MouseAdapter() {
-            override fun mouseExited(me: MouseEvent) {
-                ViewManager.cursorPoint = null
-            }
-        })
     }
 
     override fun reload() {

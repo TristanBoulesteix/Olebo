@@ -9,10 +9,9 @@ import jdr.exia.view.frames.rpg.MasterFrame
 import jdr.exia.view.frames.rpg.MasterMenuBar
 import jdr.exia.view.frames.rpg.PlayerFrame
 import jdr.exia.view.frames.rpg.ViewFacade
-import jdr.exia.view.utils.getTokenFromPoint
+import jdr.exia.view.utils.getTokenFromPosition
 import jdr.exia.view.utils.positionOf
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.awt.Point
 import java.awt.Rectangle
 
 /**
@@ -24,7 +23,7 @@ object ViewManager {
 
     private var selectedElements = mutableEmptyElements()
 
-    var cursorPoint: Point? = null
+    var cursorPosition: Position? = null
 
     /**
      * Get the list of all blueprints
@@ -76,17 +75,22 @@ object ViewManager {
     }
 
     /**
-     * Changes a token's position without dropping it (a moved token stays selected), intended for small steps
+     * Changes tokens position without dropping them (a moved token stays selected), intended for small steps
      */
-    fun moveToken(x: Int, y: Int) {
+    fun moveTokens(position: Position, origin: Position? = null) {
+        if (origin != null) {
+            selectElement(origin)
+        }
+
         if (selectedElements.isNotEmpty()) {
             if (selectedElements.size == 1) {
-                selectedElements.first().cmdPosition(selectedElements.first().positionOf(x, y), activeScene!!.commandManager)
+                selectedElements.first()
+                    .cmdPosition(selectedElements.first().positionOf(position), activeScene!!.commandManager)
             } else {
                 val newPosition = mutableListOf<Position>()
 
                 selectedElements.forEach {
-                    newPosition += it.positionOf(x, y)
+                    newPosition += it.positionOf(position)
                 }
 
                 activeScene.callManager(newPosition, selectedElements, Element::cmdPosition)
@@ -114,8 +118,8 @@ object ViewManager {
     /**
      * Checks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
      */
-    fun selectElement(x: Int, y: Int) {
-        selectedElements = activeScene!!.elements.getTokenFromPoint(Point(x, y))?.toElements()?.toMutableList()
+    fun selectElement(position: Position) {
+        selectedElements = activeScene!!.elements.getTokenFromPosition(position)?.toElements()?.toMutableList()
             ?: mutableEmptyElements()
         if (selectedElements.isNotEmpty()) {
             ViewFacade.setSelectedToken(selectedElements[0])
@@ -124,6 +128,9 @@ object ViewManager {
             unSelectElements()
         }
     }
+
+    fun positionHasElement(position: Position) =
+        activeScene!!.elements.getTokenFromPosition(position)?.toElements() != null
 
     fun selectElements(rec: Rectangle) {
         val selectedElements = mutableEmptyElements()
@@ -190,7 +197,7 @@ object ViewManager {
 
     fun toggleVisibility(tokens: Elements, visibility: Boolean? = null) {
         activeScene.callManager(
-            visibility ?: if (tokens.size == 1) !tokens[0].isVisible else true,
+            visibility ?: if (tokens.size == 1) !tokens.first().isVisible else true,
             tokens,
             Element::cmdVisiblity
         )
