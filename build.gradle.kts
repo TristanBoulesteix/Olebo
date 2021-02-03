@@ -1,6 +1,7 @@
 plugins {
-    kotlin("jvm") version "1.4.21"
-    kotlin("plugin.serialization") version "1.4.10" apply false
+    val kotlinVersion : String by System.getProperties()
+    kotlin("jvm") version kotlinVersion
+    kotlin("plugin.serialization") version kotlinVersion apply false
 }
 
 repositories {
