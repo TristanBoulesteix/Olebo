@@ -80,24 +80,33 @@ object ViewManager {
     /**
      * Changes tokens position without dropping them (a moved token stays selected), intended for small steps
      */
-    fun moveTokens(position: Position, origin: Position? = null) {
-        if (origin != null) {
-            selectElement(origin)
+    fun moveTokens(position: Position, originPosition: Position? = null) {
+        val origin = originPosition?.let { pos ->
+            selectedElements.find { it.hitBox in pos } ?: selectElement(pos).let { selectedElements.firstOrNull() }
         }
 
-        var newPosition = position
+        /**
+         * Return a new [Position] inside the bourders of the map
+         */
+        fun Position.checkBound(): Position {
+            var newPosition = this
 
-        if (position.x < 0) {
-            newPosition = newPosition.copy(x = 0)
-        } else if (newPosition.x > ABSOLUTE_WIDTH) {
-            newPosition = newPosition.copy(x = ABSOLUTE_WIDTH)
+            if (position.x < 0) {
+                newPosition = newPosition.copy(x = 0)
+            } else if (newPosition.x > ABSOLUTE_WIDTH) {
+                newPosition = newPosition.copy(x = ABSOLUTE_WIDTH)
+            }
+
+            if (newPosition.y < 0) {
+                newPosition = newPosition.copy(y = 0)
+            } else if (newPosition.y > ABSOLUTE_HEIGHT) {
+                newPosition = newPosition.copy(y = ABSOLUTE_HEIGHT)
+            }
+
+            return newPosition
         }
 
-        if (newPosition.y < 0) {
-            newPosition = newPosition.copy(y = 0)
-        } else if (newPosition.y > ABSOLUTE_HEIGHT) {
-            newPosition = newPosition.copy(y = ABSOLUTE_HEIGHT)
-        }
+        val newPosition = position.checkBound()
 
         if (selectedElements.isNotEmpty()) {
             if (selectedElements.size == 1) {
@@ -106,8 +115,14 @@ object ViewManager {
             } else {
                 val newPositions = mutableListOf<Position>()
 
-                selectedElements.forEach {
-                    newPositions += it.positionOf(newPosition)
+                val originElement = (selectedElements.find { it === origin } ?: selectedElements.first())
+
+                newPositions += originElement.positionOf(newPosition)
+
+                val p = newPosition - originElement.position
+
+                selectedElements.filterNot { it === originElement }.forEach {
+                    newPositions += it.positionOf((it.position + p).checkBound())
                 }
 
                 activeScene.callManager(newPositions, selectedElements, Element::cmdPosition)
