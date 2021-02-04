@@ -13,6 +13,7 @@ import jdr.exia.view.utils.event.addMouseMovedListener
 import jdr.exia.view.utils.event.addMouseReleasedListener
 import jdr.exia.viewModel.ViewManager
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.awt.*
@@ -37,6 +38,9 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
     var cursorColor: Color
 
     var borderCursorColor: Color
+
+    var repaintJob: Job? = null
+        private set
 
     init {
         this.layout = GridBagLayout()
@@ -127,7 +131,7 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
      * init only for [PlayerFrame]
      */
     private fun initializeForPlayer() {
-        GlobalScope.launch {
+        repaintJob = GlobalScope.launch {
             while (true) {
                 if (Settings.cursorEnabled)
                     repaint()
@@ -137,19 +141,19 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
     }
 
     private fun relativeX(absoluteX: Int): Int { //translates an X coordinate in 1600:900px to proportional coords according to this window's size
-        return (absoluteX * this.width) / 1600
+        return (absoluteX * this.width) / ViewManager.ABSOLUTE_WIDTH
     }
 
     private fun relativeY(absoluteY: Int): Int { //translates a y coordinate in 1600:900px to proportional coords according to this window's size
-        return (absoluteY * this.height) / 900
+        return (absoluteY * this.height) / ViewManager.ABSOLUTE_HEIGHT
     }
 
     private fun absoluteX(relativeX: Int): Int { // Translates an X coordinate from this window into a 1600:900 X coord
-        return (((relativeX.toFloat() / this.width.toFloat())) * 1600).toInt()
+        return (((relativeX.toFloat() / this.width.toFloat())) * ViewManager.ABSOLUTE_WIDTH).toInt()
     }
 
     private fun absoluteY(relativeY: Int): Int { // Translates an Y coordinate from this window into a 1600:900 Y coord
-        return (((relativeY.toFloat() / this.height.toFloat())) * 900).toInt()
+        return (((relativeY.toFloat() / this.height.toFloat())) * ViewManager.ABSOLUTE_HEIGHT).toInt()
     }
 
     fun updateTokens(tokens: Elements) { //Gets the current token display up to date

@@ -6,11 +6,11 @@ import jdr.exia.model.utils.Elements
 import jdr.exia.model.utils.emptyElements
 import jdr.exia.view.frames.Reloadable
 import jdr.exia.view.utils.DIMENSION_FRAME
+import jdr.exia.view.utils.event.addKeyPressedListener
 import jdr.exia.view.utils.screens
 import java.awt.Color
 import java.awt.Window
 import java.awt.event.KeyEvent
-import java.awt.event.KeyListener
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import java.io.File
@@ -20,7 +20,7 @@ import javax.swing.JDialog
 /**
  * PlayerFrame is the Frame the Players can see, it shares its content with MasterFrame
  */
-class PlayerFrame private constructor() : JDialog(null as Window?), GameFrame, KeyListener {
+class PlayerFrame private constructor() : JDialog(null as Window?), GameFrame {
     companion object : Reloadable {
         private var playerFrameInstance: PlayerFrame? = null
 
@@ -100,12 +100,17 @@ class PlayerFrame private constructor() : JDialog(null as Window?), GameFrame, K
 
     init {
         this.contentPane = mapPanel
-        this.addKeyListener(this)
         this.defaultCloseOperation = DO_NOTHING_ON_CLOSE
         this.addWindowListener(object : WindowAdapter() {
             override fun windowClosing(e: WindowEvent) =
                 Companion.hide().also { MasterMenuBar.togglePlayerFrameMenuItem?.isSelected = false }
         })
+        this.addKeyPressedListener {
+            if (it.keyCode == KeyEvent.VK_ESCAPE) {
+                Companion.hide()
+                MasterMenuBar.togglePlayerFrameMenuItem?.isSelected = false
+            }
+        }
     }
 
     override fun reload() = repaint()
@@ -120,14 +125,8 @@ class PlayerFrame private constructor() : JDialog(null as Window?), GameFrame, K
         mapPanel.backGroundImage = ImageIO.read(File(imageName))
     }
 
-    override fun keyTyped(p0: KeyEvent) = Unit
-
-    override fun keyPressed(p0: KeyEvent) {
-        if (p0.keyCode == KeyEvent.VK_ESCAPE) {
-            Companion.hide()
-            MasterMenuBar.togglePlayerFrameMenuItem?.isSelected = false
-        }
+    override fun dispose() {
+        this.mapPanel.repaintJob?.cancel()
+        super.dispose()
     }
-
-    override fun keyReleased(p0: KeyEvent) = Unit
 }

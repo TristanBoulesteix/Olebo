@@ -75,6 +75,9 @@ inline fun <T : Container> T.applyAndAppendTo(
 private val Dimension.area
     inline get() = width * height
 
+/**
+ * Compare area of dimensions
+ */
 operator fun Dimension.compareTo(dimension: Dimension) = this.area.compareTo(dimension.area)
 
 /**

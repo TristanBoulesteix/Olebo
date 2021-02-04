@@ -18,6 +18,9 @@ import java.awt.Rectangle
  * Manage MasterFrame and PlayerFrame
  */
 object ViewManager {
+    const val ABSOLUTE_WIDTH = 1600
+    const val ABSOLUTE_HEIGHT = 900
+
     private var activeAct: Act? = null
     private var activeScene: Scene? = null
 
@@ -82,18 +85,32 @@ object ViewManager {
             selectElement(origin)
         }
 
+        var newPosition = position
+
+        if (position.x < 0) {
+            newPosition = newPosition.copy(x = 0)
+        } else if (newPosition.x > ABSOLUTE_WIDTH) {
+            newPosition = newPosition.copy(x = ABSOLUTE_WIDTH)
+        }
+
+        if (newPosition.y < 0) {
+            newPosition = newPosition.copy(y = 0)
+        } else if (newPosition.y > ABSOLUTE_HEIGHT) {
+            newPosition = newPosition.copy(y = ABSOLUTE_HEIGHT)
+        }
+
         if (selectedElements.isNotEmpty()) {
             if (selectedElements.size == 1) {
                 selectedElements.first()
-                    .cmdPosition(selectedElements.first().positionOf(position), activeScene!!.commandManager)
+                    .cmdPosition(selectedElements.first().positionOf(newPosition), activeScene!!.commandManager)
             } else {
-                val newPosition = mutableListOf<Position>()
+                val newPositions = mutableListOf<Position>()
 
                 selectedElements.forEach {
-                    newPosition += it.positionOf(position)
+                    newPositions += it.positionOf(newPosition)
                 }
 
-                activeScene.callManager(newPosition, selectedElements, Element::cmdPosition)
+                activeScene.callManager(newPositions, selectedElements, Element::cmdPosition)
             }
             repaint()
         }
