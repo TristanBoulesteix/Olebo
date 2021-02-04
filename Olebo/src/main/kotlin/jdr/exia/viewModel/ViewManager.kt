@@ -119,10 +119,10 @@ object ViewManager {
 
                 newPositions += originElement.positionOf(newPosition)
 
-                val p = newPosition - originElement.position
+                val diffPosition = newPosition - originElement.position
 
                 selectedElements.filterNot { it === originElement }.forEach {
-                    newPositions += it.positionOf((it.position + p).checkBound())
+                    newPositions += it.positionOf((it.position + diffPosition).checkBound())
                 }
 
                 activeScene.callManager(newPositions, selectedElements, Element::cmdPosition)
