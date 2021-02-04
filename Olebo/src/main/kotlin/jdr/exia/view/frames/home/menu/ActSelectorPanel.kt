@@ -1,4 +1,4 @@
-package jdr.exia.view.frames.home
+package jdr.exia.view.frames.home.menu
 
 import jdr.exia.localization.STR_DOUBLE_CLICK_OPEN_ACT
 import jdr.exia.localization.Strings
@@ -23,8 +23,7 @@ class ActSelectorPanel : SelectorPanel() {
     /**
      * This panel display an Act
      */
-    @Suppress("ProtectedInFinal")
-    protected class ActPanel(id: Int, name: String) : ItemPanel(id, name) {
+    private class ActPanel(id: Int, name: String) : ItemPanel(id, name) {
         init {
             listOf(nameLabel, namePanel).forEach {
                 it.addDoubleClickListener { HomeManager.launchAct(id) }
