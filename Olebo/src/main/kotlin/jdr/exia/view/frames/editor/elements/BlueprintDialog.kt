@@ -7,7 +7,7 @@ import jdr.exia.view.utils.components.templates.JDialogTemplate
 import jdr.exia.view.utils.event.addClickListener
 import jdr.exia.view.utils.gridBagConstraintsOf
 import jdr.exia.viewModel.BlueprintManager
-import jdr.exia.viewModel.pattern.observer.Action
+import jdr.exia.viewModel.observer.Action
 import java.awt.BorderLayout
 import java.awt.Font
 import java.awt.GridBagConstraints
@@ -57,8 +57,8 @@ class BlueprintDialog : JDialogTemplate(Strings[STR_OBJECT_LIST]) {
 
     override fun update(data: Action) {
         when (data) {
-            Action.REFRESH -> this.panel.refresh()
-            Action.DISPOSE -> this.dispose()
+            Action.Refresh -> this.panel.reload()
+            Action.Dispose -> this.dispose()
         }
     }
 }

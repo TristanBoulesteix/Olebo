@@ -3,13 +3,14 @@ package jdr.exia.view.frames.home
 import jdr.exia.OLEBO_VERSION
 import jdr.exia.localization.STR_VERSION
 import jdr.exia.localization.Strings
-import jdr.exia.view.frames.Reloadable
+import jdr.exia.view.frames.home.panels.ActsPanel
+import jdr.exia.view.frames.home.panels.HomePanel
 import jdr.exia.view.frames.rpg.MasterFrame
 import jdr.exia.view.utils.components.FileMenu
 import jdr.exia.view.utils.components.templates.JFrameTemplate
 import jdr.exia.viewModel.HomeManager
-import jdr.exia.viewModel.pattern.observer.Action
-import jdr.exia.viewModel.pattern.observer.Observable
+import jdr.exia.viewModel.observer.Action
+import jdr.exia.viewModel.observer.Observable
 import javax.swing.JMenuBar
 
 /**
@@ -19,6 +20,12 @@ import javax.swing.JMenuBar
  */
 class HomeFrame : JFrameTemplate("Olebo - ${Strings[STR_VERSION]} $OLEBO_VERSION") {
     override val observable: Observable = HomeManager
+
+    var contentPane: HomePanel
+        get() = this.getContentPane() as HomePanel
+        set(value) {
+            this.setContentPane(value)
+        }
 
     init {
         HomeManager.observer = this
@@ -30,14 +37,21 @@ class HomeFrame : JFrameTemplate("Olebo - ${Strings[STR_VERSION]} $OLEBO_VERSION
             this.add(FileMenu())
         }
 
-        this.contentPane = HomePanel()
+        this.contentPane = ActsPanel(observable)
     }
 
     override fun update(data: Action) {
         when (data) {
-            Action.DISPOSE -> this.dispose()
-            Action.REFRESH -> (this.contentPane as? Reloadable)?.reload()
+            is Action.Dispose -> this.dispose()
+            is Action.Refresh -> this.contentPane.reload()
+            is Action.Switch -> switchPanel(data.panel)
         }
+    }
+
+    private fun switchPanel(panel: HomePanel) {
+        this.contentPane = panel
+        this.revalidate()
+        this.pack()
     }
 
     override fun dispose() {

@@ -15,7 +15,7 @@ import javax.swing.text.PlainDocument
  * Template for panel which display an item.
  */
 @Suppress("LeakingThis")
-abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
+open class ItemPanel(protected val id: Int, name: String) : JPanel() {
     companion object {
         val DIMENSION_SQUARE = Dimension(65, 65)
     }
@@ -24,7 +24,6 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
         this.isEditable = false
         this.isOpaque = false
         this.font = Font("Tahoma", Font.BOLD, 18)
-        //this.border = BorderFactory.createEmptyBorder(0, 10, 0, 0)
         this.border = null
         this.background = Color(0, 0, 0, 0)
         this.bounds = Rectangle(0, 10, 0, 0)
@@ -50,7 +49,7 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
     /**
      * Label that act like a button.
      */
-    protected inner class SquareLabel(icon: ImageIcon, action: (Int) -> Unit) :
+    inner class SquareLabel(icon: ImageIcon, action: (Int) -> Unit) :
         JLabel(icon, CENTER) {
 
         private val listener = ClickListener { action(id) }

@@ -35,6 +35,7 @@ class StringsBundle : Strings() {
         STR_NAME to "nom",
         STR_CONFIRM to "confirm",
         ST_ACT_ALREADY_EXISTS to "Sorry, a scenario with this name already exists or the data entered are invalid.",
+        ST_ACT_WITHOUT_SCENE to "A scenario need to contains at least one scene.",
         STR_NEW_SCENE to "new scene",
         STR_CHANGE_SCENE to "modify scene",
         STR_NAME_OF_SCENE to "name of the scene:",
@@ -143,6 +144,7 @@ class StringsBundle : Strings() {
         STR_EXIT to "exit",
         STR_UPDATE to "update",
         STR_RESET to "reset",
+        ST_CANCEL_WILL_ERASE_CHANGES to "All changes will be canceled. Do you wish to continue?",
     )
 }
 
@@ -179,6 +181,7 @@ class StringsBundle_fr : Strings() {
         STR_NAME to "nom",
         STR_CONFIRM to "valider",
         ST_ACT_ALREADY_EXISTS to "Désolé, un scénario avec le même nom existe déjà ou les données du scénario sont invalides !",
+        ST_ACT_WITHOUT_SCENE to "Un scénario doit contenir au moins une scène !",
         STR_NEW_SCENE to "nouvelle scène",
         STR_CHANGE_SCENE to "modification de la scène",
         STR_NAME_OF_SCENE to "nom de la scène :",
@@ -287,5 +290,6 @@ class StringsBundle_fr : Strings() {
         STR_EXIT to "quitter",
         STR_UPDATE to "mettre à jour",
         STR_RESET to "réinitialiser",
+        ST_CANCEL_WILL_ERASE_CHANGES to "Tous les changements vont être effacé. Voulez-vous continuer ?",
     )
 }

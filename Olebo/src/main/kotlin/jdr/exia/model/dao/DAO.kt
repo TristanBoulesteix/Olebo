@@ -90,7 +90,7 @@ object DAO {
         val reset = JButton(Strings[STR_RESET]).apply {
             this.addActionListener {
                 windowAncestor?.dispose()
-                showConfirmMessage(windowAncestor, Strings[ST_WARNING_CONFIG_RESET], Strings[STR_RESET]) {
+                showConfirmMessage(windowAncestor, Strings[ST_WARNING_CONFIG_RESET], Strings[STR_RESET], confirm = true) {
                     reset()
                     runJar(jarPath)
                     exitProcess(0)

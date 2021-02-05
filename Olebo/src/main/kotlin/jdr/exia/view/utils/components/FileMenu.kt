@@ -56,7 +56,8 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
                 showConfirmMessage(
                     this@FileMenu.windowAncestor,
                     Strings[ST_WARNING_CONFIG_RESET],
-                    Strings[STR_IMPORT_DATA]
+                    Strings[STR_IMPORT_DATA],
+                    confirm = true
                 ) {
                     JFileChooser().apply {
                         this.dialogTitle = Strings[STR_IMPORT_DATA]

@@ -1,0 +1,123 @@
+package jdr.exia.view.frames.home.panels
+
+import jdr.exia.localization.*
+import jdr.exia.model.act.Act
+import jdr.exia.model.dao.getIcon
+import jdr.exia.view.utils.*
+import jdr.exia.view.utils.components.templates.ItemPanel
+import jdr.exia.view.utils.components.templates.PlaceholderTextField
+import jdr.exia.view.utils.components.templates.SelectorPanel
+import jdr.exia.viewModel.ActCreatorManager
+import jdr.exia.viewModel.HomeManager
+import jdr.exia.viewModel.getArrayOfPairs
+import java.awt.*
+import javax.swing.BorderFactory
+import javax.swing.JButton
+import javax.swing.JPanel
+
+class ActEditorPanel(homeManager: HomeManager, act: Act? = null) : HomePanel() {
+    private val manager = ActCreatorManager()
+
+    private val builder = SelectorPanel.PairArrayBuilder { manager.tempScenes.getArrayOfPairs() }
+
+    private val selectorPanel: SceneSelectorPanel
+
+    private val nameField = PlaceholderTextField(Strings[STR_NAME])
+
+    init {
+        this.layout = BorderLayout()
+
+        JPanel().applyAndAppendTo(this, BorderLayout.NORTH) {
+            this.border = BorderFactory.createEmptyBorder(15, 10, 15, 10)
+            this.layout = GridBagLayout()
+
+            this.add(nameField, gridBagConstraintsOf(weightx = 1.0, fill = GridBagConstraints.BOTH))
+
+            this.background = BACKGROUND_COLOR_ORANGE
+        }
+
+        act?.let {
+            this.nameField.text = it.name
+            this.manager.updateAct(it.scenes, it.id.value)
+        }
+
+        selectorPanel = SceneSelectorPanel(manager)
+
+        this.add(selectorPanel, BorderLayout.CENTER)
+
+        JPanel().applyAndAppendTo(this, BorderLayout.SOUTH) {
+            this.border = BorderFactory.createEmptyBorder(10, 20, 10, 20)
+            this.layout = GridLayout(1,2,10, 15)
+            this.background = BACKGROUND_COLOR_LIGHT_BLUE
+            JButton(Strings[STR_CONFIRM]).applyAndAppendTo(this) {
+                this.addActionListener {
+                    if (
+                        nameField.text.isNotEmpty()
+                        && manager.tempScenes.isNotEmpty()
+                        && manager.saveAct(nameField.text)
+                    ) {
+                        homeManager.goHome()
+                    } else {
+                        showPopup(
+                            if (manager.tempScenes.isEmpty()) Strings[ST_ACT_WITHOUT_SCENE] else Strings[ST_ACT_ALREADY_EXISTS],
+                            windowAncestor
+                        )
+                    }
+                }
+                this.border = BORDER_BUTTONS
+            }
+
+            JButton(Strings[STR_CANCEL]).applyAndAppendTo(this) {
+                this.addActionListener {
+                    showConfirmMessage(windowAncestor, Strings[ST_CANCEL_WILL_ERASE_CHANGES], Strings[STR_WARNING]) {
+                        homeManager.goHome()
+                    }
+                }
+                this.border = BORDER_BUTTONS
+            }
+        }
+    }
+
+    override fun reload() = this.selectorPanel.reload()
+
+    /**
+     * This panel contains a JScrollpane which show the list of scenes for the current act in creation
+     */
+    inner class SceneSelectorPanel(private val controller: ActCreatorManager) : SelectorPanel(builder) {
+        override fun builder(id: Int, name: String): ItemPanel {
+            return ScenePanel(id, name)
+        }
+
+        init {
+            JPanel().applyAndAppendTo(this, BorderLayout.NORTH) {
+                this.layout = GridBagLayout()
+
+                ItemPanel(0, Strings[STR_SCENES]).applyAndAppendTo(
+                    this,
+                    gridBagConstraintsOf(fill = GridBagConstraints.BOTH, weightx = 1.0)
+                ) {
+                    this.border = BorderFactory.createMatteBorder(2, 2, 0, 2, Color.BLACK)
+                    this.add(
+                        SquareLabel(
+                            getIcon("create_icon", controller.javaClass),
+                            controller::createNewScene
+                        )
+                    )
+
+                }
+            }
+            this.reload()
+        }
+
+        /**
+         * Display a scene and its options
+         */
+        private inner class ScenePanel(id: Int, name: String) : ItemPanel(id, name) {
+            init {
+                this.add(SquareLabel(getIcon("edit_icon", HomeManager.javaClass), controller::updateNewScene))
+
+                this.add(SquareLabel(getIcon("delete_icon", HomeManager.javaClass), controller::deleteNewScene))
+            }
+        }
+    }
+}

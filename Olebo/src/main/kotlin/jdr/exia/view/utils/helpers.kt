@@ -28,10 +28,11 @@ inline fun showConfirmMessage(
     parent: Component? = null,
     message: String,
     title: String,
+    confirm: Boolean = false,
     crossinline okAction: () -> Unit
 ) {
     val ok = JButton(Strings[STR_CONFIRM]).apply {
-        this.isEnabled = false
+        this.isEnabled = !confirm
         this.addActionListener {
             windowAncestor?.dispose()
             okAction()
@@ -46,11 +47,13 @@ inline fun showConfirmMessage(
 
     JOptionPane.showOptionDialog(
         parent,
-        JCheckBox(message).apply {
-            this.addItemListener {
-                ok.isEnabled = it.stateChange == ItemEvent.SELECTED
+        if (confirm)
+            JCheckBox(message).apply {
+                this.addItemListener {
+                    ok.isEnabled = it.stateChange == ItemEvent.SELECTED
+                }
             }
-        },
+        else message,
         title,
         JOptionPane.NO_OPTION,
         JOptionPane.WARNING_MESSAGE,

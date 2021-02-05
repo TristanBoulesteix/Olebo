@@ -1,4 +1,4 @@
-package jdr.exia.viewModel.pattern.observer
+package jdr.exia.viewModel.observer
 
 /**
  * Observable class

@@ -9,9 +9,9 @@ import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
 import jdr.exia.view.frames.editor.elements.BlueprintEditorDialog
 import jdr.exia.view.utils.showPopup
-import jdr.exia.viewModel.pattern.observer.Action
-import jdr.exia.viewModel.pattern.observer.Observable
-import jdr.exia.viewModel.pattern.observer.Observer
+import jdr.exia.viewModel.observer.Action
+import jdr.exia.viewModel.observer.Observable
+import jdr.exia.viewModel.observer.Observer
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Component
 import java.io.File
@@ -26,7 +26,7 @@ class BlueprintManager : Observable {
     var type = Type.OBJECT
         set(value) {
             field = value
-            notifyObserver(Action.REFRESH)
+            notifyObserver(Action.Refresh)
         }
 
     override var observer: Observer? = null
@@ -53,7 +53,7 @@ class BlueprintManager : Observable {
             }
         }
 
-        notifyObserver(Action.REFRESH)
+        notifyObserver(Action.Refresh)
     }
 
     fun deleteElement(id: Int) {
@@ -61,7 +61,7 @@ class BlueprintManager : Observable {
             Blueprint[id].delete()
         }
 
-        notifyObserver(Action.REFRESH)
+        notifyObserver(Action.Refresh)
     }
 
     fun updateIcon(id: Int) {
@@ -85,7 +85,7 @@ class BlueprintManager : Observable {
             }
         }
 
-        notifyObserver(Action.REFRESH)
+        notifyObserver(Action.Refresh)
     }
 
     fun saveMana(id: Int, text: String) {
@@ -115,7 +115,7 @@ class BlueprintManager : Observable {
             }
         }
 
-        notifyObserver(Action.REFRESH)
+        notifyObserver(Action.Refresh)
     }
 }
 

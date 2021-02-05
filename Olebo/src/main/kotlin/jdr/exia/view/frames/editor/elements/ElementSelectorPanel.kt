@@ -21,11 +21,9 @@ import javax.swing.JPanel
  *
  * @param controller
  */
-class ElementSelectorPanel(private val controller: BlueprintManager?) :
-    SelectorPanel() {
-    override val pairs: Array<Pair<String, String>>
-        get() = controller?.elements?.map { Pair(it.id.value.toString(), it.name) }?.toTypedArray() ?: arrayOf()
-
+class ElementSelectorPanel(private val controller: BlueprintManager?) : SelectorPanel(PairArrayBuilder {
+    controller?.elements?.map { Pair(it.id.value.toString(), it.name) }?.toTypedArray() ?: arrayOf()
+}) {
     override fun builder(id: Int, name: String): ItemPanel {
         return if (controller?.type != Type.OBJECT) CharacterPanel(id, name) else ObjectPanel(id, name)
     }
@@ -51,14 +49,14 @@ class ElementSelectorPanel(private val controller: BlueprintManager?) :
             this.add(titleContentPanel, cTitleItem)
             this.revalidate()
         }, BorderLayout.NORTH)
-        this.refresh()
+        this.reload()
     }
 
-    override fun refresh() {
+    override fun reload() {
         titlePanel.remove(titleContentPanel)
         titleContentPanel = buildTitleItemPanel(controller!!)
         titlePanel.add(titleContentPanel, cTitleItem)
-        super.refresh()
+        super.reload()
     }
 
     /**

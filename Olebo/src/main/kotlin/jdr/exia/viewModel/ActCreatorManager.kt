@@ -9,9 +9,9 @@ import jdr.exia.model.dao.saveImg
 import jdr.exia.utils.forElse
 import jdr.exia.view.frames.editor.acts.SceneEditorDialog
 import jdr.exia.view.utils.showPopup
-import jdr.exia.viewModel.pattern.observer.Action
-import jdr.exia.viewModel.pattern.observer.Observable
-import jdr.exia.viewModel.pattern.observer.Observer
+import jdr.exia.viewModel.observer.Action
+import jdr.exia.viewModel.observer.Observable
+import jdr.exia.viewModel.observer.Observer
 import org.jetbrains.exposed.sql.transactions.transaction
 
 /**
@@ -20,7 +20,11 @@ import org.jetbrains.exposed.sql.transactions.transaction
 class ActCreatorManager : Observable {
     val tempScenes = mutableListOf<SceneData>()
 
-    override var observer: Observer? = null
+    override var observer: Observer?
+        get() = HomeManager.observer
+        set(value) {
+            HomeManager.observer = value
+        }
 
     private var idAct = 0
 
@@ -101,7 +105,7 @@ class ActCreatorManager : Observable {
                 tempScenes += it
             }
         }
-        notifyObserver(Action.REFRESH)
+        notifyObserver(Action.Refresh)
     }
 
     /**
@@ -118,7 +122,7 @@ class ActCreatorManager : Observable {
                 tempScenes[index] = it
             }
         }
-        notifyObserver(Action.REFRESH)
+        notifyObserver(Action.Refresh)
     }
 
     /**
@@ -126,25 +130,25 @@ class ActCreatorManager : Observable {
      */
     fun deleteNewScene(index: Int) {
         tempScenes.removeAt(index)
-        notifyObserver(Action.REFRESH)
+        notifyObserver(Action.Refresh)
     }
 
     /**
      * Get act datas stored into the database and save it into variables.
      */
-    fun updateAct(scenes: MutableList<Scene>, id: Int) {
+    fun updateAct(scenes: MutableList<Scene>, id: Int): MutableList<SceneData> {
         tempScenes += scenes.map {
             SceneData(it.name, it.background, it.id.value)
-        }.toMutableList()
+        }
         idAct = id
-        notifyObserver(Action.REFRESH)
+        return tempScenes
     }
 }
 
 /**
  * Extension function to convert a MutableList<HashMap<Field, String>> to Array<Pair<String, String>>.
  */
-fun MutableList<SceneData>.getArrayOfPairs(): Array<Pair<String, String>> {
+fun MutableList<SceneData>.getArrayOfPairs(): ArrayOfPairs {
     var i = -1
 
     return this.map {

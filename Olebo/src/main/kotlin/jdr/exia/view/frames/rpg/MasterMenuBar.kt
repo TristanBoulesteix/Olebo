@@ -203,7 +203,7 @@ object MasterMenuBar : JMenuBar() {
 
             JMenuItem(Strings[STR_CLEAR_BOARD]).applyAndAppendTo(this) {
                 addActionListener {
-                    showConfirmMessage(this, Strings[ST_CONFIRM_CLEAR_BOARD], Strings[STR_DELETION]) {
+                    showConfirmMessage(this, Strings[ST_CONFIRM_CLEAR_BOARD], Strings[STR_DELETION], confirm = true) {
                         transaction {
                             for (token in Scene[act!!.sceneId].elements) {
                                 ViewManager.removeElements(token.toElements())
