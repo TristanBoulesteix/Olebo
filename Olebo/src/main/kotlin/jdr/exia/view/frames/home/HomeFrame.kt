@@ -52,7 +52,6 @@ class HomeFrame : JFrameTemplate("Olebo - ${Strings[STR_VERSION]} $OLEBO_VERSION
     private fun switchPanel(panel: HomePanel) {
         this.contentPane = panel
         this.revalidate()
-        this.pack()
     }
 
     override fun dispose() {
