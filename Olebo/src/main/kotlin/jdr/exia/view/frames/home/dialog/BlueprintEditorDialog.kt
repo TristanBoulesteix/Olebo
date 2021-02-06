@@ -1,4 +1,4 @@
-package jdr.exia.view.frames.editor.elements
+package jdr.exia.view.frames.home.dialog
 
 import jdr.exia.localization.*
 import jdr.exia.view.utils.applyAndAppendTo

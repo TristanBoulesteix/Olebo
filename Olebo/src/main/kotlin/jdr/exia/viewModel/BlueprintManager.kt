@@ -7,7 +7,7 @@ import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.saveImg
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
-import jdr.exia.view.frames.editor.elements.BlueprintEditorDialog
+import jdr.exia.view.frames.home.dialog.BlueprintEditorDialog
 import jdr.exia.view.utils.showPopup
 import jdr.exia.viewModel.observer.Action
 import jdr.exia.viewModel.observer.Observable

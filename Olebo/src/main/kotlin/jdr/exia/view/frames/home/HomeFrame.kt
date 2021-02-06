@@ -19,11 +19,11 @@ import javax.swing.JMenuBar
  * This frame will send the selected act to the Games Views
  */
 class HomeFrame : JFrameTemplate("Olebo - ${Strings[STR_VERSION]} $OLEBO_VERSION") {
-    val manager = HomeManager()
+    private val manager = HomeManager()
 
     override val observable: Observable = manager
 
-    var contentPane: HomePanel
+    private var contentPane: HomePanel
         get() = this.getContentPane() as HomePanel
         set(value) = this.setContentPane(value)
 
