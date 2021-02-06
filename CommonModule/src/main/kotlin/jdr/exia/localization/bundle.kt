@@ -146,6 +146,7 @@ class StringsBundle : Strings() {
         STR_RESET to "reset",
         ST_CANCEL_WILL_ERASE_CHANGES to "All changes will be canceled. Do you wish to continue?",
         STR_BACK to "go back",
+        STR_LOADING to "loading",
     )
 }
 
@@ -293,5 +294,6 @@ class StringsBundle_fr : Strings() {
         STR_RESET to "réinitialiser",
         ST_CANCEL_WILL_ERASE_CHANGES to "Tous les changements vont être effacé. Voulez-vous continuer ?",
         STR_BACK to "retour",
+        STR_LOADING to "chargement",
     )
 }

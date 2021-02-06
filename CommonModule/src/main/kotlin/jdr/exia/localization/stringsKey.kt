@@ -114,6 +114,7 @@ const val STR_EXIT = "exit"
 const val STR_UPDATE = "update"
 const val STR_RESET = "reset"
 const val STR_BACK = "back"
+const val STR_LOADING = "loading"
 
 // -- Sentences
 

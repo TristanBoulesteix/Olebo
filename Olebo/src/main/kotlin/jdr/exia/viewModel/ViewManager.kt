@@ -11,6 +11,7 @@ import jdr.exia.view.frames.rpg.PlayerFrame
 import jdr.exia.view.frames.rpg.ViewFacade
 import jdr.exia.view.utils.getTokenFromPosition
 import jdr.exia.view.utils.positionOf
+import kotlinx.coroutines.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
 
@@ -34,13 +35,18 @@ object ViewManager {
     val items
         get() = Blueprint.all()
 
-    fun initializeAct(act: Act) {
+    suspend fun initializeAct(idAct: Int) = coroutineScope {
+        val act = transaction { Act[idAct] }
+        yield()
         activeAct = act
-        MasterMenuBar.act = act
-        MasterMenuBar.initialize()
-        loadCurrentScene()
-        PlayerFrame.toggle(Settings.playerFrameOpenedByDefault)
-        MasterFrame.requestFocus()
+        withContext(Dispatchers.Main) {
+            MasterMenuBar.act = act
+            MasterMenuBar.initialize()
+            yield()
+            loadCurrentScene()
+            yield()
+            PlayerFrame.toggle(Settings.playerFrameOpenedByDefault)
+        }
     }
 
     fun removeSelectedElements() = removeElements(selectedElements)
