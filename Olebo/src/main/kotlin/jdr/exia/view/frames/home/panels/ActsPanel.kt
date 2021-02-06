@@ -13,7 +13,6 @@ import jdr.exia.view.utils.components.templates.SelectorPanel
 import jdr.exia.view.utils.event.addDoubleClickListener
 import jdr.exia.view.utils.gridBagConstraintsOf
 import jdr.exia.viewModel.HomeManager
-import jdr.exia.viewModel.observer.Observable
 import java.awt.BorderLayout
 import java.awt.Color
 import java.awt.GridBagLayout
@@ -21,7 +20,7 @@ import javax.swing.BorderFactory
 import javax.swing.JButton
 import javax.swing.JPanel
 
-class ActsPanel(observable: Observable) : HomePanel() {
+class ActsPanel(private val homeManager: HomeManager) : HomePanel() {
     private val selectorPanel = ActSelectorPanel()
 
     init {
@@ -34,7 +33,7 @@ class ActsPanel(observable: Observable) : HomePanel() {
             val elementButton = JButton(Strings[STR_ELEMENTS]).apply {
                 this.border = BORDER_BUTTONS
                 this.addActionListener {
-                    HomeManager.openObjectEditorFrame()
+                    homeManager.openObjectEditorFrame()
                 }
             }
 
@@ -43,7 +42,7 @@ class ActsPanel(observable: Observable) : HomePanel() {
             val actButton = JButton(Strings[STR_ADD_ACT]).apply {
                 this.border = BORDER_BUTTONS
                 this.addActionListener {
-                    HomeManager.openActCreatorFrame()
+                    homeManager.openActCreatorFrame()
                 }
             }
 
@@ -60,7 +59,7 @@ class ActsPanel(observable: Observable) : HomePanel() {
     /**
      * This panel's goals is to display all acts in the database
      */
-    private class ActSelectorPanel : SelectorPanel(PairArrayBuilder { DAO.getActsList() }) {
+    private inner class ActSelectorPanel : SelectorPanel(PairArrayBuilder { DAO.getActsList() }) {
         override fun builder(id: Int, name: String): ItemPanel {
             return ActPanel(id, name)
         }
@@ -68,17 +67,17 @@ class ActsPanel(observable: Observable) : HomePanel() {
         /**
          * This panel display an Act
          */
-        private class ActPanel(id: Int, name: String) : ItemPanel(id, name) {
+        private inner class ActPanel(id: Int, name: String) : ItemPanel(id, name) {
             init {
                 listOf(nameLabel, namePanel).forEach {
-                    it.addDoubleClickListener { HomeManager.launchAct(id) }
+                    it.addDoubleClickListener { homeManager.launchAct(id) }
                     it.toolTipText = Strings[STR_DOUBLE_CLICK_OPEN_ACT]
                 }
                 this.nameLabel.isEnabled = false
 
-                this.add(SquareLabel(getIcon("edit_icon", HomeManager.javaClass), HomeManager::updateAct))
+                this.add(SquareLabel(getIcon("edit_icon", homeManager.javaClass), homeManager::updateAct))
 
-                this.add(SquareLabel(getIcon("delete_icon", HomeManager.javaClass), HomeManager::deleteAct))
+                this.add(SquareLabel(getIcon("delete_icon", homeManager.javaClass), homeManager::deleteAct))
             }
         }
     }

@@ -2,15 +2,15 @@ package jdr.exia.viewModel
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.dao.DAO
-import jdr.exia.view.frames.editor.elements.BlueprintDialog
 import jdr.exia.view.frames.home.panels.ActEditorPanel
 import jdr.exia.view.frames.home.panels.ActsPanel
+import jdr.exia.view.frames.home.panels.BlueprintEditorPanel
 import jdr.exia.viewModel.observer.Action
 import jdr.exia.viewModel.observer.Observable
 import jdr.exia.viewModel.observer.Observer
 import org.jetbrains.exposed.sql.transactions.transaction
 
-object HomeManager : Observable {
+class HomeManager : Observable {
     override var observer: Observer? = null
 
     fun goHome() = notifyObserver(Action.Switch(ActsPanel(this)))
@@ -31,9 +31,7 @@ object HomeManager : Observable {
     /**
      * Show elements
      */
-    fun openObjectEditorFrame() {
-        BlueprintDialog().isVisible = true
-    }
+    fun openObjectEditorFrame() = notifyObserver(Action.Switch(BlueprintEditorPanel(this)))
 
     /**
      * Show JDialog to create a new act.
@@ -54,6 +52,6 @@ object HomeManager : Observable {
      */
     fun deleteAct(id: Int) {
         DAO.deleteEntity(DAO.getActWithId(id))
-        notifyObserver(Action.Refresh)
+        notifyObserver(Action.Reload)
     }
 }

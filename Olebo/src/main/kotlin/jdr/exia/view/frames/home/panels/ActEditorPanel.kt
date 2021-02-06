@@ -16,7 +16,7 @@ import javax.swing.JButton
 import javax.swing.JPanel
 
 class ActEditorPanel(homeManager: HomeManager, act: Act? = null) : HomePanel() {
-    private val manager = ActCreatorManager()
+    private val manager = ActCreatorManager(homeManager)
 
     private val builder = SelectorPanel.PairArrayBuilder { manager.tempScenes.getArrayOfPairs() }
 
@@ -41,7 +41,7 @@ class ActEditorPanel(homeManager: HomeManager, act: Act? = null) : HomePanel() {
             this.manager.updateAct(it.scenes, it.id.value)
         }
 
-        selectorPanel = SceneSelectorPanel(manager)
+        selectorPanel = SceneSelectorPanel()
 
         this.add(selectorPanel, BorderLayout.CENTER)
 
@@ -83,7 +83,7 @@ class ActEditorPanel(homeManager: HomeManager, act: Act? = null) : HomePanel() {
     /**
      * This panel contains a JScrollpane which show the list of scenes for the current act in creation
      */
-    inner class SceneSelectorPanel(private val controller: ActCreatorManager) : SelectorPanel(builder) {
+    inner class SceneSelectorPanel : SelectorPanel(builder) {
         override fun builder(id: Int, name: String): ItemPanel {
             return ScenePanel(id, name)
         }
@@ -99,8 +99,8 @@ class ActEditorPanel(homeManager: HomeManager, act: Act? = null) : HomePanel() {
                     this.border = BorderFactory.createMatteBorder(2, 2, 0, 2, Color.BLACK)
                     this.add(
                         SquareLabel(
-                            getIcon("create_icon", controller.javaClass),
-                            controller::createNewScene
+                            getIcon("create_icon", manager.javaClass),
+                            manager::createNewScene
                         )
                     )
 
@@ -114,9 +114,8 @@ class ActEditorPanel(homeManager: HomeManager, act: Act? = null) : HomePanel() {
          */
         private inner class ScenePanel(id: Int, name: String) : ItemPanel(id, name) {
             init {
-                this.add(SquareLabel(getIcon("edit_icon", HomeManager.javaClass), controller::updateNewScene))
-
-                this.add(SquareLabel(getIcon("delete_icon", HomeManager.javaClass), controller::deleteNewScene))
+                this.add(SquareLabel(getIcon("edit_icon", manager.javaClass), manager::updateNewScene))
+                this.add(SquareLabel(getIcon("delete_icon", manager.javaClass), manager::deleteNewScene))
             }
         }
     }

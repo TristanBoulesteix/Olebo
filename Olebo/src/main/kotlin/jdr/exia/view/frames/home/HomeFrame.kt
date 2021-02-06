@@ -19,16 +19,17 @@ import javax.swing.JMenuBar
  * This frame will send the selected act to the Games Views
  */
 class HomeFrame : JFrameTemplate("Olebo - ${Strings[STR_VERSION]} $OLEBO_VERSION") {
-    override val observable: Observable = HomeManager
+    val manager = HomeManager()
+
+    override val observable: Observable = manager
 
     var contentPane: HomePanel
         get() = this.getContentPane() as HomePanel
-        set(value) {
-            this.setContentPane(value)
-        }
+        set(value) = this.setContentPane(value)
+
 
     init {
-        HomeManager.observer = this
+        manager.observer = this
 
         // This line may cause some issues with database writing ! But without it the X button won't close the program
         this.defaultCloseOperation = DISPOSE_ON_CLOSE
@@ -37,13 +38,13 @@ class HomeFrame : JFrameTemplate("Olebo - ${Strings[STR_VERSION]} $OLEBO_VERSION
             this.add(FileMenu())
         }
 
-        this.contentPane = ActsPanel(observable)
+        this.contentPane = ActsPanel(manager)
     }
 
     override fun update(data: Action) {
         when (data) {
             is Action.Dispose -> this.dispose()
-            is Action.Refresh -> this.contentPane.reload()
+            is Action.Reload -> this.contentPane.reload()
             is Action.Switch -> switchPanel(data.panel)
         }
     }

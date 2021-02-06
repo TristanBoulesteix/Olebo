@@ -17,13 +17,13 @@ import org.jetbrains.exposed.sql.transactions.transaction
 /**
  * Manager to create an act (uses all classes in jdr.exia.jdr.exia.view.frames.editor)
  */
-class ActCreatorManager : Observable {
+class ActCreatorManager(private val homeManager: HomeManager) : Observable {
     val tempScenes = mutableListOf<SceneData>()
 
     override var observer: Observer?
-        get() = HomeManager.observer
+        get() = homeManager.observer
         set(value) {
-            HomeManager.observer = value
+            homeManager.observer = value
         }
 
     private var idAct = 0
@@ -105,7 +105,7 @@ class ActCreatorManager : Observable {
                 tempScenes += it
             }
         }
-        notifyObserver(Action.Refresh)
+        notifyObserver(Action.Reload)
     }
 
     /**
@@ -122,7 +122,7 @@ class ActCreatorManager : Observable {
                 tempScenes[index] = it
             }
         }
-        notifyObserver(Action.Refresh)
+        notifyObserver(Action.Reload)
     }
 
     /**
@@ -130,7 +130,7 @@ class ActCreatorManager : Observable {
      */
     fun deleteNewScene(index: Int) {
         tempScenes.removeAt(index)
-        notifyObserver(Action.Refresh)
+        notifyObserver(Action.Reload)
     }
 
     /**

@@ -19,17 +19,21 @@ import javax.imageio.ImageIO
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
-class BlueprintManager : Observable {
+class BlueprintManager(private val homeManager: HomeManager) : Observable {
     val elements
         get() = DAO.getElementsWithType(type)
 
     var type = Type.OBJECT
         set(value) {
             field = value
-            notifyObserver(Action.Refresh)
+            notifyObserver(Action.Reload)
         }
 
-    override var observer: Observer? = null
+    override var observer: Observer?
+        get() = homeManager.observer
+        set(value) {
+            homeManager.observer = value
+        }
 
     fun getBlueprintWithId(id: Int) = transaction {
         elements.find { it.id.value == id }!!
@@ -53,7 +57,7 @@ class BlueprintManager : Observable {
             }
         }
 
-        notifyObserver(Action.Refresh)
+        notifyObserver(Action.Reload)
     }
 
     fun deleteElement(id: Int) {
@@ -61,7 +65,7 @@ class BlueprintManager : Observable {
             Blueprint[id].delete()
         }
 
-        notifyObserver(Action.Refresh)
+        notifyObserver(Action.Reload)
     }
 
     fun updateIcon(id: Int) {
@@ -85,7 +89,7 @@ class BlueprintManager : Observable {
             }
         }
 
-        notifyObserver(Action.Refresh)
+        notifyObserver(Action.Reload)
     }
 
     fun saveMana(id: Int, text: String) {
@@ -115,7 +119,7 @@ class BlueprintManager : Observable {
             }
         }
 
-        notifyObserver(Action.Refresh)
+        notifyObserver(Action.Reload)
     }
 }
 

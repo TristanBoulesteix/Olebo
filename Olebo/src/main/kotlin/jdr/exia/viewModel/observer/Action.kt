@@ -14,7 +14,7 @@ sealed class Action {
     /**
      * Refresh everything that need to be updated
      */
-    object Refresh : Action()
+    object Reload : Action()
 
     /**
      * Switch [HomePanel]

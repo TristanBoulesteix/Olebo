@@ -1,6 +1,8 @@
+/*
 package jdr.exia.view.frames.editor.elements
 
 import jdr.exia.localization.*
+import jdr.exia.view.frames.home.panels.BlueprintEditorPanel
 import jdr.exia.view.utils.BACKGROUND_COLOR_ORANGE
 import jdr.exia.view.utils.applyAndAppendTo
 import jdr.exia.view.utils.components.templates.JDialogTemplate
@@ -31,7 +33,7 @@ class BlueprintDialog : JDialogTemplate(Strings[STR_OBJECT_LIST]) {
             }
         }
     }
-    private val panel = ElementSelectorPanel(manager).apply {
+    private val panel = BlueprintEditorPanel.ElementSelectorPanel(manager).apply {
         this.isFocusable = true
     }
 
@@ -57,8 +59,8 @@ class BlueprintDialog : JDialogTemplate(Strings[STR_OBJECT_LIST]) {
 
     override fun update(data: Action) {
         when (data) {
-            Action.Refresh -> this.panel.reload()
+            Action.Reload -> this.panel.reload()
             Action.Dispose -> this.dispose()
         }
     }
-}
+}*/

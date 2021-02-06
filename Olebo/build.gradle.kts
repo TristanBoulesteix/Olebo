@@ -1,11 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val kotlinVersion : String by System.getProperties()
+val kotlinVersion: String by System.getProperties()
 
 plugins {
     application
     java
     kotlin("jvm")
+    id("org.sonarqube") version "3.0"
 }
 
 version = "1.8.0-BETA"
@@ -21,7 +22,7 @@ val exposedVersion = "0.29.1"
 dependencies {
     testImplementation("junit", "junit", "4.12")
     implementation("org.xerial", "sqlite-jdbc", "3.28.0")
-    implementation(project(":CommonModule","default"))
+    implementation(project(":CommonModule", "default"))
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
