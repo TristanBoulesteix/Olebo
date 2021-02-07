@@ -60,8 +60,10 @@ class ItemPanel : JPanel(), Reloadable {
                 this.add(CustomTitlePanel(Strings[STR_OBJECTS]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.OBJECT && (searchConstraint.isEmpty() || it.name.toLowerCase()
-                        .contains(searchConstraint, true))
+                    it.type.typeElement == Type.OBJECT && (searchConstraint.isEmpty() || it.name.contains(
+                        searchConstraint,
+                        true
+                    ))
                 }.forElse {
                     this.add(CustomPanel(it))
                 } ?: this.add(EmptyField())
@@ -70,8 +72,10 @@ class ItemPanel : JPanel(), Reloadable {
                 this.add(CustomTitlePanel(Strings[STR_PC]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.PJ && (searchConstraint.isEmpty() || it.name.toLowerCase()
-                        .contains(searchConstraint, true))
+                    it.type.typeElement == Type.PJ && (searchConstraint.isEmpty() || it.name.contains(
+                        searchConstraint,
+                        true
+                    ))
                 }.forElse {
                     this.add(CustomPanel(it))
                 } ?: this.add(EmptyField())
