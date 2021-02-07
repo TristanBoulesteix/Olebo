@@ -1,7 +1,10 @@
-package jdr.exia.view.frames.rpg.modifier
+package jdr.exia.view.frames.rpg
 
 import jdr.exia.localization.*
 import jdr.exia.model.utils.emptyElements
+import jdr.exia.view.frames.rpg.modifier.PriorityCombo
+import jdr.exia.view.frames.rpg.modifier.SideDataPanel
+import jdr.exia.view.frames.rpg.modifier.SizeCombo
 import jdr.exia.view.utils.BACKGROUND_COLOR_SELECT_PANEL
 import jdr.exia.view.utils.DEFAULT_INSET
 import jdr.exia.view.utils.DIMENSION_BUTTON_DEFAULT

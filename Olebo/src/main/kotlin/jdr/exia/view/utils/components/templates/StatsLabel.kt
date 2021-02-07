@@ -6,8 +6,9 @@ import jdr.exia.localization.Strings
 import jdr.exia.model.element.Element
 import jdr.exia.model.utils.isCharacter
 import jdr.exia.view.utils.components.filter.IntegerFilter
-import jdr.exia.view.utils.event.addFocusLostListener
+import jdr.exia.view.utils.event.addTextChangedListener
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.awt.Color
 import java.awt.Font
 import javax.swing.JLabel
 import javax.swing.JPanel
@@ -20,18 +21,21 @@ class StatsLabel(private val isHP: Boolean, private var maxValue: Int = 0, value
     private val statsField = JTextField(value.toString(), 4).apply {
         font = fontSize
         (document as AbstractDocument).documentFilter = IntegerFilter()
-        addFocusLostListener {
+        addTextChangedListener {
             if (element.isCharacter()) {
                 transaction {
+                    val extracted = extractValue(this@apply.text)
+
+                    foreground = if (extracted !in 0..maxValue) Color.RED else Color.BLACK
+
                     if (isHP) {
-                        element?.currentHealth = extractValue(this@apply.text)
+                        element?.currentHealth = extracted
                     } else {
-                        element?.currentMana = extractValue(this@apply.text)
+                        element?.currentMana = extracted
                     }
                 }
             }
         }
-
         this.isEnabled = false
     }
 
@@ -55,6 +59,8 @@ class StatsLabel(private val isHP: Boolean, private var maxValue: Int = 0, value
                     }
             }
 
+            field = value
+
             val stat = if (value == null || !value.isCharacter()) {
                 this.maxValue = 0
                 this.statsField.isEnabled = false
@@ -66,8 +72,6 @@ class StatsLabel(private val isHP: Boolean, private var maxValue: Int = 0, value
             }.toString()
             statsLabel.text = statsLabelText
             statsField.text = stat
-
-            field = value
         }
 
     init {
@@ -78,5 +82,5 @@ class StatsLabel(private val isHP: Boolean, private var maxValue: Int = 0, value
 
     private fun extractValue(string: String) = if (string == "-" || string.isBlank()) 0 else {
         string.toIntOrNull() ?: maxValue
-    }.let { if (it > maxValue) maxValue else it }
+    }
 }
