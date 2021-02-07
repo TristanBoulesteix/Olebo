@@ -5,6 +5,8 @@ import jdr.exia.model.element.Element
 import jdr.exia.model.utils.Elements
 import jdr.exia.model.utils.emptyElements
 import jdr.exia.model.utils.toJColor
+import java.io.File
+import javax.imageio.ImageIO
 
 /**
  * ViewManager is View's facade
@@ -24,9 +26,13 @@ object ViewFacade {
 
     fun setSelectedToken(token: Element?) = if (token == null) setSelectedToken() else setSelectedToken(token)
 
-    fun setMapBackground(imageName: String) { //Sets the MapPanels backGround
-        MasterFrame.setMapBackground(imageName)
-        PlayerFrame.mapBackground = imageName
+    /**
+     * Sets the [MapPanel]s backGround
+     */
+    fun setMapBackground(imageName: String) {
+        val background = ImageIO.read(File(imageName))
+        MasterFrame.mapBackground = background
+        PlayerFrame.mapBackground = background
         MasterMenuBar.initialize()
         reloadFrames()
     }

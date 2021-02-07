@@ -13,8 +13,6 @@ import java.awt.Dimension
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.awt.event.KeyEvent
-import java.io.File
-import javax.imageio.ImageIO
 import javax.swing.JFrame
 import javax.swing.JPanel
 
@@ -48,9 +46,7 @@ object MasterFrame : JFrame(), GameFrame {
             field = value
         }
 
-    override fun setMapBackground(imageName: String) { //set the background image for the mappanels
-        mapPanel.backGroundImage = ImageIO.read(File(imageName))
-    }
+    override var mapBackground by mapPanel::backGroundImage
 
     override fun setTitle(title: String) {
         super.setTitle("Olebo - ${Strings[STR_DM_TITLE_FRAME]} - \"$title\"")

@@ -9,12 +9,11 @@ import jdr.exia.view.utils.DIMENSION_FRAME
 import jdr.exia.view.utils.event.addKeyPressedListener
 import jdr.exia.view.utils.screens
 import java.awt.Color
+import java.awt.Image
 import java.awt.Window
 import java.awt.event.KeyEvent
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
-import java.io.File
-import javax.imageio.ImageIO
 import javax.swing.JDialog
 
 /**
@@ -24,10 +23,10 @@ class PlayerFrame private constructor() : JDialog(null as Window?), GameFrame {
     companion object : Reloadable {
         private var playerFrameInstance: PlayerFrame? = null
 
-        var mapBackground: String = ""
+        var mapBackground: Image? = null
             set(value) {
                 field = value
-                playerFrameInstance?.setMapBackground(value)
+                playerFrameInstance?.mapBackground = value
             }
 
         var title = "\" \""
@@ -47,7 +46,7 @@ class PlayerFrame private constructor() : JDialog(null as Window?), GameFrame {
         private fun show() {
             playerFrameInstance = PlayerFrame().apply {
                 this.title = Companion.title
-                this.setMapBackground(mapBackground)
+                this.mapBackground = this@Companion.mapBackground
                 this.updateMap(map)
                 if (screens.size == 1) { //If there is only 1 screen, we display both frames there
                     this.isUndecorated = false
@@ -121,9 +120,7 @@ class PlayerFrame private constructor() : JDialog(null as Window?), GameFrame {
         mapPanel.updateTokens(tokens)
     }
 
-    override fun setMapBackground(imageName: String) {
-        mapPanel.backGroundImage = ImageIO.read(File(imageName))
-    }
+    override var mapBackground by mapPanel::backGroundImage
 
     override fun dispose() {
         this.mapPanel.repaintJob?.cancel()
