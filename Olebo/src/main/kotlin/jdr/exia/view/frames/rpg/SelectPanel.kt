@@ -180,7 +180,7 @@ class SelectPanel : JPanel() {
             sidePanel.priorityCombo = PriorityCombo(this)
             sidePanel.sizeCombo = SizeCombo(this)
 
-            sidePanel.nameLabelPanel.isEnabled = false
+            sidePanel.nameLabel.isEnabled = false
 
             if (this.isNotEmpty()) {
                 arrayOf(rotateRightButton, rotateLeftButton, deleteButton).forEach { it.isEnabled = true }
@@ -192,7 +192,7 @@ class SelectPanel : JPanel() {
                 if (this.size == 1) {
                     lifeField.element = this[0]
                     manaField.element = this[0]
-                    sidePanel.nameLabelPanel.let {
+                    sidePanel.nameLabel.let {
                         it.text = transaction { this@with[0].alias }
                         it.isEnabled = true
                     }
