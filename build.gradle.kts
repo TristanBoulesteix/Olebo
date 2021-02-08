@@ -21,6 +21,9 @@ subprojects {
         implementation(kotlin("stdlib-jdk8"))
         implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
     }
+
+    val compileKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
+    compileKotlin.kotlinOptions.useIR = true
 }
 
 tasks.register("runOlebo") {
