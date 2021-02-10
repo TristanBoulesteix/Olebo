@@ -107,13 +107,13 @@ class BlueprintEditorPanel(homeManager: HomeManager, homeAvailable: Boolean = tr
         init {
             this.isFocusable = true
 
-            this.add(titlePanel.apply {
+            titlePanel.applyAndAppendTo(this, BorderLayout.NORTH) {
                 this.layout = GridBagLayout()
 
                 titleContentPanel = buildTitleItemPanel(manager)
                 this.add(titleContentPanel, cTitleItem)
                 this.revalidate()
-            }, BorderLayout.NORTH)
+            }
             this.reload()
         }
 

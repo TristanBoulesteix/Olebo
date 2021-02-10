@@ -7,7 +7,7 @@ import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.saveImg
 import jdr.exia.utils.forElse
-import jdr.exia.view.frames.home.dialog.SceneEditorDialog
+import jdr.exia.view.frames.home.editor.SceneEditorDialog
 import jdr.exia.view.utils.showPopup
 import jdr.exia.viewModel.observer.Action
 import jdr.exia.viewModel.observer.Observable

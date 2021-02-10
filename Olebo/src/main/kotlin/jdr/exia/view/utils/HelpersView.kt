@@ -13,6 +13,9 @@ import javax.swing.JButton
 import javax.swing.JCheckBox
 import javax.swing.JOptionPane
 import javax.swing.SwingUtilities
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
 /**
  * Show a popup with a message
@@ -63,11 +66,16 @@ inline fun showConfirmMessage(
     )
 }
 
+@OptIn(ExperimentalContracts::class)
 inline fun <T : Container> T.applyAndAppendTo(
     parent: Container,
     constraints: Any? = null,
     block: T.() -> Unit
 ): T {
+    contract {
+        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+    }
+
     this.apply(block)
     constraints?.let {
         parent.add(this, constraints)
@@ -109,6 +117,18 @@ fun gridBagConstraintsOf(
     this.anchor = anchor
     insets?.let { this.insets = it }
 }
+
+fun GridBagConstraints.copy(
+    gridx: Int? = this.gridx,
+    gridy: Int? = this.gridy,
+    gridHeight: Int? = this.gridheight,
+    gridWidth: Int? = this.gridwidth,
+    weightx: Double? = this.weightx,
+    weighty: Double? = this.weighty,
+    fill: Int = this.fill,
+    anchor: Int = this.anchor,
+    insets: Insets? = this.insets
+) = gridBagConstraintsOf(gridx, gridy, gridHeight, gridWidth, weightx, weighty, fill, anchor, insets)
 
 val Component.windowAncestor: Window?
     inline get() = SwingUtilities.getWindowAncestor(this)

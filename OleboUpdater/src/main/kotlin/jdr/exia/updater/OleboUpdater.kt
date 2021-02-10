@@ -13,7 +13,7 @@ import java.net.ServerSocket
 import java.util.*
 import kotlin.system.exitProcess
 
-const val UPDATER_VERSION = "1.2.0"
+const val UPDATER_VERSION = "1.2.1"
 
 var locale = defaultLocale
 

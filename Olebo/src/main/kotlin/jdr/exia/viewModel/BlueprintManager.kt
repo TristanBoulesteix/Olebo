@@ -7,7 +7,7 @@ import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.saveImg
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
-import jdr.exia.view.frames.home.dialog.BlueprintEditorDialog
+import jdr.exia.view.frames.home.editor.BlueprintEditorDialog
 import jdr.exia.view.utils.showPopup
 import jdr.exia.viewModel.observer.Action
 import jdr.exia.viewModel.observer.Observable
@@ -62,7 +62,9 @@ class BlueprintManager(private val homeManager: HomeManager) : Observable {
 
     fun deleteElement(id: Int) {
         transaction {
-            Blueprint[id].delete()
+            Blueprint[id].let {
+                it.delete()
+            }
         }
 
         notifyObserver(Action.Reload)

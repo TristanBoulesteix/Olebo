@@ -9,10 +9,12 @@ import javax.swing.JTextField
 /**
  * A JTextField with placeholder
  */
-class PlaceholderTextField(private var placeholder: String) : JTextField() {
+class PlaceholderTextField(private var placeholder: String, fontSize: Int = 20) : JTextField() {
     init {
-        this.font = Font("Tahoma", Font.BOLD, 20)
+        this.font = Font("Tahoma", Font.BOLD, fontSize)
     }
+
+    constructor(placeholder: Any, fontSize: Int = 20) : this(placeholder.toString(), fontSize)
 
     override fun paintComponent(pG: Graphics) {
         super.paintComponent(pG)

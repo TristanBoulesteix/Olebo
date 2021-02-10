@@ -31,7 +31,7 @@ object DAO {
 
     const val DATABASE_NAME = "database.db"
 
-    private val filePath = OLEBO_DIRECTORY + "db${File.separator}$DATABASE_NAME"
+    private val filePath = "${OLEBO_DIRECTORY}db${File.separator}$DATABASE_NAME"
     private val url = "jdbc:sqlite:$filePath"
 
     val database: Database = try {
@@ -90,7 +90,12 @@ object DAO {
         val reset = JButton(Strings[STR_RESET]).apply {
             this.addActionListener {
                 windowAncestor?.dispose()
-                showConfirmMessage(windowAncestor, Strings[ST_WARNING_CONFIG_RESET], Strings[STR_RESET], confirm = true) {
+                showConfirmMessage(
+                    windowAncestor,
+                    Strings[ST_WARNING_CONFIG_RESET],
+                    Strings[STR_RESET],
+                    confirm = true
+                ) {
                     reset()
                     runJar(jarPath)
                     exitProcess(0)

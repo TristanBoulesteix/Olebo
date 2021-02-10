@@ -84,6 +84,7 @@ class StringsBundle : Strings() {
         STR_HP to "HP",
         STR_MP to "MP",
         STR_IMG to "element icon",
+        STR_SMALL_IMG to "img",
         STR_WARNING to "warning!",
         ST_SCENE_ALREADY_EXISTS to "A scene with the same name already exists.",
         ST_ELEMENT_ALREADY_EXISTS to "An element with this name already exists.",
@@ -147,6 +148,9 @@ class StringsBundle : Strings() {
         ST_CANCEL_WILL_ERASE_CHANGES to "All changes will be canceled. Do you wish to continue?",
         STR_BACK to "go back",
         STR_LOADING to "loading",
+        ST_NAME_OF_BLUEPRINT_REQUIRED to "The name of the element is required.",
+        ST_IMG_BLUEPRINT_REQUIRED to "An image is required for an element.",
+        ST_IMG_BLUEPRINT_NOT_EXIST_OR_INVALID to "The selected image doesn't exist or is invalid.",
     )
 }
 
@@ -232,6 +236,7 @@ class StringsBundle_fr : Strings() {
         STR_HP to "PV",
         STR_MP to "PM",
         STR_IMG to "image",
+        STR_SMALL_IMG to "img",
         STR_WARNING to "attention !",
         ST_SCENE_ALREADY_EXISTS to "Une scène avec le même nom existe déjà.",
         ST_ELEMENT_ALREADY_EXISTS to "Un élément avec ce nom existe déjà.",
@@ -295,5 +300,8 @@ class StringsBundle_fr : Strings() {
         ST_CANCEL_WILL_ERASE_CHANGES to "Tous les changements vont être effacé. Voulez-vous continuer ?",
         STR_BACK to "retour",
         STR_LOADING to "chargement",
+        ST_NAME_OF_BLUEPRINT_REQUIRED to "Le nom de l'élément est requis.",
+        ST_IMG_BLUEPRINT_REQUIRED to "Un élément doit possèder une image.",
+        ST_IMG_BLUEPRINT_NOT_EXIST_OR_INVALID to "L'image sélectionnée n'existe pas ou est invalide.",
     )
 }
