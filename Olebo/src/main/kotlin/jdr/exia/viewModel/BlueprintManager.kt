@@ -1,13 +1,14 @@
 package jdr.exia.viewModel
 
-import jdr.exia.localization.STR_IMG
-import jdr.exia.localization.ST_ELEMENT_ALREADY_EXISTS
-import jdr.exia.localization.Strings
+import jdr.exia.localization.*
 import jdr.exia.model.dao.DAO
+import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.dao.saveImg
 import jdr.exia.model.element.Blueprint
+import jdr.exia.model.element.Element
 import jdr.exia.model.element.Type
 import jdr.exia.view.frames.home.editor.BlueprintEditorDialog
+import jdr.exia.view.utils.showConfirmMessage
 import jdr.exia.view.utils.showPopup
 import jdr.exia.viewModel.observer.Action
 import jdr.exia.viewModel.observer.Observable
@@ -62,8 +63,16 @@ class BlueprintManager(private val homeManager: HomeManager) : Observable {
 
     fun deleteElement(id: Int) {
         transaction {
-            Blueprint[id].let {
-                it.delete()
+            Blueprint[id].let { blueprint ->
+                val countUsage = Element.find { InstanceTable.idBlueprint eq blueprint.id.value }.count()
+
+                if (countUsage > 0) {
+                    showConfirmMessage(null, Strings[ST_INT1_OCCURENCE_BLUEPRINT_TO_DELETE, countUsage], Strings[STR_WARNING]) {
+                        blueprint.delete()
+                    }
+                } else {
+                    blueprint.delete()
+                }
             }
         }
 

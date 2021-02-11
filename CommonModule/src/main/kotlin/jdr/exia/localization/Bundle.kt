@@ -151,6 +151,10 @@ class StringsBundle : Strings() {
         ST_NAME_OF_BLUEPRINT_REQUIRED to "The name of the element is required.",
         ST_IMG_BLUEPRINT_REQUIRED to "An image is required for an element.",
         ST_IMG_BLUEPRINT_NOT_EXIST_OR_INVALID to "The selected image doesn't exist or is invalid.",
+        ST_INT1_OCCURENCE_BLUEPRINT_TO_DELETE to """
+            This element is used in %s scene(s).
+            Are you sure you want to delete it? This action cannot be cancelled.
+        """.trimIndent(),
     )
 }
 
@@ -303,5 +307,9 @@ class StringsBundle_fr : Strings() {
         ST_NAME_OF_BLUEPRINT_REQUIRED to "Le nom de l'élément est requis.",
         ST_IMG_BLUEPRINT_REQUIRED to "Un élément doit possèder une image.",
         ST_IMG_BLUEPRINT_NOT_EXIST_OR_INVALID to "L'image sélectionnée n'existe pas ou est invalide.",
+        ST_INT1_OCCURENCE_BLUEPRINT_TO_DELETE to """
+            Cet élément est utilisé dans %s scène(s).
+            Êtes-vous sûr de le supprimer? Cette action est irréversible.
+        """.trimIndent(),
     )
 }

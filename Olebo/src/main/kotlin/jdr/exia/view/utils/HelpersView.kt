@@ -29,7 +29,7 @@ fun showPopup(message: String, parent: Component? = null, isError: Boolean = fal
 
 inline fun showConfirmMessage(
     parent: Component? = null,
-    message: String,
+    message: Any,
     title: String,
     confirm: Boolean = false,
     crossinline okAction: () -> Unit
@@ -51,7 +51,7 @@ inline fun showConfirmMessage(
     JOptionPane.showOptionDialog(
         parent,
         if (confirm)
-            JCheckBox(message).apply {
+            JCheckBox(message.toString()).apply {
                 this.addItemListener {
                     ok.isEnabled = it.stateChange == ItemEvent.SELECTED
                 }
