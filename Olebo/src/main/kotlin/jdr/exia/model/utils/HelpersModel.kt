@@ -2,7 +2,6 @@ package jdr.exia.model.utils
 
 import jdr.exia.model.act.Scene
 import jdr.exia.model.command.CommandManager
-import jdr.exia.model.dao.option.Color
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Type
@@ -10,7 +9,6 @@ import java.awt.Graphics
 import java.awt.geom.AffineTransform
 import java.awt.image.BufferedImage
 import javax.swing.ImageIcon
-import java.awt.Color as JColor
 
 /**
  * Convert a String to the corresponding boolean
@@ -65,13 +63,3 @@ inline fun <T> Scene?.callManager(value: T, elements: Elements, func: (T, Comman
     this?.let { scene ->
         func(value, CommandManager(scene.id.value), elements)
     }
-
-/**
- * Convert a [java.awt.Color] to a [Color]
- */
-fun JColor.toColor() = this.let { Color(it.red, it.green, it.blue) }
-
-/**
- * Convert a [Color] to a [java.awt.Color]
- */
-fun Color.toJColor() = this.let { JColor(it.r, it.g, it.b) }

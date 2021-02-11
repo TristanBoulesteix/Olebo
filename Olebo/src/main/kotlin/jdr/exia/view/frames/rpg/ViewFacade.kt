@@ -4,7 +4,6 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
 import jdr.exia.model.utils.Elements
 import jdr.exia.model.utils.emptyElements
-import jdr.exia.model.utils.toJColor
 import java.io.File
 import javax.imageio.ImageIO
 
@@ -48,7 +47,7 @@ object ViewFacade {
 
     fun updateCursorOnPlayerFrame() {
         Settings.cursorColor.let {
-            PlayerFrame.updateCursor(it.contentCursorColor.toJColor(), it.borderCursorColor.toJColor())
+            PlayerFrame.updateCursor(it.contentCursorColor, it.borderCursorColor)
         }
     }
 

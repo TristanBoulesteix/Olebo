@@ -6,7 +6,6 @@ import jdr.exia.model.element.Size
 import jdr.exia.model.utils.Elements
 import jdr.exia.model.utils.Position
 import jdr.exia.model.utils.emptyElements
-import jdr.exia.model.utils.toJColor
 import jdr.exia.view.utils.*
 import jdr.exia.view.utils.event.addMouseExitedListener
 import jdr.exia.view.utils.event.addMouseMovedListener
@@ -53,8 +52,8 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
             initializeForPlayer()
 
         Settings.cursorColor.let {
-            cursorColor = it.contentCursorColor.toJColor()
-            borderCursorColor = it.borderCursorColor.toJColor()
+            cursorColor = it.contentCursorColor
+            borderCursorColor = it.borderCursorColor
         }
     }
 

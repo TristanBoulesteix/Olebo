@@ -4,7 +4,7 @@ import jdr.exia.availableLocales
 import jdr.exia.localization.*
 import jdr.exia.model.dao.option.CursorColor
 import jdr.exia.model.dao.option.Settings
-import jdr.exia.model.utils.toJColor
+import jdr.exia.model.dao.option.toFormatedString
 import jdr.exia.view.frames.rpg.MasterFrame
 import jdr.exia.view.frames.rpg.ViewFacade
 import jdr.exia.view.utils.applyAndAppendTo
@@ -183,9 +183,9 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
         private val customLabel
             get() = when (selectedCursorColor) {
                 null -> Settings.cursorColor.let {
-                    if (it is CursorColor.Custom) custom + " " + it.contentCursorColor.toString() else custom
+                    if (it is CursorColor.Custom) custom + " " + it.contentCursorColor.toFormatedString() else custom
                 }
-                is CursorColor.Custom -> custom + " " + selectedCursorColor!!.contentCursorColor.toString()
+                is CursorColor.Custom -> custom + " " + selectedCursorColor!!.contentCursorColor.toFormatedString()
                 else -> custom
             }
 
@@ -209,8 +209,8 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
                     val colorInSettings = Settings.cursorColor
 
                     val selectedJColor: Color = when {
-                        selectedCursorColor == null && colorInSettings is CursorColor.Custom -> colorInSettings.contentCursorColor.toJColor()
-                        selectedCursorColor is CursorColor.Custom -> selectedCursorColor!!.contentCursorColor.toJColor()
+                        selectedCursorColor == null && colorInSettings is CursorColor.Custom -> colorInSettings.contentCursorColor
+                        selectedCursorColor is CursorColor.Custom -> selectedCursorColor!!.contentCursorColor
                         else -> Color.WHITE
                     }
 
