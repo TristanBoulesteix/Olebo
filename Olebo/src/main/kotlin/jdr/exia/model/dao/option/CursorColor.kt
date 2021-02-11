@@ -63,7 +63,7 @@ sealed class CursorColor(
 
     @Suppress("CanBeParameter")
     @Serializable
-    class Custom(@Serializable(with = CursorColor.ColorAsStringSerializer::class) private val customColor: Color) :
+    class Custom(@Serializable(with = ColorAsStringSerializer::class) private val customColor: Color) :
         CursorColor(Strings[STR_CUSTOM_COLOR], customColor)
 
     /**
