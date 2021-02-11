@@ -5,6 +5,7 @@ import jdr.exia.model.act.Act
 import jdr.exia.model.dao.getIcon
 import jdr.exia.view.utils.*
 import jdr.exia.view.utils.components.templates.ItemPanel
+import jdr.exia.view.utils.components.templates.ManagerAction
 import jdr.exia.view.utils.components.templates.PlaceholderTextField
 import jdr.exia.view.utils.components.templates.SelectorPanel
 import jdr.exia.viewModel.ActCreatorManager
@@ -23,6 +24,8 @@ class ActEditorPanel(homeManager: HomeManager, act: Act? = null) : HomePanel() {
     private val selectorPanel: SceneSelectorPanel
 
     private val nameField = PlaceholderTextField(Strings[STR_NAME])
+
+    private var modified = false
 
     init {
         this.layout = BorderLayout()
@@ -47,8 +50,9 @@ class ActEditorPanel(homeManager: HomeManager, act: Act? = null) : HomePanel() {
 
         JPanel().applyAndAppendTo(this, BorderLayout.SOUTH) {
             this.border = BorderFactory.createEmptyBorder(10, 20, 10, 20)
-            this.layout = GridLayout(1,2,10, 15)
+            this.layout = GridLayout(1, 2, 10, 15)
             this.background = BACKGROUND_COLOR_LIGHT_BLUE
+
             JButton(Strings[STR_CONFIRM]).applyAndAppendTo(this) {
                 this.addActionListener {
                     if (
@@ -69,9 +73,15 @@ class ActEditorPanel(homeManager: HomeManager, act: Act? = null) : HomePanel() {
 
             JButton(Strings[STR_CANCEL]).applyAndAppendTo(this) {
                 this.addActionListener {
-                    showConfirmMessage(windowAncestor, Strings[ST_CANCEL_WILL_ERASE_CHANGES], Strings[STR_WARNING]) {
-                        homeManager.goHome()
-                    }
+                    if (modified) {
+                        showConfirmMessage(
+                            windowAncestor,
+                            Strings[ST_CANCEL_WILL_ERASE_CHANGES],
+                            Strings[STR_WARNING]
+                        ) {
+                            homeManager.goHome()
+                        }
+                    } else homeManager.goHome()
                 }
                 this.border = BORDER_BUTTONS
             }
@@ -79,6 +89,11 @@ class ActEditorPanel(homeManager: HomeManager, act: Act? = null) : HomePanel() {
     }
 
     override fun reload() = this.selectorPanel.reload()
+
+    private fun ManagerAction.triggerModify(): ManagerAction = {
+        modified = true
+        this(it)
+    }
 
     /**
      * This panel contains a JScrollpane which show the list of scenes for the current act in creation
@@ -100,7 +115,7 @@ class ActEditorPanel(homeManager: HomeManager, act: Act? = null) : HomePanel() {
                     this.add(
                         SquareLabel(
                             getIcon("create_icon", manager.javaClass),
-                            manager::createNewScene
+                            manager::createNewScene.triggerModify()
                         )
                     )
 
@@ -114,8 +129,13 @@ class ActEditorPanel(homeManager: HomeManager, act: Act? = null) : HomePanel() {
          */
         private inner class ScenePanel(id: Int, name: String) : ItemPanel(id, name) {
             init {
-                this.add(SquareLabel(getIcon("edit_icon", manager.javaClass), manager::updateNewScene))
-                this.add(SquareLabel(getIcon("delete_icon", manager.javaClass), manager::deleteNewScene))
+                this.add(SquareLabel(getIcon("edit_icon", manager.javaClass), manager::updateNewScene.triggerModify()))
+                this.add(
+                    SquareLabel(
+                        getIcon("delete_icon", manager.javaClass),
+                        manager::deleteNewScene.triggerModify()
+                    )
+                )
             }
         }
     }

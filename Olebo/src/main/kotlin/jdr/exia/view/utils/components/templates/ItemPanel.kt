@@ -11,6 +11,8 @@ import javax.imageio.ImageIO
 import javax.swing.*
 import javax.swing.text.PlainDocument
 
+typealias ManagerAction = (Int) -> Unit
+
 /**
  * Template for panel which display an item.
  */
@@ -49,7 +51,7 @@ open class ItemPanel(protected val id: Int, name: String) : JPanel() {
     /**
      * Label that act like a button.
      */
-    inner class SquareLabel(icon: ImageIcon, action: (Int) -> Unit) :
+    inner class SquareLabel(icon: ImageIcon, action: ManagerAction) :
         JLabel(icon, CENTER) {
 
         private val listener = ClickListener { action(id) }
@@ -61,7 +63,7 @@ open class ItemPanel(protected val id: Int, name: String) : JPanel() {
             this.addMouseListener(listener)
         }
 
-        constructor(img: String, action: (Int) -> Unit) : this(
+        constructor(img: String, action: ManagerAction) : this(
             ImageIcon(
                 ImageIO.read(File(img)).getScaledInstance(
                     DIMENSION_SQUARE.width, DIMENSION_SQUARE.height, Image.SCALE_SMOOTH
