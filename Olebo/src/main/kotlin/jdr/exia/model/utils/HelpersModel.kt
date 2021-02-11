@@ -48,7 +48,7 @@ fun ImageIcon.rotate(degs: Double) = with(BufferedImage(this.iconWidth, this.ico
 
     createGraphics().apply {
         val transform = AffineTransform()
-        transform.rotate(degs / 180 * Math.PI, (iconWidth / 2).toDouble(), (iconHeight / 2).toDouble())
+        transform.rotate(degs / 180 * Math.PI, iconWidth / 2.0, iconHeight / 2.0)
         drawRenderedImage(toBufferedImage(), transform)
         dispose()
     }
