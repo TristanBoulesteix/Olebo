@@ -73,10 +73,9 @@ class BlueprintManager(private val homeManager: HomeManager) : Observable {
                             Strings[ST_OCCURENCE_BLUEPRINT_TO_DELETE]
                         else
                             Strings[ST_INT1_OCCURENCE_BLUEPRINT_TO_DELETE, countUsage],
-                        Strings[STR_WARNING]
-                    ) {
-                        blueprint.delete()
-                    }
+                        Strings[STR_WARNING],
+                        okAction = blueprint::delete
+                    )
                 } else {
                     blueprint.delete()
                 }
