@@ -67,7 +67,14 @@ class BlueprintManager(private val homeManager: HomeManager) : Observable {
                 val countUsage = Element.find { InstanceTable.idBlueprint eq blueprint.id.value }.count()
 
                 if (countUsage > 0) {
-                    showConfirmMessage(null, Strings[ST_INT1_OCCURENCE_BLUEPRINT_TO_DELETE, countUsage], Strings[STR_WARNING]) {
+                    showConfirmMessage(
+                        null,
+                        if (countUsage == 1L)
+                            Strings[ST_OCCURENCE_BLUEPRINT_TO_DELETE]
+                        else
+                            Strings[ST_INT1_OCCURENCE_BLUEPRINT_TO_DELETE, countUsage],
+                        Strings[STR_WARNING]
+                    ) {
                         blueprint.delete()
                     }
                 } else {

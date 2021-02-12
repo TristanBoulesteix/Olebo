@@ -155,6 +155,10 @@ class StringsBundle : Strings() {
             This element is used in %s scene(s).
             Are you sure you want to delete it? This action cannot be cancelled.
         """.trimIndent(),
+        ST_OCCURENCE_BLUEPRINT_TO_DELETE to """
+            This element is used in 1 scene.
+            Are you sure you want to delete it? This action cannot be cancelled.
+        """.trimIndent(),
     )
 }
 
@@ -308,7 +312,11 @@ class StringsBundle_fr : Strings() {
         ST_IMG_BLUEPRINT_REQUIRED to "Un élément doit possèder une image.",
         ST_IMG_BLUEPRINT_NOT_EXIST_OR_INVALID to "L'image sélectionnée n'existe pas ou est invalide.",
         ST_INT1_OCCURENCE_BLUEPRINT_TO_DELETE to """
-            Cet élément est utilisé dans %s scène(s).
+            Cet élément est utilisé dans %s scènes.
+            Êtes-vous sûr de le supprimer? Cette action est irréversible.
+        """.trimIndent(),
+        ST_OCCURENCE_BLUEPRINT_TO_DELETE to """
+            Cet élément est utilisé dans 1 scène.
             Êtes-vous sûr de le supprimer? Cette action est irréversible.
         """.trimIndent(),
     )
