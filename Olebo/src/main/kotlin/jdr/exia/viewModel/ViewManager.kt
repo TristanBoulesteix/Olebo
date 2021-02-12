@@ -54,7 +54,7 @@ object ViewManager {
     fun removeElements(elements: Elements) { //removes given token from MutableList
         selectedElements = mutableEmptyElements()
         ViewFacade.setSelectedToken(null)
-        activeScene.callManager(elements, Element::cmdDelete)
+        activeScene.callCommandManager(elements, Element::cmdDelete)
         repaint()
     }
 
@@ -131,7 +131,7 @@ object ViewManager {
                     newPositions += it.positionOf((it.position + diffPosition).checkBound())
                 }
 
-                activeScene.callManager(newPositions, selectedElements, Element::cmdPosition)
+                activeScene.callCommandManager(newPositions, selectedElements, Element::cmdPosition)
             }
             repaint()
         }
@@ -234,7 +234,7 @@ object ViewManager {
     }
 
     fun toggleVisibility(tokens: Elements, visibility: Boolean? = null) {
-        activeScene.callManager(
+        activeScene.callCommandManager(
             visibility ?: if (tokens.size == 1) !tokens.first().isVisible else true,
             tokens,
             Element::cmdVisiblity
@@ -242,16 +242,16 @@ object ViewManager {
         repaint()
     }
 
-    fun rotateRight() = activeScene.callManager(selectedElements, Element::cmdOrientationToRight).also { repaint() }
+    fun rotateRight() = activeScene.callCommandManager(selectedElements, Element::cmdOrientationToRight).also { repaint() }
 
-    fun rotateLeft() = activeScene.callManager(selectedElements, Element::cmdOrientationToLeft).also { repaint() }
+    fun rotateLeft() = activeScene.callCommandManager(selectedElements, Element::cmdOrientationToLeft).also { repaint() }
 
     fun updatePriorityToken(priority: Priority) = selectedElements.forEach {
         it.priority = priority
     }.also { repaint() }
 
     fun updateSizeToken(size: Size) =
-        activeScene.callManager(size, selectedElements, Element::cmdDimension).also { repaint() }
+        activeScene.callCommandManager(size, selectedElements, Element::cmdDimension).also { repaint() }
 
     fun updateLabel(label: String) =
         selectedElements.forEach { transaction { it.alias = label } }
