@@ -92,13 +92,13 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
         })
 
         addMouseReleasedListener { me ->
-            val clickedPosition = Position(me.point).absolutePosition
+            val releasedPosition = Position(me.point).absolutePosition
 
             when (me.button) {
                 MouseEvent.BUTTON1 -> if (movePosition == null && selectedArea == null) ViewManager.selectElement(
-                    clickedPosition
+                    releasedPosition
                 ) // Left click
-                MouseEvent.BUTTON2, MouseEvent.BUTTON3 -> ViewManager.moveTokens(clickedPosition)   // Other buttons
+                MouseEvent.BUTTON2, MouseEvent.BUTTON3 -> ViewManager.moveTokens(releasedPosition)   // Other buttons
             }
 
             selectedArea?.let {
@@ -110,7 +110,7 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
 
             movePosition?.absolutePosition?.let {
                 ViewManager.moveTokens(it, Position(start).absolutePosition)
-                start = movePosition!!.toPoint()
+                start = it.toPoint()
                 movePosition = null
             }
         }
