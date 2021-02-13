@@ -165,5 +165,3 @@ operator fun Dimension.component2() = this.height
 
 val screens: Array<GraphicsDevice>
     get() = GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices
-
-

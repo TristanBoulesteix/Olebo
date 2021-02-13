@@ -214,8 +214,8 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
         g.setPaintMode()
         selectedElements.forEach {
             g.drawRect( //Draws a 1 pixel thick rectangle
-                relativeX(it.position.x) - 4,
-                relativeY(it.position.y) - 4,
+                relativeX(it.referencialPosition.x) - 4,
+                relativeY(it.referencialPosition.y) - 4,
                 relativeX(it.hitBox.width) + 8,
                 relativeY(it.hitBox.height) + 8
             )
@@ -228,16 +228,16 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
     ) {//Draws a blue rectangle to signify the GM that a token is invisible to the player
         g.color = Color.BLUE
         g.drawRect( //Draws a 1 pixel thick rectangle
-            (relativeX(token.position.x) - 3),
-            (relativeY(token.position.y) - 3),
+            (relativeX(token.referencialPosition.x) - 3),
+            (relativeY(token.referencialPosition.y) - 3),
             (relativeX(token.hitBox.width) + 6),
             (relativeY(token.hitBox.height) + 6)
         )
     }
 
     fun getRelativeRectangleOfToken(token: Element) = Rectangle(
-        relativeX(token.position.x),
-        relativeY(token.position.y),
+        relativeX(token.referencialPosition.x),
+        relativeY(token.referencialPosition.y),
         relativeX(token.hitBox.width),
         relativeY(token.hitBox.height)
     )
@@ -245,8 +245,8 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
     private fun drawToken(token: Element, g: Graphics) {
         g.drawImage(
             token.sprite.image,
-            relativeX(token.position.x),
-            relativeY(token.position.y),
+            relativeX(token.referencialPosition.x),
+            relativeY(token.referencialPosition.y),
             relativeX(token.hitBox.width),
             relativeY(token.hitBox.height),
             null

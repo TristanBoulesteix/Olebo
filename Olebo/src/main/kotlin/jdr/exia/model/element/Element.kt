@@ -135,18 +135,18 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         fun cmdPosition(positions: List<Position>, manager: CommandManager, elements: Elements) {
             assert(positions.size == elements.size) { "Error: Positions does not match elements number." }
 
-            val previousPosition = elements.map { it.position }
+            val previousPosition = elements.map { it.referencialPosition }
 
             manager += object : Command() {
                 override val label by StringDelegate(STR_MOVE_ELEMENTS)
 
                 override fun exec() = elements.forEachIndexed { index, element ->
-                    element.position = positions[index]
+                    element.referencialPosition = positions[index]
                 }
 
                 override fun cancelExec() = elements.forEachIndexed { index, element ->
                     if (element.stillExist())
-                        element.position = previousPosition[index]
+                        element.referencialPosition = previousPosition[index]
                 }
             }
         }
@@ -239,7 +239,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             transaction { priorityElement = value.priority }
         }
 
-    var position
+    var referencialPosition
         get() = Position(x, y)
         private set(value) {
             transaction {
@@ -247,6 +247,9 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
                 y = value.y
             }
         }
+
+    val centerPosition
+        get() = Position(this.hitBox.centerX.toInt(), this.hitBox.centerY.toInt())
 
     var currentHealth
         get() = if (this.isCharacter()) currentHP!! else throw Exception("Cet élément n'est pas un personnage !")
@@ -270,18 +273,18 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     // --- Command functions ---
 
     fun cmdPosition(position: Position, manager: CommandManager) {
-        val previousPosition = this.position
+        val previousPosition = this.referencialPosition
 
         manager += object : Command() {
             override val label by StringDelegate(STR_MOVE_ELEMENT)
 
             override fun exec() {
-                this@Element.position = position
+                this@Element.referencialPosition = position
             }
 
             override fun cancelExec() {
                 if (stillExist())
-                    this@Element.position = previousPosition
+                    this@Element.referencialPosition = previousPosition
             }
         }
     }
