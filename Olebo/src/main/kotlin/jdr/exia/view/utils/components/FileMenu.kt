@@ -25,7 +25,7 @@ import javax.swing.filechooser.FileNameExtensionFilter
 
 class FileMenu : JMenu(Strings[STR_FILES]) {
     init {
-        JMenuItem("${Strings[STR_EXPORT_DATA]} (ALPHA)").applyAndAppendTo(this) {
+        JMenuItem(Strings[STR_EXPORT_DATA]).applyAndAppendTo(this) {
             this.addActionListener {
                 val extension = "olebo"
                 JFileChooser().apply {
@@ -51,7 +51,7 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
             }
         }
 
-        JMenuItem("${Strings[STR_IMPORT_DATA]} (ALPHA)").applyAndAppendTo(this) {
+        JMenuItem(Strings[STR_IMPORT_DATA]).applyAndAppendTo(this) {
             this.addActionListener {
                 showConfirmMessage(
                     this@FileMenu.windowAncestor,

@@ -143,10 +143,6 @@ fun Graphics2D.drawCircleWithCenterCoordinates(x: Int, y: Int, radius: Int) {
     this.stroke = previousStroke
 }
 
-operator fun Point.component1() = this.x
-
-operator fun Point.component2() = this.y
-
 /**
  * Return the first element to correspond to the given position or null
  */
@@ -158,7 +154,7 @@ fun Elements.getTokenFromPosition(point: Point) = point.let { (x, y) ->
  * Get position of hitbox from coordinate clicked
  */
 fun Element.positionOf(point: Point) =
-    Point(position.x - hitBox.width / 2, point.y - hitBox.height / 2)
+    Point(point.x - hitBox.width / 2, point.y - hitBox.height / 2)
 
 operator fun Dimension.component1() = this.width
 
