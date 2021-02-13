@@ -3,7 +3,7 @@ package jdr.exia.model.utils
 import jdr.exia.model.element.Element
 
 class Elements(elements: List<Element>) : MutableList<Element> by elements.toMutableList() {
-    constructor() : this(mutableListOf())
+    private constructor() : this(mutableListOf())
 
     constructor(element: Element) : this(listOf(element))
 
