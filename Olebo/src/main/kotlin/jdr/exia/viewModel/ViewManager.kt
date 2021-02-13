@@ -207,25 +207,23 @@ object ViewManager {
         repaint()
     }
 
-    fun selectDown() {
-        with(activeScene!!) {
-            selectedElements = if (selectedElements.isEmpty() && this.elements.isNotEmpty()) {
-                this.elements[0].toElements()
-            } else {
-                fun Int.minusOne(list: Elements) = if (this == 0) list.size - 1 else this - 1
+    fun selectDown() = with(activeScene!!) {
+        selectedElements = if (selectedElements.isEmpty() && this.elements.isNotEmpty()) {
+            this.elements[0].toElements()
+        } else {
+            fun Int.minusOne(list: Elements) = if (this == 0) list.size - 1 else this - 1
 
-                selectedElements.doIfContainsSingle { element ->
-                    if (this.elements.getOrNull(this.elements.indexOfFirst { it.id == element.id }
-                            .minusOne(this.elements)) != null) {
-                        activeScene!!.elements[this.elements.indexOfFirst { it.id == element.id }
-                            .minusOne(this.elements)].toElements()
-                    } else emptyElements()
-                } ?: emptyElements()
-            }
-
-            ViewFacade.setSelectedToken(*selectedElements.toTypedArray())
-            repaint()
+            selectedElements.doIfContainsSingle { element ->
+                if (this.elements.getOrNull(this.elements.indexOfFirst { it.id == element.id }
+                        .minusOne(this.elements)) != null) {
+                    activeScene!!.elements[this.elements.indexOfFirst { it.id == element.id }
+                        .minusOne(this.elements)].toElements()
+                } else emptyElements()
+            } ?: emptyElements()
         }
+
+        ViewFacade.setSelectedToken(*selectedElements.toTypedArray())
+        repaint()
     }
 
     private fun updateTokens() { //Updates the tokens on the maps by repainting everything

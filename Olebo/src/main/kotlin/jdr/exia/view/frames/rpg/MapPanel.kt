@@ -11,10 +11,8 @@ import jdr.exia.view.utils.event.addMouseExitedListener
 import jdr.exia.view.utils.event.addMouseMovedListener
 import jdr.exia.view.utils.event.addMouseReleasedListener
 import jdr.exia.viewModel.ViewManager
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.swing.Swing
 import java.awt.*
 import java.awt.event.MouseEvent
 import java.awt.event.MouseMotionAdapter
@@ -130,32 +128,47 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
      * init only for [PlayerFrame]
      */
     private fun initializeForPlayer() {
-        repaintJob = GlobalScope.launch {
+        repaintJob = GlobalScope.launch(Dispatchers.Swing) {
             while (true) {
                 if (Settings.cursorEnabled)
                     repaint()
-                delay(70L)
+                delay(80L)
             }
         }
     }
 
-    private fun relativeX(absoluteX: Int): Int { //translates an X coordinate in 1600:900px to proportional coords according to this window's size
+    /**
+     * Translates an X coordinate in 1600:900px to proportional coords according to this window's size
+     */
+    private fun relativeX(absoluteX: Int): Int {
         return (absoluteX * this.width) / ViewManager.ABSOLUTE_WIDTH
     }
 
-    private fun relativeY(absoluteY: Int): Int { //translates a y coordinate in 1600:900px to proportional coords according to this window's size
+    /**
+     * Translates a y coordinate in 1600:900px to proportional coords according to this window's size
+     */
+    private fun relativeY(absoluteY: Int): Int {
         return (absoluteY * this.height) / ViewManager.ABSOLUTE_HEIGHT
     }
 
-    private fun absoluteX(relativeX: Int): Int { // Translates an X coordinate from this window into a 1600:900 X coord
+    /**
+     * Translates an X coordinate from this window into a 1600:900 X coord
+     */
+    private fun absoluteX(relativeX: Int): Int {
         return (((relativeX.toFloat() / this.width.toFloat())) * ViewManager.ABSOLUTE_WIDTH).toInt()
     }
 
-    private fun absoluteY(relativeY: Int): Int { // Translates an Y coordinate from this window into a 1600:900 Y coord
+    /**
+     * Translates an Y coordinate from this window into a 1600:900 Y coord
+     */
+    private fun absoluteY(relativeY: Int): Int {
         return (((relativeY.toFloat() / this.height.toFloat())) * ViewManager.ABSOLUTE_HEIGHT).toInt()
     }
 
-    fun updateTokens(tokens: Elements) { //Gets the current token display up to date
+    /**
+     * Gets the current token display up to date
+     */
+    fun updateTokens(tokens: Elements) {
         this.tokens = tokens
     }
 
@@ -163,49 +176,50 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
         get() = Point(absoluteX(x), absoluteY(y))
 
     override fun paintComponent(g: Graphics) {
-        // Draw background image
-        (g as Graphics2D).drawImage(
-            backGroundImage,
-            0,
-            0,
-            this.width,
-            this.height,
-            null
-        )
+            // Draw background image
+            (g as Graphics2D).drawImage(
+                backGroundImage,
+                0,
+                0,
+                this.width,
+                this.height,
+                null
+            )
 
-        for (token in tokens) //Display every token one by one
-        {
-            if ((parentGameFrame is PlayerFrame) && !(token.isVisible)) { //Do NOTHING
-            } //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
-            else {
-                // Draw token and visiblity indicator
-                if ((parentGameFrame is MasterFrame) && !(token.isVisible)) {
-                    drawInvisibleMarker(token, g)
+            //Display every token one by one
+            for (token in tokens) {
+                if ((parentGameFrame is PlayerFrame) && !(token.isVisible)) { //Do NOTHING
+                } //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
+                else {
+                    // Draw token and visiblity indicator
+                    if ((parentGameFrame is MasterFrame) && !(token.isVisible)) {
+                        drawInvisibleMarker(token, g)
+                    }
+                    drawToken(token, g)
                 }
-                drawToken(token, g)
             }
-        }
-        // Draw selection indicator
-        if (selectedElements.isNotEmpty() && parentGameFrame is MasterFrame) {
-            drawSelectedMarker(g)
-        }
-
-        // Draw select area
-        if (selectedArea != null) {
-            g.color = Color.RED
-            g.draw(selectedArea)
-            g.color = Color(255, 255, 255, 150)
-            g.fill(selectedArea)
-        }
-
-        // Draw cursor
-        if (parentGameFrame is PlayerFrame && Settings.cursorEnabled)
-            ViewManager.cursorPoint?.let {
-                g.color = cursorColor
-                g.fillCircleWithCenterCoordinates(relativeX(it.x), relativeY(it.y), 15)
-                g.color = borderCursorColor
-                g.drawCircleWithCenterCoordinates(relativeX(it.x), relativeY(it.y), 15)
+            // Draw selection indicator
+            if (selectedElements.isNotEmpty() && parentGameFrame is MasterFrame) {
+                drawSelectedMarker(g)
             }
+
+            // Draw select area
+            if (selectedArea != null) {
+                g.color = Color.RED
+                g.draw(selectedArea)
+                g.color = Color(255, 255, 255, 150)
+                g.fill(selectedArea)
+            }
+
+            // Draw cursor
+            if (parentGameFrame is PlayerFrame && Settings.cursorEnabled)
+                ViewManager.cursorPoint?.let {
+                    g.color = cursorColor
+                    g.fillCircleWithCenterCoordinates(relativeX(it.x), relativeY(it.y), 15)
+                    g.color = borderCursorColor
+                    g.drawCircleWithCenterCoordinates(relativeX(it.x), relativeY(it.y), 15)
+                }
+
     }
 
 
