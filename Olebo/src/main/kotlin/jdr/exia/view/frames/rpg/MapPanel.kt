@@ -4,7 +4,7 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Size
 import jdr.exia.model.utils.Elements
-import jdr.exia.model.utils.Position
+import jdr.exia.model.utils.Point
 import jdr.exia.model.utils.emptyElements
 import jdr.exia.view.utils.*
 import jdr.exia.view.utils.event.addMouseExitedListener
@@ -62,7 +62,7 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
      */
     private fun initializeForMaster() {
         var start = Point()
-        var movePosition: Position? = null
+        var movePoint: Point? = null
 
         this.addMouseMotionListener(object : MouseMotionAdapter() {
             override fun mouseMoved(me: MouseEvent) {
@@ -73,11 +73,11 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
                 if (SwingUtilities.isLeftMouseButton(me)) {
                     val end = me.point
 
-                    if (ViewManager.positionHasElement(Position(start).absolutePosition)) {
-                        movePosition = Position(end)
+                    if (ViewManager.positionHasElement(Point(start).absolutePosition)) {
+                        movePoint = Point(end)
                         selectedArea = null
                     } else {
-                        movePosition = null
+                        movePoint = null
                         selectedArea = Rectangle(
                             start.x.coerceAtMost(end.x),
                             start.y.coerceAtMost(end.y),
@@ -92,10 +92,10 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
         })
 
         addMouseReleasedListener { me ->
-            val releasedPosition = Position(me.point).absolutePosition
+            val releasedPosition = Point(me.point).absolutePosition
 
             when (me.button) {
-                MouseEvent.BUTTON1 -> if (movePosition == null && selectedArea == null) ViewManager.selectElement(
+                MouseEvent.BUTTON1 -> if (movePoint == null && selectedArea == null) ViewManager.selectElement(
                     releasedPosition
                 ) // Left click
                 MouseEvent.BUTTON2, MouseEvent.BUTTON3 -> ViewManager.moveTokens(releasedPosition)   // Other buttons
@@ -108,19 +108,19 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
                 selectedArea = null
             }
 
-            movePosition?.absolutePosition?.let {
-                ViewManager.moveTokens(it, Position(start).absolutePosition)
-                start = it.toPoint()
-                movePosition = null
+            movePoint?.absolutePosition?.let {
+                ViewManager.moveTokens(it, Point(start).absolutePosition)
+                start = it.toJPoint()
+                movePoint = null
             }
         }
 
         addMouseMovedListener { me ->
-            ViewManager.cursorPosition = Position(me.point).absolutePosition
+            ViewManager.cursorPoint = Point(me.point).absolutePosition
         }
 
         addMouseExitedListener {
-            ViewManager.cursorPosition = null
+            ViewManager.cursorPoint = null
         }
 
         ToolTipManager.sharedInstance().registerComponent(this)
@@ -159,8 +159,8 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
         this.tokens = tokens
     }
 
-    val Position.absolutePosition
-        get() = Position(absoluteX(x), absoluteY(y))
+    val Point.absolutePosition
+        get() = Point(absoluteX(x), absoluteY(y))
 
     override fun paintComponent(g: Graphics) {
         // Draw background image
@@ -200,7 +200,7 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
 
         // Draw cursor
         if (parentGameFrame is PlayerFrame && Settings.cursorEnabled)
-            ViewManager.cursorPosition?.let {
+            ViewManager.cursorPoint?.let {
                 g.color = cursorColor
                 g.fillCircleWithCenterCoordinates(relativeX(it.x), relativeY(it.y), 15)
                 g.color = borderCursorColor
@@ -214,8 +214,8 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
         g.setPaintMode()
         selectedElements.forEach {
             g.drawRect( //Draws a 1 pixel thick rectangle
-                relativeX(it.referencialPosition.x) - 4,
-                relativeY(it.referencialPosition.y) - 4,
+                relativeX(it.referencePoint.x) - 4,
+                relativeY(it.referencePoint.y) - 4,
                 relativeX(it.hitBox.width) + 8,
                 relativeY(it.hitBox.height) + 8
             )
@@ -228,16 +228,16 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
     ) {//Draws a blue rectangle to signify the GM that a token is invisible to the player
         g.color = Color.BLUE
         g.drawRect( //Draws a 1 pixel thick rectangle
-            (relativeX(token.referencialPosition.x) - 3),
-            (relativeY(token.referencialPosition.y) - 3),
+            (relativeX(token.referencePoint.x) - 3),
+            (relativeY(token.referencePoint.y) - 3),
             (relativeX(token.hitBox.width) + 6),
             (relativeY(token.hitBox.height) + 6)
         )
     }
 
     fun getRelativeRectangleOfToken(token: Element) = Rectangle(
-        relativeX(token.referencialPosition.x),
-        relativeY(token.referencialPosition.y),
+        relativeX(token.referencePoint.x),
+        relativeY(token.referencePoint.y),
         relativeX(token.hitBox.width),
         relativeY(token.hitBox.height)
     )
@@ -245,8 +245,8 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
     private fun drawToken(token: Element, g: Graphics) {
         g.drawImage(
             token.sprite.image,
-            relativeX(token.referencialPosition.x),
-            relativeY(token.referencialPosition.y),
+            relativeX(token.referencePoint.x),
+            relativeY(token.referencePoint.y),
             relativeX(token.hitBox.width),
             relativeY(token.hitBox.height),
             null
@@ -257,6 +257,6 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
      * Show alias on mouse hover
      */
     override fun getToolTipText() = mousePosition?.let {
-        if (Settings.isLabelEnabled) tokens.getTokenFromPosition(Position(it).absolutePosition)?.alias else null
+        if (Settings.isLabelEnabled) tokens.getTokenFromPosition(Point(it).absolutePosition)?.alias else null
     }
 }

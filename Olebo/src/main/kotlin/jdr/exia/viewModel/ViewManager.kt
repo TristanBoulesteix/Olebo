@@ -27,7 +27,7 @@ object ViewManager {
 
     private var selectedElements = mutableEmptyElements()
 
-    var cursorPosition: Position? = null
+    var cursorPoint: Point? = null
 
     /**
      * Get the list of all blueprints
@@ -86,18 +86,18 @@ object ViewManager {
     /**
      * Changes tokens position without dropping them (a moved token stays selected), intended for small steps
      */
-    fun moveTokens(position: Position, originPosition: Position? = null) {
-        val origin = originPosition?.let { pos ->
+    fun moveTokens(point: Point, originPoint: Point? = null) {
+        val origin = originPoint?.let { pos ->
             selectedElements.find { it.hitBox in pos } ?: selectElement(pos).let { selectedElements.firstOrNull() }
         }
 
         /**
-         * Return a new [Position] inside the bourders of the map
+         * Return a new [Point] inside the bourders of the map
          */
-        fun Position.checkBound(): Position {
+        fun Point.checkBound(): Point {
             var newPosition = this
 
-            if (position.x < 0) {
+            if (point.x < 0) {
                 newPosition = newPosition.copy(x = 0)
             } else if (newPosition.x > ABSOLUTE_WIDTH) {
                 newPosition = newPosition.copy(x = ABSOLUTE_WIDTH)
@@ -112,23 +112,23 @@ object ViewManager {
             return newPosition
         }
 
-        val newPosition = position.checkBound()
+        val newPosition = point.checkBound()
 
         if (selectedElements.isNotEmpty()) {
             if (selectedElements.size == 1) {
                 selectedElements.first()
                     .cmdPosition(selectedElements.first().positionOf(newPosition), activeScene!!.commandManager)
             } else {
-                val newPositions = mutableListOf<Position>()
+                val newPositions = mutableListOf<Point>()
 
                 val originElement = (selectedElements.find { it === origin } ?: selectedElements.first())
 
                 newPositions += originElement.positionOf(newPosition)
 
-                val diffPosition = newPosition - originElement.centerPosition
+                val diffPosition = newPosition - originElement.centerPoint
 
                 selectedElements.filterNot { it === originElement }.forEach {
-                    newPositions += it.positionOf((it.centerPosition + diffPosition).checkBound())
+                    newPositions += it.positionOf((it.centerPoint + diffPosition).checkBound())
                 }
 
                 activeScene.callCommandManager(newPositions, selectedElements, Element::cmdPosition)
@@ -156,8 +156,8 @@ object ViewManager {
     /**
      * Checks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
      */
-    fun selectElement(position: Position) {
-        selectedElements = activeScene!!.elements.getTokenFromPosition(position)?.toElements()?.toMutableList()
+    fun selectElement(point: Point) {
+        selectedElements = activeScene!!.elements.getTokenFromPosition(point)?.toElements()?.toMutableList()
             ?: mutableEmptyElements()
         if (selectedElements.isNotEmpty()) {
             ViewFacade.setSelectedToken(selectedElements[0])
@@ -167,8 +167,8 @@ object ViewManager {
         }
     }
 
-    fun positionHasElement(position: Position) =
-        activeScene!!.elements.getTokenFromPosition(position)?.toElements() != null
+    fun positionHasElement(point: Point) =
+        activeScene!!.elements.getTokenFromPosition(point)?.toElements() != null
 
     fun selectElements(rec: Rectangle) {
         val selectedElements = mutableEmptyElements()

@@ -7,7 +7,7 @@ import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.utils.Elements
-import jdr.exia.model.utils.Position
+import jdr.exia.model.utils.Point
 import jdr.exia.model.utils.isCharacter
 import jdr.exia.model.utils.rotate
 import jdr.exia.utils.CharacterException
@@ -132,21 +132,21 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
                 }
         }
 
-        fun cmdPosition(positions: List<Position>, manager: CommandManager, elements: Elements) {
-            assert(positions.size == elements.size) { "Error: Positions does not match elements number." }
+        fun cmdPosition(points: List<Point>, manager: CommandManager, elements: Elements) {
+            assert(points.size == elements.size) { "Error: Positions does not match elements number." }
 
-            val previousPosition = elements.map { it.referencialPosition }
+            val previousPosition = elements.map { it.referencePoint }
 
             manager += object : Command() {
                 override val label by StringDelegate(STR_MOVE_ELEMENTS)
 
                 override fun exec() = elements.forEachIndexed { index, element ->
-                    element.referencialPosition = positions[index]
+                    element.referencePoint = points[index]
                 }
 
                 override fun cancelExec() = elements.forEachIndexed { index, element ->
                     if (element.stillExist())
-                        element.referencialPosition = previousPosition[index]
+                        element.referencePoint = previousPosition[index]
                 }
             }
         }
@@ -239,8 +239,8 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             transaction { priorityElement = value.priority }
         }
 
-    var referencialPosition
-        get() = Position(x, y)
+    var referencePoint
+        get() = Point(x, y)
         private set(value) {
             transaction {
                 x = value.x
@@ -248,8 +248,8 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             }
         }
 
-    val centerPosition
-        get() = Position(this.hitBox.centerX.toInt(), this.hitBox.centerY.toInt())
+    val centerPoint
+        get() = Point(this.hitBox.centerX.toInt(), this.hitBox.centerY.toInt())
 
     var currentHealth
         get() = if (this.isCharacter()) currentHP!! else throw Exception("Cet élément n'est pas un personnage !")
@@ -272,19 +272,19 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
     // --- Command functions ---
 
-    fun cmdPosition(position: Position, manager: CommandManager) {
-        val previousPosition = this.referencialPosition
+    fun cmdPosition(point: Point, manager: CommandManager) {
+        val previousPosition = this.referencePoint
 
         manager += object : Command() {
             override val label by StringDelegate(STR_MOVE_ELEMENT)
 
             override fun exec() {
-                this@Element.referencialPosition = position
+                this@Element.referencePoint = point
             }
 
             override fun cancelExec() {
                 if (stillExist())
-                    this@Element.referencialPosition = previousPosition
+                    this@Element.referencePoint = previousPosition
             }
         }
     }
