@@ -6,6 +6,7 @@ import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.dao.SceneTable
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
+import jdr.exia.model.utils.Elements
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -51,10 +52,11 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
     val commandManager
         get() = CommandManager(id.value)
 
-    val elements: List<Element>
+    val elements: Elements
         get() = transaction {
-            elementIterable.toMutableList().filter { !it.isDeleted }.sortedBy { it.priority }
+            Elements(elementIterable.filter { !it.isDeleted }.sortedBy { it.priority })
         }
+
     var name by SceneTable.name
     var background by SceneTable.background
     var idAct by SceneTable.idAct

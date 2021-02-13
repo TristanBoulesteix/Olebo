@@ -41,8 +41,8 @@ object MasterFrame : JFrame(), GameFrame {
 
     var selectedElements: Elements = emptyElements()
         set(value) {
-            selectPanel.selectedElements = value.toList()
-            mapPanel.selectedElements = value.toMutableList()
+            selectPanel.selectedElements = value
+            mapPanel.selectedElements = value
             field = value
         }
 

@@ -25,7 +25,7 @@ object ViewManager {
     private var activeAct: Act? = null
     private var activeScene: Scene? = null
 
-    private var selectedElements = mutableEmptyElements()
+    private var selectedElements = emptyElements()
 
     var cursorPoint: Point? = null
 
@@ -52,7 +52,7 @@ object ViewManager {
     fun removeSelectedElements() = removeElements(selectedElements)
 
     fun removeElements(elements: Elements) { //removes given token from MutableList
-        selectedElements = mutableEmptyElements()
+        selectedElements = emptyElements()
         ViewFacade.setSelectedToken(null)
         activeScene.callCommandManager(elements, Element::cmdDelete)
         repaint()
@@ -65,7 +65,7 @@ object ViewManager {
     }
 
     fun unselectAllElements() {
-        selectedElements = mutableEmptyElements()
+        selectedElements = emptyElements()
         ViewFacade.setSelectedToken(null)
     }
 
@@ -138,7 +138,7 @@ object ViewManager {
     }
 
     private fun unSelectElements() {
-        selectedElements = mutableEmptyElements()
+        selectedElements = emptyElements()
         ViewFacade.unSelectElements()
         repaint()
     }
@@ -157,8 +157,7 @@ object ViewManager {
      * Checks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
      */
     fun selectElement(point: Point) {
-        selectedElements = activeScene!!.elements.getTokenFromPosition(point)?.toElements()?.toMutableList()
-            ?: mutableEmptyElements()
+        selectedElements = activeScene!!.elements.getTokenFromPosition(point)?.toElements() ?: emptyElements()
         if (selectedElements.isNotEmpty()) {
             ViewFacade.setSelectedToken(selectedElements[0])
             repaint()
@@ -171,7 +170,7 @@ object ViewManager {
         activeScene!!.elements.getTokenFromPosition(point)?.toElements() != null
 
     fun selectElements(rec: Rectangle) {
-        val selectedElements = mutableEmptyElements()
+        val selectedElements = emptyElements()
 
         activeScene!!.elements.forEach {
             if (rec.contains(MasterFrame.mapPanel.getRelativeRectangleOfToken(it))) {
@@ -191,7 +190,7 @@ object ViewManager {
 
     fun selectUp() = with(activeScene!!) {
         selectedElements = if (selectedElements.isEmpty() && this.elements.isNotEmpty()) {
-            this.elements[0].toElements().toMutableList()
+            this.elements[0].toElements()
         } else {
             fun Int.plusOne(list: Elements) = if (this == list.size - 1) 0 else this + 1
 
@@ -199,9 +198,9 @@ object ViewManager {
                 if (this.elements.getOrNull(this.elements.indexOfFirst { it.id == element.id }
                         .plusOne(this.elements)) != null) {
                     this.elements[this.elements.indexOfFirst { it.id == element.id }
-                        .plusOne(this.elements)].toElements().toMutableList()
-                } else mutableEmptyElements()
-            } ?: mutableEmptyElements()
+                        .plusOne(this.elements)].toElements()
+                } else emptyElements()
+            } ?: emptyElements()
         }
 
         ViewFacade.setSelectedToken(*selectedElements.toTypedArray())
@@ -211,7 +210,7 @@ object ViewManager {
     fun selectDown() {
         with(activeScene!!) {
             selectedElements = if (selectedElements.isEmpty() && this.elements.isNotEmpty()) {
-                this.elements[0].toElements().toMutableList()
+                this.elements[0].toElements()
             } else {
                 fun Int.minusOne(list: Elements) = if (this == 0) list.size - 1 else this - 1
 
@@ -219,9 +218,9 @@ object ViewManager {
                     if (this.elements.getOrNull(this.elements.indexOfFirst { it.id == element.id }
                             .minusOne(this.elements)) != null) {
                         activeScene!!.elements[this.elements.indexOfFirst { it.id == element.id }
-                            .minusOne(this.elements)].toElements().toMutableList()
-                    } else mutableEmptyElements()
-                } ?: mutableEmptyElements()
+                            .minusOne(this.elements)].toElements()
+                    } else emptyElements()
+                } ?: emptyElements()
             }
 
             ViewFacade.setSelectedToken(*selectedElements.toTypedArray())
@@ -242,9 +241,11 @@ object ViewManager {
         repaint()
     }
 
-    fun rotateRight() = activeScene.callCommandManager(selectedElements, Element::cmdOrientationToRight).also { repaint() }
+    fun rotateRight() =
+        activeScene.callCommandManager(selectedElements, Element::cmdOrientationToRight).also { repaint() }
 
-    fun rotateLeft() = activeScene.callCommandManager(selectedElements, Element::cmdOrientationToLeft).also { repaint() }
+    fun rotateLeft() =
+        activeScene.callCommandManager(selectedElements, Element::cmdOrientationToLeft).also { repaint() }
 
     fun updatePriorityToken(priority: Priority) = selectedElements.forEach {
         it.priority = priority

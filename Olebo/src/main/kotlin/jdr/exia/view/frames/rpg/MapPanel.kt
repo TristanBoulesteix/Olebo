@@ -209,7 +209,10 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
     }
 
 
-    private fun drawSelectedMarker(g: Graphics) { //Draws a red rectangle around the currently selected token for movement
+    /**
+     * Draws a red rectangle around the currently selected token for movement
+     */
+    private fun drawSelectedMarker(g: Graphics) {
         g.color = Color.RED
         g.setPaintMode()
         selectedElements.forEach {
@@ -222,10 +225,13 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
         }
     }
 
+    /**
+     * Draws a blue rectangle to signify the GM that a token is invisible to the player
+     */
     private fun drawInvisibleMarker(
         token: Element,
         g: Graphics
-    ) {//Draws a blue rectangle to signify the GM that a token is invisible to the player
+    ) {
         g.color = Color.BLUE
         g.drawRect( //Draws a 1 pixel thick rectangle
             (relativeX(token.referencePoint.x) - 3),

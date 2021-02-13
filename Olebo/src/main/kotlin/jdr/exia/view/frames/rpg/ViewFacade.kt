@@ -20,7 +20,7 @@ object ViewFacade {
         }
 
     fun setSelectedToken(vararg tokens: Element) {
-        MasterFrame.selectedElements = tokens.toMutableList()
+        MasterFrame.selectedElements = Elements(*tokens)
     }
 
     fun setSelectedToken(token: Element?) = if (token == null) setSelectedToken() else setSelectedToken(token)

@@ -2,16 +2,17 @@ package jdr.exia.model.utils
 
 import jdr.exia.model.element.Element
 
-typealias Elements = List<Element>
+class Elements(elements: List<Element>) : MutableList<Element> by elements.toMutableList() {
+    constructor() : this(mutableListOf())
 
-typealias MutableElements = MutableList<Element>
+    constructor(element: Element) : this(listOf(element))
 
-fun mutableEmptyElements(): MutableElements = emptyElements().toMutableList()
+    constructor(vararg elements: Element) : this(listOf(*elements))
 
-fun emptyElements(): Elements = emptyList()
-
-fun Element.toElements(): Elements = listOf(this)
-
-inline fun <R> Elements.doIfContainsSingle(action: (Element) -> R): R? {
-    return if (size == 1) action(this[0]) else null
+    inline fun <R> doIfContainsSingle(action: (Element) -> R) = if (size == 1) action(this[0]) else null
 }
+
+fun emptyElements(): Elements = Elements()
+
+fun Element.toElements() = Elements(this)
+
