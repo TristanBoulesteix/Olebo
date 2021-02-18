@@ -176,50 +176,49 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
         get() = Point(absoluteX(x), absoluteY(y))
 
     override fun paintComponent(g: Graphics) {
-            // Draw background image
-            (g as Graphics2D).drawImage(
-                backGroundImage,
-                0,
-                0,
-                this.width,
-                this.height,
-                null
-            )
+        // Draw background image
+        (g as Graphics2D).drawImage(
+            backGroundImage,
+            0,
+            0,
+            this.width,
+            this.height,
+            null
+        )
 
-            //Display every token one by one
-            for (token in tokens) {
-                if ((parentGameFrame is PlayerFrame) && !(token.isVisible)) { //Do NOTHING
-                } //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
-                else {
-                    // Draw token and visiblity indicator
-                    if ((parentGameFrame is MasterFrame) && !(token.isVisible)) {
-                        drawInvisibleMarker(token, g)
-                    }
-                    drawToken(token, g)
+        //Display every token one by one
+        for (token in tokens) {
+            if ((parentGameFrame is PlayerFrame) && !(token.isVisible)) { //Do NOTHING
+            } //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
+            else {
+                // Draw token and visiblity indicator
+                if ((parentGameFrame is MasterFrame) && !(token.isVisible)) {
+                    drawInvisibleMarker(token, g)
                 }
+                drawToken(token, g)
             }
-            // Draw selection indicator
-            if (selectedElements.isNotEmpty() && parentGameFrame is MasterFrame) {
-                drawSelectedMarker(g)
+        }
+        // Draw selection indicator
+        if (selectedElements.isNotEmpty() && parentGameFrame is MasterFrame) {
+            drawSelectedMarker(g)
+        }
+
+        // Draw select area
+        if (selectedArea != null) {
+            g.color = Color.RED
+            g.draw(selectedArea)
+            g.color = Color(255, 255, 255, 150)
+            g.fill(selectedArea)
+        }
+
+        // Draw cursor
+        if (parentGameFrame is PlayerFrame && Settings.cursorEnabled)
+            ViewManager.cursorPoint?.let {
+                g.color = cursorColor
+                g.fillCircleWithCenterCoordinates(relativeX(it.x), relativeY(it.y), 15)
+                g.color = borderCursorColor
+                g.drawCircleWithCenterCoordinates(relativeX(it.x), relativeY(it.y), 15)
             }
-
-            // Draw select area
-            if (selectedArea != null) {
-                g.color = Color.RED
-                g.draw(selectedArea)
-                g.color = Color(255, 255, 255, 150)
-                g.fill(selectedArea)
-            }
-
-            // Draw cursor
-            if (parentGameFrame is PlayerFrame && Settings.cursorEnabled)
-                ViewManager.cursorPoint?.let {
-                    g.color = cursorColor
-                    g.fillCircleWithCenterCoordinates(relativeX(it.x), relativeY(it.y), 15)
-                    g.color = borderCursorColor
-                    g.drawCircleWithCenterCoordinates(relativeX(it.x), relativeY(it.y), 15)
-                }
-
     }
 
 
