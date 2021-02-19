@@ -188,9 +188,8 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
 
         //Display every token one by one
         for (token in tokens) {
-            if ((parentGameFrame is PlayerFrame) && !(token.isVisible)) { //Do NOTHING
-            } //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
-            else {
+            //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
+            if (parentGameFrame !is PlayerFrame || token.isVisible) {
                 // Draw token and visiblity indicator
                 if ((parentGameFrame is MasterFrame)) {
                     if (!(token.isVisible)) {
