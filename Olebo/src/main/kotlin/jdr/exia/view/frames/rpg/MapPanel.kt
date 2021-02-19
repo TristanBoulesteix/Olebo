@@ -194,15 +194,15 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
                 // Draw token and visiblity indicator
                 if ((parentGameFrame is MasterFrame)) {
                     if (!(token.isVisible)) {
-                        drawInvisibleMarker(token, g)
+                        g.drawInvisibleMarker(token)
                     }
 
                     // Draw selection indicator
                     if (selectedElements.isNotEmpty() && token in selectedElements) {
-                        drawSelectedMarker(g, token)
+                        g.drawSelectedMarker(token)
                     }
                 }
-                drawToken(token, g)
+                g.drawToken(token)
             }
         }
 
@@ -228,10 +228,10 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
     /**
      * Draws a red rectangle around the currently selected token for movement
      */
-    private fun drawSelectedMarker(g: Graphics, token: Element) {
-        g.color = Color.RED
-        g.setPaintMode()
-        g.drawRect( //Draws a 1 pixel thick rectangle
+    private fun Graphics.drawSelectedMarker(token: Element) {
+        color = Color.RED
+        setPaintMode()
+        drawRect( //Draws a 1 pixel thick rectangle
             relativeX(token.referencePoint.x) - 4,
             relativeY(token.referencePoint.y) - 4,
             relativeX(token.hitBox.width) + 8,
@@ -242,12 +242,9 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
     /**
      * Draws a blue rectangle to signify the GM that a token is invisible to the player
      */
-    private fun drawInvisibleMarker(
-        token: Element,
-        g: Graphics
-    ) {
-        g.color = Color.BLUE
-        g.drawRect( //Draws a 1 pixel thick rectangle
+    private fun Graphics.drawInvisibleMarker(token: Element) {
+        color = Color.BLUE
+        drawRect( //Draws a 1 pixel thick rectangle
             (relativeX(token.referencePoint.x) - 3),
             (relativeY(token.referencePoint.y) - 3),
             (relativeX(token.hitBox.width) + 6),
@@ -262,8 +259,8 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
         relativeY(token.hitBox.height)
     )
 
-    private fun drawToken(token: Element, g: Graphics) {
-        g.drawImage(
+    private fun Graphics.drawToken(token: Element) {
+        drawImage(
             token.sprite.image,
             relativeX(token.referencePoint.x),
             relativeY(token.referencePoint.y),
