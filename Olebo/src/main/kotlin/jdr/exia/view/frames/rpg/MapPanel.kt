@@ -192,15 +192,18 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
             } //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
             else {
                 // Draw token and visiblity indicator
-                if ((parentGameFrame is MasterFrame) && !(token.isVisible)) {
-                    drawInvisibleMarker(token, g)
+                if ((parentGameFrame is MasterFrame)) {
+                    if (!(token.isVisible)) {
+                        drawInvisibleMarker(token, g)
+                    }
+
+                    // Draw selection indicator
+                    if (selectedElements.isNotEmpty() && token in selectedElements) {
+                        drawSelectedMarker(g, token)
+                    }
                 }
                 drawToken(token, g)
             }
-        }
-        // Draw selection indicator
-        if (selectedElements.isNotEmpty() && parentGameFrame is MasterFrame) {
-            drawSelectedMarker(g)
         }
 
         // Draw select area
@@ -225,17 +228,15 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
     /**
      * Draws a red rectangle around the currently selected token for movement
      */
-    private fun drawSelectedMarker(g: Graphics) {
+    private fun drawSelectedMarker(g: Graphics, token: Element) {
         g.color = Color.RED
         g.setPaintMode()
-        selectedElements.forEach {
-            g.drawRect( //Draws a 1 pixel thick rectangle
-                relativeX(it.referencePoint.x) - 4,
-                relativeY(it.referencePoint.y) - 4,
-                relativeX(it.hitBox.width) + 8,
-                relativeY(it.hitBox.height) + 8
-            )
-        }
+        g.drawRect( //Draws a 1 pixel thick rectangle
+            relativeX(token.referencePoint.x) - 4,
+            relativeY(token.referencePoint.y) - 4,
+            relativeX(token.hitBox.width) + 8,
+            relativeY(token.hitBox.height) + 8
+        )
     }
 
     /**

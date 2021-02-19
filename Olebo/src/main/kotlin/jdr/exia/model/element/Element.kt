@@ -189,14 +189,15 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     var isDeleted by InstanceTable.deleted
 
     // Value from the Blueprint
-    val sprite
-        get() = transaction {
+    val sprite by lazy {
+        transaction {
             if (blueprint.type.typeElement == Type.BASIC) {
                 ImageIcon(ImageIO.read(Element::class.java.classLoader.getResourceAsStream("sprites/${blueprint.sprite}")))
             } else {
                 ImageIcon(blueprint.sprite)
             }.rotate(orientation)
         }
+    }
 
     val name
         get() = transaction { blueprint.realName }
@@ -293,4 +294,8 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
      * Check if the element still exists in the database
      */
     fun stillExist() = transaction { Element.findById(this@Element.id) != null }
+
+    override fun equals(other: Any?) = other is Element && this.id == other.id
+
+    override fun hashCode() = this.id.value
 }
