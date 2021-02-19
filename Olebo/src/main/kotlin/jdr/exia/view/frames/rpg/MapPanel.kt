@@ -176,6 +176,8 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
         get() = Point(absoluteX(x), absoluteY(y))
 
     override fun paintComponent(g: Graphics) {
+        super.paintComponent(g)
+
         // Draw background image
         (g as Graphics2D).drawImage(
             backGroundImage,
@@ -202,6 +204,8 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
                     }
                 }
                 g.drawToken(token)
+
+                g.drawLabel(token)
             }
         }
 
@@ -236,6 +240,19 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
             relativeX(token.hitBox.width) + 8,
             relativeY(token.hitBox.height) + 8
         )
+    }
+
+    private fun Graphics.drawLabel(token: Element) {
+        val (refX, refY) = token.referencePoint
+        val alias = token.alias
+
+        font = Font("Arial", Font.BOLD, 24)
+        color = Color.BLACK
+
+        val x = relativeX(refX) + (relativeX(token.hitBox.width) - fontMetrics.stringWidth(alias)) / 2
+        val y = relativeY(refY) - 10
+
+        drawString(alias, x, y)
     }
 
     /**
