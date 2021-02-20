@@ -117,6 +117,8 @@ const val STR_RESET = "reset"
 const val STR_BACK = "back"
 const val STR_LOADING = "loading"
 const val STR_INFO = "info"
+const val STR_BLACK = "black"
+const val STR_LABEL_COLOR = "label_color"
 
 // -- Sentences
 

@@ -1,5 +1,6 @@
 package jdr.exia.model.dao
 
+import jdr.exia.model.dao.option.SerializableColor
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
@@ -40,6 +41,7 @@ object SettingsTable : IntIdTable(), Initializable {
     const val PLAYER_FRAME_ENABLED = "PlayerFrame_enabled"
     const val DEFAULT_ELEMENT_VISIBILITY = "default_element_visibility"
     const val LABEL_ENABLED = "label_enabled"
+    const val LABEL_COLOR = "label_color"
 
     val name = varchar("name", 255)
     val value = varchar("value", 255).default("")
@@ -69,6 +71,7 @@ object SettingsTable : IntIdTable(), Initializable {
         insertOptionIfNotExists(7, PLAYER_FRAME_ENABLED, false, insertOnlyIfnotExists)
         insertOptionIfNotExists(8, DEFAULT_ELEMENT_VISIBILITY, false, insertOnlyIfnotExists)
         insertOptionIfNotExists(9, LABEL_ENABLED, false, insertOnlyIfnotExists)
+        insertOptionIfNotExists(10, LABEL_COLOR, SerializableColor.BLACK.encode(), insertOnlyIfnotExists)
     }
 
     private fun insertOptionIfNotExists(id: Int, name: String, value: Any, insertOnlyIfnotExists: Boolean) {

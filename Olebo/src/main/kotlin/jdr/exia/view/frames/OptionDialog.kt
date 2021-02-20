@@ -3,7 +3,7 @@ package jdr.exia.view.frames
 import jdr.exia.availableLocales
 import jdr.exia.localization.*
 import jdr.exia.model.dao.SettingsTable
-import jdr.exia.model.dao.option.CursorColor
+import jdr.exia.model.dao.option.SerializableColor
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.dao.option.toFormatedString
 import jdr.exia.view.frames.rpg.MasterFrame
@@ -12,9 +12,11 @@ import jdr.exia.view.utils.applyAndAddTo
 import jdr.exia.view.utils.components.templates.LabeledItem
 import jdr.exia.view.utils.gridBagConstraintsOf
 import jdr.exia.view.utils.showMessage
+import jdr.exia.view.utils.windowAncestor
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.*
 import javax.swing.*
+import kotlin.reflect.KMutableProperty0
 
 class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPTIONS], true) {
     private val comboLanguageItems =
@@ -50,15 +52,22 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
         this.isSelected = Settings.defaultElementVisibility
     }
 
-    private val checkboxLabelEnabled = JCheckBox(Strings[STR_LABEL_ENABLED]).apply {
+    private val checkboxLabelEnabled: JCheckBox = JCheckBox(Strings[STR_LABEL_ENABLED]).apply {
         this.isSelected = Settings.isLabelEnabled
+        this.addActionListener {
+            comboLabelColor.isEnabled = this.isSelected
+        }
+    }
+
+    private val comboLabelColor: ComboLabelColor = ComboLabelColor().apply {
+        this.isEnabled = checkboxLabelEnabled.isSelected
     }
 
     private val languageChangeRestartLabel: JLabel
 
     init {
-        this.size = Dimension(500, 250)
-        this.setLocationRelativeTo(null)
+        this.size = Dimension(500, 300)
+        this.setLocationRelativeTo(windowAncestor)
         this.isResizable = true
         this.layout = GridBagLayout()
         this.defaultCloseOperation = DISPOSE_ON_CLOSE
@@ -108,7 +117,13 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
 
             this.add(
                 LabeledItem(Strings[STR_CURSOR_COLOR_LABEL], comboColorCursor),
-                gridBagConstraintsOf(0, 1, weightx = 1.0, anchor = GridBagConstraints.LINE_START)
+                gridBagConstraintsOf(
+                    0,
+                    1,
+                    weightx = 1.0,
+                    anchor = GridBagConstraints.LINE_START,
+                    insets = Insets(0, 5, 5, 0)
+                )
             )
 
             this.add(
@@ -119,6 +134,17 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
             this.add(
                 checkboxLabelEnabled,
                 gridBagConstraintsOf(0, 3, weightx = 1.0, anchor = GridBagConstraints.LINE_START)
+            )
+
+            this.add(
+                LabeledItem(Strings[STR_LABEL_COLOR], comboLabelColor),
+                gridBagConstraintsOf(
+                    0,
+                    4,
+                    weightx = 1.0,
+                    anchor = GridBagConstraints.LINE_START,
+                    insets = Insets(0, 5, 10, 0)
+                )
             )
         }
 
@@ -153,14 +179,15 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
                     Settings.language = availableLocales[comboLanguage.selectedIndex]
                     Settings.autoUpdate = checkBoxAutoUpdate.isSelected
                     Settings.playerFrameOpenedByDefault = checkBoxPlayerFrameOpenedByDefault.isSelected
-                    comboColorCursor.selectedCursorColor?.let {
+                    comboColorCursor.selectedSerializableColor?.let {
                         Settings.cursorColor = it
                         if (owner is MasterFrame)
                             ViewFacade.updateCursorOnPlayerFrame()
                     }
                     Settings.defaultElementVisibility = checkboxVisibilityElement.isSelected
-                    checkboxLabelEnabled.isSelected.let {
-                        Settings.isLabelEnabled = it
+                    checkboxLabelEnabled.isSelected.let { isEnabled ->
+                        Settings.isLabelEnabled = isEnabled
+                        comboLabelColor.selectedSerializableColor?.let { Settings.labelColor = it }
                         if (owner is MasterFrame)
                             ViewFacade.reloadFrames()
                     }
@@ -186,49 +213,52 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
         }
     }
 
-    private inner class ComboColorCursor : JComboBox<String>() {
+    private open inner class ComboColor(
+        private val optionPropertyColor: KMutableProperty0<SerializableColor>,
+        vararg serializableColors: SerializableColor
+    ) :
+        JComboBox<String>() {
         private val custom by StringDelegate(STR_CUSTOM_COLOR)
 
         private val customLabel
-            get() = when (selectedCursorColor) {
-                null -> Settings.cursorColor.let {
-                    if (it is CursorColor.Custom) custom + " " + it.contentCursorColor.toFormatedString() else custom
+            get() = when (selectedSerializableColor) {
+                null -> optionPropertyColor.get().let {
+                    if (it is SerializableColor.Custom) custom + " " + it.contentColor.toFormatedString() else custom
                 }
-                is CursorColor.Custom -> custom + " " + selectedCursorColor!!.contentCursorColor.toFormatedString()
+                is SerializableColor.Custom -> custom + " " + selectedSerializableColor!!.contentColor.toFormatedString()
                 else -> custom
             }
 
-        private val comboColorItems = listOf(
-            CursorColor.BLACK_WHITE,
-            CursorColor.WHITE_BLACK,
-            CursorColor.PURPLE,
-            CursorColor.YELLOW,
-            CursorColor.RED,
+        protected open val comboColorItems = listOf(
+            *serializableColors,
+            SerializableColor.PURPLE,
+            SerializableColor.YELLOW,
+            SerializableColor.RED,
         )
 
         private var isRefreshing = false
 
-        var selectedCursorColor: CursorColor? = null
+        var selectedSerializableColor: SerializableColor? = null
 
 
         init {
-            this.refreshItems(Settings.cursorColor)
+            this.refreshItems(optionPropertyColor.get())
             this.addActionListener {
                 if (!isRefreshing) {
-                    val colorInSettings = Settings.cursorColor
+                    val colorInSettings = optionPropertyColor.get()
 
                     val selectedJColor: Color = when {
-                        selectedCursorColor == null && colorInSettings is CursorColor.Custom -> colorInSettings.contentCursorColor
-                        selectedCursorColor is CursorColor.Custom -> selectedCursorColor!!.contentCursorColor
+                        selectedSerializableColor == null && colorInSettings is SerializableColor.Custom -> colorInSettings.contentColor
+                        selectedSerializableColor is SerializableColor.Custom -> selectedSerializableColor!!.contentColor
                         else -> Color.WHITE
                     }
 
-                    selectedCursorColor =
+                    selectedSerializableColor =
                         comboColorItems.find { it.name == selectedItem }
                             ?: selectColor(selectedJColor)?.let {
-                                CursorColor.Custom(it)
-                            } ?: selectedCursorColor
-                    selectedCursorColor?.let {
+                                SerializableColor.Custom(it)
+                            } ?: selectedSerializableColor
+                    selectedSerializableColor?.let {
                         this.refreshItems(it)
                     }
                 }
@@ -238,16 +268,21 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
         private fun selectColor(color: Color): Color? =
             JColorChooser.showDialog(this@OptionDialog, Strings[STR_SELECT_COLOR], color)
 
-        private fun refreshItems(cursorColor: CursorColor) {
+        private fun refreshItems(serializableColor: SerializableColor) {
             isRefreshing = true
             this.removeAllItems()
             comboColorItems.map { it.name }.forEach(this::addItem)
             this.addItem(customLabel)
-            this.selectedItem = selectedItemFromCursorColor(cursorColor.name)?.name ?: customLabel
+            this.selectedItem = selectedItemFromCursorColor(serializableColor.name)?.name ?: customLabel
             isRefreshing = false
         }
 
         private fun selectedItemFromCursorColor(cursorColorName: String) =
             comboColorItems.find { it.name == cursorColorName }
     }
+
+    private inner class ComboColorCursor :
+        ComboColor(Settings::cursorColor, SerializableColor.BLACK_WHITE, SerializableColor.WHITE_BLACK)
+
+    private inner class ComboLabelColor : ComboColor(Settings::labelColor, SerializableColor.BLACK)
 }

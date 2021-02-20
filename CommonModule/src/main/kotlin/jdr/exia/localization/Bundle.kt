@@ -161,6 +161,8 @@ class StringsBundle : Strings() {
         """.trimIndent(),
         ST_DEFAULT_SETTINGS_RESTORED to "The default settings have been successfully restored.",
         STR_INFO to "information",
+        STR_BLACK to "black",
+        STR_LABEL_COLOR to "label color",
     )
 }
 
@@ -323,5 +325,7 @@ class StringsBundle_fr : Strings() {
         """.trimIndent(),
         ST_DEFAULT_SETTINGS_RESTORED to "Les paramètres par défaut ont été restaurés avec succès.",
         STR_INFO to "information",
+        STR_BLACK to "noir",
+        STR_LABEL_COLOR to "couleur du label",
     )
 }

@@ -9,6 +9,7 @@ import jdr.exia.model.dao.SettingsTable.CURRENT_LANGUAGE
 import jdr.exia.model.dao.SettingsTable.CURSOR_COLOR
 import jdr.exia.model.dao.SettingsTable.CURSOR_ENABLED
 import jdr.exia.model.dao.SettingsTable.DEFAULT_ELEMENT_VISIBILITY
+import jdr.exia.model.dao.SettingsTable.LABEL_COLOR
 import jdr.exia.model.dao.SettingsTable.LABEL_ENABLED
 import jdr.exia.model.dao.SettingsTable.PLAYER_FRAME_ENABLED
 import jdr.exia.model.dao.SettingsTable.UPDATE_WARN
@@ -67,7 +68,7 @@ class Settings(id: EntityID<Int>) : IntEntity(id) {
 
         var cursorColor
             get() = transaction {
-                CursorColor[this@Companion[CURSOR_COLOR]!!]
+                SerializableColor[this@Companion[CURSOR_COLOR]!!]
             }
             set(value) = transaction {
                 this@Companion[CURSOR_COLOR] = value.encode()
@@ -89,6 +90,14 @@ class Settings(id: EntityID<Int>) : IntEntity(id) {
             get() = transaction { this@Companion[LABEL_ENABLED].toBoolean() }
             set(value) = transaction {
                 this@Companion[LABEL_ENABLED] = value
+            }
+
+        var labelColor
+            get() = transaction {
+                SerializableColor[this@Companion[LABEL_COLOR]!!]
+            }
+            set(value) = transaction {
+                this@Companion[LABEL_COLOR] = value.encode()
             }
 
         operator fun get(setting: String) = this.find { SettingsTable.name eq setting }.firstOrNull()?.value

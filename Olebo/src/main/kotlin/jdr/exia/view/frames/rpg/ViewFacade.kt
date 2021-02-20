@@ -47,7 +47,7 @@ object ViewFacade {
 
     fun updateCursorOnPlayerFrame() {
         Settings.cursorColor.let {
-            PlayerFrame.updateCursor(it.contentCursorColor, it.borderCursorColor)
+            PlayerFrame.updateCursor(it.contentColor, it.borderColor)
         }
     }
 

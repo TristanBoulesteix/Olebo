@@ -1,5 +1,6 @@
 package jdr.exia.view.frames.rpg
 
+import jdr.exia.model.dao.option.SerializableColor
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Size
@@ -50,8 +51,8 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
             initializeForPlayer()
 
         Settings.cursorColor.let {
-            cursorColor = it.contentCursorColor
-            borderCursorColor = it.borderCursorColor
+            cursorColor = it.contentColor
+            borderCursorColor = it.borderColor
         }
     }
 
@@ -188,6 +189,9 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
             null
         )
 
+        val labelColor = Settings.labelColor
+        val labelEnabled = Settings.isLabelEnabled
+
         //Display every token one by one
         for (token in tokens) {
             //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
@@ -205,7 +209,8 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
                 }
                 g.drawToken(token)
 
-                g.drawLabel(token)
+                if (labelEnabled)
+                    g.drawLabel(token, labelColor)
             }
         }
 
@@ -242,12 +247,12 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
         )
     }
 
-    private fun Graphics.drawLabel(token: Element) {
+    private fun Graphics.drawLabel(token: Element, labelColor: SerializableColor) {
         val (refX, refY) = token.referencePoint
         val alias = token.alias
 
         font = Font("Arial", Font.BOLD, 24)
-        color = Color.BLACK
+        color = labelColor.contentColor
 
         val x = relativeX(refX) + (relativeX(token.hitBox.width) - fontMetrics.stringWidth(alias)) / 2
         val y = relativeY(refY) - 10
