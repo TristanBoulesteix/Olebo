@@ -47,7 +47,7 @@ class BlueprintEditorPanel(homeManager: HomeManager, homeAvailable: Boolean = tr
 
         this.addClickListener { requestFocusInWindow() }
 
-        JPanel().applyAndAppendTo(this, BorderLayout.NORTH) {
+        JPanel().applyAndAddTo(this, BorderLayout.NORTH) {
             this.border = BorderFactory.createEmptyBorder(15, 10, 15, 10)
             this.layout = GridBagLayout()
 
@@ -63,12 +63,12 @@ class BlueprintEditorPanel(homeManager: HomeManager, homeAvailable: Boolean = tr
         this.add(selectorPanel, BorderLayout.CENTER)
 
         if (homeAvailable)
-            JPanel().applyAndAppendTo(this, BorderLayout.SOUTH) {
+            JPanel().applyAndAddTo(this, BorderLayout.SOUTH) {
                 this.border = BorderFactory.createEmptyBorder(10, 20, 10, 20)
                 this.layout = BorderLayout()
                 this.background = BACKGROUND_COLOR_LIGHT_BLUE
 
-                JButton(Strings[STR_BACK]).applyAndAppendTo(this) {
+                JButton(Strings[STR_BACK]).applyAndAddTo(this) {
                     this.border = BORDER_BUTTONS
 
                     this.addActionListener {
@@ -107,7 +107,7 @@ class BlueprintEditorPanel(homeManager: HomeManager, homeAvailable: Boolean = tr
         init {
             this.isFocusable = true
 
-            titlePanel.applyAndAppendTo(this, BorderLayout.NORTH) {
+            titlePanel.applyAndAddTo(this, BorderLayout.NORTH) {
                 this.layout = GridBagLayout()
 
                 titleContentPanel = buildTitleItemPanel(manager)

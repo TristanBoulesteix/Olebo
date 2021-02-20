@@ -2,14 +2,17 @@ package jdr.exia.view.frames
 
 import jdr.exia.availableLocales
 import jdr.exia.localization.*
+import jdr.exia.model.dao.SettingsTable
 import jdr.exia.model.dao.option.CursorColor
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.dao.option.toFormatedString
 import jdr.exia.view.frames.rpg.MasterFrame
 import jdr.exia.view.frames.rpg.ViewFacade
-import jdr.exia.view.utils.applyAndAppendTo
+import jdr.exia.view.utils.applyAndAddTo
 import jdr.exia.view.utils.components.templates.LabeledItem
 import jdr.exia.view.utils.gridBagConstraintsOf
+import jdr.exia.view.utils.showMessage
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.*
 import javax.swing.*
 
@@ -60,7 +63,7 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
         this.layout = GridBagLayout()
         this.defaultCloseOperation = DISPOSE_ON_CLOSE
 
-        JPanel().applyAndAppendTo(
+        JPanel().applyAndAddTo(
             this,
             gridBagConstraintsOf(
                 0,
@@ -84,7 +87,7 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
             )
         }
 
-        JPanel().applyAndAppendTo(
+        JPanel().applyAndAddTo(
             this,
             gridBagConstraintsOf(
                 0,
@@ -120,7 +123,7 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
         }
 
         languageChangeRestartLabel =
-            JLabel(Strings[ST_LANGUAGE_CHANGE_ON_RESTART]).applyAndAppendTo(
+            JLabel(Strings[ST_LANGUAGE_CHANGE_ON_RESTART]).applyAndAddTo(
                 this, gridBagConstraintsOf(
                     0,
                     2,
@@ -134,7 +137,7 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
                 this.isVisible = false
             }
 
-        JPanel().applyAndAppendTo(
+        JPanel().applyAndAddTo(
             this, gridBagConstraintsOf(
                 0,
                 3,
@@ -144,7 +147,7 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
                 anchor = GridBagConstraints.SOUTH
             )
         ) {
-            JButton(Strings[STR_SAVE]).applyAndAppendTo(this) {
+            JButton(Strings[STR_SAVE]).applyAndAddTo(this) {
                 addActionListener {
                     // Save option selected to the database
                     Settings.language = availableLocales[comboLanguage.selectedIndex]
@@ -167,13 +170,19 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
                 }
             }
 
-            JButton(Strings[STR_CANCEL]).applyAndAppendTo(this) {
+            JButton(Strings[STR_CANCEL]).applyAndAddTo(this) {
                 addActionListener {
                     dispose()
                 }
             }
 
-            this.add(JButton(Strings[STR_RESTORE_DEFAULTS_OPTIONS]))
+            JButton(Strings[STR_RESTORE_DEFAULTS_OPTIONS]).applyAndAddTo(this) {
+                addActionListener {
+                    transaction { SettingsTable.initializeDefault() }
+                    showMessage(Strings[ST_DEFAULT_SETTINGS_RESTORED], this)
+                    dispose()
+                }
+            }
         }
     }
 

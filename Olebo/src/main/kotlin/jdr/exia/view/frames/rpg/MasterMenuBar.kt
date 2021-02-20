@@ -35,8 +35,8 @@ object MasterMenuBar : JMenuBar() {
 
         this.add(FileMenu())
 
-        JMenu(Strings[STR_TOOLS]).applyAndAppendTo(this) {
-            JCheckBoxMenuItem(Strings[STR_ENABLE_CURSOR]).applyAndAppendTo(this) {
+        JMenu(Strings[STR_TOOLS]).applyAndAddTo(this) {
+            JCheckBoxMenuItem(Strings[STR_ENABLE_CURSOR]).applyAndAddTo(this) {
                 this.isSelected = Settings.cursorEnabled
                 this.addItemListener {
                     Settings.cursorEnabled = it.stateChange == ItemEvent.SELECTED
@@ -84,8 +84,8 @@ object MasterMenuBar : JMenuBar() {
             this.add(redoMenuItem)
         }
 
-        JMenu(Strings[STR_WINDOW]).applyAndAppendTo(this) {
-            JMenuItem(Strings[STR_CLOSE_ACT]).applyAndAppendTo(this) {
+        JMenu(Strings[STR_WINDOW]).applyAndAddTo(this) {
+            JMenuItem(Strings[STR_CLOSE_ACT]).applyAndAddTo(this) {
                 this.addActionListener {
                     MasterFrame.isVisible = false
                     PlayerFrame.hide()
@@ -96,7 +96,7 @@ object MasterMenuBar : JMenuBar() {
 
             this.addSeparator()
 
-            togglePlayerFrameMenuItem = JCheckBoxMenuItem(Strings[STR_TOGGLE_PLAYER_FRAME]).applyAndAppendTo(this) {
+            togglePlayerFrameMenuItem = JCheckBoxMenuItem(Strings[STR_TOGGLE_PLAYER_FRAME]).applyAndAddTo(this) {
                 this.isSelected = Settings.playerFrameOpenedByDefault
                 this.addActionListener { e ->
                     PlayerFrame.toggle((e.source as AbstractButton).isSelected)
@@ -109,7 +109,7 @@ object MasterMenuBar : JMenuBar() {
 
             this.addSeparator()
 
-            JMenu(Strings[STR_CHOOSE_SCENE]).applyAndAppendTo(this) {
+            JMenu(Strings[STR_CHOOSE_SCENE]).applyAndAddTo(this) {
                 act?.let {
                     it.scenes.forEachIndexed { index, scene ->
                         if (scene.id.value == it.sceneId) {
@@ -128,8 +128,8 @@ object MasterMenuBar : JMenuBar() {
             }
         }
 
-        JMenu(Strings[STR_TOKENS]).applyAndAppendTo(this) {
-            JMenuItem(Strings[STR_MANAGE_BLUEPRINTS]).applyAndAppendTo(this) {
+        JMenu(Strings[STR_TOKENS]).applyAndAddTo(this) {
+            JMenuItem(Strings[STR_MANAGE_BLUEPRINTS]).applyAndAddTo(this) {
                 addActionListener {
                     BlueprintsDialog(windowAncestor).isVisible = true
                     ViewManager.unselectAllElements()
@@ -138,7 +138,7 @@ object MasterMenuBar : JMenuBar() {
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_B, CTRLSHIFT)
             }
 
-            JMenu(Strings[STR_IMPORT_FROM_SCENE]).applyAndAppendTo(this) {
+            JMenu(Strings[STR_IMPORT_FROM_SCENE]).applyAndAddTo(this) {
                 act?.let { act ->
                     if (act.scenes.size <= 1)
                         this.isEnabled = false
@@ -147,7 +147,7 @@ object MasterMenuBar : JMenuBar() {
                         if (it.id.value != act.sceneId) {
                             val itemMenu = JMenu(it.name).apply {
                                 if (it.elements.isNotEmpty()) {
-                                    JMenuItem(Strings[STR_IMPORT_ALL_ELEMENTS]).applyAndAppendTo(this) {
+                                    JMenuItem(Strings[STR_IMPORT_ALL_ELEMENTS]).applyAndAddTo(this) {
                                         addActionListener { _ ->
                                             it.elements.forEach { token ->
                                                 transaction {
@@ -167,7 +167,7 @@ object MasterMenuBar : JMenuBar() {
                                 }
 
                                 it.elements.forElse { token ->
-                                    JMenuItem(token.name + " (" + token.type.name + ")").applyAndAppendTo(this) {
+                                    JMenuItem(token.name + " (" + token.type.name + ")").applyAndAddTo(this) {
                                         addActionListener {
                                             transaction {
                                                 Scene.moveElementToScene(
@@ -194,14 +194,14 @@ object MasterMenuBar : JMenuBar() {
 
             this.addSeparator()
 
-            JMenuItem(Strings[STR_DELETE_SELECTED_TOKENS]).applyAndAppendTo(this) {
+            JMenuItem(Strings[STR_DELETE_SELECTED_TOKENS]).applyAndAddTo(this) {
                 this.addActionListener {
                     ViewManager.removeSelectedElements()
                 }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0)
             }
 
-            JMenuItem(Strings[STR_CLEAR_BOARD]).applyAndAppendTo(this) {
+            JMenuItem(Strings[STR_CLEAR_BOARD]).applyAndAddTo(this) {
                 addActionListener {
                     showConfirmMessage(this, Strings[ST_CONFIRM_CLEAR_BOARD], Strings[STR_DELETION], confirm = true) {
                         transaction {

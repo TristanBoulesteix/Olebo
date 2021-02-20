@@ -4,6 +4,7 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import java.util.*
 
 /**
@@ -56,22 +57,34 @@ object SettingsTable : IntIdTable(), Initializable {
             SettingsTable.update({ baseVersionWhere }) { it[value] = DAO.DATABASE_VERSION.toString() }
         }
 
-        insertOptionIfNotExists(2, AUTO_UPDATE, true)
-        insertOptionIfNotExists(3, UPDATE_WARN, "")
-        insertOptionIfNotExists(4, CURSOR_ENABLED, true)
-        insertOptionIfNotExists(5, CURRENT_LANGUAGE, Locale.getDefault().language)
-        insertOptionIfNotExists(6, CURSOR_COLOR, "")
-        insertOptionIfNotExists(7, PLAYER_FRAME_ENABLED, false)
-        insertOptionIfNotExists(8, DEFAULT_ELEMENT_VISIBILITY, false)
-        insertOptionIfNotExists(9, LABEL_ENABLED, false)
+        initializeDefault(true)
     }
 
-    private fun insertOptionIfNotExists(id: Int, name: String, value: Any) {
-        if (SettingsTable.select((SettingsTable.id eq id) and (SettingsTable.name eq name)).count() <= 0) {
+    fun initializeDefault(insertOnlyIfnotExists: Boolean = false) {
+        insertOptionIfNotExists(2, AUTO_UPDATE, true, insertOnlyIfnotExists)
+        insertOptionIfNotExists(3, UPDATE_WARN, "", insertOnlyIfnotExists)
+        insertOptionIfNotExists(4, CURSOR_ENABLED, true, insertOnlyIfnotExists)
+        insertOptionIfNotExists(5, CURRENT_LANGUAGE, Locale.getDefault().language, insertOnlyIfnotExists)
+        insertOptionIfNotExists(6, CURSOR_COLOR, "", insertOnlyIfnotExists)
+        insertOptionIfNotExists(7, PLAYER_FRAME_ENABLED, false, insertOnlyIfnotExists)
+        insertOptionIfNotExists(8, DEFAULT_ELEMENT_VISIBILITY, false, insertOnlyIfnotExists)
+        insertOptionIfNotExists(9, LABEL_ENABLED, false, insertOnlyIfnotExists)
+    }
+
+    private fun insertOptionIfNotExists(id: Int, name: String, value: Any, insertOnlyIfnotExists: Boolean) {
+        fun insertOrUpdate(builder: UpdateBuilder<Int>) {
+            builder[SettingsTable.id] = EntityID(id, SettingsTable)
+            builder[SettingsTable.name] = name
+            builder[SettingsTable.value] = value.toString()
+        }
+
+        if (!insertOnlyIfnotExists) {
+            SettingsTable.update({ SettingsTable.id eq id }) {
+                insertOrUpdate(it)
+            }
+        } else if (SettingsTable.select((SettingsTable.id eq id) and (SettingsTable.name eq name)).count() <= 0) {
             SettingsTable.insert {
-                it[SettingsTable.id] = EntityID(id, SettingsTable)
-                it[SettingsTable.name] = name
-                it[SettingsTable.value] = value.toString()
+                insertOrUpdate(it)
             }
         }
     }

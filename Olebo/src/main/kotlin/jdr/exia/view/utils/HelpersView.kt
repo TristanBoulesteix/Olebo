@@ -1,73 +1,16 @@
 package jdr.exia.view.utils
 
-import jdr.exia.localization.STR_CANCEL
-import jdr.exia.localization.STR_CONFIRM
-import jdr.exia.localization.STR_WARNING
-import jdr.exia.localization.Strings
 import jdr.exia.model.element.Element
 import jdr.exia.model.utils.Elements
 import jdr.exia.model.utils.Point
 import java.awt.*
-import java.awt.event.ItemEvent
-import javax.swing.JButton
-import javax.swing.JCheckBox
-import javax.swing.JOptionPane
 import javax.swing.SwingUtilities
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
-/**
- * Show a popup with a message
- */
-fun showPopup(message: String, parent: Component? = null, isError: Boolean = false) = JOptionPane.showMessageDialog(
-    parent,
-    message,
-    Strings[STR_WARNING],
-    if (!isError) JOptionPane.INFORMATION_MESSAGE else JOptionPane.ERROR_MESSAGE
-)
-
-inline fun showConfirmMessage(
-    parent: Component? = null,
-    message: Any,
-    title: String,
-    confirm: Boolean = false,
-    crossinline okAction: () -> Unit
-) {
-    val ok = JButton(Strings[STR_CONFIRM]).apply {
-        this.isEnabled = !confirm
-        this.addActionListener {
-            windowAncestor?.dispose()
-            okAction()
-        }
-    }
-
-    val cancel = JButton(Strings[STR_CANCEL]).apply {
-        this.addActionListener {
-            windowAncestor?.dispose()
-        }
-    }
-
-    JOptionPane.showOptionDialog(
-        parent,
-        if (confirm)
-            JCheckBox(message.toString()).apply {
-                this.addItemListener {
-                    ok.isEnabled = it.stateChange == ItemEvent.SELECTED
-                }
-            }
-        else message,
-        title,
-        JOptionPane.NO_OPTION,
-        JOptionPane.WARNING_MESSAGE,
-        null,
-        arrayOf(ok, cancel),
-        ok
-    )
-}
-
 @OptIn(ExperimentalContracts::class)
-inline fun <T : Container> T.applyAndAppendTo(
+inline fun <T : Container> T.applyAndAddTo(
     parent: Container,
     constraints: Any? = null,
     block: T.() -> Unit

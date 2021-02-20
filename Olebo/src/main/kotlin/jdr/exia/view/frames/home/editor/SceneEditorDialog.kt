@@ -1,9 +1,10 @@
 package jdr.exia.view.frames.home.editor
 
 import jdr.exia.localization.*
-import jdr.exia.view.utils.applyAndAppendTo
+import jdr.exia.view.utils.MessageType
+import jdr.exia.view.utils.applyAndAddTo
 import jdr.exia.view.utils.gridBagConstraintsOf
-import jdr.exia.view.utils.showPopup
+import jdr.exia.view.utils.showMessage
 import jdr.exia.viewModel.SceneData
 import java.awt.Dimension
 import java.awt.GridBagLayout
@@ -69,13 +70,13 @@ class SceneEditorDialog(private val scene: SceneData? = null) : JDialog() {
         }, gridBagConstraintsOf(0, 1))
 
         this.add(JPanel().apply {
-            JButton(Strings[STR_CONFIRM]).applyAndAppendTo(this) {
+            JButton(Strings[STR_CONFIRM]).applyAndAddTo(this) {
                 addActionListener {
                     dispose()
                     canceled = false
                 }
             }
-            JButton(Strings[STR_CANCEL]).applyAndAppendTo(this) { addActionListener { dispose() } }
+            JButton(Strings[STR_CANCEL]).applyAndAddTo(this) { addActionListener { dispose() } }
             this.border = BorderFactory.createEmptyBorder(10, 0, 0, 0)
         }, gridBagConstraintsOf(0, 2))
     }
@@ -89,7 +90,7 @@ class SceneEditorDialog(private val scene: SceneData? = null) : JDialog() {
             SceneData(nameField.text, selectedFile.absolutePath, scene?.id)
         } else if (!canceled) {
             this.canceled = true
-            showPopup(Strings[ST_SCENE_ALREADY_EXISTS_OR_INVALID], this)
+            showMessage(Strings[ST_SCENE_ALREADY_EXISTS_OR_INVALID], this, MessageType.WARNING)
             return this.showDialog()
         } else null
     }

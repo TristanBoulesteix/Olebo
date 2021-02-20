@@ -1,6 +1,6 @@
 package jdr.exia.view.utils.components.templates
 
-import jdr.exia.view.utils.applyAndAppendTo
+import jdr.exia.view.utils.applyAndAddTo
 import jdr.exia.view.utils.components.filter.IntegerFilter
 import jdr.exia.view.utils.event.ClickListener
 import jdr.exia.view.utils.event.addFocusLostListener
@@ -79,7 +79,7 @@ open class ItemPanel(protected val id: Int, name: String) : JPanel() {
             this.removeMouseListener(listener)
             this.layout = GridBagLayout()
 
-            JTextField(text).applyAndAppendTo(
+            JTextField(text).applyAndAddTo(
                 this,
                 gridBagConstraintsOf(fill = GridBagConstraints.BOTH, weightx = 1.0, weighty = 1.0)
             ) {
@@ -91,7 +91,7 @@ open class ItemPanel(protected val id: Int, name: String) : JPanel() {
                 this.addFocusLostListener {
                     if (!it.isTemporary) {
                         if (action != null) {
-                            action(id, this@applyAndAppendTo.text)
+                            action(id, this@applyAndAddTo.text)
                         }
                     }
                 }

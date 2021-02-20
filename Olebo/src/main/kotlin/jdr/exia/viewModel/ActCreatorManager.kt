@@ -8,7 +8,8 @@ import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.saveImg
 import jdr.exia.utils.forElse
 import jdr.exia.view.frames.home.editor.SceneEditorDialog
-import jdr.exia.view.utils.showPopup
+import jdr.exia.view.utils.MessageType
+import jdr.exia.view.utils.showMessage
 import jdr.exia.viewModel.observer.Action
 import jdr.exia.viewModel.observer.Observable
 import jdr.exia.viewModel.observer.Observer
@@ -99,7 +100,7 @@ class ActCreatorManager(private val homeManager: HomeManager) : Observable {
     fun createNewScene(@Suppress("UNUSED_PARAMETER") id: Int) {
         SceneEditorDialog().showDialog()?.let {
             if (tempScenes.map { map -> map.name }.contains(it.name)) {
-                showPopup(Strings[ST_SCENE_ALREADY_EXISTS])
+                showMessage(Strings[ST_SCENE_ALREADY_EXISTS], messageType = MessageType.WARNING)
                 createNewScene(0)
             } else {
                 tempScenes += it
@@ -116,7 +117,7 @@ class ActCreatorManager(private val homeManager: HomeManager) : Observable {
             if (tempScenes.map { map ->
                     if (tempScenes[index].name == map.name) "" else map.name
                 }.contains(it.name)) {
-                showPopup(Strings[ST_SCENE_ALREADY_EXISTS])
+                showMessage(Strings[ST_SCENE_ALREADY_EXISTS], messageType = MessageType.WARNING)
                 updateNewScene(index)
             } else {
                 tempScenes[index] = it

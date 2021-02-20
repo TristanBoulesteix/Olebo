@@ -159,6 +159,8 @@ class StringsBundle : Strings() {
             This element is used in 1 scene.
             Are you sure you want to delete it? This action cannot be cancelled.
         """.trimIndent(),
+        ST_DEFAULT_SETTINGS_RESTORED to "The default settings have been successfully restored.",
+        STR_INFO to "information",
     )
 }
 
@@ -319,5 +321,7 @@ class StringsBundle_fr : Strings() {
             Cet élément est utilisé dans 1 scène.
             Êtes-vous sûr de le supprimer? Cette action est irréversible.
         """.trimIndent(),
+        ST_DEFAULT_SETTINGS_RESTORED to "Les paramètres par défaut ont été restaurés avec succès.",
+        STR_INFO to "information",
     )
 }

@@ -30,7 +30,7 @@ class ActEditorPanel(homeManager: HomeManager, act: Act? = null) : HomePanel() {
     init {
         this.layout = BorderLayout()
 
-        JPanel().applyAndAppendTo(this, BorderLayout.NORTH) {
+        JPanel().applyAndAddTo(this, BorderLayout.NORTH) {
             this.border = BorderFactory.createEmptyBorder(15, 10, 15, 10)
             this.layout = GridBagLayout()
 
@@ -48,12 +48,12 @@ class ActEditorPanel(homeManager: HomeManager, act: Act? = null) : HomePanel() {
 
         this.add(selectorPanel, BorderLayout.CENTER)
 
-        JPanel().applyAndAppendTo(this, BorderLayout.SOUTH) {
+        JPanel().applyAndAddTo(this, BorderLayout.SOUTH) {
             this.border = BorderFactory.createEmptyBorder(10, 20, 10, 20)
             this.layout = GridLayout(1, 2, 10, 15)
             this.background = BACKGROUND_COLOR_LIGHT_BLUE
 
-            JButton(Strings[STR_CONFIRM]).applyAndAppendTo(this) {
+            JButton(Strings[STR_CONFIRM]).applyAndAddTo(this) {
                 this.addActionListener {
                     if (
                         nameField.text.isNotEmpty()
@@ -62,16 +62,17 @@ class ActEditorPanel(homeManager: HomeManager, act: Act? = null) : HomePanel() {
                     ) {
                         homeManager.goHome()
                     } else {
-                        showPopup(
+                        showMessage(
                             if (manager.tempScenes.isEmpty()) Strings[ST_ACT_WITHOUT_SCENE] else Strings[ST_ACT_ALREADY_EXISTS],
-                            windowAncestor
+                            windowAncestor,
+                            MessageType.WARNING
                         )
                     }
                 }
                 this.border = BORDER_BUTTONS
             }
 
-            JButton(Strings[STR_CANCEL]).applyAndAppendTo(this) {
+            JButton(Strings[STR_CANCEL]).applyAndAddTo(this) {
                 this.addActionListener {
                     if (modified) {
                         showConfirmMessage(
@@ -104,10 +105,10 @@ class ActEditorPanel(homeManager: HomeManager, act: Act? = null) : HomePanel() {
         }
 
         init {
-            JPanel().applyAndAppendTo(this, BorderLayout.NORTH) {
+            JPanel().applyAndAddTo(this, BorderLayout.NORTH) {
                 this.layout = GridBagLayout()
 
-                ItemPanel(0, Strings[STR_SCENES]).applyAndAppendTo(
+                ItemPanel(0, Strings[STR_SCENES]).applyAndAddTo(
                     this,
                     gridBagConstraintsOf(fill = GridBagConstraints.BOTH, weightx = 1.0)
                 ) {

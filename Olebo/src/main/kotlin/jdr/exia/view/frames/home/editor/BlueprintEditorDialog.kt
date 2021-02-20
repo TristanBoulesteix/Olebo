@@ -1,7 +1,7 @@
 package jdr.exia.view.frames.home.editor
 
 import jdr.exia.localization.*
-import jdr.exia.view.utils.applyAndAppendTo
+import jdr.exia.view.utils.applyAndAddTo
 import jdr.exia.view.utils.components.filter.IntegerFilter
 import jdr.exia.view.utils.components.templates.PlaceholderTextField
 import jdr.exia.view.utils.copy
@@ -67,32 +67,32 @@ class BlueprintEditorDialog(private val type: TypeElement) : JDialog() {
             this.preferredSize = Dimension(100, 25)
         }
 
-        JPanel().applyAndAppendTo(this, constraints) {
+        JPanel().applyAndAddTo(this, constraints) {
             this.preferredSize = Dimension(220, 40)
             this.add(JLabel(Strings[STR_NAME_OF_ELEMENT]))
             this.add(nameField)
         }
 
-        nameErrorLabel = JLabel(Strings[ST_NAME_OF_BLUEPRINT_REQUIRED]).applyAndAppendTo(this, ++constraints) {
+        nameErrorLabel = JLabel(Strings[ST_NAME_OF_BLUEPRINT_REQUIRED]).applyAndAddTo(this, ++constraints) {
             this.foreground = Color.RED
             this.isVisible = false
         }
 
         if (type != TypeElement.OBJECT) {
-            JPanel().applyAndAppendTo(this, ++constraints) {
+            JPanel().applyAndAddTo(this, ++constraints) {
                 this.preferredSize = Dimension(220, 60)
                 this.add(JLabel(Strings[STR_MAX_HEALTH]))
                 this.add(lifeField)
             }
 
-            JPanel().applyAndAppendTo(this, ++constraints) {
+            JPanel().applyAndAddTo(this, ++constraints) {
                 this.preferredSize = Dimension(220, 60)
                 this.add(JLabel(Strings[STR_MAX_MANA]))
                 this.add(manaField)
             }
         }
 
-        importImgButton = JButton(Strings[STR_IMPORT_IMG]).applyAndAppendTo(
+        importImgButton = JButton(Strings[STR_IMPORT_IMG]).applyAndAddTo(
             this,
             ++constraints
         ) {
@@ -113,16 +113,16 @@ class BlueprintEditorDialog(private val type: TypeElement) : JDialog() {
             }
         }
 
-        importImgErrorLabel = JLabel().applyAndAppendTo(this, ++constraints) {
+        importImgErrorLabel = JLabel().applyAndAddTo(this, ++constraints) {
             this.foreground = Color.RED
             this.isVisible = false
         }
 
-        JPanel().applyAndAppendTo(
+        JPanel().applyAndAddTo(
             this,
             ++constraints
         ) {
-            JButton(Strings[STR_CONFIRM]).applyAndAppendTo(this) {
+            JButton(Strings[STR_CONFIRM]).applyAndAddTo(this) {
                 addActionListener {
                     fieldsValid = if (nameField.text.isNullOrBlank()) {
                         nameField.border = BorderFactory.createLineBorder(Color.RED)
@@ -158,7 +158,7 @@ class BlueprintEditorDialog(private val type: TypeElement) : JDialog() {
                 }
             }
 
-            JButton(Strings[STR_CANCEL]).applyAndAppendTo(this) {
+            JButton(Strings[STR_CANCEL]).applyAndAddTo(this) {
                 addActionListener { dispose() }
             }
 

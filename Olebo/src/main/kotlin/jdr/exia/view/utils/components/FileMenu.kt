@@ -25,7 +25,7 @@ import javax.swing.filechooser.FileNameExtensionFilter
 
 class FileMenu : JMenu(Strings[STR_FILES]) {
     init {
-        JMenuItem(Strings[STR_EXPORT_DATA]).applyAndAppendTo(this) {
+        JMenuItem(Strings[STR_EXPORT_DATA]).applyAndAddTo(this) {
             this.addActionListener {
                 val extension = "olebo"
                 JFileChooser().apply {
@@ -51,7 +51,7 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
             }
         }
 
-        JMenuItem(Strings[STR_IMPORT_DATA]).applyAndAppendTo(this) {
+        JMenuItem(Strings[STR_IMPORT_DATA]).applyAndAddTo(this) {
             this.addActionListener {
                 showConfirmMessage(
                     this@FileMenu.windowAncestor,
@@ -66,17 +66,17 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
                             if (!this.selectedFile.isDirectory && this.selectedFile.exists()) {
                                 val result = loadOleboZipData(this.selectedFile)
                                 if (result is Result.Success) {
-                                    showPopup(Strings[ST_CONFIGURATION_IMPORTED], this@FileMenu.windowAncestor)
+                                    showMessage(Strings[ST_CONFIGURATION_IMPORTED], this@FileMenu.windowAncestor)
                                     MasterFrame.isVisible = false
                                     PlayerFrame.hide()
                                     Frame.getFrames().forEach(Window::dispose)
                                     HomeFrame().isVisible = true
-                                } else showPopup(
+                                } else showMessage(
                                     when (result.value) {
                                         ZipError.DATABASE_HIGHER -> Strings[ST_WARNING_PREVIOUS_VERSION_FILE]
                                         ZipError.MISSING_FILES -> Strings[ST_WARNING_MISSING_CONF_FILES]
                                         else -> "${Strings[ST_UNKNOWN_ERROR]} ${Strings[ST_FILE_MAY_BE_CORRUPTED]}"
-                                    }, this@FileMenu.windowAncestor, true
+                                    }, this@FileMenu.windowAncestor, MessageType.ERROR
                                 )
                             }
                         }
@@ -87,13 +87,13 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
 
         this.addSeparator()
 
-        JMenuItem(Strings[STR_OPTIONS]).applyAndAppendTo(this) {
+        JMenuItem(Strings[STR_OPTIONS]).applyAndAddTo(this) {
             this.addActionListener {
                 OptionDialog(this@FileMenu.windowAncestor).isVisible = true
             }
         }
 
-        JMenuItem(Strings[STR_TAKE_SCREENSHOT]).applyAndAppendTo(this) {
+        JMenuItem(Strings[STR_TAKE_SCREENSHOT]).applyAndAddTo(this) {
             this.addActionListener {
                 val parent = this@FileMenu.windowAncestor
                 JFileChooser().apply {
@@ -126,7 +126,7 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
             this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_P, CTRL)
         }
 
-        JMenuItem(Strings[STR_ABOUT]).applyAndAppendTo(this) {
+        JMenuItem(Strings[STR_ABOUT]).applyAndAddTo(this) {
             this.addActionListener {
                 JOptionPane.showMessageDialog(
                     null,

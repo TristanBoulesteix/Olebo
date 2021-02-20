@@ -7,7 +7,7 @@ import jdr.exia.localization.Strings
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.getIcon
 import jdr.exia.view.utils.BORDER_BUTTONS
-import jdr.exia.view.utils.applyAndAppendTo
+import jdr.exia.view.utils.applyAndAddTo
 import jdr.exia.view.utils.components.templates.ItemPanel
 import jdr.exia.view.utils.components.templates.SelectorPanel
 import jdr.exia.view.utils.event.addDoubleClickListener
@@ -26,7 +26,7 @@ class ActsPanel(private val homeManager: HomeManager) : HomePanel() {
     init {
         this.layout = BorderLayout()
 
-        JPanel().applyAndAppendTo(this, BorderLayout.NORTH) {
+        JPanel().applyAndAddTo(this, BorderLayout.NORTH) {
             this.border = BorderFactory.createEmptyBorder(15, 0, 15, 0)
             this.layout = GridBagLayout()
 

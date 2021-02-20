@@ -8,8 +8,9 @@ import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Type
 import jdr.exia.view.frames.home.editor.BlueprintEditorDialog
+import jdr.exia.view.utils.MessageType
 import jdr.exia.view.utils.showConfirmMessage
-import jdr.exia.view.utils.showPopup
+import jdr.exia.view.utils.showMessage
 import jdr.exia.viewModel.observer.Action
 import jdr.exia.viewModel.observer.Observable
 import jdr.exia.viewModel.observer.Observer
@@ -54,7 +55,7 @@ class BlueprintManager(private val homeManager: HomeManager) : Observable {
             if (isNameValid()) {
                 getBlueprintWithId(id).name = name
             } else {
-                showPopup(Strings[ST_ELEMENT_ALREADY_EXISTS])
+                showMessage(Strings[ST_ELEMENT_ALREADY_EXISTS], messageType = MessageType.WARNING)
             }
         }
 

@@ -116,6 +116,7 @@ const val STR_UPDATE = "update"
 const val STR_RESET = "reset"
 const val STR_BACK = "back"
 const val STR_LOADING = "loading"
+const val STR_INFO = "info"
 
 // -- Sentences
 
@@ -153,6 +154,8 @@ const val ST_NAME_OF_BLUEPRINT_REQUIRED = "name_blueprint_required"
 const val ST_IMG_BLUEPRINT_REQUIRED = "img_blueprint_required"
 const val ST_IMG_BLUEPRINT_NOT_EXIST_OR_INVALID = "img_blueprint_invalid_or_not_exist"
 const val ST_OCCURENCE_BLUEPRINT_TO_DELETE = "num_blueprint_to_delete"
+const val ST_DEFAULT_SETTINGS_RESTORED = "restored_default_settings"
+
 
 // -- Interpolable Strings
 const val ST_INT1_OCCURENCE_BLUEPRINT_TO_DELETE = "1_num_blueprint_to_delete"

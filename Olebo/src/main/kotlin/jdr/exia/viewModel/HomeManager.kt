@@ -9,7 +9,8 @@ import jdr.exia.view.frames.home.panels.ActEditorPanel
 import jdr.exia.view.frames.home.panels.ActsPanel
 import jdr.exia.view.frames.home.panels.BlueprintEditorPanel
 import jdr.exia.view.frames.rpg.MasterFrame
-import jdr.exia.view.utils.showPopup
+import jdr.exia.view.utils.MessageType
+import jdr.exia.view.utils.showMessage
 import jdr.exia.viewModel.observer.Action
 import jdr.exia.viewModel.observer.Observable
 import jdr.exia.viewModel.observer.Observer
@@ -53,7 +54,7 @@ class HomeManager : Observable {
                     MasterFrame.requestFocus()
                 } catch (e: TimeoutCancellationException) {
                     popup.dispose()
-                    showPopup("${Strings[STR_ERROR]}: ${e.message}", null, true)
+                    showMessage("${Strings[STR_ERROR]}: ${e.message}", null, MessageType.ERROR)
                     HomeFrame().isVisible = true
                 }
             }
