@@ -125,7 +125,7 @@ object ViewManager {
 
                 val elementToPoint =
                     mapOf(originElement to originElement.positionOf(newPosition)) + selectedElements.filterNot { it === originElement }
-                        .map { it to it.positionOf((it.centerPoint + diffPosition).checkBound()) }.toMap()
+                        .map { it to it.positionOf((it.centerPoint + diffPosition).checkBound()) }
 
                 activeScene.callCommandManager(elementToPoint, Element::cmdPosition)
             }
