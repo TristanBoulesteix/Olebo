@@ -119,20 +119,17 @@ object ViewManager {
                 selectedElements.first()
                     .cmdPosition(selectedElements.first().positionOf(newPosition), activeScene!!.commandManager)
             } else {
-                val newPositions = mutableListOf<Point>()
-
                 val originElement = (selectedElements.find { it === origin } ?: selectedElements.first())
-
-                newPositions += originElement.positionOf(newPosition)
 
                 val diffPosition = newPosition - originElement.centerPoint
 
-                selectedElements.filterNot { it === originElement }.forEach {
-                    newPositions += it.positionOf((it.centerPoint + diffPosition).checkBound())
-                }
+                val elementToPoint =
+                    mapOf(originElement to originElement.positionOf(newPosition)) + selectedElements.filterNot { it === originElement }
+                        .map { it to it.positionOf((it.centerPoint + diffPosition).checkBound()) }.toMap()
 
-                activeScene.callCommandManager(newPositions, selectedElements, Element::cmdPosition)
+                activeScene.callCommandManager(elementToPoint, Element::cmdPosition)
             }
+
             repaint()
         }
     }

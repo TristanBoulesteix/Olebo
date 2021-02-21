@@ -132,21 +132,18 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
                 }
         }
 
-        fun cmdPosition(points: List<Point>, manager: CommandManager, elements: Elements) {
-            assert(points.size == elements.size) { "Error: Positions does not match elements number." }
-
-            val previousPosition = elements.map { it.referencePoint }
+        fun cmdPosition(elementsToPoint: Map<Element, Point>, manager: CommandManager) {
+            val previousPoints = elementsToPoint.mapValues { it.key.referencePoint }
 
             manager += object : Command() {
                 override val label by StringDelegate(STR_MOVE_ELEMENTS)
 
-                override fun exec() = elements.forEachIndexed { index, element ->
-                    element.referencePoint = points[index]
+                override fun exec() = elementsToPoint.forEach { (element, newPoint) ->
+                    element.referencePoint = newPoint
                 }
 
-                override fun cancelExec() = elements.forEachIndexed { index, element ->
-                    if (element.stillExist())
-                        element.referencePoint = previousPosition[index]
+                override fun cancelExec() = previousPoints.forEach { (element, oldPoint) ->
+                    element.referencePoint = oldPoint
                 }
             }
         }

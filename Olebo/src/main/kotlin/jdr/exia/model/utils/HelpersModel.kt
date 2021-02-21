@@ -64,3 +64,11 @@ inline fun <T> Scene?.callCommandManager(value: T, elements: Elements, func: (T,
     this?.let { scene ->
         func(value, CommandManager(scene.id.value), elements)
     }
+
+inline fun <T> Scene?.callCommandManager(
+    elementWithData: Map<Element, T>,
+    func: (Map<Element, T>, CommandManager) -> Unit
+) =
+    this?.let { scene ->
+        func(elementWithData, CommandManager(scene.id.value))
+    }
