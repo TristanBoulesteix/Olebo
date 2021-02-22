@@ -4,6 +4,7 @@ import jdr.exia.localization.STR_LABEL
 import jdr.exia.localization.STR_LABEL_TOOLTIP
 import jdr.exia.localization.STR_NAME
 import jdr.exia.localization.Strings
+import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.view.frames.Reloadable
 import jdr.exia.view.utils.DEFAULT_INSET
@@ -72,7 +73,7 @@ class SideDataPanel : JPanel(), Reloadable {
 
     private fun initLayout() {
         this.removeAll()
-        if (Settings.isLabelEnabled)
+        if (Settings.labelState != SerializableLabelState.DISABLED)
             loadLabelLayout()
         else
             loadUnlabelLayout()

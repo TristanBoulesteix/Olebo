@@ -4,15 +4,13 @@ import jdr.exia.availableLocales
 import jdr.exia.localization.*
 import jdr.exia.model.dao.SettingsTable
 import jdr.exia.model.dao.option.SerializableColor
+import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.dao.option.toFormatedString
 import jdr.exia.view.frames.rpg.MasterFrame
 import jdr.exia.view.frames.rpg.ViewFacade
-import jdr.exia.view.utils.applyAndAddTo
+import jdr.exia.view.utils.*
 import jdr.exia.view.utils.components.templates.LabeledItem
-import jdr.exia.view.utils.gridBagConstraintsOf
-import jdr.exia.view.utils.showMessage
-import jdr.exia.view.utils.windowAncestor
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.*
 import javax.swing.*
@@ -52,15 +50,14 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
         this.isSelected = Settings.defaultElementVisibility
     }
 
-    private val checkboxLabelEnabled: JCheckBox = JCheckBox(Strings[STR_LABEL_ENABLED]).apply {
-        this.isSelected = Settings.isLabelEnabled
+    private val comboLabelState = ComboLabelState().apply {
         this.addActionListener {
-            comboLabelColor.isEnabled = this.isSelected
+            comboLabelColor.isEnabled = this.selectedItem.isVisible
         }
     }
 
     private val comboLabelColor: ComboLabelColor = ComboLabelColor().apply {
-        this.isEnabled = checkboxLabelEnabled.isSelected
+        this.isEnabled = comboLabelState.selectedItem.isVisible
     }
 
     private val languageChangeRestartLabel: JLabel
@@ -132,8 +129,14 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
             )
 
             this.add(
-                checkboxLabelEnabled,
-                gridBagConstraintsOf(0, 3, weightx = 1.0, anchor = GridBagConstraints.LINE_START)
+                LabeledItem(Strings[STR_LABEL_STATE], comboLabelState),
+                gridBagConstraintsOf(
+                    0,
+                    3,
+                    weightx = 1.0,
+                    anchor = GridBagConstraints.LINE_START,
+                    insets = Insets(0, 5, 5, 0)
+                )
             )
 
             this.add(
@@ -185,9 +188,10 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
                             ViewFacade.updateCursorOnPlayerFrame()
                     }
                     Settings.defaultElementVisibility = checkboxVisibilityElement.isSelected
-                    checkboxLabelEnabled.isSelected.let { isEnabled ->
-                        Settings.isLabelEnabled = isEnabled
+                    (comboLabelState.selectedItem as? SerializableLabelState)?.let { state ->
+                        Settings.labelState = state
                         comboLabelColor.selectedSerializableColor?.let { Settings.labelColor = it }
+
                         if (owner is MasterFrame)
                             ViewFacade.reloadFrames()
                     }
@@ -213,7 +217,25 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
         }
     }
 
-    private open inner class ComboColor(
+    private class ComboLabelState : JComboBox<SerializableLabelState>(SerializableLabelState.values()) {
+        var selectedItem: SerializableLabelState
+            get() = this.getSelectedItem() as SerializableLabelState
+            set(value) {
+                this.setSelectedItem(value)
+            }
+
+        init {
+            this.selectedItem = Settings.labelState
+            val oldRender = this.getRenderer()
+            this.setRenderer { list, state, index, isSelected, cellHasFocus ->
+                oldRender.getListCellRendererComponent(list, state, index, isSelected, cellHasFocus).also {
+                    (it as JLabel).text = state.text
+                }
+            }
+        }
+    }
+
+    private abstract inner class ComboColor(
         private val optionPropertyColor: KMutableProperty0<SerializableColor>,
         vararg serializableColors: SerializableColor
     ) :

@@ -135,7 +135,7 @@ class StringsBundle : Strings() {
         ST_UPDATE_FAILED to "The update of Olebo has failed.",
         ST_UPDATE_TRY_AGAIN to "Please, try again later.",
         STR_CANCEL_UPDATE to "cancel update",
-        STR_LABEL_ENABLED to "enable custom label for elements",
+        STR_LABEL_STATE to "label display:",
         STR_LABEL to "label",
         STR_SIZE_COMBO_TOOLTIP to "set the size of the element",
         STR_PRIORITY_COMBO_TOOLTIP to "set the priority level of the element",
@@ -162,7 +162,11 @@ class StringsBundle : Strings() {
         ST_DEFAULT_SETTINGS_RESTORED to "The default settings have been successfully restored.",
         STR_INFO to "information",
         STR_BLACK to "black",
-        STR_LABEL_COLOR to "label color",
+        STR_LABEL_COLOR to "label color:",
+        STR_LABEL_DISABLED to "label disabled",
+        STR_LABEL_VISIBLE to "label visible for both windows",
+        STR_LABEL_VISIBLE_FOR_MASTER to "label only visible for the DM",
+        STR_LABEL_HIDDEN to "label hidden",
     )
 }
 
@@ -299,7 +303,7 @@ class StringsBundle_fr : Strings() {
         ST_UPDATE_FAILED to "Impossible de mettre à jour Olebo.",
         ST_UPDATE_TRY_AGAIN to "Veuillez réessayer ultérieurement.",
         STR_CANCEL_UPDATE to "annuler la mise à jour",
-        STR_LABEL_ENABLED to "activer les labels personnalisés pour les éléments",
+        STR_LABEL_STATE to "affichage du label :",
         STR_LABEL to "label",
         STR_SIZE_COMBO_TOOLTIP to "change la taille de l'élément",
         STR_PRIORITY_COMBO_TOOLTIP to "change le niveau de prorité de l'élément",
@@ -326,6 +330,10 @@ class StringsBundle_fr : Strings() {
         ST_DEFAULT_SETTINGS_RESTORED to "Les paramètres par défaut ont été restaurés avec succès.",
         STR_INFO to "information",
         STR_BLACK to "noir",
-        STR_LABEL_COLOR to "couleur du label",
+        STR_LABEL_COLOR to "couleur du label :",
+        STR_LABEL_DISABLED to "label désactivé",
+        STR_LABEL_VISIBLE to "label visible sur les deux fenêtres",
+        STR_LABEL_VISIBLE_FOR_MASTER to "label visible pour le maître du jeu",
+        STR_LABEL_HIDDEN to "label caché",
     )
 }

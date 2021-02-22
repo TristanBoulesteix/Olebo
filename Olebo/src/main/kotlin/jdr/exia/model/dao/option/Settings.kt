@@ -10,7 +10,7 @@ import jdr.exia.model.dao.SettingsTable.CURSOR_COLOR
 import jdr.exia.model.dao.SettingsTable.CURSOR_ENABLED
 import jdr.exia.model.dao.SettingsTable.DEFAULT_ELEMENT_VISIBILITY
 import jdr.exia.model.dao.SettingsTable.LABEL_COLOR
-import jdr.exia.model.dao.SettingsTable.LABEL_ENABLED
+import jdr.exia.model.dao.SettingsTable.LABEL_STATE
 import jdr.exia.model.dao.SettingsTable.PLAYER_FRAME_ENABLED
 import jdr.exia.model.dao.SettingsTable.UPDATE_WARN
 import jdr.exia.model.utils.toBoolean
@@ -86,10 +86,10 @@ class Settings(id: EntityID<Int>) : IntEntity(id) {
                 this@Companion[DEFAULT_ELEMENT_VISIBILITY] = value
             }
 
-        var isLabelEnabled
-            get() = transaction { this@Companion[LABEL_ENABLED].toBoolean() }
+        var labelState
+            get() = transaction { SerializableLabelState[this@Companion[LABEL_STATE]!!] }
             set(value) = transaction {
-                this@Companion[LABEL_ENABLED] = value
+                this@Companion[LABEL_STATE] = value.encode()
             }
 
         var labelColor

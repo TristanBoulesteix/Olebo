@@ -1,6 +1,7 @@
 package jdr.exia.view.frames.rpg
 
 import jdr.exia.model.dao.option.SerializableColor
+import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Size
@@ -190,7 +191,7 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
         )
 
         val labelColor = Settings.labelColor
-        val labelEnabled = Settings.isLabelEnabled
+        val labelState = Settings.labelState
 
         //Display every token one by one
         for (token in tokens) {
@@ -209,7 +210,7 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
                 }
                 g.drawToken(token)
 
-                if (labelEnabled)
+                if ((parentGameFrame is MasterFrame && labelState.isVisible) || labelState == SerializableLabelState.FOR_BOTH)
                     g.drawLabel(token, labelColor)
             }
         }
@@ -295,6 +296,6 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
      * Show alias on mouse hover
      */
     override fun getToolTipText() = mousePosition?.let {
-        if (Settings.isLabelEnabled) tokens.getTokenFromPosition(Point(it).absolutePosition)?.alias else null
+        if (Settings.labelState.isEnabled && parentGameFrame is MasterFrame) tokens.getTokenFromPosition(Point(it).absolutePosition)?.alias else null
     }
 }
