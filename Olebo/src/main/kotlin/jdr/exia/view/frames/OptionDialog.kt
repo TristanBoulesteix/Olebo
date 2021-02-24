@@ -238,8 +238,7 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
     private abstract inner class ComboColor(
         private val optionPropertyColor: KMutableProperty0<SerializableColor>,
         vararg serializableColors: SerializableColor
-    ) :
-        JComboBox<String>() {
+    ) : JComboBox<String>() {
         private val custom by StringDelegate(STR_CUSTOM_COLOR)
 
         private val customLabel
