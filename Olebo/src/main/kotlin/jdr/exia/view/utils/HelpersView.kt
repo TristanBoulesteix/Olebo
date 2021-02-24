@@ -20,9 +20,11 @@ inline fun <T : Container> T.applyAndAddTo(
     }
 
     this.apply(block)
-    constraints?.let {
+    
+    if (constraints != null)
         parent.add(this, constraints)
-    } ?: parent.add(this)
+    else parent.add(this)
+
     return this
 }
 
