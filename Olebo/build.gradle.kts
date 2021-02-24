@@ -29,7 +29,6 @@ dependencies {
     implementation("org.slf4j", "slf4j-api", "1.7.25")
     implementation("org.slf4j", "slf4j-simple", "1.7.25")
     implementation("org.apache.httpcomponents", "httpclient", "4.5.10")
-    implementation("org.jetbrains.kotlin", "kotlin-reflect", kotlinVersion)
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.4.2")
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-swing", "1.4.2")
 }
