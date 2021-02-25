@@ -1,7 +1,7 @@
 package jdr.exia.view.utils.components.templates
 
+import jdr.exia.view.utils.applyAndAddTo
 import jdr.exia.view.utils.components.filter.IntegerFilter
-import jdr.exia.view.utils.applyAndAppendTo
 import jdr.exia.view.utils.event.ClickListener
 import jdr.exia.view.utils.event.addFocusLostListener
 import jdr.exia.view.utils.gridBagConstraintsOf
@@ -11,11 +11,13 @@ import javax.imageio.ImageIO
 import javax.swing.*
 import javax.swing.text.PlainDocument
 
+typealias ManagerAction = (Int) -> Unit
+
 /**
  * Template for panel which display an item.
  */
 @Suppress("LeakingThis")
-abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
+open class ItemPanel(protected val id: Int, name: String) : JPanel() {
     companion object {
         val DIMENSION_SQUARE = Dimension(65, 65)
     }
@@ -24,7 +26,6 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
         this.isEditable = false
         this.isOpaque = false
         this.font = Font("Tahoma", Font.BOLD, 18)
-        //this.border = BorderFactory.createEmptyBorder(0, 10, 0, 0)
         this.border = null
         this.background = Color(0, 0, 0, 0)
         this.bounds = Rectangle(0, 10, 0, 0)
@@ -50,7 +51,7 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
     /**
      * Label that act like a button.
      */
-    protected inner class SquareLabel(icon: ImageIcon, action: (Int) -> Unit) :
+    inner class SquareLabel(icon: ImageIcon, action: ManagerAction) :
         JLabel(icon, CENTER) {
 
         private val listener = ClickListener { action(id) }
@@ -62,7 +63,7 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
             this.addMouseListener(listener)
         }
 
-        constructor(img: String, action: (Int) -> Unit) : this(
+        constructor(img: String, action: ManagerAction) : this(
             ImageIcon(
                 ImageIO.read(File(img)).getScaledInstance(
                     DIMENSION_SQUARE.width, DIMENSION_SQUARE.height, Image.SCALE_SMOOTH
@@ -78,7 +79,7 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
             this.removeMouseListener(listener)
             this.layout = GridBagLayout()
 
-            JTextField(text).applyAndAppendTo(
+            JTextField(text).applyAndAddTo(
                 this,
                 gridBagConstraintsOf(fill = GridBagConstraints.BOTH, weightx = 1.0, weighty = 1.0)
             ) {
@@ -90,7 +91,7 @@ abstract class ItemPanel(protected val id: Int, name: String) : JPanel() {
                 this.addFocusLostListener {
                     if (!it.isTemporary) {
                         if (action != null) {
-                            action(id, this@applyAndAppendTo.text)
+                            action(id, this@applyAndAddTo.text)
                         }
                     }
                 }

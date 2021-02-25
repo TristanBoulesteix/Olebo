@@ -3,20 +3,26 @@ package jdr.exia.view.utils.components.templates
 import jdr.exia.localization.STR_NO_ELEMENT
 import jdr.exia.localization.Strings
 import jdr.exia.utils.forElse
+import jdr.exia.view.frames.Reloadable
 import jdr.exia.view.utils.BACKGROUND_COLOR_LIGHT_BLUE
 import jdr.exia.view.utils.event.addClickListener
+import jdr.exia.viewModel.ArrayOfPairs
 import java.awt.BorderLayout
 import java.awt.Color
 import java.awt.Font
 import java.awt.GridBagLayout
 import javax.swing.*
 import javax.swing.border.EmptyBorder
+import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
 
 /**
  * This panel is a template for all panels which display a list of components
  */
-abstract class SelectorPanel : JPanel() {
-    protected abstract val pairs: Array<Pair<String, String>>
+abstract class SelectorPanel(pairBuilder: PairArrayBuilder) : JPanel(), Reloadable {
+    private val jScrollPane = JScrollPane()
+
+    private val pairs by pairBuilder
 
     protected abstract fun builder(id: Int, name: String): ItemPanel
 
@@ -24,6 +30,8 @@ abstract class SelectorPanel : JPanel() {
         this.background = BACKGROUND_COLOR_LIGHT_BLUE
         this.border = EmptyBorder(20, 20, 20, 20)
         this.layout = BorderLayout()
+
+        this.add(jScrollPane, BorderLayout.CENTER)
 
         this.createJPanelWithItemSelectablePanel()
     }
@@ -45,18 +53,20 @@ abstract class SelectorPanel : JPanel() {
             this.addClickListener { requestFocusInWindow() }
         }
 
-        (layout as BorderLayout).getLayoutComponent(BorderLayout.CENTER)?.let {
-            this.remove(it)
-        }
-        this.add(JScrollPane(panel), BorderLayout.CENTER)
+        jScrollPane.setViewportView(panel)
     }
 
     /**
      * Refresh the panel with new datas
      */
-    open fun refresh() {
+    override fun reload() {
         this.createJPanelWithItemSelectablePanel()
         this.revalidate()
         this.repaint()
+    }
+
+    class PairArrayBuilder(private val pairBuilder: () -> ArrayOfPairs) :
+        ReadOnlyProperty<SelectorPanel, ArrayOfPairs> {
+        override fun getValue(thisRef: SelectorPanel, property: KProperty<*>) = pairBuilder()
     }
 }

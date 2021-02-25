@@ -1,9 +1,9 @@
 package jdr.exia.view.utils.components.templates
 
 import jdr.exia.view.utils.DIMENSION_MENU_FRAME
-import jdr.exia.viewModel.pattern.observer.Observable
-import jdr.exia.viewModel.pattern.observer.Observer
+import jdr.exia.viewModel.observer.Observer
 import java.awt.BorderLayout
+import java.awt.Window
 import java.awt.event.KeyEvent
 import javax.swing.JComponent
 import javax.swing.JDialog
@@ -15,10 +15,8 @@ import javax.swing.KeyStroke
  *
  * It is similar to JFrameTemplate because I didn't find a public common parent to JDialog and JFrame.
  */
-abstract class JDialogTemplate(title: String, modal: Boolean = true) : JDialog(),
+abstract class JDialogTemplate(parent: Window?, title: String, modal: Boolean = true) : JDialog(parent, title),
     Observer {
-    protected abstract val observable: Observable
-
     init {
         this.title = title
         if (modal) this.modalityType = ModalityType.APPLICATION_MODAL
@@ -37,10 +35,5 @@ abstract class JDialogTemplate(title: String, modal: Boolean = true) : JDialog()
                 JComponent.WHEN_IN_FOCUSED_WINDOW
             )
         }
-    }
-
-    override fun dispose() {
-        observable.observer = null
-        super.dispose()
     }
 }

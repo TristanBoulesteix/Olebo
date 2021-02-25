@@ -1,9 +1,12 @@
 package jdr.exia.model.dao
 
+import jdr.exia.model.dao.option.SerializableColor
+import jdr.exia.model.dao.option.SerializableLabelState
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import java.util.*
 
 /**
@@ -38,7 +41,9 @@ object SettingsTable : IntIdTable(), Initializable {
     const val CURSOR_COLOR = "cursor_color"
     const val PLAYER_FRAME_ENABLED = "PlayerFrame_enabled"
     const val DEFAULT_ELEMENT_VISIBILITY = "default_element_visibility"
-    const val LABEL_ENABLED = "label_enabled"
+    const val LABEL_STATE = "label_enabled"
+    const val LABEL_COLOR = "label_color"
+    const val CHANGELOGS_VERSION = "changelogs_version"
 
     val name = varchar("name", 255)
     val value = varchar("value", 255).default("")
@@ -56,22 +61,36 @@ object SettingsTable : IntIdTable(), Initializable {
             SettingsTable.update({ baseVersionWhere }) { it[value] = DAO.DATABASE_VERSION.toString() }
         }
 
-        insertOptionIfNotExists(2, AUTO_UPDATE, true)
-        insertOptionIfNotExists(3, UPDATE_WARN, "")
-        insertOptionIfNotExists(4, CURSOR_ENABLED, true)
-        insertOptionIfNotExists(5, CURRENT_LANGUAGE, Locale.getDefault().language)
-        insertOptionIfNotExists(6, CURSOR_COLOR, "")
-        insertOptionIfNotExists(7, PLAYER_FRAME_ENABLED, false)
-        insertOptionIfNotExists(8, DEFAULT_ELEMENT_VISIBILITY, false)
-        insertOptionIfNotExists(9, LABEL_ENABLED, false)
+        initializeDefault(true)
     }
 
-    private fun insertOptionIfNotExists(id: Int, name: String, value: Any) {
-        if (SettingsTable.select((SettingsTable.id eq id) and (SettingsTable.name eq name)).count() <= 0) {
+    fun initializeDefault(insertOnlyIfnotExists: Boolean = false) {
+        insertOptionIfNotExists(2, AUTO_UPDATE, true, insertOnlyIfnotExists)
+        insertOptionIfNotExists(3, UPDATE_WARN, "", insertOnlyIfnotExists)
+        insertOptionIfNotExists(4, CURSOR_ENABLED, true, insertOnlyIfnotExists)
+        insertOptionIfNotExists(5, CURRENT_LANGUAGE, Locale.getDefault().language, insertOnlyIfnotExists)
+        insertOptionIfNotExists(6, CURSOR_COLOR, "", insertOnlyIfnotExists)
+        insertOptionIfNotExists(7, PLAYER_FRAME_ENABLED, false, insertOnlyIfnotExists)
+        insertOptionIfNotExists(8, DEFAULT_ELEMENT_VISIBILITY, false, insertOnlyIfnotExists)
+        insertOptionIfNotExists(9, LABEL_STATE, SerializableLabelState.DISABLED.encode(), insertOnlyIfnotExists)
+        insertOptionIfNotExists(10, LABEL_COLOR, SerializableColor.BLACK.encode(), insertOnlyIfnotExists)
+        insertOptionIfNotExists(11, CHANGELOGS_VERSION, "1.8.0-BETA", insertOnlyIfnotExists)
+    }
+
+    private fun insertOptionIfNotExists(id: Int, name: String, value: Any, insertOnlyIfnotExists: Boolean) {
+        fun insertOrUpdate(builder: UpdateBuilder<Int>) {
+            builder[SettingsTable.id] = EntityID(id, SettingsTable)
+            builder[SettingsTable.name] = name
+            builder[SettingsTable.value] = value.toString()
+        }
+
+        if (!insertOnlyIfnotExists) {
+            SettingsTable.update({ SettingsTable.id eq id }) {
+                insertOrUpdate(it)
+            }
+        } else if (SettingsTable.select((SettingsTable.id eq id) and (SettingsTable.name eq name)).count() <= 0) {
             SettingsTable.insert {
-                it[SettingsTable.id] = EntityID(id, SettingsTable)
-                it[SettingsTable.name] = name
-                it[SettingsTable.value] = value.toString()
+                insertOrUpdate(it)
             }
         }
     }

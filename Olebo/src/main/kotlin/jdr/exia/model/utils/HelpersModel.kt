@@ -2,7 +2,6 @@ package jdr.exia.model.utils
 
 import jdr.exia.model.act.Scene
 import jdr.exia.model.command.CommandManager
-import jdr.exia.model.dao.option.Color
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Type
@@ -10,7 +9,6 @@ import java.awt.Graphics
 import java.awt.geom.AffineTransform
 import java.awt.image.BufferedImage
 import javax.swing.ImageIcon
-import java.awt.Color as JColor
 
 /**
  * Convert a String to the corresponding boolean
@@ -50,28 +48,27 @@ fun ImageIcon.rotate(degs: Double) = with(BufferedImage(this.iconWidth, this.ico
 
     createGraphics().apply {
         val transform = AffineTransform()
-        transform.rotate(degs / 180 * Math.PI, (iconWidth / 2).toDouble(), (iconHeight / 2).toDouble())
+        transform.rotate(degs / 180 * Math.PI, iconWidth / 2.0, iconHeight / 2.0)
         drawRenderedImage(toBufferedImage(), transform)
         dispose()
     }
     ImageIcon(this)
 }
 
-fun Scene?.callManager(elements: Elements, func: (CommandManager, Elements) -> Unit) = this?.let { scene ->
-    func(CommandManager(scene.id.value), elements)
-}
+inline fun Scene?.callCommandManager(elements: Elements, func: (CommandManager, Elements) -> Unit) =
+    this?.let { scene ->
+        func(CommandManager(scene.id.value), elements)
+    }
 
-inline fun <T> Scene?.callManager(value: T, elements: Elements, func: (T, CommandManager, Elements) -> Unit) =
+inline fun <T> Scene?.callCommandManager(value: T, elements: Elements, func: (T, CommandManager, Elements) -> Unit) =
     this?.let { scene ->
         func(value, CommandManager(scene.id.value), elements)
     }
 
-/**
- * Convert a [java.awt.Color] to a [Color]
- */
-fun JColor.toColor() = this.let { Color(it.red, it.green, it.blue) }
-
-/**
- * Convert a [Color] to a [java.awt.Color]
- */
-fun Color.toJColor() = this.let { JColor(it.r, it.g, it.b) }
+inline fun <T> Scene?.callCommandManager(
+    elementWithData: Map<Element, T>,
+    func: (Map<Element, T>, CommandManager) -> Unit
+) =
+    this?.let { scene ->
+        func(elementWithData, CommandManager(scene.id.value))
+    }

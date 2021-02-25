@@ -1,7 +1,6 @@
 package jdr.exia.view.frames.rpg
 
 import jdr.exia.localization.*
-import jdr.exia.model.dao.DAO
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
 import jdr.exia.utils.forElse
@@ -9,14 +8,13 @@ import jdr.exia.view.frames.Reloadable
 import jdr.exia.view.utils.components.templates.PlaceholderTextField
 import jdr.exia.view.utils.event.ClickListener
 import jdr.exia.view.utils.event.addClickListener
+import jdr.exia.view.utils.event.addTextChangedListener
 import jdr.exia.viewModel.ViewManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.*
 import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.*
-import javax.swing.event.DocumentEvent
-import javax.swing.event.DocumentListener
 
 
 /**
@@ -37,35 +35,22 @@ class ItemPanel : JPanel(), Reloadable {
     private val searchField = PlaceholderTextField(Strings[STR_SEARCH])
 
     /**
-     * Event which trigger when the search field is modified
-     */
-    private val changeEvent = object : DocumentListener {
-        override fun changedUpdate(e: DocumentEvent?) = warn()
-
-        override fun insertUpdate(e: DocumentEvent?) = warn()
-
-        override fun removeUpdate(e: DocumentEvent?) = warn()
-
-        fun warn() {
-            searchConstraint = searchField.text
-            reload()
-        }
-    }
-
-    /**
      * Constraint applied to the content to show after a result
      */
     private var searchConstraint = ""
 
     init {
         this.layout = BorderLayout()
-        this.searchField.document.addDocumentListener(changeEvent)
+        this.searchField.addTextChangedListener {
+            searchConstraint = searchField.text
+            reload()
+        }
         this.add(searchField, BorderLayout.NORTH)
         this.add(JScrollPane(itemsView), BorderLayout.CENTER)
     }
 
     override fun reload() {
-        transaction(DAO.database) {
+        transaction {
             with(itemsView) {
                 // Remove previous components
                 this.removeAll()
@@ -75,8 +60,9 @@ class ItemPanel : JPanel(), Reloadable {
                 this.add(CustomTitlePanel(Strings[STR_OBJECTS]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.OBJECT && (searchConstraint.isEmpty() || it.name.toLowerCase().contains(
-                        searchConstraint.toLowerCase()
+                    it.type.typeElement == Type.OBJECT && (searchConstraint.isEmpty() || it.name.contains(
+                        searchConstraint,
+                        true
                     ))
                 }.forElse {
                     this.add(CustomPanel(it))
@@ -86,8 +72,10 @@ class ItemPanel : JPanel(), Reloadable {
                 this.add(CustomTitlePanel(Strings[STR_PC]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.PJ && (searchConstraint.isEmpty() || it.name.toLowerCase()
-                        .contains(searchConstraint, true))
+                    it.type.typeElement == Type.PJ && (searchConstraint.isEmpty() || it.name.contains(
+                        searchConstraint,
+                        true
+                    ))
                 }.forElse {
                     this.add(CustomPanel(it))
                 } ?: this.add(EmptyField())

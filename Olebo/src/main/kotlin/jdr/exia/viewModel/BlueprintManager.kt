@@ -1,17 +1,19 @@
 package jdr.exia.viewModel
 
-import jdr.exia.localization.STR_IMG
-import jdr.exia.localization.ST_ELEMENT_ALREADY_EXISTS
-import jdr.exia.localization.Strings
+import jdr.exia.localization.*
 import jdr.exia.model.dao.DAO
+import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.dao.saveImg
 import jdr.exia.model.element.Blueprint
+import jdr.exia.model.element.Element
 import jdr.exia.model.element.Type
-import jdr.exia.view.frames.editor.elements.BlueprintEditorDialog
-import jdr.exia.view.utils.showPopup
-import jdr.exia.viewModel.pattern.observer.Action
-import jdr.exia.viewModel.pattern.observer.Observable
-import jdr.exia.viewModel.pattern.observer.Observer
+import jdr.exia.view.frames.home.editor.BlueprintEditorDialog
+import jdr.exia.view.utils.MessageType
+import jdr.exia.view.utils.showConfirmMessage
+import jdr.exia.view.utils.showMessage
+import jdr.exia.viewModel.observer.Action
+import jdr.exia.viewModel.observer.Observable
+import jdr.exia.viewModel.observer.Observer
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Component
 import java.io.File
@@ -19,19 +21,23 @@ import javax.imageio.ImageIO
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
-class BlueprintManager : Observable {
+class BlueprintManager(private val homeManager: HomeManager) : Observable {
     val elements
         get() = DAO.getElementsWithType(type)
 
     var type = Type.OBJECT
         set(value) {
             field = value
-            notifyObserver(Action.REFRESH)
+            notifyObserver(Action.Reload)
         }
 
-    override var observer: Observer? = null
+    override var observer: Observer?
+        get() = homeManager.observer
+        set(value) {
+            homeManager.observer = value
+        }
 
-    fun getBlueprintWithId(id: Int) = transaction(DAO.database) {
+    fun getBlueprintWithId(id: Int) = transaction {
         elements.find { it.id.value == id }!!
     }
 
@@ -45,27 +51,43 @@ class BlueprintManager : Observable {
             return true
         }
 
-        transaction(DAO.database) {
+        transaction {
             if (isNameValid()) {
                 getBlueprintWithId(id).name = name
             } else {
-                showPopup(Strings[ST_ELEMENT_ALREADY_EXISTS])
+                showMessage(Strings[ST_ELEMENT_ALREADY_EXISTS], messageType = MessageType.WARNING)
             }
         }
 
-        notifyObserver(Action.REFRESH)
+        notifyObserver(Action.Reload)
     }
 
     fun deleteElement(id: Int) {
-        transaction(DAO.database) {
-            Blueprint[id].delete()
+        transaction {
+            Blueprint[id].let { blueprint ->
+                val countUsage = Element.find { InstanceTable.idBlueprint eq blueprint.id.value }.count()
+
+                if (countUsage > 0) {
+                    showConfirmMessage(
+                        null,
+                        if (countUsage == 1L)
+                            Strings[ST_OCCURENCE_BLUEPRINT_TO_DELETE]
+                        else
+                            Strings[ST_INT1_OCCURENCE_BLUEPRINT_TO_DELETE, countUsage],
+                        Strings[STR_WARNING],
+                        okAction = blueprint::delete
+                    )
+                } else {
+                    blueprint.delete()
+                }
+            }
         }
 
-        notifyObserver(Action.REFRESH)
+        notifyObserver(Action.Reload)
     }
 
     fun updateIcon(id: Int) {
-        transaction(DAO.database) {
+        transaction {
             val file = JFileChooser().apply {
                 this.currentDirectory = File(System.getProperty("user.home"))
                 this.addChoosableFileFilter(
@@ -85,23 +107,23 @@ class BlueprintManager : Observable {
             }
         }
 
-        notifyObserver(Action.REFRESH)
+        notifyObserver(Action.Reload)
     }
 
     fun saveMana(id: Int, text: String) {
-        transaction(DAO.database) {
+        transaction {
             Blueprint[id].MP = text.toIntOrNull() ?: 0
         }
     }
 
     fun saveLife(id: Int, text: String) {
-        transaction(DAO.database) {
+        transaction {
             Blueprint[id].HP = text.toIntOrNull() ?: 0
         }
     }
 
     fun createBlueprint(@Suppress("UNUSED_PARAMETER") id: Int?) {
-        transaction(DAO.database) {
+        transaction {
             BlueprintEditorDialog(type).showDialog()?.let { map ->
                 Blueprint.new {
                     this.type = this@BlueprintManager.type.type
@@ -115,7 +137,7 @@ class BlueprintManager : Observable {
             }
         }
 
-        notifyObserver(Action.REFRESH)
+        notifyObserver(Action.Reload)
     }
 }
 

@@ -35,6 +35,7 @@ class StringsBundle : Strings() {
         STR_NAME to "nom",
         STR_CONFIRM to "confirm",
         ST_ACT_ALREADY_EXISTS to "Sorry, a scenario with this name already exists or the data entered are invalid.",
+        ST_ACT_WITHOUT_SCENE to "A scenario need to contains at least one scene.",
         STR_NEW_SCENE to "new scene",
         STR_CHANGE_SCENE to "modify scene",
         STR_NAME_OF_SCENE to "name of the scene:",
@@ -83,6 +84,7 @@ class StringsBundle : Strings() {
         STR_HP to "HP",
         STR_MP to "MP",
         STR_IMG to "element icon",
+        STR_SMALL_IMG to "img",
         STR_WARNING to "warning!",
         ST_SCENE_ALREADY_EXISTS to "A scene with the same name already exists.",
         ST_ELEMENT_ALREADY_EXISTS to "An element with this name already exists.",
@@ -107,6 +109,7 @@ class StringsBundle : Strings() {
         STR_RESIZE_ELEMENT to "resize an element",
         STR_RESIZE_ELEMENT_PLR to "resize elements",
         STR_MOVE_ELEMENT to "move an element",
+        STR_MOVE_ELEMENTS to "move elements",
         STR_OBJECT to "object",
         STR_OPTIONS to "options",
         STR_GENERAL to "general",
@@ -132,7 +135,7 @@ class StringsBundle : Strings() {
         ST_UPDATE_FAILED to "The update of Olebo has failed.",
         ST_UPDATE_TRY_AGAIN to "Please, try again later.",
         STR_CANCEL_UPDATE to "cancel update",
-        STR_LABEL_ENABLED to "enable custom label for elements",
+        STR_LABEL_STATE to "label display:",
         STR_LABEL to "label",
         STR_SIZE_COMBO_TOOLTIP to "set the size of the element",
         STR_PRIORITY_COMBO_TOOLTIP to "set the priority level of the element",
@@ -142,6 +145,28 @@ class StringsBundle : Strings() {
         STR_EXIT to "exit",
         STR_UPDATE to "update",
         STR_RESET to "reset",
+        ST_CANCEL_WILL_ERASE_CHANGES to "All changes will be canceled. Do you wish to continue?",
+        STR_BACK to "go back",
+        STR_LOADING to "loading",
+        ST_NAME_OF_BLUEPRINT_REQUIRED to "The name of the element is required.",
+        ST_IMG_BLUEPRINT_REQUIRED to "An image is required for an element.",
+        ST_IMG_BLUEPRINT_NOT_EXIST_OR_INVALID to "The selected image doesn't exist or is invalid.",
+        ST_INT1_OCCURENCE_BLUEPRINT_TO_DELETE to """
+            This element is used in %s scene(s).
+            Are you sure you want to delete it? This action cannot be cancelled.
+        """.trimIndent(),
+        ST_OCCURENCE_BLUEPRINT_TO_DELETE to """
+            This element is used in 1 scene.
+            Are you sure you want to delete it? This action cannot be cancelled.
+        """.trimIndent(),
+        ST_DEFAULT_SETTINGS_RESTORED to "The default settings have been successfully restored.",
+        STR_INFO to "information",
+        STR_BLACK to "black",
+        STR_LABEL_COLOR to "label color:",
+        STR_LABEL_DISABLED to "label disabled",
+        STR_LABEL_VISIBLE to "label visible for both windows",
+        STR_LABEL_VISIBLE_FOR_MASTER to "label only visible for the DM",
+        STR_LABEL_HIDDEN to "label hidden",
     )
 }
 
@@ -178,6 +203,7 @@ class StringsBundle_fr : Strings() {
         STR_NAME to "nom",
         STR_CONFIRM to "valider",
         ST_ACT_ALREADY_EXISTS to "Désolé, un scénario avec le même nom existe déjà ou les données du scénario sont invalides !",
+        ST_ACT_WITHOUT_SCENE to "Un scénario doit contenir au moins une scène !",
         STR_NEW_SCENE to "nouvelle scène",
         STR_CHANGE_SCENE to "modification de la scène",
         STR_NAME_OF_SCENE to "nom de la scène :",
@@ -226,6 +252,7 @@ class StringsBundle_fr : Strings() {
         STR_HP to "PV",
         STR_MP to "PM",
         STR_IMG to "image",
+        STR_SMALL_IMG to "img",
         STR_WARNING to "attention !",
         ST_SCENE_ALREADY_EXISTS to "Une scène avec le même nom existe déjà.",
         ST_ELEMENT_ALREADY_EXISTS to "Un élément avec ce nom existe déjà.",
@@ -250,6 +277,7 @@ class StringsBundle_fr : Strings() {
         STR_RESIZE_ELEMENT to "redimensionner un élément",
         STR_RESIZE_ELEMENT_PLR to "redimensionner des éléments",
         STR_MOVE_ELEMENT to "déplacer un élément",
+        STR_MOVE_ELEMENTS to "déplacer les éléments",
         STR_OBJECT to "objet",
         STR_OPTIONS to "options",
         STR_GENERAL to "général",
@@ -275,7 +303,7 @@ class StringsBundle_fr : Strings() {
         ST_UPDATE_FAILED to "Impossible de mettre à jour Olebo.",
         ST_UPDATE_TRY_AGAIN to "Veuillez réessayer ultérieurement.",
         STR_CANCEL_UPDATE to "annuler la mise à jour",
-        STR_LABEL_ENABLED to "activer les labels personnalisés pour les éléments",
+        STR_LABEL_STATE to "affichage du label :",
         STR_LABEL to "label",
         STR_SIZE_COMBO_TOOLTIP to "change la taille de l'élément",
         STR_PRIORITY_COMBO_TOOLTIP to "change le niveau de prorité de l'élément",
@@ -285,5 +313,27 @@ class StringsBundle_fr : Strings() {
         STR_EXIT to "quitter",
         STR_UPDATE to "mettre à jour",
         STR_RESET to "réinitialiser",
+        ST_CANCEL_WILL_ERASE_CHANGES to "Tous les changements vont être effacé. Voulez-vous continuer ?",
+        STR_BACK to "retour",
+        STR_LOADING to "chargement",
+        ST_NAME_OF_BLUEPRINT_REQUIRED to "Le nom de l'élément est requis.",
+        ST_IMG_BLUEPRINT_REQUIRED to "Un élément doit possèder une image.",
+        ST_IMG_BLUEPRINT_NOT_EXIST_OR_INVALID to "L'image sélectionnée n'existe pas ou est invalide.",
+        ST_INT1_OCCURENCE_BLUEPRINT_TO_DELETE to """
+            Cet élément est utilisé dans %s scènes.
+            Êtes-vous sûr de le supprimer? Cette action est irréversible.
+        """.trimIndent(),
+        ST_OCCURENCE_BLUEPRINT_TO_DELETE to """
+            Cet élément est utilisé dans 1 scène.
+            Êtes-vous sûr de le supprimer? Cette action est irréversible.
+        """.trimIndent(),
+        ST_DEFAULT_SETTINGS_RESTORED to "Les paramètres par défaut ont été restaurés avec succès.",
+        STR_INFO to "information",
+        STR_BLACK to "noir",
+        STR_LABEL_COLOR to "couleur du label :",
+        STR_LABEL_DISABLED to "label désactivé",
+        STR_LABEL_VISIBLE to "label visible sur les deux fenêtres",
+        STR_LABEL_VISIBLE_FOR_MASTER to "label visible pour le maître du jeu",
+        STR_LABEL_HIDDEN to "label caché",
     )
 }

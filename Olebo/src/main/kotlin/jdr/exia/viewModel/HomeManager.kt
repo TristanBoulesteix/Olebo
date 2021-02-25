@@ -1,54 +1,85 @@
 package jdr.exia.viewModel
 
-import jdr.exia.model.act.Act
+import jdr.exia.localization.STR_ERROR
+import jdr.exia.localization.STR_LOADING
+import jdr.exia.localization.Strings
 import jdr.exia.model.dao.DAO
-import org.jetbrains.exposed.sql.transactions.transaction
-import jdr.exia.view.frames.editor.acts.ActEditorDialog
-import jdr.exia.view.frames.editor.elements.BlueprintDialog
-import jdr.exia.viewModel.pattern.observer.Action
-import jdr.exia.viewModel.pattern.observer.Observable
-import jdr.exia.viewModel.pattern.observer.Observer
+import jdr.exia.view.frames.home.HomeFrame
+import jdr.exia.view.frames.home.panels.ActEditorPanel
+import jdr.exia.view.frames.home.panels.ActsPanel
+import jdr.exia.view.frames.home.panels.BlueprintEditorPanel
+import jdr.exia.view.frames.rpg.MasterFrame
+import jdr.exia.view.utils.MessageType
+import jdr.exia.view.utils.showMessage
+import jdr.exia.viewModel.observer.Action
+import jdr.exia.viewModel.observer.Observable
+import jdr.exia.viewModel.observer.Observer
+import kotlinx.coroutines.*
+import kotlinx.coroutines.swing.Swing
+import javax.swing.JOptionPane
 
-object HomeManager : Observable {
+class HomeManager : Observable {
     override var observer: Observer? = null
+
+    fun goHome() = notifyObserver(Action.Switch(ActsPanel(this)))
 
     /**
      * Start an act
      *
      * @param id The id of the act to launch.
      */
-    fun launchAct(id: Int) {
-        notifyObserver(Action.DISPOSE)
+    fun launchAct(id: Int) = GlobalScope.launch {
+        notifyObserver(Action.Dispose)
 
-        transaction(DAO.database) {
-            ViewManager.initializeAct(Act[id])
+        val popup = withContext(Dispatchers.Main) {
+            val loadingString = Strings[STR_LOADING]
+
+            JOptionPane(
+                "$loadingString...",
+                JOptionPane.INFORMATION_MESSAGE,
+                JOptionPane.DEFAULT_OPTION,
+                null,
+                emptyArray()
+            ).run {
+                this.createDialog(parent, loadingString)
+            }
         }
+
+        val job = launch(Dispatchers.Swing) {
+            withTimeout(120_000) {
+                try {
+                    ViewManager.initializeAct(id)
+                    yield()
+                    popup.dispose()
+                    MasterFrame.requestFocus()
+                } catch (e: TimeoutCancellationException) {
+                    popup.dispose()
+                    showMessage("${Strings[STR_ERROR]}: ${e.message}", null, MessageType.ERROR)
+                    HomeFrame().isVisible = true
+                }
+            }
+        }
+
+        if (job.isActive)
+            popup.isVisible = true
     }
 
     /**
      * Show elements
      */
-    fun openObjectEditorFrame() {
-        BlueprintDialog().isVisible = true
-    }
+    fun openObjectEditorFrame() = notifyObserver(Action.Switch(BlueprintEditorPanel(this)))
 
     /**
      * Show JDialog to create a new act.
      */
-    fun openActCreatorFrame() {
-        ActEditorDialog().isVisible = true
-        notifyObserver(Action.REFRESH)
-    }
+    fun openActCreatorFrame() = notifyObserver(Action.Switch(ActEditorPanel(this)))
 
     /**
      * Show JDialog to update an act.
      *
      * @param id The id of the act to update
      */
-    fun updateAct(id: Int) {
-        ActEditorDialog().fillWithAct(DAO.getActWithId(id)).isVisible = true
-        notifyObserver(Action.REFRESH)
-    }
+    fun updateAct(id: Int) = notifyObserver(Action.Switch(ActEditorPanel(this, DAO.getActWithId(id))))
 
     /**
      * Show JDialog to delete an act.
@@ -57,6 +88,6 @@ object HomeManager : Observable {
      */
     fun deleteAct(id: Int) {
         DAO.deleteEntity(DAO.getActWithId(id))
-        notifyObserver(Action.REFRESH)
+        notifyObserver(Action.Reload)
     }
 }

@@ -1,8 +1,10 @@
-package jdr.exia.view.frames.rpg.modifier
+package jdr.exia.view.frames.rpg
 
 import jdr.exia.localization.*
-import jdr.exia.model.dao.DAO
 import jdr.exia.model.utils.emptyElements
+import jdr.exia.view.frames.rpg.modifier.PriorityCombo
+import jdr.exia.view.frames.rpg.modifier.SideDataPanel
+import jdr.exia.view.frames.rpg.modifier.SizeCombo
 import jdr.exia.view.utils.BACKGROUND_COLOR_SELECT_PANEL
 import jdr.exia.view.utils.DEFAULT_INSET
 import jdr.exia.view.utils.DIMENSION_BUTTON_DEFAULT
@@ -178,7 +180,7 @@ class SelectPanel : JPanel() {
             sidePanel.priorityCombo = PriorityCombo(this)
             sidePanel.sizeCombo = SizeCombo(this)
 
-            sidePanel.nameLabelPanel.isEnabled = false
+            sidePanel.nameLabel.isEnabled = false
 
             if (this.isNotEmpty()) {
                 arrayOf(rotateRightButton, rotateLeftButton, deleteButton).forEach { it.isEnabled = true }
@@ -190,8 +192,8 @@ class SelectPanel : JPanel() {
                 if (this.size == 1) {
                     lifeField.element = this[0]
                     manaField.element = this[0]
-                    sidePanel.nameLabelPanel.let {
-                        it.text = transaction(DAO.database) { this@with[0].alias }
+                    sidePanel.nameLabel.let {
+                        it.text = transaction { this@with[0].alias }
                         it.isEnabled = true
                     }
                 }

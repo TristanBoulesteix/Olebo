@@ -4,8 +4,8 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
 import jdr.exia.model.utils.Elements
 import jdr.exia.model.utils.emptyElements
-import jdr.exia.model.utils.toJColor
-import jdr.exia.viewModel.ViewManager
+import java.io.File
+import javax.imageio.ImageIO
 
 /**
  * ViewManager is View's facade
@@ -19,19 +19,19 @@ object ViewFacade {
             field = value
         }
 
-    fun moveToken(x: Int, y: Int) {
-        ViewManager.moveToken(x, y)
-    }
-
     fun setSelectedToken(vararg tokens: Element) {
-        MasterFrame.selectedElements = tokens.toMutableList()
+        MasterFrame.selectedElements = Elements(*tokens)
     }
 
     fun setSelectedToken(token: Element?) = if (token == null) setSelectedToken() else setSelectedToken(token)
 
-    fun setMapBackground(imageName: String) { //Sets the MapPanels backGround
-        MasterFrame.setMapBackground(imageName)
-        PlayerFrame.mapBackground = imageName
+    /**
+     * Sets the [MapPanel]s backGround
+     */
+    fun setMapBackground(imageName: String) {
+        val background = ImageIO.read(File(imageName))
+        MasterFrame.mapBackground = background
+        PlayerFrame.mapBackground = background
         MasterMenuBar.initialize()
         reloadFrames()
     }
@@ -47,7 +47,7 @@ object ViewFacade {
 
     fun updateCursorOnPlayerFrame() {
         Settings.cursorColor.let {
-            PlayerFrame.updateCursor(it.contentCursorColor.toJColor(), it.borderCursorColor.toJColor())
+            PlayerFrame.updateCursor(it.contentColor, it.borderColor)
         }
     }
 

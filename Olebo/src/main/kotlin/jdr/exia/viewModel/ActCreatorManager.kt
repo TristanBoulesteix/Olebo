@@ -1,26 +1,31 @@
 package jdr.exia.viewModel
 
+import jdr.exia.localization.ST_SCENE_ALREADY_EXISTS
+import jdr.exia.localization.Strings
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.DAO
-import jdr.exia.localization.ST_SCENE_ALREADY_EXISTS
-import jdr.exia.localization.Strings
 import jdr.exia.model.dao.saveImg
-import org.jetbrains.exposed.sql.transactions.transaction
 import jdr.exia.utils.forElse
-import jdr.exia.view.frames.editor.acts.SceneEditorDialog
-import jdr.exia.view.utils.showPopup
-import jdr.exia.viewModel.pattern.observer.Action
-import jdr.exia.viewModel.pattern.observer.Observable
-import jdr.exia.viewModel.pattern.observer.Observer
+import jdr.exia.view.frames.home.editor.SceneEditorDialog
+import jdr.exia.view.utils.MessageType
+import jdr.exia.view.utils.showMessage
+import jdr.exia.viewModel.observer.Action
+import jdr.exia.viewModel.observer.Observable
+import jdr.exia.viewModel.observer.Observer
+import org.jetbrains.exposed.sql.transactions.transaction
 
 /**
  * Manager to create an act (uses all classes in jdr.exia.jdr.exia.view.frames.editor)
  */
-class ActCreatorManager : Observable {
+class ActCreatorManager(private val homeManager: HomeManager) : Observable {
     val tempScenes = mutableListOf<SceneData>()
 
-    override var observer: Observer? = null
+    override var observer: Observer?
+        get() = homeManager.observer
+        set(value) {
+            homeManager.observer = value
+        }
 
     private var idAct = 0
 
@@ -48,7 +53,7 @@ class ActCreatorManager : Observable {
                 return scenes
             }
 
-            transaction(DAO.database) {
+            transaction {
                 Act.new {
                     this.name = actName
                 }.apply {
@@ -58,7 +63,7 @@ class ActCreatorManager : Observable {
                 }
             }
         } else {
-            transaction(DAO.database) {
+            transaction {
                 with(Act[idAct]) {
                     this.name = actName
 
@@ -95,13 +100,13 @@ class ActCreatorManager : Observable {
     fun createNewScene(@Suppress("UNUSED_PARAMETER") id: Int) {
         SceneEditorDialog().showDialog()?.let {
             if (tempScenes.map { map -> map.name }.contains(it.name)) {
-                showPopup(Strings[ST_SCENE_ALREADY_EXISTS])
+                showMessage(Strings[ST_SCENE_ALREADY_EXISTS], messageType = MessageType.WARNING)
                 createNewScene(0)
             } else {
                 tempScenes += it
             }
         }
-        notifyObserver(Action.REFRESH)
+        notifyObserver(Action.Reload)
     }
 
     /**
@@ -112,13 +117,13 @@ class ActCreatorManager : Observable {
             if (tempScenes.map { map ->
                     if (tempScenes[index].name == map.name) "" else map.name
                 }.contains(it.name)) {
-                showPopup(Strings[ST_SCENE_ALREADY_EXISTS])
+                showMessage(Strings[ST_SCENE_ALREADY_EXISTS], messageType = MessageType.WARNING)
                 updateNewScene(index)
             } else {
                 tempScenes[index] = it
             }
         }
-        notifyObserver(Action.REFRESH)
+        notifyObserver(Action.Reload)
     }
 
     /**
@@ -126,25 +131,25 @@ class ActCreatorManager : Observable {
      */
     fun deleteNewScene(index: Int) {
         tempScenes.removeAt(index)
-        notifyObserver(Action.REFRESH)
+        notifyObserver(Action.Reload)
     }
 
     /**
      * Get act datas stored into the database and save it into variables.
      */
-    fun updateAct(scenes: MutableList<Scene>, id: Int) {
+    fun updateAct(scenes: MutableList<Scene>, id: Int): MutableList<SceneData> {
         tempScenes += scenes.map {
             SceneData(it.name, it.background, it.id.value)
-        }.toMutableList()
+        }
         idAct = id
-        notifyObserver(Action.REFRESH)
+        return tempScenes
     }
 }
 
 /**
  * Extension function to convert a MutableList<HashMap<Field, String>> to Array<Pair<String, String>>.
  */
-fun MutableList<SceneData>.getArrayOfPairs(): Array<Pair<String, String>> {
+fun MutableList<SceneData>.getArrayOfPairs(): ArrayOfPairs {
     var i = -1
 
     return this.map {

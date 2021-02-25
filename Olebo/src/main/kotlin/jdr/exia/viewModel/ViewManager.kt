@@ -2,7 +2,6 @@ package jdr.exia.viewModel
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
-import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.*
 import jdr.exia.model.utils.*
@@ -10,20 +9,23 @@ import jdr.exia.view.frames.rpg.MasterFrame
 import jdr.exia.view.frames.rpg.MasterMenuBar
 import jdr.exia.view.frames.rpg.PlayerFrame
 import jdr.exia.view.frames.rpg.ViewFacade
-import jdr.exia.view.utils.getTokenFromPoint
+import jdr.exia.view.utils.getTokenFromPosition
+import jdr.exia.view.utils.positionOf
+import kotlinx.coroutines.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.awt.Point
 import java.awt.Rectangle
 
 /**
  * Manage MasterFrame and PlayerFrame
  */
 object ViewManager {
-    private var activeAct: Act? = null
-    var activeScene: Scene? = null
-        private set
+    const val ABSOLUTE_WIDTH = 1600
+    const val ABSOLUTE_HEIGHT = 900
 
-    private var selectedElements = mutableEmptyElements()
+    private var activeAct: Act? = null
+    private var activeScene: Scene? = null
+
+    private var selectedElements = emptyElements()
 
     var cursorPoint: Point? = null
 
@@ -33,21 +35,26 @@ object ViewManager {
     val items
         get() = Blueprint.all()
 
-    fun initializeAct(act: Act) {
+    suspend fun initializeAct(idAct: Int) = coroutineScope {
+        val act = transaction { Act[idAct] }
+        yield()
         activeAct = act
-        MasterMenuBar.act = act
-        MasterMenuBar.initialize()
-        loadCurrentScene()
-        PlayerFrame.toggle(Settings.playerFrameOpenedByDefault)
-        MasterFrame.requestFocus()
+        withContext(Dispatchers.Main) {
+            MasterMenuBar.act = act
+            MasterMenuBar.initialize()
+            yield()
+            loadCurrentScene()
+            yield()
+            PlayerFrame.toggle(Settings.playerFrameOpenedByDefault)
+        }
     }
 
     fun removeSelectedElements() = removeElements(selectedElements)
 
     fun removeElements(elements: Elements) { //removes given token from MutableList
-        selectedElements = mutableEmptyElements()
+        selectedElements = emptyElements()
         ViewFacade.setSelectedToken(null)
-        activeScene.callManager(elements, Element::cmdDelete)
+        activeScene.callCommandManager(elements, Element::cmdDelete)
         repaint()
     }
 
@@ -58,7 +65,7 @@ object ViewManager {
     }
 
     fun unselectAllElements() {
-        selectedElements = mutableEmptyElements()
+        selectedElements = emptyElements()
         ViewFacade.setSelectedToken(null)
     }
 
@@ -76,20 +83,59 @@ object ViewManager {
         }
     }
 
-    fun moveToken(
-        x: Int,
-        y: Int
-    ) { //Changes a token's position without dropping it (a moved token stays selected) , intended for small steps
-        if (selectedElements.isNotEmpty() && selectedElements.size == 1) {
-            val newX = (x - (selectedElements[0].hitBox.width / 2))
-            val newY = (y - (selectedElements[0].hitBox.height / 2))
-            selectedElements[0].cmdPosition(Position(newX, newY), activeScene!!.commandManager)
+    /**
+     * Changes tokens position without dropping them (a moved token stays selected), intended for small steps
+     */
+    fun moveTokens(point: Point, originPoint: Point? = null) {
+        val origin = originPoint?.let { pos ->
+            selectedElements.find { it.hitBox in pos } ?: selectElement(pos).let { selectedElements.firstOrNull() }
+        }
+
+        /**
+         * Return a new [Point] inside the bourders of the map
+         */
+        fun Point.checkBound(): Point {
+            var newPosition = this
+
+            if (point.x < 0) {
+                newPosition = newPosition.copy(x = 0)
+            } else if (newPosition.x > ABSOLUTE_WIDTH) {
+                newPosition = newPosition.copy(x = ABSOLUTE_WIDTH)
+            }
+
+            if (newPosition.y < 0) {
+                newPosition = newPosition.copy(y = 0)
+            } else if (newPosition.y > ABSOLUTE_HEIGHT) {
+                newPosition = newPosition.copy(y = ABSOLUTE_HEIGHT)
+            }
+
+            return newPosition
+        }
+
+        val newPosition = point.checkBound()
+
+        if (selectedElements.isNotEmpty()) {
+            if (selectedElements.size == 1) {
+                selectedElements.first()
+                    .cmdPosition(selectedElements.first().positionOf(newPosition), activeScene!!.commandManager)
+            } else {
+                val originElement = (selectedElements.find { it === origin } ?: selectedElements.first())
+
+                val diffPosition = newPosition - originElement.centerPoint
+
+                val elementToPoint =
+                    mapOf(originElement to originElement.positionOf(newPosition)) + selectedElements.filterNot { it === originElement }
+                        .map { it to it.positionOf((it.centerPoint + diffPosition).checkBound()) }
+
+                activeScene.callCommandManager(elementToPoint, Element::cmdPosition)
+            }
+
             repaint()
         }
     }
 
     private fun unSelectElements() {
-        selectedElements = mutableEmptyElements()
+        selectedElements = emptyElements()
         ViewFacade.unSelectElements()
         repaint()
     }
@@ -107,9 +153,8 @@ object ViewManager {
     /**
      * Checks if the point taken was on a token, if it is, transmits it to SelectPanel to display the token's characteristics
      */
-    fun selectElement(x: Int, y: Int) {
-        selectedElements = activeScene!!.elements.getTokenFromPoint(Point(x, y))?.toElements()?.toMutableList()
-            ?: mutableEmptyElements()
+    fun selectElement(point: Point) {
+        selectedElements = activeScene!!.elements.getTokenFromPosition(point)?.toElements() ?: emptyElements()
         if (selectedElements.isNotEmpty()) {
             ViewFacade.setSelectedToken(selectedElements[0])
             repaint()
@@ -118,8 +163,11 @@ object ViewManager {
         }
     }
 
+    fun positionHasElement(point: Point) =
+        activeScene!!.elements.getTokenFromPosition(point)?.toElements() != null
+
     fun selectElements(rec: Rectangle) {
-        val selectedElements = mutableEmptyElements()
+        val selectedElements = emptyElements()
 
         activeScene!!.elements.forEach {
             if (rec.contains(MasterFrame.mapPanel.getRelativeRectangleOfToken(it))) {
@@ -139,7 +187,7 @@ object ViewManager {
 
     fun selectUp() = with(activeScene!!) {
         selectedElements = if (selectedElements.isEmpty() && this.elements.isNotEmpty()) {
-            this.elements[0].toElements().toMutableList()
+            this.elements[0].toElements()
         } else {
             fun Int.plusOne(list: Elements) = if (this == list.size - 1) 0 else this + 1
 
@@ -147,34 +195,32 @@ object ViewManager {
                 if (this.elements.getOrNull(this.elements.indexOfFirst { it.id == element.id }
                         .plusOne(this.elements)) != null) {
                     this.elements[this.elements.indexOfFirst { it.id == element.id }
-                        .plusOne(this.elements)].toElements().toMutableList()
-                } else mutableEmptyElements()
-            } ?: mutableEmptyElements()
+                        .plusOne(this.elements)].toElements()
+                } else emptyElements()
+            } ?: emptyElements()
         }
 
         ViewFacade.setSelectedToken(*selectedElements.toTypedArray())
         repaint()
     }
 
-    fun selectDown() {
-        with(activeScene!!) {
-            selectedElements = if (selectedElements.isEmpty() && this.elements.isNotEmpty()) {
-                this.elements[0].toElements().toMutableList()
-            } else {
-                fun Int.minusOne(list: Elements) = if (this == 0) list.size - 1 else this - 1
+    fun selectDown() = with(activeScene!!) {
+        selectedElements = if (selectedElements.isEmpty() && this.elements.isNotEmpty()) {
+            this.elements[0].toElements()
+        } else {
+            fun Int.minusOne(list: Elements) = if (this == 0) list.size - 1 else this - 1
 
-                selectedElements.doIfContainsSingle { element ->
-                    if (this.elements.getOrNull(this.elements.indexOfFirst { it.id == element.id }
-                            .minusOne(this.elements)) != null) {
-                        activeScene!!.elements[this.elements.indexOfFirst { it.id == element.id }
-                            .minusOne(this.elements)].toElements().toMutableList()
-                    } else mutableEmptyElements()
-                } ?: mutableEmptyElements()
-            }
-
-            ViewFacade.setSelectedToken(*selectedElements.toTypedArray())
-            repaint()
+            selectedElements.doIfContainsSingle { element ->
+                if (this.elements.getOrNull(this.elements.indexOfFirst { it.id == element.id }
+                        .minusOne(this.elements)) != null) {
+                    activeScene!!.elements[this.elements.indexOfFirst { it.id == element.id }
+                        .minusOne(this.elements)].toElements()
+                } else emptyElements()
+            } ?: emptyElements()
         }
+
+        ViewFacade.setSelectedToken(*selectedElements.toTypedArray())
+        repaint()
     }
 
     private fun updateTokens() { //Updates the tokens on the maps by repainting everything
@@ -182,25 +228,27 @@ object ViewManager {
     }
 
     fun toggleVisibility(tokens: Elements, visibility: Boolean? = null) {
-        activeScene.callManager(
-            visibility ?: if (tokens.size == 1) !tokens[0].isVisible else true,
+        activeScene.callCommandManager(
+            visibility ?: if (tokens.size == 1) !tokens.first().isVisible else true,
             tokens,
             Element::cmdVisiblity
         )
         repaint()
     }
 
-    fun rotateRight() = activeScene.callManager(selectedElements, Element::cmdOrientationToRight).also { repaint() }
+    fun rotateRight() =
+        activeScene.callCommandManager(selectedElements, Element::cmdOrientationToRight).also { repaint() }
 
-    fun rotateLeft() = activeScene.callManager(selectedElements, Element::cmdOrientationToLeft).also { repaint() }
+    fun rotateLeft() =
+        activeScene.callCommandManager(selectedElements, Element::cmdOrientationToLeft).also { repaint() }
 
     fun updatePriorityToken(priority: Priority) = selectedElements.forEach {
         it.priority = priority
     }.also { repaint() }
 
     fun updateSizeToken(size: Size) =
-        activeScene.callManager(size, selectedElements, Element::cmdDimension).also { repaint() }
+        activeScene.callCommandManager(size, selectedElements, Element::cmdDimension).also { repaint() }
 
     fun updateLabel(label: String) =
-        selectedElements.forEach { transaction(DAO.database) { it.alias = label } }.also { repaint() }
+        selectedElements.forEach { transaction { it.alias = label } }
 }

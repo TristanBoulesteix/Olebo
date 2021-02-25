@@ -1,7 +1,6 @@
 package jdr.exia.model.act
 
 import jdr.exia.model.dao.ActTable
-import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.SceneTable
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
@@ -15,7 +14,7 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
 
     var name by ActTable.name
     val scenes
-        get() = transaction(DAO.database) { scenesIterable.toMutableList() }
+        get() = transaction { scenesIterable.toMutableList() }
     var sceneId by ActTable.idScene
 
     override fun delete() {

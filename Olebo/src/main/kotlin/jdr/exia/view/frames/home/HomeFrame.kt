@@ -1,26 +1,17 @@
 package jdr.exia.view.frames.home
 
 import jdr.exia.OLEBO_VERSION
-import jdr.exia.localization.STR_ADD_ACT
-import jdr.exia.localization.STR_ELEMENTS
 import jdr.exia.localization.STR_VERSION
 import jdr.exia.localization.Strings
+import jdr.exia.view.frames.home.panels.ActsPanel
+import jdr.exia.view.frames.home.panels.HomePanel
 import jdr.exia.view.frames.rpg.MasterFrame
-import jdr.exia.view.utils.BORDER_BUTTONS
 import jdr.exia.view.utils.components.FileMenu
 import jdr.exia.view.utils.components.templates.JFrameTemplate
-import jdr.exia.view.utils.gridBagConstraintsOf
 import jdr.exia.viewModel.HomeManager
-import jdr.exia.viewModel.pattern.observer.Action
-import jdr.exia.viewModel.pattern.observer.Observable
-import java.awt.BorderLayout.CENTER
-import java.awt.BorderLayout.NORTH
-import java.awt.Color
-import java.awt.GridBagLayout
-import javax.swing.BorderFactory
-import javax.swing.JButton
+import jdr.exia.viewModel.observer.Action
+import jdr.exia.viewModel.observer.Observable
 import javax.swing.JMenuBar
-import javax.swing.JPanel
 
 /**
  * Main frame of the application. It allows us to create, delete and update an act and an element.
@@ -28,12 +19,17 @@ import javax.swing.JPanel
  * This frame will send the selected act to the Games Views
  */
 class HomeFrame : JFrameTemplate("Olebo - ${Strings[STR_VERSION]} $OLEBO_VERSION") {
-    override val observable: Observable = HomeManager
+    private val manager = HomeManager()
 
-    private val selectorPanel = ActSelectorPanel()
+    override val observable: Observable = manager
+
+    private var contentPane: HomePanel
+        get() = this.getContentPane() as HomePanel
+        set(value) = this.setContentPane(value)
+
 
     init {
-        HomeManager.observer = this
+        manager.observer = this
 
         // This line may cause some issues with database writing ! But without it the X button won't close the program
         this.defaultCloseOperation = DISPOSE_ON_CLOSE
@@ -42,41 +38,20 @@ class HomeFrame : JFrameTemplate("Olebo - ${Strings[STR_VERSION]} $OLEBO_VERSION
             this.add(FileMenu())
         }
 
-        this.add(JPanel().apply {
-            this.border = BorderFactory.createEmptyBorder(15, 0, 15, 0)
-            this.layout = GridBagLayout()
-
-            val elementButton = JButton(Strings[STR_ELEMENTS]).apply {
-                this.border = BORDER_BUTTONS
-                this.addActionListener {
-                    HomeManager.openObjectEditorFrame()
-                }
-            }
-
-            this.add(elementButton, gridBagConstraintsOf(gridx = 0, gridy = 0, weightx = .5))
-
-            val actButton = JButton(Strings[STR_ADD_ACT]).apply {
-                this.border = BORDER_BUTTONS
-                this.addActionListener {
-                    HomeManager.openActCreatorFrame()
-                }
-            }
-
-            this.add(actButton, gridBagConstraintsOf(gridx = 1, gridy = 0, weightx = .5))
-
-            this.background = Color.ORANGE
-        }, NORTH)
-
-        this.add(selectorPanel, CENTER)
-
-        this.pack()
+        this.contentPane = ActsPanel(manager)
     }
 
     override fun update(data: Action) {
         when (data) {
-            Action.DISPOSE -> this.dispose()
-            Action.REFRESH -> this.selectorPanel.refresh()
+            is Action.Dispose -> this.dispose()
+            is Action.Reload -> this.contentPane.reload()
+            is Action.Switch -> switchPanel(data.panel)
         }
+    }
+
+    private fun switchPanel(panel: HomePanel) {
+        this.contentPane = panel
+        this.revalidate()
     }
 
     override fun dispose() {

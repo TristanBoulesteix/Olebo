@@ -4,10 +4,10 @@ import jdr.exia.localization.*
 import jdr.exia.model.act.Scene
 import jdr.exia.model.command.Command
 import jdr.exia.model.command.CommandManager
-import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.utils.Elements
+import jdr.exia.model.utils.Point
 import jdr.exia.model.utils.isCharacter
 import jdr.exia.model.utils.rotate
 import jdr.exia.utils.CharacterException
@@ -19,7 +19,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
 import javax.imageio.ImageIO
 import javax.swing.ImageIcon
-import kotlin.properties.ReadOnlyProperty
 
 class Element(id: EntityID<Int>) : Entity<Int>(id) {
     companion object : EntityClass<Int, Element>(InstanceTable) {
@@ -31,7 +30,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
          * @return The newly created element
          */
         fun createElement(b: Blueprint): Element {
-            return transaction(DAO.database) {
+            return transaction {
                 val id = InstanceTable.insertAndGetId {
                     if (b.isCharacter()) {
                         it[currentHP] = b.HP
@@ -82,7 +81,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
                     }
                 }
 
-                override fun cancelExec() = transaction(DAO.database) {
+                override fun cancelExec() = transaction {
                     elements.forEachIndexed { index, element ->
                         if (element.stillExist())
                             element.refresh()
@@ -103,7 +102,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
                         it.rotateLeft()
                 }
 
-                override fun cancelExec() = transaction(DAO.database) {
+                override fun cancelExec() = transaction {
                     elements.forEachIndexed { index, element ->
                         if (element.stillExist())
                             element.orientation = previousOrientation[index]
@@ -133,17 +132,33 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
                 }
         }
 
+        fun cmdPosition(elementsToPoint: Map<Element, Point>, manager: CommandManager) {
+            val previousPoints = elementsToPoint.mapValues { it.key.referencePoint }
+
+            manager += object : Command() {
+                override val label by StringDelegate(STR_MOVE_ELEMENTS)
+
+                override fun exec() = elementsToPoint.forEach { (element, newPoint) ->
+                    element.referencePoint = newPoint
+                }
+
+                override fun cancelExec() = previousPoints.forEach { (element, oldPoint) ->
+                    element.referencePoint = oldPoint
+                }
+            }
+        }
+
         fun cmdDelete(manager: CommandManager, elements: Elements) {
             manager += object : Command() {
                 override val label by StringDelegate(STR_DELETE_SELECTED_TOKENS)
 
-                override fun exec() = transaction(DAO.database) {
+                override fun exec() = transaction {
                     elements.forEach {
                         it.isDeleted = true
                     }
                 }
 
-                override fun cancelExec() = transaction(DAO.database) {
+                override fun cancelExec() = transaction {
                     elements.forEach {
                         it.isDeleted = false
                     }
@@ -171,25 +186,31 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     var isDeleted by InstanceTable.deleted
 
     // Value from the Blueprint
-    val sprite by transaction {
+    val sprite by lazy {
+        transaction {
             if (blueprint.type.typeElement == Type.BASIC) {
                 ImageIcon(ImageIO.read(Element::class.java.classLoader.getResourceAsStream("sprites/${blueprint.sprite}")))
-            }
-            else {
+            } else {
                 ImageIcon(blueprint.sprite)
             }.rotate(orientation)
         }
+    }
 
-    val name by transaction { blueprint.realName }
+    val name
+        get() = transaction { blueprint.realName }
 
-    val maxHP by transaction { blueprint.HP }
+    val maxHP
+        get() = transaction { blueprint.HP }
 
-    val maxMana by transaction { blueprint.MP }
+    val maxMana
+        get() = transaction { blueprint.MP }
 
-    val type by transaction { blueprint.type }
+    val type
+        get() = transaction { blueprint.type }
 
     // Custom getters / setters / variables / values
-    val hitBox by transaction {
+    val hitBox
+        get() = transaction {
             Rectangle(
                 x,
                 y,
@@ -199,31 +220,34 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         }
 
     var isVisible
-        get() = transaction(DAO.database) { visibleValue }
+        get() = transaction { visibleValue }
         private set(value) {
-            transaction(DAO.database) { visibleValue = value }
+            transaction { visibleValue = value }
         }
 
     var size
-        get() = transaction(DAO.database) { sizeElement.sizeElement }
+        get() = transaction { sizeElement.sizeElement }
         private set(value) {
-            transaction(DAO.database) { sizeElement = value.size }
+            transaction { sizeElement = value.size }
         }
 
     var priority
-        get() = transaction(DAO.database) { priorityElement.priorityElement }
+        get() = transaction { priorityElement.priorityElement }
         set(value) {
-            transaction(DAO.database) { priorityElement = value.priority }
+            transaction { priorityElement = value.priority }
         }
 
-    var position
-        get() = Position(x, y)
+    var referencePoint
+        get() = Point(x, y)
         private set(value) {
-            transaction(DAO.database) {
+            transaction {
                 x = value.x
                 y = value.y
             }
         }
+
+    val centerPoint
+        get() = Point(this.hitBox.centerX.toInt(), this.hitBox.centerY.toInt())
 
     var currentHealth
         get() = if (this.isCharacter()) currentHP!! else throw Exception("Cet élément n'est pas un personnage !")
@@ -236,38 +260,39 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         else throw CharacterException(this::class, "currentMana")
 
     // --- General functions ---
-    private fun rotateRight() = transaction(DAO.database) {
+    private fun rotateRight() = transaction {
         orientation = if (orientation >= 270.0) 0.0 else orientation + 90.0
     }
 
-    private fun rotateLeft() = transaction(DAO.database) {
+    private fun rotateLeft() = transaction {
         orientation = if (orientation <= 0.0) 270.0 else orientation - 90.0
     }
 
     // --- Command functions ---
 
-    fun cmdPosition(position: Position, manager: CommandManager) {
-        val previousPosition = this.position
+    fun cmdPosition(point: Point, manager: CommandManager) {
+        val previousPosition = this.referencePoint
 
         manager += object : Command() {
             override val label by StringDelegate(STR_MOVE_ELEMENT)
 
             override fun exec() {
-                this@Element.position = position
+                this@Element.referencePoint = point
             }
 
             override fun cancelExec() {
                 if (stillExist())
-                    this@Element.position = previousPosition
+                    this@Element.referencePoint = previousPosition
             }
         }
     }
 
-    fun stillExist() = transaction(DAO.database) { Element.findById(this@Element.id) != null }
-
     /**
-     * Set a value using a transaction with the default database
+     * Check if the element still exists in the database
      */
-    private fun <T> transaction(get: () -> T): ReadOnlyProperty<Element, T> =
-        ReadOnlyProperty { _, _ -> transaction(DAO.database) { get() } }
+    fun stillExist() = transaction { Element.findById(this@Element.id) != null }
+
+    override fun equals(other: Any?) = other is Element && this.id == other.id
+
+    override fun hashCode() = this.id.value
 }

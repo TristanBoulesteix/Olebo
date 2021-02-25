@@ -6,28 +6,27 @@ import jdr.exia.model.utils.Elements
 import jdr.exia.model.utils.emptyElements
 import jdr.exia.view.frames.Reloadable
 import jdr.exia.view.utils.DIMENSION_FRAME
+import jdr.exia.view.utils.event.addKeyPressedListener
+import jdr.exia.view.utils.screens
 import java.awt.Color
-import java.awt.GraphicsEnvironment
+import java.awt.Image
 import java.awt.Window
 import java.awt.event.KeyEvent
-import java.awt.event.KeyListener
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
-import java.io.File
-import javax.imageio.ImageIO
 import javax.swing.JDialog
 
 /**
  * PlayerFrame is the Frame the Players can see, it shares its content with MasterFrame
  */
-class PlayerFrame private constructor() : JDialog(null as Window?), GameFrame, KeyListener {
+class PlayerFrame private constructor() : JDialog(null as Window?), GameFrame {
     companion object : Reloadable {
         private var playerFrameInstance: PlayerFrame? = null
 
-        var mapBackground: String = ""
+        var mapBackground: Image? = null
             set(value) {
                 field = value
-                playerFrameInstance?.setMapBackground(value)
+                playerFrameInstance?.mapBackground = value
             }
 
         var title = "\" \""
@@ -47,37 +46,34 @@ class PlayerFrame private constructor() : JDialog(null as Window?), GameFrame, K
         private fun show() {
             playerFrameInstance = PlayerFrame().apply {
                 this.title = Companion.title
-                this.setMapBackground(mapBackground)
+                this.mapBackground = this@Companion.mapBackground
                 this.updateMap(map)
-                GraphicsEnvironment.getLocalGraphicsEnvironment().let { ge ->
-                    val screens = ge.screenDevices
-                    if (screens.size == 1) { //If there is only 1 screen, we display both frames there
-                        this.isUndecorated = false
-                        this.isResizable = true
-                        this.preferredSize = DIMENSION_FRAME
-                        this.pack()
-                        this.setLocationRelativeTo(null)
-                        this.isVisible = true
-                    } else { //If 2 screens are present, we display the player frame in fullscreen on the 2nd screen
-                        for (screen in screens) {
-                            if (MasterFrame.graphicsConfiguration.device != screen) {
-                                this.setSize(
-                                    screen.displayMode.width,
-                                    screen.displayMode.height
-                                )  //Sets the frame's size as exactly the size of the screen.
-                                this.isUndecorated = true
-                                this.isResizable = false
+                if (screens.size == 1) { //If there is only 1 screen, we display both frames there
+                    this.isUndecorated = false
+                    this.isResizable = true
+                    this.preferredSize = DIMENSION_FRAME
+                    this.pack()
+                    this.setLocationRelativeTo(null)
+                    this.isVisible = true
+                } else { //If 2 screens are present, we display the player frame in fullscreen on the 2nd screen
+                    for (screen in screens) {
+                        if (MasterFrame.graphicsConfiguration.device != screen) {
+                            this.setSize(
+                                screen.displayMode.width,
+                                screen.displayMode.height
+                            )  //Sets the frame's size as exactly the size of the screen.
+                            this.isUndecorated = true
+                            this.isResizable = false
 
-                                this.pack()
-                                screen.fullScreenWindow = this
-                                this.location = screen.defaultConfiguration.bounds.location.apply {
-                                    with(screen.defaultConfiguration.defaultTransform) {
-                                        x *= scaleX.toInt()
-                                        y *= scaleY.toInt()
-                                    }
+                            this.pack()
+                            screen.fullScreenWindow = this
+                            this.location = screen.defaultConfiguration.bounds.location.apply {
+                                with(screen.defaultConfiguration.defaultTransform) {
+                                    x *= scaleX.toInt()
+                                    y *= scaleY.toInt()
                                 }
-                                break
                             }
+                            break
                         }
                     }
                 }
@@ -103,12 +99,17 @@ class PlayerFrame private constructor() : JDialog(null as Window?), GameFrame, K
 
     init {
         this.contentPane = mapPanel
-        this.addKeyListener(this)
         this.defaultCloseOperation = DO_NOTHING_ON_CLOSE
         this.addWindowListener(object : WindowAdapter() {
             override fun windowClosing(e: WindowEvent) =
                 Companion.hide().also { MasterMenuBar.togglePlayerFrameMenuItem?.isSelected = false }
         })
+        this.addKeyPressedListener {
+            if (it.keyCode == KeyEvent.VK_ESCAPE) {
+                Companion.hide()
+                MasterMenuBar.togglePlayerFrameMenuItem?.isSelected = false
+            }
+        }
     }
 
     override fun reload() = repaint()
@@ -119,18 +120,10 @@ class PlayerFrame private constructor() : JDialog(null as Window?), GameFrame, K
         mapPanel.updateTokens(tokens)
     }
 
-    override fun setMapBackground(imageName: String) {
-        mapPanel.backGroundImage = ImageIO.read(File(imageName))
+    override var mapBackground by mapPanel::backGroundImage
+
+    override fun dispose() {
+        this.mapPanel.repaintJob?.cancel()
+        super.dispose()
     }
-
-    override fun keyTyped(p0: KeyEvent) = Unit
-
-    override fun keyPressed(p0: KeyEvent) {
-        if (p0.keyCode == KeyEvent.VK_ESCAPE) {
-            Companion.hide()
-            MasterMenuBar.togglePlayerFrameMenuItem?.isSelected = false
-        }
-    }
-
-    override fun keyReleased(p0: KeyEvent) = Unit
 }

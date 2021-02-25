@@ -4,16 +4,21 @@ import jdr.exia.localization.STR_LABEL
 import jdr.exia.localization.STR_LABEL_TOOLTIP
 import jdr.exia.localization.STR_NAME
 import jdr.exia.localization.Strings
+import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.view.frames.Reloadable
 import jdr.exia.view.utils.DEFAULT_INSET
 import jdr.exia.view.utils.components.filter.MaxCharFilter
 import jdr.exia.view.utils.components.templates.ComboSelectPanel
 import jdr.exia.view.utils.components.templates.PlaceholderTextField
-import jdr.exia.view.utils.components.templates.ValidableField
 import jdr.exia.view.utils.event.addFocusGainedListener
+import jdr.exia.view.utils.event.addTextChangedListener
 import jdr.exia.view.utils.gridBagConstraintsOf
 import jdr.exia.viewModel.ViewManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.swing.Swing
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.GridBagConstraints
@@ -41,20 +46,19 @@ class SideDataPanel : JPanel(), Reloadable {
         }
     }
 
-    private val nameLabel = PlaceholderTextField(Strings[STR_LABEL]).apply {
+    val nameLabel = PlaceholderTextField(Strings[STR_LABEL]).apply {
         this.font = Font(this.font.name, Font.PLAIN, 15)
         this.preferredSize = Dimension(110, this.preferredSize.height)
         this.toolTipText = Strings[STR_LABEL_TOOLTIP]
+        this.isEnabled = false
         this.addFocusGainedListener {
             this.selectAll()
         }
+        this.addTextChangedListener {
+            if (isEnabled)
+                GlobalScope.launch(Dispatchers.Swing) { ViewManager.updateLabel(text) }
+        }
         (this.document as AbstractDocument).documentFilter = MaxCharFilter(14)
-    }
-
-    val nameLabelPanel = ValidableField(nameLabel) { _, text ->
-        ViewManager.updateLabel(text)
-    }.apply {
-        this.isEnabled = false
     }
 
     var sizeCombo by reloadLayoutAfterSet(SizeCombo())
@@ -69,7 +73,7 @@ class SideDataPanel : JPanel(), Reloadable {
 
     private fun initLayout() {
         this.removeAll()
-        if (Settings.isLabelEnabled)
+        if (Settings.labelState != SerializableLabelState.DISABLED)
             loadLabelLayout()
         else
             loadUnlabelLayout()
@@ -88,7 +92,7 @@ class SideDataPanel : JPanel(), Reloadable {
         )
 
         this.add(
-            nameLabelPanel, gridBagConstraintsOf(
+            nameLabel, gridBagConstraintsOf(
                 0,
                 1,
                 weightx = 1.0,

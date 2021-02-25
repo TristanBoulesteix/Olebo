@@ -4,20 +4,15 @@ import jdr.exia.localization.STR_DM_TITLE_FRAME
 import jdr.exia.localization.Strings
 import jdr.exia.model.utils.Elements
 import jdr.exia.model.utils.emptyElements
-import jdr.exia.view.frames.rpg.modifier.SelectPanel
 import jdr.exia.view.utils.DIMENSION_FRAME
 import jdr.exia.view.utils.event.addKeyPressedListener
 import jdr.exia.view.utils.gridBagConstraintsOf
 import jdr.exia.viewModel.ViewManager
 import java.awt.Color
+import java.awt.Dimension
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.awt.event.KeyEvent
-import java.awt.event.MouseAdapter
-import java.awt.event.MouseEvent
-import java.awt.event.MouseMotionAdapter
-import java.io.File
-import javax.imageio.ImageIO
 import javax.swing.JFrame
 import javax.swing.JPanel
 
@@ -42,18 +37,16 @@ object MasterFrame : JFrame(), GameFrame {
      */
     var itemPanel = ItemPanel()
 
-    var selectPanel = SelectPanel()
+    private var selectPanel = SelectPanel()
 
     var selectedElements: Elements = emptyElements()
         set(value) {
-            selectPanel.selectedElements = value.toList()
-            mapPanel.selectedElements = value.toMutableList()
+            selectPanel.selectedElements = value
+            mapPanel.selectedElements = value
             field = value
         }
 
-    override fun setMapBackground(imageName: String) { //set the background image for the mappanels
-        mapPanel.backGroundImage = ImageIO.read(File(imageName))
-    }
+    override var mapBackground by mapPanel::backGroundImage
 
     override fun setTitle(title: String) {
         super.setTitle("Olebo - ${Strings[STR_DM_TITLE_FRAME]} - \"$title\"")
@@ -72,15 +65,19 @@ object MasterFrame : JFrame(), GameFrame {
             }
         }
         this.defaultCloseOperation = EXIT_ON_CLOSE
-        masterFramePanel.size = this.size
-        masterFramePanel.background = Color.GRAY
-        masterFramePanel.layout = GridBagLayout()
+        masterFramePanel.apply {
+            size = this.size
+            background = Color.GRAY
+            layout = GridBagLayout()
+        }
         contentPane = masterFramePanel
 
         mapPanel.setSize(1280, 720)
 
-        itemPanel.setSize(this.width - 1280, this.height)
-        itemPanel.background = Color.yellow
+        itemPanel.apply {
+            size = Dimension(this.width - 1280, this.height)
+            background = Color.yellow
+        }
 
         selectPanel.setSize(mapPanel.width, (this.height - mapPanel.height))
 
@@ -112,17 +109,6 @@ object MasterFrame : JFrame(), GameFrame {
         masterFramePanel.add(itemPanel, itemConstraints)
         masterFramePanel.add(selectPanel, selectConstraints)
         jMenuBar = MasterMenuBar
-
-        mapPanel.addMouseMotionListener(object : MouseMotionAdapter() {
-            override fun mouseMoved(me: MouseEvent) {
-                ViewManager.cursorPoint = mapPanel.getAbsolutePoint(me.point)
-            }
-        })
-        mapPanel.addMouseListener(object : MouseAdapter() {
-            override fun mouseExited(me: MouseEvent) {
-                ViewManager.cursorPoint = null
-            }
-        })
     }
 
     override fun reload() {

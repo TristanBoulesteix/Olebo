@@ -2,6 +2,7 @@ package jdr.exia.view.utils.factories
 
 import jdr.exia.localization.*
 import jdr.exia.model.dao.getIcon
+import jdr.exia.model.element.Type
 import jdr.exia.view.utils.components.templates.ItemPanel
 import jdr.exia.viewModel.BlueprintManager
 import java.awt.Color
@@ -23,14 +24,14 @@ class CharacterTitlePanel(name: String, manager: BlueprintManager) : TitlePanel(
     init {
         this.add(SquareLabel(Strings[STR_HP], isEditable = false))
         this.add(SquareLabel(Strings[STR_MP], isEditable = false))
-        this.add(SquareLabel(Strings[STR_IMG], isEditable = false))
+        this.add(SquareLabel(Strings[STR_SMALL_IMG], isEditable = false))
         this.add(SquareLabel(getIcon("create_icon", this.javaClass), manager::createBlueprint))
     }
 }
 
 fun buildTitleItemPanel(manager: BlueprintManager): TitlePanel {
     return with(manager.type) {
-        if (this == jdr.exia.model.element.Type.OBJECT) {
+        if (this == Type.OBJECT) {
             ObjectTitlePanel(Strings[STR_OBJECTS], manager)
         } else {
             CharacterTitlePanel(this.name, manager)

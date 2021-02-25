@@ -1,7 +1,6 @@
 package jdr.exia.model.element
 
 import jdr.exia.localization.*
-import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.TypeTable
 import jdr.exia.model.element.Type.TypeElement
 import org.jetbrains.exposed.dao.Entity
@@ -15,10 +14,10 @@ import org.jetbrains.exposed.sql.transactions.transaction
  * @param type A [TypeElement] object. It is the link between the enum and the database
  */
 enum class Type(val type: TypeElement, typeNameKey: String) {
-    OBJECT(transaction(DAO.database) { TypeElement[1] }, STR_OBJECT),
-    PJ(transaction(DAO.database) { TypeElement[2] }, STR_PC),
-    PNJ(transaction(DAO.database) { TypeElement[3] }, STR_NPC),
-    BASIC(transaction(DAO.database) { TypeElement[4] }, STR_BASE_ELEMENT);
+    OBJECT(transaction { TypeElement[1] }, STR_OBJECT),
+    PJ(transaction { TypeElement[2] }, STR_PC),
+    PNJ(transaction { TypeElement[3] }, STR_NPC),
+    BASIC(transaction { TypeElement[4] }, STR_BASE_ELEMENT);
 
     val typeName by StringDelegate(typeNameKey)
 

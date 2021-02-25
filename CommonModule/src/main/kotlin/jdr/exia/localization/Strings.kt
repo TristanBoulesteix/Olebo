@@ -28,16 +28,18 @@ abstract class Strings : ListResourceBundle() {
                 Control.getNoFallbackControl(Control.FORMAT_DEFAULT)
             )
 
-        operator fun get(key: String, state: StringStates = StringStates.CAPITALIZE): String = try {
+        operator fun get(key: String, state: StringStates = StringStates.CAPITALIZE, vararg args: Any?): String = try {
             langBundle.getString(key)
         } catch (e: Exception) {
             key
-        }.let {
+        }.let { string ->
             when (state) {
-                StringStates.CAPITALIZE -> it.capitalize(localeHandler.activeLanguage)
-                StringStates.NORMAL -> it
-            }
+                StringStates.CAPITALIZE -> string.capitalize(localeHandler.activeLanguage)
+                StringStates.NORMAL -> string
+            }.format(*args)
         }
+
+        operator fun get(key: String, vararg args: Any?) = get(key, StringStates.CAPITALIZE, *args)
     }
 
     protected abstract val contents: Map<String, String>
