@@ -12,7 +12,7 @@ import javax.swing.JOptionPane
 import javax.swing.SwingUtilities
 import javax.swing.UIManager
 
-const val OLEBO_VERSION = "1.8.0-BETA"
+const val OLEBO_VERSION = "1.9.0-BETA"
 
 fun main() {
     SwingUtilities.invokeLater {

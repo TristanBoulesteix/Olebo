@@ -9,7 +9,7 @@ plugins {
     id("org.sonarqube") version "3.0"
 }
 
-version = "1.8.0-BETA"
+version = "1.9.0-BETA"
 
 repositories {
     mavenCentral()
