@@ -43,6 +43,7 @@ object SettingsTable : IntIdTable(), Initializable {
     const val DEFAULT_ELEMENT_VISIBILITY = "default_element_visibility"
     const val LABEL_STATE = "label_enabled"
     const val LABEL_COLOR = "label_color"
+    const val CHANGELOGS_VERSION = "changelogs_version"
 
     val name = varchar("name", 255)
     val value = varchar("value", 255).default("")
@@ -73,6 +74,7 @@ object SettingsTable : IntIdTable(), Initializable {
         insertOptionIfNotExists(8, DEFAULT_ELEMENT_VISIBILITY, false, insertOnlyIfnotExists)
         insertOptionIfNotExists(9, LABEL_STATE, SerializableLabelState.DISABLED.encode(), insertOnlyIfnotExists)
         insertOptionIfNotExists(10, LABEL_COLOR, SerializableColor.BLACK.encode(), insertOnlyIfnotExists)
+        insertOptionIfNotExists(11, CHANGELOGS_VERSION, "", insertOnlyIfnotExists)
     }
 
     private fun insertOptionIfNotExists(id: Int, name: String, value: Any, insertOnlyIfnotExists: Boolean) {

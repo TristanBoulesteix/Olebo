@@ -36,12 +36,17 @@ private val lastRelease: JsonObject
         JsonObject(emptyMap())
     }
 
+val currentChangelogs
+    get() = lastRelease["body"]?.jsonPrimitive?.contentOrNull
+
 /**
  * Check for update on startup
  */
 fun checkForUpdate() = GlobalScope.launch {
-    lastRelease.let { release ->
+    lastRelease.takeIf { it.isNotEmpty() }?.let { release ->
         fun prepareUpdate(auto: Boolean = true) {
+            Settings.wasJustUpdated = true
+
             Runtime.getRuntime().addShutdownHook(Thread {
                 if ((auto && Settings.autoUpdate) || !auto) {
                     val url = release["assets"]!!.jsonArray[0].jsonObject["browser_download_url"].toString()
@@ -92,7 +97,9 @@ fun checkForUpdate() = GlobalScope.launch {
  * Update Olebo without prompt and restart it
  */
 fun forceUpdateAndRestart(exitCode: Int = 0): Nothing {
-    val url = lastRelease["assets"]!!.jsonArray[0].jsonObject["browser_download_url"].toString()
+    val release = lastRelease
+    val url = release["assets"]!!.jsonArray[0].jsonObject["browser_download_url"].toString()
+    Settings.wasJustUpdated = true
     runJar(oleboUpdater, url, jarPath, UpdateOptions(true).toQuotedString())
     exitProcess(exitCode)
 }
