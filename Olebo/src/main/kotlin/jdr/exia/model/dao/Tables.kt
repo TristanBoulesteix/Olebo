@@ -74,7 +74,7 @@ object SettingsTable : IntIdTable(), Initializable {
         insertOptionIfNotExists(8, DEFAULT_ELEMENT_VISIBILITY, false, insertOnlyIfnotExists)
         insertOptionIfNotExists(9, LABEL_STATE, SerializableLabelState.DISABLED.encode(), insertOnlyIfnotExists)
         insertOptionIfNotExists(10, LABEL_COLOR, SerializableColor.BLACK.encode(), insertOnlyIfnotExists)
-        insertOptionIfNotExists(11, CHANGELOGS_VERSION, "", insertOnlyIfnotExists)
+        insertOptionIfNotExists(11, CHANGELOGS_VERSION, "1.8.0-BETA", insertOnlyIfnotExists)
     }
 
     private fun insertOptionIfNotExists(id: Int, name: String, value: Any, insertOnlyIfnotExists: Boolean) {
