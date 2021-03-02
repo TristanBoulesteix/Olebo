@@ -4,9 +4,8 @@ val kotlinVersion: String by System.getProperties()
 
 plugins {
     application
-    java
     kotlin("jvm")
-    id("org.sonarqube") version "3.0"
+    id("org.jetbrains.compose") version "0.3.0"
 }
 
 version = "1.9.0-BETA"
@@ -15,6 +14,7 @@ repositories {
     mavenCentral()
     maven("https://dl.bintray.com/kotlin/exposed/")
     jcenter()
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
 }
 
 val exposedVersion = "0.29.1"
@@ -31,6 +31,7 @@ dependencies {
     implementation("org.apache.httpcomponents", "httpclient", "4.5.10")
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.4.2")
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-swing", "1.4.2")
+    implementation(compose.desktop.currentOs)
 }
 
 val main = "jdr.exia.OleboKt"
