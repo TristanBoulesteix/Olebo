@@ -41,7 +41,7 @@ class ActEditorPanel(homeManager: HomeManager, act: Act? = null) : HomePanel() {
 
         act?.let {
             this.nameField.text = it.name
-            this.manager.updateAct(it.scenes, it.id.value)
+            this.manager.updateAct(it.scenes.toMutableList(), it.id.value)
         }
 
         selectorPanel = SceneSelectorPanel()

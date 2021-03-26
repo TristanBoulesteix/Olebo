@@ -3,12 +3,7 @@ package jdr.exia
 import jdr.exia.localization.Strings
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.updater.checkForUpdate
-import jdr.exia.updater.currentChangelogs
-import jdr.exia.view.frames.home.HomeFrame
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import javax.swing.JOptionPane
+import jdr.exia.view.compose.showHomeWindow
 import javax.swing.SwingUtilities
 import javax.swing.UIManager
 
@@ -24,7 +19,9 @@ fun main() {
             UIManager.getSystemLookAndFeelClassName()
         )
 
-        with(HomeFrame()) {
+        showHomeWindow()
+
+/*        with(HomeFrame()) {
             isVisible = true
             GlobalScope.launch(Dispatchers.IO) {
                 if (Settings.wasJustUpdated) {
@@ -40,6 +37,7 @@ fun main() {
                     }
                 }
             }
-        }
+        }*/
     }
 }
+

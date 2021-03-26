@@ -5,7 +5,7 @@ val kotlinVersion: String by System.getProperties()
 plugins {
     application
     kotlin("jvm")
-    id("org.jetbrains.compose") version "0.3.0"
+    id("org.jetbrains.compose") version "0.3.1"
 }
 
 version = "1.9.0-BETA"

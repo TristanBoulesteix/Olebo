@@ -35,9 +35,7 @@ object ViewManager {
     val items
         get() = Blueprint.all()
 
-    suspend fun initializeAct(idAct: Int) = coroutineScope {
-        val act = transaction { Act[idAct] }
-        yield()
+    suspend fun initializeAct(act: Act) = coroutineScope {
         activeAct = act
         withContext(Dispatchers.Main) {
             MasterMenuBar.act = act

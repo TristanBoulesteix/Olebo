@@ -58,7 +58,6 @@ class ActCreatorManager(private val homeManager: HomeManager) : Observable {
                     this.name = actName
                 }.apply {
                     val scenesList = createScenes(this.id.value)
-                    this.scenes += scenesList
                     if (scenesList.isNotEmpty()) this.sceneId = scenesList[0].id.value
                 }
             }
@@ -80,11 +79,11 @@ class ActCreatorManager(private val homeManager: HomeManager) : Observable {
                                 scene?.name = map.name
                                 if (scene?.background != map.img) scene?.background = saveImg(map.img)
                             }
-                            else -> this.scenes += Scene.new {
+                            else -> /*this.scenes += Scene.new {
                                 this.name = map.name
                                 this.background = saveImg(map.img)
                                 this.idAct = this@with.id.value
-                            }
+                            }*/ {} // TODO
                         }
                     } ?: this.scenes.forEach { it.delete() }
                 }

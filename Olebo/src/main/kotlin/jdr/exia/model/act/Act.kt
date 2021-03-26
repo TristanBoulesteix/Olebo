@@ -5,20 +5,19 @@ import jdr.exia.model.dao.SceneTable
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.SizedIterable
 
 class Act(id: EntityID<Int>) : Entity<Int>(id) {
     companion object : EntityClass<Int, Act>(ActTable)
 
-    private val scenesIterable by Scene referrersOn SceneTable.idAct
-
     var name by ActTable.name
-    val scenes
-        get() = transaction { scenesIterable.toMutableList() }
+
+    val scenes by Scene referrersOn SceneTable.idAct
+
     var sceneId by ActTable.idScene
 
     override fun delete() {
-        scenesIterable.forEach {
+        scenes.forEach {
             it.delete()
         }
 
@@ -28,7 +27,7 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
     /**
      * Find a scene with its id from all scenes stored in an Act
      */
-    fun MutableList<Scene>.findWithId(id: Int): Scene? {
+    fun SizedIterable<Scene>.findWithId(id: Int): Scene? {
         return this.find { it.id.value == id }
     }
 }

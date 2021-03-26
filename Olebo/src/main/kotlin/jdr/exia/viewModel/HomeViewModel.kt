@@ -1,38 +1,38 @@
+@file:Suppress("DuplicatedCode")
+
 package jdr.exia.viewModel
 
+import androidx.compose.desktop.AppFrame
+import androidx.compose.desktop.AppManager
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import jdr.exia.localization.STR_ERROR
 import jdr.exia.localization.STR_LOADING
 import jdr.exia.localization.Strings
 import jdr.exia.model.act.Act
-import jdr.exia.model.dao.DAO
 import jdr.exia.view.frames.home.HomeFrame
-import jdr.exia.view.frames.home.panels.ActEditorPanel
-import jdr.exia.view.frames.home.panels.ActsPanel
-import jdr.exia.view.frames.home.panels.BlueprintEditorPanel
 import jdr.exia.view.frames.rpg.MasterFrame
 import jdr.exia.view.utils.MessageType
 import jdr.exia.view.utils.showMessage
-import jdr.exia.viewModel.observer.Action
-import jdr.exia.viewModel.observer.Observable
-import jdr.exia.viewModel.observer.Observer
 import kotlinx.coroutines.*
 import kotlinx.coroutines.swing.Swing
 import org.jetbrains.exposed.sql.transactions.transaction
 import javax.swing.JOptionPane
 
-class HomeManager : Observable {
-    override var observer: Observer? = null
+class HomeViewModel {
+    private val actsAsList
+        get() = transaction { Act.all().toList() }
 
-    fun goHome() = notifyObserver(Action.Switch(ActsPanel(this)))
+    var acts by mutableStateOf(actsAsList)
+        private set
 
     /**
      * Start an act
      *
-     * @param id The id of the act to launch.
+     * @param act The act to launch
      */
-    fun launchAct(id: Int) = GlobalScope.launch {
-        notifyObserver(Action.Dispose)
-
+    fun launchAct(act: Act) = GlobalScope.launch {
         val popup = withContext(Dispatchers.Main) {
             val loadingString = Strings[STR_LOADING]
 
@@ -50,9 +50,10 @@ class HomeManager : Observable {
         val job = launch(Dispatchers.Swing) {
             withTimeout(120_000) {
                 try {
-                    ViewManager.initializeAct(transaction { Act[id] })
+                    ViewManager.initializeAct(act)
                     yield()
                     popup.dispose()
+                    AppManager.windows.forEach(AppFrame::close)
                     MasterFrame.requestFocus()
                 } catch (e: TimeoutCancellationException) {
                     popup.dispose()
@@ -66,30 +67,13 @@ class HomeManager : Observable {
             popup.isVisible = true
     }
 
-    /**
-     * Show elements
-     */
-    fun openObjectEditorFrame() = notifyObserver(Action.Switch(BlueprintEditorPanel(this)))
+    fun deleteAct(act: Act) = transaction {
+        act.delete()
+        updateActs()
+    }
 
-    /**
-     * Show JDialog to create a new act.
-     */
-    fun openActCreatorFrame() = notifyObserver(Action.Switch(ActEditorPanel(this)))
 
-    /**
-     * Show JDialog to update an act.
-     *
-     * @param id The id of the act to update
-     */
-    fun updateAct(id: Int) = notifyObserver(Action.Switch(ActEditorPanel(this, DAO.getActWithId(id))))
-
-    /**
-     * Show JDialog to delete an act.
-     *
-     * @param id The id of the act to delete
-     */
-    fun deleteAct(id: Int) {
-        DAO.deleteEntity(DAO.getActWithId(id))
-        notifyObserver(Action.Reload)
+    private fun updateActs() {
+        acts = actsAsList
     }
 }

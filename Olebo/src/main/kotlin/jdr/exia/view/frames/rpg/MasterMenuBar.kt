@@ -140,7 +140,7 @@ object MasterMenuBar : JMenuBar() {
 
             JMenu(Strings[STR_IMPORT_FROM_SCENE]).applyAndAddTo(this) {
                 act?.let { act ->
-                    if (act.scenes.size <= 1)
+                    if (act.scenes.count() <= 1)
                         this.isEnabled = false
 
                     act.scenes.forEach {
