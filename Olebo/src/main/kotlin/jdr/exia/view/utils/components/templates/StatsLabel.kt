@@ -61,7 +61,7 @@ class StatsLabel(private val isHP: Boolean, private var maxValue: Int = 0, value
 
             field = value
 
-            val stat = if (value == null || !value.isCharacter()) {
+            val stat = if (!value.isCharacter()) {
                 this.maxValue = 0
                 this.statsField.isEnabled = false
                 0

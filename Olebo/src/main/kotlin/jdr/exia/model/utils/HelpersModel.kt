@@ -9,6 +9,8 @@ import java.awt.Graphics
 import java.awt.geom.AffineTransform
 import java.awt.image.BufferedImage
 import javax.swing.ImageIcon
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
 /**
  * Convert a String to the corresponding boolean
@@ -22,7 +24,12 @@ fun String?.toBoolean(): Boolean = this?.toLowerCase() == "true"
  *
  * @return true if it's a character
  */
+@OptIn(ExperimentalContracts::class)
 fun Element?.isCharacter(): Boolean {
+    contract {
+        returns(true) implies (this@isCharacter != null)
+    }
+
     return this != null && (this.type.typeElement == Type.PNJ || this.type.typeElement == Type.PJ)
 }
 
@@ -31,7 +38,12 @@ fun Element?.isCharacter(): Boolean {
  *
  * @return true if it's a character
  */
+@OptIn(ExperimentalContracts::class)
 fun Blueprint?.isCharacter(): Boolean {
+    contract {
+        returns(true) implies (this@isCharacter != null)
+    }
+
     return this != null && (this.type.typeElement == Type.PNJ || this.type.typeElement == Type.PJ)
 }
 
