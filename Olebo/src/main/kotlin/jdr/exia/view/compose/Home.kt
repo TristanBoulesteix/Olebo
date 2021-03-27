@@ -2,24 +2,22 @@
 
 package jdr.exia.view.compose
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import jdr.exia.OLEBO_VERSION
-import jdr.exia.localization.*
+import jdr.exia.localization.STR_ADD_ACT
+import jdr.exia.localization.STR_ELEMENTS
+import jdr.exia.localization.STR_VERSION
+import jdr.exia.localization.Strings
 import jdr.exia.model.act.Act
 import jdr.exia.view.compose.components.ButtonBuilder
 import jdr.exia.view.compose.components.ContentRow
@@ -27,8 +25,6 @@ import jdr.exia.view.compose.components.CustomWindow
 import jdr.exia.view.compose.ui.*
 import jdr.exia.view.utils.components.FileMenu
 import jdr.exia.viewModel.HomeViewModel
-import org.jetbrains.exposed.sql.emptySized
-import org.jetbrains.exposed.sql.transactions.transaction
 import javax.swing.JMenuBar
 
 fun showHomeWindow() = CustomWindow(
@@ -58,14 +54,16 @@ fun MainContent(
         var editedActState by remember { mutableStateOf<Act?>(null) }
 
         if (editedActState == null) {
-            ActsPanel(
+            ActsView(
                 acts = acts,
                 onRowClick = onRowClick,
                 onEdit = { editedActState = it },
                 onDelete = onDeleteAct
             )
         } else {
-            ActPanel(editedActState)
+            ActEditorView(editedActState) {
+                editedActState = null
+            }
         }
 
 /*        if (currentPage != HomeScreen.ACTS)
@@ -80,9 +78,8 @@ fun MainContent(
     }
 }
 
-
 @Composable
-fun ActsPanel(
+fun ActsView(
     acts: List<Act>,
     onRowClick: (Act) -> Unit,
     onEdit: (Act) -> Unit,
@@ -115,44 +112,6 @@ fun ActsPanel(
                             ButtonBuilder(imageFromIcon("delete_icon")) { onDelete(act) }
                         )
                     )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun ActPanel(act: Act? = null) = Column {
-    Row(
-        horizontalArrangement = Arrangement.SpaceAround,
-        modifier = Modifier.fillMaxWidth().background(lightOrange).padding(15.dp)
-    ) {
-        val roundedShape = remember { RoundedCornerShape(25) }
-
-        var name by remember { mutableStateOf(act?.name ?: "") }
-
-        BasicTextField(
-            value = name,
-            onValueChange = { name = it },
-            modifier = Modifier.fillMaxWidth().clip(roundedShape).background(Color.White)
-                .border(BorderStroke(2.dp, Color.Black), roundedShape).padding(10.dp),
-            singleLine = true,
-        )
-    }
-
-    val scenes = transaction { (act?.scenes ?: emptySized()).toList() }
-
-    Box(modifier = Modifier.fillMaxSize().background(blue).padding(15.dp)) {
-        Column(modifier = Modifier.padding(20.dp).fillMaxSize().background(Color.White).border(BorderInlined.defaultBorder)) {
-            ContentRow(Strings[STR_SCENES])
-
-            LazyColumn(
-                modifier = Modifier.background(Color.White)
-                    .fillMaxSize()
-                    .border(BorderInlined.defaultBorder)
-            ) {
-                items(items = scenes) {
-                    ContentRow(contentText = it.name)
                 }
             }
         }

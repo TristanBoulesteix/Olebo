@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.dp
-import jdr.exia.view.compose.OnClick
+import jdr.exia.view.compose.DefaultFunction
 import jdr.exia.view.compose.ui.BorderInlined
 import jdr.exia.view.compose.ui.border
 import jdr.exia.view.compose.ui.typography
@@ -19,7 +19,7 @@ import jdr.exia.view.compose.ui.typography
 @Composable
 fun ContentRow(
     contentText: String,
-    onClick: OnClick? = null,
+    onClick: DefaultFunction? = null,
     modifier: Modifier = Modifier,
     buttonBuilders: List<ButtonBuilder> = emptyList()
 ) = Row(

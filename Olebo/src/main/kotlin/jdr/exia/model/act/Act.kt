@@ -6,9 +6,21 @@ import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.SizedIterable
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
 class Act(id: EntityID<Int>) : Entity<Int>(id) {
-    companion object : EntityClass<Int, Act>(ActTable)
+    companion object : EntityClass<Int, Act>(ActTable) {
+        @OptIn(ExperimentalContracts::class)
+        infix fun SceneData?.isEqualTo(sceneData: SceneData?): Boolean {
+            contract {
+                returns(true) implies (sceneData != null)
+            }
+
+            return this?.let { sceneData != null && sceneData.id == it.id } ?: false
+        }
+
+    }
 
     var name by ActTable.name
 
@@ -30,4 +42,9 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
     fun SizedIterable<Scene>.findWithId(id: Int): Scene? {
         return this.find { it.id.value == id }
     }
+
+    /**
+     * Temporary scene
+     */
+    data class SceneData(val name: String, val img: String, val id: Int? = null)
 }

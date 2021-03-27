@@ -4,4 +4,4 @@ import androidx.compose.ui.graphics.imageFromResource
 
 fun imageFromIcon(name: String) = imageFromResource("icons/$name.png")
 
-typealias OnClick = () -> Unit
+typealias DefaultFunction = () -> Unit
