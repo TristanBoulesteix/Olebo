@@ -10,17 +10,7 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
 class Act(id: EntityID<Int>) : Entity<Int>(id) {
-    companion object : EntityClass<Int, Act>(ActTable) {
-        @OptIn(ExperimentalContracts::class)
-        infix fun SceneData?.isEqualTo(sceneData: SceneData?): Boolean {
-            contract {
-                returns(true) implies (sceneData != null)
-            }
-
-            return this?.let { sceneData != null && sceneData.id == it.id } ?: false
-        }
-
-    }
+    companion object : EntityClass<Int, Act>(ActTable)
 
     var name by ActTable.name
 
@@ -39,12 +29,27 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
     /**
      * Find a scene with its id from all scenes stored in an Act
      */
-    fun SizedIterable<Scene>.findWithId(id: Int): Scene? {
-        return this.find { it.id.value == id }
-    }
+    fun SizedIterable<Scene>.findWithId(id: Int) = this.find { it.id.value == id }
 
     /**
      * Temporary scene
      */
-    data class SceneData(val name: String, val img: String, val id: Int? = null)
+    data class SceneData(val name: String, val img: String, val id: Int? = null) {
+        companion object {
+            fun default() = SceneData("", "")
+        }
+    }
+}
+
+/**
+ * Check if the receiver [Act.SceneData] has the same id as the parameter of the method.
+ * This function can be infix if the smartcast isn't required.
+ */
+@OptIn(ExperimentalContracts::class)
+infix fun Act.SceneData?.isValidAndEqualTo(sceneData: Act.SceneData?): Boolean {
+    contract {
+        returns(true) implies (sceneData != null && this@isValidAndEqualTo != null)
+    }
+
+    return this?.let { sceneData != null && sceneData.id == it.id } ?: false
 }

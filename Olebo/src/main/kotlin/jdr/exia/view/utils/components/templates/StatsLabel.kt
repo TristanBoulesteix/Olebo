@@ -2,7 +2,7 @@ package jdr.exia.view.utils.components.templates
 
 import jdr.exia.localization.STR_HP
 import jdr.exia.localization.STR_MP
-import jdr.exia.localization.Strings
+import jdr.exia.localization.StringLocale
 import jdr.exia.model.element.Element
 import jdr.exia.model.utils.isCharacter
 import jdr.exia.view.utils.components.filter.IntegerFilter
@@ -40,7 +40,7 @@ class StatsLabel(private val isHP: Boolean, private var maxValue: Int = 0, value
     }
 
     private val statsLabelText
-        get() = " / $maxValue ${if (isHP) Strings[STR_HP] else Strings[STR_MP]}"
+        get() = " / $maxValue ${if (isHP) StringLocale[STR_HP] else StringLocale[STR_MP]}"
 
     private val statsLabel = JLabel(statsLabelText).apply {
         font = fontSize

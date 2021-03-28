@@ -1,7 +1,7 @@
 package jdr.exia.view.frames.rpg
 
 import jdr.exia.localization.STR_PLAYER_TITLE_FRAME
-import jdr.exia.localization.Strings
+import jdr.exia.localization.StringLocale
 import jdr.exia.model.utils.Elements
 import jdr.exia.model.utils.emptyElements
 import jdr.exia.view.frames.Reloadable
@@ -114,7 +114,7 @@ class PlayerFrame private constructor() : JDialog(null as Window?), GameFrame {
 
     override fun reload() = repaint()
 
-    override fun setTitle(title: String) = super.setTitle("Olebo - ${Strings[STR_PLAYER_TITLE_FRAME]} - \"$title\"")
+    override fun setTitle(title: String) = super.setTitle("Olebo - ${StringLocale[STR_PLAYER_TITLE_FRAME]} - \"$title\"")
 
     override fun updateMap(tokens: Elements) {
         mapPanel.updateTokens(tokens)

@@ -17,18 +17,23 @@ import jdr.exia.OLEBO_VERSION
 import jdr.exia.localization.STR_ADD_ACT
 import jdr.exia.localization.STR_ELEMENTS
 import jdr.exia.localization.STR_VERSION
-import jdr.exia.localization.Strings
+import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
 import jdr.exia.view.compose.components.ButtonBuilder
 import jdr.exia.view.compose.components.ContentRow
 import jdr.exia.view.compose.components.CustomWindow
-import jdr.exia.view.compose.ui.*
+import jdr.exia.view.compose.ui.OleboTheme
+import jdr.exia.view.compose.ui.blue
+import jdr.exia.view.compose.ui.lightOrange
+import jdr.exia.view.compose.utils.BorderInlined
+import jdr.exia.view.compose.utils.border
+import jdr.exia.view.compose.utils.imageFromIcon
 import jdr.exia.view.utils.components.FileMenu
 import jdr.exia.viewModel.HomeViewModel
 import javax.swing.JMenuBar
 
 fun showHomeWindow() = CustomWindow(
-    title = "Olebo - ${Strings[STR_VERSION]} $OLEBO_VERSION",
+    title = "Olebo - ${StringLocale[STR_VERSION]} $OLEBO_VERSION",
     size = IntSize(600, 800),
     minimumSize = IntSize(600, 800),
     jMenuBar = JMenuBar().apply { add(FileMenu()) }
@@ -72,7 +77,7 @@ fun MainContent(
                     onClick = { setCurrentPage(HomeScreen.ACTS) },
                     modifier = Modifier.fillMaxWidth().align(Alignment.CenterEnd)
                 ) {
-                    Text(text = Strings[STR_BACK], textAlign = TextAlign.Right, modifier = Modifier.fillMaxWidth())
+                    Text(text = StringLocale[STR_BACK], textAlign = TextAlign.Right, modifier = Modifier.fillMaxWidth())
                 }
             }*/
     }
@@ -91,10 +96,10 @@ fun ActsView(
             modifier = Modifier.fillMaxWidth().background(lightOrange).padding(15.dp)
         ) {
             OutlinedButton(onClick = { println("Add element") }) {
-                Text(text = Strings[STR_ELEMENTS])
+                Text(text = StringLocale[STR_ELEMENTS])
             }
             OutlinedButton(onClick = { println("Add act") }) {
-                Text(text = Strings[STR_ADD_ACT])
+                Text(text = StringLocale[STR_ADD_ACT])
             }
         }
 

@@ -25,14 +25,14 @@ import javax.swing.JPanel
 class SelectPanel : JPanel() {
     private val sidePanel = SideDataPanel()
 
-    private val rotateRightButton = JButton(Strings[STR_ROTATE_TO_RIGHT]).apply {
+    private val rotateRightButton = JButton(StringLocale[STR_ROTATE_TO_RIGHT]).apply {
         preferredSize = DIMENSION_BUTTON_DEFAULT
         addActionListener {
             ViewManager.rotateRight()
         }
     }
 
-    private val rotateLeftButton = JButton(Strings[STR_ROTATE_TO_LEFT]).apply {
+    private val rotateLeftButton = JButton(StringLocale[STR_ROTATE_TO_LEFT]).apply {
         preferredSize = DIMENSION_BUTTON_DEFAULT
         addActionListener {
             ViewManager.rotateLeft()
@@ -47,10 +47,10 @@ class SelectPanel : JPanel() {
 
         private val contentText
             get() = when {
-                selectedElements.isEmpty() -> Strings[STR_HIDE]
-                selectedElements.size == 1 -> if (selectedElements[0].isVisible) Strings[STR_HIDE] else Strings[STR_SHOW]
-                conditionVisibility -> Strings[STR_HIDE]
-                else -> Strings[STR_SHOW]
+                selectedElements.isEmpty() -> StringLocale[STR_HIDE]
+                selectedElements.size == 1 -> if (selectedElements[0].isVisible) StringLocale[STR_HIDE] else StringLocale[STR_SHOW]
+                conditionVisibility -> StringLocale[STR_HIDE]
+                else -> StringLocale[STR_SHOW]
             }
 
         init {
@@ -79,7 +79,7 @@ class SelectPanel : JPanel() {
     }
 
 
-    private val deleteButton = JButton(Strings[STR_DELETE]).apply { //Deletes selected Token
+    private val deleteButton = JButton(StringLocale[STR_DELETE]).apply { //Deletes selected Token
         preferredSize = DIMENSION_BUTTON_DEFAULT
         addActionListener {
             ViewManager.removeElements(selectedElements)
@@ -187,7 +187,7 @@ class SelectPanel : JPanel() {
 
                 visibilityButton.initialize(false)
                 sidePanel.blueprintNameLabel.text =
-                    if (this.size == 1) this[0].name else "$size ${Strings[STR_SELECTED_ELEMENTS, StringStates.NORMAL]}"
+                    if (this.size == 1) this[0].name else "$size ${StringLocale[STR_SELECTED_ELEMENTS, StringStates.NORMAL]}"
 
                 if (this.size == 1) {
                     lifeField.element = this[0]

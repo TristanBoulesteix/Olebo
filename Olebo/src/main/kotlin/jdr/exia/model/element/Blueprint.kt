@@ -1,6 +1,6 @@
 package jdr.exia.model.element
 
-import jdr.exia.localization.Strings
+import jdr.exia.localization.StringLocale
 import jdr.exia.model.dao.BlueprintTable
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.utils.CharacterException
@@ -29,7 +29,7 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
      * Name the has to be displayed to the user
      */
     val realName
-        get() = if (type.typeElement == Type.BASIC) Strings[name] else name
+        get() = if (type.typeElement == Type.BASIC) StringLocale[name] else name
 
     override fun delete() {
         File(sprite).delete()

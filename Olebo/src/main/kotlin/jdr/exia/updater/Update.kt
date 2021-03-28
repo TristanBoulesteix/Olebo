@@ -67,19 +67,19 @@ fun checkForUpdate() = GlobalScope.launch {
                 withContext(Dispatchers.Main) {
                     val result = JOptionPane.showOptionDialog(
                         null,
-                        Strings[ST_NEW_VERSION_AVAILABLE],
-                        Strings[STR_UPDATE_AVAILABLE],
+                        StringLocale[ST_NEW_VERSION_AVAILABLE],
+                        StringLocale[STR_UPDATE_AVAILABLE],
                         JOptionPane.YES_NO_CANCEL_OPTION,
                         JOptionPane.QUESTION_MESSAGE,
                         null,
-                        arrayOf(Strings[STR_YES], Strings[STR_NO], Strings[ST_NEVER_ASK_UPDATE]),
-                        Strings[STR_NO]
+                        arrayOf(StringLocale[STR_YES], StringLocale[STR_NO], StringLocale[ST_NEVER_ASK_UPDATE]),
+                        StringLocale[STR_NO]
                     )
                     if (result == JOptionPane.YES_OPTION) {
                         JOptionPane.showMessageDialog(
                             null,
-                            Strings[ST_UPDATE_OLEBO_RESTART],
-                            Strings[STR_PREPARE_UPDATE],
+                            StringLocale[ST_UPDATE_OLEBO_RESTART],
+                            StringLocale[STR_PREPARE_UPDATE],
                             JOptionPane.INFORMATION_MESSAGE
                         )
                         prepareUpdate(false)

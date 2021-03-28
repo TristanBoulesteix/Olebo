@@ -1,6 +1,6 @@
 package jdr.exia.view.utils.components.templates
 
-import jdr.exia.localization.Strings
+import jdr.exia.localization.StringLocale
 import jdr.exia.model.element.Element
 import jdr.exia.model.utils.Elements
 import javax.swing.JComboBox
@@ -11,7 +11,7 @@ abstract class ComboSelectPanel(items: Array<String>, elements: Elements?, toolt
     init {
         selectedItem = elements
         border = EmptyBorder(0, 0, 0, 0)
-        toolTipText = Strings[tooltipKey]
+        toolTipText = StringLocale[tooltipKey]
     }
 
     abstract override fun setSelectedItem(selected: Any?)

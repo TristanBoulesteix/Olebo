@@ -32,19 +32,19 @@ fun main(vararg args: String) {
 
         val options = Json.decodeFromString<UpdateOptions>(args[2])
         locale = Locale(options.localeCode)
-        Strings(::locale)
+        StringLocale(::locale)
 
 
         val returnCode = try {
             HttpUpdater().use {
-                notify(Strings[ST_OLEBO_IS_UPDATING], Strings[ST_NOT_TURN_OFF])
+                notify(StringLocale[ST_OLEBO_IS_UPDATING], StringLocale[ST_NOT_TURN_OFF])
                 update(it.getDownloadedFile(args[0]), File(args[1]))
             }
-            notify(Strings[ST_UPDATE_SUCCESS], null)
+            notify(StringLocale[ST_UPDATE_SUCCESS], null)
             0
         } catch (e: Exception) {
             e.printStackTrace()
-            notify(Strings[ST_UPDATE_FAILED], Strings[ST_UPDATE_TRY_AGAIN], TrayIcon.MessageType.ERROR)
+            notify(StringLocale[ST_UPDATE_FAILED], StringLocale[ST_UPDATE_TRY_AGAIN], TrayIcon.MessageType.ERROR)
             -1
         }
 

@@ -3,7 +3,7 @@ package jdr.exia.view.frames.home.panels
 import jdr.exia.localization.STR_ADD_ACT
 import jdr.exia.localization.STR_DOUBLE_CLICK_OPEN_ACT
 import jdr.exia.localization.STR_ELEMENTS
-import jdr.exia.localization.Strings
+import jdr.exia.localization.StringLocale
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.getIcon
 import jdr.exia.view.utils.BORDER_BUTTONS
@@ -30,7 +30,7 @@ class ActsPanel(private val homeManager: HomeManager) : HomePanel() {
             this.border = BorderFactory.createEmptyBorder(15, 0, 15, 0)
             this.layout = GridBagLayout()
 
-            val elementButton = JButton(Strings[STR_ELEMENTS]).apply {
+            val elementButton = JButton(StringLocale[STR_ELEMENTS]).apply {
                 this.border = BORDER_BUTTONS
                 this.addActionListener {
                     homeManager.openObjectEditorFrame()
@@ -39,7 +39,7 @@ class ActsPanel(private val homeManager: HomeManager) : HomePanel() {
 
             this.add(elementButton, gridBagConstraintsOf(gridx = 0, gridy = 0, weightx = .5))
 
-            val actButton = JButton(Strings[STR_ADD_ACT]).apply {
+            val actButton = JButton(StringLocale[STR_ADD_ACT]).apply {
                 this.border = BORDER_BUTTONS
                 this.addActionListener {
                     homeManager.openActCreatorFrame()
@@ -71,7 +71,7 @@ class ActsPanel(private val homeManager: HomeManager) : HomePanel() {
             init {
                 listOf(nameLabel, namePanel).forEach {
                     it.addDoubleClickListener { homeManager.launchAct(id) }
-                    it.toolTipText = Strings[STR_DOUBLE_CLICK_OPEN_ACT]
+                    it.toolTipText = StringLocale[STR_DOUBLE_CLICK_OPEN_ACT]
                 }
                 this.nameLabel.isEnabled = false
 

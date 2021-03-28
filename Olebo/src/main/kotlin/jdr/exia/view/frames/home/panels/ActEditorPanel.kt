@@ -23,7 +23,7 @@ class ActEditorPanel(homeManager: HomeManager, act: Act? = null) : HomePanel() {
 
     private val selectorPanel: SceneSelectorPanel
 
-    private val nameField = PlaceholderTextField(Strings[STR_NAME])
+    private val nameField = PlaceholderTextField(StringLocale[STR_NAME])
 
     private var modified = false
 
@@ -53,7 +53,7 @@ class ActEditorPanel(homeManager: HomeManager, act: Act? = null) : HomePanel() {
             this.layout = GridLayout(1, 2, 10, 15)
             this.background = BACKGROUND_COLOR_LIGHT_BLUE
 
-            JButton(Strings[STR_CONFIRM]).applyAndAddTo(this) {
+            JButton(StringLocale[STR_CONFIRM]).applyAndAddTo(this) {
                 this.addActionListener {
                     if (
                         nameField.text.isNotEmpty()
@@ -63,7 +63,7 @@ class ActEditorPanel(homeManager: HomeManager, act: Act? = null) : HomePanel() {
                         homeManager.goHome()
                     } else {
                         showMessage(
-                            if (manager.tempScenes.isEmpty()) Strings[ST_ACT_WITHOUT_SCENE] else Strings[ST_ACT_ALREADY_EXISTS],
+                            if (manager.tempScenes.isEmpty()) StringLocale[ST_ACT_WITHOUT_SCENE] else StringLocale[ST_ACT_ALREADY_EXISTS],
                             windowAncestor,
                             MessageType.WARNING
                         )
@@ -72,13 +72,13 @@ class ActEditorPanel(homeManager: HomeManager, act: Act? = null) : HomePanel() {
                 this.border = BORDER_BUTTONS
             }
 
-            JButton(Strings[STR_CANCEL]).applyAndAddTo(this) {
+            JButton(StringLocale[STR_CANCEL]).applyAndAddTo(this) {
                 this.addActionListener {
                     if (modified) {
                         showConfirmMessage(
                             windowAncestor,
-                            Strings[ST_CANCEL_WILL_ERASE_CHANGES],
-                            Strings[STR_WARNING]
+                            StringLocale[ST_CANCEL_WILL_ERASE_CHANGES],
+                            StringLocale[STR_WARNING]
                         ) {
                             homeManager.goHome()
                         }
@@ -108,7 +108,7 @@ class ActEditorPanel(homeManager: HomeManager, act: Act? = null) : HomePanel() {
             JPanel().applyAndAddTo(this, BorderLayout.NORTH) {
                 this.layout = GridBagLayout()
 
-                ItemPanel(0, Strings[STR_SCENES]).applyAndAddTo(
+                ItemPanel(0, StringLocale[STR_SCENES]).applyAndAddTo(
                     this,
                     gridBagConstraintsOf(fill = GridBagConstraints.BOTH, weightx = 1.0)
                 ) {

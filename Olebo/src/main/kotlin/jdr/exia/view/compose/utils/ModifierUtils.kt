@@ -1,4 +1,4 @@
-package jdr.exia.view.compose.ui
+package jdr.exia.view.compose.utils
 
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
@@ -8,6 +8,13 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+
+/**
+ * Apply modification to [Modifier] only if condition is true
+ */
+@Stable
+fun Modifier.appyIf(condition: Boolean, mod: Modifier.() -> Modifier) =
+    if (condition) this.mod() else this
 
 data class BorderInlined(val strokeWidth: Dp, val color: Color) {
     companion object {

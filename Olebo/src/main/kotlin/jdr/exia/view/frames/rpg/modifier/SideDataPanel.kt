@@ -3,7 +3,7 @@ package jdr.exia.view.frames.rpg.modifier
 import jdr.exia.localization.STR_LABEL
 import jdr.exia.localization.STR_LABEL_TOOLTIP
 import jdr.exia.localization.STR_NAME
-import jdr.exia.localization.Strings
+import jdr.exia.localization.StringLocale
 import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.view.frames.Reloadable
@@ -38,7 +38,7 @@ class SideDataPanel : JPanel(), Reloadable {
         override fun setText(text: String?) {
             if (text == null) {
                 this.isEnabled = false
-                super.setText(Strings[STR_NAME])
+                super.setText(StringLocale[STR_NAME])
             } else {
                 this.isEnabled = true
                 super.setText(text)
@@ -46,10 +46,10 @@ class SideDataPanel : JPanel(), Reloadable {
         }
     }
 
-    val nameLabel = PlaceholderTextField(Strings[STR_LABEL]).apply {
+    val nameLabel = PlaceholderTextField(StringLocale[STR_LABEL]).apply {
         this.font = Font(this.font.name, Font.PLAIN, 15)
         this.preferredSize = Dimension(110, this.preferredSize.height)
-        this.toolTipText = Strings[STR_LABEL_TOOLTIP]
+        this.toolTipText = StringLocale[STR_LABEL_TOOLTIP]
         this.isEnabled = false
         this.addFocusGainedListener {
             this.selectAll()

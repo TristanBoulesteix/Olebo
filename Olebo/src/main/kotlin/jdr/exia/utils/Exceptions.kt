@@ -3,7 +3,7 @@ package jdr.exia.utils
 import jdr.exia.localization.STR_CRITICAL_ERROR
 import jdr.exia.localization.STR_ERROR
 import jdr.exia.localization.ST_ERROR_LOADING_DATABASE
-import jdr.exia.localization.Strings
+import jdr.exia.localization.StringLocale
 import javax.swing.FocusManager
 import javax.swing.JOptionPane
 import kotlin.reflect.KClass
@@ -13,7 +13,7 @@ class MessageException(message: String) : Exception(message) {
         JOptionPane.showMessageDialog(
             FocusManager.getCurrentManager().activeWindow,
             message,
-            Strings[STR_ERROR],
+            StringLocale[STR_ERROR],
             JOptionPane.ERROR_MESSAGE
         )
     }
@@ -26,8 +26,8 @@ class DatabaseException(e: Exception) : Exception(e) {
     init {
         JOptionPane.showMessageDialog(
             null,
-            Strings[ST_ERROR_LOADING_DATABASE],
-            Strings[STR_CRITICAL_ERROR],
+            StringLocale[ST_ERROR_LOADING_DATABASE],
+            StringLocale[STR_CRITICAL_ERROR],
             JOptionPane.ERROR_MESSAGE
         )
     }

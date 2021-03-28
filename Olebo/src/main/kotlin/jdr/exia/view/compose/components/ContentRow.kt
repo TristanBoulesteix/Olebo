@@ -11,19 +11,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.dp
-import jdr.exia.view.compose.DefaultFunction
-import jdr.exia.view.compose.ui.BorderInlined
-import jdr.exia.view.compose.ui.border
 import jdr.exia.view.compose.ui.typography
+import jdr.exia.view.compose.utils.BorderInlined
+import jdr.exia.view.compose.utils.DefaultFunction
+import jdr.exia.view.compose.utils.appyIf
+import jdr.exia.view.compose.utils.border
 
 @Composable
 fun ContentRow(
-    contentText: String,
+    content: @Composable DefaultFunction,
     onClick: DefaultFunction? = null,
     modifier: Modifier = Modifier,
-    buttonBuilders: List<ButtonBuilder> = emptyList()
+    buttonBuilders: List<ButtonBuilder> = emptyList(),
+    withBottomBorder: Boolean = true
 ) = Row(
-    modifier = modifier.fillMaxWidth().size(65.dp).border(bottom = BorderInlined.defaultBorder),
+    modifier = modifier.fillMaxWidth().size(65.dp)
+        .appyIf(condition = withBottomBorder, mod = { border(bottom = BorderInlined.defaultBorder) }),
     horizontalArrangement = Arrangement.End
 ) {
     var boxModifier = Modifier.fillMaxHeight().weight(1f, fill = true)
@@ -31,22 +34,30 @@ fun ContentRow(
     if (onClick != null)
         boxModifier = boxModifier.clickable(onClick = onClick)
 
-    Box(
-        modifier = boxModifier,
-        contentAlignment = Alignment.CenterStart
-    ) {
-        Text(text = contentText, style = typography.h1, modifier = Modifier.padding(10.dp))
-    }
+    Box(modifier = boxModifier, contentAlignment = Alignment.CenterStart) { content() }
 
     buttonBuilders.forEach { (icon, action) ->
         RowButton(image = icon, onClick = action)
     }
 }
 
+@Composable
+fun ContentRow(
+    contentText: String,
+    onClick: DefaultFunction? = null,
+    modifier: Modifier = Modifier,
+    buttonBuilders: List<ButtonBuilder> = emptyList()
+) = ContentRow(
+    content = { Text(text = contentText, style = typography.h1, modifier = Modifier.padding(10.dp)) },
+    onClick = onClick,
+    modifier = modifier,
+    buttonBuilders = buttonBuilders
+)
+
 data class ButtonBuilder(val icon: ImageBitmap, val onClick: () -> Unit)
 
 @Composable
-fun RowButton(image: ImageBitmap, onClick: () -> Unit) {
+private fun RowButton(image: ImageBitmap, onClick: () -> Unit) {
     Box(
         modifier = Modifier.size(65.dp)
             .border(start = BorderInlined.defaultBorder)

@@ -2,7 +2,7 @@ package jdr.exia.viewModel
 
 import jdr.exia.localization.STR_ERROR
 import jdr.exia.localization.STR_LOADING
-import jdr.exia.localization.Strings
+import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
 import jdr.exia.model.dao.DAO
 import jdr.exia.view.frames.home.HomeFrame
@@ -34,7 +34,7 @@ class HomeManager : Observable {
         notifyObserver(Action.Dispose)
 
         val popup = withContext(Dispatchers.Main) {
-            val loadingString = Strings[STR_LOADING]
+            val loadingString = StringLocale[STR_LOADING]
 
             JOptionPane(
                 "$loadingString...",
@@ -56,7 +56,7 @@ class HomeManager : Observable {
                     MasterFrame.requestFocus()
                 } catch (e: TimeoutCancellationException) {
                     popup.dispose()
-                    showMessage("${Strings[STR_ERROR]}: ${e.message}", null, MessageType.ERROR)
+                    showMessage("${StringLocale[STR_ERROR]}: ${e.message}", null, MessageType.ERROR)
                     HomeFrame().isVisible = true
                 }
             }

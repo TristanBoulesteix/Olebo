@@ -55,7 +55,7 @@ class BlueprintManager(private val homeManager: HomeManager) : Observable {
             if (isNameValid()) {
                 getBlueprintWithId(id).name = name
             } else {
-                showMessage(Strings[ST_ELEMENT_ALREADY_EXISTS], messageType = MessageType.WARNING)
+                showMessage(StringLocale[ST_ELEMENT_ALREADY_EXISTS], messageType = MessageType.WARNING)
             }
         }
 
@@ -71,10 +71,10 @@ class BlueprintManager(private val homeManager: HomeManager) : Observable {
                     showConfirmMessage(
                         null,
                         if (countUsage == 1L)
-                            Strings[ST_OCCURENCE_BLUEPRINT_TO_DELETE]
+                            StringLocale[ST_OCCURENCE_BLUEPRINT_TO_DELETE]
                         else
-                            Strings[ST_INT1_OCCURENCE_BLUEPRINT_TO_DELETE, countUsage],
-                        Strings[STR_WARNING],
+                            StringLocale[ST_INT1_OCCURENCE_BLUEPRINT_TO_DELETE, countUsage],
+                        StringLocale[STR_WARNING],
                         okAction = blueprint::delete
                     )
                 } else {
@@ -91,7 +91,7 @@ class BlueprintManager(private val homeManager: HomeManager) : Observable {
             val file = JFileChooser().apply {
                 this.currentDirectory = File(System.getProperty("user.home"))
                 this.addChoosableFileFilter(
-                    FileNameExtensionFilter(Strings[STR_IMG], *ImageIO.getReaderFileSuffixes())
+                    FileNameExtensionFilter(StringLocale[STR_IMG], *ImageIO.getReaderFileSuffixes())
                 )
                 this.isAcceptAllFileFilterUsed = false
             }

@@ -2,7 +2,7 @@ package jdr.exia.view.frames.home
 
 import jdr.exia.OLEBO_VERSION
 import jdr.exia.localization.STR_VERSION
-import jdr.exia.localization.Strings
+import jdr.exia.localization.StringLocale
 import jdr.exia.view.frames.home.panels.ActsPanel
 import jdr.exia.view.frames.home.panels.HomePanel
 import jdr.exia.view.frames.rpg.MasterFrame
@@ -18,7 +18,7 @@ import javax.swing.JMenuBar
  *
  * This frame will send the selected act to the Games Views
  */
-class HomeFrame : JFrameTemplate("Olebo - ${Strings[STR_VERSION]} $OLEBO_VERSION") {
+class HomeFrame : JFrameTemplate("Olebo - ${StringLocale[STR_VERSION]} $OLEBO_VERSION") {
     private val manager = HomeManager()
 
     override val observable: Observable = manager

@@ -53,7 +53,7 @@ class BlueprintEditorDialog(private val type: TypeElement) : JDialog() {
     private var fieldsValid = true
 
     init {
-        this.title = Strings[STR_NEW_ELEMENT]
+        this.title = StringLocale[STR_NEW_ELEMENT]
         this.modalityType = ModalityType.APPLICATION_MODAL
         this.size = if (type == TypeElement.OBJECT) Dimension(300, 200) else Dimension(300, 300)
         this.defaultCloseOperation = DO_NOTHING_ON_CLOSE
@@ -69,11 +69,11 @@ class BlueprintEditorDialog(private val type: TypeElement) : JDialog() {
 
         JPanel().applyAndAddTo(this, constraints) {
             this.preferredSize = Dimension(220, 40)
-            this.add(JLabel(Strings[STR_NAME_OF_ELEMENT]))
+            this.add(JLabel(StringLocale[STR_NAME_OF_ELEMENT]))
             this.add(nameField)
         }
 
-        nameErrorLabel = JLabel(Strings[ST_NAME_OF_BLUEPRINT_REQUIRED]).applyAndAddTo(this, ++constraints) {
+        nameErrorLabel = JLabel(StringLocale[ST_NAME_OF_BLUEPRINT_REQUIRED]).applyAndAddTo(this, ++constraints) {
             this.foreground = Color.RED
             this.isVisible = false
         }
@@ -81,18 +81,18 @@ class BlueprintEditorDialog(private val type: TypeElement) : JDialog() {
         if (type != TypeElement.OBJECT) {
             JPanel().applyAndAddTo(this, ++constraints) {
                 this.preferredSize = Dimension(220, 60)
-                this.add(JLabel(Strings[STR_MAX_HEALTH]))
+                this.add(JLabel(StringLocale[STR_MAX_HEALTH]))
                 this.add(lifeField)
             }
 
             JPanel().applyAndAddTo(this, ++constraints) {
                 this.preferredSize = Dimension(220, 60)
-                this.add(JLabel(Strings[STR_MAX_MANA]))
+                this.add(JLabel(StringLocale[STR_MAX_MANA]))
                 this.add(manaField)
             }
         }
 
-        importImgButton = JButton(Strings[STR_IMPORT_IMG]).applyAndAddTo(
+        importImgButton = JButton(StringLocale[STR_IMPORT_IMG]).applyAndAddTo(
             this,
             ++constraints
         ) {
@@ -122,7 +122,7 @@ class BlueprintEditorDialog(private val type: TypeElement) : JDialog() {
             this,
             ++constraints
         ) {
-            JButton(Strings[STR_CONFIRM]).applyAndAddTo(this) {
+            JButton(StringLocale[STR_CONFIRM]).applyAndAddTo(this) {
                 addActionListener {
                     fieldsValid = if (nameField.text.isNullOrBlank()) {
                         nameField.border = BorderFactory.createLineBorder(Color.RED)
@@ -137,12 +137,12 @@ class BlueprintEditorDialog(private val type: TypeElement) : JDialog() {
                     fieldsValid = if (!::selectedFile.isInitialized) {
                         importImgButton.foreground = Color.RED
                         importImgErrorLabel.isVisible = true
-                        importImgErrorLabel.text = Strings[ST_IMG_BLUEPRINT_REQUIRED]
+                        importImgErrorLabel.text = StringLocale[ST_IMG_BLUEPRINT_REQUIRED]
                         false
                     } else if (!selectedFile.exists()) {
                         importImgButton.foreground = Color.RED
                         importImgErrorLabel.isVisible = true
-                        importImgErrorLabel.text = Strings[ST_IMG_BLUEPRINT_NOT_EXIST_OR_INVALID]
+                        importImgErrorLabel.text = StringLocale[ST_IMG_BLUEPRINT_NOT_EXIST_OR_INVALID]
                         false
                     } else {
                         importImgButton.foreground = Color.BLACK
@@ -158,7 +158,7 @@ class BlueprintEditorDialog(private val type: TypeElement) : JDialog() {
                 }
             }
 
-            JButton(Strings[STR_CANCEL]).applyAndAddTo(this) {
+            JButton(StringLocale[STR_CANCEL]).applyAndAddTo(this) {
                 addActionListener { dispose() }
             }
 

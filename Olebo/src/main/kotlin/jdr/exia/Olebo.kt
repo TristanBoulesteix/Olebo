@@ -1,6 +1,6 @@
 package jdr.exia
 
-import jdr.exia.localization.Strings
+import jdr.exia.localization.StringLocale
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.updater.checkForUpdate
 import jdr.exia.view.compose.showHomeWindow
@@ -11,7 +11,7 @@ const val OLEBO_VERSION = "1.9.0-BETA"
 
 fun main() {
     SwingUtilities.invokeLater {
-        Strings(Settings.Companion::activeLanguage)
+        StringLocale(Settings.Companion::activeLanguage)
 
         checkForUpdate()
 

@@ -9,7 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import jdr.exia.localization.STR_ERROR
 import jdr.exia.localization.STR_LOADING
-import jdr.exia.localization.Strings
+import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
 import jdr.exia.view.frames.home.HomeFrame
 import jdr.exia.view.frames.rpg.MasterFrame
@@ -34,7 +34,7 @@ class HomeViewModel {
      */
     fun launchAct(act: Act) = GlobalScope.launch {
         val popup = withContext(Dispatchers.Main) {
-            val loadingString = Strings[STR_LOADING]
+            val loadingString = StringLocale[STR_LOADING]
 
             JOptionPane(
                 "$loadingString...",
@@ -57,7 +57,7 @@ class HomeViewModel {
                     MasterFrame.requestFocus()
                 } catch (e: TimeoutCancellationException) {
                     popup.dispose()
-                    showMessage("${Strings[STR_ERROR]}: ${e.message}", null, MessageType.ERROR)
+                    showMessage("${StringLocale[STR_ERROR]}: ${e.message}", null, MessageType.ERROR)
                     HomeFrame().isVisible = true
                 }
             }

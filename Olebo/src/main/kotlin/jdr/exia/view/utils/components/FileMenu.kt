@@ -23,14 +23,14 @@ import javax.swing.*
 import javax.swing.filechooser.FileNameExtensionFilter
 
 
-class FileMenu : JMenu(Strings[STR_FILES]) {
+class FileMenu : JMenu(StringLocale[STR_FILES]) {
     init {
-        JMenuItem(Strings[STR_EXPORT_DATA]).applyAndAddTo(this) {
+        JMenuItem(StringLocale[STR_EXPORT_DATA]).applyAndAddTo(this) {
             this.addActionListener {
                 val extension = "olebo"
                 JFileChooser().apply {
-                    this.dialogTitle = Strings[STR_EXPORT_DATA]
-                    this.fileFilter = FileNameExtensionFilter(Strings[STR_OLEBO_FILE], extension)
+                    this.dialogTitle = StringLocale[STR_EXPORT_DATA]
+                    this.fileFilter = FileNameExtensionFilter(StringLocale[STR_OLEBO_FILE], extension)
                     if (this.showSaveDialog(this@FileMenu.windowAncestor) == JFileChooser.APPROVE_OPTION) {
                         val fileToSave = if (this.selectedFile.extension == extension)
                             this.selectedFile
@@ -40,8 +40,8 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
                         if (fileToSave.exists()) {
                             val result = JOptionPane.showConfirmDialog(
                                 null,
-                                Strings[ST_FILE_ALREADY_EXISTS],
-                                Strings[STR_SAVE_AS],
+                                StringLocale[ST_FILE_ALREADY_EXISTS],
+                                StringLocale[STR_SAVE_AS],
                                 JOptionPane.YES_NO_OPTION
                             )
                             if (result == JOptionPane.YES_OPTION) zipOleboDirectory(fileToSave)
@@ -51,31 +51,31 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
             }
         }
 
-        JMenuItem(Strings[STR_IMPORT_DATA]).applyAndAddTo(this) {
+        JMenuItem(StringLocale[STR_IMPORT_DATA]).applyAndAddTo(this) {
             this.addActionListener {
                 showConfirmMessage(
                     this@FileMenu.windowAncestor,
-                    Strings[ST_WARNING_CONFIG_RESET],
-                    Strings[STR_IMPORT_DATA],
+                    StringLocale[ST_WARNING_CONFIG_RESET],
+                    StringLocale[STR_IMPORT_DATA],
                     confirm = true
                 ) {
                     JFileChooser().apply {
-                        this.dialogTitle = Strings[STR_IMPORT_DATA]
-                        this.fileFilter = FileNameExtensionFilter(Strings[STR_OLEBO_FILE], "olebo")
+                        this.dialogTitle = StringLocale[STR_IMPORT_DATA]
+                        this.fileFilter = FileNameExtensionFilter(StringLocale[STR_OLEBO_FILE], "olebo")
                         if (this.showOpenDialog(this@FileMenu.windowAncestor) == JFileChooser.APPROVE_OPTION) {
                             if (!this.selectedFile.isDirectory && this.selectedFile.exists()) {
                                 val result = loadOleboZipData(this.selectedFile)
                                 if (result is Result.Success) {
-                                    showMessage(Strings[ST_CONFIGURATION_IMPORTED], this@FileMenu.windowAncestor)
+                                    showMessage(StringLocale[ST_CONFIGURATION_IMPORTED], this@FileMenu.windowAncestor)
                                     MasterFrame.isVisible = false
                                     PlayerFrame.hide()
                                     Frame.getFrames().forEach(Window::dispose)
                                     HomeFrame().isVisible = true
                                 } else showMessage(
                                     when (result.value) {
-                                        ZipError.DATABASE_HIGHER -> Strings[ST_WARNING_PREVIOUS_VERSION_FILE]
-                                        ZipError.MISSING_FILES -> Strings[ST_WARNING_MISSING_CONF_FILES]
-                                        else -> "${Strings[ST_UNKNOWN_ERROR]} ${Strings[ST_FILE_MAY_BE_CORRUPTED]}"
+                                        ZipError.DATABASE_HIGHER -> StringLocale[ST_WARNING_PREVIOUS_VERSION_FILE]
+                                        ZipError.MISSING_FILES -> StringLocale[ST_WARNING_MISSING_CONF_FILES]
+                                        else -> "${StringLocale[ST_UNKNOWN_ERROR]} ${StringLocale[ST_FILE_MAY_BE_CORRUPTED]}"
                                     }, this@FileMenu.windowAncestor, MessageType.ERROR
                                 )
                             }
@@ -87,17 +87,17 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
 
         this.addSeparator()
 
-        JMenuItem(Strings[STR_OPTIONS]).applyAndAddTo(this) {
+        JMenuItem(StringLocale[STR_OPTIONS]).applyAndAddTo(this) {
             this.addActionListener {
                 OptionDialog(this@FileMenu.windowAncestor).isVisible = true
             }
         }
 
-        JMenuItem(Strings[STR_TAKE_SCREENSHOT]).applyAndAddTo(this) {
+        JMenuItem(StringLocale[STR_TAKE_SCREENSHOT]).applyAndAddTo(this) {
             this.addActionListener {
                 val parent = this@FileMenu.windowAncestor
                 JFileChooser().apply {
-                    this.dialogTitle = Strings[STR_TAKE_SCREENSHOT]
+                    this.dialogTitle = StringLocale[STR_TAKE_SCREENSHOT]
                     this.fileFilter = FileNameExtensionFilter("Image PNG", "png")
                     if (this.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
                         val fileToSave = if (this.selectedFile.extension == "png")
@@ -113,8 +113,8 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
                         if (fileToSave.exists()) {
                             val result = JOptionPane.showConfirmDialog(
                                 null,
-                                Strings[ST_FILE_ALREADY_EXISTS],
-                                Strings[STR_SAVE_AS],
+                                StringLocale[ST_FILE_ALREADY_EXISTS],
+                                StringLocale[STR_SAVE_AS],
                                 JOptionPane.YES_NO_OPTION
                             )
                             if (result == JOptionPane.YES_OPTION) saveImg()
@@ -126,12 +126,12 @@ class FileMenu : JMenu(Strings[STR_FILES]) {
             this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_P, CTRL)
         }
 
-        JMenuItem(Strings[STR_ABOUT]).applyAndAddTo(this) {
+        JMenuItem(StringLocale[STR_ABOUT]).applyAndAddTo(this) {
             this.addActionListener {
                 JOptionPane.showMessageDialog(
                     null,
-                    "Olebo - ${Strings[STR_APP_VERSION]} $OLEBO_VERSION - ${Strings[STR_DATABASE_VERSION]} ${Settings.databaseVersion}",
-                    Strings[STR_ABOUT],
+                    "Olebo - ${StringLocale[STR_APP_VERSION]} $OLEBO_VERSION - ${StringLocale[STR_DATABASE_VERSION]} ${Settings.databaseVersion}",
+                    StringLocale[STR_ABOUT],
                     JOptionPane.INFORMATION_MESSAGE
                 )
             }

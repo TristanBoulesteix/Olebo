@@ -2,7 +2,7 @@ package jdr.exia.updater
 
 import jdr.exia.localization.STR_CANCEL_UPDATE
 import jdr.exia.localization.ST_OLEBO_IS_UPDATING
-import jdr.exia.localization.Strings
+import jdr.exia.localization.StringLocale
 import java.awt.*
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
@@ -21,7 +21,7 @@ private val trayIcon by lazy {
 
     val trayIcon = TrayIcon(image, "Olebo Updater").apply {
         this.isImageAutoSize = true
-        this.toolTip = Strings[ST_OLEBO_IS_UPDATING]
+        this.toolTip = StringLocale[ST_OLEBO_IS_UPDATING]
         popupMenu = PopupMenu().apply {
             add(menuItem)
         }
@@ -50,7 +50,7 @@ fun notify(title: String, message: String?, messageType: TrayIcon.MessageType = 
         trayIcon.displayMessage(title, message, messageType)
 }
 
-class MenuItem : java.awt.MenuItem(Strings[STR_CANCEL_UPDATE]) {
+class MenuItem : java.awt.MenuItem(StringLocale[STR_CANCEL_UPDATE]) {
     var isSafeToStop = true
         set(value) {
             this.isEnabled = value

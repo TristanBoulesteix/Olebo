@@ -8,10 +8,10 @@ import kotlinx.serialization.json.Json
 
 @Serializable
 enum class SerializableLabelState(val text: String) {
-    DISABLED(Strings[STR_LABEL_DISABLED]),
-    ONLY_FOR_MASTER(Strings[STR_LABEL_VISIBLE_FOR_MASTER]),
-    FOR_BOTH(Strings[STR_LABEL_VISIBLE]),
-    HIDDEN(Strings[STR_LABEL_HIDDEN]);
+    DISABLED(StringLocale[STR_LABEL_DISABLED]),
+    ONLY_FOR_MASTER(StringLocale[STR_LABEL_VISIBLE_FOR_MASTER]),
+    FOR_BOTH(StringLocale[STR_LABEL_VISIBLE]),
+    HIDDEN(StringLocale[STR_LABEL_HIDDEN]);
 
     companion object {
         operator fun get(json: String) = try {

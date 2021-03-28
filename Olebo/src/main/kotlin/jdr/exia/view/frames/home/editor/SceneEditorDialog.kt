@@ -33,7 +33,7 @@ class SceneEditorDialog(private val scene: SceneData? = null) : JDialog() {
     private var canceled = true
 
     init {
-        this.title = if (scene == null) Strings[STR_NEW_SCENE] else Strings[STR_CHANGE_SCENE]
+        this.title = if (scene == null) StringLocale[STR_NEW_SCENE] else StringLocale[STR_CHANGE_SCENE]
         this.modalityType = ModalityType.APPLICATION_MODAL
         this.size = Dimension(400, 400)
         this.defaultCloseOperation = DO_NOTHING_ON_CLOSE
@@ -43,11 +43,11 @@ class SceneEditorDialog(private val scene: SceneData? = null) : JDialog() {
 
         this.add(JPanel().apply {
             this.preferredSize = Dimension(220, 60)
-            this.add(JLabel(Strings[STR_NAME_OF_SCENE]))
+            this.add(JLabel(StringLocale[STR_NAME_OF_SCENE]))
             this.add(nameField)
         }, gridBagConstraintsOf(0, 0))
 
-        this.add(JButton(Strings[STR_IMPORT_IMG]).apply {
+        this.add(JButton(StringLocale[STR_IMPORT_IMG]).apply {
             this.toolTipText = if (scene != null) {
                 selectedFile = File(scene.img)
                 selectedFile.name
@@ -70,13 +70,13 @@ class SceneEditorDialog(private val scene: SceneData? = null) : JDialog() {
         }, gridBagConstraintsOf(0, 1))
 
         this.add(JPanel().apply {
-            JButton(Strings[STR_CONFIRM]).applyAndAddTo(this) {
+            JButton(StringLocale[STR_CONFIRM]).applyAndAddTo(this) {
                 addActionListener {
                     dispose()
                     canceled = false
                 }
             }
-            JButton(Strings[STR_CANCEL]).applyAndAddTo(this) { addActionListener { dispose() } }
+            JButton(StringLocale[STR_CANCEL]).applyAndAddTo(this) { addActionListener { dispose() } }
             this.border = BorderFactory.createEmptyBorder(10, 0, 0, 0)
         }, gridBagConstraintsOf(0, 2))
     }
@@ -90,7 +90,7 @@ class SceneEditorDialog(private val scene: SceneData? = null) : JDialog() {
             SceneData(nameField.text, selectedFile.absolutePath, scene?.id)
         } else if (!canceled) {
             this.canceled = true
-            showMessage(Strings[ST_SCENE_ALREADY_EXISTS_OR_INVALID], this, MessageType.WARNING)
+            showMessage(StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID], this, MessageType.WARNING)
             return this.showDialog()
         } else null
     }

@@ -5,7 +5,7 @@ package jdr.exia.localization
 /**
  * Default strings (English strings)
  */
-class StringsBundle : Strings() {
+class StringLocaleBundle : StringLocale() {
     override val contents = mapOf(
         STR_VERSION to "version",
         STR_FILES to "files",
@@ -173,7 +173,7 @@ class StringsBundle : Strings() {
 /**
  * French strings
  */
-class StringsBundle_fr : Strings() {
+class StringLocaleBundle_fr : StringLocale() {
     override val contents = mapOf(
         STR_VERSION to "version",
         STR_FILES to "fichiers",

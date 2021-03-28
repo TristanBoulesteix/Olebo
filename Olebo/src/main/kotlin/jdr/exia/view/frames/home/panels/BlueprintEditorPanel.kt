@@ -28,13 +28,13 @@ class BlueprintEditorPanel(homeManager: HomeManager, homeAvailable: Boolean = tr
         manager.elements.map { Pair(it.id.value.toString(), it.name) }.toTypedArray()
     }
 
-    private val comboType = JComboBox(arrayOf(Strings[STR_OBJECTS], Strings[STR_PC], Strings[STR_NPC])).apply {
+    private val comboType = JComboBox(arrayOf(StringLocale[STR_OBJECTS], StringLocale[STR_PC], StringLocale[STR_NPC])).apply {
         this.font = Font("Tahoma", Font.BOLD, 20)
         this.addActionListener {
             when (this.selectedItem) {
-                Strings[STR_OBJECTS] -> manager.type = Type.OBJECT
-                Strings[STR_PC] -> manager.type = Type.PJ
-                Strings[STR_NPC] -> manager.type = Type.PNJ
+                StringLocale[STR_OBJECTS] -> manager.type = Type.OBJECT
+                StringLocale[STR_PC] -> manager.type = Type.PJ
+                StringLocale[STR_NPC] -> manager.type = Type.PNJ
             }
         }
     }
@@ -68,7 +68,7 @@ class BlueprintEditorPanel(homeManager: HomeManager, homeAvailable: Boolean = tr
                 this.layout = BorderLayout()
                 this.background = BACKGROUND_COLOR_LIGHT_BLUE
 
-                JButton(Strings[STR_BACK]).applyAndAddTo(this) {
+                JButton(StringLocale[STR_BACK]).applyAndAddTo(this) {
                     this.border = BORDER_BUTTONS
 
                     this.addActionListener {

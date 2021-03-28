@@ -32,7 +32,7 @@ class ItemPanel : JPanel(), Reloadable {
     /**
      * Search field to find a specific blueprint
      */
-    private val searchField = PlaceholderTextField(Strings[STR_SEARCH])
+    private val searchField = PlaceholderTextField(StringLocale[STR_SEARCH])
 
     /**
      * Constraint applied to the content to show after a result
@@ -57,7 +57,7 @@ class ItemPanel : JPanel(), Reloadable {
                 this.updateUI()
 
                 // Object list
-                this.add(CustomTitlePanel(Strings[STR_OBJECTS]).apply { this.isEnabled = false })
+                this.add(CustomTitlePanel(StringLocale[STR_OBJECTS]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
                     it.type.typeElement == Type.OBJECT && (searchConstraint.isEmpty() || it.name.contains(
@@ -69,7 +69,7 @@ class ItemPanel : JPanel(), Reloadable {
                 } ?: this.add(EmptyField())
 
                 // PJ list
-                this.add(CustomTitlePanel(Strings[STR_PC]).apply { this.isEnabled = false })
+                this.add(CustomTitlePanel(StringLocale[STR_PC]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
                     it.type.typeElement == Type.PJ && (searchConstraint.isEmpty() || it.name.contains(
@@ -81,7 +81,7 @@ class ItemPanel : JPanel(), Reloadable {
                 } ?: this.add(EmptyField())
 
                 // PNJ list
-                this.add(CustomTitlePanel(Strings[STR_NPC]).apply { this.isEnabled = false })
+                this.add(CustomTitlePanel(StringLocale[STR_NPC]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
                     it.type.typeElement == Type.PNJ && (searchConstraint.isEmpty() || it.name.contains(
@@ -93,7 +93,7 @@ class ItemPanel : JPanel(), Reloadable {
                 } ?: this.add(EmptyField())
 
                 // Basic elements list
-                this.add(CustomTitlePanel(Strings[STR_BASE_ELEMENT_PLR]).apply { this.isEnabled = false })
+                this.add(CustomTitlePanel(StringLocale[STR_BASE_ELEMENT_PLR]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
                     it.type.typeElement == Type.BASIC && (searchConstraint.isEmpty() || it.realName.contains(
@@ -157,7 +157,7 @@ class ItemPanel : JPanel(), Reloadable {
     /**
      * Class showing "Aucun élément" as JTextField
      */
-    class EmptyField : JTextField(Strings[STR_NO_ELEMENT]) {
+    class EmptyField : JTextField(StringLocale[STR_NO_ELEMENT]) {
         init {
             this.isEnabled = false
             this.maximumSize = dimensionElement

@@ -1,7 +1,7 @@
 package jdr.exia.viewModel
 
 import jdr.exia.localization.ST_SCENE_ALREADY_EXISTS
-import jdr.exia.localization.Strings
+import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.DAO
@@ -99,7 +99,7 @@ class ActCreatorManager(private val homeManager: HomeManager) : Observable {
     fun createNewScene(@Suppress("UNUSED_PARAMETER") id: Int) {
         SceneEditorDialog().showDialog()?.let {
             if (tempScenes.map { map -> map.name }.contains(it.name)) {
-                showMessage(Strings[ST_SCENE_ALREADY_EXISTS], messageType = MessageType.WARNING)
+                showMessage(StringLocale[ST_SCENE_ALREADY_EXISTS], messageType = MessageType.WARNING)
                 createNewScene(0)
             } else {
                 tempScenes += it
@@ -116,7 +116,7 @@ class ActCreatorManager(private val homeManager: HomeManager) : Observable {
             if (tempScenes.map { map ->
                     if (tempScenes[index].name == map.name) "" else map.name
                 }.contains(it.name)) {
-                showMessage(Strings[ST_SCENE_ALREADY_EXISTS], messageType = MessageType.WARNING)
+                showMessage(StringLocale[ST_SCENE_ALREADY_EXISTS], messageType = MessageType.WARNING)
                 updateNewScene(index)
             } else {
                 tempScenes[index] = it

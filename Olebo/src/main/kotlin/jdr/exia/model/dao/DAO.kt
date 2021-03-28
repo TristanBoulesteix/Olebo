@@ -80,20 +80,20 @@ object DAO {
     }
 
     private fun showUpdateMessageWarn() {
-        val update = JButton(Strings[STR_UPDATE]).apply {
+        val update = JButton(StringLocale[STR_UPDATE]).apply {
             this.addActionListener {
                 windowAncestor?.dispose()
                 forceUpdateAndRestart()
             }
         }
 
-        val reset = JButton(Strings[STR_RESET]).apply {
+        val reset = JButton(StringLocale[STR_RESET]).apply {
             this.addActionListener {
                 windowAncestor?.dispose()
                 showConfirmMessage(
                     windowAncestor,
-                    Strings[ST_WARNING_CONFIG_RESET],
-                    Strings[STR_RESET],
+                    StringLocale[ST_WARNING_CONFIG_RESET],
+                    StringLocale[STR_RESET],
                     confirm = true
                 ) {
                     reset()
@@ -103,12 +103,12 @@ object DAO {
             }
         }
 
-        val exit = JButton(Strings[STR_EXIT]).apply { this.addActionListener { windowAncestor?.dispose() } }
+        val exit = JButton(StringLocale[STR_EXIT]).apply { this.addActionListener { windowAncestor?.dispose() } }
 
         JOptionPane.showOptionDialog(
             null,
-            Strings[ST_DB_VERSION_MISMATCH_MESSAGE],
-            Strings[STR_DB_VERSION_MISMATCH],
+            StringLocale[ST_DB_VERSION_MISMATCH_MESSAGE],
+            StringLocale[STR_DB_VERSION_MISMATCH],
             JOptionPane.NO_OPTION,
             JOptionPane.ERROR_MESSAGE,
             null,
@@ -135,7 +135,7 @@ object DAO {
      */
     fun getActWithId(idAct: Int): Act {
         return transaction {
-            Act.findById(idAct) ?: throw MessageException(Strings[ST_ERROR_ACT_NOT_EXISTS])
+            Act.findById(idAct) ?: throw MessageException(StringLocale[ST_ERROR_ACT_NOT_EXISTS])
         }
     }
 

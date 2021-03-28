@@ -1,7 +1,7 @@
 package jdr.exia.view.frames.rpg
 
 import jdr.exia.localization.STR_DM_TITLE_FRAME
-import jdr.exia.localization.Strings
+import jdr.exia.localization.StringLocale
 import jdr.exia.model.utils.Elements
 import jdr.exia.model.utils.emptyElements
 import jdr.exia.view.utils.DIMENSION_FRAME
@@ -49,7 +49,7 @@ object MasterFrame : JFrame(), GameFrame {
     override var mapBackground by mapPanel::backGroundImage
 
     override fun setTitle(title: String) {
-        super.setTitle("Olebo - ${Strings[STR_DM_TITLE_FRAME]} - \"$title\"")
+        super.setTitle("Olebo - ${StringLocale[STR_DM_TITLE_FRAME]} - \"$title\"")
     }
 
     init {

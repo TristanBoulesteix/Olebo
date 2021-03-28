@@ -1,7 +1,7 @@
 package jdr.exia.view.utils.components.templates
 
 import jdr.exia.localization.STR_NO_ELEMENT
-import jdr.exia.localization.Strings
+import jdr.exia.localization.StringLocale
 import jdr.exia.utils.forElse
 import jdr.exia.view.frames.Reloadable
 import jdr.exia.view.utils.BACKGROUND_COLOR_LIGHT_BLUE
@@ -45,7 +45,7 @@ abstract class SelectorPanel(pairBuilder: PairArrayBuilder) : JPanel(), Reloadab
                 this.add(builder(it.first.toInt(), it.second))
             } ?: this.add(JPanel().apply {
                 this.layout = GridBagLayout()
-                this.add(JLabel(Strings[STR_NO_ELEMENT]).apply {
+                this.add(JLabel(StringLocale[STR_NO_ELEMENT]).apply {
                     this.font = Font("Tahoma", Font.BOLD, 20)
                 })
             })

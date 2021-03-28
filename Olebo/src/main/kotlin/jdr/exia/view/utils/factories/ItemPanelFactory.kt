@@ -22,9 +22,9 @@ class ObjectTitlePanel(name: String, manager: BlueprintManager) : TitlePanel(nam
 
 class CharacterTitlePanel(name: String, manager: BlueprintManager) : TitlePanel(name) {
     init {
-        this.add(SquareLabel(Strings[STR_HP], isEditable = false))
-        this.add(SquareLabel(Strings[STR_MP], isEditable = false))
-        this.add(SquareLabel(Strings[STR_SMALL_IMG], isEditable = false))
+        this.add(SquareLabel(StringLocale[STR_HP], isEditable = false))
+        this.add(SquareLabel(StringLocale[STR_MP], isEditable = false))
+        this.add(SquareLabel(StringLocale[STR_SMALL_IMG], isEditable = false))
         this.add(SquareLabel(getIcon("create_icon", this.javaClass), manager::createBlueprint))
     }
 }
@@ -32,7 +32,7 @@ class CharacterTitlePanel(name: String, manager: BlueprintManager) : TitlePanel(
 fun buildTitleItemPanel(manager: BlueprintManager): TitlePanel {
     return with(manager.type) {
         if (this == Type.OBJECT) {
-            ObjectTitlePanel(Strings[STR_OBJECTS], manager)
+            ObjectTitlePanel(StringLocale[STR_OBJECTS], manager)
         } else {
             CharacterTitlePanel(this.name, manager)
         }

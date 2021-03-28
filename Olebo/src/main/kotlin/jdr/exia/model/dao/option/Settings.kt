@@ -2,7 +2,7 @@ package jdr.exia.model.dao.option
 
 import jdr.exia.OLEBO_VERSION
 import jdr.exia.localization.ST_UNKNOWN_DATABASE_VERSION
-import jdr.exia.localization.Strings
+import jdr.exia.localization.StringLocale
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.SettingsTable
 import jdr.exia.model.dao.SettingsTable.AUTO_UPDATE
@@ -29,7 +29,7 @@ class Settings(id: EntityID<Int>) : IntEntity(id) {
         var databaseVersion
             get() = transaction(DAO.database) {
                 this@Companion[BASE_VERSION]?.toIntOrNull()
-                    ?: throw MessageException(Strings[ST_UNKNOWN_DATABASE_VERSION])
+                    ?: throw MessageException(StringLocale[ST_UNKNOWN_DATABASE_VERSION])
             }
             set(value) {
                 transaction(DAO.database) {

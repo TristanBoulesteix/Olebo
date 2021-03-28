@@ -16,7 +16,7 @@ import java.awt.*
 import javax.swing.*
 import kotlin.reflect.KMutableProperty0
 
-class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPTIONS], true) {
+class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, StringLocale[STR_OPTIONS], true) {
     private val comboLanguageItems =
         availableLocales.map { it.getDisplayLanguage(it).capitalize(Settings.language) }.toTypedArray()
 
@@ -36,17 +36,17 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
             }
         }
 
-    private val checkBoxAutoUpdate = JCheckBox(Strings[STR_AUTO_UPDATE]).apply {
+    private val checkBoxAutoUpdate = JCheckBox(StringLocale[STR_AUTO_UPDATE]).apply {
         this.isSelected = Settings.autoUpdate
     }
 
-    private val checkBoxPlayerFrameOpenedByDefault = JCheckBox(Strings[STR_PLAYERFRAME_OPENED]).apply {
+    private val checkBoxPlayerFrameOpenedByDefault = JCheckBox(StringLocale[STR_PLAYERFRAME_OPENED]).apply {
         this.isSelected = Settings.playerFrameOpenedByDefault
     }
 
     private val comboColorCursor = ComboColorCursor()
 
-    private val checkboxVisibilityElement = JCheckBox(Strings[STR_DEFAULT_ELEMENT_VISIBILITY]).apply {
+    private val checkboxVisibilityElement = JCheckBox(StringLocale[STR_DEFAULT_ELEMENT_VISIBILITY]).apply {
         this.isSelected = Settings.defaultElementVisibility
     }
 
@@ -81,10 +81,10 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
             )
         ) {
             this.layout = GridBagLayout()
-            this.border = BorderFactory.createTitledBorder(Strings[STR_GENERAL])
+            this.border = BorderFactory.createTitledBorder(StringLocale[STR_GENERAL])
 
             this.add(
-                LabeledItem(Strings[STR_SOFTWARE_LANGUAGE_LABEL], comboLanguage),
+                LabeledItem(StringLocale[STR_SOFTWARE_LANGUAGE_LABEL], comboLanguage),
                 gridBagConstraintsOf(0, 0, weightx = 1.0, anchor = GridBagConstraints.LINE_START)
             )
             this.add(
@@ -105,7 +105,7 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
             )
         ) {
             this.layout = GridBagLayout()
-            this.border = BorderFactory.createTitledBorder(Strings[STR_LOOK_AND_FEEL])
+            this.border = BorderFactory.createTitledBorder(StringLocale[STR_LOOK_AND_FEEL])
 
             this.add(
                 checkBoxPlayerFrameOpenedByDefault,
@@ -113,7 +113,7 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
             )
 
             this.add(
-                LabeledItem(Strings[STR_CURSOR_COLOR_LABEL], comboColorCursor),
+                LabeledItem(StringLocale[STR_CURSOR_COLOR_LABEL], comboColorCursor),
                 gridBagConstraintsOf(
                     0,
                     1,
@@ -129,7 +129,7 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
             )
 
             this.add(
-                LabeledItem(Strings[STR_LABEL_STATE], comboLabelState),
+                LabeledItem(StringLocale[STR_LABEL_STATE], comboLabelState),
                 gridBagConstraintsOf(
                     0,
                     3,
@@ -140,7 +140,7 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
             )
 
             this.add(
-                LabeledItem(Strings[STR_LABEL_COLOR], comboLabelColor),
+                LabeledItem(StringLocale[STR_LABEL_COLOR], comboLabelColor),
                 gridBagConstraintsOf(
                     0,
                     4,
@@ -152,7 +152,7 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
         }
 
         languageChangeRestartLabel =
-            JLabel(Strings[ST_LANGUAGE_CHANGE_ON_RESTART]).applyAndAddTo(
+            JLabel(StringLocale[ST_LANGUAGE_CHANGE_ON_RESTART]).applyAndAddTo(
                 this, gridBagConstraintsOf(
                     0,
                     2,
@@ -176,7 +176,7 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
                 anchor = GridBagConstraints.SOUTH
             )
         ) {
-            JButton(Strings[STR_SAVE]).applyAndAddTo(this) {
+            JButton(StringLocale[STR_SAVE]).applyAndAddTo(this) {
                 addActionListener {
                     // Save option selected to the database
                     Settings.language = availableLocales[comboLanguage.selectedIndex]
@@ -201,16 +201,16 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
                 }
             }
 
-            JButton(Strings[STR_CANCEL]).applyAndAddTo(this) {
+            JButton(StringLocale[STR_CANCEL]).applyAndAddTo(this) {
                 addActionListener {
                     dispose()
                 }
             }
 
-            JButton(Strings[STR_RESTORE_DEFAULTS_OPTIONS]).applyAndAddTo(this) {
+            JButton(StringLocale[STR_RESTORE_DEFAULTS_OPTIONS]).applyAndAddTo(this) {
                 addActionListener {
                     transaction { SettingsTable.initializeDefault() }
-                    showMessage(Strings[ST_DEFAULT_SETTINGS_RESTORED], this)
+                    showMessage(StringLocale[ST_DEFAULT_SETTINGS_RESTORED], this)
                     dispose()
                 }
             }
@@ -287,7 +287,7 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, Strings[STR_OPT
         }
 
         private fun selectColor(color: Color): Color? =
-            JColorChooser.showDialog(this@OptionDialog, Strings[STR_SELECT_COLOR], color)
+            JColorChooser.showDialog(this@OptionDialog, StringLocale[STR_SELECT_COLOR], color)
 
         private fun refreshItems(serializableColor: SerializableColor) {
             isRefreshing = true

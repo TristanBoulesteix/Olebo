@@ -8,9 +8,9 @@ import javax.swing.JCheckBox
 import javax.swing.JOptionPane
 
 enum class MessageType(val title: String, val OptionPaneType: Int) {
-    INFO(Strings[STR_INFO], JOptionPane.INFORMATION_MESSAGE),
-    WARNING(Strings[STR_WARNING], JOptionPane.WARNING_MESSAGE),
-    ERROR(Strings[STR_ERROR], JOptionPane.INFORMATION_MESSAGE)
+    INFO(StringLocale[STR_INFO], JOptionPane.INFORMATION_MESSAGE),
+    WARNING(StringLocale[STR_WARNING], JOptionPane.WARNING_MESSAGE),
+    ERROR(StringLocale[STR_ERROR], JOptionPane.INFORMATION_MESSAGE)
 }
 
 /**
@@ -31,7 +31,7 @@ inline fun showConfirmMessage(
     confirm: Boolean = false,
     crossinline okAction: () -> Unit
 ) {
-    val ok = JButton(Strings[STR_CONFIRM]).apply {
+    val ok = JButton(StringLocale[STR_CONFIRM]).apply {
         this.isEnabled = !confirm
         this.addActionListener {
             windowAncestor?.dispose()
@@ -39,7 +39,7 @@ inline fun showConfirmMessage(
         }
     }
 
-    val cancel = JButton(Strings[STR_CANCEL]).apply {
+    val cancel = JButton(StringLocale[STR_CANCEL]).apply {
         this.addActionListener {
             windowAncestor?.dispose()
         }

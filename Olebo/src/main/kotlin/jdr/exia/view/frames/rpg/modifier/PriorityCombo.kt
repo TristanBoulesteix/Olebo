@@ -8,15 +8,15 @@ import jdr.exia.viewModel.ViewManager
 
 class PriorityCombo(items: Elements? = null) :
     ComboSelectPanel(
-        arrayOf(Strings[STR_FOREGROUND], Strings[STR_DEFAULT], Strings[STR_BACKGROUND]),
+        arrayOf(StringLocale[STR_FOREGROUND], StringLocale[STR_DEFAULT], StringLocale[STR_BACKGROUND]),
         items,
         STR_PRIORITY_COMBO_TOOLTIP
     ) {
     init {
         addActionListener {
             val newPriority = when (selectedItem) {
-                Strings[STR_BACKGROUND] -> Priority.LOW
-                Strings[STR_FOREGROUND] -> Priority.HIGH
+                StringLocale[STR_BACKGROUND] -> Priority.LOW
+                StringLocale[STR_FOREGROUND] -> Priority.HIGH
                 else -> Priority.REGULAR
             }
 
@@ -25,11 +25,11 @@ class PriorityCombo(items: Elements? = null) :
     }
 
     override fun setSelectedItem(selected: Any?) {
-        this.toSelect = selected.doIfElement(Strings[STR_DEFAULT]) {
+        this.toSelect = selected.doIfElement(StringLocale[STR_DEFAULT]) {
             when (it.priority) {
-                Priority.HIGH -> Strings[STR_FOREGROUND]
-                Priority.LOW -> Strings[STR_BACKGROUND]
-                Priority.REGULAR -> Strings[STR_DEFAULT]
+                Priority.HIGH -> StringLocale[STR_FOREGROUND]
+                Priority.LOW -> StringLocale[STR_BACKGROUND]
+                Priority.REGULAR -> StringLocale[STR_DEFAULT]
             }
         }
     }
