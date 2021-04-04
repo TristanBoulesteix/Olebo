@@ -2,6 +2,8 @@
 
 package jdr.exia.view.compose
 
+import androidx.compose.desktop.DesktopMaterialTheme
+import androidx.compose.desktop.WindowEvents
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,33 +21,44 @@ import jdr.exia.localization.STR_ELEMENTS
 import jdr.exia.localization.STR_VERSION
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
+import jdr.exia.model.utils.imageFromIcon
 import jdr.exia.view.compose.components.ButtonBuilder
 import jdr.exia.view.compose.components.ContentRow
 import jdr.exia.view.compose.components.CustomWindow
+import jdr.exia.view.compose.tools.BorderInlined
+import jdr.exia.view.compose.tools.border
 import jdr.exia.view.compose.ui.OleboTheme
 import jdr.exia.view.compose.ui.blue
 import jdr.exia.view.compose.ui.lightOrange
-import jdr.exia.view.compose.utils.BorderInlined
-import jdr.exia.view.compose.utils.border
-import jdr.exia.view.compose.utils.imageFromIcon
 import jdr.exia.view.utils.components.FileMenu
 import jdr.exia.viewModel.HomeViewModel
 import javax.swing.JMenuBar
 
+val defaultWindowSize = IntSize(700, 900)
+
+var homeWindowSize by mutableStateOf(defaultWindowSize)
+    private set
+
 fun showHomeWindow() = CustomWindow(
     title = "Olebo - ${StringLocale[STR_VERSION]} $OLEBO_VERSION",
-    size = IntSize(600, 800),
-    minimumSize = IntSize(600, 800),
-    jMenuBar = JMenuBar().apply { add(FileMenu()) }
+    size = defaultWindowSize,
+    minimumSize = defaultWindowSize,
+    jMenuBar = JMenuBar().apply { add(FileMenu()) },
+    events = WindowEvents(
+        onOpen = { homeWindowSize = defaultWindowSize },
+        onResize = { homeWindowSize = it }
+    )
 ) {
     val viewModel = HomeViewModel()
 
     OleboTheme {
-        MainContent(
-            acts = viewModel.acts,
-            onRowClick = viewModel::launchAct,
-            onDeleteAct = viewModel::deleteAct
-        )
+        DesktopMaterialTheme {
+            MainContent(
+                acts = viewModel.acts,
+                onRowClick = viewModel::launchAct,
+                onDeleteAct = viewModel::deleteAct
+            )
+        }
     }
 }
 
@@ -70,16 +83,6 @@ fun MainContent(
                 editedActState = null
             }
         }
-
-/*        if (currentPage != HomeScreen.ACTS)
-            Box(modifier = Modifier.align(Alignment.Bottom).fillMaxWidth().background(Color.Gray).padding(15.dp)) {
-                Button(
-                    onClick = { setCurrentPage(HomeScreen.ACTS) },
-                    modifier = Modifier.fillMaxWidth().align(Alignment.CenterEnd)
-                ) {
-                    Text(text = StringLocale[STR_BACK], textAlign = TextAlign.Right, modifier = Modifier.fillMaxWidth())
-                }
-            }*/
     }
 }
 

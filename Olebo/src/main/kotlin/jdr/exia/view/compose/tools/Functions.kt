@@ -1,3 +1,3 @@
-package jdr.exia.view.compose.utils
+package jdr.exia.view.compose.tools
 
 typealias DefaultFunction = () -> Unit

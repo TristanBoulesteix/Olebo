@@ -167,6 +167,7 @@ class StringLocaleBundle : StringLocale() {
         STR_LABEL_VISIBLE to "label visible for both windows",
         STR_LABEL_VISIBLE_FOR_MASTER to "label only visible for the DM",
         STR_LABEL_HIDDEN to "label hidden",
+        ST_ENTER_SCENE_NAME to "Enter a scene name",
     )
 }
 
@@ -335,5 +336,6 @@ class StringLocaleBundle_fr : StringLocale() {
         STR_LABEL_VISIBLE to "label visible sur les deux fenêtres",
         STR_LABEL_VISIBLE_FOR_MASTER to "label visible pour le maître du jeu",
         STR_LABEL_HIDDEN to "label caché",
+        ST_ENTER_SCENE_NAME to "Entrez un nom de scène",
     )
 }

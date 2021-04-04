@@ -2,10 +2,12 @@ package jdr.exia.model.act
 
 import jdr.exia.model.dao.ActTable
 import jdr.exia.model.dao.SceneTable
+import jdr.exia.model.utils.Image
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.SizedIterable
+import java.io.File
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
@@ -34,9 +36,9 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
     /**
      * Temporary scene
      */
-    data class SceneData(val name: String, val img: String, val id: Int? = null) {
+    data class SceneData(val name: String, val img: Image, val id: Int? = null) {
         companion object {
-            fun default() = SceneData("", "")
+            fun default() = SceneData("", Image.unspecified)
         }
     }
 }
@@ -51,5 +53,9 @@ infix fun Act.SceneData?.isValidAndEqualTo(sceneData: Act.SceneData?): Boolean {
         returns(true) implies (sceneData != null && this@isValidAndEqualTo != null)
     }
 
-    return this?.let { sceneData != null && sceneData.id == it.id } ?: false
+    return this?.let { it == sceneData || (sceneData != null && sceneData.id == it.id && sceneData.isValid() && it.isValid()) }
+        ?: false
 }
+
+fun Act.SceneData.isValid() =
+    this.name.isNotBlank() && this.img.isValid() && File(this.img.path).let { it.exists() && it.isFile }

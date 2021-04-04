@@ -161,6 +161,7 @@ const val ST_IMG_BLUEPRINT_REQUIRED = "img_blueprint_required"
 const val ST_IMG_BLUEPRINT_NOT_EXIST_OR_INVALID = "img_blueprint_invalid_or_not_exist"
 const val ST_OCCURENCE_BLUEPRINT_TO_DELETE = "num_blueprint_to_delete"
 const val ST_DEFAULT_SETTINGS_RESTORED = "restored_default_settings"
+const val ST_ENTER_SCENE_NAME = "enter_scene_name"
 
 
 // -- Interpolable StringLocale

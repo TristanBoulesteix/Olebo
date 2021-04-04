@@ -11,11 +11,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.dp
+import jdr.exia.view.compose.tools.BorderInlined
+import jdr.exia.view.compose.tools.DefaultFunction
+import jdr.exia.view.compose.tools.applyIf
+import jdr.exia.view.compose.tools.border
 import jdr.exia.view.compose.ui.typography
-import jdr.exia.view.compose.utils.BorderInlined
-import jdr.exia.view.compose.utils.DefaultFunction
-import jdr.exia.view.compose.utils.appyIf
-import jdr.exia.view.compose.utils.border
 
 @Composable
 fun ContentRow(
@@ -23,10 +23,10 @@ fun ContentRow(
     onClick: DefaultFunction? = null,
     modifier: Modifier = Modifier,
     buttonBuilders: List<ButtonBuilder> = emptyList(),
-    withBottomBorder: Boolean = true
+    removeBottomBorder: Boolean = false
 ) = Row(
     modifier = modifier.fillMaxWidth().size(65.dp)
-        .appyIf(condition = withBottomBorder, mod = { border(bottom = BorderInlined.defaultBorder) }),
+        .applyIf(condition = !removeBottomBorder, mod = { border(bottom = BorderInlined.defaultBorder) }),
     horizontalArrangement = Arrangement.End
 ) {
     var boxModifier = Modifier.fillMaxHeight().weight(1f, fill = true)
@@ -37,7 +37,13 @@ fun ContentRow(
     Box(modifier = boxModifier, contentAlignment = Alignment.CenterStart) { content() }
 
     buttonBuilders.forEach { (icon, action) ->
-        RowButton(image = icon, onClick = action)
+        RowButton(
+            image = icon,
+            onClick = action,
+            modifier = Modifier.applyIf(
+                condition = removeBottomBorder,
+                mod = { border(bottom = BorderInlined.defaultBorder) })
+        )
     }
 }
 
@@ -57,9 +63,9 @@ fun ContentRow(
 data class ButtonBuilder(val icon: ImageBitmap, val onClick: () -> Unit)
 
 @Composable
-private fun RowButton(image: ImageBitmap, onClick: () -> Unit) {
+private fun RowButton(image: ImageBitmap, modifier: Modifier, onClick: () -> Unit) {
     Box(
-        modifier = Modifier.size(65.dp)
+        modifier = modifier.size(65.dp)
             .border(start = BorderInlined.defaultBorder)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.CenterStart

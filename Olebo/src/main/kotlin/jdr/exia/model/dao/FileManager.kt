@@ -1,6 +1,7 @@
 package jdr.exia.model.dao
 
 import jdr.exia.main
+import jdr.exia.model.utils.Image
 import jdr.exia.utils.Result
 import java.io.BufferedOutputStream
 import java.io.File
@@ -47,6 +48,18 @@ fun saveImg(path: String): String {
     File(path).copyTo(img, true)
 
     return img.absolutePath
+}
+
+fun saveImgAndGetImg(imagePath: String): Image {
+    val img = File.createTempFile(
+        "img_",
+        "_background.png",
+        File(imgPath).apply { this.mkdirs() }
+    )
+
+    File(imagePath).copyTo(img, true)
+
+    return Image(img.absolutePath)
 }
 
 /**

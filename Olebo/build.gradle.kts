@@ -1,11 +1,11 @@
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlinVersion: String by System.getProperties()
 
 plugins {
-    application
     kotlin("jvm")
-    id("org.jetbrains.compose") version "0.3.1"
+    id("org.jetbrains.compose") version "0.3.2"
 }
 
 version = "1.9.0-BETA"
@@ -26,8 +26,8 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
-    implementation("org.slf4j", "slf4j-api", "1.7.25")
-    implementation("org.slf4j", "slf4j-simple", "1.7.25")
+    implementation("org.slf4j", "slf4j-api", "1.7.30")
+    implementation("org.slf4j", "slf4j-simple", "1.7.30")
     implementation("org.apache.httpcomponents", "httpclient", "4.5.10")
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.4.2")
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-swing", "1.4.2")
@@ -49,10 +49,6 @@ val jar by tasks.getting(Jar::class) {
     dependsOn(":OleboUpdater:build")
 }
 
-val run by tasks.getting(JavaExec::class) {
-    dependsOn(":OleboUpdater:build")
-}
-
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8
 }
@@ -60,8 +56,25 @@ configure<JavaPluginConvention> {
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
     kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+    kotlinOptions.freeCompilerArgs += "-Xinline-classes"
 }
 
-application {
-    mainClassName = main
+compose.desktop {
+    application {
+        javaHome = System.getenv("JDK_16")
+
+        mainClass = main
+
+        nativeDistributions {
+            packageVersion = "1.9.0"
+
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+
+            modules("java.sql")
+        }
+    }
 }
+
+/*val run by tasks.getting(JavaExec::class) {
+    dependsOn(":OleboUpdater:build")
+}*/
