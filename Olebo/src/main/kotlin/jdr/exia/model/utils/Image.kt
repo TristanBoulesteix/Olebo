@@ -17,7 +17,7 @@ inline class Image(val path: String) {
     fun isUnspecified() = path.isBlank()
 }
 
-fun imageFromIcon(name: String) = imageFromResource("icons/$name.png")
+fun imageFromIconRes(name: String) = imageFromResource("icons/$name.png")
 
 fun imageFromFile(file: File): ImageBitmap {
     return SkijaImage.makeFromEncoded(file.readBytes()).asImageBitmap()

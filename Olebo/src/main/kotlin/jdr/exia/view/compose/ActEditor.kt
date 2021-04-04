@@ -24,7 +24,7 @@ import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.isValidAndEqualTo
 import jdr.exia.model.utils.imageFromFile
-import jdr.exia.model.utils.imageFromIcon
+import jdr.exia.model.utils.imageFromIconRes
 import jdr.exia.view.compose.components.ButtonBuilder
 import jdr.exia.view.compose.components.ContentRow
 import jdr.exia.view.compose.tools.BorderInlined
@@ -71,6 +71,14 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
         val headerScrollState = rememberScrollState()
         val listState = rememberLazyListState()
 
+        val contentModifier = remember {
+            Modifier.padding(bottom = 20.dp, end = 20.dp, start = 20.dp)
+                .background(Color.White)
+                .weight(1f)
+                .fillMaxSize()
+                .border(BorderInlined.defaultBorder)
+        }
+
         var sceneInCreation by remember { mutableStateOf(false) }
 
         Box(
@@ -86,7 +94,7 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
                         modifier = Modifier.background(Color.White).border(BorderInlined.defaultBorder),
                         buttonBuilders = listOf(
                             ButtonBuilder(
-                                icon = imageFromIcon("create_icon"),
+                                icon = imageFromIconRes("create_icon"),
                                 onClick = { sceneInCreation = !sceneInCreation })
                         )
                     )
@@ -94,35 +102,39 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
             }
         }
 
-        LazyColumn(
-            modifier = Modifier.padding(bottom = 20.dp, end = 20.dp, start = 20.dp)
-                .background(Color.White)
-                .weight(1f)
-                .fillMaxSize()
-                .border(BorderInlined.defaultBorder),
-            state = listState
-        ) {
-            items(items = viewModel.scenes) { scene ->
-                if (!sceneInCreation && viewModel.currentEditScene isValidAndEqualTo scene) {
-                    EditSceneRow(
-                        sceneData = scene,
-                        onConfirmed = viewModel::onEditConfirmed,
-                        onCanceled = viewModel::onEditDone
-                    )
-                } else {
-                    ContentRow(
-                        contentText = scene.name,
-                        buttonBuilders = listOf(
-                            ButtonBuilder(
-                                imageFromIcon("edit_icon"),
-                                onClick = {
-                                    viewModel.onEditItemSelected(scene)
-                                    sceneInCreation = false
-                                }
-                            ),
-                            ButtonBuilder(imageFromIcon("delete_icon"), onClick = {})
+        if (sceneInCreation) {
+            EditSceneRow(
+                modifier = contentModifier,
+                onConfirmed = { },
+                onCanceled = { sceneInCreation = false }
+            )
+        } else {
+            LazyColumn(
+                modifier = contentModifier,
+                state = listState
+            ) {
+                items(items = viewModel.scenes) { scene ->
+                    if (viewModel.currentEditScene isValidAndEqualTo scene) {
+                        EditSceneRow(
+                            sceneData = scene,
+                            onConfirmed = viewModel::onEditConfirmed,
+                            onCanceled = viewModel::onEditDone
                         )
-                    )
+                    } else {
+                        ContentRow(
+                            contentText = scene.name,
+                            buttonBuilders = listOf(
+                                ButtonBuilder(
+                                    imageFromIconRes("edit_icon"),
+                                    onClick = {
+                                        viewModel.onEditItemSelected(scene)
+                                        sceneInCreation = false
+                                    }
+                                ),
+                                ButtonBuilder(imageFromIconRes("delete_icon"), onClick = {})
+                            )
+                        )
+                    }
                 }
             }
         }
@@ -171,12 +183,12 @@ private fun EditSceneRow(
         removeBottomBorder = false,
         buttonBuilders = if (sceneData != null)
             listOf(
-                ButtonBuilder(icon = imageFromIcon("confirm_icon"), onClick = { onConfirmed(data) }),
-                ButtonBuilder(icon = imageFromIcon("exit_icon"), onClick = onCanceled)
+                ButtonBuilder(icon = imageFromIconRes("confirm_icon"), onClick = { onConfirmed(data) }),
+                ButtonBuilder(icon = imageFromIconRes("exit_icon"), onClick = onCanceled)
             ) else emptyList()
     )
 
-    ImagePreviewContent(data = data, defaultModifier = defaultModifier, onUpdateData = { data = it })
+    ImagePreviewContent(data = data, onUpdateData = { data = it })
 }
 
 private val roundedShape = RoundedCornerShape(20.dp)
@@ -187,21 +199,23 @@ private fun Modifier.addBorderWithShape() =
 @Composable
 private fun ImagePreviewContent(
     data: Act.SceneData,
-    defaultModifier: Modifier,
     onUpdateData: (Act.SceneData) -> Unit
 ) {
+
     val imgExist = !data.img.isUnspecified() && File(data.img.path).let { it.exists() && it.isFile }
 
     Box(
         modifier = Modifier.padding(10.dp).sizeIn(maxWidth = 600.dp, maxHeight = 600.dp)
             .applyIf(condition = !imgExist, mod = Modifier::addBorderWithShape)
+            .applyIf(condition = !imgExist, mod = { this.size(600.dp) })
     ) {
-        if (imgExist)
+        if (imgExist) {
             Image(
                 bitmap = imageFromFile(File(data.img.path)),
                 contentDescription = null,
-                Modifier.clip(roundedShape).applyIf(condition = imgExist, mod = Modifier::addBorderWithShape)
+                Modifier.clip(roundedShape).addBorderWithShape().align(Alignment.Center)
             )
+        }
 
         OutlinedButton(
             onClick = {
@@ -219,8 +233,8 @@ private fun ImagePreviewContent(
                     onUpdateData(data.copy(img = Img(fileChooser.selectedFile.absolutePath)))
                 }
             },
-            modifier = defaultModifier.fillMaxWidth().padding(10.dp).align(Alignment.Center),
-            content = { Text(text = StringLocale[STR_IMPORT_IMG]) }
+            modifier = Modifier.padding(10.dp).align(Alignment.Center).matchParentSize(),
+            content = { Text(text = StringLocale[if (imgExist) STR_IMPORT_NEW_IMG else STR_IMPORT_IMG]) }
         )
     }
 }

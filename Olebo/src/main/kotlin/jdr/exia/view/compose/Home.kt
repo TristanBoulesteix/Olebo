@@ -21,7 +21,7 @@ import jdr.exia.localization.STR_ELEMENTS
 import jdr.exia.localization.STR_VERSION
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
-import jdr.exia.model.utils.imageFromIcon
+import jdr.exia.model.utils.imageFromIconRes
 import jdr.exia.view.compose.components.ButtonBuilder
 import jdr.exia.view.compose.components.ContentRow
 import jdr.exia.view.compose.components.CustomWindow
@@ -116,8 +116,8 @@ fun ActsView(
                         contentText = act.name,
                         onClick = { onRowClick(act) },
                         buttonBuilders = listOf(
-                            ButtonBuilder(imageFromIcon("edit_icon")) { onEdit(act) },
-                            ButtonBuilder(imageFromIcon("delete_icon")) { onDelete(act) }
+                            ButtonBuilder(imageFromIconRes("edit_icon")) { onEdit(act) },
+                            ButtonBuilder(imageFromIconRes("delete_icon")) { onDelete(act) }
                         )
                     )
                 }
