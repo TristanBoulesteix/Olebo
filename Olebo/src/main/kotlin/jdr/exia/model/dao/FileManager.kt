@@ -62,18 +62,6 @@ fun Image.saveImgAndGetPath(): String {
     return img.absolutePath
 }
 
-fun saveImgAndGetImg(imagePath: String): Image {
-    val img = File.createTempFile(
-        "img_",
-        "_background.png",
-        File(imgPath).apply { this.mkdirs() }
-    )
-
-    File(imagePath).copyTo(img, true)
-
-    return Image(img.absolutePath)
-}
-
 /**
  * Get the appdata path depending on the pateform.
  *
