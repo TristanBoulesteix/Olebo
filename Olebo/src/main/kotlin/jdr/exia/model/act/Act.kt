@@ -36,7 +36,7 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
     /**
      * Temporary scene
      */
-    data class SceneData(val name: String, val img: Image, val id: Int? = null) {
+    data class SceneData(val name: String, val img: Image, val id: EntityID<Int>? = null) {
         companion object {
             fun default() = SceneData("", Image.unspecified)
         }

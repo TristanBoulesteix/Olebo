@@ -14,7 +14,9 @@ import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,16 +52,14 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
     ) {
         val roundedShape = remember { RoundedCornerShape(25) }
 
-        var name by remember { mutableStateOf(act?.name ?: "") }
-
         BasicTextField(
-            value = name,
-            onValueChange = { name = it },
+            value = viewModel.actName,
+            onValueChange = { viewModel.actName = it },
             modifier = Modifier.fillMaxWidth().clip(roundedShape).background(Color.White)
                 .border(BorderStroke(2.dp, Color.Black), roundedShape).padding(10.dp),
             singleLine = true,
             decorationBox = { composableContent ->
-                if (act != null && name.isEmpty())
+                if (act != null && viewModel.actName.isEmpty())
                     Text(text = act.name)
                 else composableContent()
             }
@@ -176,9 +176,14 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
             horizontalArrangement = Arrangement.SpaceAround,
             modifier = Modifier.fillMaxWidth().padding(15.dp)
         ) {
-            OutlinedButton(onClick = onDone, enabled = !isEditing) {
-                Text(text = StringLocale[STR_CONFIRM])
-            }
+            OutlinedButton(
+                onClick = {
+                    viewModel.submit()
+                    onDone()
+                },
+                enabled = !isEditing,
+                content = { Text(text = StringLocale[STR_CONFIRM]) }
+            )
             OutlinedButton(
                 onClick = if (isEditing) fun() {
                     setSceneInCreation(null)

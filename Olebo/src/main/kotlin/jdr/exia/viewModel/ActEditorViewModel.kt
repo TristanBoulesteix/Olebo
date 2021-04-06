@@ -4,9 +4,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import jdr.exia.model.act.Act
+import jdr.exia.model.act.Scene
 import jdr.exia.model.act.isValid
 import jdr.exia.model.act.isValidAndEqualTo
+import jdr.exia.model.dao.saveImgAndGetPath
 import jdr.exia.model.utils.Image
+import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.emptySized
 import org.jetbrains.exposed.sql.mapLazy
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -14,9 +17,11 @@ import org.jetbrains.exposed.sql.transactions.transaction
 class ActEditorViewModel(private val act: Act?) {
     private var currentEditPosition by mutableStateOf(-1)
 
+    var actName by mutableStateOf(act?.name ?: "")
+
     var scenes by transaction {
         mutableStateOf((act?.scenes ?: emptySized()).mapLazy {
-            Act.SceneData(it.name, Image(it.background), it.id.value)
+            Act.SceneData(it.name, Image(it.background), it.id)
         }.toList())
     }
         private set
@@ -51,6 +56,29 @@ class ActEditorViewModel(private val act: Act?) {
         currentEditPosition = -1
     }
 
-    private fun sceneWithNameExist(name: String, excludedId: Int? = null) =
+    fun submit() = transaction {
+        if (act != null && Act.all().filterNot { it.id == act.id }.any { it.name == act.name })
+            return@transaction
+
+        val act = act?.also { it.name = actName } ?: Act.new { this.name = actName }
+
+        val idList = scenes.mapNotNull { it.id }
+
+        act.scenes.filter { it.id !in idList }.forEach(Scene::delete)
+
+        scenes.forEach {
+            if(it.id != null) with(Scene[it.id]) {
+                this.name = it.name
+                this.background = it.img.saveImgAndGetPath()
+            } else Scene.new {
+                this.name = it.name
+                this.background = it.img.saveImgAndGetPath()
+                this.idAct = act.id.value
+            }
+        }
+    }
+
+
+    private fun sceneWithNameExist(name: String, excludedId: EntityID<Int>? = null) =
         scenes.filter { excludedId == null || it.id != excludedId }.any { it.name == name }
 }

@@ -50,6 +50,18 @@ fun saveImg(path: String): String {
     return img.absolutePath
 }
 
+fun Image.saveImgAndGetPath(): String {
+    val img = File.createTempFile(
+        "img_",
+        "_background.png",
+        File(imgPath).apply { this.mkdirs() }
+    )
+
+    File(path).copyTo(img, true)
+
+    return img.absolutePath
+}
+
 fun saveImgAndGetImg(imagePath: String): Image {
     val img = File.createTempFile(
         "img_",
