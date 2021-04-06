@@ -53,9 +53,15 @@ infix fun Act.SceneData?.isValidAndEqualTo(sceneData: Act.SceneData?): Boolean {
         returns(true) implies (sceneData != null && this@isValidAndEqualTo != null)
     }
 
-    return this?.let { it == sceneData || (sceneData != null && sceneData.id == it.id && sceneData.isValid() && it.isValid()) }
-        ?: false
+    return this.isValid() && (this == sceneData || (sceneData.isValid() && sceneData.id == this.id))
 }
 
-fun Act.SceneData.isValid() =
-    this.name.isNotBlank() && this.img.isValid() && File(this.img.path).let { it.exists() && it.isFile }
+@OptIn(ExperimentalContracts::class)
+fun Act.SceneData?.isValid(): Boolean {
+    contract {
+        returns(true) implies (this@isValid != null)
+    }
+
+    return this != null && this.name.isNotBlank() && this.img.isValid() && File(this.img.path)
+        .let { it.exists() && it.isFile }
+}

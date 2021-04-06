@@ -27,10 +27,7 @@ import jdr.exia.model.utils.imageFromFile
 import jdr.exia.model.utils.imageFromIconRes
 import jdr.exia.view.compose.components.ButtonBuilder
 import jdr.exia.view.compose.components.ContentRow
-import jdr.exia.view.compose.tools.BorderInlined
-import jdr.exia.view.compose.tools.DefaultFunction
-import jdr.exia.view.compose.tools.applyIf
-import jdr.exia.view.compose.tools.border
+import jdr.exia.view.compose.tools.*
 import jdr.exia.view.compose.ui.blue
 import jdr.exia.view.compose.ui.lightOrange
 import jdr.exia.viewModel.ActEditorViewModel
@@ -79,7 +76,7 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
                 .border(BorderInlined.defaultBorder)
         }
 
-        var sceneInCreation by remember { mutableStateOf(false) }
+        val (sceneInCreation, setSceneInCreation) = remember { mutableStateOf<Act.SceneData?>(null) withSetter { if (it != null) viewModel.onEditDone() } }
 
         Box(
             modifier = Modifier.padding(top = 20.dp, end = 20.dp, start = 20.dp)
@@ -92,21 +89,36 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
                     ContentRow(
                         contentText = StringLocale[STR_SCENES],
                         modifier = Modifier.background(Color.White).border(BorderInlined.defaultBorder),
-                        buttonBuilders = listOf(
-                            ButtonBuilder(
-                                icon = imageFromIconRes("create_icon"),
-                                onClick = { sceneInCreation = !sceneInCreation })
-                        )
+                        buttonBuilders =
+                        if (sceneInCreation == null) {
+                            listOf(
+                                ButtonBuilder(
+                                    icon = imageFromIconRes("create_icon"),
+                                    onClick = { setSceneInCreation(Act.SceneData.default()) })
+                            )
+                        } else {
+                            listOf(
+                                ButtonBuilder(
+                                    icon = imageFromIconRes("confirm_icon"),
+                                    onClick = {
+                                        viewModel.onAddScene(sceneInCreation).also { setSceneInCreation(null) }
+                                    }),
+                                ButtonBuilder(
+                                    icon = imageFromIconRes("exit_icon"),
+                                    onClick = { setSceneInCreation(null) })
+                            )
+                        }
                     )
                 }
             }
         }
 
-        if (sceneInCreation) {
+        if (sceneInCreation != null) {
             EditSceneRow(
-                modifier = contentModifier,
-                onConfirmed = { },
-                onCanceled = { sceneInCreation = false }
+                data = sceneInCreation,
+                updateData = setSceneInCreation,
+                showButtons = false,
+                modifier = contentModifier
             )
         } else {
             LazyColumn(
@@ -115,9 +127,12 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
             ) {
                 items(items = viewModel.scenes) { scene ->
                     if (viewModel.currentEditScene isValidAndEqualTo scene) {
+                        val (tempCurrentEditedScene, setTempCurrentEditScene) = remember { mutableStateOf(scene) }
+
                         EditSceneRow(
-                            sceneData = scene,
-                            onConfirmed = viewModel::onEditConfirmed,
+                            data = tempCurrentEditedScene,
+                            updateData = setTempCurrentEditScene,
+                            onConfirmed = { viewModel.onEditConfirmed(tempCurrentEditedScene) },
                             onCanceled = viewModel::onEditDone
                         )
                     } else {
@@ -128,7 +143,7 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
                                     imageFromIconRes("edit_icon"),
                                     onClick = {
                                         viewModel.onEditItemSelected(scene)
-                                        sceneInCreation = false
+                                        setSceneInCreation(null)
                                     }
                                 ),
                                 ButtonBuilder(imageFromIconRes("delete_icon"), onClick = {})
@@ -155,40 +170,40 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
 
 @Composable
 private fun EditSceneRow(
-    sceneData: Act.SceneData? = null,
+    data: Act.SceneData,
+    updateData: (Act.SceneData) -> Unit,
     modifier: Modifier = Modifier,
-    onConfirmed: (Act.SceneData) -> Unit,
-    onCanceled: DefaultFunction
+    showButtons: Boolean = true,
+    onConfirmed: DefaultFunction? = null,
+    onCanceled: DefaultFunction? = null
 ) = Column(
     modifier = modifier.applyIf(
-        condition = sceneData != null,
+        condition = showButtons,
         mod = { border(bottom = BorderInlined.defaultBorder) }
     )
 ) {
-    var data by remember { mutableStateOf(sceneData ?: Act.SceneData.default()) }
-
     val defaultModifier = remember { Modifier.fillMaxWidth().padding(horizontal = 10.dp) }
 
     ContentRow(
         content = {
             TextField(
                 data.name,
-                onValueChange = { data = data.copy(name = it) },
+                onValueChange = { updateData(data.copy(name = it)) },
                 modifier = defaultModifier,
                 singleLine = true,
-                placeholder = { Text(sceneData?.name ?: StringLocale[ST_ENTER_SCENE_NAME]) },
+                placeholder = { Text(data.name.takeIf { it.isNotBlank() } ?: StringLocale[ST_ENTER_SCENE_NAME]) },
                 colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White),
             )
         },
         removeBottomBorder = false,
-        buttonBuilders = if (sceneData != null)
+        buttonBuilders = if (showButtons && onConfirmed != null && onCanceled != null)
             listOf(
-                ButtonBuilder(icon = imageFromIconRes("confirm_icon"), onClick = { onConfirmed(data) }),
+                ButtonBuilder(icon = imageFromIconRes("confirm_icon"), onClick = onConfirmed),
                 ButtonBuilder(icon = imageFromIconRes("exit_icon"), onClick = onCanceled)
             ) else emptyList()
     )
 
-    ImagePreviewContent(data = data, onUpdateData = { data = it })
+    ImagePreviewContent(data = data, onUpdateData = { updateData(it) })
 }
 
 private val roundedShape = RoundedCornerShape(20.dp)
@@ -201,7 +216,6 @@ private fun ImagePreviewContent(
     data: Act.SceneData,
     onUpdateData: (Act.SceneData) -> Unit
 ) {
-
     val imgExist = !data.img.isUnspecified() && File(data.img.path).let { it.exists() && it.isFile }
 
     Box(
