@@ -30,6 +30,8 @@ import jdr.exia.view.compose.components.ContentRow
 import jdr.exia.view.compose.tools.*
 import jdr.exia.view.compose.ui.blue
 import jdr.exia.view.compose.ui.lightOrange
+import jdr.exia.view.utils.MessageType
+import jdr.exia.view.utils.showMessage
 import jdr.exia.viewModel.ActEditorViewModel
 import java.io.File
 import javax.imageio.ImageIO
@@ -101,7 +103,14 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
                                 ButtonBuilder(
                                     icon = imageFromIconRes("confirm_icon"),
                                     onClick = {
-                                        viewModel.onAddScene(sceneInCreation).also { setSceneInCreation(null) }
+                                        if (viewModel.onAddScene(sceneInCreation)) {
+                                            setSceneInCreation(null)
+                                        } else {
+                                            showMessage(
+                                                StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID],
+                                                messageType = MessageType.WARNING
+                                            )
+                                        }
                                     }),
                                 ButtonBuilder(
                                     icon = imageFromIconRes("exit_icon"),
@@ -132,7 +141,14 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
                         EditSceneRow(
                             data = tempCurrentEditedScene,
                             updateData = setTempCurrentEditScene,
-                            onConfirmed = { viewModel.onEditConfirmed(tempCurrentEditedScene) },
+                            onConfirmed = {
+                                if (!viewModel.onEditConfirmed(tempCurrentEditedScene)) {
+                                    showMessage(
+                                        StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID],
+                                        messageType = MessageType.WARNING
+                                    )
+                                }
+                            },
                             onCanceled = viewModel::onEditDone
                         )
                     } else {
@@ -154,16 +170,24 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
             }
         }
 
+        val isEditing = sceneInCreation != null || viewModel.currentEditScene != null
+
         Row(
             horizontalArrangement = Arrangement.SpaceAround,
             modifier = Modifier.fillMaxWidth().padding(15.dp)
         ) {
-            OutlinedButton(onClick = onDone) {
+            OutlinedButton(onClick = onDone, enabled = !isEditing) {
                 Text(text = StringLocale[STR_CONFIRM])
             }
-            OutlinedButton(onClick = onDone) {
-                Text(text = StringLocale[STR_CANCEL])
-            }
+            OutlinedButton(
+                onClick = if (isEditing) fun() {
+                    setSceneInCreation(null)
+                    viewModel.onEditDone()
+                } else onDone,
+                content = {
+                    Text(text = StringLocale[STR_CANCEL])
+                }
+            )
         }
     }
 }

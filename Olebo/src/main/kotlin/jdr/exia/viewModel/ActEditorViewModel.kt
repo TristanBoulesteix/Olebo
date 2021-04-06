@@ -24,26 +24,33 @@ class ActEditorViewModel(private val act: Act?) {
     val currentEditScene
         get() = scenes.getOrNull(currentEditPosition)
 
-    fun onAddScene(sceneData: Act.SceneData) {
-        if (sceneData.isValid()) {
-            scenes = scenes + listOf(sceneData)
-        }
-    }
+    fun onAddScene(sceneData: Act.SceneData) = if (sceneData.isValid() && !sceneWithNameExist(sceneData.name)) {
+        scenes = scenes + listOf(sceneData)
+        true
+    } else false
 
     fun onEditItemSelected(sceneData: Act.SceneData) {
         currentEditPosition = scenes.indexOf(sceneData)
     }
 
-    fun onEditConfirmed(sceneData: Act.SceneData) {
-        if (currentEditScene isValidAndEqualTo sceneData)
+    fun onEditConfirmed(sceneData: Act.SceneData): Boolean {
+        if (currentEditScene isValidAndEqualTo sceneData && !sceneWithNameExist(sceneData.name, sceneData.id)) {
             scenes = scenes.toMutableList().also {
                 it[currentEditPosition] = sceneData
             }
 
-        onEditDone()
+            onEditDone()
+
+            return true
+        }
+
+        return false
     }
 
     fun onEditDone() {
         currentEditPosition = -1
     }
+
+    private fun sceneWithNameExist(name: String, excludedId: Int? = null) =
+        scenes.filter { excludedId == null || it.id != excludedId }.any { it.name == name }
 }
