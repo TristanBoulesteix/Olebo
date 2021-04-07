@@ -169,6 +169,8 @@ class StringLocaleBundle : StringLocale() {
         STR_LABEL_VISIBLE_FOR_MASTER to "label only visible for the DM",
         STR_LABEL_HIDDEN to "label hidden",
         ST_ENTER_SCENE_NAME to "Enter a scene name",
+        ST_CONFIRM_DELETE_ACT to "Are you sure to delete this scenario? This action cannot be canceled.",
+        STR_DELETE_ACT to "delete scenario",
     )
 }
 
@@ -339,5 +341,7 @@ class StringLocaleBundle_fr : StringLocale() {
         STR_LABEL_VISIBLE_FOR_MASTER to "label visible pour le maître du jeu",
         STR_LABEL_HIDDEN to "label caché",
         ST_ENTER_SCENE_NAME to "Entrez un nom de scène",
+        ST_CONFIRM_DELETE_ACT to "Êtes-vous sûr de vouloir supprimer ce scénario ? Cette action est irréversible.",
+        STR_DELETE_ACT to "delete scenario",
     )
 }

@@ -124,6 +124,7 @@ const val STR_LABEL_DISABLED = "label_disabled"
 const val STR_LABEL_HIDDEN = "label_hidden"
 const val STR_LABEL_VISIBLE = "label_visible"
 const val STR_LABEL_VISIBLE_FOR_MASTER = "label_visible_for_master"
+const val STR_DELETE_ACT = "delete_act"
 
 // -- Sentences
 
@@ -163,6 +164,7 @@ const val ST_IMG_BLUEPRINT_NOT_EXIST_OR_INVALID = "img_blueprint_invalid_or_not_
 const val ST_OCCURENCE_BLUEPRINT_TO_DELETE = "num_blueprint_to_delete"
 const val ST_DEFAULT_SETTINGS_RESTORED = "restored_default_settings"
 const val ST_ENTER_SCENE_NAME = "enter_scene_name"
+const val ST_CONFIRM_DELETE_ACT = "confirm_delete_act"
 
 
 // -- Interpolable StringLocale

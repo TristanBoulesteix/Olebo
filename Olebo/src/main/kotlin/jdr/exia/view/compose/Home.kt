@@ -79,9 +79,7 @@ fun MainContent(
                 onDelete = onDeleteAct
             )
         } else {
-            ActEditorView(editedActState) {
-                editedActState = null
-            }
+            ActEditorView(act = editedActState, onDone = { editedActState = null })
         }
     }
 }

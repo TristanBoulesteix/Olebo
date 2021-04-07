@@ -7,13 +7,12 @@ import androidx.compose.desktop.AppManager
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import jdr.exia.localization.STR_ERROR
-import jdr.exia.localization.STR_LOADING
-import jdr.exia.localization.StringLocale
+import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.view.frames.home.HomeFrame
 import jdr.exia.view.frames.rpg.MasterFrame
 import jdr.exia.view.utils.MessageType
+import jdr.exia.view.utils.showConfirmMessage
 import jdr.exia.view.utils.showMessage
 import kotlinx.coroutines.*
 import kotlinx.coroutines.swing.Swing
@@ -68,12 +67,14 @@ class HomeViewModel {
     }
 
     fun deleteAct(act: Act) = transaction {
-        act.delete()
-        updateActs()
+        showConfirmMessage(message = StringLocale[ST_CONFIRM_DELETE_ACT], title = StringLocale[STR_DELETE_ACT]) {
+            act.delete()
+            refreshActs()
+        }
     }
 
 
-    private fun updateActs() {
+    private fun refreshActs() {
         acts = actsAsList
     }
 }
