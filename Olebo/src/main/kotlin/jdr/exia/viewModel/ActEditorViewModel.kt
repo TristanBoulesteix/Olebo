@@ -52,28 +52,38 @@ class ActEditorViewModel(private val act: Act?) {
         return false
     }
 
+    fun onRemoveScene(sceneData: Act.SceneData) {
+        scenes = scenes.toMutableList().also {
+            it.remove(sceneData)
+        }
+
+        onEditDone()
+    }
+
     fun onEditDone() {
         currentEditPosition = -1
     }
 
-    fun submit() = transaction {
-        if (act != null && Act.all().filterNot { it.id == act.id }.any { it.name == act.name })
-            return@transaction
+    fun submit() {
+        if (act != null && transaction { Act.all().filterNot { it.id == act.id }.any { it.name == act.name } })
+            return
 
-        val act = act?.also { it.name = actName } ?: Act.new { this.name = actName }
+        val act = transaction { act?.also { it.name = actName } ?: Act.new { this.name = actName } }
 
         val idList = scenes.mapNotNull { it.id }
 
-        act.scenes.filter { it.id !in idList }.forEach(Scene::delete)
+        transaction {
+            act.scenes.filter { it.id !in idList }.forEach(Scene::delete)
 
-        scenes.forEach {
-            if(it.id != null) with(Scene[it.id]) {
-                this.name = it.name
-                this.background = it.img.saveImgAndGetPath()
-            } else Scene.new {
-                this.name = it.name
-                this.background = it.img.saveImgAndGetPath()
-                this.idAct = act.id.value
+            scenes.forEach {
+                if (it.id != null) with(Scene[it.id]) {
+                    this.name = it.name
+                    this.background = it.img.saveImgAndGetPath()
+                } else Scene.new {
+                    this.name = it.name
+                    this.background = it.img.saveImgAndGetPath()
+                    this.idAct = act.id.value
+                }
             }
         }
     }

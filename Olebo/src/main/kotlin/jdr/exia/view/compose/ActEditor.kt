@@ -162,7 +162,10 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
                                         setSceneInCreation(null)
                                     }
                                 ),
-                                ButtonBuilder(imageFromIconRes("delete_icon"), onClick = {})
+                                ButtonBuilder(
+                                    imageFromIconRes("delete_icon"),
+                                    onClick = { viewModel.onRemoveScene(scene) }
+                                )
                             )
                         )
                     }
