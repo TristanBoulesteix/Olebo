@@ -73,8 +73,7 @@ class HomeViewModel {
         }
     }
 
-
-    private fun refreshActs() {
+    fun refreshActs() {
         acts = actsAsList
     }
 }

@@ -28,6 +28,7 @@ import jdr.exia.view.compose.components.CustomWindow
 import jdr.exia.view.compose.tools.BorderInlined
 import jdr.exia.view.compose.tools.DefaultFunction
 import jdr.exia.view.compose.tools.border
+import jdr.exia.view.compose.tools.withSetter
 import jdr.exia.view.compose.ui.OleboTheme
 import jdr.exia.view.compose.ui.blue
 import jdr.exia.view.compose.ui.lightOrange
@@ -56,6 +57,7 @@ fun showHomeWindow() = CustomWindow(
         DesktopMaterialTheme {
             MainContent(
                 acts = viewModel.acts,
+                refreshAct = viewModel::refreshActs,
                 onRowClick = viewModel::launchAct,
                 onDeleteAct = viewModel::deleteAct
             )
@@ -66,13 +68,14 @@ fun showHomeWindow() = CustomWindow(
 @Composable
 fun MainContent(
     acts: List<Act>,
+    refreshAct: DefaultFunction,
     onRowClick: (Act) -> Unit,
     onDeleteAct: (Act) -> Unit
 ) {
     Row(modifier = Modifier.fillMaxSize()) {
-        var editedActState by remember { mutableStateOf<Act?>(null) }
+        var editedActState by remember { mutableStateOf<Act?>(null) withSetter { if (it == null) refreshAct() } }
 
-        var actInCreation by remember { mutableStateOf(false) }
+        var actInCreation by remember { mutableStateOf(false) withSetter { if (!it) refreshAct() } }
 
         when {
             editedActState != null -> ActEditorView(act = editedActState, onDone = { editedActState = null })
