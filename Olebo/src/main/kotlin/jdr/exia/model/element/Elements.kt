@@ -1,6 +1,4 @@
-package jdr.exia.model.utils
-
-import jdr.exia.model.element.Element
+package jdr.exia.model.element
 
 class Elements(elements: List<Element>) : MutableList<Element> by elements.toMutableList() {
     private constructor() : this(mutableListOf())

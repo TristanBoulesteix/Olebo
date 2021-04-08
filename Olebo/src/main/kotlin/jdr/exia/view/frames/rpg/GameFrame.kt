@@ -1,6 +1,6 @@
 package jdr.exia.view.frames.rpg
 
-import jdr.exia.model.utils.Elements
+import jdr.exia.model.element.Elements
 import jdr.exia.view.frames.Reloadable
 import java.awt.Image
 

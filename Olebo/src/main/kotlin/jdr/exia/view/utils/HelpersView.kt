@@ -1,7 +1,7 @@
 package jdr.exia.view.utils
 
 import jdr.exia.model.element.Element
-import jdr.exia.model.utils.Elements
+import jdr.exia.model.element.Elements
 import jdr.exia.model.utils.Point
 import java.awt.*
 import javax.swing.SwingUtilities

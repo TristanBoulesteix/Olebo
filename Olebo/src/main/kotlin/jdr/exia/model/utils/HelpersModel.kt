@@ -4,6 +4,7 @@ import jdr.exia.model.act.Scene
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
+import jdr.exia.model.element.Elements
 import jdr.exia.model.element.Type
 import java.awt.Graphics
 import java.awt.geom.AffineTransform

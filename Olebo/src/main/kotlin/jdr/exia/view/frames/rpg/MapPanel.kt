@@ -5,9 +5,9 @@ import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Size
-import jdr.exia.model.utils.Elements
+import jdr.exia.model.element.Elements
+import jdr.exia.model.element.emptyElements
 import jdr.exia.model.utils.Point
-import jdr.exia.model.utils.emptyElements
 import jdr.exia.view.utils.*
 import jdr.exia.view.utils.event.addMouseExitedListener
 import jdr.exia.view.utils.event.addMouseMovedListener

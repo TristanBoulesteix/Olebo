@@ -2,8 +2,8 @@ package jdr.exia.view.frames.rpg
 
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
-import jdr.exia.model.utils.Elements
-import jdr.exia.model.utils.emptyElements
+import jdr.exia.model.element.Elements
+import jdr.exia.model.element.emptyElements
 import java.io.File
 import javax.imageio.ImageIO
 

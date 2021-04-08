@@ -2,7 +2,7 @@ package jdr.exia.view.utils.components.templates
 
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.element.Element
-import jdr.exia.model.utils.Elements
+import jdr.exia.model.element.Elements
 import javax.swing.JComboBox
 import javax.swing.border.EmptyBorder
 

@@ -64,7 +64,10 @@ class ActEditorViewModel(private val act: Act?) {
         currentEditPosition = -1
     }
 
-    fun submit() {
+    fun submitAct() {
+        if(scenes.isEmpty())
+            return
+
         if (act != null && transaction { Act.all().filterNot { it.id == act.id }.any { it.name == act.name } })
             return
 

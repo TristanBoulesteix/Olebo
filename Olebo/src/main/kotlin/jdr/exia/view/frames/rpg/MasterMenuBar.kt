@@ -5,7 +5,7 @@ import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.option.Settings
-import jdr.exia.model.utils.toElements
+import jdr.exia.model.element.toElements
 import jdr.exia.utils.forElse
 import jdr.exia.view.frames.home.BlueprintsDialog
 import jdr.exia.view.frames.home.HomeFrame

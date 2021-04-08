@@ -59,9 +59,8 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
                 .border(BorderStroke(2.dp, Color.Black), roundedShape).padding(10.dp),
             singleLine = true,
             decorationBox = { composableContent ->
-                if (act != null && viewModel.actName.isEmpty())
-                    Text(text = act.name)
-                else composableContent()
+                if (viewModel.actName.isEmpty()) Text(text = act?.name ?: StringLocale[STR_INSERT_ACT_NAME])
+                composableContent()
             }
         )
     }
@@ -181,7 +180,7 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
         ) {
             OutlinedButton(
                 onClick = {
-                    viewModel.submit()
+                    viewModel.submitAct()
                     onDone()
                 },
                 enabled = !isEditing,

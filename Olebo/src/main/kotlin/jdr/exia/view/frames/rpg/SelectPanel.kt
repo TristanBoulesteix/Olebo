@@ -1,7 +1,7 @@
 package jdr.exia.view.frames.rpg
 
 import jdr.exia.localization.*
-import jdr.exia.model.utils.emptyElements
+import jdr.exia.model.element.emptyElements
 import jdr.exia.view.frames.rpg.modifier.PriorityCombo
 import jdr.exia.view.frames.rpg.modifier.SideDataPanel
 import jdr.exia.view.frames.rpg.modifier.SizeCombo

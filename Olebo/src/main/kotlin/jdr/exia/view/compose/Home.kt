@@ -26,6 +26,7 @@ import jdr.exia.view.compose.components.ButtonBuilder
 import jdr.exia.view.compose.components.ContentRow
 import jdr.exia.view.compose.components.CustomWindow
 import jdr.exia.view.compose.tools.BorderInlined
+import jdr.exia.view.compose.tools.DefaultFunction
 import jdr.exia.view.compose.tools.border
 import jdr.exia.view.compose.ui.OleboTheme
 import jdr.exia.view.compose.ui.blue
@@ -71,15 +72,18 @@ fun MainContent(
     Row(modifier = Modifier.fillMaxSize()) {
         var editedActState by remember { mutableStateOf<Act?>(null) }
 
-        if (editedActState == null) {
-            ActsView(
+        var actInCreation by remember { mutableStateOf(false) }
+
+        when {
+            editedActState != null -> ActEditorView(act = editedActState, onDone = { editedActState = null })
+            actInCreation -> ActEditorView(onDone = { actInCreation = false })
+            else -> ActsView(
                 acts = acts,
                 onRowClick = onRowClick,
                 onEdit = { editedActState = it },
-                onDelete = onDeleteAct
+                onDelete = onDeleteAct,
+                startActCreation = { actInCreation = true }
             )
-        } else {
-            ActEditorView(act = editedActState, onDone = { editedActState = null })
         }
     }
 }
@@ -89,7 +93,8 @@ fun ActsView(
     acts: List<Act>,
     onRowClick: (Act) -> Unit,
     onEdit: (Act) -> Unit,
-    onDelete: (Act) -> Unit
+    onDelete: (Act) -> Unit,
+    startActCreation: DefaultFunction
 ) {
     Column {
         Row(
@@ -99,7 +104,7 @@ fun ActsView(
             OutlinedButton(onClick = { println("Add element") }) {
                 Text(text = StringLocale[STR_ELEMENTS])
             }
-            OutlinedButton(onClick = { println("Add act") }) {
+            OutlinedButton(onClick = startActCreation) {
                 Text(text = StringLocale[STR_ADD_ACT])
             }
         }

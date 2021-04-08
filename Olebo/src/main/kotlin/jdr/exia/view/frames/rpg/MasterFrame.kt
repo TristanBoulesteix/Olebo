@@ -2,8 +2,8 @@ package jdr.exia.view.frames.rpg
 
 import jdr.exia.localization.STR_DM_TITLE_FRAME
 import jdr.exia.localization.StringLocale
-import jdr.exia.model.utils.Elements
-import jdr.exia.model.utils.emptyElements
+import jdr.exia.model.element.Elements
+import jdr.exia.model.element.emptyElements
 import jdr.exia.view.utils.DIMENSION_FRAME
 import jdr.exia.view.utils.event.addKeyPressedListener
 import jdr.exia.view.utils.gridBagConstraintsOf

@@ -6,7 +6,7 @@ import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.dao.SceneTable
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
-import jdr.exia.model.utils.Elements
+import jdr.exia.model.element.Elements
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID

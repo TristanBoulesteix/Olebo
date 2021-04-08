@@ -2,7 +2,7 @@ package jdr.exia.view.frames.rpg.modifier
 
 import jdr.exia.localization.*
 import jdr.exia.model.element.Priority
-import jdr.exia.model.utils.Elements
+import jdr.exia.model.element.Elements
 import jdr.exia.view.utils.components.templates.ComboSelectPanel
 import jdr.exia.viewModel.ViewManager
 
