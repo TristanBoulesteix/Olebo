@@ -3,12 +3,16 @@ package jdr.exia.viewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import jdr.exia.localization.ST_ACT_ALREADY_EXISTS
+import jdr.exia.localization.ST_ACT_WITHOUT_SCENE
+import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.act.isValid
 import jdr.exia.model.act.isValidAndEqualTo
 import jdr.exia.model.dao.saveImgAndGetPath
 import jdr.exia.model.tools.Image
+import jdr.exia.model.utils.Result
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.emptySized
 import org.jetbrains.exposed.sql.mapLazy
@@ -64,12 +68,12 @@ class ActEditorViewModel(private val act: Act?) {
         currentEditPosition = -1
     }
 
-    fun submitAct() {
+    fun submitAct(): Result {
         if(scenes.isEmpty())
-            return
+            return Result.Failure(StringLocale[ST_ACT_WITHOUT_SCENE])
 
         if (act != null && transaction { Act.all().filterNot { it.id == act.id }.any { it.name == act.name } })
-            return
+            return Result.Failure(StringLocale[ST_ACT_ALREADY_EXISTS])
 
         val act = transaction { act?.also { it.name = actName } ?: Act.new { this.name = actName } }
 
@@ -89,6 +93,8 @@ class ActEditorViewModel(private val act: Act?) {
                 }
             }
         }
+
+        return Result.Success
     }
 
 

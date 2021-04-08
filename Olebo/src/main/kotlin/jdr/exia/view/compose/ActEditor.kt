@@ -27,6 +27,7 @@ import jdr.exia.model.act.Act
 import jdr.exia.model.act.isValidAndEqualTo
 import jdr.exia.model.tools.imageFromFile
 import jdr.exia.model.tools.imageFromIconRes
+import jdr.exia.model.utils.Result
 import jdr.exia.view.compose.components.ButtonBuilder
 import jdr.exia.view.compose.components.ContentRow
 import jdr.exia.view.compose.tools.*
@@ -180,8 +181,10 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
         ) {
             OutlinedButton(
                 onClick = {
-                    viewModel.submitAct()
-                    onDone()
+                    when (val result = viewModel.submitAct()) {
+                        is Result.Failure -> showMessage(message = result.message, messageType = MessageType.WARNING)
+                        is Result.Success -> onDone()
+                    }
                 },
                 enabled = !isEditing,
                 content = { Text(text = StringLocale[STR_CONFIRM]) }
