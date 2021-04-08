@@ -172,6 +172,7 @@ class StringLocaleBundle : StringLocale() {
         ST_CONFIRM_DELETE_ACT to "Are you sure to delete this scenario? This action cannot be canceled.",
         STR_DELETE_ACT to "delete scenario",
         STR_INSERT_ACT_NAME to "insert a scenario name",
+        ST_ACT_WITHOUT_NAME to "A scenario must have a name.",
     )
 }
 
@@ -345,5 +346,6 @@ class StringLocaleBundle_fr : StringLocale() {
         ST_CONFIRM_DELETE_ACT to "Êtes-vous sûr de vouloir supprimer ce scénario ? Cette action est irréversible.",
         STR_DELETE_ACT to "supprimer scénario",
         STR_INSERT_ACT_NAME to "insérez un nom de scénario",
+        ST_ACT_WITHOUT_NAME to "Un scénario doit avoir un nom.",
     )
 }

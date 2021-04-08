@@ -166,6 +166,7 @@ const val ST_OCCURENCE_BLUEPRINT_TO_DELETE = "num_blueprint_to_delete"
 const val ST_DEFAULT_SETTINGS_RESTORED = "restored_default_settings"
 const val ST_ENTER_SCENE_NAME = "enter_scene_name"
 const val ST_CONFIRM_DELETE_ACT = "confirm_delete_act"
+const val ST_ACT_WITHOUT_NAME = "act_without_name"
 
 
 // -- Interpolable StringLocale

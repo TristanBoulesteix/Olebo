@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import jdr.exia.localization.ST_ACT_ALREADY_EXISTS
+import jdr.exia.localization.ST_ACT_WITHOUT_NAME
 import jdr.exia.localization.ST_ACT_WITHOUT_SCENE
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
@@ -69,10 +70,17 @@ class ActEditorViewModel(private val act: Act?) {
     }
 
     fun submitAct(): Result {
-        if(scenes.isEmpty())
+        if (scenes.isEmpty())
             return Result.Failure(StringLocale[ST_ACT_WITHOUT_SCENE])
+        if (actName.isBlank()) {
+            if (act == null) {
+                return Result.Failure(StringLocale[ST_ACT_WITHOUT_NAME])
+            } else {
+                actName = act.name
+            }
+        }
 
-        if (act != null && transaction { Act.all().filterNot { it.id == act.id }.any { it.name == act.name } })
+        if(transaction {(act != null && Act.all().filterNot { it.id == act.id }.any { it.name == actName } ) || (act == null && Act.all().any { it.name == actName })})
             return Result.Failure(StringLocale[ST_ACT_ALREADY_EXISTS])
 
         val act = transaction { act?.also { it.name = actName } ?: Act.new { this.name = actName } }
