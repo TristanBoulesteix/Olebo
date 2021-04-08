@@ -2,7 +2,7 @@ package jdr.exia.model.act
 
 import jdr.exia.model.dao.ActTable
 import jdr.exia.model.dao.SceneTable
-import jdr.exia.model.utils.Image
+import jdr.exia.model.tools.Image
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID

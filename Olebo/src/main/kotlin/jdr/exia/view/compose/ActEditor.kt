@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.dp
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.isValidAndEqualTo
-import jdr.exia.model.utils.imageFromFile
-import jdr.exia.model.utils.imageFromIconRes
+import jdr.exia.model.tools.imageFromFile
+import jdr.exia.model.tools.imageFromIconRes
 import jdr.exia.view.compose.components.ButtonBuilder
 import jdr.exia.view.compose.components.ContentRow
 import jdr.exia.view.compose.tools.*
@@ -39,7 +39,7 @@ import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
-import jdr.exia.model.utils.Image as Img
+import jdr.exia.model.tools.Image as Img
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

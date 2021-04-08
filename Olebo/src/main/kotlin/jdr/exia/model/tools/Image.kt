@@ -1,4 +1,4 @@
-package jdr.exia.model.utils
+package jdr.exia.model.tools
 
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap

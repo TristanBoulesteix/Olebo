@@ -21,7 +21,7 @@ import jdr.exia.localization.STR_ELEMENTS
 import jdr.exia.localization.STR_VERSION
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
-import jdr.exia.model.utils.imageFromIconRes
+import jdr.exia.model.tools.imageFromIconRes
 import jdr.exia.view.compose.components.ButtonBuilder
 import jdr.exia.view.compose.components.ContentRow
 import jdr.exia.view.compose.components.CustomWindow

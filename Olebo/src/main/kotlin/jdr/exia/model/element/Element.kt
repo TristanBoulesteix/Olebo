@@ -6,7 +6,7 @@ import jdr.exia.model.command.Command
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.dao.option.Settings
-import jdr.exia.model.utils.Point
+import jdr.exia.model.tools.Point
 import jdr.exia.model.utils.isCharacter
 import jdr.exia.model.utils.rotate
 import jdr.exia.utils.CharacterException

@@ -1,7 +1,7 @@
 package jdr.exia.model.dao
 
 import jdr.exia.main
-import jdr.exia.model.utils.Image
+import jdr.exia.model.tools.Image
 import jdr.exia.utils.Result
 import java.io.BufferedOutputStream
 import java.io.File

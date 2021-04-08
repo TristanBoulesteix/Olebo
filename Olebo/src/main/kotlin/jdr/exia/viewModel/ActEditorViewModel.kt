@@ -8,7 +8,7 @@ import jdr.exia.model.act.Scene
 import jdr.exia.model.act.isValid
 import jdr.exia.model.act.isValidAndEqualTo
 import jdr.exia.model.dao.saveImgAndGetPath
-import jdr.exia.model.utils.Image
+import jdr.exia.model.tools.Image
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.emptySized
 import org.jetbrains.exposed.sql.mapLazy

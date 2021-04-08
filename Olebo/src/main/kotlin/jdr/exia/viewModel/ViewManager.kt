@@ -4,6 +4,7 @@ import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.*
+import jdr.exia.model.tools.Point
 import jdr.exia.model.utils.*
 import jdr.exia.view.frames.rpg.MasterFrame
 import jdr.exia.view.frames.rpg.MasterMenuBar
