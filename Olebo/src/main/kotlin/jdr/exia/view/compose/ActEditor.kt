@@ -42,7 +42,6 @@ import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 import jdr.exia.model.tools.Image as Img
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
     val viewModel = remember { ActEditorViewModel(act) }
