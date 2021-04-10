@@ -72,6 +72,7 @@ class ActEditorViewModel(private val act: Act?) {
     fun submitAct(): Result {
         if (scenes.isEmpty())
             return Result.Failure(StringLocale[ST_ACT_WITHOUT_SCENE])
+
         if (actName.isBlank()) {
             if (act == null) {
                 return Result.Failure(StringLocale[ST_ACT_WITHOUT_NAME])
