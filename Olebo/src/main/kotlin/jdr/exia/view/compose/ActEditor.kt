@@ -27,9 +27,9 @@ import jdr.exia.model.act.Act
 import jdr.exia.model.act.isValidAndEqualTo
 import jdr.exia.model.tools.imageFromFile
 import jdr.exia.model.tools.imageFromIconRes
-import jdr.exia.model.utils.Result
 import jdr.exia.view.compose.components.ButtonBuilder
-import jdr.exia.view.compose.components.ContentRow
+import jdr.exia.view.compose.components.ContentListRow
+import jdr.exia.view.compose.components.FooterRow
 import jdr.exia.view.compose.components.HeaderRow
 import jdr.exia.view.compose.tools.*
 import jdr.exia.view.compose.ui.blue
@@ -84,7 +84,7 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
         ) {
             Box(modifier = Modifier.verticalScroll(headerScrollState).fillMaxSize()) {
                 Column {
-                    ContentRow(
+                    ContentListRow(
                         contentText = StringLocale[STR_SCENES],
                         modifier = Modifier.background(Color.White).border(BorderInlined.defaultBorder),
                         buttonBuilders =
@@ -148,7 +148,7 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
                             onCanceled = viewModel::onEditDone
                         )
                     } else {
-                        ContentRow(
+                        ContentListRow(
                             contentText = scene.name,
                             buttonBuilders = listOf(
                                 ButtonBuilder(
@@ -171,30 +171,15 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
 
         val isEditing = sceneInCreation != null || viewModel.currentEditScene != null
 
-        Row(
-            horizontalArrangement = Arrangement.SpaceAround,
-            modifier = Modifier.fillMaxWidth().padding(15.dp)
-        ) {
-            OutlinedButton(
-                onClick = {
-                    when (val result = viewModel.submitAct()) {
-                        is Result.Failure -> showMessage(message = result.message, messageType = MessageType.WARNING)
-                        is Result.Success -> onDone()
-                    }
-                },
-                enabled = !isEditing,
-                content = { Text(text = StringLocale[STR_CONFIRM]) }
-            )
-            OutlinedButton(
-                onClick = if (isEditing) fun() {
-                    setSceneInCreation(null)
-                    viewModel.onEditDone()
-                } else onDone,
-                content = {
-                    Text(text = StringLocale[STR_CANCEL])
-                }
-            )
-        }
+        FooterRow(
+            lazyResult = lazy(viewModel::submitAct),
+            isEnabled = !isEditing,
+            onDone = onDone,
+            onCancel = {
+                setSceneInCreation(null)
+                viewModel.onEditDone()
+            }
+        )
     }
 }
 
@@ -214,7 +199,7 @@ private fun EditSceneRow(
 ) {
     val defaultModifier = remember { Modifier.fillMaxWidth().padding(horizontal = 10.dp) }
 
-    ContentRow(
+    ContentListRow(
         content = {
             TextField(
                 data.name,

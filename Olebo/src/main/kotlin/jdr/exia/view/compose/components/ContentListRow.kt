@@ -18,7 +18,7 @@ import jdr.exia.view.compose.tools.border
 import jdr.exia.view.compose.ui.typography
 
 @Composable
-fun ContentRow(
+fun ContentListRow(
     content: @Composable DefaultFunction,
     onClick: DefaultFunction? = null,
     modifier: Modifier = Modifier,
@@ -48,12 +48,12 @@ fun ContentRow(
 }
 
 @Composable
-fun ContentRow(
+fun ContentListRow(
     contentText: String,
     onClick: DefaultFunction? = null,
     modifier: Modifier = Modifier,
     buttonBuilders: List<ButtonBuilder> = emptyList()
-) = ContentRow(
+) = ContentListRow(
     content = { Text(text = contentText, style = typography.h1, modifier = Modifier.padding(10.dp)) },
     onClick = onClick,
     modifier = modifier,

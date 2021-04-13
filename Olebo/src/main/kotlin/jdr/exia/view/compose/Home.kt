@@ -23,7 +23,7 @@ import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
 import jdr.exia.model.tools.imageFromIconRes
 import jdr.exia.view.compose.components.ButtonBuilder
-import jdr.exia.view.compose.components.ContentRow
+import jdr.exia.view.compose.components.ContentListRow
 import jdr.exia.view.compose.components.CustomWindow
 import jdr.exia.view.compose.components.HeaderRow
 import jdr.exia.view.compose.tools.BorderInlined
@@ -119,7 +119,7 @@ fun ActsView(
                 .border(BorderInlined.defaultBorder)
         ) {
             items(items = acts) { act ->
-                ContentRow(
+                ContentListRow(
                     contentText = act.name,
                     onClick = { onRowClick(act) },
                     buttonBuilders = listOf(
