@@ -66,7 +66,9 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, StringLocale[ST
     private val languageChangeRestartLabel: JLabel
 
     init {
-        this.size = Dimension(500, 300)
+        val size = Dimension(500, 300)
+        this.size = size
+        this.minimumSize = size
         this.setLocationRelativeTo(windowAncestor)
         this.isResizable = true
         this.layout = GridBagLayout()
