@@ -25,13 +25,13 @@ import jdr.exia.model.tools.imageFromIconRes
 import jdr.exia.view.compose.components.ButtonBuilder
 import jdr.exia.view.compose.components.ContentRow
 import jdr.exia.view.compose.components.CustomWindow
+import jdr.exia.view.compose.components.HeaderRow
 import jdr.exia.view.compose.tools.BorderInlined
 import jdr.exia.view.compose.tools.DefaultFunction
 import jdr.exia.view.compose.tools.border
 import jdr.exia.view.compose.tools.withSetter
 import jdr.exia.view.compose.ui.OleboTheme
 import jdr.exia.view.compose.ui.blue
-import jdr.exia.view.compose.ui.lightOrange
 import jdr.exia.view.utils.components.FileMenu
 import jdr.exia.viewModel.HomeViewModel
 import javax.swing.JMenuBar
@@ -73,11 +73,14 @@ fun MainContent(
     onDeleteAct: (Act) -> Unit
 ) {
     Row(modifier = Modifier.fillMaxSize()) {
+        var areElementsVisible by remember { mutableStateOf(false) }
+
         var editedActState by remember { mutableStateOf<Act?>(null) withSetter { if (it == null) refreshAct() } }
 
         var actInCreation by remember { mutableStateOf(false) withSetter { if (!it) refreshAct() } }
 
         when {
+            areElementsVisible -> ElementsView(onDone = { areElementsVisible = false })
             editedActState != null -> ActEditorView(act = editedActState, onDone = { editedActState = null })
             actInCreation -> ActEditorView(onDone = { actInCreation = false })
             else -> ActsView(
@@ -85,6 +88,7 @@ fun MainContent(
                 onRowClick = onRowClick,
                 onEdit = { editedActState = it },
                 onDelete = onDeleteAct,
+                viewElements = { areElementsVisible = true },
                 startActCreation = { actInCreation = true }
             )
         }
@@ -97,36 +101,32 @@ fun ActsView(
     onRowClick: (Act) -> Unit,
     onEdit: (Act) -> Unit,
     onDelete: (Act) -> Unit,
+    viewElements: DefaultFunction,
     startActCreation: DefaultFunction
-) {
-    Column {
-        Row(
-            horizontalArrangement = Arrangement.SpaceAround,
-            modifier = Modifier.fillMaxWidth().background(lightOrange).padding(15.dp)
-        ) {
-            OutlinedButton(onClick = { println("Add element") }) {
-                Text(text = StringLocale[STR_ELEMENTS])
-            }
-            OutlinedButton(onClick = startActCreation) {
-                Text(text = StringLocale[STR_ADD_ACT])
-            }
+) = Column {
+    HeaderRow {
+        OutlinedButton(onClick = viewElements) {
+            Text(text = StringLocale[STR_ELEMENTS])
         }
+        OutlinedButton(onClick = startActCreation) {
+            Text(text = StringLocale[STR_ADD_ACT])
+        }
+    }
 
-        Box(modifier = Modifier.fillMaxSize().background(blue).padding(15.dp)) {
-            LazyColumn(
-                modifier = Modifier.padding(20.dp).fillMaxSize().background(Color.White)
-                    .border(BorderInlined.defaultBorder)
-            ) {
-                items(items = acts) { act ->
-                    ContentRow(
-                        contentText = act.name,
-                        onClick = { onRowClick(act) },
-                        buttonBuilders = listOf(
-                            ButtonBuilder(imageFromIconRes("edit_icon")) { onEdit(act) },
-                            ButtonBuilder(imageFromIconRes("delete_icon")) { onDelete(act) }
-                        )
+    Box(modifier = Modifier.fillMaxSize().background(blue).padding(15.dp)) {
+        LazyColumn(
+            modifier = Modifier.padding(20.dp).fillMaxSize().background(Color.White)
+                .border(BorderInlined.defaultBorder)
+        ) {
+            items(items = acts) { act ->
+                ContentRow(
+                    contentText = act.name,
+                    onClick = { onRowClick(act) },
+                    buttonBuilders = listOf(
+                        ButtonBuilder(imageFromIconRes("edit_icon")) { onEdit(act) },
+                        ButtonBuilder(imageFromIconRes("delete_icon")) { onDelete(act) }
                     )
-                }
+                )
             }
         }
     }

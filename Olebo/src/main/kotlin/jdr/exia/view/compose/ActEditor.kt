@@ -30,9 +30,9 @@ import jdr.exia.model.tools.imageFromIconRes
 import jdr.exia.model.utils.Result
 import jdr.exia.view.compose.components.ButtonBuilder
 import jdr.exia.view.compose.components.ContentRow
+import jdr.exia.view.compose.components.HeaderRow
 import jdr.exia.view.compose.tools.*
 import jdr.exia.view.compose.ui.blue
-import jdr.exia.view.compose.ui.lightOrange
 import jdr.exia.view.utils.MessageType
 import jdr.exia.view.utils.showMessage
 import jdr.exia.viewModel.ActEditorViewModel
@@ -46,10 +46,7 @@ import jdr.exia.model.tools.Image as Img
 fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
     val viewModel = remember { ActEditorViewModel(act) }
 
-    Row(
-        horizontalArrangement = Arrangement.SpaceAround,
-        modifier = Modifier.fillMaxWidth().background(lightOrange).padding(15.dp)
-    ) {
+    HeaderRow {
         val roundedShape = remember { RoundedCornerShape(25) }
 
         BasicTextField(
