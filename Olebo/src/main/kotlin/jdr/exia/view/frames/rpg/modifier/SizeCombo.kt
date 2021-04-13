@@ -1,8 +1,8 @@
 package jdr.exia.view.frames.rpg.modifier
 
 import jdr.exia.localization.STR_SIZE_COMBO_TOOLTIP
-import jdr.exia.model.element.Size
 import jdr.exia.model.element.Elements
+import jdr.exia.model.element.Size
 import jdr.exia.view.utils.components.templates.ComboSelectPanel
 import jdr.exia.viewModel.ViewManager
 

@@ -15,7 +15,7 @@ repositories {
 
 dependencies {
     implementation("org.apache.httpcomponents", "httpclient", "4.5.10")
-    implementation(project(":CommonModule","default"))
+    implementation(project(":CommonModule", "default"))
 }
 
 val main = "jdr.exia.updater.OleboUpdaterKt"
@@ -31,7 +31,7 @@ val jar by tasks.getting(Jar::class) {
         }
     })
     doLast {
-       archiveFile.get().asFile.copyTo(project(":Olebo").file("src/main/resources/updater/OleboUpdater.jar"), true)
+        archiveFile.get().asFile.copyTo(project(":Olebo").file("src/main/resources/updater/OleboUpdater.jar"), true)
     }
 }
 

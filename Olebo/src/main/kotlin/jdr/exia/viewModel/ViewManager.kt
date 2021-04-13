@@ -5,14 +5,17 @@ import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.*
 import jdr.exia.model.tools.Point
-import jdr.exia.model.utils.*
+import jdr.exia.model.utils.callCommandManager
 import jdr.exia.view.frames.rpg.MasterFrame
 import jdr.exia.view.frames.rpg.MasterMenuBar
 import jdr.exia.view.frames.rpg.PlayerFrame
 import jdr.exia.view.frames.rpg.ViewFacade
 import jdr.exia.view.utils.getTokenFromPosition
 import jdr.exia.view.utils.positionOf
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.yield
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
 

@@ -15,7 +15,10 @@ import jdr.exia.view.utils.factories.buildTitleItemPanel
 import jdr.exia.viewModel.BlueprintManager
 import jdr.exia.viewModel.HomeManager
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.awt.*
+import java.awt.BorderLayout
+import java.awt.Font
+import java.awt.GridBagConstraints
+import java.awt.GridBagLayout
 import javax.swing.BorderFactory
 import javax.swing.JButton
 import javax.swing.JComboBox
@@ -28,16 +31,17 @@ class BlueprintEditorPanel(homeManager: HomeManager, homeAvailable: Boolean = tr
         manager.elements.map { Pair(it.id.value.toString(), it.name) }.toTypedArray()
     }
 
-    private val comboType = JComboBox(arrayOf(StringLocale[STR_OBJECTS], StringLocale[STR_PC], StringLocale[STR_NPC])).apply {
-        this.font = Font("Tahoma", Font.BOLD, 20)
-        this.addActionListener {
-            when (this.selectedItem) {
-                StringLocale[STR_OBJECTS] -> manager.type = Type.OBJECT
-                StringLocale[STR_PC] -> manager.type = Type.PJ
-                StringLocale[STR_NPC] -> manager.type = Type.PNJ
+    private val comboType =
+        JComboBox(arrayOf(StringLocale[STR_OBJECTS], StringLocale[STR_PC], StringLocale[STR_NPC])).apply {
+            this.font = Font("Tahoma", Font.BOLD, 20)
+            this.addActionListener {
+                when (this.selectedItem) {
+                    StringLocale[STR_OBJECTS] -> manager.type = Type.OBJECT
+                    StringLocale[STR_PC] -> manager.type = Type.PJ
+                    StringLocale[STR_NPC] -> manager.type = Type.PNJ
+                }
             }
         }
-    }
 
     private val selectorPanel: BlueprintSelectorPanel
 

@@ -9,7 +9,7 @@ import jdr.exia.viewModel.observer.Action
 import java.awt.Window
 
 class BlueprintsDialog(parent: Window?) : JDialogTemplate(parent, StringLocale[STR_MANAGE_BLUEPRINTS], true) {
-    val panel : BlueprintEditorPanel
+    val panel: BlueprintEditorPanel
 
     init {
         HomeManager().apply {

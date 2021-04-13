@@ -83,7 +83,8 @@ class ActCreatorManager(private val homeManager: HomeManager) : Observable {
                                 this.name = map.name
                                 this.background = saveImg(map.img)
                                 this.idAct = this@with.id.value
-                            }*/ {} // TODO
+                            }*/ {
+                            } // TODO
                         }
                     } ?: this.scenes.forEach { it.delete() }
                 }

@@ -1,5 +1,5 @@
 plugins {
-    val kotlinVersion : String by System.getProperties()
+    val kotlinVersion: String by System.getProperties()
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion apply false
 }

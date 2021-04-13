@@ -114,7 +114,8 @@ class PlayerFrame private constructor() : JDialog(null as Window?), GameFrame {
 
     override fun reload() = repaint()
 
-    override fun setTitle(title: String) = super.setTitle("Olebo - ${StringLocale[STR_PLAYER_TITLE_FRAME]} - \"$title\"")
+    override fun setTitle(title: String) =
+        super.setTitle("Olebo - ${StringLocale[STR_PLAYER_TITLE_FRAME]} - \"$title\"")
 
     override fun updateMap(tokens: Elements) {
         mapPanel.updateTokens(tokens)

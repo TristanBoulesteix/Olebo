@@ -20,7 +20,7 @@ inline fun <T : Container> T.applyAndAddTo(
     }
 
     this.apply(block)
-    
+
     if (constraints != null)
         parent.add(this, constraints)
     else parent.add(this)
