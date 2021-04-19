@@ -1,5 +1,7 @@
 package jdr.exia.model.act
 
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import jdr.exia.model.dao.ActTable
 import jdr.exia.model.dao.SceneTable
 import jdr.exia.model.tools.Image
@@ -36,7 +38,8 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
     /**
      * Temporary scene
      */
-    data class SceneData(val name: String, val img: Image, val id: EntityID<Int>? = null) {
+    @Immutable
+    data class SceneData(val name: String, @Stable val img: Image, @Stable val id: EntityID<Int>? = null) {
         companion object {
             fun default() = SceneData("", Image.unspecified)
         }

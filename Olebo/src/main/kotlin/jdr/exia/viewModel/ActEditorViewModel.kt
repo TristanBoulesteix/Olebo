@@ -109,7 +109,6 @@ class ActEditorViewModel(private val act: Act?) {
         return Result.Success
     }
 
-
     private fun sceneWithNameExist(name: String, excludedId: EntityID<Int>? = null) =
         scenes.filter { excludedId == null || it.id != excludedId }.any { it.name == name }
 }

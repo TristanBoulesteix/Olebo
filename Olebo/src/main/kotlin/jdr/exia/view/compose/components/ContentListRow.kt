@@ -54,11 +54,15 @@ fun ContentListRow(
     modifier: Modifier = Modifier,
     buttonBuilders: List<ButtonBuilder> = emptyList()
 ) = ContentListRow(
-    content = { Text(text = contentText, style = typography.h1, modifier = Modifier.padding(10.dp)) },
+    content = { ContentText(contentText) },
     onClick = onClick,
     modifier = modifier,
     buttonBuilders = buttonBuilders
 )
+
+@Composable
+fun ContentText(contentText: String) =
+    Text(text = contentText, style = typography.h1, modifier = Modifier.padding(10.dp))
 
 data class ButtonBuilder(val icon: ImageBitmap, val onClick: () -> Unit)
 
