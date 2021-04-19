@@ -16,11 +16,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 class ElementsEditorViewModel(private val type: Type) {
     private var currentEditPosition by mutableStateOf(-1)
 
-    val blueprints by lazy {
-        transaction {
-            Blueprint.all().filter { it.type.typeElement == type }
-        }.toMutableList()
-    }
+    var blueprints by mutableStateOf(transaction { Blueprint.all().filter { it.type.typeElement == type } })
 
     val currentEditBlueprint
         get() = blueprints.getOrNull(currentEditPosition)
@@ -33,8 +29,8 @@ class ElementsEditorViewModel(private val type: Type) {
     }
 
     fun onRemoveBlueprint(blueprint: Blueprint) {
-        blueprints.remove(blueprint)
         onEditDone()
+        blueprint.remove()
     }
 
     fun onEditConfirmed(data: Blueprint.BlueprintData) = transaction {
@@ -42,7 +38,7 @@ class ElementsEditorViewModel(private val type: Type) {
 
         if (data.isValid() && blueprint.id == data.id) {
             blueprint.apply {
-                if(data.name.isNotBlank()) {
+                if (data.name.isNotBlank()) {
                     ::name.assignIfDifferent(data.name)
                 }
 
@@ -81,4 +77,11 @@ class ElementsEditorViewModel(private val type: Type) {
     private fun blueprintWithNameExist(name: String, excludedId: EntityID<Int>? = null) =
         blueprints.filter { it.type.typeElement == type && (excludedId == null || it.id != excludedId) }
             .any { it.name == name }
+
+    private fun Blueprint.remove() = transaction {
+        delete()
+        blueprints = blueprints.toMutableList().also {
+            it -= this@remove
+        }
+    }
 }

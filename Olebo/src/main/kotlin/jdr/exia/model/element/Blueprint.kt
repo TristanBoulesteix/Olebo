@@ -103,6 +103,8 @@ fun Blueprint.BlueprintData?.isValid(): Boolean {
         returns(true) implies (this@isValid != null)
     }
 
-    return this != null && this.name.isNotBlank() && this.img.isValid() && File(this.img.path)
-        .let { it.exists() && it.isFile }
+    return this != null
+            && this.img.isValid()
+            && File(this.img.path).let { it.exists() && it.isFile }
+            && if (this.type == Type.OBJECT) true else this.mana != null && this.life != null
 }
