@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import jdr.exia.localization.ST_SCENE_ALREADY_EXISTS_OR_INVALID
 import jdr.exia.localization.ST_UNKNOWN_ERROR
 import jdr.exia.localization.StringLocale
+import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
 import jdr.exia.model.tools.imageFromIconRes
 import jdr.exia.model.utils.Result
@@ -171,49 +172,52 @@ private fun ColumnScope.ScrolableContent(viewModel: ElementsEditorViewModel) {
                         }
                     }
                 },
-                buttonBuilders = editedData.let { data ->
-                    if (data == null) {
-                        listOf(
-                            ButtonBuilder(
-                                imageFromIconRes("edit_icon"),
-                                onClick = {
-                                    viewModel.onEditItemSelected(blueprint)
-                                    viewModel.cancelBluprintCreation()
-                                }
-                            ),
-                            ButtonBuilder(
-                                imageFromIconRes("delete_icon"),
-                                onClick = { viewModel.onRemoveBlueprint(blueprint) }
-                            )
-                        )
-                    } else {
-                        listOf(
-                            ButtonBuilder(
-                                imageFromIconRes("confirm_icon"),
-                                onClick = {
-                                    when (val result = viewModel.onEditConfirmed(data)) {
-                                        is Result.Failure -> {
-                                            result.message.let {
-                                                if(it != null) {
-                                                    showMessage(it, messageType = MessageType.WARNING)
-                                                } else {
-                                                    showMessage(StringLocale[ST_UNKNOWN_ERROR], messageType = MessageType.WARNING)
-                                                    viewModel.onEditDone()
-                                                }
-                                            }
-                                        }
-                                        else -> viewModel.onEditDone()
-                                    }
-                                }
-                            ),
-                            ButtonBuilder(
-                                imageFromIconRes("exit_icon"),
-                                onClick = { viewModel.onEditDone() }
-                            )
-                        )
-                    }
-                }
+                buttonBuilders = editedData.getButtons(viewModel, blueprint)
             )
         }
     }
+}
+
+private fun Blueprint.BlueprintData?.getButtons(
+    viewModel: ElementsEditorViewModel,
+    blueprint: Blueprint
+) = if (this == null) {
+    listOf(
+        ButtonBuilder(
+            imageFromIconRes("edit_icon"),
+            onClick = {
+                viewModel.onEditItemSelected(blueprint)
+                viewModel.cancelBluprintCreation()
+            }
+        ),
+        ButtonBuilder(
+            imageFromIconRes("delete_icon"),
+            onClick = { viewModel.onRemoveBlueprint(blueprint) }
+        )
+    )
+} else {
+    listOf(
+        ButtonBuilder(
+            imageFromIconRes("confirm_icon"),
+            onClick = {
+                when (val result = viewModel.onEditConfirmed(this)) {
+                    is Result.Failure -> {
+                        result.message.let {
+                            if (it != null) {
+                                showMessage(it, messageType = MessageType.WARNING)
+                            } else {
+                                showMessage(StringLocale[ST_UNKNOWN_ERROR], messageType = MessageType.WARNING)
+                                viewModel.onEditDone()
+                            }
+                        }
+                    }
+                    else -> viewModel.onEditDone()
+                }
+            }
+        ),
+        ButtonBuilder(
+            imageFromIconRes("exit_icon"),
+            onClick = { viewModel.onEditDone() }
+        )
+    )
 }
