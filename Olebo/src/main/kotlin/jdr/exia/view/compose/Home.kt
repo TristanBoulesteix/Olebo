@@ -26,7 +26,7 @@ import jdr.exia.view.compose.components.ButtonBuilder
 import jdr.exia.view.compose.components.ContentListRow
 import jdr.exia.view.compose.components.CustomWindow
 import jdr.exia.view.compose.components.HeaderRow
-import jdr.exia.view.compose.tools.BorderInlined
+import jdr.exia.view.compose.tools.BorderBuilder
 import jdr.exia.view.compose.tools.DefaultFunction
 import jdr.exia.view.compose.tools.border
 import jdr.exia.view.compose.tools.withSetter
@@ -116,7 +116,7 @@ fun ActsView(
     Box(modifier = Modifier.fillMaxSize().background(blue).padding(15.dp)) {
         LazyColumn(
             modifier = Modifier.padding(20.dp).fillMaxSize().background(Color.White)
-                .border(BorderInlined.defaultBorder)
+                .border(BorderBuilder.defaultBorder)
         ) {
             items(items = acts) { act ->
                 ContentListRow(

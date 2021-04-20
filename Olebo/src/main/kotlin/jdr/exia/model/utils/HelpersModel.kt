@@ -6,6 +6,7 @@ import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Elements
 import jdr.exia.model.element.Type
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Graphics
 import java.awt.geom.AffineTransform
 import java.awt.image.BufferedImage
@@ -45,7 +46,9 @@ fun Blueprint?.isCharacter(): Boolean {
         returns(true) implies (this@isCharacter != null)
     }
 
-    return this != null && (this.type.typeElement == Type.PNJ || this.type.typeElement == Type.PJ)
+    val blueprint = this@isCharacter
+
+    return transaction { blueprint != null && (blueprint.type.typeElement == Type.PNJ || blueprint.type.typeElement == Type.PJ) }
 }
 
 fun ImageIcon.rotate(degs: Double) = with(BufferedImage(this.iconWidth, this.iconHeight, BufferedImage.TYPE_INT_ARGB)) {

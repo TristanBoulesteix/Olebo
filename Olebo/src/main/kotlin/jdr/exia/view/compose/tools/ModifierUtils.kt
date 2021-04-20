@@ -18,18 +18,19 @@ inline fun Modifier.applyIf(condition: Boolean, mod: Modifier.() -> Modifier) =
     if (condition) this.mod() else this
 
 @Immutable
-data class BorderInlined(val strokeWidth: Dp, val color: Color) {
+data class BorderBuilder(val strokeWidth: Dp, val color: Color) {
     companion object {
-        val defaultBorder = BorderInlined(2.dp, Color.Black)
+        @Stable
+        val defaultBorder = BorderBuilder(2.dp, Color.Black)
     }
 }
 
 @Stable
 fun Modifier.border(
-    start: BorderInlined? = null,
-    top: BorderInlined? = null,
-    end: BorderInlined? = null,
-    bottom: BorderInlined? = null,
+    start: BorderBuilder? = null,
+    top: BorderBuilder? = null,
+    end: BorderBuilder? = null,
+    bottom: BorderBuilder? = null,
 ) = drawBehind {
     start?.let {
         drawStartBorder(it, shareTop = top != null, shareBottom = bottom != null)
@@ -41,19 +42,19 @@ fun Modifier.border(
         drawEndBorder(it, shareTop = top != null, shareBottom = bottom != null)
     }
     bottom?.let {
-        drawBottomBorder(borderInlined = it, shareStart = start != null, shareEnd = end != null)
+        drawBottomBorder(borderBuilder = it, shareStart = start != null, shareEnd = end != null)
     }
 }
 
 @Stable
-fun Modifier.border(border: BorderInlined) = this.border(start = border, top = border, end = border, bottom = border)
+fun Modifier.border(border: BorderBuilder) = this.border(start = border, top = border, end = border, bottom = border)
 
 private fun DrawScope.drawTopBorder(
-    borderInlined: BorderInlined,
+    borderBuilder: BorderBuilder,
     shareStart: Boolean = true,
     shareEnd: Boolean = true
 ) {
-    val strokeWidthPx = borderInlined.strokeWidth.toPx()
+    val strokeWidthPx = borderBuilder.strokeWidth.toPx()
     if (strokeWidthPx == 0f) return
     drawPath(
         Path().apply {
@@ -64,16 +65,16 @@ private fun DrawScope.drawTopBorder(
             lineTo(width, 0f)
             close()
         },
-        color = borderInlined.color
+        color = borderBuilder.color
     )
 }
 
 private fun DrawScope.drawBottomBorder(
-    borderInlined: BorderInlined,
+    borderBuilder: BorderBuilder,
     shareStart: Boolean,
     shareEnd: Boolean
 ) {
-    val strokeWidthPx = borderInlined.strokeWidth.toPx()
+    val strokeWidthPx = borderBuilder.strokeWidth.toPx()
     if (strokeWidthPx == 0f) return
     drawPath(
         Path().apply {
@@ -85,16 +86,16 @@ private fun DrawScope.drawBottomBorder(
             lineTo(width, height)
             close()
         },
-        color = borderInlined.color
+        color = borderBuilder.color
     )
 }
 
 private fun DrawScope.drawStartBorder(
-    borderInlined: BorderInlined,
+    borderBuilder: BorderBuilder,
     shareTop: Boolean = true,
     shareBottom: Boolean = true
 ) {
-    val strokeWidthPx = borderInlined.strokeWidth.toPx()
+    val strokeWidthPx = borderBuilder.strokeWidth.toPx()
     if (strokeWidthPx == 0f) return
     drawPath(
         Path().apply {
@@ -105,16 +106,16 @@ private fun DrawScope.drawStartBorder(
             lineTo(0f, height)
             close()
         },
-        color = borderInlined.color
+        color = borderBuilder.color
     )
 }
 
 private fun DrawScope.drawEndBorder(
-    borderInlined: BorderInlined,
+    borderBuilder: BorderBuilder,
     shareTop: Boolean = true,
     shareBottom: Boolean = true
 ) {
-    val strokeWidthPx = borderInlined.strokeWidth.toPx()
+    val strokeWidthPx = borderBuilder.strokeWidth.toPx()
     if (strokeWidthPx == 0f) return
     drawPath(
         Path().apply {
@@ -126,6 +127,6 @@ private fun DrawScope.drawEndBorder(
             lineTo(width, height)
             close()
         },
-        color = borderInlined.color
+        color = borderBuilder.color
     )
 }

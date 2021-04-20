@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.dp
-import jdr.exia.view.compose.tools.BorderInlined
+import jdr.exia.view.compose.tools.BorderBuilder
 import jdr.exia.view.compose.tools.DefaultFunction
 import jdr.exia.view.compose.tools.applyIf
 import jdr.exia.view.compose.tools.border
@@ -26,7 +26,7 @@ fun ContentListRow(
     removeBottomBorder: Boolean = false
 ) = Row(
     modifier = modifier.fillMaxWidth().size(65.dp)
-        .applyIf(condition = !removeBottomBorder, mod = { border(bottom = BorderInlined.defaultBorder) }),
+        .applyIf(condition = !removeBottomBorder, mod = { border(bottom = BorderBuilder.defaultBorder) }),
     horizontalArrangement = Arrangement.End
 ) {
     var boxModifier = Modifier.fillMaxHeight().weight(1f, fill = true)
@@ -36,13 +36,14 @@ fun ContentListRow(
 
     Box(modifier = boxModifier, contentAlignment = Alignment.CenterStart) { content() }
 
-    buttonBuilders.forEach { (icon, action) ->
+    buttonBuilders.forEach { (content, isEnabled, action) ->
         RowButton(
-            image = icon,
+            content = content,
             onClick = action,
+            clickEnabled = isEnabled,
             modifier = Modifier.applyIf(
                 condition = removeBottomBorder,
-                mod = { border(bottom = BorderInlined.defaultBorder) })
+                mod = { border(bottom = BorderBuilder.defaultBorder) })
         )
     }
 }
@@ -64,20 +65,36 @@ fun ContentListRow(
 fun ContentText(contentText: String) =
     Text(text = contentText, style = typography.h1, modifier = Modifier.padding(10.dp))
 
-data class ButtonBuilder(val icon: ImageBitmap, val onClick: () -> Unit)
+data class ButtonBuilder(val content: Any, val clickEnabled: Boolean = true, val onClick: DefaultFunction) {
+    constructor(icon: ImageBitmap, clickEnabled: Boolean = true, onClick: DefaultFunction) : this(
+        content = icon,
+        clickEnabled = clickEnabled,
+        onClick = onClick
+    )
+
+    constructor(icon: ImageBitmap) : this(icon, clickEnabled = false, onClick = {})
+
+    constructor(content: Any) : this(content = content, clickEnabled = false, onClick = {})
+
+    constructor() : this(content = "")
+}
 
 @Composable
-private fun RowButton(image: ImageBitmap, modifier: Modifier, onClick: () -> Unit) {
+private fun RowButton(content: Any, modifier: Modifier, onClick: DefaultFunction, clickEnabled: Boolean) {
     Box(
         modifier = modifier.size(65.dp)
-            .border(start = BorderInlined.defaultBorder)
-            .clickable(onClick = onClick),
+            .border(start = BorderBuilder.defaultBorder)
+            .clickable(onClick = onClick, enabled = clickEnabled),
         contentAlignment = Alignment.CenterStart
     ) {
-        Image(
-            bitmap = image,
-            contentDescription = "button",
-            modifier = Modifier.align(Alignment.Center)
-        )
+        if (content is ImageBitmap) {
+            Image(
+                bitmap = content,
+                contentDescription = "button",
+                modifier = Modifier.align(Alignment.Center)
+            )
+        } else {
+            Text(text = content.toString(), modifier = Modifier.align(Alignment.Center))
+        }
     }
 }

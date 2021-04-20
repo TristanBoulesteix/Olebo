@@ -71,7 +71,7 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
                 .background(Color.White)
                 .weight(1f)
                 .fillMaxSize()
-                .border(BorderInlined.defaultBorder)
+                .border(BorderBuilder.defaultBorder)
         }
 
         val (sceneInCreation, setSceneInCreation) = remember { mutableStateOf<Act.SceneData?>(null) withSetter { if (it != null) viewModel.onEditDone() } }
@@ -80,13 +80,13 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
             modifier = Modifier.padding(top = 20.dp, end = 20.dp, start = 20.dp)
                 .background(Color.White)
                 .fillMaxWidth()
-                .border(BorderInlined.defaultBorder)
+                .border(BorderBuilder.defaultBorder)
         ) {
             Box(modifier = Modifier.verticalScroll(headerScrollState).fillMaxSize()) {
                 Column {
                     ContentListRow(
                         contentText = StringLocale[STR_SCENES],
-                        modifier = Modifier.background(Color.White).border(BorderInlined.defaultBorder),
+                        modifier = Modifier.background(Color.White).border(BorderBuilder.defaultBorder),
                         buttonBuilders =
                         if (sceneInCreation == null) {
                             listOf(
@@ -194,7 +194,7 @@ private fun EditSceneRow(
 ) = Column(
     modifier = modifier.applyIf(
         condition = showButtons,
-        mod = { border(bottom = BorderInlined.defaultBorder) }
+        mod = { border(bottom = BorderBuilder.defaultBorder) }
     )
 ) {
     val defaultModifier = remember { Modifier.fillMaxWidth().padding(horizontal = 10.dp) }

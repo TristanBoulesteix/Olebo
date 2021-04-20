@@ -19,15 +19,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import jdr.exia.localization.ST_SCENE_ALREADY_EXISTS_OR_INVALID
-import jdr.exia.localization.ST_UNKNOWN_ERROR
-import jdr.exia.localization.StringLocale
+import jdr.exia.localization.*
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
+import jdr.exia.model.tools.imageFromFile
 import jdr.exia.model.tools.imageFromIconRes
 import jdr.exia.model.utils.Result
+import jdr.exia.model.utils.isCharacter
 import jdr.exia.view.compose.components.*
-import jdr.exia.view.compose.tools.BorderInlined
+import jdr.exia.view.compose.tools.BorderBuilder
 import jdr.exia.view.compose.tools.DefaultFunction
 import jdr.exia.view.compose.tools.applyIf
 import jdr.exia.view.compose.tools.border
@@ -36,6 +36,8 @@ import jdr.exia.view.utils.MessageType
 import jdr.exia.view.utils.showMessage
 import jdr.exia.viewModel.ElementsEditorViewModel
 import jdr.exia.viewModel.ElementsTabViewModel
+import org.jetbrains.exposed.sql.transactions.transaction
+import java.io.File
 
 @Composable
 fun ElementsView(onDone: DefaultFunction) = Column {
@@ -52,7 +54,7 @@ fun ElementsView(onDone: DefaultFunction) = Column {
                             fontWeight = FontWeight.Bold.takeIf { tabViewModel.currentTab == tab },
                             modifier = Modifier.applyIf(
                                 condition = tabViewModel.currentTab == tab,
-                                mod = { border(bottom = BorderInlined(5.dp, Color.Black)) }
+                                mod = { border(bottom = BorderBuilder(5.dp, Color.Black)) }
                             ).clickable { tabViewModel.onSelectTab(tab) }.padding(20.dp)
                         )
                     }
@@ -80,16 +82,29 @@ private fun Content(innerPadding: PaddingValues, currentType: Type) = Box(modifi
             modifier = Modifier.padding(top = 20.dp, end = 20.dp, start = 20.dp)
                 .background(Color.White)
                 .fillMaxWidth()
-                .border(BorderInlined.defaultBorder)
+                .border(BorderBuilder.defaultBorder)
         ) {
             Box(modifier = Modifier.verticalScroll(headerScrollState).fillMaxSize()) {
                 Column {
                     ContentListRow(
                         contentText = currentType.typeName,
-                        modifier = Modifier.background(Color.White).border(BorderInlined.defaultBorder),
+                        modifier = Modifier.background(Color.White).border(BorderBuilder.defaultBorder),
                         buttonBuilders =
                         if (viewModel.blueprintInCreation == null) {
-                            listOf(
+                            if (currentType.type.typeElement != Type.OBJECT) listOf(
+                                ButtonBuilder(
+                                    content = StringLocale[STR_HP]
+                                ),
+                                ButtonBuilder(
+                                    content = StringLocale[STR_MP]
+                                )
+                            ) else {
+                                emptyList()
+                            } + listOf(
+                                ButtonBuilder(
+                                    content = StringLocale[STR_IMG]
+                                ),
+                                ButtonBuilder(),
                                 ButtonBuilder(
                                     icon = imageFromIconRes("create_icon"),
                                     onClick = viewModel::startBlueprintCreation
@@ -144,7 +159,7 @@ private fun ColumnScope.ScrolableContent(viewModel: ElementsEditorViewModel) {
             .background(Color.White)
             .weight(1f)
             .fillMaxSize()
-            .border(BorderInlined.defaultBorder)
+            .border(BorderBuilder.defaultBorder)
     }
 
     LazyColumn(
@@ -182,16 +197,32 @@ private fun Blueprint.BlueprintData?.getButtons(
     viewModel: ElementsEditorViewModel,
     blueprint: Blueprint
 ) = if (this == null) {
-    listOf(
+    if (blueprint.isCharacter()) transaction {
+        listOf(
+            ButtonBuilder(
+                content = blueprint.HP,
+                onClick = {}
+            ),
+            ButtonBuilder(
+                content = blueprint.MP,
+                onClick = {}
+            )
+        )
+    } else {
+        emptyList()
+    } + listOf(
         ButtonBuilder(
-            imageFromIconRes("edit_icon"),
+            icon = imageFromFile(File(blueprint.sprite))
+        ),
+        ButtonBuilder(
+            icon = imageFromIconRes("edit_icon"),
             onClick = {
                 viewModel.onEditItemSelected(blueprint)
                 viewModel.cancelBluprintCreation()
             }
         ),
         ButtonBuilder(
-            imageFromIconRes("delete_icon"),
+            icon = imageFromIconRes("delete_icon"),
             onClick = { viewModel.onRemoveBlueprint(blueprint) }
         )
     )
