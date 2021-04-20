@@ -4,7 +4,6 @@ package jdr.exia.view.compose.components
 
 import androidx.compose.desktop.ComposePanel
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.unit.IntSize
 import java.awt.Dimension
 import javax.swing.JFrame
 import javax.swing.JMenuBar
@@ -13,8 +12,8 @@ import javax.swing.WindowConstants
 
 fun CustomWindow(
     title: String = "",
-    size: IntSize = IntSize(800, 600),
-    minimumSize: IntSize? = null,
+    size: Dimension = Dimension(800, 600),
+    minimumSize: Dimension? = null,
     jMenuBar: JMenuBar? = null,
     content: @Composable () -> Unit = { },
 ) = SwingUtilities.invokeLater {
@@ -28,7 +27,7 @@ fun CustomWindow(
 
         this.preferredSize = Dimension(size.width, size.height)
         if (minimumSize != null) {
-            this.minimumSize = Dimension(minimumSize.width, minimumSize.height)
+            this.minimumSize = minimumSize
         }
 
         this.jMenuBar = jMenuBar

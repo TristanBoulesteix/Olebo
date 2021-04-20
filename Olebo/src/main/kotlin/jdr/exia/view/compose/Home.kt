@@ -12,7 +12,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import jdr.exia.OLEBO_VERSION
 import jdr.exia.localization.STR_ADD_ACT
@@ -33,9 +32,10 @@ import jdr.exia.view.compose.ui.OleboTheme
 import jdr.exia.view.compose.ui.blue
 import jdr.exia.view.utils.components.FileMenu
 import jdr.exia.viewModel.HomeViewModel
+import java.awt.Dimension
 import javax.swing.JMenuBar
 
-val defaultWindowSize = IntSize(700, 900)
+val defaultWindowSize = Dimension(700, 900)
 
 fun showHomeWindow() = CustomWindow(
     title = "Olebo - ${StringLocale[STR_VERSION]} $OLEBO_VERSION",
