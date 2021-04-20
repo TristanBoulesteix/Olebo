@@ -71,7 +71,7 @@ object ViewManager {
         ViewFacade.setSelectedToken(null)
     }
 
-    private fun loadCurrentScene() {
+    private fun loadCurrentScene() = transaction {
         with(activeAct!!) activeAct@{
             activeScene = this.scenes.findWithId(this.sceneId)
             ViewFacade.apply {

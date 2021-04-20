@@ -111,17 +111,19 @@ object MasterMenuBar : JMenuBar() {
 
             JMenu(StringLocale[STR_CHOOSE_SCENE]).applyAndAddTo(this) {
                 act?.let {
-                    it.scenes.forEachIndexed { index, scene ->
-                        if (scene.id.value == it.sceneId) {
-                            val item =
-                                JMenuItem("${index + 1} ${scene.name} (${StringLocale[STR_IS_CURRENT_SCENE, StringStates.NORMAL]})").apply {
-                                    isEnabled = false
-                                }
-                            this.add(item)
-                        } else {
-                            val item = JMenuItem("${index + 1} ${scene.name}")
-                            item.addActionListener { transaction { ViewManager.changeCurrentScene(scene.id.value) } }
-                            this.add(item)
+                    transaction {
+                        it.scenes.forEachIndexed { index, scene ->
+                            if (scene.id.value == it.sceneId) {
+                                val item =
+                                    JMenuItem("${index + 1} ${scene.name} (${StringLocale[STR_IS_CURRENT_SCENE, StringStates.NORMAL]})").apply {
+                                        isEnabled = false
+                                    }
+                                add(item)
+                            } else {
+                                val item = JMenuItem("${index + 1} ${scene.name}")
+                                item.addActionListener { transaction { ViewManager.changeCurrentScene(scene.id.value) } }
+                                add(item)
+                            }
                         }
                     }
                 }
@@ -140,55 +142,57 @@ object MasterMenuBar : JMenuBar() {
 
             JMenu(StringLocale[STR_IMPORT_FROM_SCENE]).applyAndAddTo(this) {
                 act?.let { act ->
-                    if (act.scenes.count() <= 1)
-                        this.isEnabled = false
+                    transaction {
+                        if (act.scenes.count() <= 1)
+                            isEnabled = false
 
-                    act.scenes.forEach {
-                        if (it.id.value != act.sceneId) {
-                            val itemMenu = JMenu(it.name).apply {
-                                if (it.elements.isNotEmpty()) {
-                                    JMenuItem(StringLocale[STR_IMPORT_ALL_ELEMENTS]).applyAndAddTo(this) {
-                                        addActionListener { _ ->
-                                            it.elements.forEach { token ->
+                        act.scenes.forEach {
+                            if (it.id.value != act.sceneId) {
+                                val itemMenu = JMenu(it.name).apply {
+                                    if (it.elements.isNotEmpty()) {
+                                        JMenuItem(StringLocale[STR_IMPORT_ALL_ELEMENTS]).applyAndAddTo(this) {
+                                            addActionListener { _ ->
+                                                it.elements.forEach { token ->
+                                                    transaction {
+                                                        Scene.moveElementToScene(
+                                                            token,
+                                                            Scene[act.sceneId]
+                                                        )
+                                                    }
+                                                }
+                                                ViewManager.repaint()
+                                                initialize()
+                                                reloadCommandItemLabel()
+                                            }
+                                        }
+
+                                        this.add(JSeparator())
+                                    }
+
+                                    it.elements.forElse { token ->
+                                        JMenuItem(token.name + " (" + token.type.name + ")").applyAndAddTo(this) {
+                                            addActionListener {
                                                 transaction {
                                                     Scene.moveElementToScene(
                                                         token,
                                                         Scene[act.sceneId]
                                                     )
                                                 }
+                                                ViewManager.repaint()
                                             }
-                                            ViewManager.repaint()
-                                            initialize()
-                                            reloadCommandItemLabel()
                                         }
+                                    } ?: run {
+                                        isEnabled = false
                                     }
-
-                                    this.add(JSeparator())
                                 }
 
-                                it.elements.forElse { token ->
-                                    JMenuItem(token.name + " (" + token.type.name + ")").applyAndAddTo(this) {
-                                        addActionListener {
-                                            transaction {
-                                                Scene.moveElementToScene(
-                                                    token,
-                                                    Scene[act.sceneId]
-                                                )
-                                            }
-                                            ViewManager.repaint()
-                                        }
-                                    }
-                                } ?: run {
-                                    isEnabled = false
-                                }
+                                add(itemMenu)
                             }
-
-                            this.add(itemMenu)
                         }
-                    }
 
-                    if (this.menuComponents.none { it is JMenuItem && it.isEnabled })
-                        this.isEnabled = false
+                        if (menuComponents.none { it is JMenuItem && it.isEnabled })
+                            isEnabled = false
+                    }
                 }
             }
 
