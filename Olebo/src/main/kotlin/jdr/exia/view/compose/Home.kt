@@ -3,7 +3,6 @@
 package jdr.exia.view.compose
 
 import androidx.compose.desktop.DesktopMaterialTheme
-import androidx.compose.desktop.WindowEvents
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -45,11 +44,7 @@ fun showHomeWindow() = CustomWindow(
     title = "Olebo - ${StringLocale[STR_VERSION]} $OLEBO_VERSION",
     size = defaultWindowSize,
     minimumSize = defaultWindowSize,
-    jMenuBar = JMenuBar().apply { add(FileMenu()) },
-    events = WindowEvents(
-        onOpen = { homeWindowSize = defaultWindowSize },
-        onResize = { homeWindowSize = it }
-    )
+    jMenuBar = JMenuBar().apply { add(FileMenu()) }
 ) {
     val viewModel = HomeViewModel()
 
