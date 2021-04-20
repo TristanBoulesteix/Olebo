@@ -37,9 +37,6 @@ import javax.swing.JMenuBar
 
 val defaultWindowSize = IntSize(700, 900)
 
-var homeWindowSize by mutableStateOf(defaultWindowSize)
-    private set
-
 fun showHomeWindow() = CustomWindow(
     title = "Olebo - ${StringLocale[STR_VERSION]} $OLEBO_VERSION",
     size = defaultWindowSize,
