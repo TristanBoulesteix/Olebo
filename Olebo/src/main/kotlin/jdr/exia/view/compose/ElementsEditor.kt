@@ -186,7 +186,8 @@ private fun ColumnScope.ScrolableContent(viewModel: ElementsEditorViewModel) {
                                 onValueChange = { editedData = data.copy(name = it) },
                                 placeholder = { Text(text = blueprint.name) },
                                 colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White),
-                                modifier = Modifier.padding(horizontal = 4.dp).fillMaxWidth()
+                                modifier = Modifier.padding(horizontal = 4.dp).fillMaxWidth(),
+                                singleLine = true
                             )
                         }
                     }

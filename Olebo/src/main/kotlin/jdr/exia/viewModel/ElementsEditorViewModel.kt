@@ -3,6 +3,8 @@ package jdr.exia.viewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import jdr.exia.localization.ST_ELEMENT_ALREADY_EXISTS
+import jdr.exia.localization.StringLocale
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
 import jdr.exia.model.element.isValid
@@ -37,6 +39,9 @@ class ElementsEditorViewModel(private val type: Type) {
         val blueprint = currentEditBlueprint ?: return@transaction Result.Failure()
 
         if (data.isValid() && blueprint.id == data.id) {
+            if(blueprintWithNameExist(data.name, data.id))
+                return@transaction Result.Failure(StringLocale[ST_ELEMENT_ALREADY_EXISTS])
+
             blueprint.apply {
                 if (data.name.isNotBlank()) {
                     ::name.assignIfDifferent(data.name)
@@ -47,8 +52,8 @@ class ElementsEditorViewModel(private val type: Type) {
                 }
 
                 if (isCharacter()) {
-                    ::HP.assignIfDifferent(data.life ?: 0)
-                    ::MP.assignIfDifferent(data.mana ?: 0)
+                    ::HP.assignIfDifferent(data.life ?: HP)
+                    ::MP.assignIfDifferent(data.mana ?: MP)
                 }
             }
 
