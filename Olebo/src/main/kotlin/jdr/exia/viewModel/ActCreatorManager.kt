@@ -5,7 +5,7 @@ import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.DAO
-import jdr.exia.model.dao.saveImg
+import jdr.exia.model.tools.saveImg
 import jdr.exia.utils.forElse
 import jdr.exia.view.frames.home.editor.SceneEditorDialog
 import jdr.exia.view.utils.MessageType

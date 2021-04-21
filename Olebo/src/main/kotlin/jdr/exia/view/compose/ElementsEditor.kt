@@ -24,6 +24,7 @@ import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
 import jdr.exia.model.tools.imageFromFile
 import jdr.exia.model.tools.imageFromIconRes
+import jdr.exia.model.tools.savePathToImage
 import jdr.exia.model.utils.Result
 import jdr.exia.model.utils.isCharacter
 import jdr.exia.view.compose.components.*
@@ -38,6 +39,9 @@ import jdr.exia.viewModel.ElementsEditorViewModel
 import jdr.exia.viewModel.ElementsTabViewModel
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
+import javax.imageio.ImageIO
+import javax.swing.JFileChooser
+import javax.swing.filechooser.FileNameExtensionFilter
 
 @Composable
 fun ElementsView(onDone: DefaultFunction) = Column {
@@ -187,7 +191,11 @@ private fun ColumnScope.ScrolableContent(viewModel: ElementsEditorViewModel) {
                         }
                     }
                 },
-                buttonBuilders = editedData.getButtons(viewModel, blueprint)
+                buttonBuilders = editedData.getButtons(
+                    viewModel = viewModel,
+                    blueprint = blueprint,
+                    onUpdate = { editedData = it }
+                )
             )
         }
     }
@@ -195,18 +203,13 @@ private fun ColumnScope.ScrolableContent(viewModel: ElementsEditorViewModel) {
 
 private fun Blueprint.BlueprintData?.getButtons(
     viewModel: ElementsEditorViewModel,
-    blueprint: Blueprint
+    blueprint: Blueprint,
+    onUpdate: (Blueprint.BlueprintData) -> Unit
 ) = if (this == null) {
     if (blueprint.isCharacter()) transaction {
         listOf(
-            ButtonBuilder(
-                content = blueprint.HP,
-                onClick = {}
-            ),
-            ButtonBuilder(
-                content = blueprint.MP,
-                onClick = {}
-            )
+            ButtonBuilder(content = blueprint.HP),
+            ButtonBuilder(content = blueprint.MP)
         )
     } else {
         emptyList()
@@ -229,26 +232,54 @@ private fun Blueprint.BlueprintData?.getButtons(
 } else {
     listOf(
         ButtonBuilder(
+            icon = imageFromFile(File(img.path)),
+            onClick = { updateImage(onUpdate) }
+        ),
+        ButtonBuilder(
             imageFromIconRes("confirm_icon"),
-            onClick = {
-                when (val result = viewModel.onEditConfirmed(this)) {
-                    is Result.Failure -> {
-                        result.message.let {
-                            if (it != null) {
-                                showMessage(it, messageType = MessageType.WARNING)
-                            } else {
-                                showMessage(StringLocale[ST_UNKNOWN_ERROR], messageType = MessageType.WARNING)
-                                viewModel.onEditDone()
-                            }
-                        }
-                    }
-                    else -> viewModel.onEditDone()
-                }
-            }
+            onClick = { submitData(viewModel) }
         ),
         ButtonBuilder(
             imageFromIconRes("exit_icon"),
             onClick = { viewModel.onEditDone() }
         )
     )
+}
+
+private fun Blueprint.BlueprintData.submitData(viewModel: ElementsEditorViewModel) {
+    when (val result = viewModel.onEditConfirmed(this)) {
+        is Result.Failure -> {
+            result.message.let {
+                if (it != null) {
+                    showMessage(it, messageType = MessageType.WARNING)
+                } else {
+                    showMessage(StringLocale[ST_UNKNOWN_ERROR], messageType = MessageType.WARNING)
+                    viewModel.onEditDone()
+                }
+            }
+        }
+        else -> viewModel.onEditDone()
+    }
+}
+
+private inline fun Blueprint.BlueprintData.updateImage(crossinline onUpdate: (Blueprint.BlueprintData) -> Unit) {
+    transaction {
+        val file = JFileChooser().apply {
+            this.currentDirectory = File(System.getProperty("user.home"))
+            this.addChoosableFileFilter(
+                FileNameExtensionFilter(StringLocale[STR_IMG], *ImageIO.getReaderFileSuffixes())
+            )
+            this.isAcceptAllFileFilterUsed = false
+        }
+
+        val result = file.showSaveDialog(null) // TODO : Add parent
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            val selectedFile = file.selectedFile
+
+            if (selectedFile.exists()) {
+                onUpdate(copy(img = savePathToImage(selectedFile.absolutePath, "blueprint")))
+            }
+        }
+    }
 }

@@ -1,7 +1,6 @@
 package jdr.exia.model.dao
 
 import jdr.exia.main
-import jdr.exia.model.tools.Image
 import jdr.exia.utils.Result
 import java.io.BufferedOutputStream
 import java.io.File
@@ -19,8 +18,6 @@ const val OLEBO_MANIFEST_NAME = "manifest.$OLEBO_MANIFEST_EXTENSION"
  */
 val OLEBO_DIRECTORY = "${appDatas}Olebo${File.separator}"
 
-val imgPath = OLEBO_DIRECTORY + "img${File.separator}"
-
 val updaterPath = "${OLEBO_DIRECTORY}oleboUpdater.jar"
 
 /**
@@ -32,35 +29,6 @@ val updaterPath = "${OLEBO_DIRECTORY}oleboUpdater.jar"
  */
 fun getIcon(name: String, clazz: Class<*>, extension: String = ".png"): ImageIcon =
     ImageIcon(clazz.classLoader.getResource("icons/$name$extension"))
-
-/**
- * Save a picture to img folder
- *
- * @param path The path of the picture to save
- */
-fun saveImg(path: String): String {
-    val img = File.createTempFile(
-        "img_",
-        "_background.png",
-        File(imgPath).apply { this.mkdirs() }
-    )
-
-    File(path).copyTo(img, true)
-
-    return img.absolutePath
-}
-
-fun Image.saveImgAndGetPath(): String {
-    val img = File.createTempFile(
-        "img_",
-        "_background.png",
-        File(imgPath).apply { this.mkdirs() }
-    )
-
-    File(path).copyTo(img, true)
-
-    return img.absolutePath
-}
 
 /**
  * Get the appdata path depending on the pateform.

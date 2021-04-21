@@ -3,10 +3,10 @@ package jdr.exia.viewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import jdr.exia.model.dao.saveImgAndGetPath
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
 import jdr.exia.model.element.isValid
+import jdr.exia.model.tools.saveImgAndGetPath
 import jdr.exia.model.utils.Result
 import jdr.exia.model.utils.assignIfDifferent
 import jdr.exia.model.utils.isCharacter

@@ -3,10 +3,10 @@ package jdr.exia.viewModel
 import jdr.exia.localization.*
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.InstanceTable
-import jdr.exia.model.dao.saveImg
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Type
+import jdr.exia.model.tools.saveImg
 import jdr.exia.view.frames.home.editor.BlueprintEditorDialog
 import jdr.exia.view.utils.MessageType
 import jdr.exia.view.utils.showConfirmMessage
