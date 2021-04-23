@@ -4,7 +4,7 @@ import jdr.exia.localization.StringLocale
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.updater.checkForUpdate
 import jdr.exia.updater.currentChangelogs
-import jdr.exia.view.compose.showHomeWindow
+import jdr.exia.view.compose.HomeFrame
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -24,7 +24,7 @@ fun main() {
             UIManager.getSystemLookAndFeelClassName()
         )
 
-        showHomeWindow()
+        HomeFrame().isVisible = true
 
         GlobalScope.launch(Dispatchers.IO) {
             if (Settings.wasJustUpdated) {
