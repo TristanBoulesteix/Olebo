@@ -27,10 +27,10 @@ import jdr.exia.model.act.Act
 import jdr.exia.model.act.isValidAndEqualTo
 import jdr.exia.model.tools.imageFromFile
 import jdr.exia.model.tools.imageFromIconRes
-import jdr.exia.view.compose.components.ButtonBuilder
 import jdr.exia.view.compose.components.ContentListRow
 import jdr.exia.view.compose.components.FooterRow
 import jdr.exia.view.compose.components.HeaderRow
+import jdr.exia.view.compose.components.ImageButtonBuilder
 import jdr.exia.view.compose.tools.*
 import jdr.exia.view.compose.ui.blue
 import jdr.exia.view.utils.MessageType
@@ -74,7 +74,7 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
                 .border(BorderBuilder.defaultBorder)
         }
 
-        val (sceneInCreation, setSceneInCreation) = remember { mutableStateOf<Act.SceneData?>(null) withSetter { if (it != null) viewModel.onEditDone() } }
+        val (sceneInCreation, setSceneInCreation) = remember { mutableStateOf<Act.SceneData?>(null) withSetter { newValue -> if (newValue != null) viewModel.onEditDone() } }
 
         Box(
             modifier = Modifier.padding(top = 20.dp, end = 20.dp, start = 20.dp)
@@ -90,14 +90,14 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
                         buttonBuilders =
                         if (sceneInCreation == null) {
                             listOf(
-                                ButtonBuilder(
-                                    icon = imageFromIconRes("create_icon"),
+                                ImageButtonBuilder(
+                                    content = imageFromIconRes("create_icon"),
                                     onClick = { setSceneInCreation(Act.SceneData.default()) })
                             )
                         } else {
                             listOf(
-                                ButtonBuilder(
-                                    icon = imageFromIconRes("confirm_icon"),
+                                ImageButtonBuilder(
+                                    content = imageFromIconRes("confirm_icon"),
                                     onClick = {
                                         if (viewModel.onAddScene(sceneInCreation)) {
                                             setSceneInCreation(null)
@@ -107,9 +107,10 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
                                                 messageType = MessageType.WARNING
                                             )
                                         }
-                                    }),
-                                ButtonBuilder(
-                                    icon = imageFromIconRes("exit_icon"),
+                                    }
+                                ),
+                                ImageButtonBuilder(
+                                    content = imageFromIconRes("exit_icon"),
                                     onClick = { setSceneInCreation(null) })
                             )
                         }
@@ -151,15 +152,15 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
                         ContentListRow(
                             contentText = scene.name,
                             buttonBuilders = listOf(
-                                ButtonBuilder(
-                                    imageFromIconRes("edit_icon"),
+                                ImageButtonBuilder(
+                                    content = imageFromIconRes("edit_icon"),
                                     onClick = {
                                         viewModel.onEditItemSelected(scene)
                                         setSceneInCreation(null)
                                     }
                                 ),
-                                ButtonBuilder(
-                                    imageFromIconRes("delete_icon"),
+                                ImageButtonBuilder(
+                                    content = imageFromIconRes("delete_icon"),
                                     onClick = { viewModel.onRemoveScene(scene) }
                                 )
                             )
@@ -213,8 +214,8 @@ private fun EditSceneRow(
         removeBottomBorder = false,
         buttonBuilders = if (showButtons && onConfirmed != null && onCanceled != null)
             listOf(
-                ButtonBuilder(icon = imageFromIconRes("confirm_icon"), onClick = onConfirmed),
-                ButtonBuilder(icon = imageFromIconRes("exit_icon"), onClick = onCanceled)
+                ImageButtonBuilder(content = imageFromIconRes("confirm_icon"), onClick = onConfirmed),
+                ImageButtonBuilder(content = imageFromIconRes("exit_icon"), onClick = onCanceled)
             ) else emptyList()
     )
 

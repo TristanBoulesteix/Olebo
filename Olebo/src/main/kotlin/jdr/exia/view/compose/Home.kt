@@ -20,10 +20,10 @@ import jdr.exia.localization.STR_VERSION
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
 import jdr.exia.model.tools.imageFromIconRes
-import jdr.exia.view.compose.components.ButtonBuilder
 import jdr.exia.view.compose.components.ContentListRow
 import jdr.exia.view.compose.components.CustomWindow
 import jdr.exia.view.compose.components.HeaderRow
+import jdr.exia.view.compose.components.ImageButtonBuilder
 import jdr.exia.view.compose.tools.BorderBuilder
 import jdr.exia.view.compose.tools.DefaultFunction
 import jdr.exia.view.compose.tools.border
@@ -67,9 +67,9 @@ fun MainContent(
     Row(modifier = Modifier.fillMaxSize()) {
         var areElementsVisible by remember { mutableStateOf(false) }
 
-        var editedActState by remember { mutableStateOf<Act?>(null) withSetter { if (it == null) refreshAct() } }
+        var editedActState by remember { mutableStateOf<Act?>(null) withSetter { newValue -> if (newValue == null) refreshAct() } }
 
-        var actInCreation by remember { mutableStateOf(false) withSetter { if (!it) refreshAct() } }
+        var actInCreation by remember { mutableStateOf(false) withSetter { newValue -> if (!newValue) refreshAct() } }
 
         when {
             areElementsVisible -> ElementsView(onDone = { areElementsVisible = false })
@@ -115,8 +115,8 @@ fun ActsView(
                     contentText = act.name,
                     onClick = { onRowClick(act) },
                     buttonBuilders = listOf(
-                        ButtonBuilder(imageFromIconRes("edit_icon")) { onEdit(act) },
-                        ButtonBuilder(imageFromIconRes("delete_icon")) { onDelete(act) }
+                        ImageButtonBuilder(content = imageFromIconRes("edit_icon"), onClick = { onEdit(act) }),
+                        ImageButtonBuilder(content = imageFromIconRes("delete_icon"), onClick = { onDelete(act) })
                     )
                 )
             }

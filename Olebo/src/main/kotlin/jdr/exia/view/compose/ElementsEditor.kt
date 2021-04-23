@@ -2,23 +2,21 @@
 
 package jdr.exia.view.compose
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import jdr.exia.localization.*
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
@@ -75,6 +73,13 @@ fun ElementsView(onDone: DefaultFunction) = Column {
     )
 }
 
+private val ColumnScope.contentModifier
+    get() = Modifier.padding(bottom = 20.dp, end = 20.dp, start = 20.dp)
+        .background(Color.White)
+        .weight(1f)
+        .fillMaxSize()
+        .border(BorderBuilder.defaultBorder)
+
 @Composable
 private fun Content(innerPadding: PaddingValues, currentType: Type) = Box(modifier = Modifier.padding(innerPadding)) {
     val viewModel = remember(currentType) { ElementsEditorViewModel(currentType) }
@@ -82,64 +87,7 @@ private fun Content(innerPadding: PaddingValues, currentType: Type) = Box(modifi
     Column(modifier = Modifier.fillMaxSize().padding(15.dp)) {
         val headerScrollState = rememberScrollState()
 
-        Box(
-            modifier = Modifier.padding(top = 20.dp, end = 20.dp, start = 20.dp)
-                .background(Color.White)
-                .fillMaxWidth()
-                .border(BorderBuilder.defaultBorder)
-        ) {
-            Box(modifier = Modifier.verticalScroll(headerScrollState).fillMaxSize()) {
-                Column {
-                    ContentListRow(
-                        contentText = currentType.typeName,
-                        modifier = Modifier.background(Color.White).border(BorderBuilder.defaultBorder),
-                        buttonBuilders =
-                        if (viewModel.blueprintInCreation == null) {
-                            if (currentType.type.typeElement != Type.OBJECT) listOf(
-                                ButtonBuilder(
-                                    content = StringLocale[STR_HP]
-                                ),
-                                ButtonBuilder(
-                                    content = StringLocale[STR_MP]
-                                )
-                            ) else {
-                                emptyList()
-                            } + listOf(
-                                ButtonBuilder(
-                                    content = StringLocale[STR_IMG]
-                                ),
-                                ButtonBuilder(),
-                                ButtonBuilder(
-                                    icon = imageFromIconRes("create_icon"),
-                                    onClick = viewModel::startBlueprintCreation
-                                )
-                            )
-                        } else {
-                            listOf(
-                                ButtonBuilder(
-                                    icon = imageFromIconRes("confirm_icon"),
-                                    onClick = {
-                                        if (viewModel.onSubmitBlueprint()) {
-                                            viewModel.cancelBluprintCreation()
-                                        } else {
-                                            showMessage(
-                                                StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID],
-                                                messageType = MessageType.WARNING
-                                            )
-                                        }
-                                    }
-                                ),
-                                ButtonBuilder(
-                                    icon = imageFromIconRes("exit_icon"),
-                                    onClick = viewModel::cancelBluprintCreation
-                                )
-                            )
-                        }
-                    )
-                }
-            }
-        }
-
+        HeaderContent(headerScrollState, currentType, viewModel)
 
         if (viewModel.blueprintInCreation != null) {
             /*EditSceneRow(
@@ -148,6 +96,20 @@ private fun Content(innerPadding: PaddingValues, currentType: Type) = Box(modifi
                 showButtons = false,
                 modifier = contentModifier
             )*/
+        } else if (viewModel.blueprints.isEmpty()) {
+            Column(modifier = contentModifier, verticalArrangement = Arrangement.Center) {
+                Text(
+                    text = StringLocale[STR_NO_ELEMENT],
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 30.sp
+                )
+                OutlinedButton(
+                    onClick = viewModel::startBlueprintCreation,
+                    content = { Text(StringLocale[STR_ADD_ELEMENT]) },
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+            }
         } else {
             ScrolableContent(viewModel)
         }
@@ -155,16 +117,76 @@ private fun Content(innerPadding: PaddingValues, currentType: Type) = Box(modifi
 }
 
 @Composable
+private fun HeaderContent(
+    headerScrollState: ScrollState,
+    currentType: Type,
+    viewModel: ElementsEditorViewModel
+) = Box(
+    modifier = Modifier.padding(top = 20.dp, end = 20.dp, start = 20.dp)
+        .background(Color.White)
+        .fillMaxWidth()
+        .border(BorderBuilder.defaultBorder)
+) {
+    Box(modifier = Modifier.verticalScroll(headerScrollState).fillMaxSize()) {
+        Column {
+            ContentListRow(
+                contentText = currentType.typeName,
+                modifier = Modifier.background(Color.White).border(BorderBuilder.defaultBorder),
+                buttonBuilders =
+                if (viewModel.blueprintInCreation == null) {
+                    if (viewModel.blueprints.isNotEmpty()) {
+                        if (currentType.type.typeElement != Type.OBJECT) listOf(
+                            ContentButtonBuilder(
+                                content = StringLocale[STR_HP]
+                            ),
+                            ContentButtonBuilder(
+                                content = StringLocale[STR_MP]
+                            )
+                        ) else {
+                            emptyList()
+                        } + listOf(
+                            ContentButtonBuilder(
+                                content = StringLocale[STR_IMG]
+                            ),
+                            EmptyContent
+                        )
+                    } else {
+                        emptyList()
+                    } + listOf(
+                        ImageButtonBuilder(
+                            content = imageFromIconRes("create_icon"),
+                            onClick = viewModel::startBlueprintCreation
+                        )
+                    )
+                } else {
+                    listOf(
+                        ImageButtonBuilder(
+                            content = imageFromIconRes("confirm_icon"),
+                            onClick = {
+                                if (viewModel.onSubmitBlueprint()) {
+                                    viewModel.cancelBluprintCreation()
+                                } else {
+                                    showMessage(
+                                        StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID],
+                                        messageType = MessageType.WARNING
+                                    )
+                                }
+                            }
+                        ),
+                        ImageButtonBuilder(
+                            content = imageFromIconRes("exit_icon"),
+                            onClick = viewModel::cancelBluprintCreation
+                        )
+                    )
+                }
+            )
+        }
+    }
+}
+
+@Composable
 private fun ColumnScope.ScrolableContent(viewModel: ElementsEditorViewModel) {
     val listState = rememberLazyListState()
-
-    val contentModifier = remember {
-        Modifier.padding(bottom = 20.dp, end = 20.dp, start = 20.dp)
-            .background(Color.White)
-            .weight(1f)
-            .fillMaxSize()
-            .border(BorderBuilder.defaultBorder)
-    }
 
     LazyColumn(
         modifier = contentModifier,
@@ -209,39 +231,66 @@ private fun Blueprint.BlueprintData?.getButtons(
 ) = if (this == null) {
     if (blueprint.isCharacter()) transaction {
         listOf(
-            ButtonBuilder(content = blueprint.HP),
-            ButtonBuilder(content = blueprint.MP)
+            ContentButtonBuilder(content = blueprint.HP),
+            ContentButtonBuilder(content = blueprint.MP)
         )
     } else {
         emptyList()
     } + listOf(
-        ButtonBuilder(
-            icon = imageFromFile(File(blueprint.sprite))
+        ImageButtonBuilder(
+            content = imageFromFile(File(blueprint.sprite))
         ),
-        ButtonBuilder(
-            icon = imageFromIconRes("edit_icon"),
+        ImageButtonBuilder(
+            content = imageFromIconRes("edit_icon"),
             onClick = {
                 viewModel.onEditItemSelected(blueprint)
                 viewModel.cancelBluprintCreation()
             }
         ),
-        ButtonBuilder(
-            icon = imageFromIconRes("delete_icon"),
+        ImageButtonBuilder(
+            content = imageFromIconRes("delete_icon"),
             onClick = { viewModel.onRemoveBlueprint(blueprint) }
         )
     )
 } else {
-    listOf(
-        ButtonBuilder(
-            icon = imageFromFile(File(img.path)),
+    if (blueprint.isCharacter()) transaction {
+        listOf(
+            ComposableContentBuilder(
+                content = {
+                    IntTextField(
+                        value = life,
+                        onValueChange = { onUpdate(copy(life = it)) },
+                        modifier = Modifier.padding(2.dp).padding(start = 1.dp),
+                        colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    )
+                }
+            ),
+            ComposableContentBuilder(
+                content = {
+                    IntTextField(
+                        value = mana,
+                        onValueChange = { onUpdate(copy(mana = it)) },
+                        modifier = Modifier.padding(2.dp).padding(start = 1.dp),
+                        colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    )
+                }
+            )
+        )
+    } else {
+        emptyList()
+    } + listOf(
+        ImageButtonBuilder(
+            content = imageFromFile(File(img.path)),
             onClick = { updateImage(onUpdate) }
         ),
-        ButtonBuilder(
-            imageFromIconRes("confirm_icon"),
+        ImageButtonBuilder(
+            content = imageFromIconRes("confirm_icon"),
             onClick = { submitData(viewModel) }
         ),
-        ButtonBuilder(
-            imageFromIconRes("exit_icon"),
+        ImageButtonBuilder(
+            content = imageFromIconRes("exit_icon"),
             onClick = { viewModel.onEditDone() }
         )
     )

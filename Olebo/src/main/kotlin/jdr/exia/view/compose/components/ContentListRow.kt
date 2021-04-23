@@ -22,7 +22,7 @@ fun ContentListRow(
     content: @Composable DefaultFunction,
     onClick: DefaultFunction? = null,
     modifier: Modifier = Modifier,
-    buttonBuilders: List<ButtonBuilder> = emptyList(),
+    buttonBuilders: List<ContentBuilder> = emptyList(),
     removeBottomBorder: Boolean = false
 ) = Row(
     modifier = modifier.fillMaxWidth().size(65.dp)
@@ -36,11 +36,9 @@ fun ContentListRow(
 
     Box(modifier = boxModifier, contentAlignment = Alignment.CenterStart) { content() }
 
-    buttonBuilders.forEach { (content, isEnabled, action) ->
+    buttonBuilders.forEach {
         RowButton(
-            content = content,
-            onClick = action,
-            clickEnabled = isEnabled,
+            contentBuilder = it,
             modifier = Modifier.applyIf(
                 condition = removeBottomBorder,
                 mod = { border(bottom = BorderBuilder.defaultBorder) })
@@ -53,7 +51,7 @@ fun ContentListRow(
     contentText: String,
     onClick: DefaultFunction? = null,
     modifier: Modifier = Modifier,
-    buttonBuilders: List<ButtonBuilder> = emptyList()
+    buttonBuilders: List<ContentBuilder> = emptyList()
 ) = ContentListRow(
     content = { ContentText(contentText) },
     onClick = onClick,
@@ -65,36 +63,69 @@ fun ContentListRow(
 fun ContentText(contentText: String) =
     Text(text = contentText, style = typography.h1, modifier = Modifier.padding(10.dp))
 
-data class ButtonBuilder(val content: Any, val clickEnabled: Boolean = true, val onClick: DefaultFunction) {
-    constructor(icon: ImageBitmap, clickEnabled: Boolean = true, onClick: DefaultFunction) : this(
-        content = icon,
-        clickEnabled = clickEnabled,
-        onClick = onClick
-    )
+interface ContentBuilder {
+    val content: Any?
 
-    constructor(icon: ImageBitmap) : this(icon, clickEnabled = false, onClick = {})
+    val enabled: Boolean
 
-    constructor(content: Any) : this(content = content, clickEnabled = false, onClick = {})
+    val onChange: DefaultFunction
+}
 
-    constructor() : this(content = "")
+object EmptyContent : ContentBuilder {
+    override val content: Nothing? = null
+
+    override val enabled = false
+
+    override val onChange = {}
+}
+
+data class ImageButtonBuilder(
+    override val content: ImageBitmap,
+    override val enabled: Boolean = true,
+    val onClick: DefaultFunction
+) : ContentBuilder {
+    override val onChange by ::onClick
+
+    constructor(content: ImageBitmap) : this(content, enabled = false, onClick = {})
+}
+
+data class ContentButtonBuilder(
+    override val content: String,
+    override val enabled: Boolean = false,
+    val onClick: DefaultFunction = {}
+) : ContentBuilder {
+    override val onChange by ::onClick
+
+    constructor(content: Any) : this(content = content.toString())
+}
+
+data class ComposableContentBuilder(
+    override val content: @Composable DefaultFunction
+) : ContentBuilder {
+    override val enabled = true
+
+    override val onChange = {}
 }
 
 @Composable
-private fun RowButton(content: Any, modifier: Modifier, onClick: DefaultFunction, clickEnabled: Boolean) {
+private fun RowButton(contentBuilder: ContentBuilder, modifier: Modifier) {
     Box(
         modifier = modifier.size(65.dp)
             .border(start = BorderBuilder.defaultBorder)
-            .clickable(onClick = onClick, enabled = clickEnabled),
+            .clickable(onClick = contentBuilder.onChange, enabled = contentBuilder.enabled),
         contentAlignment = Alignment.CenterStart
     ) {
-        if (content is ImageBitmap) {
-            Image(
-                bitmap = content,
+        when (contentBuilder) {
+            is ImageButtonBuilder -> Image(
+                bitmap = contentBuilder.content,
                 contentDescription = "button",
                 modifier = Modifier.align(Alignment.Center)
             )
-        } else {
-            Text(text = content.toString(), modifier = Modifier.align(Alignment.Center))
+            is ContentButtonBuilder -> Text(text = contentBuilder.content, modifier = Modifier.align(Alignment.Center))
+            is ComposableContentBuilder -> contentBuilder.content()
+            else -> {
+                // Do nothing
+            }
         }
     }
 }

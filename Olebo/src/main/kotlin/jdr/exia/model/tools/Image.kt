@@ -1,5 +1,7 @@
 package jdr.exia.model.tools
 
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.imageFromResource
@@ -10,8 +12,10 @@ import org.jetbrains.skija.Image as SkijaImage
 private val imgPath = OLEBO_DIRECTORY + "img${File.separator}"
 
 //TODO: Replace with value class when Kotlin 1.5 will be available (if Jetpack compose is compatible)
+@Immutable
 inline class Image(val path: String) {
     companion object {
+        @Stable
         val unspecified = Image("")
     }
 
