@@ -2,7 +2,6 @@ package jdr.exia.model.tools
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.imageFromResource
 import jdr.exia.model.dao.OLEBO_DIRECTORY
@@ -19,16 +18,14 @@ inline class Image(val path: String) {
         val unspecified = Image("")
     }
 
-   fun isValid() = !isUnspecified() && File(path).let { it.exists() && it.isFile }
+    fun isValid() = !isUnspecified() && File(path).let { it.exists() && it.isFile }
 
     fun isUnspecified() = path.isBlank()
 }
 
 fun imageFromIconRes(name: String) = imageFromResource("icons/$name.png")
 
-fun imageFromFile(file: File): ImageBitmap {
-    return SkijaImage.makeFromEncoded(file.readBytes()).asImageBitmap()
-}
+fun imageFromFile(file: File) = SkijaImage.makeFromEncoded(file.readBytes()).asImageBitmap()
 
 /**
  * Save a picture to img folder

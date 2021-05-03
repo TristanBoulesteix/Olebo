@@ -89,29 +89,33 @@ private fun Content(innerPadding: PaddingValues, currentType: Type) = Box(modifi
 
         HeaderContent(headerScrollState, currentType, viewModel)
 
-        if (viewModel.blueprintInCreation != null) {
-            /*EditSceneRow(
-                data = sceneInCreation,
-                updateData = setSceneInCreation,
-                showButtons = false,
-                modifier = contentModifier
-            )*/
-        } else if (viewModel.blueprints.isEmpty()) {
-            Column(modifier = contentModifier, verticalArrangement = Arrangement.Center) {
-                Text(
-                    text = StringLocale[STR_NO_ELEMENT],
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 30.sp
-                )
-                OutlinedButton(
-                    onClick = viewModel::startBlueprintCreation,
-                    content = { Text(StringLocale[STR_ADD_ELEMENT]) },
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
+        when {
+            viewModel.blueprintInCreation != null -> {
+                /*EditSceneRow(
+                    data = sceneInCreation,
+                    updateData = setSceneInCreation,
+                    showButtons = false,
+                    modifier = contentModifier
+                )*/
             }
-        } else {
-            ScrolableContent(viewModel)
+            viewModel.blueprints.isEmpty() -> {
+                Column(modifier = contentModifier, verticalArrangement = Arrangement.Center) {
+                    Text(
+                        text = StringLocale[STR_NO_ELEMENT],
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 30.sp
+                    )
+                    OutlinedButton(
+                        onClick = viewModel::startBlueprintCreation,
+                        content = { Text(StringLocale[STR_ADD_ELEMENT]) },
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    )
+                }
+            }
+            else -> {
+                ScrolableContent(viewModel)
+            }
         }
     }
 }
