@@ -91,12 +91,7 @@ private fun Content(innerPadding: PaddingValues, currentType: Type) = Box(modifi
 
         when {
             viewModel.blueprintInCreation != null -> {
-                /*EditSceneRow(
-                    data = sceneInCreation,
-                    updateData = setSceneInCreation,
-                    showButtons = false,
-                    modifier = contentModifier
-                )*/
+                // Edition on
             }
             viewModel.blueprints.isEmpty() -> {
                 Column(modifier = contentModifier, verticalArrangement = Arrangement.Center) {
