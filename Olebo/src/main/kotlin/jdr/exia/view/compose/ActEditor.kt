@@ -5,9 +5,6 @@ package jdr.exia.view.compose
 import androidx.compose.desktop.AppManager
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.OutlinedButton
@@ -27,10 +24,7 @@ import jdr.exia.model.act.Act
 import jdr.exia.model.act.isValidAndEqualTo
 import jdr.exia.model.tools.imageFromFile
 import jdr.exia.model.tools.imageFromIconRes
-import jdr.exia.view.compose.components.ContentListRow
-import jdr.exia.view.compose.components.FooterRow
-import jdr.exia.view.compose.components.HeaderRow
-import jdr.exia.view.compose.components.ImageButtonBuilder
+import jdr.exia.view.compose.components.*
 import jdr.exia.view.compose.tools.*
 import jdr.exia.view.compose.ui.blue
 import jdr.exia.view.utils.MessageType
@@ -64,7 +58,6 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
 
     Column(modifier = Modifier.fillMaxSize().background(blue).padding(15.dp)) {
         val headerScrollState = rememberScrollState()
-        val listState = rememberLazyListState()
 
         val contentModifier = remember {
             Modifier.padding(bottom = 20.dp, end = 20.dp, start = 20.dp)
@@ -111,7 +104,8 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
                                 ),
                                 ImageButtonBuilder(
                                     content = imageFromIconRes("exit_icon"),
-                                    onClick = { setSceneInCreation(null) })
+                                    onClick = { setSceneInCreation(null) }
+                                )
                             )
                         }
                     )
@@ -127,11 +121,8 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
                 modifier = contentModifier
             )
         } else {
-            LazyColumn(
-                modifier = contentModifier,
-                state = listState
-            ) {
-                items(items = viewModel.scenes) { scene ->
+            ScrollableColumn(modifier = contentModifier) {
+                ColumnItem(items = viewModel.scenes) { scene ->
                     if (viewModel.currentEditScene isValidAndEqualTo scene) {
                         val (tempCurrentEditedScene, setTempCurrentEditScene) = remember { mutableStateOf(scene) }
 

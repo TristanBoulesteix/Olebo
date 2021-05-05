@@ -4,9 +4,6 @@ package jdr.exia.view.compose
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -185,13 +182,8 @@ private fun HeaderContent(
 
 @Composable
 private fun ColumnScope.ScrolableContent(viewModel: ElementsEditorViewModel) {
-    val listState = rememberLazyListState()
-
-    LazyColumn(
-        modifier = contentModifier,
-        state = listState
-    ) {
-        items(items = viewModel.blueprints) { blueprint ->
+    ScrollableColumn(modifier = contentModifier) {
+        ColumnItem(viewModel.blueprints) { blueprint ->
             var editedData by (viewModel.currentEditBlueprint == blueprint).let { isEditing ->
                 remember(isEditing) { mutableStateOf(blueprint.takeIf { isEditing }?.toBlueprintData()) }
             }

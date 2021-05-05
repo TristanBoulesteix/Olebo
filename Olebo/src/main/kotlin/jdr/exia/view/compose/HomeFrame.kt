@@ -4,8 +4,6 @@ import androidx.compose.desktop.ComposePanel
 import androidx.compose.desktop.DesktopMaterialTheme
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -22,6 +20,7 @@ import jdr.exia.model.tools.imageFromIconRes
 import jdr.exia.view.compose.components.ContentListRow
 import jdr.exia.view.compose.components.HeaderRow
 import jdr.exia.view.compose.components.ImageButtonBuilder
+import jdr.exia.view.compose.components.ScrollableColumn
 import jdr.exia.view.compose.tools.BorderBuilder
 import jdr.exia.view.compose.tools.DefaultFunction
 import jdr.exia.view.compose.tools.border
@@ -115,11 +114,11 @@ class HomeFrame : JFrame("Olebo - ${StringLocale[STR_VERSION]} $OLEBO_VERSION") 
         }
 
         Box(modifier = Modifier.fillMaxSize().background(blue).padding(15.dp)) {
-            LazyColumn(
+            ScrollableColumn(
                 modifier = Modifier.padding(20.dp).fillMaxSize().background(Color.White)
                     .border(BorderBuilder.defaultBorder)
             ) {
-                items(items = acts) { act ->
+                ColumnItem(items = acts) { act ->
                     ContentListRow(
                         contentText = act.name,
                         onClick = { onRowClick(act) },
