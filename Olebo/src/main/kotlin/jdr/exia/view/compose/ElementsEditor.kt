@@ -5,7 +5,10 @@ package jdr.exia.view.compose
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -86,9 +89,11 @@ private fun Content(innerPadding: PaddingValues, currentType: Type) = Box(modifi
 
         HeaderContent(headerScrollState, currentType, viewModel)
 
+        val blueprintInCreation = viewModel.blueprintInCreation
+
         when {
-            viewModel.blueprintInCreation != null -> {
-                // Edition on
+            blueprintInCreation != null -> {
+                CreateBlueprint(blueprintInCreation, viewModel::onUpdateBlueprintInCreation)
             }
             viewModel.blueprints.isEmpty() -> {
                 Column(modifier = contentModifier, verticalArrangement = Arrangement.Center) {
@@ -105,9 +110,7 @@ private fun Content(innerPadding: PaddingValues, currentType: Type) = Box(modifi
                     )
                 }
             }
-            else -> {
-                ScrolableContent(viewModel)
-            }
+            else -> ScrolableContent(viewModel)
         }
     }
 }
@@ -181,6 +184,29 @@ private fun HeaderContent(
 }
 
 @Composable
+private fun ColumnScope.CreateBlueprint(
+    blueprint: Blueprint.BlueprintData,
+    onUpdate: (Blueprint.BlueprintData) -> Unit
+) = Column(modifier = contentModifier) {
+    @Composable
+    fun RowField(content: @Composable RowScope.() -> Unit) = Row(
+        modifier = Modifier.fillMaxWidth().padding(top = 5.dp),
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically,
+        content = content
+    )
+
+    RowField {
+        Text(StringLocale[STR_NAME])
+        CustomTextField(value = blueprint.name, onValueChange = { onUpdate(blueprint.copy(name = it)) })
+    }
+
+    RowField {
+        Text(StringLocale[STR_IMG])
+    }
+}
+
+@Composable
 private fun ColumnScope.ScrolableContent(viewModel: ElementsEditorViewModel) {
     ScrollableColumn(modifier = contentModifier) {
         ColumnItem(viewModel.blueprints) { blueprint ->
@@ -194,13 +220,11 @@ private fun ColumnScope.ScrolableContent(viewModel: ElementsEditorViewModel) {
                         if (data == null) {
                             ContentText(blueprint.name)
                         } else {
-                            TextField(
+                            CustomTextField(
                                 value = data.name,
                                 onValueChange = { editedData = data.copy(name = it) },
-                                placeholder = { Text(text = blueprint.name) },
-                                colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White),
-                                modifier = Modifier.padding(horizontal = 4.dp).fillMaxWidth(),
-                                singleLine = true
+                                placeholder = blueprint.name,
+                                modifier = Modifier.padding(horizontal = 4.dp).fillMaxWidth()
                             )
                         }
                     }

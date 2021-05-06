@@ -9,8 +9,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -193,13 +191,11 @@ private fun EditSceneRow(
 
     ContentListRow(
         content = {
-            TextField(
+            CustomTextField(
                 data.name,
                 onValueChange = { updateData(data.copy(name = it)) },
                 modifier = defaultModifier,
-                singleLine = true,
-                placeholder = { Text(data.name.takeIf { it.isNotBlank() } ?: StringLocale[ST_ENTER_SCENE_NAME]) },
-                colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White),
+                placeholder = data.name.takeIf { it.isNotBlank() } ?: StringLocale[ST_ENTER_SCENE_NAME]
             )
         },
         removeBottomBorder = false,

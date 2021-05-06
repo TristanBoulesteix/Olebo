@@ -26,6 +26,10 @@ class ElementsEditorViewModel(private val type: Type) {
     var blueprintInCreation by mutableStateOf(null as Blueprint.BlueprintData?)
         private set
 
+    fun onUpdateBlueprintInCreation(data: Blueprint.BlueprintData) {
+        blueprintInCreation = data
+    }
+
     fun onEditItemSelected(blueprintData: Blueprint) {
         currentEditPosition = blueprints.indexOf(blueprintData)
     }
@@ -39,7 +43,7 @@ class ElementsEditorViewModel(private val type: Type) {
         val blueprint = currentEditBlueprint ?: return@transaction Result.Failure()
 
         if (data.isValid() && blueprint.id == data.id) {
-            if(blueprintWithNameExist(data.name, data.id))
+            if (blueprintWithNameExist(data.name, data.id))
                 return@transaction Result.Failure(StringLocale[ST_ELEMENT_ALREADY_EXISTS])
 
             blueprint.apply {
