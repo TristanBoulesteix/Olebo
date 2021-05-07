@@ -21,6 +21,8 @@ inline class Image(val path: String) {
     fun isValid() = !isUnspecified() && File(path).let { it.exists() && it.isFile }
 
     fun isUnspecified() = path.isBlank()
+
+    fun toBitmap() = imageFromFile(File(path))
 }
 
 fun imageFromIconRes(name: String) = imageFromResource("icons/$name.png")

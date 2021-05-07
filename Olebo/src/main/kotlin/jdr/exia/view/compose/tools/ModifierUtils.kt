@@ -1,5 +1,7 @@
 package jdr.exia.view.compose.tools
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
@@ -9,6 +11,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import jdr.exia.view.compose.ui.roundedShape
 
 /**
  * Apply modification to [Modifier] only if condition is true
@@ -130,3 +133,7 @@ private fun DrawScope.drawEndBorder(
         color = borderBuilder.color
     )
 }
+
+@Stable
+fun Modifier.addRoundedBorder() =
+    this.border(border = BorderStroke(2.dp, Color.Black), shape = roundedShape)

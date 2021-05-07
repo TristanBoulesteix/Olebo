@@ -2,16 +2,15 @@
 
 package jdr.exia.view.compose
 
+import androidx.compose.desktop.AppManager
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -20,17 +19,16 @@ import androidx.compose.ui.unit.sp
 import jdr.exia.localization.*
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
+import jdr.exia.model.tools.Image
 import jdr.exia.model.tools.imageFromFile
 import jdr.exia.model.tools.imageFromIconRes
 import jdr.exia.model.tools.savePathToImage
 import jdr.exia.model.utils.Result
 import jdr.exia.model.utils.isCharacter
 import jdr.exia.view.compose.components.*
-import jdr.exia.view.compose.tools.BorderBuilder
-import jdr.exia.view.compose.tools.DefaultFunction
-import jdr.exia.view.compose.tools.applyIf
-import jdr.exia.view.compose.tools.border
+import jdr.exia.view.compose.tools.*
 import jdr.exia.view.compose.ui.blue
+import jdr.exia.view.compose.ui.roundedShape
 import jdr.exia.view.utils.MessageType
 import jdr.exia.view.utils.showMessage
 import jdr.exia.viewModel.ElementsEditorViewModel
@@ -73,6 +71,7 @@ fun ElementsView(onDone: DefaultFunction) = Column {
     )
 }
 
+
 private val ColumnScope.contentModifier
     get() = Modifier.padding(bottom = 20.dp, end = 20.dp, start = 20.dp)
         .background(Color.White)
@@ -92,9 +91,7 @@ private fun Content(innerPadding: PaddingValues, currentType: Type) = Box(modifi
         val blueprintInCreation = viewModel.blueprintInCreation
 
         when {
-            blueprintInCreation != null -> {
-                CreateBlueprint(blueprintInCreation, viewModel::onUpdateBlueprintInCreation)
-            }
+            blueprintInCreation != null -> CreateBlueprint(blueprintInCreation, viewModel::onUpdateBlueprintInCreation)
             viewModel.blueprints.isEmpty() -> {
                 Column(modifier = contentModifier, verticalArrangement = Arrangement.Center) {
                     Text(
@@ -189,20 +186,65 @@ private fun ColumnScope.CreateBlueprint(
     onUpdate: (Blueprint.BlueprintData) -> Unit
 ) = Column(modifier = contentModifier) {
     @Composable
-    fun RowField(content: @Composable RowScope.() -> Unit) = Row(
-        modifier = Modifier.fillMaxWidth().padding(top = 5.dp),
+    fun RowField(modifier: Modifier = Modifier, content: @Composable RowScope.() -> Unit) = Row(
+        modifier = modifier.fillMaxWidth().padding(top = 5.dp),
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically,
         content = content
     )
 
     RowField {
-        Text(StringLocale[STR_NAME])
+        Text(StringLocale[STR_NAME_OF_ELEMENT])
         CustomTextField(value = blueprint.name, onValueChange = { onUpdate(blueprint.copy(name = it)) })
     }
 
-    RowField {
-        Text(StringLocale[STR_IMG])
+    if (blueprint.type != Type.OBJECT) {
+        RowField {
+            Text(StringLocale[STR_MAX_HEALTH])
+            IntTextField(value = blueprint.life ?: 0, onValueChange = { onUpdate(blueprint.copy(life = it)) })
+        }
+
+        RowField {
+            Text(StringLocale[STR_MAX_MANA])
+            IntTextField(value = blueprint.mana ?: 0, onValueChange = { onUpdate(blueprint.copy(mana = it)) })
+        }
+    }
+
+    RowField(modifier = Modifier.height(200.dp).padding(top = 10.dp)) {
+        Button(
+            content = { Text(StringLocale[STR_IMPORT_IMG]) },
+            onClick = {
+                val file = JFileChooser().apply {
+                    this.currentDirectory = File(System.getProperty("user.home"))
+                    this.addChoosableFileFilter(
+                        FileNameExtensionFilter("Images", *ImageIO.getReaderFileSuffixes())
+                    )
+                    this.isAcceptAllFileFilterUsed = false
+                }
+
+                if (file.showSaveDialog(AppManager.focusedWindow?.window) == JFileChooser.APPROVE_OPTION) {
+                    onUpdate(blueprint.copy(img = Image(file.selectedFile.absolutePath)))
+                }
+            },
+            modifier = Modifier.fillMaxWidth(0.30f)
+        )
+
+        val imgExist = !blueprint.img.isUnspecified() && File(blueprint.img.path).let { it.exists() && it.isFile }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.70f)
+                .applyIf(condition = !imgExist, mod = { size(200.dp).clip(roundedShape).addRoundedBorder() })
+        ) {
+            if (imgExist) {
+                Image(
+                    bitmap = blueprint.img.toBitmap(),
+                    contentDescription = null,
+                    modifier = Modifier.sizeIn(maxHeight = 200.dp, maxWidth = 200.dp).clip(roundedShape)
+                        .addRoundedBorder()
+                )
+            }
+        }
     }
 }
 

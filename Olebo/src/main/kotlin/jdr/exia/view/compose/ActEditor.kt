@@ -25,6 +25,7 @@ import jdr.exia.model.tools.imageFromIconRes
 import jdr.exia.view.compose.components.*
 import jdr.exia.view.compose.tools.*
 import jdr.exia.view.compose.ui.blue
+import jdr.exia.view.compose.ui.roundedShape
 import jdr.exia.view.utils.MessageType
 import jdr.exia.view.utils.showMessage
 import jdr.exia.viewModel.ActEditorViewModel
@@ -209,11 +210,6 @@ private fun EditSceneRow(
     ImagePreviewContent(data = data, onUpdateData = { updateData(it) })
 }
 
-private val roundedShape = RoundedCornerShape(20.dp)
-
-private fun Modifier.addBorderWithShape() =
-    this.border(border = BorderStroke(2.dp, Color.Black), shape = roundedShape)
-
 @Composable
 private fun ImagePreviewContent(
     data: Act.SceneData,
@@ -223,14 +219,14 @@ private fun ImagePreviewContent(
 
     Box(
         modifier = Modifier.padding(10.dp).sizeIn(maxWidth = 600.dp, maxHeight = 600.dp)
-            .applyIf(condition = !imgExist, mod = Modifier::addBorderWithShape)
+            .applyIf(condition = !imgExist, mod = Modifier::addRoundedBorder)
             .applyIf(condition = !imgExist, mod = { this.size(600.dp) })
     ) {
         if (imgExist) {
             Image(
                 bitmap = imageFromFile(File(data.img.path)),
                 contentDescription = null,
-                Modifier.clip(roundedShape).addBorderWithShape().align(Alignment.Center)
+                Modifier.clip(roundedShape).addRoundedBorder().align(Alignment.Center)
             )
         }
 
