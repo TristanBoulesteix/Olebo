@@ -34,7 +34,12 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
     var sprite
         get() = _sprite
         set(value) {
-            val oldImg = File(_sprite).takeIf { it.exists() }
+            // TODO : Sorcellerie (Très mauvaise pratique. Ce truc marche mais on ne devrait pas avoir besoin du Try. Changer ce code dès que possible !)
+            val oldImg = try {
+                File(_sprite).takeIf { it.exists() }
+            } catch (e: NullPointerException) {
+                null
+            }
             _sprite = value
             oldImg?.delete()
         }

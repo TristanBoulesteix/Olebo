@@ -40,7 +40,7 @@ class ElementsEditorViewModel(private val type: Type) {
     }
 
     fun onEditConfirmed(data: Blueprint.BlueprintData) = transaction {
-        val blueprint = currentEditBlueprint ?: return@transaction Result.Failure()
+        val blueprint = currentEditBlueprint ?: return@transaction Result.Failure
 
         if (data.isValid() && blueprint.id == data.id) {
             if (blueprintWithNameExist(data.name, data.id))
@@ -64,7 +64,7 @@ class ElementsEditorViewModel(private val type: Type) {
             onEditDone()
 
             Result.Success
-        } else Result.Failure()
+        } else Result.Failure
     }
 
 
@@ -81,7 +81,17 @@ class ElementsEditorViewModel(private val type: Type) {
         currentEditPosition = -1
     }
 
-    fun onSubmitBlueprint() = true
+    fun onSubmitBlueprint(): Result {
+        val blueprint = blueprintInCreation ?: return Result.Failure
+
+        if (!blueprint.isValid())
+            return Result.Failure
+
+        return if (transaction { !blueprintWithNameExist(blueprint.name) }) {
+            blueprint.create()
+            Result.Success
+        } else Result.Failure
+    }
 
     private fun blueprintWithNameExist(name: String, excludedId: EntityID<Int>? = null) =
         blueprints.filter { it.type.typeElement == type && (excludedId == null || it.id != excludedId) }
@@ -91,6 +101,23 @@ class ElementsEditorViewModel(private val type: Type) {
         delete()
         blueprints = blueprints.toMutableList().also {
             it -= this@remove
+        }
+    }
+
+    private fun (Blueprint.BlueprintData).create() = transaction {
+        val blueprint = Blueprint.new {
+            this.type = this@create.type.type
+            this.name = this@create. name
+            if (this@create.type != Type.OBJECT) {
+                this.HP = this@create.life!!
+                this.MP = this@create.mana!!
+            }
+
+            this.sprite = this@create.img.saveImgAndGetPath()
+        }
+
+        blueprints = blueprints.toMutableList().also {
+            it += blueprint
         }
     }
 }

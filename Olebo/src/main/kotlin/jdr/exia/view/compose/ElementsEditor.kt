@@ -159,10 +159,9 @@ private fun HeaderContent(
                         ImageButtonBuilder(
                             content = imageFromIconRes("confirm_icon"),
                             onClick = {
-                                if (viewModel.onSubmitBlueprint()) {
-                                    viewModel.cancelBluprintCreation()
-                                } else {
-                                    showMessage(
+                                when (viewModel.onSubmitBlueprint()) {
+                                    is Result.Success -> viewModel.cancelBluprintCreation()
+                                    else -> showMessage(
                                         StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID],
                                         messageType = MessageType.WARNING
                                     )
@@ -353,23 +352,14 @@ private fun Blueprint.BlueprintData?.getButtons(
     )
 }
 
-private fun Blueprint.BlueprintData.submitData(viewModel: ElementsEditorViewModel) {
+private fun (Blueprint.BlueprintData).submitData(viewModel: ElementsEditorViewModel) {
     when (val result = viewModel.onEditConfirmed(this)) {
-        is Result.Failure -> {
-            result.message.let {
-                if (it != null) {
-                    showMessage(it, messageType = MessageType.WARNING)
-                } else {
-                    showMessage(StringLocale[ST_UNKNOWN_ERROR], messageType = MessageType.WARNING)
-                    viewModel.onEditDone()
-                }
-            }
-        }
+        is Result.Failure -> showMessage(result.message, messageType = MessageType.WARNING)
         else -> viewModel.onEditDone()
     }
 }
 
-private inline fun Blueprint.BlueprintData.updateImage(crossinline onUpdate: (Blueprint.BlueprintData) -> Unit) {
+private inline fun (Blueprint.BlueprintData).updateImage(crossinline onUpdate: (Blueprint.BlueprintData) -> Unit) {
     transaction {
         val file = JFileChooser().apply {
             this.currentDirectory = File(System.getProperty("user.home"))
@@ -379,7 +369,7 @@ private inline fun Blueprint.BlueprintData.updateImage(crossinline onUpdate: (Bl
             this.isAcceptAllFileFilterUsed = false
         }
 
-        val result = file.showSaveDialog(null) // TODO : Add parent
+        val result = file.showSaveDialog(null)
 
         if (result == JFileChooser.APPROVE_OPTION) {
             val selectedFile = file.selectedFile
