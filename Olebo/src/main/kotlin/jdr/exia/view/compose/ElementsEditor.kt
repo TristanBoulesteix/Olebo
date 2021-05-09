@@ -43,6 +43,8 @@ import javax.swing.filechooser.FileNameExtensionFilter
 fun ElementsView(onDone: DefaultFunction) = Column {
     val tabViewModel = remember { ElementsTabViewModel() }
 
+    val contentViewModel = remember(tabViewModel.currentTab) { ElementsEditorViewModel(tabViewModel.currentTab) }
+
     Scaffold(
         backgroundColor = blue,
         topBar = {
@@ -61,16 +63,22 @@ fun ElementsView(onDone: DefaultFunction) = Column {
                 }
             }
         },
-        content = { Content(it, tabViewModel.currentTab) },
+        content = {
+            Content(
+                viewModel = contentViewModel,
+                innerPadding = it,
+                currentType = tabViewModel.currentTab
+            )
+        },
         bottomBar = {
             FooterRow(
                 lazyResult = lazy { Result.Success },
-                onDone = onDone
+                isEnabled = contentViewModel.blueprintInCreation == null,
+                onDone = if (contentViewModel.blueprintInCreation == null) onDone else contentViewModel::cancelBluprintCreation
             )
         }
     )
 }
-
 
 private val ColumnScope.contentModifier
     get() = Modifier.padding(bottom = 20.dp, end = 20.dp, start = 20.dp)
@@ -80,37 +88,39 @@ private val ColumnScope.contentModifier
         .border(BorderBuilder.defaultBorder)
 
 @Composable
-private fun Content(innerPadding: PaddingValues, currentType: Type) = Box(modifier = Modifier.padding(innerPadding)) {
-    val viewModel = remember(currentType) { ElementsEditorViewModel(currentType) }
+private fun Content(viewModel: ElementsEditorViewModel, innerPadding: PaddingValues, currentType: Type) =
+    Box(modifier = Modifier.padding(innerPadding)) {
+        Column(modifier = Modifier.fillMaxSize().padding(15.dp)) {
+            val headerScrollState = rememberScrollState()
 
-    Column(modifier = Modifier.fillMaxSize().padding(15.dp)) {
-        val headerScrollState = rememberScrollState()
+            HeaderContent(headerScrollState, currentType, viewModel)
 
-        HeaderContent(headerScrollState, currentType, viewModel)
+            val blueprintInCreation = viewModel.blueprintInCreation
 
-        val blueprintInCreation = viewModel.blueprintInCreation
-
-        when {
-            blueprintInCreation != null -> CreateBlueprint(blueprintInCreation, viewModel::onUpdateBlueprintInCreation)
-            viewModel.blueprints.isEmpty() -> {
-                Column(modifier = contentModifier, verticalArrangement = Arrangement.Center) {
-                    Text(
-                        text = StringLocale[STR_NO_ELEMENT],
-                        modifier = Modifier.align(Alignment.CenterHorizontally),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 30.sp
-                    )
-                    OutlinedButton(
-                        onClick = viewModel::startBlueprintCreation,
-                        content = { Text(StringLocale[STR_ADD_ELEMENT]) },
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
-                    )
+            when {
+                blueprintInCreation != null -> CreateBlueprint(
+                    blueprintInCreation,
+                    viewModel::onUpdateBlueprintInCreation
+                )
+                viewModel.blueprints.isEmpty() -> {
+                    Column(modifier = contentModifier, verticalArrangement = Arrangement.Center) {
+                        Text(
+                            text = StringLocale[STR_NO_ELEMENT],
+                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 30.sp
+                        )
+                        OutlinedButton(
+                            onClick = viewModel::startBlueprintCreation,
+                            content = { Text(StringLocale[STR_ADD_ELEMENT]) },
+                            modifier = Modifier.align(Alignment.CenterHorizontally)
+                        )
+                    }
                 }
+                else -> ScrolableContent(viewModel)
             }
-            else -> ScrolableContent(viewModel)
         }
     }
-}
 
 @Composable
 private fun HeaderContent(

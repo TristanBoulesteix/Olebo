@@ -107,7 +107,7 @@ class ElementsEditorViewModel(private val type: Type) {
     private fun (Blueprint.BlueprintData).create() = transaction {
         val blueprint = Blueprint.new {
             this.type = this@create.type.type
-            this.name = this@create. name
+            this.name = this@create.name
             if (this@create.type != Type.OBJECT) {
                 this.HP = this@create.life!!
                 this.MP = this@create.mana!!
