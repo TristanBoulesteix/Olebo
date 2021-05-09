@@ -34,7 +34,7 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
     var sprite
         get() = _sprite
         set(value) {
-            val oldImg = if(id._value != null)File(_sprite).takeIf { it.exists() } else null
+            val oldImg = if (id._value != null) File(_sprite).takeIf { it.exists() } else null
             _sprite = value
             oldImg?.delete()
         }
