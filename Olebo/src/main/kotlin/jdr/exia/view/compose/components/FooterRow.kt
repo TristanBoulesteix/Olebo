@@ -32,7 +32,7 @@ fun FooterRow(
     OutlinedButton(
         onClick = {
             when (val result = lazyResult.value) {
-                is Result.Failure -> result.message?.let { showMessage(message = it, messageType = MessageType.WARNING) }
+                is Result.Failure -> showMessage(message = result.message, messageType = MessageType.WARNING)
                 is Result.Success -> onDone()
             }
         },
