@@ -17,7 +17,7 @@ repositories {
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
 }
 
-val exposedVersion = "0.29.1"
+val exposedVersion = "0.31.1"
 
 dependencies {
     testImplementation("junit", "junit", "4.12")
