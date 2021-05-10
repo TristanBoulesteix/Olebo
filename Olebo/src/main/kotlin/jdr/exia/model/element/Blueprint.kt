@@ -92,7 +92,7 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
         companion object {
             fun defaultObject() = BlueprintData("", Image.unspecified)
 
-            fun defaultCharacter() = BlueprintData("", Image.unspecified, 0, 0, Type.PNJ)
+            fun defaultCharacter(type: Type) = BlueprintData("", Image.unspecified, 0, 0, type)
         }
     }
 }

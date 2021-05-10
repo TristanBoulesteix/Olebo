@@ -70,7 +70,7 @@ class ElementsEditorViewModel(private val type: Type) {
 
     fun startBlueprintCreation() {
         blueprintInCreation =
-            Blueprint.BlueprintData.let { if (type == Type.OBJECT) it.defaultObject() else it.defaultCharacter() }
+            Blueprint.BlueprintData.let { if (type == Type.OBJECT) it.defaultObject() else it.defaultCharacter(type) }
     }
 
     fun cancelBluprintCreation() {
