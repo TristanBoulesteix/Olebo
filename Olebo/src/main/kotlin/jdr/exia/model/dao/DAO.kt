@@ -10,7 +10,6 @@ import jdr.exia.view.utils.windowAncestor
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
@@ -113,19 +112,6 @@ object DAO {
             arrayOf(update, reset, exit),
             exit
         )
-    }
-
-    /**
-     * Get all acts stored into the database.
-     *
-     * Acts are stored as pairs. The first part is the ID and the second is the name
-     */
-    fun getActsList(): Array<Pair<String, String>> {
-        return transaction {
-            ActTable.slice(ActTable.id, ActTable.name).selectAll().map {
-                it[ActTable.id].toString() to it[ActTable.name]
-            }.toTypedArray()
-        }
     }
 
 }
