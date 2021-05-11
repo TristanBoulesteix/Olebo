@@ -94,6 +94,7 @@ class FileMenu : JMenu(StringLocale[STR_FILES]) {
         }
 
         JMenuItem(StringLocale[STR_TAKE_SCREENSHOT]).applyAndAddTo(this) {
+            this.isEnabled = false // TODO: Make it work with Jetpack Compose
             this.addActionListener {
                 val parent = this@FileMenu.windowAncestor
                 JFileChooser().apply {
