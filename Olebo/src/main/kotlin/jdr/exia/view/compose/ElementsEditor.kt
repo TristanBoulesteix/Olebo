@@ -71,11 +71,21 @@ fun ElementsView(onDone: DefaultFunction) = Column {
             )
         },
         bottomBar = {
-            FooterRow(
-                lazyResult = lazy { Result.Success },
-                isEnabled = contentViewModel.blueprintInCreation == null,
-                onDone = if (contentViewModel.blueprintInCreation == null) onDone else contentViewModel::cancelBluprintCreation
-            )
+            Box(
+                contentAlignment = Alignment.TopCenter,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 15.dp).padding(bottom = 20.dp)
+            ) {
+                OutlinedButton(
+                    onClick = when {
+                        contentViewModel.currentEditBlueprint != null -> contentViewModel::onEditDone
+                        contentViewModel.blueprintInCreation != null -> contentViewModel::cancelBluprintCreation
+                        else -> onDone
+                    },
+                    content = {
+                        Text(text = StringLocale[if (contentViewModel.currentEditBlueprint == null && contentViewModel.blueprintInCreation == null) STR_BACK else STR_CANCEL])
+                    }
+                )
+            }
         }
     )
 }

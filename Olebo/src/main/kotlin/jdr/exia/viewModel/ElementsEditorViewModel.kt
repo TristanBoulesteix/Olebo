@@ -67,7 +67,6 @@ class ElementsEditorViewModel(private val type: Type) {
         } else Result.Failure
     }
 
-
     fun startBlueprintCreation() {
         blueprintInCreation =
             Blueprint.BlueprintData.let { if (type == Type.OBJECT) it.defaultObject() else it.defaultCharacter(type) }
