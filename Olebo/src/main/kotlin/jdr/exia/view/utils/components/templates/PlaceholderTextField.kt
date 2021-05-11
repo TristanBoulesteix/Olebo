@@ -14,8 +14,6 @@ class PlaceholderTextField(private var placeholder: String, fontSize: Int = 20) 
         this.font = Font("Tahoma", Font.BOLD, fontSize)
     }
 
-    constructor(placeholder: Any, fontSize: Int = 20) : this(placeholder.toString(), fontSize)
-
     override fun paintComponent(pG: Graphics) {
         super.paintComponent(pG)
 

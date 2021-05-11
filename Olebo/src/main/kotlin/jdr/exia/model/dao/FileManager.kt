@@ -8,7 +8,6 @@ import java.io.FileOutputStream
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
-import javax.swing.ImageIcon
 
 const val OLEBO_MANIFEST_EXTENSION = "o_manifest"
 const val OLEBO_MANIFEST_NAME = "manifest.$OLEBO_MANIFEST_EXTENSION"
@@ -19,16 +18,6 @@ const val OLEBO_MANIFEST_NAME = "manifest.$OLEBO_MANIFEST_EXTENSION"
 val OLEBO_DIRECTORY = "${appDatas}Olebo${File.separator}"
 
 val updaterPath = "${OLEBO_DIRECTORY}oleboUpdater.jar"
-
-/**
- * Get icon from name in ressources
- *
- * @param name The name of the ressource
- * @param clazz The class of the controller / the object which the ressource
- * @param extension (optionnal) The extension of the picture. The defaut extension is ".png"
- */
-fun getIcon(name: String, clazz: Class<*>, extension: String = ".png"): ImageIcon =
-    ImageIcon(clazz.classLoader.getResource("icons/$name$extension"))
 
 /**
  * Get the appdata path depending on the pateform.

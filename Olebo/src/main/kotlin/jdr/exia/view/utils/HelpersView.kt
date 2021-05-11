@@ -63,18 +63,6 @@ fun gridBagConstraintsOf(
     insets?.let { this.insets = it }
 }
 
-fun GridBagConstraints.copy(
-    gridx: Int? = this.gridx,
-    gridy: Int? = this.gridy,
-    gridHeight: Int? = this.gridheight,
-    gridWidth: Int? = this.gridwidth,
-    weightx: Double? = this.weightx,
-    weighty: Double? = this.weighty,
-    fill: Int = this.fill,
-    anchor: Int = this.anchor,
-    insets: Insets? = this.insets
-) = gridBagConstraintsOf(gridx, gridy, gridHeight, gridWidth, weightx, weighty, fill, anchor, insets)
-
 val Component.windowAncestor: Window?
     inline get() = SwingUtilities.getWindowAncestor(this)
 

@@ -34,23 +34,6 @@ fun imageFromFile(file: File) = SkijaImage.makeFromEncoded(file.readBytes()).asI
  *
  * @param path The path of the picture to save
  */
-fun saveImg(path: String): String {
-    val img = File.createTempFile(
-        "img_",
-        "_background.png",
-        File(imgPath).apply { this.mkdirs() }
-    )
-
-    File(path).copyTo(img, true)
-
-    return img.absolutePath
-}
-
-/**
- * Save a picture to img folder
- *
- * @param path The path of the picture to save
- */
 fun savePathToImage(path: String, suffix: String = "background"): Image {
     val img = File.createTempFile(
         "img_",

@@ -1,17 +1,12 @@
 package jdr.exia.model.dao
 
 import jdr.exia.localization.*
-import jdr.exia.model.act.Act
-import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
-import jdr.exia.model.element.Type
 import jdr.exia.updater.forceUpdateAndRestart
 import jdr.exia.updater.runJar
 import jdr.exia.utils.DatabaseException
-import jdr.exia.utils.MessageException
 import jdr.exia.view.utils.showConfirmMessage
 import jdr.exia.view.utils.windowAncestor
-import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.select
@@ -133,38 +128,4 @@ object DAO {
         }
     }
 
-    /**
-     * Get an instance of a selected act with its ID
-     */
-    fun getActWithId(idAct: Int): Act {
-        return transaction {
-            Act.findById(idAct) ?: throw MessageException(StringLocale[ST_ERROR_ACT_NOT_EXISTS])
-        }
-    }
-
-    /**
-     * Get all elements with a given type
-     *
-     * @param type The wanted type of elements
-     *
-     * @return A MutableList of Blueprints
-     */
-    fun getElementsWithType(type: Type): MutableList<Blueprint> {
-        return transaction {
-            Blueprint.find {
-                BlueprintTable.idType eq type.type.id.value
-            }.toCollection(mutableListOf())
-        }
-    }
-
-    /**
-     * Delete an element in the database
-     *
-     * @param entity The entity to delete
-     */
-    fun deleteEntity(entity: Entity<Int>) {
-        transaction {
-            entity.delete()
-        }
-    }
 }
