@@ -27,6 +27,7 @@ import jdr.exia.view.compose.tools.border
 import jdr.exia.view.compose.tools.withSetter
 import jdr.exia.view.compose.ui.OleboTheme
 import jdr.exia.view.compose.ui.blue
+import jdr.exia.view.frames.rpg.MasterFrame
 import jdr.exia.view.utils.components.FileMenu
 import jdr.exia.viewModel.HomeViewModel
 import java.awt.Dimension
@@ -121,7 +122,10 @@ class HomeFrame : JFrame("Olebo - ${StringLocale[STR_VERSION]} $OLEBO_VERSION") 
                 ColumnItem(items = acts) { act ->
                     ContentListRow(
                         contentText = act.name,
-                        onClick = { onRowClick(act) },
+                        onClick = {
+                            onRowClick(act)
+                            dispose()
+                        },
                         buttonBuilders = listOf(
                             ImageButtonBuilder(content = imageFromIconRes("edit_icon"), onClick = { onEdit(act) }),
                             ImageButtonBuilder(content = imageFromIconRes("delete_icon"), onClick = { onDelete(act) })
@@ -130,5 +134,10 @@ class HomeFrame : JFrame("Olebo - ${StringLocale[STR_VERSION]} $OLEBO_VERSION") 
                 }
             }
         }
+    }
+
+    override fun dispose() {
+        MasterFrame.dispose()
+        super.dispose()
     }
 }
