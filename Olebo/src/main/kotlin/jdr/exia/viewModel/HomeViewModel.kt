@@ -2,8 +2,6 @@
 
 package jdr.exia.viewModel
 
-import androidx.compose.desktop.AppFrame
-import androidx.compose.desktop.AppManager
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -52,7 +50,6 @@ class HomeViewModel {
                     ViewManager.initializeAct(act)
                     yield()
                     popup.dispose()
-                    AppManager.windows.forEach(AppFrame::close)
                     MasterFrame.requestFocus()
                 } catch (e: TimeoutCancellationException) {
                     popup.dispose()
