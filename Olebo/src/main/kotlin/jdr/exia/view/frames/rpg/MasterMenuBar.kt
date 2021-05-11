@@ -7,8 +7,7 @@ import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.toElements
 import jdr.exia.utils.forElse
-import jdr.exia.view.frames.home.BlueprintsDialog
-import jdr.exia.view.frames.home.HomeFrame
+import jdr.exia.view.compose.HomeFrame
 import jdr.exia.view.utils.*
 import jdr.exia.view.utils.components.FileMenu
 import jdr.exia.viewModel.ViewManager
@@ -133,7 +132,7 @@ object MasterMenuBar : JMenuBar() {
         JMenu(StringLocale[STR_TOKENS]).applyAndAddTo(this) {
             JMenuItem(StringLocale[STR_MANAGE_BLUEPRINTS]).applyAndAddTo(this) {
                 addActionListener {
-                    BlueprintsDialog(windowAncestor).isVisible = true
+                    // TODO BlueprintsDialog(windowAncestor).isVisible = true
                     ViewManager.unselectAllElements()
                     ViewManager.repaint()
                 }

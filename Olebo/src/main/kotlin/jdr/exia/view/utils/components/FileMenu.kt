@@ -7,8 +7,8 @@ import jdr.exia.model.dao.loadOleboZipData
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.dao.zipOleboDirectory
 import jdr.exia.utils.Result
+import jdr.exia.view.compose.HomeFrame
 import jdr.exia.view.frames.OptionDialog
-import jdr.exia.view.frames.home.HomeFrame
 import jdr.exia.view.frames.rpg.MasterFrame
 import jdr.exia.view.frames.rpg.PlayerFrame
 import jdr.exia.view.utils.*

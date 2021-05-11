@@ -9,7 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
-import jdr.exia.view.frames.home.HomeFrame
+import jdr.exia.view.compose.HomeFrame
 import jdr.exia.view.frames.rpg.MasterFrame
 import jdr.exia.view.utils.MessageType
 import jdr.exia.view.utils.showConfirmMessage
