@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.isValidAndEqualTo
-import jdr.exia.model.tools.imageFromFile
-import jdr.exia.model.tools.imageFromIconRes
+import jdr.exia.model.type.imageFromFile
+import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.view.components.*
 import jdr.exia.view.ui.blue
 import jdr.exia.view.tools.*
@@ -33,7 +33,7 @@ import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
-import jdr.exia.model.tools.Image as Img
+import jdr.exia.model.type.Image as Img
 
 @Composable
 fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {

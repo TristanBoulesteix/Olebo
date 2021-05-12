@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.dao.BlueprintTable
 import jdr.exia.model.dao.InstanceTable
-import jdr.exia.model.tools.Image
+import jdr.exia.model.type.Image
 import jdr.exia.model.utils.isCharacter
 import jdr.exia.utils.CharacterException
 import org.jetbrains.exposed.dao.Entity

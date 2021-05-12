@@ -19,10 +19,10 @@ import androidx.compose.ui.unit.sp
 import jdr.exia.localization.*
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
-import jdr.exia.model.tools.Image
-import jdr.exia.model.tools.imageFromFile
-import jdr.exia.model.tools.imageFromIconRes
-import jdr.exia.model.tools.savePathToImage
+import jdr.exia.model.type.Image
+import jdr.exia.model.type.imageFromFile
+import jdr.exia.model.type.imageFromIconRes
+import jdr.exia.model.type.savePathToImage
 import jdr.exia.model.utils.Result
 import jdr.exia.model.utils.isCharacter
 import jdr.exia.view.components.*
