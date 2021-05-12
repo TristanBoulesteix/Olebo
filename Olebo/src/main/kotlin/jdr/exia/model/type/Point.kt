@@ -1,4 +1,4 @@
-package jdr.exia.model.tools
+package jdr.exia.model.type
 
 import java.awt.Rectangle
 import java.awt.Point as JPoint

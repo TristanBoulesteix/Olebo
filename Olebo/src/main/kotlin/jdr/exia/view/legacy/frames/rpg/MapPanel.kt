@@ -7,7 +7,7 @@ import jdr.exia.model.element.Element
 import jdr.exia.model.element.Elements
 import jdr.exia.model.element.Size
 import jdr.exia.model.element.emptyElements
-import jdr.exia.model.tools.Point
+import jdr.exia.model.type.Point
 import jdr.exia.view.legacy.utils.compareTo
 import jdr.exia.view.legacy.utils.drawCircleWithCenterCoordinates
 import jdr.exia.view.legacy.utils.event.addMouseExitedListener

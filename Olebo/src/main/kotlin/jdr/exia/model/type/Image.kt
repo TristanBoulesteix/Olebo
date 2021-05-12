@@ -1,4 +1,4 @@
-package jdr.exia.model.tools
+package jdr.exia.model.type
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
