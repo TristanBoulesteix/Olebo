@@ -1,7 +1,6 @@
 package jdr.exia.view
 
 import androidx.compose.desktop.ComposePanel
-import androidx.compose.desktop.DesktopMaterialTheme
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.OutlinedButton
@@ -23,14 +22,14 @@ import jdr.exia.view.element.ContentListRow
 import jdr.exia.view.element.HeaderRow
 import jdr.exia.view.element.ImageButtonBuilder
 import jdr.exia.view.element.ScrollableColumn
+import jdr.exia.view.legacy.frames.rpg.MasterFrame
+import jdr.exia.view.menubar.FileMenu
 import jdr.exia.view.tools.BorderBuilder
 import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.border
 import jdr.exia.view.tools.withSetter
-import jdr.exia.view.ui.OleboTheme
 import jdr.exia.view.ui.blue
-import jdr.exia.view.legacy.frames.rpg.MasterFrame
-import jdr.exia.view.menubar.FileMenu
+import jdr.exia.view.ui.setThemedContent
 import jdr.exia.viewModel.HomeViewModel
 import java.awt.Dimension
 import javax.swing.JFrame
@@ -51,17 +50,13 @@ class HomeWindow : JFrame("Olebo - ${StringLocale[STR_VERSION]} $OLEBO_VERSION")
         this.jMenuBar = JMenuBar().apply { add(FileMenu()) }
 
         this.contentPane = ComposePanel().apply {
-            setContent {
-                OleboTheme {
-                    DesktopMaterialTheme {
-                        MainContent(
-                            acts = viewModel.acts,
-                            refreshAct = viewModel::refreshActs,
-                            onRowClick = viewModel::launchAct,
-                            onDeleteAct = viewModel::deleteAct
-                        )
-                    }
-                }
+            setThemedContent {
+                MainContent(
+                    acts = viewModel.acts,
+                    refreshAct = viewModel::refreshActs,
+                    onRowClick = viewModel::launchAct,
+                    onDeleteAct = viewModel::deleteAct
+                )
             }
         }
 
