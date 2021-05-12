@@ -8,11 +8,10 @@ import androidx.compose.runtime.setValue
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.view.HomeWindow
-import jdr.exia.view.legacy.frames.rpg.MasterFrame
+import jdr.exia.view.MasterWindow
 import jdr.exia.view.tools.MessageType
 import jdr.exia.view.tools.showConfirmMessage
 import jdr.exia.view.tools.showMessage
-import jdr.exia.viewModel.legacy.ViewManager
 import kotlinx.coroutines.*
 import kotlinx.coroutines.swing.Swing
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -48,10 +47,11 @@ class HomeViewModel {
         val job = launch(Dispatchers.Swing) {
             withTimeout(120_000) {
                 try {
-                    ViewManager.initializeAct(act)
+                    // TODO : Add cancelation to MasterWindow initilization
+                    val masterWindow = MasterWindow(act).also { it.isVisible = true }
                     yield()
                     popup.dispose()
-                    MasterFrame.requestFocus()
+                    masterWindow.requestFocus()
                 } catch (e: TimeoutCancellationException) {
                     popup.dispose()
                     showMessage("${StringLocale[STR_ERROR]}: ${e.message}", null, MessageType.ERROR)

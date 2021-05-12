@@ -17,7 +17,7 @@ class MasterWindow(act: Act) : JFrame() {
         this.size = DIMENSION_FRAME
         this.isFocusable = true
         this.defaultCloseOperation = EXIT_ON_CLOSE
-        this.jMenuBar = MasterMenuBar
+        this.jMenuBar = MasterMenuBar(act)
 
         // Add content
         val itemConstraints = gridBagConstraintsOf(
