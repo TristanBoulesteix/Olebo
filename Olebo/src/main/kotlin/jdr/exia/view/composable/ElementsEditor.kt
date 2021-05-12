@@ -26,8 +26,6 @@ import jdr.exia.model.type.savePathToImage
 import jdr.exia.model.utils.Result
 import jdr.exia.model.utils.isCharacter
 import jdr.exia.view.element.*
-import jdr.exia.view.legacy.utils.MessageType
-import jdr.exia.view.legacy.utils.showMessage
 import jdr.exia.view.tools.*
 import jdr.exia.view.ui.blue
 import jdr.exia.view.ui.roundedShape

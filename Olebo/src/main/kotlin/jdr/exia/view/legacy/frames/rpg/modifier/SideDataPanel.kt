@@ -7,7 +7,7 @@ import jdr.exia.localization.StringLocale
 import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.view.legacy.frames.Reloadable
-import jdr.exia.view.legacy.utils.DEFAULT_INSET
+import jdr.exia.view.ui.DEFAULT_INSET
 import jdr.exia.view.legacy.utils.components.filter.MaxCharFilter
 import jdr.exia.view.legacy.utils.components.templates.ComboSelectPanel
 import jdr.exia.view.legacy.utils.components.templates.PlaceholderTextField

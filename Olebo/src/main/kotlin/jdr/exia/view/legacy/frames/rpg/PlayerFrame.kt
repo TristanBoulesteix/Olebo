@@ -5,7 +5,8 @@ import jdr.exia.localization.StringLocale
 import jdr.exia.model.element.Elements
 import jdr.exia.model.element.emptyElements
 import jdr.exia.view.legacy.frames.Reloadable
-import jdr.exia.view.legacy.utils.DIMENSION_FRAME
+import jdr.exia.view.legacy.utils.components.MasterMenuBar
+import jdr.exia.view.ui.DIMENSION_FRAME
 import jdr.exia.view.legacy.utils.event.addKeyPressedListener
 import jdr.exia.view.legacy.utils.screens
 import java.awt.Color

@@ -1,4 +1,4 @@
-package jdr.exia.view.legacy.frames.rpg
+package jdr.exia.view.legacy.utils.components
 
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
@@ -8,8 +8,12 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.toElements
 import jdr.exia.model.utils.forElse
 import jdr.exia.view.HomeWindow
+import jdr.exia.view.legacy.frames.rpg.MasterFrame
+import jdr.exia.view.legacy.frames.rpg.PlayerFrame
 import jdr.exia.view.legacy.utils.*
-import jdr.exia.view.legacy.utils.components.FileMenu
+import jdr.exia.view.tools.showConfirmMessage
+import jdr.exia.view.ui.CTRL
+import jdr.exia.view.ui.CTRLSHIFT
 import jdr.exia.viewModel.legacy.ViewManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.event.ItemEvent

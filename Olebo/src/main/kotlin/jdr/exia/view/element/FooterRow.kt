@@ -16,8 +16,8 @@ import jdr.exia.localization.STR_CONFIRM
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.utils.Result
 import jdr.exia.view.tools.DefaultFunction
-import jdr.exia.view.legacy.utils.MessageType
-import jdr.exia.view.legacy.utils.showMessage
+import jdr.exia.view.tools.MessageType
+import jdr.exia.view.tools.showMessage
 
 @Composable
 fun FooterRow(

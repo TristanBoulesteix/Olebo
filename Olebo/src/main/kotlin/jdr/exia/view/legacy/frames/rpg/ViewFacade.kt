@@ -4,6 +4,7 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Elements
 import jdr.exia.model.element.emptyElements
+import jdr.exia.view.legacy.utils.components.MasterMenuBar
 import java.io.File
 import javax.imageio.ImageIO
 

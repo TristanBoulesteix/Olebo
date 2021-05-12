@@ -5,9 +5,9 @@ import jdr.exia.model.element.emptyElements
 import jdr.exia.view.legacy.frames.rpg.modifier.PriorityCombo
 import jdr.exia.view.legacy.frames.rpg.modifier.SideDataPanel
 import jdr.exia.view.legacy.frames.rpg.modifier.SizeCombo
-import jdr.exia.view.legacy.utils.BACKGROUND_COLOR_SELECT_PANEL
-import jdr.exia.view.legacy.utils.DEFAULT_INSET
-import jdr.exia.view.legacy.utils.DIMENSION_BUTTON_DEFAULT
+import jdr.exia.view.ui.BACKGROUND_COLOR_SELECT_PANEL
+import jdr.exia.view.ui.DEFAULT_INSET
+import jdr.exia.view.ui.DIMENSION_BUTTON_DEFAULT
 import jdr.exia.view.legacy.utils.components.templates.StatsLabel
 import jdr.exia.view.legacy.utils.gridBagConstraintsOf
 import jdr.exia.viewModel.legacy.ViewManager
