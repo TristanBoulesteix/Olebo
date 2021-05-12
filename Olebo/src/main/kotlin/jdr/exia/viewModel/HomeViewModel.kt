@@ -12,6 +12,7 @@ import jdr.exia.view.legacy.frames.rpg.MasterFrame
 import jdr.exia.view.legacy.utils.MessageType
 import jdr.exia.view.legacy.utils.showConfirmMessage
 import jdr.exia.view.legacy.utils.showMessage
+import jdr.exia.viewModel.legacy.ViewManager
 import kotlinx.coroutines.*
 import kotlinx.coroutines.swing.Swing
 import org.jetbrains.exposed.sql.transactions.transaction

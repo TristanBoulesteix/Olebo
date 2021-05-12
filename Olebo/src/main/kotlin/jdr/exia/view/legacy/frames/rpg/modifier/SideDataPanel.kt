@@ -14,7 +14,7 @@ import jdr.exia.view.legacy.utils.components.templates.PlaceholderTextField
 import jdr.exia.view.legacy.utils.event.addFocusGainedListener
 import jdr.exia.view.legacy.utils.event.addTextChangedListener
 import jdr.exia.view.legacy.utils.gridBagConstraintsOf
-import jdr.exia.viewModel.ViewManager
+import jdr.exia.viewModel.legacy.ViewManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

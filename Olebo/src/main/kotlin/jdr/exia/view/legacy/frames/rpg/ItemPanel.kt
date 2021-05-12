@@ -9,7 +9,7 @@ import jdr.exia.view.legacy.utils.components.templates.PlaceholderTextField
 import jdr.exia.view.legacy.utils.event.ClickListener
 import jdr.exia.view.legacy.utils.event.addClickListener
 import jdr.exia.view.legacy.utils.event.addTextChangedListener
-import jdr.exia.viewModel.ViewManager
+import jdr.exia.viewModel.legacy.ViewManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.*
 import java.io.File

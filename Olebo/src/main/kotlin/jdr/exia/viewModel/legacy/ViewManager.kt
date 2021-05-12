@@ -1,4 +1,4 @@
-package jdr.exia.viewModel
+package jdr.exia.viewModel.legacy
 
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
@@ -184,7 +184,7 @@ object ViewManager {
             unSelectElements()
         }
 
-        this.selectedElements = selectedElements
+        ViewManager.selectedElements = selectedElements
     }
 
     fun selectUp() = with(activeScene!!) {

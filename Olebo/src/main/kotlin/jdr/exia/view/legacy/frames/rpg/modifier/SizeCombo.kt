@@ -4,7 +4,7 @@ import jdr.exia.localization.STR_SIZE_COMBO_TOOLTIP
 import jdr.exia.model.element.Elements
 import jdr.exia.model.element.Size
 import jdr.exia.view.legacy.utils.components.templates.ComboSelectPanel
-import jdr.exia.viewModel.ViewManager
+import jdr.exia.viewModel.legacy.ViewManager
 
 class SizeCombo(items: Elements? = null) :
     ComboSelectPanel(arrayOf("XS", "S", "M", "L", "XL", "XXL"), items, STR_SIZE_COMBO_TOOLTIP) {

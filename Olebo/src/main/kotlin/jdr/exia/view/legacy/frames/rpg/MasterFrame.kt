@@ -7,7 +7,7 @@ import jdr.exia.model.element.emptyElements
 import jdr.exia.view.legacy.utils.DIMENSION_FRAME
 import jdr.exia.view.legacy.utils.event.addKeyPressedListener
 import jdr.exia.view.legacy.utils.gridBagConstraintsOf
-import jdr.exia.viewModel.ViewManager
+import jdr.exia.viewModel.legacy.ViewManager
 import java.awt.Color
 import java.awt.Dimension
 import java.awt.GridBagConstraints

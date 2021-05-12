@@ -15,7 +15,7 @@ import jdr.exia.view.legacy.utils.event.addMouseMovedListener
 import jdr.exia.view.legacy.utils.event.addMouseReleasedListener
 import jdr.exia.view.legacy.utils.fillCircleWithCenterCoordinates
 import jdr.exia.view.legacy.utils.getTokenFromPosition
-import jdr.exia.viewModel.ViewManager
+import jdr.exia.viewModel.legacy.ViewManager
 import kotlinx.coroutines.*
 import kotlinx.coroutines.swing.Swing
 import java.awt.*

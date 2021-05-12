@@ -10,7 +10,7 @@ import jdr.exia.view.legacy.utils.DEFAULT_INSET
 import jdr.exia.view.legacy.utils.DIMENSION_BUTTON_DEFAULT
 import jdr.exia.view.legacy.utils.components.templates.StatsLabel
 import jdr.exia.view.legacy.utils.gridBagConstraintsOf
-import jdr.exia.viewModel.ViewManager
+import jdr.exia.viewModel.legacy.ViewManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.*
 import javax.swing.JButton

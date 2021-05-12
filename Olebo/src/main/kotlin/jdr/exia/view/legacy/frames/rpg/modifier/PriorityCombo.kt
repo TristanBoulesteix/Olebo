@@ -4,7 +4,7 @@ import jdr.exia.localization.*
 import jdr.exia.model.element.Elements
 import jdr.exia.model.element.Priority
 import jdr.exia.view.legacy.utils.components.templates.ComboSelectPanel
-import jdr.exia.viewModel.ViewManager
+import jdr.exia.viewModel.legacy.ViewManager
 
 class PriorityCombo(items: Elements? = null) :
     ComboSelectPanel(

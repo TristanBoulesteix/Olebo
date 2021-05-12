@@ -10,7 +10,7 @@ import jdr.exia.model.utils.forElse
 import jdr.exia.view.HomeFrame
 import jdr.exia.view.legacy.utils.*
 import jdr.exia.view.legacy.utils.components.FileMenu
-import jdr.exia.viewModel.ViewManager
+import jdr.exia.viewModel.legacy.ViewManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.event.ItemEvent
 import java.awt.event.KeyEvent
