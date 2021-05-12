@@ -1,6 +1,6 @@
 @file:Suppress("FunctionName")
 
-package jdr.exia.view
+package jdr.exia.view.composable.editor
 
 import androidx.compose.desktop.AppManager
 import androidx.compose.foundation.*

@@ -1,6 +1,6 @@
 @file:Suppress("FunctionName")
 
-package jdr.exia.view
+package jdr.exia.view.composable.editor
 
 import androidx.compose.desktop.AppManager
 import androidx.compose.foundation.*
@@ -23,8 +23,8 @@ import jdr.exia.model.act.isValidAndEqualTo
 import jdr.exia.model.type.imageFromFile
 import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.view.element.*
-import jdr.exia.view.ui.blue
 import jdr.exia.view.tools.*
+import jdr.exia.view.ui.blue
 import jdr.exia.view.ui.roundedShape
 import jdr.exia.viewModel.ActEditorViewModel
 import java.io.File

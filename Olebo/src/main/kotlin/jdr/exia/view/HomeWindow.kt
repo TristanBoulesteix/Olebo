@@ -17,6 +17,8 @@ import jdr.exia.localization.STR_VERSION
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
 import jdr.exia.model.type.imageFromIconRes
+import jdr.exia.view.composable.editor.ActEditorView
+import jdr.exia.view.composable.editor.ElementsView
 import jdr.exia.view.element.ContentListRow
 import jdr.exia.view.element.HeaderRow
 import jdr.exia.view.element.ImageButtonBuilder
