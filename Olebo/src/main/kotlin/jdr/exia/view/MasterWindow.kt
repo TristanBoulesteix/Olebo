@@ -1,6 +1,8 @@
 package jdr.exia.view
 
 import androidx.compose.desktop.ComposePanel
+import androidx.compose.foundation.layout.Column
+import androidx.compose.runtime.Composable
 import jdr.exia.model.act.Act
 import jdr.exia.view.composable.master.ItemList
 import jdr.exia.view.menubar.MasterMenuBar
@@ -22,9 +24,13 @@ class MasterWindow(act: Act) : JFrame() {
 
         // Add Composable ContentPane
         this.contentPane = ComposePanel().apply {
-            setThemedContent {
-                ItemList()
-            }
+            setThemedContent(::MainContent)
         }
+    }
+
+    @Suppress("FunctionName")
+    @Composable
+    fun MainContent() = Column {
+        ItemList()
     }
 }
