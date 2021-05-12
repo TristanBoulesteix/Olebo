@@ -2,8 +2,8 @@ package jdr.exia
 
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.dao.option.Settings
-import jdr.exia.updater.checkForUpdate
-import jdr.exia.updater.currentChangelogs
+import jdr.exia.update.checkForUpdate
+import jdr.exia.update.currentChangelogs
 import jdr.exia.view.HomeFrame
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

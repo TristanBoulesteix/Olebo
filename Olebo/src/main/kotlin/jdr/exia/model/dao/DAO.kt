@@ -2,8 +2,8 @@ package jdr.exia.model.dao
 
 import jdr.exia.localization.*
 import jdr.exia.model.element.Element
-import jdr.exia.updater.forceUpdateAndRestart
-import jdr.exia.updater.runJar
+import jdr.exia.update.forceUpdateAndRestart
+import jdr.exia.update.runJar
 import jdr.exia.utils.DatabaseException
 import jdr.exia.view.legacy.utils.showConfirmMessage
 import jdr.exia.view.legacy.utils.windowAncestor

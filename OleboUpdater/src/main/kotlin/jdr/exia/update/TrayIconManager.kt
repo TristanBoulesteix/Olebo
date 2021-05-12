@@ -1,4 +1,4 @@
-package jdr.exia.updater
+package jdr.exia.update
 
 import jdr.exia.localization.STR_CANCEL_UPDATE
 import jdr.exia.localization.ST_OLEBO_IS_UPDATING

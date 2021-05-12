@@ -1,4 +1,4 @@
-package jdr.exia.updater
+package jdr.exia.update
 
 import jdr.exia.OLEBO_VERSION
 import jdr.exia.localization.*

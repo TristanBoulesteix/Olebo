@@ -1,4 +1,4 @@
-package jdr.exia.updater
+package jdr.exia.update
 
 import org.apache.http.HttpEntity
 import org.apache.http.HttpResponse

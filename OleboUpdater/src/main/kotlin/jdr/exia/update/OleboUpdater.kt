@@ -1,4 +1,4 @@
-package jdr.exia.updater
+package jdr.exia.update
 
 import jdr.exia.defaultLocale
 import jdr.exia.localization.*
