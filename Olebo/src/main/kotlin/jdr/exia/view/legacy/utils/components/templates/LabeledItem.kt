@@ -1,6 +1,6 @@
 package jdr.exia.view.legacy.utils.components.templates
 
-import jdr.exia.view.legacy.utils.gridBagConstraintsOf
+import jdr.exia.view.tools.gridBagConstraintsOf
 import java.awt.Component
 import java.awt.GridBagLayout
 import javax.swing.JLabel

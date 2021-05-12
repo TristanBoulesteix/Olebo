@@ -9,10 +9,10 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.dao.option.toFormatedString
 import jdr.exia.view.legacy.frames.rpg.MasterFrame
 import jdr.exia.view.legacy.frames.rpg.ViewFacade
-import jdr.exia.view.legacy.utils.applyAndAddTo
+import jdr.exia.view.tools.applyAndAddTo
 import jdr.exia.view.legacy.utils.components.templates.LabeledItem
-import jdr.exia.view.legacy.utils.gridBagConstraintsOf
-import jdr.exia.view.legacy.utils.windowAncestor
+import jdr.exia.view.tools.gridBagConstraintsOf
+import jdr.exia.view.tools.windowAncestor
 import jdr.exia.view.tools.showMessage
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.*

@@ -10,8 +10,8 @@ import jdr.exia.view.legacy.frames.rpg.MasterFrame
 import jdr.exia.view.legacy.utils.components.MasterMenuBar
 import jdr.exia.view.legacy.frames.rpg.PlayerFrame
 import jdr.exia.view.legacy.frames.rpg.ViewFacade
-import jdr.exia.view.legacy.utils.getTokenFromPosition
-import jdr.exia.view.legacy.utils.positionOf
+import jdr.exia.view.tools.getTokenFromPosition
+import jdr.exia.view.tools.positionOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext

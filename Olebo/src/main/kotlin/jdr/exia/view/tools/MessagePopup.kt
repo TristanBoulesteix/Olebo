@@ -1,7 +1,6 @@
 package jdr.exia.view.tools
 
 import jdr.exia.localization.*
-import jdr.exia.view.legacy.utils.windowAncestor
 import java.awt.Component
 import java.awt.event.ItemEvent
 import javax.swing.JButton

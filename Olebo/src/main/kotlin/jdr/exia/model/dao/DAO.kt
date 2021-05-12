@@ -5,7 +5,7 @@ import jdr.exia.model.element.Element
 import jdr.exia.update.forceUpdateAndRestart
 import jdr.exia.update.runJar
 import jdr.exia.utils.DatabaseException
-import jdr.exia.view.legacy.utils.windowAncestor
+import jdr.exia.view.tools.windowAncestor
 import jdr.exia.view.tools.showConfirmMessage
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils

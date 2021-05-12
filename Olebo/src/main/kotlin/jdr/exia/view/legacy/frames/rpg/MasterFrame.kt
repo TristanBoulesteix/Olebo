@@ -6,7 +6,7 @@ import jdr.exia.model.element.Elements
 import jdr.exia.model.element.emptyElements
 import jdr.exia.view.legacy.utils.components.MasterMenuBar
 import jdr.exia.view.legacy.utils.event.addKeyPressedListener
-import jdr.exia.view.legacy.utils.gridBagConstraintsOf
+import jdr.exia.view.tools.gridBagConstraintsOf
 import jdr.exia.view.ui.DIMENSION_FRAME
 import jdr.exia.viewModel.legacy.ViewManager
 import java.awt.Color

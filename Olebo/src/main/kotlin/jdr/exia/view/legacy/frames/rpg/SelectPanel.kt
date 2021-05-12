@@ -9,7 +9,7 @@ import jdr.exia.view.ui.BACKGROUND_COLOR_SELECT_PANEL
 import jdr.exia.view.ui.DEFAULT_INSET
 import jdr.exia.view.ui.DIMENSION_BUTTON_DEFAULT
 import jdr.exia.view.legacy.utils.components.templates.StatsLabel
-import jdr.exia.view.legacy.utils.gridBagConstraintsOf
+import jdr.exia.view.tools.gridBagConstraintsOf
 import jdr.exia.viewModel.legacy.ViewManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.*

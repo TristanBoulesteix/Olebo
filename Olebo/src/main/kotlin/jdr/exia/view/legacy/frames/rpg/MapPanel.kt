@@ -8,13 +8,13 @@ import jdr.exia.model.element.Elements
 import jdr.exia.model.element.Size
 import jdr.exia.model.element.emptyElements
 import jdr.exia.model.type.Point
-import jdr.exia.view.legacy.utils.compareTo
-import jdr.exia.view.legacy.utils.drawCircleWithCenterCoordinates
+import jdr.exia.view.tools.compareTo
+import jdr.exia.view.tools.drawCircleWithCenterCoordinates
 import jdr.exia.view.legacy.utils.event.addMouseExitedListener
 import jdr.exia.view.legacy.utils.event.addMouseMovedListener
 import jdr.exia.view.legacy.utils.event.addMouseReleasedListener
-import jdr.exia.view.legacy.utils.fillCircleWithCenterCoordinates
-import jdr.exia.view.legacy.utils.getTokenFromPosition
+import jdr.exia.view.tools.fillCircleWithCenterCoordinates
+import jdr.exia.view.tools.getTokenFromPosition
 import jdr.exia.viewModel.legacy.ViewManager
 import kotlinx.coroutines.*
 import kotlinx.coroutines.swing.Swing

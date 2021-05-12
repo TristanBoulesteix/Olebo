@@ -1,4 +1,4 @@
-package jdr.exia.view.legacy.utils
+package jdr.exia.view.tools
 
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Elements
