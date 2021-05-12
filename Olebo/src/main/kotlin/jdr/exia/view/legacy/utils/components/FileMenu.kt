@@ -2,11 +2,10 @@ package jdr.exia.view.legacy.utils.components
 
 import jdr.exia.OLEBO_VERSION
 import jdr.exia.localization.*
-import jdr.exia.model.dao.ZipError
 import jdr.exia.model.dao.loadOleboZipData
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.dao.zipOleboDirectory
-import jdr.exia.utils.Result
+import jdr.exia.model.utils.Result
 import jdr.exia.view.HomeFrame
 import jdr.exia.view.legacy.frames.OptionDialog
 import jdr.exia.view.legacy.frames.rpg.MasterFrame
@@ -64,20 +63,25 @@ class FileMenu : JMenu(StringLocale[STR_FILES]) {
                         this.fileFilter = FileNameExtensionFilter(StringLocale[STR_OLEBO_FILE], "olebo")
                         if (this.showOpenDialog(this@FileMenu.windowAncestor) == JFileChooser.APPROVE_OPTION) {
                             if (!this.selectedFile.isDirectory && this.selectedFile.exists()) {
-                                val result = loadOleboZipData(this.selectedFile)
-                                if (result is Result.Success) {
-                                    showMessage(StringLocale[ST_CONFIGURATION_IMPORTED], this@FileMenu.windowAncestor)
-                                    MasterFrame.isVisible = false
-                                    PlayerFrame.hide()
-                                    Frame.getFrames().forEach(Window::dispose)
-                                    HomeFrame().isVisible = true
-                                } else showMessage(
-                                    when (result.value) {
-                                        ZipError.DATABASE_HIGHER -> StringLocale[ST_WARNING_PREVIOUS_VERSION_FILE]
-                                        ZipError.MISSING_FILES -> StringLocale[ST_WARNING_MISSING_CONF_FILES]
-                                        else -> "${StringLocale[ST_UNKNOWN_ERROR]} ${StringLocale[ST_FILE_MAY_BE_CORRUPTED]}"
-                                    }, this@FileMenu.windowAncestor, MessageType.ERROR
-                                )
+                                when (val result = loadOleboZipData(this.selectedFile)) {
+                                    is Result.Success -> {
+                                        showMessage(
+                                            StringLocale[ST_CONFIGURATION_IMPORTED],
+                                            this@FileMenu.windowAncestor
+                                        )
+                                        MasterFrame.isVisible = false
+                                        PlayerFrame.hide()
+                                        Frame.getFrames().forEach(Window::dispose)
+                                        HomeFrame().isVisible = true
+                                    }
+                                    is Result.Failure -> {
+                                        showMessage(
+                                            if (result.causeUnknown) "${StringLocale[ST_UNKNOWN_ERROR]} ${StringLocale[ST_FILE_MAY_BE_CORRUPTED]}" else result.message,
+                                            this@FileMenu.windowAncestor,
+                                            MessageType.ERROR
+                                        )
+                                    }
+                                }
                             }
                         }
                     }

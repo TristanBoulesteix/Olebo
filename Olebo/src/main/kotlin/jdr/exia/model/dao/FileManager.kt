@@ -1,7 +1,10 @@
 package jdr.exia.model.dao
 
+import jdr.exia.localization.ST_WARNING_MISSING_CONF_FILES
+import jdr.exia.localization.ST_WARNING_PREVIOUS_VERSION_FILE
+import jdr.exia.localization.StringLocale
 import jdr.exia.main
-import jdr.exia.utils.Result
+import jdr.exia.model.utils.Result
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -55,10 +58,6 @@ val oleboUpdater: String
         return jar.absolutePath
     }
 
-enum class ZipError {
-    MISSING_FILES, DATABASE_HIGHER, EXCEPTION
-}
-
 fun zipOleboDirectory(fileDestination: File) {
     val oleboDirectory = File(OLEBO_DIRECTORY)
     val outputTempZip = File.createTempFile("Olebo", ".olebo")
@@ -90,16 +89,16 @@ fun zipOleboDirectory(fileDestination: File) {
     outputTempZip.copyRecursively(fileDestination)
 }
 
-fun loadOleboZipData(zipFile: File): Result<ZipError> = try {
+fun loadOleboZipData(zipFile: File): Result = try {
     ZipFile(zipFile).use { zip ->
         with(zip.entries().asSequence().toList()) {
             if (this.none { it.name == "db/${DAO.DATABASE_NAME}" } || this.none { it.name == OLEBO_MANIFEST_NAME })
-                return Result.Failed(ZipError.MISSING_FILES)
+                return Result.Failure(StringLocale[ST_WARNING_MISSING_CONF_FILES])
 
             this.find { it.name == OLEBO_MANIFEST_NAME }?.let { entry ->
                 zip.getInputStream(entry).use { stream ->
                     if (String(stream.readBytes()).toIntOrNull()?.let { it > DAO.DATABASE_VERSION } != false)
-                        return Result.Failed(ZipError.DATABASE_HIGHER)
+                        return Result.Failure(StringLocale[ST_WARNING_PREVIOUS_VERSION_FILE])
                 }
             }
 
@@ -124,10 +123,10 @@ fun loadOleboZipData(zipFile: File): Result<ZipError> = try {
         }
     }
 
-    Result.Success()
+    Result.Success
 } catch (e: Exception) {
     e.printStackTrace()
-    Result.Failed(ZipError.EXCEPTION)
+    Result.Failure
 }
 
 fun reset() = File(OLEBO_DIRECTORY).let {

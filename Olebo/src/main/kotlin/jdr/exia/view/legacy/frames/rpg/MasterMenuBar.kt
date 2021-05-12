@@ -6,7 +6,7 @@ import jdr.exia.model.act.Scene
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.toElements
-import jdr.exia.utils.forElse
+import jdr.exia.model.utils.forElse
 import jdr.exia.view.HomeFrame
 import jdr.exia.view.legacy.utils.*
 import jdr.exia.view.legacy.utils.components.FileMenu
