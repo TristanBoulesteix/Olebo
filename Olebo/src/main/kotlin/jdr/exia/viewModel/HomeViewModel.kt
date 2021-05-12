@@ -7,11 +7,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
-import jdr.exia.view.compose.HomeFrame
-import jdr.exia.view.frames.rpg.MasterFrame
-import jdr.exia.view.utils.MessageType
-import jdr.exia.view.utils.showConfirmMessage
-import jdr.exia.view.utils.showMessage
+import jdr.exia.view.HomeFrame
+import jdr.exia.view.legacy.frames.rpg.MasterFrame
+import jdr.exia.view.legacy.utils.MessageType
+import jdr.exia.view.legacy.utils.showConfirmMessage
+import jdr.exia.view.legacy.utils.showMessage
 import kotlinx.coroutines.*
 import kotlinx.coroutines.swing.Swing
 import org.jetbrains.exposed.sql.transactions.transaction
