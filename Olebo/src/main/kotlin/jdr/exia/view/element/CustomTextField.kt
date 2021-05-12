@@ -1,4 +1,4 @@
-package jdr.exia.view.components
+package jdr.exia.view.element
 
 import androidx.compose.material.Text
 import androidx.compose.material.TextField

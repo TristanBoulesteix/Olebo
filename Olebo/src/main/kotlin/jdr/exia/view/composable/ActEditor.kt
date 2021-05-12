@@ -22,7 +22,7 @@ import jdr.exia.model.act.Act
 import jdr.exia.model.act.isValidAndEqualTo
 import jdr.exia.model.type.imageFromFile
 import jdr.exia.model.type.imageFromIconRes
-import jdr.exia.view.components.*
+import jdr.exia.view.element.*
 import jdr.exia.view.ui.blue
 import jdr.exia.view.tools.*
 import jdr.exia.view.ui.roundedShape

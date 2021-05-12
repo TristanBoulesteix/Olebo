@@ -25,12 +25,12 @@ import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.model.type.savePathToImage
 import jdr.exia.model.utils.Result
 import jdr.exia.model.utils.isCharacter
-import jdr.exia.view.components.*
-import jdr.exia.view.ui.blue
-import jdr.exia.view.tools.*
-import jdr.exia.view.ui.roundedShape
+import jdr.exia.view.element.*
 import jdr.exia.view.legacy.utils.MessageType
 import jdr.exia.view.legacy.utils.showMessage
+import jdr.exia.view.tools.*
+import jdr.exia.view.ui.blue
+import jdr.exia.view.ui.roundedShape
 import jdr.exia.viewModel.ElementsEditorViewModel
 import jdr.exia.viewModel.ElementsTabViewModel
 import org.jetbrains.exposed.sql.transactions.transaction

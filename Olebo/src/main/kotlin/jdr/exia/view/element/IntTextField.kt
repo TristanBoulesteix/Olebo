@@ -1,6 +1,6 @@
 @file:Suppress("FunctionName")
 
-package jdr.exia.view.components
+package jdr.exia.view.element
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.TextField
