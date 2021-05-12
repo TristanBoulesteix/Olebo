@@ -7,7 +7,7 @@ import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.toElements
 import jdr.exia.model.utils.forElse
-import jdr.exia.view.HomeFrame
+import jdr.exia.view.HomeWindow
 import jdr.exia.view.legacy.utils.*
 import jdr.exia.view.legacy.utils.components.FileMenu
 import jdr.exia.viewModel.legacy.ViewManager
@@ -88,7 +88,7 @@ object MasterMenuBar : JMenuBar() {
                 this.addActionListener {
                     MasterFrame.isVisible = false
                     PlayerFrame.hide()
-                    HomeFrame().isVisible = true
+                    HomeWindow().isVisible = true
                 }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Q, CTRL)
             }

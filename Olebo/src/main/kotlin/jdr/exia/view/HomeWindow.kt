@@ -35,7 +35,7 @@ import javax.swing.JFrame
 import javax.swing.JMenuBar
 
 @Suppress("FunctionName")
-class HomeFrame : JFrame("Olebo - ${StringLocale[STR_VERSION]} $OLEBO_VERSION") {
+class HomeWindow : JFrame("Olebo - ${StringLocale[STR_VERSION]} $OLEBO_VERSION") {
     private val viewModel = HomeViewModel()
 
     init {

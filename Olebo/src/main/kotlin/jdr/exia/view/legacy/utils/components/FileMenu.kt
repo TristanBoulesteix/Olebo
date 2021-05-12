@@ -6,7 +6,7 @@ import jdr.exia.model.dao.loadOleboZipData
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.dao.zipOleboDirectory
 import jdr.exia.model.utils.Result
-import jdr.exia.view.HomeFrame
+import jdr.exia.view.HomeWindow
 import jdr.exia.view.legacy.frames.OptionDialog
 import jdr.exia.view.legacy.frames.rpg.MasterFrame
 import jdr.exia.view.legacy.frames.rpg.PlayerFrame
@@ -72,7 +72,7 @@ class FileMenu : JMenu(StringLocale[STR_FILES]) {
                                         MasterFrame.isVisible = false
                                         PlayerFrame.hide()
                                         Frame.getFrames().forEach(Window::dispose)
-                                        HomeFrame().isVisible = true
+                                        HomeWindow().isVisible = true
                                     }
                                     is Result.Failure -> {
                                         showMessage(
