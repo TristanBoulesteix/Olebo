@@ -7,7 +7,7 @@ import jdr.exia.model.element.*
 import jdr.exia.model.type.Point
 import jdr.exia.model.utils.callCommandManager
 import jdr.exia.view.legacy.frames.rpg.MasterFrame
-import jdr.exia.view.legacy.utils.components.MasterMenuBar
+import jdr.exia.view.menubar.MasterMenuBar
 import jdr.exia.view.legacy.frames.rpg.PlayerFrame
 import jdr.exia.view.legacy.frames.rpg.ViewFacade
 import jdr.exia.view.tools.getTokenFromPosition

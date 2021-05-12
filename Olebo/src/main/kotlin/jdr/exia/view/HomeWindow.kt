@@ -28,7 +28,7 @@ import jdr.exia.view.tools.withSetter
 import jdr.exia.view.ui.OleboTheme
 import jdr.exia.view.ui.blue
 import jdr.exia.view.legacy.frames.rpg.MasterFrame
-import jdr.exia.view.legacy.utils.components.FileMenu
+import jdr.exia.view.menubar.FileMenu
 import jdr.exia.viewModel.HomeViewModel
 import java.awt.Dimension
 import javax.swing.JFrame

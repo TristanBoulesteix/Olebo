@@ -1,6 +1,7 @@
 package jdr.exia.view
 
 import jdr.exia.model.act.Act
+import jdr.exia.view.menubar.MasterMenuBar
 import jdr.exia.view.tools.gridBagConstraintsOf
 import jdr.exia.view.ui.DIMENSION_FRAME
 import jdr.exia.viewModel.MainViewModel
@@ -16,6 +17,7 @@ class MasterWindow(act: Act) : JFrame() {
         this.size = DIMENSION_FRAME
         this.isFocusable = true
         this.defaultCloseOperation = EXIT_ON_CLOSE
+        this.jMenuBar = MasterMenuBar
 
         // Add content
         val itemConstraints = gridBagConstraintsOf(

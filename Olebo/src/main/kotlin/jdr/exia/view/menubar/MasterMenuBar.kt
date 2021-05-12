@@ -1,4 +1,4 @@
-package jdr.exia.view.legacy.utils.components
+package jdr.exia.view.menubar
 
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
