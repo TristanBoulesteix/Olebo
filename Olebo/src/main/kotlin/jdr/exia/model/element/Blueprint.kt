@@ -26,10 +26,16 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
     private var _sprite by BlueprintTable.sprite
     private var maxLife by BlueprintTable.HP
     private var maxMana by BlueprintTable.MP
-    var type by Type.TypeElement referencedOn BlueprintTable.idType
+    private var _type by Type.TypeElement referencedOn BlueprintTable.idType
 
     var HP by statsDelegate(::maxLife)
     var MP by statsDelegate(::maxMana)
+
+    var type
+        get() = _type.typeElement
+        set(value) {
+            _type = value.type
+        }
 
     var sprite
         get() = _sprite
@@ -40,10 +46,10 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
         }
 
     /**
-     * Name the has to be displayed to the user
+     * Name as it has to be displayed to the user
      */
     val realName
-        get() = if (type.typeElement == Type.BASIC) StringLocale[name] else name
+        get() = if (type == Type.BASIC) StringLocale[name] else name
 
     override fun delete() {
         File(sprite).delete()
@@ -63,17 +69,17 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
             Image(sprite),
             getLifeOrNull(),
             getManaOrNull(),
-            type.typeElement,
+            type,
             this@Blueprint.id
         )
     }
 
     private fun statsDelegate(stats: KMutableProperty0<Int?>) = object : ReadWriteProperty<Blueprint, Int> {
         override operator fun getValue(thisRef: Blueprint, property: KProperty<*>): Int =
-            if (type.typeElement == Type.PNJ || type.typeElement == Type.PJ) stats.get()!! else throw Exception("Cet élément n'est pas un personnage !")
+            if (type == Type.PNJ || type == Type.PJ) stats.get()!! else throw Exception("Cet élément n'est pas un personnage !")
 
         override operator fun setValue(thisRef: Blueprint, property: KProperty<*>, value: Int) =
-            if (type.typeElement == Type.PNJ || type.typeElement == Type.PJ) stats.set(value)
+            if (type == Type.PNJ || type == Type.PJ) stats.set(value)
             else throw CharacterException(this::class, if (stats == ::maxLife) "HP" else "MP")
     }
 

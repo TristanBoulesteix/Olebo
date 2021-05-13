@@ -187,7 +187,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     // Value from the Blueprint
     val sprite by lazy {
         transaction {
-            if (blueprint.type.typeElement == Type.BASIC) {
+            if (blueprint.type == Type.BASIC) {
                 ImageIcon(ImageIO.read(Element::class.java.classLoader.getResourceAsStream("sprites/${blueprint.sprite}")))
             } else {
                 ImageIcon(blueprint.sprite)

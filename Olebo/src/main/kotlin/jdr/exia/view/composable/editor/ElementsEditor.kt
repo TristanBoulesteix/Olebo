@@ -3,7 +3,9 @@
 package jdr.exia.view.composable.editor
 
 import androidx.compose.desktop.AppManager
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -99,9 +101,7 @@ private val ColumnScope.contentModifier
 private fun Content(viewModel: ElementsEditorViewModel, innerPadding: PaddingValues, currentType: Type) =
     Box(modifier = Modifier.padding(innerPadding)) {
         Column(modifier = Modifier.fillMaxSize().padding(15.dp)) {
-            val headerScrollState = rememberScrollState()
-
-            HeaderContent(headerScrollState, currentType, viewModel)
+            HeaderContent(currentType, viewModel)
 
             val blueprintInCreation = viewModel.blueprintInCreation
 
@@ -132,7 +132,6 @@ private fun Content(viewModel: ElementsEditorViewModel, innerPadding: PaddingVal
 
 @Composable
 private fun HeaderContent(
-    headerScrollState: ScrollState,
     currentType: Type,
     viewModel: ElementsEditorViewModel
 ) = Box(
@@ -141,60 +140,56 @@ private fun HeaderContent(
         .fillMaxWidth()
         .border(BorderBuilder.defaultBorder)
 ) {
-    Box(modifier = Modifier.verticalScroll(headerScrollState).fillMaxSize()) {
-        Column {
-            ContentListRow(
-                contentText = currentType.typeName,
-                modifier = Modifier.background(Color.White).border(BorderBuilder.defaultBorder),
-                buttonBuilders =
-                if (viewModel.blueprintInCreation == null) {
-                    if (viewModel.blueprints.isNotEmpty()) {
-                        if (currentType.type.typeElement != Type.OBJECT) listOf(
-                            ContentButtonBuilder(
-                                content = StringLocale[STR_HP]
-                            ),
-                            ContentButtonBuilder(
-                                content = StringLocale[STR_MP]
+    ContentListRow(
+        contentText = currentType.typeName,
+        modifier = Modifier.fillMaxWidth().background(Color.White).border(BorderBuilder.defaultBorder),
+        buttonBuilders =
+        if (viewModel.blueprintInCreation == null) {
+            if (viewModel.blueprints.isNotEmpty()) {
+                if (currentType.type.typeElement != Type.OBJECT) listOf(
+                    ContentButtonBuilder(
+                        content = StringLocale[STR_HP]
+                    ),
+                    ContentButtonBuilder(
+                        content = StringLocale[STR_MP]
+                    )
+                ) else {
+                    emptyList()
+                } + listOf(
+                    ContentButtonBuilder(
+                        content = StringLocale[STR_IMG]
+                    ),
+                    EmptyContent
+                )
+            } else {
+                emptyList()
+            } + listOf(
+                ImageButtonBuilder(
+                    content = imageFromIconRes("create_icon"),
+                    onClick = viewModel::startBlueprintCreation
+                )
+            )
+        } else {
+            listOf(
+                ImageButtonBuilder(
+                    content = imageFromIconRes("confirm_icon"),
+                    onClick = {
+                        when (viewModel.onSubmitBlueprint()) {
+                            is Result.Success -> viewModel.cancelBluprintCreation()
+                            else -> showMessage(
+                                StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID],
+                                messageType = MessageType.WARNING
                             )
-                        ) else {
-                            emptyList()
-                        } + listOf(
-                            ContentButtonBuilder(
-                                content = StringLocale[STR_IMG]
-                            ),
-                            EmptyContent
-                        )
-                    } else {
-                        emptyList()
-                    } + listOf(
-                        ImageButtonBuilder(
-                            content = imageFromIconRes("create_icon"),
-                            onClick = viewModel::startBlueprintCreation
-                        )
-                    )
-                } else {
-                    listOf(
-                        ImageButtonBuilder(
-                            content = imageFromIconRes("confirm_icon"),
-                            onClick = {
-                                when (viewModel.onSubmitBlueprint()) {
-                                    is Result.Success -> viewModel.cancelBluprintCreation()
-                                    else -> showMessage(
-                                        StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID],
-                                        messageType = MessageType.WARNING
-                                    )
-                                }
-                            }
-                        ),
-                        ImageButtonBuilder(
-                            content = imageFromIconRes("exit_icon"),
-                            onClick = viewModel::cancelBluprintCreation
-                        )
-                    )
-                }
+                        }
+                    }
+                ),
+                ImageButtonBuilder(
+                    content = imageFromIconRes("exit_icon"),
+                    onClick = viewModel::cancelBluprintCreation
+                )
             )
         }
-    }
+    )
 }
 
 @Composable

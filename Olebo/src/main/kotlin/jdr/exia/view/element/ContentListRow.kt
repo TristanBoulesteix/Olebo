@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
@@ -79,6 +80,7 @@ object EmptyContent : ContentBuilder {
     override val onChange = {}
 }
 
+@Stable
 data class ImageButtonBuilder(
     override val content: ImageBitmap,
     override val enabled: Boolean = true,

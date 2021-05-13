@@ -60,7 +60,7 @@ class ItemPanel : JPanel(), Reloadable {
                 this.add(CustomTitlePanel(StringLocale[STR_OBJECTS]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.OBJECT && (searchConstraint.isEmpty() || it.name.contains(
+                    it.type == Type.OBJECT && (searchConstraint.isEmpty() || it.name.contains(
                         searchConstraint,
                         true
                     ))
@@ -72,7 +72,7 @@ class ItemPanel : JPanel(), Reloadable {
                 this.add(CustomTitlePanel(StringLocale[STR_PC]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.PJ && (searchConstraint.isEmpty() || it.name.contains(
+                    it.type == Type.PJ && (searchConstraint.isEmpty() || it.name.contains(
                         searchConstraint,
                         true
                     ))
@@ -84,7 +84,7 @@ class ItemPanel : JPanel(), Reloadable {
                 this.add(CustomTitlePanel(StringLocale[STR_NPC]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.PNJ && (searchConstraint.isEmpty() || it.name.contains(
+                    it.type == Type.PNJ && (searchConstraint.isEmpty() || it.name.contains(
                         searchConstraint,
                         true
                     ))
@@ -96,7 +96,7 @@ class ItemPanel : JPanel(), Reloadable {
                 this.add(CustomTitlePanel(StringLocale[STR_BASE_ELEMENT_PLR]).apply { this.isEnabled = false })
 
                 ViewManager.items.filter {
-                    it.type.typeElement == Type.BASIC && (searchConstraint.isEmpty() || it.realName.contains(
+                    it.type == Type.BASIC && (searchConstraint.isEmpty() || it.realName.contains(
                         searchConstraint,
                         true
                     ))
@@ -135,7 +135,7 @@ class ItemPanel : JPanel(), Reloadable {
             val label = JLabel().apply {
                 this.size = Dimension(40, 40)
 
-                val imageIo = if (element.type.typeElement == Type.BASIC)
+                val imageIo = if (element.type == Type.BASIC)
                     ImageIO.read(ItemPanel::class.java.classLoader.getResourceAsStream("sprites/${element.sprite}"))
                 else ImageIO.read(File(element.sprite))
 

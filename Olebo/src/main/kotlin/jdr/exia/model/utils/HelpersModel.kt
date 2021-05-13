@@ -32,7 +32,7 @@ fun Element?.isCharacter(): Boolean {
         returns(true) implies (this@isCharacter != null)
     }
 
-    return this != null && (this.type.typeElement == Type.PNJ || this.type.typeElement == Type.PJ)
+    return this != null && (this.type == Type.PNJ || this.type == Type.PJ)
 }
 
 /**
@@ -48,7 +48,7 @@ fun Blueprint?.isCharacter(): Boolean {
 
     val blueprint = this@isCharacter
 
-    return transaction { blueprint != null && (blueprint.type.typeElement == Type.PNJ || blueprint.type.typeElement == Type.PJ) }
+    return transaction { blueprint != null && (blueprint.type == Type.PNJ || blueprint.type == Type.PJ) }
 }
 
 fun ImageIcon.rotate(degs: Double) = with(BufferedImage(this.iconWidth, this.iconHeight, BufferedImage.TYPE_INT_ARGB)) {
