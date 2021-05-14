@@ -1,15 +1,11 @@
 package jdr.exia.view
 
 import androidx.compose.desktop.ComposePanel
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import jdr.exia.model.act.Act
 import jdr.exia.view.composable.master.ItemList
+import jdr.exia.view.composable.master.Map
 import jdr.exia.view.menubar.MasterMenuBar
 import jdr.exia.view.ui.DIMENSION_FRAME
 import jdr.exia.view.ui.setThemedContent
@@ -39,8 +35,6 @@ class MasterWindow(act: Act) : JFrame() {
     @Composable
     fun MainContent() = Row {
         ItemList()
-        Box(modifier = Modifier.fillMaxHeight().width(1280.dp).weight(1f)) {
-
-        }
+        Map(viewModel.act)
     }
 }

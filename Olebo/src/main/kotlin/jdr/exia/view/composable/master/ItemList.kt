@@ -28,7 +28,7 @@ import java.io.File
 
 @Composable
 fun ItemList() = Column(
-    modifier = Modifier.widthIn(max = 700.dp).fillMaxHeight().fillMaxWidth().border(BorderStroke(1.dp, Color.Black))
+    modifier = Modifier.widthIn(max = 550.dp).fillMaxHeight().fillMaxWidth().border(BorderStroke(1.dp, Color.Black))
 ) {
     var searchString by remember { mutableStateOf("") }
 
