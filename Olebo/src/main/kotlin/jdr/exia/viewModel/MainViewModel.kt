@@ -7,14 +7,16 @@ import jdr.exia.model.act.Act
 import jdr.exia.model.element.Element
 import jdr.exia.model.type.Point
 import jdr.exia.model.utils.callCommandManager
+import jdr.exia.view.HomeWindow
 import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.menubar.MasterMenuBar
+import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.getTokenFromPosition
 import jdr.exia.view.tools.positionOf
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
 
-class MainViewModel(val act: Act) {
+class MainViewModel(val act: Act, private val closeMasterWindow: DefaultFunction) {
     companion object {
         const val ABSOLUTE_WIDTH = 1600
         const val ABSOLUTE_HEIGHT = 900
@@ -122,5 +124,10 @@ class MainViewModel(val act: Act) {
     fun repaint() {
         panel.repaint()
         menuBar.reloadCommandItemLabel()
+    }
+
+    fun closeAct() {
+        closeMasterWindow()
+        HomeWindow().isVisible = true
     }
 }

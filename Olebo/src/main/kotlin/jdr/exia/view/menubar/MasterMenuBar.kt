@@ -6,7 +6,6 @@ import jdr.exia.model.act.Scene
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.utils.forElse
-import jdr.exia.view.HomeWindow
 import jdr.exia.view.legacy.frames.rpg.MasterFrame
 import jdr.exia.view.legacy.frames.rpg.PlayerFrame
 import jdr.exia.view.tools.applyAndAddTo
@@ -83,12 +82,7 @@ class MasterMenuBar(val act: Act, viewModel: MainViewModel) : JMenuBar() {
 
         JMenu(StringLocale[STR_WINDOW]).applyAndAddTo(this) {
             JMenuItem(StringLocale[STR_CLOSE_ACT]).applyAndAddTo(this) {
-                this.addActionListener {
-                    TODO()
-                    MasterFrame.isVisible = false
-                    PlayerFrame.hide()
-                    HomeWindow().isVisible = true
-                }
+                this.addActionListener { viewModel.closeAct() }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Q, CTRL)
             }
 
