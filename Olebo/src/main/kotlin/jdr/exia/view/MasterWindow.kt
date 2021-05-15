@@ -14,7 +14,8 @@ import jdr.exia.viewModel.MainViewModel
 import javax.swing.JFrame
 
 class MasterWindow(act: Act) : JFrame() {
-    private val viewModel: MainViewModel = MainViewModel(act = act, closeMasterWindow = this::dispose)
+    private val viewModel: MainViewModel =
+        MainViewModel(act = act, closeMasterWindow = this::dispose, focusMasterWindow = this::requestFocus)
 
     init {
         // Initilize content frame

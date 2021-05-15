@@ -8,6 +8,7 @@ import jdr.exia.model.element.Element
 import jdr.exia.model.type.Point
 import jdr.exia.model.utils.callCommandManager
 import jdr.exia.view.HomeWindow
+import jdr.exia.view.PlayerWindow
 import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.menubar.MasterMenuBar
 import jdr.exia.view.tools.DefaultFunction
@@ -16,15 +17,21 @@ import jdr.exia.view.tools.positionOf
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
 
-class MainViewModel(val act: Act, private val closeMasterWindow: DefaultFunction) {
+class MainViewModel(
+    val act: Act,
+    private val closeMasterWindow: DefaultFunction,
+    val focusMasterWindow: DefaultFunction
+) {
     companion object {
         const val ABSOLUTE_WIDTH = 1600
         const val ABSOLUTE_HEIGHT = 900
     }
 
-    val menuBar by lazy { MasterMenuBar(act = act, viewModel = this) }
+    private val playerWindow: PlayerWindow
 
-    val panel by lazy { MapPanel(isParentMaster = true, viewModel = this) }
+    val menuBar = MasterMenuBar(act = act, viewModel = this)
+
+    val panel = MapPanel(isParentMaster = true, viewModel = this)
 
     val scene
         get() = transaction { act.currentScene }
@@ -33,6 +40,13 @@ class MainViewModel(val act: Act, private val closeMasterWindow: DefaultFunction
         private set
 
     var cursor: Point? by mutableStateOf(null)
+
+    init {
+        playerWindow = PlayerWindow(
+            mapPanel = MapPanel(isParentMaster = false, viewModel = this),
+            onHide = { menuBar.togglePlayerFrameMenuItem.isSelected = false }
+        )
+    }
 
     /**
      * Returns true if there is at least one element at the given position
@@ -129,5 +143,9 @@ class MainViewModel(val act: Act, private val closeMasterWindow: DefaultFunction
     fun closeAct() {
         closeMasterWindow()
         HomeWindow().isVisible = true
+    }
+
+    fun togglePlayerWindow(isVisible: Boolean) {
+        playerWindow.isVisible = isVisible
     }
 }

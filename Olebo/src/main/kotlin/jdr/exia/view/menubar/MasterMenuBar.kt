@@ -6,8 +6,6 @@ import jdr.exia.model.act.Scene
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.utils.forElse
-import jdr.exia.view.legacy.frames.rpg.MasterFrame
-import jdr.exia.view.legacy.frames.rpg.PlayerFrame
 import jdr.exia.view.tools.applyAndAddTo
 import jdr.exia.view.tools.screens
 import jdr.exia.view.tools.showConfirmMessage
@@ -28,7 +26,7 @@ class MasterMenuBar(val act: Act, viewModel: MainViewModel) : JMenuBar() {
 
     private val redoMenuItem: JMenuItem
 
-    private val togglePlayerFrameMenuItem: JCheckBoxMenuItem
+     val togglePlayerFrameMenuItem: JCheckBoxMenuItem
 
     init {
         this.removeAll()
@@ -90,12 +88,12 @@ class MasterMenuBar(val act: Act, viewModel: MainViewModel) : JMenuBar() {
 
             togglePlayerFrameMenuItem = JCheckBoxMenuItem(StringLocale[STR_TOGGLE_PLAYER_FRAME]).applyAndAddTo(this) {
                 this.isSelected = Settings.playerFrameOpenedByDefault
-                this.addActionListener { e ->
-                    PlayerFrame.toggle((e.source as AbstractButton).isSelected)
 
-                    TODO()
+                this.addActionListener { e ->
+                    viewModel.togglePlayerWindow((e.source as AbstractButton).isSelected)
+
                     if (screens.size > 1)
-                        MasterFrame.requestFocus()
+                        viewModel.focusMasterWindow()
                 }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_O, CTRL)
             }
