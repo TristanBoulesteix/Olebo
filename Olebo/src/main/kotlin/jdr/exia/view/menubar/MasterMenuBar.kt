@@ -5,7 +5,6 @@ import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.option.Settings
-import jdr.exia.model.element.toElements
 import jdr.exia.model.utils.forElse
 import jdr.exia.view.HomeWindow
 import jdr.exia.view.legacy.frames.rpg.MasterFrame
@@ -15,6 +14,7 @@ import jdr.exia.view.tools.screens
 import jdr.exia.view.tools.showConfirmMessage
 import jdr.exia.view.ui.CTRL
 import jdr.exia.view.ui.CTRLSHIFT
+import jdr.exia.viewModel.MainViewModel
 import jdr.exia.viewModel.legacy.ViewManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.event.ItemEvent
@@ -22,21 +22,16 @@ import java.awt.event.KeyEvent
 import javax.swing.*
 
 /**
- * This is MasterFrame's menu bar (situated at the top)
+ * This is the DM Window menu bar (situated at the top)
  */
-class MasterMenuBar(val act: Act) : JMenuBar() {
-    private var undoMenuItem: JMenuItem? = null
+class MasterMenuBar(val act: Act, viewModel: MainViewModel) : JMenuBar() {
+    private val undoMenuItem: JMenuItem
 
-    private var redoMenuItem: JMenuItem? = null
+    private val redoMenuItem: JMenuItem
 
-    var togglePlayerFrameMenuItem: JCheckBoxMenuItem? = null
-        private set
+    private val togglePlayerFrameMenuItem: JCheckBoxMenuItem
 
     init {
-        initialize()
-    }
-
-    fun initialize() {
         this.removeAll()
 
         this.add(FileMenu())
@@ -60,9 +55,8 @@ class MasterMenuBar(val act: Act) : JMenuBar() {
                 init {
                     this.isEnabled = false
                     this.addActionListener {
-                        CommandManager(act.currentScene.id.value).undo()
-                        ViewManager.repaint()
-
+                        CommandManager(transaction { act.currentScene.id }).undo()
+                        viewModel.repaint()
                     }
                     this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Z, CTRL)
                 }
@@ -77,8 +71,8 @@ class MasterMenuBar(val act: Act) : JMenuBar() {
                 init {
                     this.isEnabled = false
                     this.addActionListener {
-                        CommandManager(act.currentScene.id.value).redo()
-                        ViewManager.repaint()
+                        CommandManager(transaction { act.currentScene.id }).redo()
+                        viewModel.repaint()
                     }
                     this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Y, CTRL)
                 }
@@ -90,6 +84,7 @@ class MasterMenuBar(val act: Act) : JMenuBar() {
         JMenu(StringLocale[STR_WINDOW]).applyAndAddTo(this) {
             JMenuItem(StringLocale[STR_CLOSE_ACT]).applyAndAddTo(this) {
                 this.addActionListener {
+                    TODO()
                     MasterFrame.isVisible = false
                     PlayerFrame.hide()
                     HomeWindow().isVisible = true
@@ -104,6 +99,7 @@ class MasterMenuBar(val act: Act) : JMenuBar() {
                 this.addActionListener { e ->
                     PlayerFrame.toggle((e.source as AbstractButton).isSelected)
 
+                    TODO()
                     if (screens.size > 1)
                         MasterFrame.requestFocus()
                 }
@@ -113,21 +109,21 @@ class MasterMenuBar(val act: Act) : JMenuBar() {
             this.addSeparator()
 
             JMenu(StringLocale[STR_CHOOSE_SCENE]).applyAndAddTo(this) {
-                    transaction {
-                        act.scenes.forEachIndexed { index, scene ->
-                            if (scene.id.value == act.currentScene.id.value) {
-                                val item =
-                                    JMenuItem("${index + 1} ${scene.name} (${StringLocale[STR_IS_CURRENT_SCENE, StringStates.NORMAL]})").apply {
-                                        isEnabled = false
-                                    }
-                                add(item)
-                            } else {
-                                val item = JMenuItem("${index + 1} ${scene.name}")
-                                item.addActionListener { transaction { ViewManager.changeCurrentScene(scene.id.value) } }
-                                add(item)
-                            }
+                transaction {
+                    act.scenes.forEachIndexed { index, scene ->
+                        if (scene.id.value == act.currentScene.id.value) {
+                            val item =
+                                JMenuItem("${index + 1} ${scene.name} (${StringLocale[STR_IS_CURRENT_SCENE, StringStates.NORMAL]})").apply {
+                                    isEnabled = false
+                                }
+                            add(item)
+                        } else {
+                            val item = JMenuItem("${index + 1} ${scene.name}")
+                            item.addActionListener { transaction { ViewManager.changeCurrentScene(scene.id.value) } } // TODO
+                            add(item)
                         }
                     }
+                }
             }
         }
 
@@ -135,71 +131,69 @@ class MasterMenuBar(val act: Act) : JMenuBar() {
             JMenuItem(StringLocale[STR_MANAGE_BLUEPRINTS]).applyAndAddTo(this) {
                 addActionListener {
                     // TODO BlueprintsDialog(windowAncestor).isVisible = true
-                    ViewManager.unselectAllElements()
-                    ViewManager.repaint()
+                    viewModel.unselectElements()
+                    viewModel.repaint()
                 }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_B, CTRLSHIFT)
             }
 
             JMenu(StringLocale[STR_IMPORT_FROM_SCENE]).applyAndAddTo(this) {
-                    transaction {
-                        if (act.scenes.count() <= 1)
-                            isEnabled = false
+                transaction {
+                    if (act.scenes.count() <= 1)
+                        isEnabled = false
 
-                        act.scenes.forEach {
-                            if (it.id.value != act.currentScene.id.value) {
-                                val itemMenu = JMenu(it.name).apply {
-                                    if (it.elements.isNotEmpty()) {
-                                        JMenuItem(StringLocale[STR_IMPORT_ALL_ELEMENTS]).applyAndAddTo(this) {
-                                            addActionListener { _ ->
-                                                it.elements.forEach { token ->
-                                                    transaction {
-                                                        Scene.moveElementToScene(
-                                                            token,
-                                                            Scene[act.currentScene.id.value]
-                                                        )
-                                                    }
-                                                }
-                                                ViewManager.repaint()
-                                                initialize()
-                                                reloadCommandItemLabel()
-                                            }
-                                        }
-
-                                        this.add(JSeparator())
-                                    }
-
-                                    it.elements.forElse { token ->
-                                        JMenuItem(token.name + " (" + token.type.name + ")").applyAndAddTo(this) {
-                                            addActionListener {
+                    act.scenes.forEach {
+                        if (it.id.value != act.currentScene.id.value) {
+                            val itemMenu = JMenu(it.name).apply {
+                                if (it.elements.isNotEmpty()) {
+                                    JMenuItem(StringLocale[STR_IMPORT_ALL_ELEMENTS]).applyAndAddTo(this) {
+                                        addActionListener { _ ->
+                                            it.elements.forEach { token ->
                                                 transaction {
                                                     Scene.moveElementToScene(
                                                         token,
                                                         Scene[act.currentScene.id.value]
                                                     )
                                                 }
-                                                ViewManager.repaint()
                                             }
+                                            viewModel.repaint()
                                         }
-                                    } ?: run {
-                                        isEnabled = false
                                     }
+
+                                    this.add(JSeparator())
                                 }
 
-                                add(itemMenu)
+                                it.elements.forElse { token ->
+                                    JMenuItem(token.name + " (" + token.type.name + ")").applyAndAddTo(this) {
+                                        addActionListener {
+                                            transaction {
+                                                Scene.moveElementToScene(
+                                                    token,
+                                                    Scene[act.currentScene.id.value]
+                                                )
+                                            }
+                                            viewModel.repaint()
+                                        }
+                                    }
+                                } ?: run {
+                                    isEnabled = false
+                                }
                             }
-                        }
 
-                        if (menuComponents.none { it is JMenuItem && it.isEnabled })
-                            isEnabled = false
+                            add(itemMenu)
+                        }
                     }
+
+                    if (menuComponents.none { it is JMenuItem && it.isEnabled })
+                        isEnabled = false
+                }
             }
 
             this.addSeparator()
 
             JMenuItem(StringLocale[STR_DELETE_SELECTED_TOKENS]).applyAndAddTo(this) {
                 this.addActionListener {
-                    ViewManager.removeSelectedElements()
+                    viewModel.removeElements()
                 }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0)
             }
@@ -214,7 +208,7 @@ class MasterMenuBar(val act: Act) : JMenuBar() {
                     ) {
                         transaction {
                             for (token in Scene[act.currentScene.id.value].elements) {
-                                ViewManager.removeElements(token.toElements())
+                                viewModel.removeElements(listOf(token))
                                 transaction { token.delete() }
                                 Thread.sleep(100)
                             }
@@ -224,15 +218,17 @@ class MasterMenuBar(val act: Act) : JMenuBar() {
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, CTRLSHIFT)
             }
         }
+
+        reloadCommandItemLabel()
     }
 
-    fun reloadCommandItemLabel() = CommandManager(act.currentScene.id.value).let { manager ->
-        undoMenuItem?.apply {
+    fun reloadCommandItemLabel() = CommandManager(transaction { act.currentScene.id }).let { manager ->
+        undoMenuItem.apply {
             isEnabled = manager.undoLabel != null
             text = manager.undoLabel ?: ""
         }
 
-        redoMenuItem?.apply {
+        redoMenuItem.apply {
             isEnabled = manager.redoLabel != null
             text = manager.redoLabel ?: ""
         }

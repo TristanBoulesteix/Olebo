@@ -8,6 +8,7 @@ import jdr.exia.model.element.Element
 import jdr.exia.model.type.Point
 import jdr.exia.model.utils.callCommandManager
 import jdr.exia.view.composable.master.MapPanel
+import jdr.exia.view.menubar.MasterMenuBar
 import jdr.exia.view.tools.getTokenFromPosition
 import jdr.exia.view.tools.positionOf
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -19,7 +20,9 @@ class MainViewModel(val act: Act) {
         const val ABSOLUTE_HEIGHT = 900
     }
 
-    val panel  by lazy { MapPanel(isParentMaster = true, viewModel = this) }
+    val menuBar by lazy { MasterMenuBar(act = act, viewModel = this) }
+
+    val panel by lazy { MapPanel(isParentMaster = true, viewModel = this) }
 
     val scene
         get() = transaction { act.currentScene }
@@ -36,7 +39,7 @@ class MainViewModel(val act: Act) {
 
     fun selectElementsAtPosition(position: Point) {
         selectedElements = scene.elements.getTokenFromPosition(position)?.let { listOf(it) } ?: emptyList()
-        panel.repaint()
+        repaint()
     }
 
     /**
@@ -88,7 +91,7 @@ class MainViewModel(val act: Act) {
             }
         }
 
-        panel.repaint()
+        repaint()
     }
 
     fun selectElements(rec: Rectangle) {
@@ -102,6 +105,22 @@ class MainViewModel(val act: Act) {
 
         selectedElements = elements.ifEmpty { emptyList() }
 
+        repaint()
+    }
+
+    fun removeElements(elements: List<Element> = selectedElements) { //removes given token from MutableList
+        selectedElements = emptyList()
+        scene.callCommandManager(elements, Element::cmdDelete)
+        repaint()
+    }
+
+    fun unselectElements() {
+        selectedElements = emptyList()
+        repaint()
+    }
+
+    fun repaint() {
         panel.repaint()
+        menuBar.reloadCommandItemLabel()
     }
 }

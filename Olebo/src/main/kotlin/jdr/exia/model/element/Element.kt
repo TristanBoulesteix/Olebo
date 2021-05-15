@@ -67,7 +67,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             }
         }
 
-        fun cmdOrientationToRight(manager: CommandManager, elements: Elements) {
+        fun cmdOrientationToRight(manager: CommandManager, elements: List<Element>) {
             val previousOrientation = elements.map { it.orientation }
 
             manager += object : Command() {
@@ -90,7 +90,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             }
         }
 
-        fun cmdOrientationToLeft(manager: CommandManager, elements: Elements) {
+        fun cmdOrientationToLeft(manager: CommandManager, elements: List<Element>) {
             val previousOrientation = elements.map { it.orientation }
 
             manager += object : Command() {
@@ -147,7 +147,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             }
         }
 
-        fun cmdDelete(manager: CommandManager, elements: Elements) {
+        fun cmdDelete(manager: CommandManager, elements: List<Element>) {
             manager += object : Command() {
                 override val label by StringDelegate(STR_DELETE_SELECTED_TOKENS)
 

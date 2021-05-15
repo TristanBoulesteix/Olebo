@@ -1,5 +1,8 @@
 package jdr.exia.model.command
 
+import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.sql.transactions.transaction
+
 class CommandManager private constructor() : MutableList<Command> by mutableListOf() {
     companion object {
         private var managerInstance: Pair<Int, CommandManager>? = null
@@ -11,6 +14,10 @@ class CommandManager private constructor() : MutableList<Command> by mutableList
             }
 
             return CommandManager().also { managerInstance = sceneId to it }
+        }
+
+        operator fun invoke(sceneId: EntityID<Int>) = transaction {
+            CommandManager(sceneId.value)
         }
     }
 
