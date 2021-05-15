@@ -11,8 +11,8 @@ import jdr.exia.view.ui.DEFAULT_INSET
 import jdr.exia.view.legacy.utils.components.filter.MaxCharFilter
 import jdr.exia.view.legacy.utils.components.templates.ComboSelectPanel
 import jdr.exia.view.legacy.utils.components.templates.PlaceholderTextField
-import jdr.exia.view.legacy.utils.event.addFocusGainedListener
-import jdr.exia.view.legacy.utils.event.addTextChangedListener
+import jdr.exia.view.tools.event.addFocusGainedListener
+import jdr.exia.view.tools.event.addTextChangedListener
 import jdr.exia.view.tools.gridBagConstraintsOf
 import jdr.exia.viewModel.legacy.ViewManager
 import kotlinx.coroutines.Dispatchers

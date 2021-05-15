@@ -6,7 +6,7 @@ import jdr.exia.localization.StringLocale
 import jdr.exia.model.element.Element
 import jdr.exia.model.utils.isCharacter
 import jdr.exia.view.legacy.utils.components.filter.IntegerFilter
-import jdr.exia.view.legacy.utils.event.addTextChangedListener
+import jdr.exia.view.tools.event.addTextChangedListener
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Color
 import java.awt.Font

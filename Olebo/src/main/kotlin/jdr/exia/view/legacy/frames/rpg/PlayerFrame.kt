@@ -7,7 +7,7 @@ import jdr.exia.model.element.emptyElements
 import jdr.exia.view.legacy.frames.Reloadable
 import jdr.exia.view.legacy.MasterMenuBar
 import jdr.exia.view.ui.DIMENSION_FRAME
-import jdr.exia.view.legacy.utils.event.addKeyPressedListener
+import jdr.exia.view.tools.event.addKeyPressedListener
 import jdr.exia.view.tools.screens
 import java.awt.Color
 import java.awt.Image

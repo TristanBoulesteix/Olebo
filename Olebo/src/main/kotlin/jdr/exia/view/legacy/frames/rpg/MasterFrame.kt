@@ -4,7 +4,7 @@ import jdr.exia.localization.STR_DM_TITLE_FRAME
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.element.Elements
 import jdr.exia.model.element.emptyElements
-import jdr.exia.view.legacy.utils.event.addKeyPressedListener
+import jdr.exia.view.tools.event.addKeyPressedListener
 import jdr.exia.view.legacy.MasterMenuBar
 import jdr.exia.view.tools.gridBagConstraintsOf
 import jdr.exia.view.ui.DIMENSION_FRAME

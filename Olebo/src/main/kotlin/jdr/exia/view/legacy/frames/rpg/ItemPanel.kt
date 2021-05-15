@@ -6,9 +6,9 @@ import jdr.exia.model.element.Type
 import jdr.exia.model.utils.forElse
 import jdr.exia.view.legacy.frames.Reloadable
 import jdr.exia.view.legacy.utils.components.templates.PlaceholderTextField
-import jdr.exia.view.legacy.utils.event.ClickListener
-import jdr.exia.view.legacy.utils.event.addClickListener
-import jdr.exia.view.legacy.utils.event.addTextChangedListener
+import jdr.exia.view.tools.event.ClickListener
+import jdr.exia.view.tools.event.addClickListener
+import jdr.exia.view.tools.event.addTextChangedListener
 import jdr.exia.viewModel.legacy.ViewManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.*

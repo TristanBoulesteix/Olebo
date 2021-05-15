@@ -1,12 +1,13 @@
-package jdr.exia.view.legacy.frames.rpg
+@file:Suppress("FunctionName")
+
+package jdr.exia.view.composable.master
 
 import jdr.exia.model.dao.option.SerializableColor
 import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.dao.option.Settings
+import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
-import jdr.exia.model.element.Elements
 import jdr.exia.model.element.Size
-import jdr.exia.model.element.emptyElements
 import jdr.exia.model.type.Point
 import jdr.exia.view.tools.compareTo
 import jdr.exia.view.tools.drawCircleWithCenterCoordinates
@@ -15,25 +16,28 @@ import jdr.exia.view.tools.event.addMouseMovedListener
 import jdr.exia.view.tools.event.addMouseReleasedListener
 import jdr.exia.view.tools.fillCircleWithCenterCoordinates
 import jdr.exia.view.tools.getTokenFromPosition
-import jdr.exia.viewModel.legacy.ViewManager
+import jdr.exia.viewModel.MainViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.swing.Swing
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.*
 import java.awt.event.MouseEvent
 import java.awt.event.MouseMotionAdapter
+import java.io.File
+import javax.imageio.ImageIO
 import javax.swing.JPanel
 import javax.swing.SwingUtilities
 import javax.swing.ToolTipManager
 import kotlin.math.abs
 
-/**
- * This panel contains the map and all the objects placed within it
- */
-class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
-    //The background... Why are you reading this? Stop!! I said stop!!! You're still doing it, even when you had to scroll sideways... Ok i'm giving up, bye
-    var backGroundImage: Image? = null
-    private var tokens = emptyElements() //These are all the tokens placed on  the current map
-    var selectedElements = emptyElements()
+class MapPanel(private val isParentMaster: Boolean, private val viewModel: MainViewModel) : JPanel() {
+    private var backGroundImage = transaction { ImageIO.read(File(viewModel.scene.background)) }
+
+    /**
+     * These are all the [Blueprint] placed on  the current map
+     */
+    private val tokens
+        get() = transaction { viewModel.scene.elements }
 
     private var selectedArea: Rectangle? = null
 
@@ -49,7 +53,7 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
         this.background = Color.WHITE
         this.isOpaque = false
 
-        if (parentGameFrame is MasterFrame)
+        if (isParentMaster)
             initializeForMaster()
         else
             initializeForPlayer()
@@ -61,7 +65,7 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
     }
 
     /**
-     * init only for [MasterFrame]
+     * init only for DM window
      */
     private fun initializeForMaster() {
         var start = Point()
@@ -76,7 +80,7 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
                 if (SwingUtilities.isLeftMouseButton(me)) {
                     val end = me.point
 
-                    if (ViewManager.positionHasElement(Point(start).absolutePosition)) {
+                    if (viewModel.hasElementAtPosition(Point(start).absolutePosition)) {
                         movePoint = Point(end)
                         selectedArea = null
                     } else {
@@ -98,39 +102,39 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
             val releasedPosition = Point(me.point).absolutePosition
 
             when (me.button) {
-                MouseEvent.BUTTON1 -> if (movePoint == null && selectedArea == null) ViewManager.selectElement(
+                MouseEvent.BUTTON1 -> if (movePoint == null && selectedArea == null) viewModel.selectElementsAtPosition(
                     releasedPosition
                 ) // Left click
-                MouseEvent.BUTTON2, MouseEvent.BUTTON3 -> ViewManager.moveTokens(releasedPosition)   // Other buttons
+                MouseEvent.BUTTON2, MouseEvent.BUTTON3 -> viewModel.moveTokensTo(releasedPosition)   // Other buttons
             }
 
             selectedArea?.let {
                 if (it.size >= Dimension(Size.XS.size.absoluteSizeValue, Size.XS.size.absoluteSizeValue))
-                    ViewManager.selectElements(it)
+                    viewModel.selectElements(it)
                 else repaint()
                 selectedArea = null
             }
 
             movePoint?.absolutePosition?.let {
-                ViewManager.moveTokens(it, Point(start).absolutePosition)
+                viewModel.moveTokensTo(it, Point(start).absolutePosition)
                 start = it.toJPoint()
                 movePoint = null
             }
         }
 
         addMouseMovedListener { me ->
-            ViewManager.cursorPoint = Point(me.point).absolutePosition
+            viewModel.cursor = Point(me.point).absolutePosition
         }
 
         addMouseExitedListener {
-            ViewManager.cursorPoint = null
+            viewModel.cursor = null
         }
 
         ToolTipManager.sharedInstance().registerComponent(this)
     }
 
     /**
-     * init only for [PlayerFrame]
+     * init only for players window
      */
     private fun initializeForPlayer() {
         repaintJob = GlobalScope.launch(Dispatchers.Swing) {
@@ -146,35 +150,28 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
      * Translates an X coordinate in 1600:900px to proportional coords according to this window's size
      */
     private fun relativeX(absoluteX: Int): Int {
-        return (absoluteX * this.width) / ViewManager.ABSOLUTE_WIDTH
+        return (absoluteX * this.width) / MainViewModel.ABSOLUTE_WIDTH
     }
 
     /**
      * Translates a y coordinate in 1600:900px to proportional coords according to this window's size
      */
     private fun relativeY(absoluteY: Int): Int {
-        return (absoluteY * this.height) / ViewManager.ABSOLUTE_HEIGHT
+        return (absoluteY * this.height) / MainViewModel.ABSOLUTE_HEIGHT
     }
 
     /**
      * Translates an X coordinate from this window into a 1600:900 X coord
      */
     private fun absoluteX(relativeX: Int): Int {
-        return (((relativeX.toFloat() / this.width.toFloat())) * ViewManager.ABSOLUTE_WIDTH).toInt()
+        return (((relativeX.toFloat() / this.width.toFloat())) * MainViewModel.ABSOLUTE_WIDTH).toInt()
     }
 
     /**
      * Translates an Y coordinate from this window into a 1600:900 Y coord
      */
     private fun absoluteY(relativeY: Int): Int {
-        return (((relativeY.toFloat() / this.height.toFloat())) * ViewManager.ABSOLUTE_HEIGHT).toInt()
-    }
-
-    /**
-     * Gets the current token display up to date
-     */
-    fun updateTokens(tokens: Elements) {
-        this.tokens = tokens
+        return (((relativeY.toFloat() / this.height.toFloat())) * MainViewModel.ABSOLUTE_HEIGHT).toInt()
     }
 
     val Point.absolutePosition
@@ -199,21 +196,21 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
         //Display every token one by one
         for (token in tokens) {
             //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
-            if (parentGameFrame !is PlayerFrame || token.isVisible) {
+            if (isParentMaster || token.isVisible) {
                 // Draw token and visiblity indicator
-                if ((parentGameFrame is MasterFrame)) {
+                if ((isParentMaster)) {
                     if (!(token.isVisible)) {
                         g.drawInvisibleMarker(token)
                     }
 
                     // Draw selection indicator
-                    if (selectedElements.isNotEmpty() && token in selectedElements) {
+                    if (viewModel.selectedElements.isNotEmpty() && token in viewModel.selectedElements) {
                         g.drawSelectedMarker(token)
                     }
                 }
                 g.drawToken(token)
 
-                if ((parentGameFrame is MasterFrame && labelState.isVisible) || labelState == SerializableLabelState.FOR_BOTH)
+                if ((isParentMaster && labelState.isVisible) || labelState == SerializableLabelState.FOR_BOTH)
                     g.drawLabel(token, labelColor)
             }
         }
@@ -227,15 +224,14 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
         }
 
         // Draw cursor
-        if (parentGameFrame is PlayerFrame && Settings.cursorEnabled)
-            ViewManager.cursorPoint?.let {
+        if (!isParentMaster && Settings.cursorEnabled)
+            viewModel.cursor?.let {
                 g.color = cursorColor
                 g.fillCircleWithCenterCoordinates(relativeX(it.x), relativeY(it.y), 15)
                 g.color = borderCursorColor
                 g.drawCircleWithCenterCoordinates(relativeX(it.x), relativeY(it.y), 15)
             }
     }
-
 
     /**
      * Draws a red rectangle around the currently selected token for movement
@@ -299,6 +295,6 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
      * Show alias on mouse hover
      */
     override fun getToolTipText() = mousePosition?.let {
-        if (Settings.labelState.isEnabled && parentGameFrame is MasterFrame) tokens.getTokenFromPosition(Point(it).absolutePosition)?.alias else null
+        if (Settings.labelState.isEnabled && isParentMaster) tokens.getTokenFromPosition(Point(it).absolutePosition)?.alias else null
     }
 }

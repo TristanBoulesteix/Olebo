@@ -60,7 +60,7 @@ class MasterMenuBar(val act: Act) : JMenuBar() {
                 init {
                     this.isEnabled = false
                     this.addActionListener {
-                        CommandManager(act.sceneId).undo()
+                        CommandManager(act.currentScene.id.value).undo()
                         ViewManager.repaint()
 
                     }
@@ -77,7 +77,7 @@ class MasterMenuBar(val act: Act) : JMenuBar() {
                 init {
                     this.isEnabled = false
                     this.addActionListener {
-                        CommandManager(act.sceneId).redo()
+                        CommandManager(act.currentScene.id.value).redo()
                         ViewManager.repaint()
                     }
                     this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Y, CTRL)
@@ -115,7 +115,7 @@ class MasterMenuBar(val act: Act) : JMenuBar() {
             JMenu(StringLocale[STR_CHOOSE_SCENE]).applyAndAddTo(this) {
                     transaction {
                         act.scenes.forEachIndexed { index, scene ->
-                            if (scene.id.value == act.sceneId) {
+                            if (scene.id.value == act.currentScene.id.value) {
                                 val item =
                                     JMenuItem("${index + 1} ${scene.name} (${StringLocale[STR_IS_CURRENT_SCENE, StringStates.NORMAL]})").apply {
                                         isEnabled = false
@@ -147,7 +147,7 @@ class MasterMenuBar(val act: Act) : JMenuBar() {
                             isEnabled = false
 
                         act.scenes.forEach {
-                            if (it.id.value != act.sceneId) {
+                            if (it.id.value != act.currentScene.id.value) {
                                 val itemMenu = JMenu(it.name).apply {
                                     if (it.elements.isNotEmpty()) {
                                         JMenuItem(StringLocale[STR_IMPORT_ALL_ELEMENTS]).applyAndAddTo(this) {
@@ -156,7 +156,7 @@ class MasterMenuBar(val act: Act) : JMenuBar() {
                                                     transaction {
                                                         Scene.moveElementToScene(
                                                             token,
-                                                            Scene[act.sceneId]
+                                                            Scene[act.currentScene.id.value]
                                                         )
                                                     }
                                                 }
@@ -175,7 +175,7 @@ class MasterMenuBar(val act: Act) : JMenuBar() {
                                                 transaction {
                                                     Scene.moveElementToScene(
                                                         token,
-                                                        Scene[act.sceneId]
+                                                        Scene[act.currentScene.id.value]
                                                     )
                                                 }
                                                 ViewManager.repaint()
@@ -213,7 +213,7 @@ class MasterMenuBar(val act: Act) : JMenuBar() {
                         confirm = true
                     ) {
                         transaction {
-                            for (token in Scene[act.sceneId].elements) {
+                            for (token in Scene[act.currentScene.id.value].elements) {
                                 ViewManager.removeElements(token.toElements())
                                 transaction { token.delete() }
                                 Thread.sleep(100)
@@ -226,7 +226,7 @@ class MasterMenuBar(val act: Act) : JMenuBar() {
         }
     }
 
-    fun reloadCommandItemLabel() = CommandManager(act.sceneId).let { manager ->
+    fun reloadCommandItemLabel() = CommandManager(act.currentScene.id.value).let { manager ->
         undoMenuItem?.apply {
             isEnabled = manager.undoLabel != null
             text = manager.undoLabel ?: ""

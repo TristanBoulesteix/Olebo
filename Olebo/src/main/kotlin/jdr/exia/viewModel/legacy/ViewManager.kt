@@ -6,8 +6,8 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.*
 import jdr.exia.model.type.Point
 import jdr.exia.model.utils.callCommandManager
-import jdr.exia.view.legacy.frames.rpg.MasterFrame
 import jdr.exia.view.legacy.MasterMenuBar
+import jdr.exia.view.legacy.frames.rpg.MasterFrame
 import jdr.exia.view.legacy.frames.rpg.PlayerFrame
 import jdr.exia.view.legacy.frames.rpg.ViewFacade
 import jdr.exia.view.tools.getTokenFromPosition
@@ -61,7 +61,7 @@ object ViewManager {
     }
 
     fun changeCurrentScene(sceneId: Int) {
-        activeAct!!.sceneId = sceneId
+       // activeAct!!.sceneId = sceneId
         loadCurrentScene()
         repaint()
     }
@@ -73,7 +73,7 @@ object ViewManager {
 
     private fun loadCurrentScene() = transaction {
         with(activeAct!!) activeAct@{
-            activeScene = this.scenes.findWithId(this.sceneId)
+         //   activeScene = this.scenes.findWithId(this.sceneId)
             ViewFacade.apply {
                 this.loadItems()
                 this.setMapBackground(activeScene!!.background)

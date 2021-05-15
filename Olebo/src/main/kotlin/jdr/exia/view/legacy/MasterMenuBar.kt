@@ -60,7 +60,7 @@ object MasterMenuBar : JMenuBar() {
                     this.isEnabled = false
                     this.addActionListener {
                         act?.let {
-                            CommandManager(it.sceneId).undo()
+                            CommandManager(it.currentScene.id.value).undo()
                             ViewManager.repaint()
                         }
                     }
@@ -78,7 +78,7 @@ object MasterMenuBar : JMenuBar() {
                     this.isEnabled = false
                     this.addActionListener {
                         act?.let {
-                            CommandManager(it.sceneId).redo()
+                            CommandManager(it.currentScene.id.value).redo()
                             ViewManager.repaint()
                         }
                     }
@@ -118,7 +118,7 @@ object MasterMenuBar : JMenuBar() {
                 act?.let {
                     transaction {
                         it.scenes.forEachIndexed { index, scene ->
-                            if (scene.id.value == it.sceneId) {
+                            if (scene.id.value == it.currentScene.id.value) {
                                 val item =
                                     JMenuItem("${index + 1} ${scene.name} (${StringLocale[STR_IS_CURRENT_SCENE, StringStates.NORMAL]})").apply {
                                         isEnabled = false
@@ -152,7 +152,7 @@ object MasterMenuBar : JMenuBar() {
                             isEnabled = false
 
                         act.scenes.forEach {
-                            if (it.id.value != act.sceneId) {
+                            if (it.id.value != act.currentScene.id.value) {
                                 val itemMenu = JMenu(it.name).apply {
                                     if (it.elements.isNotEmpty()) {
                                         JMenuItem(StringLocale[STR_IMPORT_ALL_ELEMENTS]).applyAndAddTo(this) {
@@ -161,7 +161,7 @@ object MasterMenuBar : JMenuBar() {
                                                     transaction {
                                                         Scene.moveElementToScene(
                                                             token,
-                                                            Scene[act.sceneId]
+                                                            Scene[act.currentScene.id.value]
                                                         )
                                                     }
                                                 }
@@ -180,7 +180,7 @@ object MasterMenuBar : JMenuBar() {
                                                 transaction {
                                                     Scene.moveElementToScene(
                                                         token,
-                                                        Scene[act.sceneId]
+                                                        Scene[act.currentScene.id.value]
                                                     )
                                                 }
                                                 ViewManager.repaint()
@@ -219,7 +219,7 @@ object MasterMenuBar : JMenuBar() {
                         confirm = true
                     ) {
                         transaction {
-                            for (token in Scene[act!!.sceneId].elements) {
+                            for (token in Scene[act!!.currentScene.id.value].elements) {
                                 ViewManager.removeElements(token.toElements())
                                 transaction { token.delete() }
                                 Thread.sleep(100)
@@ -232,7 +232,7 @@ object MasterMenuBar : JMenuBar() {
         }
     }
 
-    fun reloadCommandItemLabel() = CommandManager(act?.sceneId ?: -1).let { manager ->
+    fun reloadCommandItemLabel() = CommandManager(act?.currentScene?.id?.value ?: -1).let { manager ->
         undoMenuItem?.apply {
             isEnabled = manager.undoLabel != null
             text = manager.undoLabel ?: ""

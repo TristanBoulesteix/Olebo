@@ -1,4 +1,4 @@
-package jdr.exia.view.legacy.utils.event
+package jdr.exia.view.tools.event
 
 import java.awt.Component
 import java.awt.event.KeyEvent

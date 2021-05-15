@@ -1,4 +1,4 @@
-package jdr.exia.view.legacy.utils.event
+package jdr.exia.view.tools.event
 
 import javax.swing.event.DocumentEvent
 import javax.swing.event.DocumentListener

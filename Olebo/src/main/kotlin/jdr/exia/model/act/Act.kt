@@ -20,7 +20,7 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
 
     val scenes by Scene referrersOn SceneTable.idAct
 
-    var sceneId by ActTable.idScene
+    private var sceneId by ActTable.idScene
 
     override fun delete() {
         scenes.forEach {
@@ -29,6 +29,13 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
 
         super.delete()
     }
+
+    var currentScene
+        get() = scenes.findWithId(sceneId) ?: scenes.first()
+        set(value) {
+            sceneId = value.id.value
+        }
+
 
     /**
      * Find a scene with its id from all scenes stored in an Act

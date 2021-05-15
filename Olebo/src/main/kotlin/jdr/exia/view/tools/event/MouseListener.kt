@@ -1,4 +1,4 @@
-package jdr.exia.view.legacy.utils.event
+package jdr.exia.view.tools.event
 
 import java.awt.event.MouseEvent
 import java.awt.event.MouseListener as MouseListenerSwing
