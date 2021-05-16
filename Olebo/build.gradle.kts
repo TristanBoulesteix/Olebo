@@ -20,14 +20,13 @@ repositories {
 val exposedVersion = "0.31.1"
 
 dependencies {
+    implementation("org.slf4j", "slf4j-simple", "1.7.30")
     testImplementation("junit", "junit", "4.12")
     implementation("org.xerial", "sqlite-jdbc", "3.28.0")
     implementation(project(":CommonModule", "default"))
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
-    implementation("org.slf4j", "slf4j-api", "1.7.30")
-    implementation("org.slf4j", "slf4j-simple", "1.7.30")
     implementation("org.apache.httpcomponents", "httpclient", "4.5.10")
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.4.2")
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-swing", "1.4.2")
@@ -70,7 +69,7 @@ compose.desktop {
 
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
 
-            modules("java.sql")
+            modules("java.naming", "java.sql")
         }
     }
 }
