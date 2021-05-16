@@ -15,7 +15,12 @@ import javax.swing.JFrame
 
 class MasterWindow(act: Act) : JFrame() {
     private val viewModel: MainViewModel =
-        MainViewModel(act = act, closeMasterWindow = this::dispose, focusMasterWindow = this::requestFocus)
+        MainViewModel(
+            act = act,
+            closeMasterWindow = this::dispose,
+            focusMasterWindow = this::requestFocus,
+            getMasterWindowScreen = { this.graphicsConfiguration.device }
+        )
 
     init {
         // Initilize content frame

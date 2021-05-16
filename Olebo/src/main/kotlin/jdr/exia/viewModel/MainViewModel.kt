@@ -8,26 +8,28 @@ import jdr.exia.model.element.Element
 import jdr.exia.model.type.Point
 import jdr.exia.model.utils.callCommandManager
 import jdr.exia.view.HomeWindow
-import jdr.exia.view.PlayerWindow
+import jdr.exia.view.PlayerDialog
 import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.menubar.MasterMenuBar
 import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.getTokenFromPosition
 import jdr.exia.view.tools.positionOf
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.awt.GraphicsDevice
 import java.awt.Rectangle
 
 class MainViewModel(
     val act: Act,
     private val closeMasterWindow: DefaultFunction,
-    val focusMasterWindow: DefaultFunction
+    val focusMasterWindow: DefaultFunction,
+    getMasterWindowScreen: () -> GraphicsDevice
 ) {
     companion object {
         const val ABSOLUTE_WIDTH = 1600
         const val ABSOLUTE_HEIGHT = 900
     }
 
-    private val playerWindow: PlayerWindow
+    private val playerDialogData: PlayerDialog.PlayerDialogData
 
     val menuBar = MasterMenuBar(act = act, viewModel = this)
 
@@ -42,9 +44,10 @@ class MainViewModel(
     var cursor: Point? by mutableStateOf(null)
 
     init {
-        playerWindow = PlayerWindow(
+        playerDialogData = PlayerDialog.PlayerDialogData(
             mapPanel = MapPanel(isParentMaster = false, viewModel = this),
-            onHide = { menuBar.togglePlayerFrameMenuItem.isSelected = false }
+            onHide = { menuBar.togglePlayerFrameMenuItem.isSelected = false },
+            getMasterWindowScreen = getMasterWindowScreen
         )
     }
 
@@ -146,6 +149,6 @@ class MainViewModel(
     }
 
     fun togglePlayerWindow(isVisible: Boolean) {
-        playerWindow.isVisible = isVisible
+        PlayerDialog.toggle(playerDialogData, isVisible)
     }
 }
