@@ -139,8 +139,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: MainV
     private fun initializeForPlayer() {
         repaintJob = GlobalScope.launch(Dispatchers.Swing) {
             while (true) {
-                if (Settings.cursorEnabled)
-                    repaint()
+                repaint()
                 delay(80L)
             }
         }
