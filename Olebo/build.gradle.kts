@@ -20,7 +20,7 @@ repositories {
 val exposedVersion = "0.31.1"
 
 dependencies {
-    implementation("org.slf4j", "slf4j-simple", "1.7.30")
+    implementation("org.slf4j", "slf4j-simple", "2.0.0-alpha1")
     testImplementation("junit", "junit", "4.12")
     implementation("org.xerial", "sqlite-jdbc", "3.28.0")
     implementation(project(":CommonModule", "default"))
