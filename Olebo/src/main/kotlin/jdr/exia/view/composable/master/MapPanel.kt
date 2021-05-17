@@ -5,7 +5,6 @@ package jdr.exia.view.composable.master
 import jdr.exia.model.dao.option.SerializableColor
 import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.dao.option.Settings
-import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Size
 import jdr.exia.model.type.Point
@@ -30,12 +29,6 @@ import kotlin.math.abs
 
 class MapPanel(private val isParentMaster: Boolean, private val viewModel: MainViewModel) : JComponent() {
     private var backGroundImage = transaction { ImageIO.read(File(viewModel.scene.background)) }
-
-    /**
-     * These are all the [Blueprint] placed on  the current map
-     */
-    private val tokens
-        get() = transaction { viewModel.scene.elements }
 
     private var selectedArea: Rectangle? = null
 
@@ -174,7 +167,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: MainV
         val labelState = Settings.labelState
 
         //Display every token one by one
-        for (token in tokens) {
+        for (token in viewModel.tokens) {
             //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
             if (isParentMaster || token.isVisible) {
                 // Draw token and visiblity indicator
@@ -276,6 +269,6 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: MainV
      * Show alias on mouse hover
      */
     override fun getToolTipText() = mousePosition?.let {
-        if (Settings.labelState.isEnabled && isParentMaster) tokens.getTokenFromPosition(Point(it).absolutePosition)?.alias else null
+        if (Settings.labelState.isEnabled && isParentMaster) viewModel.tokens.getTokenFromPosition(Point(it).absolutePosition)?.alias else null
     }
 }

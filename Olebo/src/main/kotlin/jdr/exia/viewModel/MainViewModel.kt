@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import jdr.exia.model.act.Act
+import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.type.Point
 import jdr.exia.model.utils.callCommandManager
@@ -14,6 +15,10 @@ import jdr.exia.view.menubar.MasterMenuBar
 import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.getTokenFromPosition
 import jdr.exia.view.tools.positionOf
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.swing.Swing
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.GraphicsDevice
 import java.awt.Rectangle
@@ -37,6 +42,12 @@ class MainViewModel(
 
     val scene
         get() = transaction { act.currentScene }
+
+    /**
+     * These are all the [Blueprint] placed on  the current map
+     */
+    var tokens = transaction { scene.elements }
+        private set
 
     var selectedElements: List<Element> by mutableStateOf(emptyList())
         private set
@@ -139,8 +150,13 @@ class MainViewModel(
     }
 
     fun repaint() {
-        panel.repaint()
-        menuBar.reloadCommandItemLabel()
+        GlobalScope.launch(Dispatchers.Swing) {
+            launch(Dispatchers.IO) {
+                tokens = transaction { scene.elements }
+            }
+            menuBar.reloadCommandItemLabel()
+            panel.repaint()
+        }
     }
 
     fun closeAct() {
