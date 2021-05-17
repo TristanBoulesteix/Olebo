@@ -151,9 +151,10 @@ class MainViewModel(
 
     fun repaint() {
         GlobalScope.launch(Dispatchers.Swing) {
-            val job =launch(Dispatchers.IO) {
+            val job = launch(Dispatchers.IO) {
                 tokens = transaction { scene.elements }
             }
+
             menuBar.reloadCommandItemLabel()
 
             job.join()
