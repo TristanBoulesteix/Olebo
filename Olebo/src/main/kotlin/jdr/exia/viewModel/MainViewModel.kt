@@ -151,10 +151,12 @@ class MainViewModel(
 
     fun repaint() {
         GlobalScope.launch(Dispatchers.Swing) {
-            launch(Dispatchers.IO) {
+            val job =launch(Dispatchers.IO) {
                 tokens = transaction { scene.elements }
             }
             menuBar.reloadCommandItemLabel()
+
+            job.join()
             panel.repaint()
         }
     }
@@ -164,7 +166,6 @@ class MainViewModel(
         HomeWindow().isVisible = true
     }
 
-    fun togglePlayerWindow(isVisible: Boolean) {
-        PlayerDialog.toggle(playerDialogData, isVisible)
-    }
+    fun togglePlayerWindow(isVisible: Boolean) = PlayerDialog.toggle(playerDialogData, isVisible)
+
 }
