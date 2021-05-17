@@ -17,20 +17,18 @@ import jdr.exia.view.tools.event.addMouseReleasedListener
 import jdr.exia.view.tools.fillCircleWithCenterCoordinates
 import jdr.exia.view.tools.getTokenFromPosition
 import jdr.exia.viewModel.MainViewModel
-import kotlinx.coroutines.*
-import kotlinx.coroutines.swing.Swing
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.*
 import java.awt.event.MouseEvent
 import java.awt.event.MouseMotionAdapter
 import java.io.File
 import javax.imageio.ImageIO
-import javax.swing.JPanel
+import javax.swing.JComponent
 import javax.swing.SwingUtilities
 import javax.swing.ToolTipManager
 import kotlin.math.abs
 
-class MapPanel(private val isParentMaster: Boolean, private val viewModel: MainViewModel) : JPanel() {
+class MapPanel(private val isParentMaster: Boolean, private val viewModel: MainViewModel) : JComponent() {
     private var backGroundImage = transaction { ImageIO.read(File(viewModel.scene.background)) }
 
     /**
@@ -45,9 +43,6 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: MainV
 
     var borderCursorColor: Color
 
-    var repaintJob: Job? = null
-        private set
-
     init {
         this.layout = GridBagLayout()
         this.background = Color.WHITE
@@ -55,8 +50,6 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: MainV
 
         if (isParentMaster)
             initializeForMaster()
-        else
-            initializeForPlayer()
 
         Settings.cursorColor.let {
             cursorColor = it.contentColor
@@ -134,18 +127,6 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: MainV
     }
 
     /**
-     * init only for players window
-     */
-    private fun initializeForPlayer() {
-        repaintJob = GlobalScope.launch(Dispatchers.Swing) {
-            while (true) {
-                repaint()
-                delay(80L)
-            }
-        }
-    }
-
-    /**
      * Translates an X coordinate in 1600:900px to proportional coords according to this window's size
      */
     private fun relativeX(absoluteX: Int): Int {
@@ -197,8 +178,8 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: MainV
             //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
             if (isParentMaster || token.isVisible) {
                 // Draw token and visiblity indicator
-                if ((isParentMaster)) {
-                    if (!(token.isVisible)) {
+                if (isParentMaster) {
+                    if (!token.isVisible) {
                         g.drawInvisibleMarker(token)
                     }
 
@@ -207,6 +188,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: MainV
                         g.drawSelectedMarker(token)
                     }
                 }
+
                 g.drawToken(token)
 
                 if ((isParentMaster && labelState.isVisible) || labelState == SerializableLabelState.FOR_BOTH)

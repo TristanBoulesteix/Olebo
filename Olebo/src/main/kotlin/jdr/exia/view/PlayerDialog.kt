@@ -7,6 +7,8 @@ import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.event.addKeyPressedListener
 import jdr.exia.view.tools.screens
 import jdr.exia.view.ui.DIMENSION_FRAME
+import kotlinx.coroutines.*
+import kotlinx.coroutines.swing.Swing
 import java.awt.GraphicsDevice
 import java.awt.Window
 import java.awt.event.KeyEvent
@@ -67,7 +69,12 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: D
                 playerDialog = null
             }
         }
+
+        val isVisible
+            get() = playerDialog?.isVisible == true
     }
+
+    private val repaintJob: Job
 
     init {
         this.contentPane = mapPanel
@@ -82,6 +89,13 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: D
                 dispose()
             }
         }
+
+        repaintJob = GlobalScope.launch(Dispatchers.Swing) {
+            while (isActive) {
+                mapPanel.repaint()
+                delay(80L)
+            }
+        }
     }
 
     override fun setTitle(title: String) =
@@ -89,6 +103,7 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: D
 
     override fun dispose() {
         super.dispose()
+        repaintJob.cancel()
         onHide()
     }
 
