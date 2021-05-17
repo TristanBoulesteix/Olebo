@@ -27,8 +27,8 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
 
 @Composable
-fun ItemList() = Column(
-    modifier = Modifier.widthIn(max = 550.dp).fillMaxHeight().fillMaxWidth().border(BorderStroke(1.dp, Color.Black))
+fun ItemList(modifier: Modifier) = Column(
+    modifier = modifier.widthIn(max = 640.dp).fillMaxHeight().border(BorderStroke(1.dp, Color.Black))
 ) {
     var searchString by remember { mutableStateOf("") }
 

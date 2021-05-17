@@ -2,10 +2,14 @@ package jdr.exia.view
 
 import androidx.compose.desktop.ComposePanel
 import androidx.compose.desktop.SwingPanel
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import jdr.exia.model.act.Act
 import jdr.exia.view.composable.master.ItemList
 import jdr.exia.view.ui.DIMENSION_FRAME
@@ -41,14 +45,20 @@ class MasterWindow(act: Act) : JFrame() {
     @Suppress("FunctionName")
     @Composable
     fun MainContent() = Row {
-        ItemList()
-        Map()
+        ItemList(modifier = Modifier.weight(.3f))
+        Column(modifier = Modifier.weight(.7f).fillMaxSize()) {
+            Map(modifier = Modifier.weight(.85f))
+            Box(modifier = Modifier.weight(.15f).fillMaxSize().background(Color.Black)) {
+
+            }
+        }
+
     }
 
     @Suppress("FunctionName")
     @Composable
-    private fun Map() = SwingPanel(
-        modifier = Modifier.fillMaxSize(),
+    private fun Map(modifier: Modifier) = SwingPanel(
+        modifier = modifier.fillMaxSize(),
         factory = viewModel::panel::get
     )
 }
