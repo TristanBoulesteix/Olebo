@@ -2,16 +2,14 @@ package jdr.exia.view
 
 import androidx.compose.desktop.ComposePanel
 import androidx.compose.desktop.SwingPanel
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import jdr.exia.model.act.Act
 import jdr.exia.view.composable.master.ItemList
+import jdr.exia.view.composable.master.SelectedEditor
 import jdr.exia.view.ui.DIMENSION_FRAME
 import jdr.exia.view.ui.setThemedContent
 import jdr.exia.viewModel.MainViewModel
@@ -48,9 +46,7 @@ class MasterWindow(act: Act) : JFrame() {
         ItemList(modifier = Modifier.weight(.3f))
         Column(modifier = Modifier.weight(.7f).fillMaxSize()) {
             Map(modifier = Modifier.weight(.85f))
-            Box(modifier = Modifier.weight(.15f).fillMaxSize().background(Color.Black)) {
-
-            }
+            SelectedEditor(modifier = Modifier.weight(.15f).fillMaxSize(), selectedElements = viewModel.selectedElements)
         }
 
     }

@@ -1,11 +1,13 @@
 package jdr.exia.model.element
 
+import androidx.compose.ui.graphics.imageFromResource
 import jdr.exia.localization.*
 import jdr.exia.model.act.Scene
 import jdr.exia.model.command.Command
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.dao.option.Settings
+import jdr.exia.model.type.Image
 import jdr.exia.model.type.Point
 import jdr.exia.model.utils.isCharacter
 import jdr.exia.model.utils.rotate
@@ -194,6 +196,18 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             }.rotate(orientation)
         }
     }
+
+    val spriteBitmap
+        get() = transaction {
+            Image(blueprint.sprite).let {
+                if (blueprint.type == Type.BASIC) {
+                    imageFromResource("sprites/${it.path}")
+                } else {
+                    it.toBitmap()
+                }
+                // TODO : Add rotation
+            }
+        }
 
     val name
         get() = transaction { blueprint.realName }
