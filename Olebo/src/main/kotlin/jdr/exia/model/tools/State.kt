@@ -1,4 +1,4 @@
-package jdr.exia.view.tools
+package jdr.exia.model.tools
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue

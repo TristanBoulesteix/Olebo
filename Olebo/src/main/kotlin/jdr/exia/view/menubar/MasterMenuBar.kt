@@ -5,7 +5,7 @@ import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.option.Settings
-import jdr.exia.model.utils.forElse
+import jdr.exia.model.tools.forElse
 import jdr.exia.view.tools.applyAndAddTo
 import jdr.exia.view.tools.screens
 import jdr.exia.view.tools.showConfirmMessage

@@ -4,16 +4,14 @@ import jdr.exia.localization.STR_LABEL
 import jdr.exia.localization.STR_LABEL_TOOLTIP
 import jdr.exia.localization.STR_NAME
 import jdr.exia.localization.StringLocale
-import jdr.exia.model.dao.option.SerializableLabelState
-import jdr.exia.model.dao.option.Settings
 import jdr.exia.view.legacy.frames.Reloadable
-import jdr.exia.view.ui.DEFAULT_INSET
 import jdr.exia.view.legacy.utils.components.filter.MaxCharFilter
 import jdr.exia.view.legacy.utils.components.templates.ComboSelectPanel
 import jdr.exia.view.legacy.utils.components.templates.PlaceholderTextField
 import jdr.exia.view.tools.event.addFocusGainedListener
 import jdr.exia.view.tools.event.addTextChangedListener
 import jdr.exia.view.tools.gridBagConstraintsOf
+import jdr.exia.view.ui.DEFAULT_INSET
 import jdr.exia.viewModel.legacy.ViewManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -73,10 +71,10 @@ class SideDataPanel : JPanel(), Reloadable {
 
     private fun initLayout() {
         this.removeAll()
-        if (Settings.labelState != SerializableLabelState.DISABLED)
+      /*  if (Settings.labelState != SerializableLabelState.DISABLED)
             loadLabelLayout()
         else
-            loadUnlabelLayout()
+            loadUnlabelLayout()*/
     }
 
     private fun loadLabelLayout() {

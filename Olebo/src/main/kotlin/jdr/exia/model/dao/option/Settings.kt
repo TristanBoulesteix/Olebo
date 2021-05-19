@@ -16,7 +16,7 @@ import jdr.exia.model.dao.SettingsTable.LABEL_COLOR
 import jdr.exia.model.dao.SettingsTable.LABEL_STATE
 import jdr.exia.model.dao.SettingsTable.PLAYER_FRAME_ENABLED
 import jdr.exia.model.dao.SettingsTable.UPDATE_WARN
-import jdr.exia.model.utils.toBoolean
+import jdr.exia.model.tools.toBoolean
 import jdr.exia.utils.MessageException
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.IntEntity

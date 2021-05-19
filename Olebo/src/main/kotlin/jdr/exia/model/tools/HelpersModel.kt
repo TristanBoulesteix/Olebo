@@ -1,4 +1,4 @@
-package jdr.exia.model.utils
+package jdr.exia.model.tools
 
 import jdr.exia.model.act.Scene
 import jdr.exia.model.command.CommandManager

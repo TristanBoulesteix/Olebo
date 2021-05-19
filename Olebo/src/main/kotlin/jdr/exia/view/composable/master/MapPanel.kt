@@ -269,6 +269,6 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: MainV
      * Show alias on mouse hover
      */
     override fun getToolTipText() = mousePosition?.let {
-        if (Settings.labelState.isEnabled && isParentMaster) viewModel.tokens.getTokenFromPosition(Point(it).absolutePosition)?.alias else null
+        if (isParentMaster) viewModel.tokens.getTokenFromPosition(Point(it).absolutePosition)?.alias else null
     }
 }

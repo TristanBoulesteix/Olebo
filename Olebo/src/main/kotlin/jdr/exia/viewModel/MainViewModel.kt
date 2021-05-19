@@ -7,7 +7,7 @@ import jdr.exia.model.act.Act
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.type.Point
-import jdr.exia.model.utils.callCommandManager
+import jdr.exia.model.tools.callCommandManager
 import jdr.exia.view.HomeWindow
 import jdr.exia.view.PlayerDialog
 import jdr.exia.view.composable.master.MapPanel

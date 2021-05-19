@@ -15,6 +15,7 @@ import jdr.exia.localization.STR_ELEMENTS
 import jdr.exia.localization.STR_VERSION
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
+import jdr.exia.model.tools.withSetter
 import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.view.composable.editor.ActEditorView
 import jdr.exia.view.composable.editor.ElementsView
@@ -24,19 +25,15 @@ import jdr.exia.view.element.ImageButtonBuilder
 import jdr.exia.view.element.ScrollableColumn
 import jdr.exia.view.legacy.frames.rpg.MasterFrame
 import jdr.exia.view.menubar.FileMenu
-import jdr.exia.view.tools.BorderBuilder
-import jdr.exia.view.tools.DefaultFunction
-import jdr.exia.view.tools.border
-import jdr.exia.view.tools.withSetter
+import jdr.exia.view.tools.*
 import jdr.exia.view.ui.blue
 import jdr.exia.view.ui.setThemedContent
 import jdr.exia.viewModel.HomeViewModel
 import java.awt.Dimension
-import javax.swing.JFrame
 import javax.swing.JMenuBar
 
 @Suppress("FunctionName")
-class HomeWindow : JFrame("Olebo - ${StringLocale[STR_VERSION]} $OLEBO_VERSION") {
+class HomeWindow : ComposableWindow("Olebo - ${StringLocale[STR_VERSION]} $OLEBO_VERSION") {
     private val viewModel = HomeViewModel()
 
     init {
@@ -103,10 +100,10 @@ class HomeWindow : JFrame("Olebo - ${StringLocale[STR_VERSION]} $OLEBO_VERSION")
         startActCreation: DefaultFunction
     ) = Column {
         HeaderRow {
-            OutlinedButton(onClick = viewElements) {
+            OutlinedButton(onClick = viewElements, modifier = Modifier.withFocusCursor()) {
                 Text(text = StringLocale[STR_ELEMENTS])
             }
-            OutlinedButton(onClick = startActCreation) {
+            OutlinedButton(onClick = startActCreation, modifier = Modifier.withFocusCursor()) {
                 Text(text = StringLocale[STR_ADD_ACT])
             }
         }

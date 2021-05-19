@@ -9,9 +9,9 @@ import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
 import jdr.exia.model.element.isValid
 import jdr.exia.model.type.saveImgAndGetPath
-import jdr.exia.model.utils.Result
-import jdr.exia.model.utils.assignIfDifferent
-import jdr.exia.model.utils.isCharacter
+import jdr.exia.model.tools.Result
+import jdr.exia.model.tools.assignIfDifferent
+import jdr.exia.model.tools.isCharacter
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.transaction
 

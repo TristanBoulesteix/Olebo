@@ -6,7 +6,7 @@ import jdr.exia.model.act.Scene
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.toElements
-import jdr.exia.model.utils.forElse
+import jdr.exia.model.tools.forElse
 import jdr.exia.view.HomeWindow
 import jdr.exia.view.legacy.frames.rpg.MasterFrame
 import jdr.exia.view.legacy.frames.rpg.PlayerFrame

@@ -72,7 +72,7 @@ object SettingsTable : IntIdTable(), Initializable {
         insertOptionIfNotExists(6, CURSOR_COLOR, "", insertOnlyIfnotExists)
         insertOptionIfNotExists(7, PLAYER_FRAME_ENABLED, false, insertOnlyIfnotExists)
         insertOptionIfNotExists(8, DEFAULT_ELEMENT_VISIBILITY, false, insertOnlyIfnotExists)
-        insertOptionIfNotExists(9, LABEL_STATE, SerializableLabelState.DISABLED.encode(), insertOnlyIfnotExists)
+        insertOptionIfNotExists(9, LABEL_STATE, SerializableLabelState.ONLY_FOR_MASTER.encode(), insertOnlyIfnotExists)
         insertOptionIfNotExists(10, LABEL_COLOR, SerializableColor.BLACK.encode(), insertOnlyIfnotExists)
         insertOptionIfNotExists(11, CHANGELOGS_VERSION, "", insertOnlyIfnotExists)
     }

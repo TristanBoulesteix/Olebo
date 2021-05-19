@@ -3,7 +3,7 @@ package jdr.exia.view.legacy.frames.rpg
 import jdr.exia.localization.*
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
-import jdr.exia.model.utils.forElse
+import jdr.exia.model.tools.forElse
 import jdr.exia.view.legacy.frames.Reloadable
 import jdr.exia.view.legacy.utils.components.templates.PlaceholderTextField
 import jdr.exia.view.tools.event.ClickListener

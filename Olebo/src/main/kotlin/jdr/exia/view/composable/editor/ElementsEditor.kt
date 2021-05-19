@@ -5,7 +5,6 @@ package jdr.exia.view.composable.editor
 import androidx.compose.desktop.AppManager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -25,8 +24,8 @@ import jdr.exia.model.type.Image
 import jdr.exia.model.type.imageFromFile
 import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.model.type.savePathToImage
-import jdr.exia.model.utils.Result
-import jdr.exia.model.utils.isCharacter
+import jdr.exia.model.tools.Result
+import jdr.exia.model.tools.isCharacter
 import jdr.exia.view.element.*
 import jdr.exia.view.tools.*
 import jdr.exia.view.ui.blue
@@ -57,7 +56,7 @@ fun ElementsView(onDone: DefaultFunction) = Column {
                             modifier = Modifier.applyIf(
                                 condition = tabViewModel.currentTab == tab,
                                 mod = { border(bottom = BorderBuilder(5.dp, Color.Black)) }
-                            ).clickable { tabViewModel.onSelectTab(tab) }.padding(20.dp)
+                            ).clickableWithCursor { tabViewModel.onSelectTab(tab) }.padding(20.dp)
                         )
                     }
                 }
@@ -83,7 +82,8 @@ fun ElementsView(onDone: DefaultFunction) = Column {
                     },
                     content = {
                         Text(text = StringLocale[if (contentViewModel.currentEditBlueprint == null && contentViewModel.blueprintInCreation == null) STR_BACK else STR_CANCEL])
-                    }
+                    },
+                    modifier = Modifier.withFocusCursor()
                 )
             }
         }
@@ -121,7 +121,7 @@ private fun Content(viewModel: ElementsEditorViewModel, innerPadding: PaddingVal
                         OutlinedButton(
                             onClick = viewModel::startBlueprintCreation,
                             content = { Text(StringLocale[STR_ADD_ELEMENT]) },
-                            modifier = Modifier.align(Alignment.CenterHorizontally)
+                            modifier = Modifier.align(Alignment.CenterHorizontally).withFocusCursor()
                         )
                     }
                 }

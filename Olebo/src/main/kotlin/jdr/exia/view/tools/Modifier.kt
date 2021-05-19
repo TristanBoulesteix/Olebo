@@ -2,6 +2,7 @@ package jdr.exia.view.tools
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
@@ -9,8 +10,10 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.input.pointer.pointerMoveFilter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import jdr.exia.view.ComposableWindow
 import jdr.exia.view.ui.roundedShape
 
 /**
@@ -137,3 +140,17 @@ private fun DrawScope.drawEndBorder(
 @Stable
 fun Modifier.addRoundedBorder() =
     this.border(border = BorderStroke(2.dp, Color.Black), shape = roundedShape)
+
+fun Modifier.withFocusCursor() = this.pointerMoveFilter(
+    onEnter = {
+        ComposableWindow.currentFocused?.hasItemFocus(true)
+        false
+    },
+    onExit = {
+        ComposableWindow.currentFocused?.hasItemFocus(false)
+        false
+    }
+)
+
+fun Modifier.clickableWithCursor(enabled: Boolean = true, onClick: DefaultFunction) =
+    this.clickable(onClick = onClick, enabled = enabled).withFocusCursor()

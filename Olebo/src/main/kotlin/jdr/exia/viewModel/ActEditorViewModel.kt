@@ -13,7 +13,7 @@ import jdr.exia.model.act.isValid
 import jdr.exia.model.act.isValidAndEqualTo
 import jdr.exia.model.type.Image
 import jdr.exia.model.type.saveImgAndGetPath
-import jdr.exia.model.utils.Result
+import jdr.exia.model.tools.Result
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.emptySized
 import org.jetbrains.exposed.sql.mapLazy

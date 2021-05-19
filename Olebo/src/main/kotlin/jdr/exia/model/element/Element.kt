@@ -7,10 +7,10 @@ import jdr.exia.model.command.Command
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.dao.option.Settings
+import jdr.exia.model.tools.isCharacter
+import jdr.exia.model.tools.rotate
 import jdr.exia.model.type.Image
 import jdr.exia.model.type.Point
-import jdr.exia.model.utils.isCharacter
-import jdr.exia.model.utils.rotate
 import jdr.exia.utils.CharacterException
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass

@@ -299,6 +299,6 @@ class MapPanel(private val parentGameFrame: GameFrame) : JPanel() {
      * Show alias on mouse hover
      */
     override fun getToolTipText() = mousePosition?.let {
-        if (Settings.labelState.isEnabled && parentGameFrame is MasterFrame) tokens.getTokenFromPosition(Point(it).absolutePosition)?.alias else null
+        if (parentGameFrame is MasterFrame) tokens.getTokenFromPosition(Point(it).absolutePosition)?.alias else null
     }
 }

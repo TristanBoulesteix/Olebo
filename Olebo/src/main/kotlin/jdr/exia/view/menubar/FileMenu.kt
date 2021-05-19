@@ -5,7 +5,7 @@ import jdr.exia.localization.*
 import jdr.exia.model.dao.loadOleboZipData
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.dao.zipOleboDirectory
-import jdr.exia.model.utils.Result
+import jdr.exia.model.tools.Result
 import jdr.exia.view.HomeWindow
 import jdr.exia.view.legacy.frames.OptionDialog
 import jdr.exia.view.legacy.frames.rpg.MasterFrame

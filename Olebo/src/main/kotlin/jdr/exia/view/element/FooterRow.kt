@@ -14,10 +14,11 @@ import androidx.compose.ui.unit.dp
 import jdr.exia.localization.STR_CANCEL
 import jdr.exia.localization.STR_CONFIRM
 import jdr.exia.localization.StringLocale
-import jdr.exia.model.utils.Result
+import jdr.exia.model.tools.Result
 import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.MessageType
 import jdr.exia.view.tools.showMessage
+import jdr.exia.view.tools.withFocusCursor
 
 @Composable
 fun FooterRow(
@@ -37,12 +38,14 @@ fun FooterRow(
             }
         },
         enabled = isEnabled,
-        content = { Text(text = StringLocale[STR_CONFIRM]) }
+        content = { Text(text = StringLocale[STR_CONFIRM]) },
+        modifier = Modifier.withFocusCursor()
     )
     OutlinedButton(
         onClick = if (!isEnabled) onCancel else onDone,
         content = {
             Text(text = StringLocale[STR_CANCEL])
-        }
+        },
+        modifier = Modifier.withFocusCursor()
     )
 }

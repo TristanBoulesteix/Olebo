@@ -4,7 +4,7 @@ import jdr.exia.localization.ST_WARNING_MISSING_CONF_FILES
 import jdr.exia.localization.ST_WARNING_PREVIOUS_VERSION_FILE
 import jdr.exia.localization.StringLocale
 import jdr.exia.main
-import jdr.exia.model.utils.Result
+import jdr.exia.model.tools.Result
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream

@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.isValidAndEqualTo
+import jdr.exia.model.tools.withSetter
 import jdr.exia.model.type.imageFromFile
 import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.view.element.*
@@ -244,7 +245,7 @@ private fun ImagePreviewContent(
                     onUpdateData(data.copy(img = Img(fileChooser.selectedFile.absolutePath)))
                 }
             },
-            modifier = Modifier.padding(10.dp).align(Alignment.Center).matchParentSize(),
+            modifier = Modifier.padding(10.dp).align(Alignment.Center).matchParentSize().withFocusCursor(),
             content = { Text(text = StringLocale[if (imgExist) STR_IMPORT_NEW_IMG else STR_IMPORT_IMG]) }
         )
     }

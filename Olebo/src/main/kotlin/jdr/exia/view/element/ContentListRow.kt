@@ -3,7 +3,6 @@
 package jdr.exia.view.element
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -12,11 +11,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.dp
-import jdr.exia.view.tools.BorderBuilder
-import jdr.exia.view.tools.DefaultFunction
-import jdr.exia.view.tools.applyIf
-import jdr.exia.view.tools.border
+import jdr.exia.view.tools.*
 import jdr.exia.view.ui.typography
+import java.awt.Cursor
+
+typealias CursorSetter = (Cursor) -> Unit
+
 
 @Composable
 fun ContentListRow(
@@ -33,7 +33,7 @@ fun ContentListRow(
     var boxModifier = Modifier.fillMaxHeight().weight(1f, fill = true)
 
     if (onClick != null)
-        boxModifier = boxModifier.clickable(onClick = onClick)
+        boxModifier = boxModifier.clickableWithCursor(onClick = onClick)
 
     Box(modifier = boxModifier, contentAlignment = Alignment.CenterStart) { content() }
 
@@ -114,7 +114,7 @@ private fun RowButton(contentBuilder: ContentBuilder, modifier: Modifier) {
     Box(
         modifier = modifier.size(65.dp)
             .border(start = BorderBuilder.defaultBorder)
-            .clickable(onClick = contentBuilder.onChange, enabled = contentBuilder.enabled),
+            .clickableWithCursor(onClick = contentBuilder.onChange, enabled = contentBuilder.enabled),
         contentAlignment = Alignment.CenterStart
     ) {
         when (contentBuilder) {
