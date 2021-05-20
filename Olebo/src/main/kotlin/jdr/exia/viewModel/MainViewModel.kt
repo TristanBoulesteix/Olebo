@@ -6,8 +6,8 @@ import androidx.compose.runtime.setValue
 import jdr.exia.model.act.Act
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
-import jdr.exia.model.type.Point
 import jdr.exia.model.tools.callCommandManager
+import jdr.exia.model.type.Point
 import jdr.exia.view.HomeWindow
 import jdr.exia.view.PlayerDialog
 import jdr.exia.view.composable.master.MapPanel
@@ -15,8 +15,8 @@ import jdr.exia.view.menubar.MasterMenuBar
 import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.getTokenFromPosition
 import jdr.exia.view.tools.positionOf
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.swing.Swing
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -149,17 +149,15 @@ class MainViewModel(
         repaint()
     }
 
-    fun repaint() {
-        GlobalScope.launch(Dispatchers.Swing) {
-            val job = launch(Dispatchers.IO) {
-                tokens = transaction { scene.elements }
-            }
-
-            menuBar.reloadCommandItemLabel()
-
-            job.join()
-            panel.repaint()
+    fun repaint() = CoroutineScope(Dispatchers.Swing).launch {
+        val job = launch(Dispatchers.IO) {
+            tokens = transaction { scene.elements }
         }
+
+        menuBar.reloadCommandItemLabel()
+
+        job.join()
+        panel.repaint()
     }
 
     fun closeAct() {
@@ -168,5 +166,4 @@ class MainViewModel(
     }
 
     fun togglePlayerWindow(isVisible: Boolean) = PlayerDialog.toggle(playerDialogData, isVisible)
-
 }

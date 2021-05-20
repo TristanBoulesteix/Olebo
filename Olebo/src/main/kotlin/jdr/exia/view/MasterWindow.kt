@@ -46,9 +46,12 @@ class MasterWindow(act: Act) : JFrame() {
         ItemList(modifier = Modifier.weight(.3f))
         Column(modifier = Modifier.weight(.7f).fillMaxSize()) {
             Map(modifier = Modifier.weight(.85f))
-            SelectedEditor(modifier = Modifier.weight(.15f).fillMaxSize(), selectedElements = viewModel.selectedElements)
+            SelectedEditor(
+                modifier = Modifier.weight(.15f).fillMaxSize(),
+                selectedElements = viewModel.selectedElements,
+                repaint = viewModel::repaint
+            )
         }
-
     }
 
     @Suppress("FunctionName")

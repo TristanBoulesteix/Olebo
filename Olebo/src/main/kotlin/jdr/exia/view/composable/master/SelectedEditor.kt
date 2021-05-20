@@ -14,12 +14,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import jdr.exia.localization.*
 import jdr.exia.model.element.Element
-import jdr.exia.model.tools.withSetter
+import jdr.exia.model.tools.toMutableState
 import jdr.exia.view.element.CustomTextField
-
+import jdr.exia.view.tools.DefaultFunction
 
 @Composable
-fun SelectedEditor(modifier: Modifier, selectedElements: List<Element>) =
+fun SelectedEditor(modifier: Modifier, selectedElements: List<Element>, repaint: DefaultFunction) =
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         ImagePreview(selectedElements)
 
@@ -28,7 +28,7 @@ fun SelectedEditor(modifier: Modifier, selectedElements: List<Element>) =
             verticalArrangement = Arrangement.SpaceAround
         ) {
             NameElement(selectedElements)
-            LabelField(selectedElements)
+            LabelField(selectedElements, repaint)
         }
 
     }
@@ -62,11 +62,11 @@ private fun NameElement(selectedElements: List<Element>) {
 }
 
 @Composable
-private fun LabelField(selectedElements: List<Element>) {
+private fun LabelField(selectedElements: List<Element>, repaint: DefaultFunction) {
     var value by remember(selectedElements.size, selectedElements.firstOrNull()) {
-        mutableStateOf(if (selectedElements.size == 1) selectedElements.first().alias else "") withSetter {
-            selectedElements.firstOrNull()?.alias = it
-        }
+        if (selectedElements.size == 1) {
+            selectedElements.first()::alias.toMutableState(repaint)
+        } else mutableStateOf("")
     }
 
     CustomTextField(
