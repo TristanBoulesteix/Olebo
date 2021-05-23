@@ -176,6 +176,7 @@ class StringLocaleBundle : StringLocale() {
         ST_ACT_WITHOUT_NAME to "A scenario must have a name.",
         STR_ADD_ELEMENT to "add an element",
         ST_STR1_DM_WINDOW_NAME to "Olebo - DM window - %s",
+        STR_SIZE to "size:",
     )
 }
 
@@ -353,5 +354,6 @@ class StringLocaleBundle_fr : StringLocale() {
         ST_ACT_WITHOUT_NAME to "Un scénario doit avoir un nom.",
         STR_ADD_ELEMENT to "ajouter un élément",
         ST_STR1_DM_WINDOW_NAME to "Olebo - Fenêtre MJ - %s",
+        STR_SIZE to "taille :",
     )
 }

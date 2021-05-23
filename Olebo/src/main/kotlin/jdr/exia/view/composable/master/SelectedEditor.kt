@@ -14,8 +14,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import jdr.exia.localization.*
 import jdr.exia.model.element.Element
+import jdr.exia.model.element.Size
 import jdr.exia.model.tools.toMutableState
 import jdr.exia.view.element.CustomTextField
+import jdr.exia.view.element.TitledDropdownMenu
 import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.withFocusCursor
 
@@ -24,14 +26,22 @@ fun SelectedEditor(modifier: Modifier, selectedElements: List<Element>, repaint:
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         ImagePreview(selectedElements)
 
-        Column(
-            modifier = Modifier.padding(start = 5.dp).fillMaxHeight(),
-            verticalArrangement = Arrangement.SpaceAround
-        ) {
+        ColumnEditor {
             NameElement(selectedElements)
             LabelField(selectedElements, repaint)
         }
+
+        ColumnEditor {
+            SizeSelector(selectedElements)
+        }
     }
+
+@Composable
+fun ColumnEditor(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) = Column(
+    modifier = modifier.padding(start = 5.dp).fillMaxHeight(),
+    verticalArrangement = Arrangement.SpaceAround,
+    content = content
+)
 
 @Composable
 private fun ImagePreview(selectedElements: List<Element>) {
@@ -77,5 +87,20 @@ private fun LabelField(selectedElements: List<Element>, repaint: DefaultFunction
         },
         placeholder = StringLocale[STR_LABEL],
         modifier = Modifier.withFocusCursor()
+    )
+}
+
+@Composable
+private fun SizeSelector(selectedElements: List<Element>) {
+    var selectedSize by remember { mutableStateOf(Size.DEFAULT) }
+
+    val isEnabled = selectedElements.isNotEmpty()
+
+    TitledDropdownMenu(
+        title = StringLocale[STR_SIZE],
+        items = Size.values(),
+        onValueChanged = { selectedSize = it },
+        selectedItem = selectedSize,
+        isEnabled = isEnabled
     )
 }
