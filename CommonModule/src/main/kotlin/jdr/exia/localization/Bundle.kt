@@ -175,6 +175,7 @@ class StringLocaleBundle : StringLocale() {
         STR_INSERT_ACT_NAME to "insert a scenario name",
         ST_ACT_WITHOUT_NAME to "A scenario must have a name.",
         STR_ADD_ELEMENT to "add an element",
+        ST_STR1_DM_WINDOW_NAME to "Olebo - DM window - %s",
     )
 }
 
@@ -351,5 +352,6 @@ class StringLocaleBundle_fr : StringLocale() {
         STR_INSERT_ACT_NAME to "insérez un nom de scénario",
         ST_ACT_WITHOUT_NAME to "Un scénario doit avoir un nom.",
         STR_ADD_ELEMENT to "ajouter un élément",
+        ST_STR1_DM_WINDOW_NAME to "Olebo - Fenêtre MJ - %s",
     )
 }

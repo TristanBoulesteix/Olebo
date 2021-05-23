@@ -7,14 +7,17 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import jdr.exia.localization.ST_STR1_DM_WINDOW_NAME
+import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
 import jdr.exia.view.composable.master.ItemList
 import jdr.exia.view.composable.master.SelectedEditor
 import jdr.exia.view.ui.DIMENSION_FRAME
 import jdr.exia.view.ui.setThemedContent
 import jdr.exia.viewModel.MainViewModel
+import org.jetbrains.exposed.sql.transactions.transaction
 
-class MasterWindow(act: Act) : ComposableWindow("") {
+class MasterWindow(act: Act) : ComposableWindow() {
     private val viewModel: MainViewModel =
         MainViewModel(
             act = act,
@@ -30,6 +33,8 @@ class MasterWindow(act: Act) : ComposableWindow("") {
         this.isFocusable = true
         this.defaultCloseOperation = EXIT_ON_CLOSE
         this.jMenuBar = viewModel.menuBar
+
+        this.title = transaction { act.name }
 
         // Add Composable ContentPane
         this.contentPane = ComposePanel().apply {
@@ -59,4 +64,8 @@ class MasterWindow(act: Act) : ComposableWindow("") {
         modifier = modifier.fillMaxSize(),
         factory = viewModel::panel::get
     )
+
+    override fun setTitle(title: String) {
+        super.setTitle(StringLocale[ST_STR1_DM_WINDOW_NAME, title])
+    }
 }

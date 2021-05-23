@@ -173,3 +173,4 @@ const val ST_ACT_WITHOUT_NAME = "act_without_name"
 
 // -- Interpolable StringLocale
 const val ST_INT1_OCCURENCE_BLUEPRINT_TO_DELETE = "1_num_blueprint_to_delete"
+const val ST_STR1_DM_WINDOW_NAME = "1_dm_window_name"

@@ -5,7 +5,7 @@ import jdr.exia.view.ui.handCursor
 import javax.swing.JFrame
 
 @Suppress("")
-abstract class ComposableWindow(title: String) : JFrame(title) {
+abstract class ComposableWindow(title: String = "") : JFrame(title) {
     companion object {
         private val composableWindows = mutableListOf<ComposableWindow>()
 
