@@ -18,12 +18,12 @@ abstract class ComposableWindow(title: String = "") : JFrame(title) {
             field = value
 
             if (field < 0) field = 0
+
+            cursor = if (field > 0) handCursor else defaultCursor
         }
 
     fun hasItemhovered(requestHover: Boolean) {
         if (requestHover) hoverRequestCount++ else hoverRequestCount--
-
-        cursor = if (hoverRequestCount > 0) handCursor else defaultCursor
     }
 
     fun hasSwingItemHovered() {
