@@ -62,20 +62,19 @@ private fun ItemList(
             ContentListRow(contentText = StringLocale[STR_NO_ELEMENT])
         } else {
             ColumnItem(items = filtered) {
-                val name = rememberTransation { it.realName }
+                val name = transaction { it.realName }
 
                 ContentListRow(
                     contentText = name,
-                    buttonBuilders = remember {
-                        listOf(
-                            ImageButtonBuilder(
-                                if (type == Type.BASIC)
-                                    imageFromResource("sprites/${it.sprite}")
-                                else
-                                    imageFromFile(File(it.sprite))
-                            )
+                    buttonBuilders =
+                    listOf(
+                        ImageButtonBuilder(
+                            if (type == Type.BASIC)
+                                imageFromResource("sprites/${it.sprite}")
+                            else
+                                imageFromFile(File(it.sprite))
                         )
-                    }
+                    )
                 )
             }
         }
