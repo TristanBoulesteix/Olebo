@@ -17,6 +17,7 @@ import jdr.exia.model.element.Element
 import jdr.exia.model.tools.toMutableState
 import jdr.exia.view.element.CustomTextField
 import jdr.exia.view.tools.DefaultFunction
+import jdr.exia.view.tools.withFocusCursor
 
 @Composable
 fun SelectedEditor(modifier: Modifier, selectedElements: List<Element>, repaint: DefaultFunction) =
@@ -30,7 +31,6 @@ fun SelectedEditor(modifier: Modifier, selectedElements: List<Element>, repaint:
             NameElement(selectedElements)
             LabelField(selectedElements, repaint)
         }
-
     }
 
 @Composable
@@ -75,6 +75,7 @@ private fun LabelField(selectedElements: List<Element>, repaint: DefaultFunction
             if (selectedElements.size == 1)
                 value = it
         },
-        placeholder = StringLocale[STR_LABEL]
+        placeholder = StringLocale[STR_LABEL],
+        modifier = Modifier.withFocusCursor()
     )
 }

@@ -13,9 +13,8 @@ import jdr.exia.view.composable.master.SelectedEditor
 import jdr.exia.view.ui.DIMENSION_FRAME
 import jdr.exia.view.ui.setThemedContent
 import jdr.exia.viewModel.MainViewModel
-import javax.swing.JFrame
 
-class MasterWindow(act: Act) : JFrame() {
+class MasterWindow(act: Act) : ComposableWindow("") {
     private val viewModel: MainViewModel =
         MainViewModel(
             act = act,

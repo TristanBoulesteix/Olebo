@@ -13,17 +13,21 @@ abstract class ComposableWindow(title: String) : JFrame(title) {
             get() = composableWindows.find { it.isFocused }
     }
 
-    private var focusRequestedNumber = 0
+    private var hoverRequestCount = 0
         set(value) {
             field = value
 
             if (field < 0) field = 0
         }
 
-    fun hasItemFocus(requestFocus: Boolean) {
-        if (requestFocus) focusRequestedNumber++ else focusRequestedNumber--
+    fun hasItemhovered(requestHover: Boolean) {
+        if (requestHover) hoverRequestCount++ else hoverRequestCount--
 
-        cursor = if (focusRequestedNumber > 0) handCursor else defaultCursor
+        cursor = if (hoverRequestCount > 0) handCursor else defaultCursor
+    }
+
+    fun hasSwingItemHovered() {
+        hoverRequestCount = 0
     }
 
     override fun setVisible(isVisible: Boolean) {

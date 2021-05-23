@@ -143,11 +143,11 @@ fun Modifier.addRoundedBorder() =
 
 fun Modifier.withFocusCursor() = this.pointerMoveFilter(
     onEnter = {
-        ComposableWindow.currentFocused?.hasItemFocus(true)
+        ComposableWindow.currentFocused?.hasItemhovered(true)
         false
     },
     onExit = {
-        ComposableWindow.currentFocused?.hasItemFocus(false)
+        ComposableWindow.currentFocused?.hasItemhovered(false)
         false
     }
 )

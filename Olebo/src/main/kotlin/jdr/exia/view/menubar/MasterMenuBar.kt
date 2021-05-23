@@ -26,7 +26,7 @@ class MasterMenuBar(val act: Act, viewModel: MainViewModel) : JMenuBar() {
 
     private val redoMenuItem: JMenuItem
 
-     val togglePlayerFrameMenuItem: JCheckBoxMenuItem
+    val togglePlayerFrameMenuItem: JCheckBoxMenuItem
 
     init {
         this.removeAll()
