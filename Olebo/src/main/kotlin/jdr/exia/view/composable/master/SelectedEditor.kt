@@ -40,7 +40,7 @@ fun SelectedEditor(
 
     ColumnEditor {
         SizeSelector(selectedElements = selectedElements, repaint = repaint, commandManager)
-        LayerSelector(selectedElements = selectedElements, repaint = repaint, commandManager)
+        LayerSelector(selectedElements = selectedElements, repaint = repaint)
     }
 }
 
@@ -126,7 +126,7 @@ private fun SizeSelector(selectedElements: List<Element>, repaint: DefaultFuncti
 }
 
 @Composable
-private fun LayerSelector(selectedElements: List<Element>, repaint: DefaultFunction, commandManager: CommandManager) {
+private fun LayerSelector(selectedElements: List<Element>, repaint: DefaultFunction) {
     var selectedLayer by remember(selectedElements) {
         mutableStateOf(
             when {
