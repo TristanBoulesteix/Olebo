@@ -6,6 +6,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -39,14 +40,34 @@ fun SelectedEditor(
     }
 
     ColumnEditor {
-        SizeSelector(selectedElements = selectedElements, repaint = repaint, commandManager)
+        SizeSelector(selectedElements = selectedElements, repaint = repaint, commandManager = commandManager)
         LayerSelector(selectedElements = selectedElements, repaint = repaint)
+    }
+
+    ColumnEditor {
+        val buttonsWidth = 200.dp
+
+        OutlinedButton(
+            onClick = {
+                Element.cmdOrientationToRight(commandManager, selectedElements)
+                repaint()
+            },
+            modifier = Modifier.width(buttonsWidth)
+        ) { Text(StringLocale[STR_ROTATE_TO_RIGHT]) }
+
+        OutlinedButton(
+            onClick = {
+                Element.cmdOrientationToRight(commandManager, selectedElements)
+                repaint()
+            },
+            modifier = Modifier.width(buttonsWidth)
+        ) { Text(StringLocale[STR_ROTATE_TO_LEFT]) }
     }
 }
 
 @Composable
-fun ColumnEditor(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) = Column(
-    modifier = modifier.padding(start = 10.dp).fillMaxHeight(),
+inline fun ColumnEditor(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) = Column(
+    modifier = modifier.padding(start = 30.dp).fillMaxHeight(),
     verticalArrangement = Arrangement.SpaceAround,
     content = content
 )
