@@ -46,7 +46,7 @@ fun SelectedEditor(
 
 @Composable
 fun ColumnEditor(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) = Column(
-    modifier = modifier.padding(start = 5.dp).fillMaxHeight(),
+    modifier = modifier.padding(start = 10.dp).fillMaxHeight(),
     verticalArrangement = Arrangement.SpaceAround,
     content = content
 )
