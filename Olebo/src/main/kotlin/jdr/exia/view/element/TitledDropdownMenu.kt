@@ -15,7 +15,13 @@ import javax.swing.JComboBox
 
 @Suppress("UNCHECKED_CAST")
 @Composable
-fun <T> TitledDropdownMenu(title: String, items: Array<T>,selectedItem: T, onValueChanged: (T) -> Unit, isEnabled: Boolean) = Row(
+fun <T> TitledDropdownMenu(
+    title: String,
+    items: Array<T>,
+    selectedItem: T,
+    onValueChanged: (T) -> Unit,
+    isEnabled: Boolean
+) = Row(
     horizontalArrangement = Arrangement.SpaceBetween,
     modifier = Modifier.width(180.dp)
 ) {
@@ -24,9 +30,9 @@ fun <T> TitledDropdownMenu(title: String, items: Array<T>,selectedItem: T, onVal
     SwingPanel(
         factory = {
             JComboBox(items).apply {
-                this.selectedItem = selectedItem
                 this.addActionListener {
-                    onValueChanged(this.selectedItem as T)
+                    if (this.isFocusOwner)
+                        onValueChanged(this.selectedItem as T)
                 }
             }
         },

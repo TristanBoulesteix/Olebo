@@ -177,6 +177,7 @@ class StringLocaleBundle : StringLocale() {
         STR_ADD_ELEMENT to "add an element",
         ST_STR1_DM_WINDOW_NAME to "Olebo - DM window - %s",
         STR_SIZE to "size:",
+        STR_PRIORITY to "layer:",
     )
 }
 
@@ -355,5 +356,6 @@ class StringLocaleBundle_fr : StringLocale() {
         STR_ADD_ELEMENT to "ajouter un élément",
         ST_STR1_DM_WINDOW_NAME to "Olebo - Fenêtre MJ - %s",
         STR_SIZE to "taille :",
+        STR_PRIORITY to "plan :",
     )
 }

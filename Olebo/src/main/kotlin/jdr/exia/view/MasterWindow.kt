@@ -18,13 +18,12 @@ import jdr.exia.viewModel.MainViewModel
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class MasterWindow(act: Act) : ComposableWindow() {
-    private val viewModel: MainViewModel =
-        MainViewModel(
-            act = act,
-            closeMasterWindow = this::dispose,
-            focusMasterWindow = this::requestFocus,
-            getMasterWindowScreen = { this.graphicsConfiguration.device }
-        )
+    private val viewModel: MainViewModel = MainViewModel(
+        act = act,
+        closeMasterWindow = this::dispose,
+        focusMasterWindow = this::requestFocus,
+        getMasterWindowScreen = { this.graphicsConfiguration.device }
+    )
 
     init {
         // Initilize content frame
@@ -52,6 +51,7 @@ class MasterWindow(act: Act) : ComposableWindow() {
             Map(modifier = Modifier.weight(.85f))
             SelectedEditor(
                 modifier = Modifier.weight(.15f).fillMaxSize(),
+                commandManager = viewModel.commandManager,
                 selectedElements = viewModel.selectedElements,
                 repaint = viewModel::repaint
             )

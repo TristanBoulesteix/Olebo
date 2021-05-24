@@ -13,28 +13,36 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import jdr.exia.localization.*
+import jdr.exia.model.command.CommandManager
 import jdr.exia.model.element.Element
+import jdr.exia.model.element.Priority
 import jdr.exia.model.element.Size
 import jdr.exia.model.tools.toMutableState
+import jdr.exia.model.tools.withSetter
 import jdr.exia.view.element.CustomTextField
 import jdr.exia.view.element.TitledDropdownMenu
 import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.withFocusCursor
 
 @Composable
-fun SelectedEditor(modifier: Modifier, selectedElements: List<Element>, repaint: DefaultFunction) =
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        ImagePreview(selectedElements)
+fun SelectedEditor(
+    modifier: Modifier,
+    commandManager: CommandManager,
+    selectedElements: List<Element>,
+    repaint: DefaultFunction
+) = Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+    ImagePreview(selectedElements)
 
-        ColumnEditor {
-            NameElement(selectedElements)
-            LabelField(selectedElements, repaint)
-        }
-
-        ColumnEditor {
-            SizeSelector(selectedElements)
-        }
+    ColumnEditor {
+        NameElement(selectedElements)
+        LabelField(selectedElements, repaint)
     }
+
+    ColumnEditor {
+        SizeSelector(selectedElements = selectedElements, repaint = repaint, commandManager)
+        LayerSelector(selectedElements = selectedElements, repaint = repaint, commandManager)
+    }
+}
 
 @Composable
 fun ColumnEditor(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) = Column(
@@ -91,8 +99,20 @@ private fun LabelField(selectedElements: List<Element>, repaint: DefaultFunction
 }
 
 @Composable
-private fun SizeSelector(selectedElements: List<Element>) {
-    var selectedSize by remember { mutableStateOf(Size.DEFAULT) }
+private fun SizeSelector(selectedElements: List<Element>, repaint: DefaultFunction, commandManager: CommandManager) {
+    var selectedSize by remember(selectedElements) {
+        mutableStateOf(
+            when {
+                selectedElements.isEmpty() -> Size.DEFAULT
+                selectedElements.size == 1 -> selectedElements.first().size
+                else -> selectedElements.groupingBy { it.size }.eachCount().maxByOrNull { it.value }?.key
+                    ?: Size.DEFAULT
+            }
+        ) withSetter { newSize ->
+            Element.cmdDimension(newSize, commandManager, selectedElements)
+            repaint()
+        }
+    }
 
     val isEnabled = selectedElements.isNotEmpty()
 
@@ -101,6 +121,33 @@ private fun SizeSelector(selectedElements: List<Element>) {
         items = Size.values(),
         onValueChanged = { selectedSize = it },
         selectedItem = selectedSize,
+        isEnabled = isEnabled
+    )
+}
+
+@Composable
+private fun LayerSelector(selectedElements: List<Element>, repaint: DefaultFunction, commandManager: CommandManager) {
+    var selectedLayer by remember(selectedElements) {
+        mutableStateOf(
+            when {
+                selectedElements.isEmpty() -> Priority.REGULAR
+                selectedElements.size == 1 -> selectedElements.first().priority
+                else -> selectedElements.groupingBy { it.priority }.eachCount().maxByOrNull { it.value }?.key
+                    ?: Priority.REGULAR
+            }
+        ) withSetter { newPriority ->
+            selectedElements.forEach { it.priority = newPriority }
+            repaint()
+        }
+    }
+
+    val isEnabled = selectedElements.isNotEmpty()
+
+    TitledDropdownMenu(
+        title = StringLocale[STR_PRIORITY],
+        items = Priority.values(),
+        onValueChanged = { selectedLayer = it },
+        selectedItem = selectedLayer,
         isEnabled = isEnabled
     )
 }

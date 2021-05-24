@@ -112,7 +112,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             }
         }
 
-        fun cmdDimension(size: Size, manager: CommandManager, elements: Elements) {
+        fun cmdDimension(size: Size, manager: CommandManager, elements: List<Element>) {
             val elementsFiltered = elements.filter { it.size != size }
 
             val previousSize = elementsFiltered.map { it.size }

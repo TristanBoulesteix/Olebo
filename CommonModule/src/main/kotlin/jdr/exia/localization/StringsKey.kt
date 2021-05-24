@@ -128,7 +128,8 @@ const val STR_LABEL_VISIBLE_FOR_MASTER = "label_visible_for_master"
 const val STR_DELETE_ACT = "delete_act"
 const val STR_INSERT_ACT_NAME = "insert_act_name"
 const val STR_ADD_ELEMENT = "add_blueprint"
-const val STR_SIZE = "size_of_item"
+const val STR_SIZE = "size_of_items"
+const val STR_PRIORITY = "priority_of_items"
 
 // -- Sentences
 

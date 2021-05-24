@@ -43,6 +43,9 @@ class MainViewModel(
     val scene
         get() = transaction { act.currentScene }
 
+    // TODO : Change this value when scene change
+    val commandManager by transaction { mutableStateOf(scene.commandManager) }
+
     /**
      * These are all the [Blueprint] placed on  the current map
      */
