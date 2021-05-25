@@ -30,13 +30,16 @@ fun SelectedEditor(
     modifier: Modifier,
     commandManager: CommandManager,
     selectedElements: List<Element>,
+    deleteSelectedElement: DefaultFunction,
     repaint: DefaultFunction
 ) = Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
     ImagePreview(selectedElements)
 
     ColumnEditor {
-        NameElement(selectedElements)
-        LabelField(selectedElements, repaint)
+        val size = remember { 250.dp }
+
+        NameElement(selectedElements = selectedElements, modifier = Modifier.width(size))
+        LabelField(selectedElements = selectedElements, repaint = repaint, modifier = Modifier.width(size))
     }
 
     ColumnEditor {
@@ -44,26 +47,17 @@ fun SelectedEditor(
         LayerSelector(selectedElements = selectedElements, repaint = repaint)
     }
 
-    ColumnEditor {
-        val buttonsWidth = 200.dp
+    OrientationButtons(selectedElements = selectedElements, repaint = repaint, commandManager = commandManager)
 
-        OutlinedButton(
-            onClick = {
-                Element.cmdOrientationToRight(commandManager, selectedElements)
-                repaint()
-            },
-            modifier = Modifier.width(buttonsWidth)
-        ) { Text(StringLocale[STR_ROTATE_TO_RIGHT]) }
-
-        OutlinedButton(
-            onClick = {
-                Element.cmdOrientationToRight(commandManager, selectedElements)
-                repaint()
-            },
-            modifier = Modifier.width(buttonsWidth)
-        ) { Text(StringLocale[STR_ROTATE_TO_LEFT]) }
-    }
+    VisibilityButtons(
+        selectedElements = selectedElements,
+        repaint = repaint,
+        commandManager = commandManager,
+        deleteSelectedElement = deleteSelectedElement
+    )
 }
+
+private val buttonsWidth = 200.dp
 
 @Composable
 inline fun ColumnEditor(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) = Column(
@@ -90,45 +84,53 @@ private fun ImagePreview(selectedElements: List<Element>) {
 }
 
 @Composable
-private fun NameElement(selectedElements: List<Element>) {
+private fun NameElement(selectedElements: List<Element>, modifier: Modifier) {
     val text = when {
         selectedElements.isEmpty() -> StringLocale[STR_NO_SELECTED_ELEMENT]
         selectedElements.size == 1 -> selectedElements.first().name
         else -> "${selectedElements.size} ${StringLocale[STR_SELECTED_ELEMENTS, StringStates.NORMAL]}"
     }
 
-    Text(text)
+    Text(text, modifier)
 }
 
 @Composable
-private fun LabelField(selectedElements: List<Element>, repaint: DefaultFunction) {
-    var value by remember(selectedElements.size, selectedElements.firstOrNull()) {
-        if (selectedElements.size == 1) {
-            selectedElements.first()::alias.toMutableState(repaint)
-        } else mutableStateOf("")
-    }
+private fun LabelField(selectedElements: List<Element>, repaint: DefaultFunction, modifier: Modifier) {
+    if (selectedElements.size == 1) {
+        var value by remember(selectedElements.size, selectedElements.firstOrNull()) {
+            if (selectedElements.size == 1) {
+                selectedElements.first()::alias.toMutableState(repaint)
+            } else mutableStateOf("")
+        }
 
-    CustomTextField(
-        value = value,
-        onValueChange = {
-            if (selectedElements.size == 1)
-                value = it
-        },
-        placeholder = StringLocale[STR_LABEL],
-        modifier = Modifier.withFocusCursor()
-    )
+        CustomTextField(
+            value = value,
+            onValueChange = {
+                if (selectedElements.size == 1)
+                    value = it
+            },
+            placeholder = StringLocale[STR_LABEL],
+            modifier = modifier.withFocusCursor()
+        )
+    } else {
+        Text(StringLocale[STR_LABEL], modifier = modifier)
+    }
+}
+
+private fun <T> List<Element>.getElementProperty(elementPropertyGetter: Element.() -> T, defaultValue: T) = when {
+    this.isEmpty() -> defaultValue
+    this.size == 1 -> this.first().elementPropertyGetter()
+    else -> this.groupingBy(elementPropertyGetter).eachCount().maxByOrNull { it.value }?.key ?: defaultValue
 }
 
 @Composable
 private fun SizeSelector(selectedElements: List<Element>, repaint: DefaultFunction, commandManager: CommandManager) {
     var selectedSize by remember(selectedElements) {
         mutableStateOf(
-            when {
-                selectedElements.isEmpty() -> Size.DEFAULT
-                selectedElements.size == 1 -> selectedElements.first().size
-                else -> selectedElements.groupingBy { it.size }.eachCount().maxByOrNull { it.value }?.key
-                    ?: Size.DEFAULT
-            }
+            selectedElements.getElementProperty(
+                elementPropertyGetter = Element::size.getter,
+                defaultValue = Size.DEFAULT
+            )
         ) withSetter { newSize ->
             Element.cmdDimension(newSize, commandManager, selectedElements)
             repaint()
@@ -150,12 +152,10 @@ private fun SizeSelector(selectedElements: List<Element>, repaint: DefaultFuncti
 private fun LayerSelector(selectedElements: List<Element>, repaint: DefaultFunction) {
     var selectedLayer by remember(selectedElements) {
         mutableStateOf(
-            when {
-                selectedElements.isEmpty() -> Priority.REGULAR
-                selectedElements.size == 1 -> selectedElements.first().priority
-                else -> selectedElements.groupingBy { it.priority }.eachCount().maxByOrNull { it.value }?.key
-                    ?: Priority.REGULAR
-            }
+            selectedElements.getElementProperty(
+                elementPropertyGetter = Element::priority.getter,
+                defaultValue = Priority.REGULAR
+            )
         ) withSetter { newPriority ->
             selectedElements.forEach { it.priority = newPriority }
             repaint()
@@ -171,4 +171,67 @@ private fun LayerSelector(selectedElements: List<Element>, repaint: DefaultFunct
         selectedItem = selectedLayer,
         isEnabled = isEnabled
     )
+}
+
+@Composable
+private fun OrientationButtons(
+    selectedElements: List<Element>,
+    repaint: DefaultFunction,
+    commandManager: CommandManager
+) = ColumnEditor {
+    OutlinedButton(
+        onClick = {
+            Element.cmdOrientationToRight(commandManager, selectedElements)
+            repaint()
+        },
+        modifier = Modifier.width(buttonsWidth),
+        enabled = selectedElements.isNotEmpty()
+    ) { Text(StringLocale[STR_ROTATE_TO_RIGHT]) }
+
+    OutlinedButton(
+        onClick = {
+            Element.cmdOrientationToRight(commandManager, selectedElements)
+            repaint()
+        },
+        modifier = Modifier.width(buttonsWidth),
+        enabled = selectedElements.isNotEmpty()
+    ) { Text(StringLocale[STR_ROTATE_TO_LEFT]) }
+}
+
+@Composable
+private fun VisibilityButtons(
+    selectedElements: List<Element>,
+    deleteSelectedElement: DefaultFunction,
+    repaint: DefaultFunction,
+    commandManager: CommandManager
+) = ColumnEditor {
+    var isVisible by remember(selectedElements) {
+        mutableStateOf(
+            selectedElements.getElementProperty(
+                elementPropertyGetter = Element::isVisible.getter,
+                defaultValue = true
+            )
+        ) withSetter { newVisiblity ->
+            Element.cmdVisiblity(newVisiblity, commandManager, selectedElements)
+            repaint()
+        }
+    }
+
+    val visibilityText = if (selectedElements.isEmpty()) {
+        StringLocale[STR_VISIBILITY]
+    } else {
+        StringLocale[if (isVisible) STR_HIDE else STR_SHOW]
+    }
+
+    OutlinedButton(
+        onClick = { isVisible = !isVisible },
+        modifier = Modifier.width(buttonsWidth),
+        enabled = selectedElements.isNotEmpty()
+    ) { Text(visibilityText) }
+
+    OutlinedButton(
+        onClick = deleteSelectedElement,
+        modifier = Modifier.width(buttonsWidth),
+        enabled = selectedElements.isNotEmpty()
+    ) { Text(StringLocale[STR_DELETE]) }
 }

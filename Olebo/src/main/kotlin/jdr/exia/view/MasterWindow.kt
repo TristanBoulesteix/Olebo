@@ -53,7 +53,8 @@ class MasterWindow(act: Act) : ComposableWindow() {
                 modifier = Modifier.weight(.15f).fillMaxSize(),
                 commandManager = viewModel.commandManager,
                 selectedElements = viewModel.selectedElements,
-                repaint = viewModel::repaint
+                repaint = viewModel::repaint,
+                deleteSelectedElement = viewModel::deleteSelectedElement
             )
         }
     }

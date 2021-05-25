@@ -169,4 +169,11 @@ class MainViewModel(
     }
 
     fun togglePlayerWindow(isVisible: Boolean) = PlayerDialog.toggle(playerDialogData, isVisible)
+
+    fun deleteSelectedElement() {
+        val elementsToDelete = selectedElements
+        unselectElements()
+        Element.cmdDelete(commandManager, elementsToDelete)
+        repaint()
+    }
 }
