@@ -18,12 +18,15 @@ import jdr.exia.model.command.CommandManager
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Priority
 import jdr.exia.model.element.Size
+import jdr.exia.model.tools.isCharacter
 import jdr.exia.model.tools.toMutableState
 import jdr.exia.model.tools.withSetter
 import jdr.exia.view.element.CustomTextField
+import jdr.exia.view.element.IntTextField
 import jdr.exia.view.element.TitledDropdownMenu
 import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.withFocusCursor
+import org.jetbrains.exposed.sql.transactions.transaction
 
 @Composable
 fun SelectedEditor(
@@ -32,7 +35,11 @@ fun SelectedEditor(
     selectedElements: List<Element>,
     deleteSelectedElement: DefaultFunction,
     repaint: DefaultFunction
-) = Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+) = Row(
+    modifier = modifier,
+    verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.SpaceBetween
+) {
     ImagePreview(selectedElements)
 
     ColumnEditor {
@@ -55,6 +62,11 @@ fun SelectedEditor(
         commandManager = commandManager,
         deleteSelectedElement = deleteSelectedElement
     )
+
+    ColumnEditor {
+        LifeField(selectedElements)
+        ManaField(selectedElements)
+    }
 }
 
 private val buttonsWidth = 200.dp
@@ -234,4 +246,54 @@ private fun VisibilityButtons(
         modifier = Modifier.width(buttonsWidth),
         enabled = selectedElements.isNotEmpty()
     ) { Text(StringLocale[STR_DELETE]) }
+}
+
+@Composable
+private fun LifeField(selectedElements: List<Element>) = Row(
+    verticalAlignment = Alignment.CenterVertically,
+    modifier = Modifier.width(200.dp)
+) {
+    if (selectedElements.size == 1 && selectedElements.first().isCharacter()) {
+        val element = selectedElements.first()
+
+        IntTextField(
+            value = element.currentHealth,
+            onValueChange = {
+                if (it != null) {
+                    transaction { element.currentHealth = it }
+                }
+            },
+            maxSize = 3,
+            modifier = Modifier.width(80.dp)
+        )
+
+        Text(" / ${element.maxHP} ${StringLocale[STR_HP]}", modifier = Modifier)
+    } else {
+        Text("0 / 0 ${StringLocale[STR_HP]}", modifier = Modifier.fillMaxWidth())
+    }
+}
+
+@Composable
+private fun ManaField(selectedElements: List<Element>) = Row(
+    verticalAlignment = Alignment.CenterVertically,
+    modifier = Modifier.width(200.dp)
+) {
+    if (selectedElements.size == 1 && selectedElements.first().isCharacter()) {
+        val element = selectedElements.first()
+
+        IntTextField(
+            value = element.currentMana,
+            onValueChange = {
+                if (it != null) {
+                    transaction { element.currentMana = it }
+                }
+            },
+            maxSize = 3,
+            modifier = Modifier.width(80.dp)
+        )
+
+        Text(" / ${element.maxMana} ${StringLocale[STR_MP]}", modifier = Modifier)
+    } else {
+        Text("0 / 0 ${StringLocale[STR_MP]}", modifier = Modifier.fillMaxWidth())
+    }
 }

@@ -11,21 +11,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 
+private fun String.takeNullable(n: Int?) = when {
+    n == null -> this
+    this.firstOrNull() == '-' -> this.take(n + 1)
+    else -> this.take(n)
+}
+
 @Composable
 fun IntTextField(
     value: Int?,
     onValueChange: (Int?) -> Unit,
+    maxSize: Int? = null,
     modifier: Modifier = Modifier,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
     colors: TextFieldColors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White)
 ) {
-    var text by remember { mutableStateOf(value.toString()) }
+    var text by remember { mutableStateOf(value.toString().takeNullable(maxSize)) }
 
     TextField(
         value = text,
         onValueChange = {
             if (it.toIntOrNull() != null || it.isEmpty() || it == "-") {
-                text = it
+                text = it.takeNullable(maxSize)
             }
             onValueChange(it.toIntOrNull())
         },
