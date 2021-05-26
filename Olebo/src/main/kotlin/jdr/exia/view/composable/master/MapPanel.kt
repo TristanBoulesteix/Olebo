@@ -29,10 +29,6 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: MainV
 
     private var selectedArea: Rectangle? = null
 
-    var cursorColor: Color
-
-    var borderCursorColor: Color
-
     init {
         this.layout = GridBagLayout()
         this.background = Color.WHITE
@@ -40,11 +36,6 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: MainV
 
         if (isParentMaster)
             initializeForMaster()
-
-        Settings.cursorColor.let {
-            cursorColor = it.contentColor
-            borderCursorColor = it.borderColor
-        }
     }
 
     /**
@@ -204,6 +195,8 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: MainV
         // Draw cursor
         if (!isParentMaster && Settings.cursorEnabled)
             viewModel.cursor?.let {
+                val (cursorColor, borderCursorColor) = Settings.cursorColor
+
                 g.color = cursorColor
                 g.fillCircleWithCenterCoordinates(relativeX(it.x), relativeY(it.y), 15)
                 g.color = borderCursorColor

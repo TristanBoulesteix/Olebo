@@ -30,6 +30,10 @@ sealed class SerializableColor(
 
     constructor(name: String, color: Color) : this(name, color, color)
 
+    operator fun component1() = contentColor
+
+    operator fun component2() = borderColor
+
     @Serializable
     object BLACK_WHITE :
         SerializableColor(StringLocale[STR_BLACK_WITH_WHITE_BORDER], Color.BLACK, Color.WHITE)
