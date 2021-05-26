@@ -29,15 +29,13 @@ class MainViewModel(
     private val closeMasterWindow: DefaultFunction,
     val focusMasterWindow: DefaultFunction,
     getMasterWindowScreen: () -> GraphicsDevice
-) : CoroutineScope {
+) {
     companion object {
         const val ABSOLUTE_WIDTH = 1600
         const val ABSOLUTE_HEIGHT = 900
     }
 
     private val playerDialogData: PlayerDialog.PlayerDialogData
-
-    override val coroutineContext = Dispatchers.Swing
 
     val menuBar = MasterMenuBar(act = act, viewModel = this)
 
@@ -155,7 +153,7 @@ class MainViewModel(
         repaint()
     }
 
-    fun repaint() = launch {
+    fun repaint() = CoroutineScope(Dispatchers.Swing).launch {
         val job = launch(Dispatchers.IO) {
             tokens = transaction { scene.elements }
         }
@@ -180,7 +178,7 @@ class MainViewModel(
         repaint()
     }
 
-    fun addNewElement(blueprint: Blueprint) = launch {
+    fun addNewElement(blueprint: Blueprint) = CoroutineScope(Dispatchers.Swing).launch {
         withContext(Dispatchers.IO) {
             scene.addElement(blueprint)
         }
