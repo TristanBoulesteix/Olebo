@@ -49,7 +49,7 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
      *
      * @return The [Element] created
      */
-    fun addElement(blueprint: Blueprint) = Element.createElement(blueprint).let { element ->
+    fun addElement(blueprint: Blueprint) = Element.createElement(blueprint).also { element ->
         val id = element.id
         transaction {
             InstanceTable.update({ InstanceTable.id eq id }) {
