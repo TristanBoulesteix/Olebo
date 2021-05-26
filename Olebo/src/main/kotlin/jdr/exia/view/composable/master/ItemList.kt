@@ -43,7 +43,7 @@ fun ItemList(modifier: Modifier, createElement: (Blueprint) -> Unit) = Column(
     val items = rememberTransation {
         val items = Blueprint.all().groupBy { it.type }
 
-        (items.keys + Type.values()).associateWith { items[it] ?: emptyList() }
+        (Type.values() + items.keys).associateWith { items[it] ?: emptyList() }
     }
 
     ItemList(items = items, searchString = searchString, createElement = createElement)
