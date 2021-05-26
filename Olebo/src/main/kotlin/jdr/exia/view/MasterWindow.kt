@@ -29,10 +29,10 @@ class MasterWindow(act: Act) : ComposableWindow() {
         // Initilize content frame
         this.extendedState = MAXIMIZED_BOTH
         this.size = DIMENSION_FRAME
+        this.minimumSize = DIMENSION_FRAME
         this.isFocusable = true
         this.defaultCloseOperation = EXIT_ON_CLOSE
         this.jMenuBar = viewModel.menuBar
-
         this.title = transaction { act.name }
 
         // Add Composable ContentPane
