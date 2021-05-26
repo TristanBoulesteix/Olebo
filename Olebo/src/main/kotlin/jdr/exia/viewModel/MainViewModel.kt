@@ -19,6 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.swing.Swing
+import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.GraphicsDevice
 import java.awt.Rectangle
@@ -28,13 +29,15 @@ class MainViewModel(
     private val closeMasterWindow: DefaultFunction,
     val focusMasterWindow: DefaultFunction,
     getMasterWindowScreen: () -> GraphicsDevice
-) {
+) : CoroutineScope {
     companion object {
         const val ABSOLUTE_WIDTH = 1600
         const val ABSOLUTE_HEIGHT = 900
     }
 
     private val playerDialogData: PlayerDialog.PlayerDialogData
+
+    override val coroutineContext = Dispatchers.Swing
 
     val menuBar = MasterMenuBar(act = act, viewModel = this)
 
@@ -152,7 +155,7 @@ class MainViewModel(
         repaint()
     }
 
-    fun repaint() = CoroutineScope(Dispatchers.Swing).launch {
+    fun repaint() = launch {
         val job = launch(Dispatchers.IO) {
             tokens = transaction { scene.elements }
         }
@@ -174,6 +177,13 @@ class MainViewModel(
         val elementsToDelete = selectedElements
         unselectElements()
         Element.cmdDelete(commandManager, elementsToDelete)
+        repaint()
+    }
+
+    fun addNewElement(blueprint: Blueprint) = launch {
+        withContext(Dispatchers.IO) {
+            scene.addElement(blueprint)
+        }
         repaint()
     }
 }

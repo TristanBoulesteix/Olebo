@@ -153,4 +153,4 @@ fun Modifier.withFocusCursor() = this.pointerMoveFilter(
 )
 
 fun Modifier.clickableWithCursor(enabled: Boolean = true, onClick: DefaultFunction) =
-    this.clickable(onClick = onClick, enabled = enabled).withFocusCursor()
+    this.clickable(onClick = onClick, enabled = enabled).applyIf(enabled) { withFocusCursor() }

@@ -46,7 +46,7 @@ class MasterWindow(act: Act) : ComposableWindow() {
     @Suppress("FunctionName")
     @Composable
     fun MainContent() = Row {
-        ItemList(modifier = Modifier.weight(.3f))
+        ItemList(modifier = Modifier.weight(.3f), createElement = viewModel::addNewElement)
         Column(modifier = Modifier.weight(.7f).fillMaxSize()) {
             Map(modifier = Modifier.weight(.85f))
             SelectedEditor(
