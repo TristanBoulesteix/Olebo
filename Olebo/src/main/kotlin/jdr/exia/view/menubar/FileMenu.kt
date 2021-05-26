@@ -10,11 +10,7 @@ import jdr.exia.view.HomeWindow
 import jdr.exia.view.legacy.frames.OptionDialog
 import jdr.exia.view.legacy.frames.rpg.MasterFrame
 import jdr.exia.view.legacy.frames.rpg.PlayerFrame
-import jdr.exia.view.tools.applyAndAddTo
-import jdr.exia.view.tools.windowAncestor
-import jdr.exia.view.tools.MessageType
-import jdr.exia.view.tools.showConfirmMessage
-import jdr.exia.view.tools.showMessage
+import jdr.exia.view.tools.*
 import jdr.exia.view.ui.CTRL
 import java.awt.Component
 import java.awt.Frame
@@ -99,6 +95,7 @@ class FileMenu : JMenu(StringLocale[STR_FILES]) {
         JMenuItem(StringLocale[STR_OPTIONS]).applyAndAddTo(this) {
             this.addActionListener {
                 OptionDialog(this@FileMenu.windowAncestor).isVisible = true
+                this@FileMenu.windowAncestor?.repaint()
             }
         }
 
