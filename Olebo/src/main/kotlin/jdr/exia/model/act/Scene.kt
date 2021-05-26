@@ -47,7 +47,7 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
      *
      * @param blueprint The Blueprint to instanciate
      */
-    fun addElement(blueprint: Blueprint) =Element.createElement(blueprint).let{ element ->
+    fun addElement(blueprint: Blueprint) = Element.createElement(blueprint).let { element ->
         val id = element.id
         transaction {
             InstanceTable.update({ InstanceTable.id eq id }) {
