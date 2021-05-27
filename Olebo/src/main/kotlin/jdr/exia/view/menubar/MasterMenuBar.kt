@@ -12,7 +12,6 @@ import jdr.exia.view.tools.showConfirmMessage
 import jdr.exia.view.ui.CTRL
 import jdr.exia.view.ui.CTRLSHIFT
 import jdr.exia.viewModel.MainViewModel
-import jdr.exia.viewModel.legacy.ViewManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.event.ItemEvent
 import java.awt.event.KeyEvent
@@ -101,21 +100,30 @@ class MasterMenuBar(val act: Act, viewModel: MainViewModel) : JMenuBar() {
             this.addSeparator()
 
             JMenu(StringLocale[STR_CHOOSE_SCENE]).applyAndAddTo(this) {
-                transaction {
-                    act.scenes.forEachIndexed { index, scene ->
-                        if (scene.id.value == act.currentScene.id.value) {
-                            val item =
-                                JMenuItem("${index + 1} ${scene.name} (${StringLocale[STR_IS_CURRENT_SCENE, StringStates.NORMAL]})").apply {
-                                    isEnabled = false
+                fun refreshSceneMenuItems() {
+                    removeAll()
+
+                    transaction {
+                        act.scenes.forEachIndexed { index, scene ->
+                            if (scene.id.value == act.currentScene.id.value) {
+                                val item =
+                                    JMenuItem("${index + 1} ${scene.name} (${StringLocale[STR_IS_CURRENT_SCENE, StringStates.NORMAL]})").apply {
+                                        isEnabled = false
+                                    }
+                                add(item)
+                            } else {
+                                val item = JMenuItem("${index + 1} ${scene.name}")
+                                item.addActionListener {
+                                    viewModel.switchScene(scene)
+                                    refreshSceneMenuItems()
                                 }
-                            add(item)
-                        } else {
-                            val item = JMenuItem("${index + 1} ${scene.name}")
-                            item.addActionListener { transaction { ViewManager.changeCurrentScene(scene.id.value) } } // TODO
-                            add(item)
+                                add(item)
+                            }
                         }
                     }
                 }
+
+                refreshSceneMenuItems()
             }
         }
 

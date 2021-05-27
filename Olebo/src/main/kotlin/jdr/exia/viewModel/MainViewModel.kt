@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import jdr.exia.model.act.Act
+import jdr.exia.model.act.Scene
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.tools.callCommandManager
@@ -182,6 +183,12 @@ class MainViewModel(
         withContext(Dispatchers.IO) {
             scene.addElement(blueprint)
         }
+        repaint()
+    }
+
+    fun switchScene(scene: Scene) {
+        transaction { act.currentScene = scene }
+        selectedElements = emptyList()
         repaint()
     }
 }
