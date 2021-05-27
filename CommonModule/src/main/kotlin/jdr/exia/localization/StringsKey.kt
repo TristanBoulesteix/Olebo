@@ -130,6 +130,7 @@ const val STR_INSERT_ACT_NAME = "insert_act_name"
 const val STR_ADD_ELEMENT = "add_blueprint"
 const val STR_SIZE = "size_of_items"
 const val STR_PRIORITY = "priority_of_items"
+const val STR_CLOSE = "close"
 
 // -- Sentences
 

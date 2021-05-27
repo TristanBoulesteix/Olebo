@@ -130,7 +130,7 @@ class MasterMenuBar(val act: Act, viewModel: MainViewModel) : JMenuBar() {
         JMenu(StringLocale[STR_TOKENS]).applyAndAddTo(this) {
             JMenuItem(StringLocale[STR_MANAGE_BLUEPRINTS]).applyAndAddTo(this) {
                 addActionListener {
-                    // TODO BlueprintsDialog(windowAncestor).isVisible = true
+                    viewModel.showBlueprintEditor()
                     viewModel.unselectElements()
                     viewModel.repaint()
                 }

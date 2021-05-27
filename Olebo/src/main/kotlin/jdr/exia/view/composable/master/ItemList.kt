@@ -23,12 +23,11 @@ import jdr.exia.view.element.ContentListRow
 import jdr.exia.view.element.ImageButtonBuilder
 import jdr.exia.view.element.ScrollableColumn
 import jdr.exia.view.tools.clickableWithCursor
-import jdr.exia.view.tools.rememberTransation
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
 
 @Composable
-fun ItemList(modifier: Modifier, createElement: (Blueprint) -> Unit) = Column(
+fun ItemList(modifier: Modifier, items: Map<Type, List<Blueprint>>, createElement: (Blueprint) -> Unit) = Column(
     modifier = modifier.widthIn(max = 450.dp).fillMaxHeight().border(BorderStroke(1.dp, Color.Black))
 ) {
     var searchString by remember { mutableStateOf("") }
@@ -39,12 +38,6 @@ fun ItemList(modifier: Modifier, createElement: (Blueprint) -> Unit) = Column(
         modifier = Modifier.padding(10.dp).fillMaxWidth(),
         placeholder = { Text(text = StringLocale[STR_SEARCH]) }
     )
-
-    val items = rememberTransation {
-        val items = Blueprint.all().groupBy { it.type }
-
-        (Type.values() + items.keys).associateWith { items[it] ?: emptyList() }
-    }
 
     ItemList(items = items, searchString = searchString, createElement = createElement)
 }

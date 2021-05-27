@@ -5,6 +5,7 @@ import java.awt.Dimension
 import java.awt.Insets
 import java.awt.event.KeyEvent
 
+val DIMENSION_MAIN_WINDOW = Dimension(700, 900)
 val DIMENSION_FRAME = Dimension(1920, 1080)
 val DIMENSION_BUTTON_DEFAULT = Dimension(150, 40)
 

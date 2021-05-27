@@ -20,12 +20,12 @@ import androidx.compose.ui.unit.sp
 import jdr.exia.localization.*
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
+import jdr.exia.model.tools.Result
+import jdr.exia.model.tools.isCharacter
 import jdr.exia.model.type.Image
 import jdr.exia.model.type.imageFromFile
 import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.model.type.savePathToImage
-import jdr.exia.model.tools.Result
-import jdr.exia.model.tools.isCharacter
 import jdr.exia.view.element.*
 import jdr.exia.view.tools.*
 import jdr.exia.view.ui.blue
@@ -39,7 +39,7 @@ import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
 @Composable
-fun ElementsView(onDone: DefaultFunction) = Column {
+fun ElementsView(onDone: DefaultFunction, closeText: String = StringLocale[STR_BACK]) = Column {
     val tabViewModel = remember { ElementsTabViewModel() }
 
     val contentViewModel = remember(tabViewModel.currentTab) { ElementsEditorViewModel(tabViewModel.currentTab) }
@@ -81,7 +81,7 @@ fun ElementsView(onDone: DefaultFunction) = Column {
                         else -> onDone
                     },
                     content = {
-                        Text(text = StringLocale[if (contentViewModel.currentEditBlueprint == null && contentViewModel.blueprintInCreation == null) STR_BACK else STR_CANCEL])
+                        Text(text = if (contentViewModel.currentEditBlueprint == null && contentViewModel.blueprintInCreation == null) closeText else StringLocale[STR_CANCEL])
                     },
                     modifier = Modifier.withFocusCursor()
                 )

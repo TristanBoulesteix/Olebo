@@ -1,21 +1,30 @@
 package jdr.exia.viewModel
 
+import androidx.compose.desktop.ComposePanel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import jdr.exia.localization.STR_CLOSE
+import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
+import jdr.exia.model.element.Type
 import jdr.exia.model.tools.callCommandManager
 import jdr.exia.model.type.Point
+import jdr.exia.view.ComposableWindow
 import jdr.exia.view.HomeWindow
 import jdr.exia.view.PlayerDialog
+import jdr.exia.view.composable.editor.ElementsView
 import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.menubar.MasterMenuBar
 import jdr.exia.view.tools.DefaultFunction
+import jdr.exia.view.tools.applyAndAddTo
 import jdr.exia.view.tools.getTokenFromPosition
 import jdr.exia.view.tools.positionOf
+import jdr.exia.view.ui.DIMENSION_MAIN_WINDOW
+import jdr.exia.view.ui.setThemedContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,6 +33,7 @@ import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.GraphicsDevice
 import java.awt.Rectangle
+import javax.swing.JDialog
 
 class MainViewModel(
     val act: Act,
@@ -49,6 +59,9 @@ class MainViewModel(
 
     val commandManager
         get() = transaction { scene.commandManager }
+
+    var blueprintsGrouped by mutableStateOf(loadBlueprints())
+        private set
 
     /**
      * These are all the [Blueprint] placed on  the current map
@@ -192,5 +205,33 @@ class MainViewModel(
         transaction { act.currentScene = scene }
         selectedElements = emptyList()
         repaint()
+    }
+
+    fun showBlueprintEditor() {
+        selectedElements = emptyList()
+
+        JDialog(ComposableWindow.currentFocused, true).apply {
+            DIMENSION_MAIN_WINDOW.let {
+                this.size = it
+                this.minimumSize = it
+            }
+
+            setLocationRelativeTo(null)
+
+            ComposePanel().applyAndAddTo(this) {
+                setThemedContent {
+                    ElementsView(onDone = { dispose() }, closeText = StringLocale[STR_CLOSE])
+                }
+            }
+        }.isVisible = true
+
+        blueprintsGrouped = loadBlueprints()
+        repaint()
+    }
+
+    private fun loadBlueprints(): Map<Type, List<Blueprint>> = transaction {
+        val items = Blueprint.all().groupBy { it.type }
+
+        (Type.values() + items.keys).associateWith { items[it] ?: emptyList() }
     }
 }

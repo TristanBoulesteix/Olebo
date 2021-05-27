@@ -178,6 +178,7 @@ class StringLocaleBundle : StringLocale() {
         ST_STR1_DM_WINDOW_NAME to "Olebo - DM window - %s",
         STR_SIZE to "size:",
         STR_PRIORITY to "layer:",
+        STR_CLOSE to "close",
     )
 }
 
@@ -357,5 +358,6 @@ class StringLocaleBundle_fr : StringLocale() {
         ST_STR1_DM_WINDOW_NAME to "Olebo - Fenêtre MJ - %s",
         STR_SIZE to "taille :",
         STR_PRIORITY to "plan :",
+        STR_CLOSE to "fermer",
     )
 }

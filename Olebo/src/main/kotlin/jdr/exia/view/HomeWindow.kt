@@ -25,11 +25,14 @@ import jdr.exia.view.element.ImageButtonBuilder
 import jdr.exia.view.element.ScrollableColumn
 import jdr.exia.view.legacy.frames.rpg.MasterFrame
 import jdr.exia.view.menubar.FileMenu
-import jdr.exia.view.tools.*
+import jdr.exia.view.tools.BorderBuilder
+import jdr.exia.view.tools.DefaultFunction
+import jdr.exia.view.tools.border
+import jdr.exia.view.tools.withFocusCursor
+import jdr.exia.view.ui.DIMENSION_MAIN_WINDOW
 import jdr.exia.view.ui.blue
 import jdr.exia.view.ui.setThemedContent
 import jdr.exia.viewModel.HomeViewModel
-import java.awt.Dimension
 import javax.swing.JMenuBar
 
 @Suppress("FunctionName")
@@ -39,7 +42,7 @@ class HomeWindow : ComposableWindow("Olebo - ${StringLocale[STR_VERSION]} $OLEBO
     init {
         this.defaultCloseOperation = DISPOSE_ON_CLOSE
 
-        Dimension(700, 900).let {
+        DIMENSION_MAIN_WINDOW.let {
             this.size = it
             this.minimumSize = it
         }
