@@ -38,6 +38,8 @@ class MainViewModel(
 
     private val playerDialogData: PlayerDialog.PlayerDialogData
 
+    private val scope = CoroutineScope(Dispatchers.Swing)
+
     val menuBar = MasterMenuBar(act = act, viewModel = this)
 
     val panel = MapPanel(isParentMaster = true, viewModel = this)
@@ -154,7 +156,7 @@ class MainViewModel(
         repaint()
     }
 
-    fun repaint() = CoroutineScope(Dispatchers.Swing).launch {
+    fun repaint() = scope.launch {
         val job = launch(Dispatchers.IO) {
             tokens = transaction { scene.elements }
         }
@@ -179,7 +181,7 @@ class MainViewModel(
         repaint()
     }
 
-    fun addNewElement(blueprint: Blueprint) = CoroutineScope(Dispatchers.Swing).launch {
+    fun addNewElement(blueprint: Blueprint) = scope.launch {
         withContext(Dispatchers.IO) {
             scene.addElement(blueprint)
         }
