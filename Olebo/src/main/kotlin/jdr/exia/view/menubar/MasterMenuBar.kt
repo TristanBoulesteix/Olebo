@@ -129,11 +129,7 @@ class MasterMenuBar(val act: Act, viewModel: MainViewModel) : JMenuBar() {
 
         JMenu(StringLocale[STR_TOKENS]).applyAndAddTo(this) {
             JMenuItem(StringLocale[STR_MANAGE_BLUEPRINTS]).applyAndAddTo(this) {
-                addActionListener {
-                    viewModel.showBlueprintEditor()
-                    viewModel.unselectElements()
-                    viewModel.repaint()
-                }
+                addActionListener { viewModel.showBlueprintEditor() }
                 this.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_B, CTRLSHIFT)
             }
 
