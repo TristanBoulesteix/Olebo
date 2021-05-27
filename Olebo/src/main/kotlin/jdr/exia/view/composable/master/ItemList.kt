@@ -29,7 +29,7 @@ import java.io.File
 
 @Composable
 fun ItemList(modifier: Modifier, createElement: (Blueprint) -> Unit) = Column(
-    modifier = modifier.widthIn(max = 640.dp).fillMaxHeight().border(BorderStroke(1.dp, Color.Black))
+    modifier = modifier.widthIn(max = 450.dp).fillMaxHeight().border(BorderStroke(1.dp, Color.Black))
 ) {
     var searchString by remember { mutableStateOf("") }
 
