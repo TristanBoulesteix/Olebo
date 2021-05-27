@@ -3,15 +3,17 @@ package jdr.exia.viewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import jdr.exia.localization.ST_ELEMENT_ALREADY_EXISTS
-import jdr.exia.localization.StringLocale
+import jdr.exia.localization.*
+import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.element.Blueprint
+import jdr.exia.model.element.Element
 import jdr.exia.model.element.Type
 import jdr.exia.model.element.isValid
-import jdr.exia.model.type.saveImgAndGetPath
 import jdr.exia.model.tools.Result
 import jdr.exia.model.tools.assignIfDifferent
 import jdr.exia.model.tools.isCharacter
+import jdr.exia.model.type.saveImgAndGetPath
+import jdr.exia.view.tools.showConfirmMessage
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -97,10 +99,30 @@ class ElementsEditorViewModel(private val type: Type) {
             .any { it.name == name }
 
     private fun Blueprint.remove() = transaction {
-        delete()
-        blueprints = blueprints.toMutableList().also {
-            it -= this@remove
+        val countUsage = Element.find { InstanceTable.idBlueprint eq this@remove.id.value }.count()
+
+        fun deleteAndClearState() {
+            delete()
+            blueprints = blueprints.toMutableList().also {
+                it -= this@remove
+            }
         }
+
+        if (countUsage > 0) {
+            showConfirmMessage(
+                null,
+                if (countUsage == 1L)
+                    StringLocale[ST_OCCURENCE_BLUEPRINT_TO_DELETE]
+                else
+                    StringLocale[ST_INT1_OCCURENCE_BLUEPRINT_TO_DELETE, countUsage],
+                StringLocale[STR_WARNING],
+                okAction = ::deleteAndClearState
+            )
+        } else {
+            deleteAndClearState()
+        }
+
+
     }
 
     private fun (Blueprint.BlueprintData).create() = transaction {
