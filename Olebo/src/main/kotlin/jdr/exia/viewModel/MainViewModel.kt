@@ -12,6 +12,7 @@ import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Type
 import jdr.exia.model.tools.callCommandManager
+import jdr.exia.model.tools.doIfContainsSingle
 import jdr.exia.model.type.Point
 import jdr.exia.view.ComposableWindow
 import jdr.exia.view.HomeWindow
@@ -226,6 +227,37 @@ class MainViewModel(
         }.isVisible = true
 
         blueprintsGrouped = loadBlueprints()
+        repaint()
+    }
+
+    fun select(up: Boolean = true) = transaction {
+        if (selectedElements.isEmpty() && scene.elements.isNotEmpty()) {
+            scene.elements.first()
+        } else {
+            val operation = if (up) fun Int.(list: List<Element>): Int {
+                return if (this == list.size - 1) 0 else this + 1
+            } else fun Int.(list: List<Element>): Int {
+                return if (this == 0) list.size - 1 else this - 1
+            }
+
+            selectedElements = selectedElements.doIfContainsSingle(emptyList()) { blueprint ->
+                val elements = scene.elements
+
+                if (elements.getOrNull(elements.indexOfFirst { it.id == blueprint.id }
+                        .operation(elements)) != null) {
+                    listOf(elements[elements.indexOfFirst { it.id == blueprint.id }.operation(elements)])
+                } else emptyList()
+            }
+        }
+    }
+
+    fun rotateRight() {
+        Element.cmdOrientationToRight(commandManager, selectedElements)
+        repaint()
+    }
+
+    fun rotateLeft() {
+        Element.cmdOrientationToLeft(commandManager, selectedElements)
         repaint()
     }
 

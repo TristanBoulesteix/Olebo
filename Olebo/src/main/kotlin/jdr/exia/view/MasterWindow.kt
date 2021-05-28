@@ -12,10 +12,12 @@ import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
 import jdr.exia.view.composable.master.ItemList
 import jdr.exia.view.composable.master.SelectedEditor
+import jdr.exia.view.tools.event.addKeyPressedListener
 import jdr.exia.view.ui.DIMENSION_FRAME
 import jdr.exia.view.ui.setThemedContent
 import jdr.exia.viewModel.MainViewModel
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.awt.event.KeyEvent
 
 class MasterWindow(act: Act) : ComposableWindow() {
     private val viewModel: MainViewModel = MainViewModel(
@@ -34,6 +36,15 @@ class MasterWindow(act: Act) : ComposableWindow() {
         this.defaultCloseOperation = EXIT_ON_CLOSE
         this.jMenuBar = viewModel.menuBar
         this.title = transaction { act.name }
+
+        this.addKeyPressedListener {
+            when(it.keyCode) {
+                KeyEvent.VK_UP -> viewModel.select()
+                KeyEvent.VK_DOWN -> viewModel.select(false)
+                KeyEvent.VK_RIGHT -> viewModel.rotateRight()
+                KeyEvent.VK_LEFT -> viewModel.rotateLeft()
+            }
+        }
 
         // Add Composable ContentPane
         this.contentPane = ComposePanel().apply {
