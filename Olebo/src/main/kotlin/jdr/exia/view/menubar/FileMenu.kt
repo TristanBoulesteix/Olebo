@@ -11,7 +11,6 @@ import jdr.exia.view.OptionDialog
 import jdr.exia.view.tools.*
 import jdr.exia.view.ui.CTRL
 import java.awt.Component
-import java.awt.Frame
 import java.awt.Window
 import java.awt.event.KeyEvent
 import java.awt.image.BufferedImage
@@ -68,7 +67,7 @@ class FileMenu : JMenu(StringLocale[STR_FILES]) {
                                             StringLocale[ST_CONFIGURATION_IMPORTED],
                                             this@FileMenu.windowAncestor
                                         )
-                                        Frame.getFrames().forEach(Window::dispose)
+                                        Window.getWindows().filter { it.isDisplayable }.forEach(Window::dispose)
                                         HomeWindow().isVisible = true
                                     }
                                     is Result.Failure -> {

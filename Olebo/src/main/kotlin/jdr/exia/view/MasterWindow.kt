@@ -80,4 +80,9 @@ class MasterWindow(act: Act) : ComposableWindow() {
     override fun setTitle(title: String) {
         super.setTitle(StringLocale[ST_STR1_DM_WINDOW_NAME, title])
     }
+
+    override fun dispose() {
+        viewModel.togglePlayerWindow(false)
+        super.dispose()
+    }
 }

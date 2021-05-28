@@ -8,6 +8,7 @@ import jdr.exia.localization.STR_CLOSE
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
+import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Type
@@ -81,6 +82,10 @@ class MainViewModel(
             onHide = { menuBar.togglePlayerFrameMenuItem.isSelected = false },
             getMasterWindowScreen = getMasterWindowScreen
         )
+
+        if(Settings.playerFrameOpenedByDefault) {
+            togglePlayerWindow(true)
+        }
     }
 
     /**
@@ -165,7 +170,7 @@ class MainViewModel(
         repaint()
     }
 
-    fun unselectElements() {
+    private fun unselectElements() {
         selectedElements = emptyList()
         repaint()
     }
