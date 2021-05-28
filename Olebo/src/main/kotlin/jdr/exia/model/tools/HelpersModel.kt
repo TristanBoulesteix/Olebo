@@ -51,7 +51,7 @@ fun Blueprint?.isCharacter(): Boolean {
     return transaction { blueprint != null && (blueprint.type == Type.PNJ || blueprint.type == Type.PJ) }
 }
 
-fun ImageIcon.rotate(degs: Double) = with(BufferedImage(this.iconWidth, this.iconHeight, BufferedImage.TYPE_INT_ARGB)) {
+fun ImageIcon.rotate(degs: Float) = with(BufferedImage(this.iconWidth, this.iconHeight, BufferedImage.TYPE_INT_ARGB)) {
     fun ImageIcon.toBufferedImage() = BufferedImage(
         this.iconWidth,
         this.iconHeight,

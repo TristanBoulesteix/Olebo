@@ -274,11 +274,11 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
     // --- General functions ---
     private fun rotateRight() = transaction {
-        orientation = if (orientation >= 270.0) 0.0 else orientation + 90.0
+        orientation = if (orientation >= 270.0) 0f else orientation + 90f
     }
 
     private fun rotateLeft() = transaction {
-        orientation = if (orientation <= 0.0) 270.0 else orientation - 90.0
+        orientation = if (orientation <= 0.0) 270f else orientation - 90f
     }
 
     // --- Command functions ---

@@ -226,7 +226,7 @@ object InstanceTable : IntIdTable() {
     val y = integer("y").default(10)
     val idSize = reference("ID_Size", SizeTable, onDelete = ReferenceOption.CASCADE).default(EntityID(2, SizeTable))
     val visible = bool("Visible").default(false)
-    val orientation = double("Orientation").default(0.0)
+    val orientation = float("Orientation").default(0f)
     val priority =
         reference("id_priority", PriorityTable, onDelete = ReferenceOption.CASCADE).default(EntityID(2, PriorityTable))
     val idScene = integer("ID_Scene").references(SceneTable.id).default(0)
