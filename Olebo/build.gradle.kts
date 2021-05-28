@@ -65,9 +65,9 @@ compose.desktop {
         mainClass = main
 
         nativeDistributions {
-            packageVersion = "1.9.0"
+            packageVersion = getVersion().toString()
 
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(/*TargetFormat.Dmg,*/ TargetFormat.Msi, TargetFormat.Deb)
 
             modules("java.naming", "java.sql")
         }
