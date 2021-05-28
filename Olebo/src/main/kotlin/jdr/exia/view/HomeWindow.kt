@@ -23,7 +23,6 @@ import jdr.exia.view.element.ContentListRow
 import jdr.exia.view.element.HeaderRow
 import jdr.exia.view.element.ImageButtonBuilder
 import jdr.exia.view.element.ScrollableColumn
-import jdr.exia.view.legacy.frames.rpg.MasterFrame
 import jdr.exia.view.menubar.FileMenu
 import jdr.exia.view.tools.BorderBuilder
 import jdr.exia.view.tools.DefaultFunction
@@ -131,10 +130,5 @@ class HomeWindow : ComposableWindow("Olebo - ${StringLocale[STR_VERSION]} $OLEBO
                 }
             }
         }
-    }
-
-    override fun dispose() {
-        MasterFrame.dispose()
-        super.dispose()
     }
 }

@@ -1,4 +1,4 @@
-package jdr.exia.view.legacy.frames
+package jdr.exia.view
 
 import jdr.exia.availableLocales
 import jdr.exia.localization.*
@@ -7,13 +7,10 @@ import jdr.exia.model.dao.option.SerializableColor
 import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.dao.option.toFormatedString
-import jdr.exia.view.legacy.frames.rpg.MasterFrame
-import jdr.exia.view.legacy.frames.rpg.ViewFacade
 import jdr.exia.view.tools.applyAndAddTo
-import jdr.exia.view.legacy.utils.components.templates.LabeledItem
 import jdr.exia.view.tools.gridBagConstraintsOf
-import jdr.exia.view.tools.windowAncestor
 import jdr.exia.view.tools.showMessage
+import jdr.exia.view.tools.windowAncestor
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.*
 import javax.swing.*
@@ -189,16 +186,11 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, StringLocale[ST
                     Settings.playerFrameOpenedByDefault = checkBoxPlayerFrameOpenedByDefault.isSelected
                     comboColorCursor.selectedSerializableColor?.let {
                         Settings.cursorColor = it
-                        if (owner is MasterFrame)
-                            ViewFacade.updateCursorOnPlayerFrame()
                     }
                     Settings.defaultElementVisibility = checkboxVisibilityElement.isSelected
                     (comboLabelState.selectedItem as? SerializableLabelState)?.let { state ->
                         Settings.labelState = state
                         comboLabelColor.selectedSerializableColor?.let { Settings.labelColor = it }
-
-                        if (owner is MasterFrame)
-                            ViewFacade.reloadFrames()
                     }
 
                     // Close the Options dialog
@@ -311,4 +303,12 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, StringLocale[ST
         ComboColor(Settings::cursorColor, SerializableColor.BLACK_WHITE, SerializableColor.WHITE_BLACK)
 
     private inner class ComboLabelColor : ComboColor(Settings::labelColor, SerializableColor.BLACK)
+
+    class LabeledItem<T : Component>(label: String, component: T) : JPanel() {
+        init {
+            this.layout = GridBagLayout()
+            this.add(JLabel(label), gridBagConstraintsOf(0, 0))
+            this.add(component, gridBagConstraintsOf(1, 0))
+        }
+    }
 }

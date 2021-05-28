@@ -4,7 +4,6 @@ import jdr.exia.model.act.Scene
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
-import jdr.exia.model.element.Elements
 import jdr.exia.model.element.Type
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Graphics
@@ -76,7 +75,7 @@ inline fun Scene?.callCommandManager(elements: List<Element>, func: (CommandMana
         func(CommandManager(scene.id.value), elements)
     }
 
-inline fun <T> Scene?.callCommandManager(value: T, elements: Elements, func: (T, CommandManager, Elements) -> Unit) =
+inline fun <T> Scene?.callCommandManager(value: T, elements: List<Element>, func: (T, CommandManager, List<Element>) -> Unit) =
     this?.let { scene ->
         func(value, CommandManager(scene.id.value), elements)
     }

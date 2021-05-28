@@ -1,7 +1,6 @@
 package jdr.exia.view.tools
 
 import jdr.exia.model.element.Element
-import jdr.exia.model.element.Elements
 import jdr.exia.model.type.Point
 import java.awt.*
 import javax.swing.SwingUtilities
@@ -79,7 +78,7 @@ fun Graphics2D.drawCircleWithCenterCoordinates(x: Int, y: Int, radius: Int) {
 /**
  * Return the first element to correspond to the given position or null
  */
-fun Elements.getTokenFromPosition(point: Point) = point.let { (x, y) ->
+fun List<Element>.getTokenFromPosition(point: Point) = point.let { (x, y) ->
     this.filter { it.hitBox.contains(x, y) }.maxByOrNull { it.priority }
 }
 

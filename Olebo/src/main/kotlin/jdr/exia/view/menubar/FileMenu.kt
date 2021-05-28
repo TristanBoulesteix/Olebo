@@ -7,9 +7,7 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.dao.zipOleboDirectory
 import jdr.exia.model.tools.Result
 import jdr.exia.view.HomeWindow
-import jdr.exia.view.legacy.frames.OptionDialog
-import jdr.exia.view.legacy.frames.rpg.MasterFrame
-import jdr.exia.view.legacy.frames.rpg.PlayerFrame
+import jdr.exia.view.OptionDialog
 import jdr.exia.view.tools.*
 import jdr.exia.view.ui.CTRL
 import java.awt.Component
@@ -70,8 +68,6 @@ class FileMenu : JMenu(StringLocale[STR_FILES]) {
                                             StringLocale[ST_CONFIGURATION_IMPORTED],
                                             this@FileMenu.windowAncestor
                                         )
-                                        MasterFrame.isVisible = false
-                                        PlayerFrame.hide()
                                         Frame.getFrames().forEach(Window::dispose)
                                         HomeWindow().isVisible = true
                                     }
