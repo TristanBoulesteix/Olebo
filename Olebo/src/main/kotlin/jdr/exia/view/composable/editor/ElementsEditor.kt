@@ -51,7 +51,7 @@ fun ElementsView(onDone: DefaultFunction, closeText: String = StringLocale[STR_B
                 Row(horizontalArrangement = Arrangement.SpaceAround, modifier = Modifier.fillMaxWidth()) {
                     tabViewModel.tabs.forEach { tab ->
                         Text(
-                            text = tab.typeName,
+                            text = tab.localizedName,
                             fontWeight = FontWeight.Bold.takeIf { tabViewModel.currentTab == tab },
                             modifier = Modifier.applyIf(
                                 condition = tabViewModel.currentTab == tab,
@@ -141,7 +141,7 @@ private fun HeaderContent(
         .border(BorderBuilder.defaultBorder)
 ) {
     ContentListRow(
-        contentText = currentType.typeName,
+        contentText = currentType.localizedName,
         modifier = Modifier.fillMaxWidth().background(Color.White).border(BorderBuilder.defaultBorder),
         buttonBuilders =
         if (viewModel.blueprintInCreation == null) {

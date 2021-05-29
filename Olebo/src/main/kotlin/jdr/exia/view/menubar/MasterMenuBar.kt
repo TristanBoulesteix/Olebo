@@ -160,7 +160,7 @@ class MasterMenuBar(val act: Act, viewModel: MainViewModel) : JMenuBar() {
                                 }
 
                                 it.elements.forElse { token ->
-                                    JMenuItem(token.name + " (" + token.type.name + ")").applyAndAddTo(this) {
+                                    JMenuItem(token.name + " (" + token.type.localizedName + ")").applyAndAddTo(this) {
                                         addActionListener {
                                             transaction {
                                                 Scene.moveElementToScene(

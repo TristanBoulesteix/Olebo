@@ -19,7 +19,7 @@ enum class Type(val type: TypeElement, typeNameKey: String) {
     PNJ(transaction { TypeElement[3] }, STR_NPC),
     BASIC(transaction { TypeElement[4] }, STR_BASE_ELEMENT);
 
-    val typeName by StringDelegate(typeNameKey)
+    val localizedName by StringDelegate(typeNameKey)
 
     /**
      * This class is the link between the enum and the database
@@ -30,7 +30,7 @@ enum class Type(val type: TypeElement, typeNameKey: String) {
         private val actualName by TypeTable.name
 
         val name
-            get() = typeElement.typeName
+            get() = typeElement.localizedName
 
         /**
          * Get the enum which is linked to the databse

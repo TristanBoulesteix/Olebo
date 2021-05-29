@@ -49,7 +49,7 @@ private fun ItemList(
     createElement: (Blueprint) -> Unit
 ) = ScrollableColumn {
     items.forEach { (type, list) ->
-        ContentListRow(contentText = type.typeName, modifier = Modifier.background(Color.Cyan))
+        ContentListRow(contentText = type.localizedName, modifier = Modifier.background(Color.Cyan))
 
         val filtered = transaction { list.filter { it.realName.contains(searchString, ignoreCase = true) } }
 
