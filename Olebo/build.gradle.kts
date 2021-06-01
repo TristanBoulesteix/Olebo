@@ -5,7 +5,7 @@ val kotlinVersion: String by System.getProperties()
 
 plugins {
     kotlin("jvm")
-    id("org.jetbrains.compose") version "0.3.2"
+    id("org.jetbrains.compose") version "0.4.0"
 }
 
 version = "0.1.0"
@@ -20,6 +20,7 @@ repositories {
 val exposedVersion = "0.31.1"
 
 dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.10")
     implementation("org.slf4j", "slf4j-simple", "2.0.0-alpha1")
     testImplementation("junit", "junit", "4.12")
     implementation("org.xerial", "sqlite-jdbc", "3.28.0")
