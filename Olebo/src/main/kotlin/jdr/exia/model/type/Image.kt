@@ -10,7 +10,6 @@ import org.jetbrains.skija.Image as SkijaImage
 
 private val imgPath = OLEBO_DIRECTORY + "img${File.separator}"
 
-//TODO: Replace with value class when Kotlin 1.5 will be available (if Jetpack compose is compatible)
 @Immutable
 @JvmInline
 value class Image(val path: String) {

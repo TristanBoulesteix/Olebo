@@ -47,7 +47,6 @@ class HomeViewModel {
         val job = launch(Dispatchers.Swing) {
             withTimeout(120_000) {
                 try {
-                    // TODO : Add cancelation to MasterWindow initilization
                     val masterWindow = MasterWindow(act).also { it.isVisible = true }
                     yield()
                     popup.dispose()
