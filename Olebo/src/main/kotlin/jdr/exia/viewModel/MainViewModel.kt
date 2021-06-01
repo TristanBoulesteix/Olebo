@@ -35,6 +35,9 @@ import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.GraphicsDevice
 import java.awt.Rectangle
+import java.awt.image.BufferedImage
+import java.io.File
+import javax.imageio.ImageIO
 import javax.swing.JDialog
 
 class MainViewModel(
@@ -55,6 +58,9 @@ class MainViewModel(
     val menuBar = MasterMenuBar(act = act, viewModel = this)
 
     val panel = MapPanel(isParentMaster = true, viewModel = this)
+
+    var backGroundImage: BufferedImage = transaction { ImageIO.read(File(scene.background)) }
+        private set
 
     val scene
         get() = transaction { act.currentScene }
@@ -83,7 +89,7 @@ class MainViewModel(
             getMasterWindowScreen = getMasterWindowScreen
         )
 
-        if(Settings.playerFrameOpenedByDefault) {
+        if (Settings.playerFrameOpenedByDefault) {
             togglePlayerWindow(true)
         }
     }
@@ -210,6 +216,7 @@ class MainViewModel(
     fun switchScene(scene: Scene) {
         transaction { act.currentScene = scene }
         selectedElements = emptyList()
+        backGroundImage = transaction { ImageIO.read(File(scene.background)) }
         repaint()
     }
 

@@ -13,20 +13,15 @@ import jdr.exia.view.tools.event.addMouseExitedListener
 import jdr.exia.view.tools.event.addMouseMovedListener
 import jdr.exia.view.tools.event.addMouseReleasedListener
 import jdr.exia.viewModel.MainViewModel
-import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.*
 import java.awt.event.MouseEvent
 import java.awt.event.MouseMotionAdapter
-import java.io.File
-import javax.imageio.ImageIO
 import javax.swing.JComponent
 import javax.swing.SwingUtilities
 import javax.swing.ToolTipManager
 import kotlin.math.abs
 
 class MapPanel(private val isParentMaster: Boolean, private val viewModel: MainViewModel) : JComponent() {
-    private var backGroundImage = transaction { ImageIO.read(File(viewModel.scene.background)) }
-
     private var selectedArea: Rectangle? = null
 
     init {
@@ -150,7 +145,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: MainV
 
         // Draw background image
         (g as Graphics2D).drawImage(
-            backGroundImage,
+            viewModel.backGroundImage,
             0,
             0,
             this.width,
