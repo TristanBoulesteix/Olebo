@@ -4,7 +4,6 @@ import jdr.exia.view.ui.defaultCursor
 import jdr.exia.view.ui.handCursor
 import javax.swing.JFrame
 
-@Suppress("")
 abstract class ComposableWindow(title: String = "") : JFrame(title) {
     companion object {
         private val composableWindows = mutableListOf<ComposableWindow>()

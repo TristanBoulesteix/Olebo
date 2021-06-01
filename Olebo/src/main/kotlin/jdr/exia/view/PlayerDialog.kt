@@ -19,7 +19,7 @@ import javax.swing.JDialog
 /**
  * PlayerFrame is the Frame the Players can see, it shares its content with MasterFrame
  */
-class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: DefaultFunction) :
+class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: DefaultFunction,  title: String) :
     JDialog(null as Window?) {
     companion object {
         private var playerDialog: PlayerDialog? = null
@@ -28,7 +28,7 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: D
             playerDialog?.dispose()
 
             if (isVisible) {
-                PlayerDialog(data.mapPanel, data.onHide).apply {
+                PlayerDialog(data.mapPanel, data.onHide, data.title).apply {
                     // If there is only 1 screen, we display both frames there
                     if (screens.size == 1) {
                         this.isUndecorated = false
@@ -80,6 +80,8 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: D
         this.contentPane = mapPanel
         this.defaultCloseOperation = DO_NOTHING_ON_CLOSE
 
+        this.title = title
+
         this.addWindowListener(object : WindowAdapter() {
             override fun windowClosing(e: WindowEvent) = dispose()
         })
@@ -108,6 +110,7 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: D
     }
 
     data class PlayerDialogData(
+        val title: String,
         val mapPanel: MapPanel,
         val onHide: DefaultFunction,
         val getMasterWindowScreen: () -> GraphicsDevice

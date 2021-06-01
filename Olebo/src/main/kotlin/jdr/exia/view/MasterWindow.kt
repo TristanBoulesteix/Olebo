@@ -2,17 +2,12 @@ package jdr.exia.view
 
 import androidx.compose.desktop.ComposePanel
 import androidx.compose.desktop.SwingPanel
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import jdr.exia.localization.ST_STR1_DM_WINDOW_NAME
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
@@ -44,7 +39,7 @@ class MasterWindow(act: Act) : ComposableWindow() {
         this.title = transaction { act.name }
 
         this.addKeyPressedListener {
-            when(it.keyCode) {
+            when (it.keyCode) {
                 KeyEvent.VK_UP -> viewModel.select()
                 KeyEvent.VK_DOWN -> viewModel.select(false)
                 KeyEvent.VK_RIGHT -> viewModel.rotateRight()
@@ -63,10 +58,14 @@ class MasterWindow(act: Act) : ComposableWindow() {
     @Suppress("FunctionName")
     @Composable
     fun MainContent() = Row {
-        ItemList(modifier = Modifier.weight(.20f), createElement = viewModel::addNewElement, items = viewModel.blueprintsGrouped)
+        ItemList(
+            modifier = Modifier.weight(.20f),
+            createElement = viewModel::addNewElement,
+            items = viewModel.blueprintsGrouped
+        )
         Column(modifier = Modifier.weight(.80f).fillMaxSize()) {
-            Box(modifier = Modifier.weight(.85f).fillMaxSize().background(Color.Red).border(BorderStroke(5.dp, Color.Red))) {
-                Map(modifier = Modifier)
+            Box(modifier = Modifier.weight(.85f).fillMaxSize()) {
+                SwingPanel(factory = viewModel::panel::get)
             }
             SelectedEditor(
                 modifier = Modifier.weight(.15f).fillMaxSize(),
@@ -77,13 +76,6 @@ class MasterWindow(act: Act) : ComposableWindow() {
             )
         }
     }
-
-    @Suppress("FunctionName")
-    @Composable
-    private fun Map(modifier: Modifier) = SwingPanel(
-        modifier = modifier.fillMaxSize(),
-        factory = viewModel::panel::get
-    )
 
     override fun setTitle(title: String) {
         super.setTitle(StringLocale[ST_STR1_DM_WINDOW_NAME, title])

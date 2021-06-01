@@ -84,6 +84,7 @@ class MainViewModel(
 
     init {
         playerDialogData = PlayerDialog.PlayerDialogData(
+            title = transaction { act.name },
             mapPanel = MapPanel(isParentMaster = false, viewModel = this),
             onHide = { menuBar.togglePlayerFrameMenuItem.isSelected = false },
             getMasterWindowScreen = getMasterWindowScreen
