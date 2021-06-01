@@ -40,7 +40,7 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
     /**
      * Find a scene with its id from all scenes stored in an Act
      */
-    fun SizedIterable<Scene>.findWithId(id: Int) = this.find { it.id.value == id }
+    private fun SizedIterable<Scene>.findWithId(id: Int) = this.find { it.id.value == id }
 
     /**
      * Temporary scene

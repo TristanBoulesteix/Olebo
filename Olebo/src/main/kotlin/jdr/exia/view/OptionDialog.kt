@@ -18,7 +18,9 @@ import kotlin.reflect.KMutableProperty0
 
 class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, StringLocale[STR_OPTIONS], true) {
     private val comboLanguageItems =
-        availableLocales.map { it.getDisplayLanguage(it).capitalize(Settings.language) }.toTypedArray()
+        availableLocales.map { it ->
+            it.getDisplayLanguage(it)
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Settings.language) else it.toString() } }.toTypedArray()
 
     private val comboLanguage =
         JComboBox<String>().apply {

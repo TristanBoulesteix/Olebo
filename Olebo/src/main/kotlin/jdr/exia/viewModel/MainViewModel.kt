@@ -62,7 +62,7 @@ class MainViewModel(
     var backGroundImage: BufferedImage = transaction { ImageIO.read(File(scene.background)) }
         private set
 
-    val scene
+    private val scene
         get() = transaction { act.currentScene }
 
     val commandManager

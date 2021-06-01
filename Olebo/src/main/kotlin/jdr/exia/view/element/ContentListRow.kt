@@ -13,9 +13,6 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.dp
 import jdr.exia.view.tools.*
 import jdr.exia.view.ui.typography
-import java.awt.Cursor
-
-typealias CursorSetter = (Cursor) -> Unit
 
 
 @Composable

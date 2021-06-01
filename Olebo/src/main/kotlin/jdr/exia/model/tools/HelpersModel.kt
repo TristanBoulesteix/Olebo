@@ -9,6 +9,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Graphics
 import java.awt.geom.AffineTransform
 import java.awt.image.BufferedImage
+import java.util.*
 import javax.swing.ImageIcon
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
@@ -18,7 +19,7 @@ import kotlin.contracts.contract
  *
  * @return true if the value is "true"
  */
-fun String?.toBoolean(): Boolean = this?.toLowerCase() == "true"
+fun String?.toBoolean(): Boolean = this?.lowercase(Locale.getDefault()) == "true"
 
 /**
  * Check if element is a PNJ or a PJ
@@ -73,11 +74,6 @@ fun ImageIcon.rotate(degs: Float) = with(BufferedImage(this.iconWidth, this.icon
 inline fun Scene?.callCommandManager(elements: List<Element>, func: (CommandManager, List<Element>) -> Unit) =
     this?.let { scene ->
         func(CommandManager(scene.id.value), elements)
-    }
-
-inline fun <T> Scene?.callCommandManager(value: T, elements: List<Element>, func: (T, CommandManager, List<Element>) -> Unit) =
-    this?.let { scene ->
-        func(value, CommandManager(scene.id.value), elements)
     }
 
 inline fun <T> Scene?.callCommandManager(

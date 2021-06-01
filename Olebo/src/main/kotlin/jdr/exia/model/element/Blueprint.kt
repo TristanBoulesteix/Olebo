@@ -6,7 +6,7 @@ import jdr.exia.model.dao.BlueprintTable
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.type.Image
 import jdr.exia.model.tools.isCharacter
-import jdr.exia.utils.CharacterException
+import jdr.exia.model.tools.CharacterException
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID

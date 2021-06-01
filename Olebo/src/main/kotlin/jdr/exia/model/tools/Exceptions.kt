@@ -1,4 +1,4 @@
-package jdr.exia.utils
+package jdr.exia.model.tools
 
 import jdr.exia.localization.STR_CRITICAL_ERROR
 import jdr.exia.localization.STR_ERROR

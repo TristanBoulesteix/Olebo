@@ -8,6 +8,7 @@ import jdr.exia.model.tools.Result
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
@@ -29,7 +30,7 @@ val updaterPath = "${OLEBO_DIRECTORY}oleboUpdater.jar"
  */
 val appDatas: String
     get() {
-        val os = System.getProperty("os.name").toUpperCase()
+        val os = System.getProperty("os.name").uppercase(Locale.getDefault())
 
         return when {
             os.contains("WIN") -> System.getenv("APPDATA")

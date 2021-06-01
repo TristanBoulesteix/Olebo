@@ -4,7 +4,7 @@ import jdr.exia.localization.*
 import jdr.exia.model.element.Element
 import jdr.exia.update.forceUpdateAndRestart
 import jdr.exia.update.runJar
-import jdr.exia.utils.DatabaseException
+import jdr.exia.model.tools.DatabaseException
 import jdr.exia.view.tools.windowAncestor
 import jdr.exia.view.tools.showConfirmMessage
 import org.jetbrains.exposed.sql.Database

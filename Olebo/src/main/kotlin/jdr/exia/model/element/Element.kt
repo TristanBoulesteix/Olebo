@@ -11,7 +11,7 @@ import jdr.exia.model.tools.isCharacter
 import jdr.exia.model.tools.rotate
 import jdr.exia.model.type.Image
 import jdr.exia.model.type.Point
-import jdr.exia.utils.CharacterException
+import jdr.exia.model.tools.CharacterException
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID

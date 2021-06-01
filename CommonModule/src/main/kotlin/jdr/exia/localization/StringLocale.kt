@@ -34,7 +34,7 @@ abstract class StringLocale : ListResourceBundle() {
             key
         }.let { string ->
             when (state) {
-                StringStates.CAPITALIZE -> string.capitalize(localeHandler.activeLanguage)
+                StringStates.CAPITALIZE -> string.replaceFirstChar { if (it.isLowerCase()) it.titlecase(localeHandler.activeLanguage) else it.toString() }
                 StringStates.NORMAL -> string
             }.format(*args)
         }
