@@ -1,3 +1,4 @@
+
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -16,7 +17,7 @@ repositories {
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
 }
 
-val exposedVersion = "0.31.1"
+val exposedVersion = "0.32.1"
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.10")
