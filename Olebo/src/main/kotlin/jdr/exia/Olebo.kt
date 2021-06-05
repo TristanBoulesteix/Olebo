@@ -5,6 +5,7 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.update.checkForUpdate
 import jdr.exia.update.currentChangelogs
 import jdr.exia.view.HomeWindow
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -14,6 +15,7 @@ import javax.swing.UIManager
 
 const val OLEBO_VERSION = "0.1.0"
 
+@OptIn(DelicateCoroutinesApi::class)
 fun main() {
     SwingUtilities.invokeLater {
         StringLocale(Settings.Companion::activeLanguage)

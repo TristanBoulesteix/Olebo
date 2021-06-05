@@ -5,10 +5,7 @@ import jdr.exia.localization.*
 import jdr.exia.model.dao.jarPath
 import jdr.exia.model.dao.oleboUpdater
 import jdr.exia.model.dao.option.Settings
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import kotlinx.serialization.json.*
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClients
@@ -42,6 +39,7 @@ val currentChangelogs
 /**
  * Check for update on startup
  */
+@OptIn(DelicateCoroutinesApi::class)
 fun checkForUpdate() = GlobalScope.launch {
     lastRelease.takeIf { it.isNotEmpty() }?.let { release ->
         fun prepareUpdate(auto: Boolean = true) {

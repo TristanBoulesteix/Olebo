@@ -29,7 +29,7 @@ class HomeViewModel {
      *
      * @param act The act to launch
      */
-    fun launchAct(act: Act) = GlobalScope.launch {
+    fun launchAct(act: Act) = CoroutineScope(Dispatchers.Main).launch {
         val popup = withContext(Dispatchers.Main) {
             val loadingString = StringLocale[STR_LOADING]
 
