@@ -43,6 +43,8 @@ val currentChangelogs
  * Check for update on startup
  */
 fun checkForUpdate() = GlobalScope.launch {
+    val test = Json { ignoreUnknownKeys = true }.decodeFromJsonElement<List<Asset>>(lastRelease["assets"]!!.jsonArray)
+
     lastRelease.takeIf { it.isNotEmpty() }?.let { release ->
         fun prepareUpdate(auto: Boolean = true) {
             Settings.wasJustUpdated = true
