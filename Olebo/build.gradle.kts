@@ -73,7 +73,3 @@ compose.desktop {
         }
     }
 }
-
-/*val run by tasks.getting(JavaExec::class) {
-    dependsOn(":OleboUpdater:build")
-}*/
