@@ -25,6 +25,7 @@ dependencies {
     testImplementation("junit", "junit", "4.12")
     implementation("org.xerial", "sqlite-jdbc", "3.28.0")
     implementation(project(":Localization", "default"))
+    implementation(project(":Update", "default"))
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
@@ -36,7 +37,7 @@ dependencies {
 
 val main = "jdr.exia.OleboKt"
 
-val jar by tasks.getting(Jar::class) {
+/*val jar by tasks.getting(Jar::class) {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
     manifest {
         attributes["Main-Class"] = main
@@ -46,7 +47,7 @@ val jar by tasks.getting(Jar::class) {
             if (file.isDirectory) collection else collection.plus(zipTree(file))
         }
     })
-}
+}*/
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
