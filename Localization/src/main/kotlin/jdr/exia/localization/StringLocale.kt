@@ -7,7 +7,7 @@ import kotlin.reflect.KProperty0
 /**
  * Parent class of Bundles which contains translations of all the StringLocale of Olebo. They are retrieved with the get operator.
  */
-abstract class StringLocale : ListResourceBundle() {
+abstract class StringLocale internal constructor() : ListResourceBundle() {
     /**
      * The invoke() method of the companion object need to be called in order to initialize the right locale to use
      */
