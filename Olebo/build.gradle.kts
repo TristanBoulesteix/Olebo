@@ -46,7 +46,6 @@ val jar by tasks.getting(Jar::class) {
             if (file.isDirectory) collection else collection.plus(zipTree(file))
         }
     })
-    dependsOn(":OleboUpdater:build")
 }
 
 tasks.withType<KotlinCompile> {
