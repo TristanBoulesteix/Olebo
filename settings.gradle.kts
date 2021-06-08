@@ -16,4 +16,6 @@ pluginManagement {
 
 rootProject.name = "Olebo"
 include("Olebo")
-include("Localization")
+
+// Dependencies
+include("Localization", "Update")
