@@ -16,4 +16,4 @@ pluginManagement {
 
 rootProject.name = "Olebo"
 include("Olebo")
-include("CommonModule")
+include("Localization")

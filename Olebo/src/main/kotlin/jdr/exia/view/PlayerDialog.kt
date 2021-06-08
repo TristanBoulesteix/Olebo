@@ -19,7 +19,7 @@ import javax.swing.JDialog
 /**
  * PlayerFrame is the Frame the Players can see, it shares its content with MasterFrame
  */
-class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: DefaultFunction,  title: String) :
+class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: DefaultFunction, title: String) :
     JDialog(null as Window?) {
     companion object {
         private var playerDialog: PlayerDialog? = null
@@ -92,7 +92,7 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: D
             }
         }
 
-        repaintJob = GlobalScope.launch(Dispatchers.Swing) {
+        repaintJob = CoroutineScope(Dispatchers.Swing).launch {
             while (isActive) {
                 mapPanel.repaint()
                 delay(80L)
