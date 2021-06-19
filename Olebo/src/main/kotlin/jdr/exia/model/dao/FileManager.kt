@@ -5,10 +5,10 @@ import jdr.exia.localization.ST_WARNING_PREVIOUS_VERSION_FILE
 import jdr.exia.localization.StringLocale
 import jdr.exia.main
 import jdr.exia.model.tools.Result
+import jdr.exia.system.OS
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
@@ -19,26 +19,9 @@ const val OLEBO_MANIFEST_NAME = "manifest.$OLEBO_MANIFEST_EXTENSION"
 /**
  * Path to the Olebo directory
  */
-val OLEBO_DIRECTORY = "${appDatas}Olebo${File.separator}"
+val OLEBO_DIRECTORY = "${OS.current.appDataDir}${File.separator}Olebo${File.separator}"
 
 val updaterPath = "${OLEBO_DIRECTORY}oleboUpdater.jar"
-
-/**
- * Get the appdata path depending on the pateform.
- *
- * Available for Windows, Mac Os and Linux
- */
-val appDatas: String
-    get() {
-        val os = System.getProperty("os.name").uppercase(Locale.getDefault())
-
-        return when {
-            os.contains("WIN") -> System.getenv("APPDATA")
-            os.contains("MAC") -> System.getProperty("user.home") + "/Library/"
-            os.contains("NUX") -> System.getProperty("user.home")
-            else -> System.getProperty("user.dir")
-        } + File.separator
-    }
 
 /**
  * Get the path of Olebo
