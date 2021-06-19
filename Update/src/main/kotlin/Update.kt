@@ -1,3 +1,4 @@
+import jdr.exia.system.OS
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.serialization.decodeFromString
@@ -24,6 +25,11 @@ private val lastRelease
         null
     }
 
-suspend fun getReleaseManagerAsync(currentOleboVersion: String) = coroutineScope {
-    async { UpdateManager(lastRelease.takeIf { it?.tag != currentOleboVersion }) }
+suspend fun getUpdaterForCurrentOsAsync(currentOleboVersion: String) = coroutineScope {
+    async {
+        Updater(
+            lastRelease.takeIf {
+            it?.tag != currentOleboVersion
+        }, OS.current)
+    }
 }
