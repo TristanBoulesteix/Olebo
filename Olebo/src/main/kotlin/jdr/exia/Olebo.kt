@@ -1,26 +1,25 @@
 package jdr.exia
 
+import getReleaseManagerAsync
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.dao.option.Settings
-import jdr.exia.update.checkForUpdate
 import jdr.exia.update.currentChangelogs
 import jdr.exia.view.HomeWindow
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.swing.Swing
 import javax.swing.JOptionPane
-import javax.swing.SwingUtilities
 import javax.swing.UIManager
 
 const val OLEBO_VERSION = "0.1.0"
 
 @OptIn(DelicateCoroutinesApi::class)
-fun main() {
-    SwingUtilities.invokeLater {
+suspend fun main(): Unit = coroutineScope {
+    launch(Dispatchers.Swing) {
         StringLocale(Settings.Companion::activeLanguage)
 
-        checkForUpdate()
+        GlobalScope.launch(Dispatchers.IO) {
+            manageUpdate()
+        }
 
         UIManager.setLookAndFeel(
             UIManager.getSystemLookAndFeelClassName()
@@ -28,7 +27,7 @@ fun main() {
 
         HomeWindow().isVisible = true
 
-        GlobalScope.launch(Dispatchers.IO) {
+        launch {
             if (Settings.wasJustUpdated) {
                 currentChangelogs.takeIf { !it.isNullOrBlank() }?.let {
                     JOptionPane.showMessageDialog(
@@ -45,3 +44,10 @@ fun main() {
     }
 }
 
+private suspend fun manageUpdate() = coroutineScope {
+    val updateManager = getReleaseManagerAsync(OLEBO_VERSION).await()
+
+    if(updateManager.hasUpdateAvailable) {
+
+    }
+}

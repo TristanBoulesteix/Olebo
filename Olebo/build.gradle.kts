@@ -1,8 +1,7 @@
-
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlinVersion: String by System.getProperties()
+val coroutineVersion: String by System.getProperties()
 
 plugins {
     kotlin("jvm")
@@ -29,9 +28,8 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
-    implementation("org.apache.httpcomponents", "httpclient", "4.5.10")
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.4.2")
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-swing", "1.4.2")
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", coroutineVersion)
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-swing", coroutineVersion)
     implementation(compose.desktop.currentOs)
 }
 
@@ -48,12 +46,6 @@ val main = "jdr.exia.OleboKt"
         }
     })
 }*/
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
-    kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
-    kotlinOptions.freeCompilerArgs += "-Xinline-classes"
-}
 
 compose.desktop {
     application {
