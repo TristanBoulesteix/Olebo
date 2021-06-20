@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.imageFromResource
-import jdr.exia.model.dao.OLEBO_DIRECTORY
+import jdr.exia.system.OLEBO_DIRECTORY
 import java.io.File
 import org.jetbrains.skija.Image as SkijaImage
 

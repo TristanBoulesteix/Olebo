@@ -5,7 +5,7 @@ import jdr.exia.localization.ST_WARNING_PREVIOUS_VERSION_FILE
 import jdr.exia.localization.StringLocale
 import jdr.exia.main
 import jdr.exia.model.tools.Result
-import jdr.exia.system.OS
+import jdr.exia.system.OLEBO_DIRECTORY
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -15,11 +15,6 @@ import java.util.zip.ZipOutputStream
 
 const val OLEBO_MANIFEST_EXTENSION = "o_manifest"
 const val OLEBO_MANIFEST_NAME = "manifest.$OLEBO_MANIFEST_EXTENSION"
-
-/**
- * Path to the Olebo directory
- */
-val OLEBO_DIRECTORY = "${OS.current.appDataDir}${File.separator}Olebo${File.separator}"
 
 val updaterPath = "${OLEBO_DIRECTORY}oleboUpdater.jar"
 

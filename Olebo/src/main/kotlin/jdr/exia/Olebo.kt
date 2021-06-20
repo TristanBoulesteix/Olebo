@@ -49,11 +49,11 @@ private suspend fun manageUpdate() = coroutineScope {
     val updater = getUpdaterForCurrentOsAsync(OLEBO_VERSION).await()
 
     // If there is un updater available, it means that there is a new version available
-    if(updater != null) {
-        if(Settings.autoUpdate) {
+    if (updater != null) {
+        if (Settings.autoUpdate) {
             Settings.wasJustUpdated = true
-            updater.start()
-        } else if(Settings.updateWarn != updater.versionName) {
+            updater.startUpdate { Settings.autoUpdate }
+        } else if (Settings.updateWarn != updater.versionName) {
             withContext(Dispatchers.Main) {
                 val result = JOptionPane.showOptionDialog(
                     null,
@@ -74,7 +74,7 @@ private suspend fun manageUpdate() = coroutineScope {
                         JOptionPane.INFORMATION_MESSAGE
                     )
                     Settings.wasJustUpdated = true
-                    updater.start(false)
+                    updater.startUpdate { true }
                     exitProcess(0)
                 } else if (result == JOptionPane.CANCEL_OPTION) {
                     Settings.updateWarn = updater.versionName
