@@ -35,9 +35,9 @@ Name: "french"; MessagesFile: "compiler:Languages\French.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\trist\Documents\Dev\Kotlin\Olebo\Olebo\build\compose\binaries\main\app\Olebo\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\trist\Documents\Dev\Kotlin\Olebo\Olebo\build\compose\binaries\main\app\Olebo\runtime\*"; DestDir: "{app}/runtime"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\trist\Documents\Dev\Kotlin\Olebo\Olebo\build\compose\binaries\main\app\Olebo\app\*"; DestDir: "{app}/app"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\Olebo\build\compose\binaries\main\app\Olebo\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Olebo\build\compose\binaries\main\app\Olebo\runtime\*"; DestDir: "{app}/runtime"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\Olebo\build\compose\binaries\main\app\Olebo\app\*"; DestDir: "{app}/app"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]
