@@ -1,5 +1,3 @@
-@file:Suppress("DuplicatedCode")
-
 package jdr.exia.viewModel
 
 import androidx.compose.runtime.getValue

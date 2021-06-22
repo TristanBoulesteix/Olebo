@@ -1,9 +1,9 @@
 package jdr.exia
 
-import getUpdaterForCurrentOsAsync
+import jdr.exia.update.currentChangeLogs
+import jdr.exia.update.getUpdaterForCurrentOsAsync
 import jdr.exia.localization.*
 import jdr.exia.model.dao.option.Settings
-import jdr.exia.update.currentChangelogs
 import jdr.exia.view.HomeWindow
 import kotlinx.coroutines.*
 import kotlinx.coroutines.swing.Swing
@@ -30,7 +30,7 @@ suspend fun main(): Unit = coroutineScope {
 
         launch {
             if (Settings.wasJustUpdated) {
-                currentChangelogs.takeIf { !it.isNullOrBlank() }?.let {
+                currentChangeLogs.takeIf { !it.isNullOrBlank() }?.let {
                     JOptionPane.showMessageDialog(
                         null,
                         it,

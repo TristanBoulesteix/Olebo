@@ -1,9 +1,9 @@
 package jdr.exia.model.command
 
-abstract class Command {
-    abstract val label: String
+interface Command {
+    val label: String
 
-    abstract fun exec()
+    fun exec()
 
-    abstract fun cancelExec()
+    fun cancelExec()
 }

@@ -30,7 +30,7 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
     private val elementIterable by Element referrersOn InstanceTable.idScene
 
     val commandManager
-        get() = CommandManager(id.value)
+        get() = CommandManager(id)
 
     val elements
         get() = transaction {

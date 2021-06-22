@@ -1,10 +1,10 @@
 package jdr.exia.model.dao
 
+import jdr.exia.update.forceUpdate
 import jdr.exia.localization.*
 import jdr.exia.model.element.Element
 import jdr.exia.model.tools.DatabaseException
 import jdr.exia.system.OLEBO_DIRECTORY
-import jdr.exia.update.forceUpdateAndRestart
 import jdr.exia.update.runJar
 import jdr.exia.view.tools.showConfirmMessage
 import jdr.exia.view.tools.windowAncestor
@@ -81,7 +81,7 @@ object DAO {
         val update = JButton(StringLocale[STR_UPDATE]).apply {
             this.addActionListener {
                 windowAncestor?.dispose()
-                forceUpdateAndRestart()
+                forceUpdate()
             }
         }
 

@@ -1,4 +1,4 @@
-@file:Suppress("unused", "ClassName")
+@file:Suppress("ClassName")
 
 package jdr.exia.localization
 

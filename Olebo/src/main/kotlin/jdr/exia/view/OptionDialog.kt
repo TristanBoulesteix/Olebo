@@ -20,7 +20,7 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, StringLocale[ST
     private val comboLanguageItems =
         availableLocales.map { it ->
             it.getDisplayLanguage(it)
-            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Settings.language) else it.toString() } }.toTypedArray()
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Settings.language) else it.toString() } }
 
     private val comboLanguage =
         JComboBox<String>().apply {

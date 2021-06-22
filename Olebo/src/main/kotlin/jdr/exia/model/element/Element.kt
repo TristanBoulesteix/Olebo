@@ -7,11 +7,11 @@ import jdr.exia.model.command.Command
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.dao.option.Settings
+import jdr.exia.model.tools.CharacterException
 import jdr.exia.model.tools.isCharacter
 import jdr.exia.model.tools.rotate
 import jdr.exia.model.type.Image
 import jdr.exia.model.type.Point
-import jdr.exia.model.tools.CharacterException
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -50,7 +50,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         fun cmdVisiblity(visibility: Boolean, manager: CommandManager, elements: List<Element>) {
             val previousVisibilities = elements.map { it.isVisible }
 
-            manager += object : Command() {
+            manager += object : Command {
                 override val label by StringDelegate(if (elements.size == 1) ST_CHANGE_VISIBILITY else ST_CHANGE_VISIBILITY_PLR)
 
                 override fun exec() {
@@ -72,7 +72,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         fun cmdOrientationToRight(manager: CommandManager, elements: List<Element>) {
             val previousOrientation = elements.map { it.orientation }
 
-            manager += object : Command() {
+            manager += object : Command {
                 override val label by StringDelegate(STR_ROTATE_TO_RIGHT)
 
                 override fun exec() {
@@ -95,7 +95,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         fun cmdOrientationToLeft(manager: CommandManager, elements: List<Element>) {
             val previousOrientation = elements.map { it.orientation }
 
-            manager += object : Command() {
+            manager += object : Command {
                 override val label by StringDelegate(STR_ROTATE_TO_LEFT)
 
                 override fun exec() = elements.forEach {
@@ -118,7 +118,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             val previousSize = elementsFiltered.map { it.size }
 
             if (elementsFiltered.isNotEmpty())
-                manager += object : Command() {
+                manager += object : Command {
                     override val label by StringDelegate(if (elements.size == 1) STR_RESIZE_ELEMENT else STR_RESIZE_ELEMENT_PLR)
 
                     override fun exec() = elementsFiltered.forEach {
@@ -136,7 +136,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         fun cmdPosition(elementsToPoint: Map<Element, Point>, manager: CommandManager) {
             val previousPoints = elementsToPoint.mapValues { it.key.referencePoint }
 
-            manager += object : Command() {
+            manager += object : Command {
                 override val label by StringDelegate(STR_MOVE_ELEMENTS)
 
                 override fun exec() = elementsToPoint.forEach { (element, newPoint) ->
@@ -150,7 +150,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         }
 
         fun cmdDelete(manager: CommandManager, elements: List<Element>) {
-            manager += object : Command() {
+            manager += object : Command {
                 override val label by StringDelegate(STR_DELETE_SELECTED_TOKENS)
 
                 override fun exec() = transaction {
@@ -286,7 +286,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     fun cmdPosition(point: Point, manager: CommandManager) {
         val previousPosition = this.referencePoint
 
-        manager += object : Command() {
+        manager += object : Command {
             override val label by StringDelegate(STR_MOVE_ELEMENT)
 
             override fun exec() {
