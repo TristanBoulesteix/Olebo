@@ -1,11 +1,10 @@
 package jdr.exia.model.dao
 
-import jdr.exia.update.forceUpdate
 import jdr.exia.localization.*
 import jdr.exia.model.element.Element
 import jdr.exia.model.tools.DatabaseException
 import jdr.exia.system.OLEBO_DIRECTORY
-import jdr.exia.update.runJar
+import jdr.exia.update.forceUpdate
 import jdr.exia.view.tools.showConfirmMessage
 import jdr.exia.view.tools.windowAncestor
 import org.jetbrains.exposed.sql.Database
@@ -95,8 +94,7 @@ object DAO {
                     confirm = true
                 ) {
                     reset()
-                    runJar(jarPath)
-                    exitProcess(0)
+                    restart()
                 }
             }
         }

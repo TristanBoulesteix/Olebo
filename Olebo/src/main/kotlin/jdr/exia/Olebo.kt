@@ -1,9 +1,9 @@
 package jdr.exia
 
-import jdr.exia.update.currentChangeLogs
-import jdr.exia.update.getUpdaterForCurrentOsAsync
 import jdr.exia.localization.*
 import jdr.exia.model.dao.option.Settings
+import jdr.exia.update.currentChangeLogs
+import jdr.exia.update.getUpdaterForCurrentOsAsync
 import jdr.exia.view.HomeWindow
 import kotlinx.coroutines.*
 import kotlinx.coroutines.swing.Swing

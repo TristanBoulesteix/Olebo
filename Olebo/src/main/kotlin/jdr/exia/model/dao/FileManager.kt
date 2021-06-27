@@ -9,33 +9,22 @@ import jdr.exia.system.OLEBO_DIRECTORY
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.nio.file.Path
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
+import kotlin.io.path.Path
+import kotlin.io.path.div
+import kotlin.system.exitProcess
 
 const val OLEBO_MANIFEST_EXTENSION = "o_manifest"
 const val OLEBO_MANIFEST_NAME = "manifest.$OLEBO_MANIFEST_EXTENSION"
-
-val updaterPath = "${OLEBO_DIRECTORY}oleboUpdater.jar"
 
 /**
  * Get the path of Olebo
  */
 val jarPath: String
     get() = File(::main::class.java.protectionDomain.codeSource.location.toURI()).absolutePath
-
-val oleboUpdater: String
-    get() {
-        val jar = File(updaterPath)
-
-        ::main.javaClass.classLoader.getResourceAsStream("updater/OleboUpdater.jar")!!.use { input ->
-            jar.outputStream().use { output ->
-                input.copyTo(output)
-            }
-        }
-
-        return jar.absolutePath
-    }
 
 fun zipOleboDirectory(fileDestination: File) {
     val oleboDirectory = File(OLEBO_DIRECTORY)
@@ -113,3 +102,10 @@ fun reset() = File(OLEBO_DIRECTORY).let {
         it.deleteRecursively()
     it.mkdirs()
 }
+
+fun restart(status: Int = 0): Nothing {
+    Runtime.getRuntime().exec(Path(jarPath).parent.parent / "Olebo.exe")
+    exitProcess(status)
+}
+
+private fun Runtime.exec(path: Path): Process = this.exec(path.toString())
