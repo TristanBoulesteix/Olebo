@@ -1,6 +1,5 @@
 package jdr.exia.localization
 
-import jdr.exia.defaultLocale
 import java.util.*
 import kotlin.reflect.KProperty0
 

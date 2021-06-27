@@ -1,4 +1,4 @@
-package jdr.exia
+package jdr.exia.localization
 
 import java.util.*
 

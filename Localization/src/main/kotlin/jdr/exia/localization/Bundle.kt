@@ -185,6 +185,7 @@ class StringLocaleBundle : StringLocale() {
 /**
  * French strings
  */
+@Suppress("unused")
 class StringLocaleBundle_fr : StringLocale() {
     override val contents = mapOf(
         STR_VERSION to "version",
