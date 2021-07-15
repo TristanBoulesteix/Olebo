@@ -12,6 +12,8 @@ import kotlin.system.exitProcess
 
 private const val URL = "https://api.github.com/repos/TristanBoulesteix/Olebo/releases"
 
+private val json = Json { ignoreUnknownKeys = true }
+
 private val lastRelease
     get() = try {
         val request = HttpGet(URL)
@@ -20,7 +22,7 @@ private val lastRelease
 
         HttpClients.createDefault().use {
             it.execute(request).use { response ->
-                Json { ignoreUnknownKeys = true }.decodeFromString<List<Release>>(EntityUtils.toString(response.entity))
+                json.decodeFromString<List<Release>>(EntityUtils.toString(response.entity))
                     .firstOrNull()
             }
         }

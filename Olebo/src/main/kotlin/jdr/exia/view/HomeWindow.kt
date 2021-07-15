@@ -5,7 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -15,7 +15,6 @@ import jdr.exia.localization.STR_ELEMENTS
 import jdr.exia.localization.STR_VERSION
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
-import jdr.exia.model.tools.withSetter
 import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.view.composable.editor.ActEditorView
 import jdr.exia.view.composable.editor.ElementsView
@@ -31,7 +30,7 @@ import jdr.exia.view.tools.withFocusCursor
 import jdr.exia.view.ui.DIMENSION_MAIN_WINDOW
 import jdr.exia.view.ui.blue
 import jdr.exia.view.ui.setThemedContent
-import jdr.exia.viewModel.HomeViewModel
+import jdr.exia.viewModel.home.*
 import javax.swing.JMenuBar
 
 @Suppress("FunctionName")
@@ -52,7 +51,8 @@ class HomeWindow : ComposableWindow("Olebo - ${StringLocale[STR_VERSION]} $OLEBO
             setThemedContent {
                 MainContent(
                     acts = viewModel.acts,
-                    refreshAct = viewModel::refreshActs,
+                    content = viewModel.content,
+                    switchContent = { viewModel.content = it },
                     onRowClick = viewModel::launchAct,
                     onDeleteAct = viewModel::deleteAct
                 )
@@ -65,29 +65,24 @@ class HomeWindow : ComposableWindow("Olebo - ${StringLocale[STR_VERSION]} $OLEBO
     @Composable
     private fun MainContent(
         acts: List<Act>,
-        refreshAct: DefaultFunction,
+        content: HomeContent,
+        switchContent: (HomeContent) -> Unit,
         onRowClick: (Act) -> Unit,
         onDeleteAct: (Act) -> Unit
     ) {
         Row(modifier = Modifier.fillMaxSize()) {
-            var areElementsVisible by remember { mutableStateOf(false) }
-
-            var editedActState by remember { mutableStateOf<Act?>(null) withSetter { newValue -> if (newValue == null) refreshAct() } }
-
-            var actInCreation by remember { mutableStateOf(false) withSetter { newValue -> if (!newValue) refreshAct() } }
-
-            when {
-                areElementsVisible -> ElementsView(onDone = { areElementsVisible = false })
-                editedActState != null -> ActEditorView(act = editedActState, onDone = { editedActState = null })
-                actInCreation -> ActEditorView(onDone = { actInCreation = false })
-                else -> ActsView(
+            when (content) {
+                is ActsView -> ActsView(
                     acts = acts,
                     onRowClick = onRowClick,
-                    onEdit = { editedActState = it },
+                    onEdit = { switchContent(ActEditor(it)) },
                     onDelete = onDeleteAct,
-                    viewElements = { areElementsVisible = true },
-                    startActCreation = { actInCreation = true }
+                    viewElements = { switchContent(ElementsView) },
+                    startActCreation = { switchContent(ActCreator) }
                 )
+                is ElementsView -> ElementsView(onDone = { switchContent(ActsView) })
+                is ActEditor -> ActEditorView(act = content.act, onDone = { switchContent(ActsView) })
+                is ActCreator -> ActEditorView(onDone = { switchContent(ActsView) })
             }
         }
     }

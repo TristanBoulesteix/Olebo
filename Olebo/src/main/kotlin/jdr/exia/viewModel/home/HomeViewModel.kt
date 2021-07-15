@@ -1,10 +1,11 @@
-package jdr.exia.viewModel
+package jdr.exia.viewModel.home
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
+import jdr.exia.model.tools.withSetter
 import jdr.exia.view.HomeWindow
 import jdr.exia.view.MasterWindow
 import jdr.exia.view.tools.MessageType
@@ -21,6 +22,8 @@ class HomeViewModel {
 
     var acts by mutableStateOf(actsAsList)
         private set
+
+    var content by mutableStateOf(ActsView as HomeContent) withSetter { if (it is ActsView) refreshActs() }
 
     /**
      * Start an act
@@ -68,7 +71,7 @@ class HomeViewModel {
         }
     }
 
-    fun refreshActs() {
+    private fun refreshActs() {
         acts = actsAsList
     }
 }
