@@ -36,7 +36,8 @@ fun ItemList(modifier: Modifier, items: Map<Type, List<Blueprint>>, createElemen
         value = searchString,
         onValueChange = { searchString = it },
         modifier = Modifier.padding(10.dp).fillMaxWidth(),
-        placeholder = { Text(text = StringLocale[STR_SEARCH]) }
+        placeholder = { Text(text = StringLocale[STR_SEARCH]) },
+        singleLine = true
     )
 
     ItemList(items = items, searchString = searchString, createElement = createElement)
