@@ -25,7 +25,7 @@ val tables by lazy {
     )
 }
 
-interface Initializable {
+sealed interface Initializable {
     fun initialize()
 }
 
