@@ -62,3 +62,17 @@ compose.desktop {
         }
     }
 }
+
+tasks.register<PublishToServer>("publish") {
+    dependsOn("createDistributable")
+    buildPath = buildDir.toPath()
+}
+
+abstract class PublishToServer : DefaultTask() {
+    lateinit var buildPath: java.nio.file.Path
+
+    @TaskAction
+    fun action() {
+        val exePath = buildPath
+    }
+}
