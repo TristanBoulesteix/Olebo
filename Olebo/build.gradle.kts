@@ -89,7 +89,6 @@ buildscript {
 
         classpath("io.ktor:ktor-client-core:$ktorVersion")
         classpath("io.ktor:ktor-client-cio:$ktorVersion")
-
         classpath("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.5.1")
     }
 }
@@ -97,11 +96,15 @@ buildscript {
 tasks.register<PublishToServer>("publish") {
     dependsOn("createDistributable")
     buildPath.set(buildDir.toPath())
+    versionName.set(version.toString())
 }
 
 abstract class PublishToServer : DefaultTask() {
     @get:Input
     abstract val buildPath: Property<JavaPath>
+
+    @get:Input
+    abstract val versionName: Property<String>
 
     @ExperimentalPathApi
     @TaskAction
@@ -113,17 +116,26 @@ abstract class PublishToServer : DefaultTask() {
             return
         }
 
+        val versionName = getVersionName() ?: run {
+            System.err.println("Publication de version annulée")
+            return
+        }
+
         HttpClient(CIO).use {
             runBlocking {
                 try {
-                    it.submitFormWithBinaryData<HttpResponse>(url = "https://olebo.fr/versions", formData = formData {
-                        append("zip", zipDirectory(exePath.toFile()))
-                        append("code", versionCode)
-                    }) {
+                    val response = it.submitFormWithBinaryData<HttpResponse>(
+                        url = "https://olebo.fr/versions",
+                        formData = formData {
+                            append("zip", zipDirectory(exePath.toFile()))
+                            append("code", versionCode)
+                            append("name", versionName)
+                        }) {
                         this.onUpload { bytesSentTotal, contentLength ->
                             println("Sent $bytesSentTotal bytes from $contentLength")
                         }
                     }
+                    println(response.status)
                 } catch (e: Throwable) {
                     e.printStackTrace()
                 }
@@ -135,6 +147,19 @@ abstract class PublishToServer : DefaultTask() {
         val versionCode = JOptionPane.showInputDialog("Entrez le code de version") ?: return null
 
         return versionCode.toIntOrNull() ?: getVersionCode()
+    }
+
+    private fun getVersionName(): String? {
+        val version = versionName.get()
+
+        val confirm = JOptionPane.showConfirmDialog(
+            null,
+            "Confimez le nom de la version : $version",
+            "Publication de Olebo v. $version",
+            JOptionPane.YES_NO_OPTION
+        )
+
+        return version.takeIf { confirm == JOptionPane.OK_OPTION }
     }
 
     private fun createTempFile() = File.createTempFile("Olebo_build", ".olebo.build").also {
