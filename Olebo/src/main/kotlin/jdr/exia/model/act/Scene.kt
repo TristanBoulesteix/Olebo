@@ -1,5 +1,7 @@
 package jdr.exia.model.act
 
+import jdr.exia.localization.StringDelegate
+import jdr.exia.model.command.Command
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.dao.SceneTable
@@ -44,14 +46,31 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
     /**
      * Add an element to the scene as Instance
      *
-     * @param blueprint The Blueprint to instanciate
+     * @param blueprint The Blueprint to instantiate
      */
     fun addElement(blueprint: Blueprint) {
         val id = Element.createElement(blueprint).id
-        transaction {
-            InstanceTable.update({ InstanceTable.id eq id }) {
-                it[idScene] = this@Scene.id.value
+
+        commandManager += object : Command {
+            override val label by StringDelegate("Créer un élément")
+
+            override fun exec() {
+                transaction {
+                    InstanceTable.update({ InstanceTable.id eq id }) {
+                        it[idScene] = this@Scene.id.value
+                        it[deleted] = false
+                    }
+                }
             }
+
+            override fun cancelExec() {
+                transaction {
+                    InstanceTable.update({ InstanceTable.id eq id }) {
+                        it[deleted] = true
+                    }
+                }
+            }
+
         }
     }
 
