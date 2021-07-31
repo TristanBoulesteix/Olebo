@@ -170,7 +170,7 @@ class MainViewModel(
             }
         }
 
-        selectedElements = elements.ifEmpty { emptyList() }
+        selectedElements = elements
 
         repaint()
     }
