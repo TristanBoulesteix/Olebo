@@ -104,7 +104,7 @@ class MainViewModel(
         if (!addToExistingElements) {
             selectedElements = scene.elements.getTokenFromPosition(position)?.let { listOf(it) } ?: emptyList()
         } else {
-             scene.elements.getTokenFromPosition(position)?.let { selectedElements = selectedElements + it }
+            scene.elements.getTokenFromPosition(position)?.let { selectedElements = selectedElements + it }
         }
         repaint()
     }
@@ -146,7 +146,7 @@ class MainViewModel(
                 selectedElements.first()
                     .cmdPosition(selectedElements.first().positionOf(newPosition), scene.commandManager)
             } else {
-                val originElement = (selectedElements.find { it === origin } ?: selectedElements.first())
+                val originElement = selectedElements.find { it === origin } ?: selectedElements.first()
 
                 val diffPosition = newPosition - originElement.centerPoint
 
