@@ -1,5 +1,6 @@
 package jdr.exia.model.act
 
+import jdr.exia.localization.STR_NEW_ELEMENT
 import jdr.exia.localization.StringDelegate
 import jdr.exia.model.command.Command
 import jdr.exia.model.command.CommandManager
@@ -52,25 +53,20 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
         val id = Element.createElement(blueprint).id
 
         commandManager += object : Command {
-            override val label by StringDelegate("Créer un élément")
+            override val label by StringDelegate(STR_NEW_ELEMENT)
 
-            override fun exec() {
-                transaction {
-                    InstanceTable.update({ InstanceTable.id eq id }) {
-                        it[idScene] = this@Scene.id.value
-                        it[deleted] = false
-                    }
+            override fun exec(): Unit = transaction {
+                InstanceTable.update({ InstanceTable.id eq id }) {
+                    it[idScene] = this@Scene.id.value
+                    it[deleted] = false
                 }
             }
 
-            override fun cancelExec() {
-                transaction {
-                    InstanceTable.update({ InstanceTable.id eq id }) {
-                        it[deleted] = true
-                    }
+            override fun cancelExec(): Unit = transaction {
+                InstanceTable.update({ InstanceTable.id eq id }) {
+                    it[deleted] = true
                 }
             }
-
         }
     }
 
