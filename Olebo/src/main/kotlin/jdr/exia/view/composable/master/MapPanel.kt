@@ -70,16 +70,15 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: MainV
             }
         })
 
-        addMouseEnteredListener {
-            setHovered()
-        }
+        addMouseEnteredListener { setHovered() }
 
         addMouseReleasedListener { me ->
             val releasedPosition = Point(me.point).absolutePosition
 
             when (me.button) {
                 MouseEvent.BUTTON1 -> if (movePoint == null && selectedArea == null) viewModel.selectElementsAtPosition(
-                    releasedPosition
+                    releasedPosition,
+                    me.isControlDown
                 ) // Left click
                 MouseEvent.BUTTON2, MouseEvent.BUTTON3 -> viewModel.moveTokensTo(releasedPosition)   // Other buttons
             }
@@ -160,7 +159,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: MainV
         for (token in viewModel.tokens) {
             //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
             if (isParentMaster || token.isVisible) {
-                // Draw token and visiblity indicator
+                // Draw token and visibility indicator
                 if (isParentMaster) {
                     if (!token.isVisible) {
                         g.drawInvisibleMarker(token)

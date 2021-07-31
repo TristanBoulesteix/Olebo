@@ -100,8 +100,12 @@ class MainViewModel(
      */
     fun hasElementAtPosition(position: Point) = scene.elements.getTokenFromPosition(position) != null
 
-    fun selectElementsAtPosition(position: Point) {
-        selectedElements = scene.elements.getTokenFromPosition(position)?.let { listOf(it) } ?: emptyList()
+    fun selectElementsAtPosition(position: Point, addToExistingElements: Boolean = false) {
+        if (!addToExistingElements) {
+            selectedElements = scene.elements.getTokenFromPosition(position)?.let { listOf(it) } ?: emptyList()
+        } else {
+             scene.elements.getTokenFromPosition(position)?.let { selectedElements = selectedElements + it }
+        }
         repaint()
     }
 
@@ -115,7 +119,7 @@ class MainViewModel(
         }
 
         /**
-         * Return a new [Point] inside the bourders of the map
+         * Return a new [Point] inside the borders of the map
          */
         fun Point.checkBound(): Point {
             var newPosition = this
