@@ -31,18 +31,16 @@ class HomeViewModel {
      * @param act The act to launch
      */
     fun launchAct(act: Act) = CoroutineScope(Dispatchers.Main).launch {
-        val popup = withContext(Dispatchers.Main) {
-            val loadingString = StringLocale[STR_LOADING]
+        val loadingString = StringLocale[STR_LOADING]
 
-            JOptionPane(
-                "$loadingString...",
-                JOptionPane.INFORMATION_MESSAGE,
-                JOptionPane.DEFAULT_OPTION,
-                null,
-                emptyArray()
-            ).run {
-                this.createDialog(parent, loadingString)
-            }
+        val popup = JOptionPane(
+            "$loadingString...",
+            JOptionPane.INFORMATION_MESSAGE,
+            JOptionPane.DEFAULT_OPTION,
+            null,
+            emptyArray()
+        ).run {
+            this.createDialog(parent, loadingString)
         }
 
         val job = launch(Dispatchers.Swing) {

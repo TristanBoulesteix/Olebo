@@ -52,7 +52,7 @@ private suspend fun manageUpdate() = coroutineScope {
     if (updater != null) {
         if (Settings.autoUpdate) {
             Settings.wasJustUpdated = true
-            updater.startUpdate { Settings.autoUpdate }
+            updater.startUpdate(Settings::autoUpdate)
         } else if (Settings.updateWarn != updater.versionName) {
             withContext(Dispatchers.Main) {
                 val result = JOptionPane.showOptionDialog(
