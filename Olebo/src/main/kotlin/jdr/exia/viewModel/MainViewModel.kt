@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import jdr.exia.localization.STR_CLOSE
+import jdr.exia.localization.STR_MANAGE_BLUEPRINTS
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
@@ -228,7 +229,7 @@ class MainViewModel(
     fun showBlueprintEditor() {
         selectedElements = emptyList()
 
-        JDialog(ComposableWindow.currentFocused, true).apply {
+        JDialog(ComposableWindow.currentFocused, StringLocale[STR_MANAGE_BLUEPRINTS], true).apply {
             DIMENSION_MAIN_WINDOW.let {
                 this.size = it
                 this.minimumSize = it
