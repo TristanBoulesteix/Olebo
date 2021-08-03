@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.model.tools.withSetter
-import jdr.exia.view.HomeWindow
 import jdr.exia.view.MasterWindow
 import jdr.exia.view.tools.MessageType
 import jdr.exia.view.tools.showConfirmMessage
@@ -53,7 +52,7 @@ class HomeViewModel {
                 } catch (e: TimeoutCancellationException) {
                     popup.dispose()
                     showMessage("${StringLocale[STR_ERROR]}: ${e.message}", null, MessageType.ERROR)
-                    HomeWindow().isVisible = true
+                    //HomeWindow().isVisible = true
                 }
             }
         }

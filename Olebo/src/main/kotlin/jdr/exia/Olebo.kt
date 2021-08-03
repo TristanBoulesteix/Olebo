@@ -1,12 +1,15 @@
 package jdr.exia
 
+import androidx.compose.desktop.DesktopMaterialTheme
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.window.application
 import jdr.exia.localization.*
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.update.currentChangeLogs
 import jdr.exia.update.getUpdaterForCurrentOsAsync
 import jdr.exia.view.HomeWindow
+import jdr.exia.view.ui.OleboTheme
 import kotlinx.coroutines.*
-import kotlinx.coroutines.swing.Swing
 import javax.swing.JOptionPane
 import javax.swing.UIManager
 import kotlin.system.exitProcess
@@ -14,32 +17,34 @@ import kotlin.system.exitProcess
 const val OLEBO_VERSION = "0.1.0"
 
 @OptIn(DelicateCoroutinesApi::class)
-suspend fun main(): Unit = coroutineScope {
-    launch(Dispatchers.Swing) {
-        StringLocale(Settings.Companion::activeLanguage)
+fun main(): Unit = application {
+    StringLocale(Settings.Companion::activeLanguage)
 
-        GlobalScope.launch(Dispatchers.IO) {
-            manageUpdate()
+    GlobalScope.launch(Dispatchers.IO) {
+        manageUpdate()
+    }
+
+    UIManager.setLookAndFeel(
+        UIManager.getSystemLookAndFeelClassName()
+    )
+
+    OleboTheme {
+        DesktopMaterialTheme {
+            HomeWindow()
         }
+    }
 
-        UIManager.setLookAndFeel(
-            UIManager.getSystemLookAndFeelClassName()
-        )
+    rememberCoroutineScope().launch {
+        if (Settings.wasJustUpdated) {
+            currentChangeLogs.takeIf { !it.isNullOrBlank() }?.let {
+                JOptionPane.showMessageDialog(
+                    null,
+                    it,
+                    "Changelogs",
+                    JOptionPane.INFORMATION_MESSAGE
+                )
 
-        HomeWindow().isVisible = true
-
-        launch {
-            if (Settings.wasJustUpdated) {
-                currentChangeLogs.takeIf { !it.isNullOrBlank() }?.let {
-                    JOptionPane.showMessageDialog(
-                        null,
-                        it,
-                        "Changelogs",
-                        JOptionPane.INFORMATION_MESSAGE
-                    )
-
-                    Settings.wasJustUpdated = false
-                }
+                Settings.wasJustUpdated = false
             }
         }
     }

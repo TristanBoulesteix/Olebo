@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.awt.ComposePanel
+import androidx.compose.ui.window.application
 import jdr.exia.localization.STR_CLOSE
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
@@ -200,7 +201,10 @@ class MainViewModel(
 
     fun closeAct() {
         closeMasterWindow()
-        HomeWindow().isVisible = true
+        application {
+            HomeWindow()
+        }
+        //HomeWindow().isVisible = true
     }
 
     fun togglePlayerWindow(isVisible: Boolean) = PlayerDialog.toggle(playerDialogData, isVisible)
