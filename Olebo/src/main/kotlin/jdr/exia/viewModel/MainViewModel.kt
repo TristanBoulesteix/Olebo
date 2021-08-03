@@ -5,7 +5,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.awt.ComposePanel
-import androidx.compose.ui.window.application
 import jdr.exia.localization.STR_CLOSE
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
@@ -18,7 +17,6 @@ import jdr.exia.model.tools.callCommandManager
 import jdr.exia.model.tools.doIfContainsSingle
 import jdr.exia.model.type.Point
 import jdr.exia.view.ComposableWindow
-import jdr.exia.view.HomeWindow
 import jdr.exia.view.PlayerDialog
 import jdr.exia.view.composable.editor.ElementsView
 import jdr.exia.view.composable.master.MapPanel
@@ -201,9 +199,6 @@ class MainViewModel(
 
     fun closeAct() {
         closeMasterWindow()
-        application {
-            HomeWindow()
-        }
         //HomeWindow().isVisible = true
     }
 
