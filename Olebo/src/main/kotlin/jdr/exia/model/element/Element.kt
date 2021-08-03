@@ -1,6 +1,7 @@
 package jdr.exia.model.element
 
-import androidx.compose.ui.graphics.imageFromResource
+import androidx.compose.ui.res.loadImageBitmap
+import androidx.compose.ui.res.useResource
 import jdr.exia.localization.*
 import jdr.exia.model.act.Scene
 import jdr.exia.model.command.Command
@@ -201,7 +202,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         get() = transaction {
             Image(blueprint.sprite).let {
                 if (blueprint.type == Type.BASIC) {
-                    imageFromResource("sprites/${it.path}")
+                    useResource("sprites/${it.path}", ::loadImageBitmap)
                 } else {
                     it.toBitmap()
                 }

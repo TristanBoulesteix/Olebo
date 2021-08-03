@@ -2,7 +2,6 @@
 
 package jdr.exia.view.element
 
-import androidx.compose.desktop.SwingPanel
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
@@ -10,6 +9,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.awt.SwingPanel
 import androidx.compose.ui.unit.dp
 import javax.swing.JComboBox
 

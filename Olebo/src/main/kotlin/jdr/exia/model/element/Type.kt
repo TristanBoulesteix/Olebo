@@ -9,7 +9,7 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.transaction
 
 /**
- * The type of an element
+ * The type of element
  *
  * @param type A [TypeElement] object. It is the link between the enum and the database
  */
@@ -33,7 +33,7 @@ enum class Type(val type: TypeElement, typeNameKey: String) {
             get() = typeElement.localizedName
 
         /**
-         * Get the enum which is linked to the databse
+         * Get the enum which is linked to the database
          *
          * @see [Type]
          */

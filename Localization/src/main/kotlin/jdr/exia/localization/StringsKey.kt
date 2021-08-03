@@ -1,7 +1,7 @@
 package jdr.exia.localization
 
-// Values whose keys are prefixed by STR are plain strings that should be formated.
-// Those prefixed by ST are sentences already formated
+// Values whose keys are prefixed by STR are plain strings that should be formatted.
+// Those prefixed by ST are sentences already formatted
 
 // -- StringLocale
 
@@ -174,6 +174,6 @@ const val ST_CONFIRM_DELETE_ACT = "confirm_delete_act"
 const val ST_ACT_WITHOUT_NAME = "act_without_name"
 
 
-// -- Interpolable StringLocale
+// -- Interpolatable StringLocale
 const val ST_INT1_OCCURENCE_BLUEPRINT_TO_DELETE = "1_num_blueprint_to_delete"
 const val ST_STR1_DM_WINDOW_NAME = "1_dm_window_name"

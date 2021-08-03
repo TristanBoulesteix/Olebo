@@ -3,7 +3,8 @@ package jdr.exia.model.type
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.imageFromResource
+import androidx.compose.ui.res.loadImageBitmap
+import androidx.compose.ui.res.useResource
 import jdr.exia.system.OLEBO_DIRECTORY
 import java.io.File
 import org.jetbrains.skija.Image as SkijaImage
@@ -25,7 +26,7 @@ value class Image(val path: String) {
     fun toBitmap() = imageFromFile(File(path))
 }
 
-fun imageFromIconRes(name: String) = imageFromResource("icons/$name.png")
+fun imageFromIconRes(name: String) = useResource("icons/$name.png", ::loadImageBitmap)
 
 fun imageFromFile(file: File) = SkijaImage.makeFromEncoded(file.readBytes()).asImageBitmap()
 

@@ -2,12 +2,12 @@
 
 package jdr.exia.view.ui
 
-import androidx.compose.desktop.ComposePanel
 import androidx.compose.desktop.DesktopMaterialTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.awt.ComposePanel
 
 private val darkColorPalette = darkColors(
     primary = black,

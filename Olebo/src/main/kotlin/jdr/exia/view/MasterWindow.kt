@@ -1,13 +1,13 @@
 package jdr.exia.view
 
-import androidx.compose.desktop.ComposePanel
-import androidx.compose.desktop.SwingPanel
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.awt.ComposePanel
+import androidx.compose.ui.awt.SwingPanel
 import jdr.exia.localization.ST_STR1_DM_WINDOW_NAME
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
@@ -29,7 +29,7 @@ class MasterWindow(act: Act) : ComposableWindow() {
     )
 
     init {
-        // Initilize content frame
+        // Initialize content frame
         this.extendedState = MAXIMIZED_BOTH
         this.size = DIMENSION_FRAME
         this.minimumSize = DIMENSION_FRAME
@@ -65,7 +65,7 @@ class MasterWindow(act: Act) : ComposableWindow() {
         )
         Column(modifier = Modifier.weight(.80f).fillMaxSize()) {
             Box(modifier = Modifier.weight(.85f).fillMaxSize()) {
-                SwingPanel(factory = viewModel::panel::get)
+                SwingPanel(factory = viewModel::panel)
             }
             SelectedEditor(
                 modifier = Modifier.weight(.15f).fillMaxSize(),

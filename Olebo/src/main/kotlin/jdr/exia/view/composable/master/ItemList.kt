@@ -11,7 +11,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.imageFromResource
+import androidx.compose.ui.res.loadImageBitmap
+import androidx.compose.ui.res.useResource
 import androidx.compose.ui.unit.dp
 import jdr.exia.localization.STR_NO_ELEMENT
 import jdr.exia.localization.STR_SEARCH
@@ -67,7 +68,7 @@ private fun ItemList(
                     listOf(
                         ImageButtonBuilder(
                             if (type == Type.BASIC)
-                                imageFromResource("sprites/${it.sprite}")
+                                useResource("sprites/${it.sprite}", ::loadImageBitmap)
                             else
                                 imageFromFile(File(it.sprite))
                         )

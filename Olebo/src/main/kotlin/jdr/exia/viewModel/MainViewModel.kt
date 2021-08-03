@@ -1,9 +1,10 @@
 package jdr.exia.viewModel
 
-import androidx.compose.desktop.ComposePanel
+
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.awt.ComposePanel
 import jdr.exia.localization.STR_CLOSE
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act

@@ -21,7 +21,7 @@ enum class Size(val size: SizeElement) {
     }
 
     /**
-     * This class is the link between the enum and the databse
+     * This class is the link between the enum and the database
      */
     class SizeElement(id: EntityID<Int>) : Entity<Int>(id) {
         companion object : EntityClass<Int, SizeElement>(SizeTable)
@@ -30,7 +30,7 @@ enum class Size(val size: SizeElement) {
         val absoluteSizeValue by SizeTable.value
 
         /**
-         * Get the enum which is linked to the databse
+         * Get the enum which is linked to the database
          *
          * @see [Size]
          */
