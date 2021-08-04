@@ -45,7 +45,6 @@ fun ApplicationScope.Window(
 
             onDispose {
                 WindowStateManager.composeWindows -= window
-                println(WindowStateManager.composeWindows.size)
             }
         }
 
