@@ -2,7 +2,6 @@
 
 package jdr.exia.view.composable.editor
 
-import androidx.compose.desktop.AppManager
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,6 +22,7 @@ import jdr.exia.model.act.isValidAndEqualTo
 import jdr.exia.model.tools.withSetter
 import jdr.exia.model.type.imageFromFile
 import jdr.exia.model.type.imageFromIconRes
+import jdr.exia.view.WindowManager
 import jdr.exia.view.element.*
 import jdr.exia.view.tools.*
 import jdr.exia.view.ui.blue
@@ -239,7 +239,7 @@ private fun ImagePreviewContent(
                     this.isAcceptAllFileFilterUsed = false
                 }
 
-                val result = fileChooser.showSaveDialog(AppManager.focusedWindow?.window)
+                val result = fileChooser.showSaveDialog(WindowManager.currentFocusedState?.window)
 
                 if (result == JFileChooser.APPROVE_OPTION && fileChooser.selectedFile.let { it.exists() && it.isFile }) {
                     onUpdateData(data.copy(img = Img(fileChooser.selectedFile.absolutePath)))

@@ -1,12 +1,13 @@
 package jdr.exia.view.composable.master
 
+import androidx.compose.ui.awt.ComposeWindow
 import jdr.exia.model.dao.option.SerializableColor
 import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Size
 import jdr.exia.model.type.Point
-import jdr.exia.view.ComposableWindow
+import jdr.exia.view.WindowManager
 import jdr.exia.view.tools.*
 import jdr.exia.view.tools.event.addMouseEnteredListener
 import jdr.exia.view.tools.event.addMouseExitedListener
@@ -42,7 +43,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
         var start = Point()
         var movePoint: Point? = null
 
-        fun setHovered() = (windowAncestor as? ComposableWindow)?.hasSwingItemHovered()
+        fun setHovered() = WindowManager.getStateFromWindow(windowAncestor as ComposeWindow)?.hasSwingItemHovered()
 
         this.addMouseMotionListener(object : MouseMotionAdapter() {
             override fun mouseMoved(me: MouseEvent) {

@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.SwingPanel
 import androidx.compose.ui.window.ApplicationScope
@@ -25,7 +24,6 @@ import jdr.exia.viewModel.MasterViewModel
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.event.KeyEvent
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ApplicationScope.MasterWindow(act: Act, onExit: DefaultFunction) {
     val scope = rememberCoroutineScope()

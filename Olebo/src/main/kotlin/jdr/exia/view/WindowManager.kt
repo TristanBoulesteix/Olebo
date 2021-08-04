@@ -4,14 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.window.*
 import jdr.exia.view.ui.defaultCursor
 import jdr.exia.view.ui.handCursor
 import java.awt.Dimension
 import java.util.*
-import javax.swing.JFrame
 import javax.swing.JMenuBar
 
 object WindowManager {
@@ -19,6 +17,8 @@ object WindowManager {
 
     val currentFocusedState
         get() = composeWindows.find { it.window.isFocused }
+
+    fun getStateFromWindow(composeWindow: ComposeWindow) = composeWindows.find { it.window == composeWindow }
 }
 
 class SwingState(val window: ComposeWindow) {
@@ -46,7 +46,6 @@ class SwingState(val window: ComposeWindow) {
     override fun hashCode() = id.hashCode()
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ApplicationScope.Window(
     menuBar: JMenuBar,
@@ -82,45 +81,5 @@ fun ApplicationScope.Window(
         }
 
         content()
-    }
-}
-
-abstract class ComposableWindow(title: String = "") : JFrame(title) {
-    companion object {
-        private val composableWindows = mutableListOf<ComposableWindow>()
-
-        val currentFocused
-            get() = composableWindows.find { it.isFocused }
-    }
-
-    private var hoverRequestCount = 0
-        set(value) {
-            field = value
-
-            if (field < 0) field = 0
-
-            cursor = if (field > 0) handCursor else defaultCursor
-        }
-
-    fun hasItemhovered(requestHover: Boolean) {
-        if (requestHover) hoverRequestCount++ else hoverRequestCount--
-    }
-
-    fun hasSwingItemHovered() {
-        hoverRequestCount = 0
-    }
-
-    override fun setVisible(isVisible: Boolean) {
-        if (isVisible) {
-            composableWindows += this
-        } else {
-            composableWindows -= this
-        }
-        super.setVisible(isVisible)
-    }
-
-    override fun dispose() {
-        composableWindows -= this
-        super.dispose()
     }
 }

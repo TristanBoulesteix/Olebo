@@ -8,7 +8,7 @@ val coroutineVersion: String by System.getProperties()
 
 plugins {
     kotlin("jvm")
-    id("org.jetbrains.compose") version "0.5.0-build270"
+    id("org.jetbrains.compose") version "1.0.0-alpha1-rc4"
 }
 
 version = "0.1.0"
@@ -17,6 +17,7 @@ repositories {
     mavenCentral()
     maven("https://dl.bintray.com/kotlin/exposed/")
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    google()
 }
 
 val exposedVersion = "0.32.1"
@@ -38,18 +39,6 @@ dependencies {
 
 val main = "jdr.exia.OleboKt"
 
-/*val jar by tasks.getting(Jar::class) {
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    manifest {
-        attributes["Main-Class"] = main
-    }
-    from(configurations.compileClasspath.map { configuration ->
-        configuration.asFileTree.fold(files().asFileTree) { collection, file ->
-            if (file.isDirectory) collection else collection.plus(zipTree(file))
-        }
-    })
-}*/
-
 compose.desktop {
     application {
         javaHome = System.getenv("JDK_16")
@@ -57,7 +46,7 @@ compose.desktop {
         mainClass = main
 
         nativeDistributions {
-            packageVersion = getVersion().toString()
+            packageVersion = version.toString()
 
             targetFormats(/*TargetFormat.Dmg,*/ TargetFormat.Msi, TargetFormat.Deb)
 

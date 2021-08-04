@@ -2,7 +2,6 @@
 
 package jdr.exia.view.composable.editor
 
-import androidx.compose.desktop.AppManager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -26,6 +25,7 @@ import jdr.exia.model.type.Image
 import jdr.exia.model.type.imageFromFile
 import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.model.type.savePathToImage
+import jdr.exia.view.WindowManager
 import jdr.exia.view.element.*
 import jdr.exia.view.tools.*
 import jdr.exia.view.ui.blue
@@ -234,7 +234,7 @@ private fun ColumnScope.CreateBlueprint(
                     this.isAcceptAllFileFilterUsed = false
                 }
 
-                if (file.showSaveDialog(AppManager.focusedWindow?.window) == JFileChooser.APPROVE_OPTION) {
+                if (file.showSaveDialog(WindowManager.currentFocusedState?.window) == JFileChooser.APPROVE_OPTION) {
                     onUpdate(blueprint.copy(img = Image(file.selectedFile.absolutePath)))
                 }
             },
