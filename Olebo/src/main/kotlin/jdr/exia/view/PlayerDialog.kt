@@ -6,9 +6,10 @@ import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.event.addKeyPressedListener
 import jdr.exia.view.tools.screens
-import jdr.exia.view.ui.DIMENSION_FRAME
+import jdr.exia.view.ui.MASTER_WINDOW_SIZE
 import kotlinx.coroutines.*
 import kotlinx.coroutines.swing.Swing
+import java.awt.Dimension
 import java.awt.GraphicsDevice
 import java.awt.Window
 import java.awt.event.KeyEvent
@@ -33,7 +34,9 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: D
                     if (screens.size == 1) {
                         this.isUndecorated = false
                         this.isResizable = true
-                        this.preferredSize = DIMENSION_FRAME
+                        this.preferredSize = MASTER_WINDOW_SIZE.let { (height, width) ->
+                            Dimension(width.value.toInt(), height.value.toInt())
+                        }
                         this.pack()
                         this.setLocationRelativeTo(null)
                         this.isVisible = true
