@@ -73,8 +73,6 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: D
             }
         }
 
-        val isVisible
-            get() = playerDialog?.isVisible == true
     }
 
     private val repaintJob: Job

@@ -5,15 +5,17 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.input.pointer.pointerMoveFilter
+import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.pointerIcon
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import jdr.exia.view.WindowStateManager
+import jdr.exia.view.ui.handCursor
 import jdr.exia.view.ui.roundedShape
 
 /**
@@ -141,16 +143,8 @@ private fun DrawScope.drawEndBorder(
 fun Modifier.addRoundedBorder() =
     this.border(border = BorderStroke(2.dp, Color.Black), shape = roundedShape)
 
-fun Modifier.withFocusCursor() = this.pointerMoveFilter(
-    onEnter = {
-        WindowStateManager.currentFocusedState?.hasItemhovered(true)
-        false
-    },
-    onExit = {
-        WindowStateManager.currentFocusedState?.hasItemhovered(false)
-        false
-    }
-)
+@OptIn(ExperimentalComposeUiApi::class)
+fun Modifier.withFocusCursor() = this.pointerIcon(PointerIcon(handCursor))
 
 fun Modifier.clickableWithCursor(enabled: Boolean = true, onClick: DefaultFunction) =
     this.clickable(onClick = onClick, enabled = enabled).applyIf(enabled) { withFocusCursor() }

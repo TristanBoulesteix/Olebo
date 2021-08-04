@@ -234,7 +234,7 @@ private fun ColumnScope.CreateBlueprint(
                     this.isAcceptAllFileFilterUsed = false
                 }
 
-                if (file.showSaveDialog(WindowStateManager.currentFocusedState?.window) == JFileChooser.APPROVE_OPTION) {
+                if (file.showSaveDialog(WindowStateManager.currentFocusedState) == JFileChooser.APPROVE_OPTION) {
                     onUpdate(blueprint.copy(img = Image(file.selectedFile.absolutePath)))
                 }
             },

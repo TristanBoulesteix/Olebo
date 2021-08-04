@@ -214,7 +214,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     fun showBlueprintEditor() {
         selectedElements = emptyList()
 
-        JDialog(WindowStateManager.currentFocusedState?.window, true).apply {
+        JDialog(WindowStateManager.currentFocusedState, true).apply {
             DIMENSION_MAIN_WINDOW.let {
                 this.size = it
                 this.minimumSize = it
