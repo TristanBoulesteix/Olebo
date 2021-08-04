@@ -12,9 +12,9 @@ import jdr.exia.view.tools.event.addMouseEnteredListener
 import jdr.exia.view.tools.event.addMouseExitedListener
 import jdr.exia.view.tools.event.addMouseMovedListener
 import jdr.exia.view.tools.event.addMouseReleasedListener
-import jdr.exia.viewModel.ABSOLUTE_HEIGHT
-import jdr.exia.viewModel.ABSOLUTE_WIDTH
 import jdr.exia.viewModel.MasterViewModel
+import jdr.exia.viewModel.MasterViewModel.Companion.ABSOLUTE_HEIGHT
+import jdr.exia.viewModel.MasterViewModel.Companion.ABSOLUTE_WIDTH
 import java.awt.*
 import java.awt.event.MouseEvent
 import java.awt.event.MouseMotionAdapter

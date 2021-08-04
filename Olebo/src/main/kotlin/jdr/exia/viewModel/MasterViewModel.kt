@@ -35,10 +35,12 @@ import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.JDialog
 
-const val ABSOLUTE_WIDTH = 1600
-const val ABSOLUTE_HEIGHT = 900
-
 class MasterViewModel(val act: Act, val scope: CoroutineScope) {
+    companion object {
+        const val ABSOLUTE_WIDTH = 1600
+        const val ABSOLUTE_HEIGHT = 900
+    }
+
     private val scene
         get() = transaction { act.currentScene }
 
