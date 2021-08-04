@@ -49,37 +49,39 @@ class SwingState(val window: ComposeWindow) {
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ApplicationScope.Window(
-    title: String = "", size: WindowSize, minimumSize: WindowSize? = null, isVisible: Boolean = true,
-    menuBar: JMenuBar, content: @Composable () -> Unit
+    menuBar: JMenuBar,
+    title: String = "",
+    size: WindowSize,
+    minimumSize: WindowSize? = null,
+    placement: WindowPlacement = WindowPlacement.Floating,
+    content: @Composable FrameWindowScope. () -> Unit
 ) {
     val windowState = rememberWindowState(
         size = size,
-        position = WindowPosition(Alignment.Center)
+        position = WindowPosition(Alignment.Center),
+        placement = placement
     )
 
-    if (isVisible) {
-        Window(onCloseRequest = ::exitApplication, state = windowState, title = title) {
-            LaunchedEffect(Unit) {
-                minimumSize?.let { (width, height) ->
-                    window.minimumSize = Dimension(width.value.toInt(), height.value.toInt())
-                }
-
-                window.jMenuBar = menuBar
+    Window(onCloseRequest = ::exitApplication, state = windowState, title = title) {
+        LaunchedEffect(Unit) {
+            minimumSize?.let { (width, height) ->
+                window.minimumSize = Dimension(width.value.toInt(), height.value.toInt())
             }
 
-            DisposableEffect(Unit) {
-                val swingState = SwingState(window)
-
-                WindowManager.composeWindows += swingState
-
-                onDispose {
-                    WindowManager.composeWindows -= swingState
-                    println("dispose")
-                }
-            }
-
-            content()
+            window.jMenuBar = menuBar
         }
+
+        DisposableEffect(Unit) {
+            val swingState = SwingState(window)
+
+            WindowManager.composeWindows += swingState
+
+            onDispose {
+                WindowManager.composeWindows -= swingState
+            }
+        }
+
+        content()
     }
 }
 

@@ -1,13 +1,15 @@
 package jdr.exia
 
 import androidx.compose.desktop.DesktopMaterialTheme
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.window.application
 import jdr.exia.localization.*
+import jdr.exia.model.act.Act
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.update.currentChangeLogs
 import jdr.exia.update.getUpdaterForCurrentOsAsync
 import jdr.exia.view.HomeWindow
+import jdr.exia.view.MasterWindow
 import jdr.exia.view.ui.OleboTheme
 import kotlinx.coroutines.*
 import javax.swing.JOptionPane
@@ -15,6 +17,12 @@ import javax.swing.UIManager
 import kotlin.system.exitProcess
 
 const val OLEBO_VERSION = "0.1.0"
+
+sealed class WindowState {
+    object HomeWindow : WindowState()
+
+    class MasterWindow(val act: Act) : WindowState()
+}
 
 @OptIn(DelicateCoroutinesApi::class)
 fun main(): Unit = application {
@@ -30,7 +38,18 @@ fun main(): Unit = application {
 
     OleboTheme {
         DesktopMaterialTheme {
-            HomeWindow()
+            var windowState by remember { mutableStateOf<WindowState>(WindowState.HomeWindow) }
+
+            when (val currentWindow = windowState) {
+                is WindowState.HomeWindow -> HomeWindow(startAct = { windowState = WindowState.MasterWindow(it) })
+                is WindowState.MasterWindow -> {
+                    MasterWindow(
+                        act = currentWindow.act,
+                        onExit = { windowState = WindowState.HomeWindow }
+                    )
+                }
+                else -> exitApplication()
+            }
         }
     }
 

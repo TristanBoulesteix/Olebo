@@ -4,85 +4,99 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.awt.ComposePanel
 import androidx.compose.ui.awt.SwingPanel
+import androidx.compose.ui.window.ApplicationScope
+import androidx.compose.ui.window.WindowPlacement
 import jdr.exia.localization.ST_STR1_DM_WINDOW_NAME
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
+import jdr.exia.model.dao.option.Settings
 import jdr.exia.view.composable.master.ItemList
+import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.composable.master.SelectedEditor
+import jdr.exia.view.menubar.MasterMenuBar
+import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.event.addKeyPressedListener
-import jdr.exia.view.ui.DIMENSION_FRAME
-import jdr.exia.view.ui.setThemedContent
-import jdr.exia.viewModel.MainViewModel
+import jdr.exia.view.ui.MASTER_WINDOW_SIZE
+import jdr.exia.viewModel.MasterViewModel
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.event.KeyEvent
 
-class MasterWindow(act: Act) : ComposableWindow() {
-    private val viewModel: MainViewModel = MainViewModel(
-        act = act,
-        closeMasterWindow = this::dispose,
-        focusMasterWindow = this::requestFocus,
-        getMasterWindowScreen = { this.graphicsConfiguration.device }
-    )
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun ApplicationScope.MasterWindow(act: Act, onExit: DefaultFunction) {
+    val scope = rememberCoroutineScope()
 
-    init {
-        // Initialize content frame
-        this.extendedState = MAXIMIZED_BOTH
-        this.size = DIMENSION_FRAME
-        this.minimumSize = DIMENSION_FRAME
-        this.isFocusable = true
-        this.defaultCloseOperation = EXIT_ON_CLOSE
-        this.jMenuBar = viewModel.menuBar
-        this.title = transaction { act.name }
+    val viewModel = remember { MasterViewModel(act = act, scope = scope) }
 
-        this.addKeyPressedListener {
-            when (it.keyCode) {
-                KeyEvent.VK_UP -> viewModel.select()
-                KeyEvent.VK_DOWN -> viewModel.select(false)
-                KeyEvent.VK_RIGHT -> viewModel.rotateRight()
-                KeyEvent.VK_LEFT -> viewModel.rotateLeft()
-            }
-        }
+    val menuBar = remember { MasterMenuBar(closeAct = onExit, viewModel = viewModel) }
 
-        // Add Composable ContentPane
-        this.contentPane = ComposePanel().apply {
-            setThemedContent {
-                MainContent()
-            }
-        }
-    }
-
-    @Suppress("FunctionName")
-    @Composable
-    fun MainContent() = Row {
-        ItemList(
-            modifier = Modifier.weight(.20f),
-            createElement = viewModel::addNewElement,
-            items = viewModel.blueprintsGrouped
-        )
-        Column(modifier = Modifier.weight(.80f).fillMaxSize()) {
-            Box(modifier = Modifier.weight(.85f).fillMaxSize()) {
-                SwingPanel(factory = viewModel::panel)
-            }
-            SelectedEditor(
-                modifier = Modifier.weight(.15f).fillMaxSize(),
-                commandManager = viewModel.commandManager,
-                selectedElements = viewModel.selectedElements,
-                repaint = viewModel::repaint,
-                deleteSelectedElement = viewModel::deleteSelectedElement
+    Window(
+        title = transaction { StringLocale[ST_STR1_DM_WINDOW_NAME, act.name] },
+        size = MASTER_WINDOW_SIZE,
+        minimumSize = MASTER_WINDOW_SIZE,
+        menuBar = menuBar,
+        placement = WindowPlacement.Maximized
+    ) {
+        val playerDialogData = remember {
+            PlayerDialog.PlayerDialogData(
+                title = transaction { act.name },
+                mapPanel = MapPanel(isParentMaster = false, viewModel = viewModel),
+                onHide = { menuBar.togglePlayerFrameMenuItem.isSelected = false },
+                getMasterWindowScreen = { window.graphicsConfiguration.device }
             )
         }
-    }
 
-    override fun setTitle(title: String) {
-        super.setTitle(StringLocale[ST_STR1_DM_WINDOW_NAME, title])
-    }
+        DisposableEffect(Unit) {
+            if (Settings.playerFrameOpenedByDefault) {
+                playerDialogData.togglePlayerWindow(true)
+            }
 
-    override fun dispose() {
-        viewModel.togglePlayerWindow(false)
-        super.dispose()
+            onDispose {
+                playerDialogData.togglePlayerWindow(false)
+            }
+        }
+
+        LaunchedEffect(Unit) {
+            menuBar.togglePlayerWindow = { playerDialogData.togglePlayerWindow(it) }
+
+            window.addKeyPressedListener {
+                when (it.keyCode) {
+                    KeyEvent.VK_UP -> viewModel.select()
+                    KeyEvent.VK_DOWN -> viewModel.select(false)
+                    KeyEvent.VK_RIGHT -> viewModel.rotateRight()
+                    KeyEvent.VK_LEFT -> viewModel.rotateLeft()
+                }
+            }
+        }
+
+        MainContent(viewModel = viewModel)
+    }
+}
+
+private fun PlayerDialog.PlayerDialogData.togglePlayerWindow(isVisible: Boolean) = PlayerDialog.toggle(this, isVisible)
+
+@Composable
+private fun MainContent(viewModel: MasterViewModel) = Row {
+    ItemList(
+        modifier = Modifier.weight(.20f),
+        createElement = viewModel::addNewElement,
+        items = viewModel.blueprintsGrouped
+    )
+
+    Column(modifier = Modifier.weight(.80f).fillMaxSize()) {
+        Box(modifier = Modifier.weight(.85f).fillMaxSize()) {
+            SwingPanel(factory = viewModel::panel)
+        }
+        SelectedEditor(
+            modifier = Modifier.weight(.15f).fillMaxSize(),
+            commandManager = viewModel.commandManager,
+            selectedElements = viewModel.selectedElements,
+            repaint = viewModel::repaint,
+            deleteSelectedElement = viewModel::deleteSelectedElement
+        )
     }
 }

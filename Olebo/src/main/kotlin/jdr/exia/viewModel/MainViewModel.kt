@@ -9,7 +9,6 @@ import jdr.exia.localization.STR_CLOSE
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
-import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Type
@@ -17,10 +16,8 @@ import jdr.exia.model.tools.callCommandManager
 import jdr.exia.model.tools.doIfContainsSingle
 import jdr.exia.model.type.Point
 import jdr.exia.view.ComposableWindow
-import jdr.exia.view.PlayerDialog
 import jdr.exia.view.composable.editor.ElementsView
 import jdr.exia.view.composable.master.MapPanel
-import jdr.exia.view.menubar.MasterMenuBar
 import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.applyAndAddTo
 import jdr.exia.view.tools.getTokenFromPosition
@@ -30,43 +27,28 @@ import jdr.exia.view.ui.setThemedContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.swing.Swing
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.awt.GraphicsDevice
 import java.awt.Rectangle
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.JDialog
 
-class MainViewModel(
-    val act: Act,
-    private val closeMasterWindow: DefaultFunction,
-    val focusMasterWindow: DefaultFunction,
-    getMasterWindowScreen: () -> GraphicsDevice
-) {
-    companion object {
-        const val ABSOLUTE_WIDTH = 1600
-        const val ABSOLUTE_HEIGHT = 900
-    }
+const val ABSOLUTE_WIDTH = 1600
+const val ABSOLUTE_HEIGHT = 900
 
-    private val playerDialogData: PlayerDialog.PlayerDialogData
-
-    private val scope = CoroutineScope(Dispatchers.Swing)
-
-    val menuBar = MasterMenuBar(act = act, viewModel = this)
-
-    val panel = MapPanel(isParentMaster = true, viewModel = this)
-
-    var backGroundImage: BufferedImage = transaction { ImageIO.read(File(scene.background)) }
-        private set
-
+class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     private val scene
         get() = transaction { act.currentScene }
 
     val commandManager
         get() = transaction { scene.commandManager }
+
+    val panel = MapPanel(isParentMaster = true, viewModel = this)
+
+    var selectedElements: List<Element> by mutableStateOf(emptyList())
+        private set
 
     var blueprintsGrouped by mutableStateOf(loadBlueprints())
         private set
@@ -77,23 +59,12 @@ class MainViewModel(
     var tokens = transaction { scene.elements }
         private set
 
-    var selectedElements: List<Element> by mutableStateOf(emptyList())
+    var backGroundImage: BufferedImage = transaction { ImageIO.read(File(scene.background)) }
         private set
 
     var cursor: Point? by mutableStateOf(null)
 
-    init {
-        playerDialogData = PlayerDialog.PlayerDialogData(
-            title = transaction { act.name },
-            mapPanel = MapPanel(isParentMaster = false, viewModel = this),
-            onHide = { menuBar.togglePlayerFrameMenuItem.isSelected = false },
-            getMasterWindowScreen = getMasterWindowScreen
-        )
-
-        if (Settings.playerFrameOpenedByDefault) {
-            togglePlayerWindow(true)
-        }
-    }
+    lateinit var reloadMenuBar: DefaultFunction
 
     /**
      * Returns true if there is at least one element at the given position
@@ -186,23 +157,36 @@ class MainViewModel(
         repaint()
     }
 
-    fun repaint() = scope.launch {
-        val job = launch(Dispatchers.IO) {
-            tokens = transaction { scene.elements }
+    fun select(up: Boolean = true) = transaction {
+        if (selectedElements.isEmpty() && scene.elements.isNotEmpty()) {
+            scene.elements.first()
+        } else {
+            val operation = if (up) fun Int.(list: List<Element>): Int {
+                return if (this == list.size - 1) 0 else this + 1
+            } else fun Int.(list: List<Element>): Int {
+                return if (this == 0) list.size - 1 else this - 1
+            }
+
+            selectedElements = selectedElements.doIfContainsSingle(emptyList()) { blueprint ->
+                val elements = scene.elements
+
+                if (elements.getOrNull(elements.indexOfFirst { it.id == blueprint.id }
+                        .operation(elements)) != null) {
+                    listOf(elements[elements.indexOfFirst { it.id == blueprint.id }.operation(elements)])
+                } else emptyList()
+            }
         }
-
-        menuBar.reloadCommandItemLabel()
-
-        job.join()
-        panel.repaint()
     }
 
-    fun closeAct() {
-        closeMasterWindow()
-        //HomeWindow().isVisible = true
+    fun rotateRight() {
+        Element.cmdOrientationToRight(commandManager, selectedElements)
+        repaint()
     }
 
-    fun togglePlayerWindow(isVisible: Boolean) = PlayerDialog.toggle(playerDialogData, isVisible)
+    fun rotateLeft() {
+        Element.cmdOrientationToLeft(commandManager, selectedElements)
+        repaint()
+    }
 
     fun deleteSelectedElement() {
         val elementsToDelete = selectedElements
@@ -247,35 +231,14 @@ class MainViewModel(
         repaint()
     }
 
-    fun select(up: Boolean = true) = transaction {
-        if (selectedElements.isEmpty() && scene.elements.isNotEmpty()) {
-            scene.elements.first()
-        } else {
-            val operation = if (up) fun Int.(list: List<Element>): Int {
-                return if (this == list.size - 1) 0 else this + 1
-            } else fun Int.(list: List<Element>): Int {
-                return if (this == 0) list.size - 1 else this - 1
-            }
-
-            selectedElements = selectedElements.doIfContainsSingle(emptyList()) { blueprint ->
-                val elements = scene.elements
-
-                if (elements.getOrNull(elements.indexOfFirst { it.id == blueprint.id }
-                        .operation(elements)) != null) {
-                    listOf(elements[elements.indexOfFirst { it.id == blueprint.id }.operation(elements)])
-                } else emptyList()
-            }
+    fun repaint() = scope.launch {
+        withContext(Dispatchers.IO) {
+            tokens = transaction { scene.elements }
         }
-    }
 
-    fun rotateRight() {
-        Element.cmdOrientationToRight(commandManager, selectedElements)
-        repaint()
-    }
+        reloadMenuBar()
 
-    fun rotateLeft() {
-        Element.cmdOrientationToLeft(commandManager, selectedElements)
-        repaint()
+        panel.repaint()
     }
 
     private fun loadBlueprints(): Map<Type, List<Blueprint>> = transaction {

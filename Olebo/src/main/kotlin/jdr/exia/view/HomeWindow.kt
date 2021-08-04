@@ -4,7 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -27,33 +28,27 @@ import jdr.exia.view.tools.BorderBuilder
 import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.border
 import jdr.exia.view.tools.withFocusCursor
-import jdr.exia.view.ui.DEFAULT_WINDOWS_SIZE
+import jdr.exia.view.ui.HOME_WINDOWS_SIZE
 import jdr.exia.view.ui.blue
 import jdr.exia.viewModel.home.*
 import javax.swing.JMenuBar
 
 @Composable
-fun ApplicationScope.HomeWindow() {
-    var isOpen by remember { mutableStateOf(true) }
+fun ApplicationScope.HomeWindow(startAct: (Act) -> Unit) = Window(
+    title = "Olebo - ${StringLocale[STR_VERSION]} $OLEBO_VERSION",
+    size = HOME_WINDOWS_SIZE,
+    minimumSize = HOME_WINDOWS_SIZE,
+    menuBar = remember { JMenuBar().apply { add(FileMenu()) } }
+) {
+    val viewModel = remember { HomeViewModel() }
 
-    Window(
-        title = "Olebo - ${StringLocale[STR_VERSION]} $OLEBO_VERSION",
-        size = DEFAULT_WINDOWS_SIZE,
-        minimumSize = DEFAULT_WINDOWS_SIZE,
-        isVisible = isOpen,
-        menuBar = remember { JMenuBar().apply { add(FileMenu()) } }
-    ) {
-        val viewModel = remember { HomeViewModel() }
-
-        MainContent(
-            acts = viewModel.acts,
-            content = viewModel.content,
-            switchContent = { viewModel.content = it },
-            onRowClick = viewModel::launchAct,
-            onDeleteAct = viewModel::deleteAct,
-            dispose = { isOpen = false }
-        )
-    }
+    MainContent(
+        acts = viewModel.acts,
+        content = viewModel.content,
+        switchContent = { viewModel.content = it },
+        onRowClick = startAct,
+        onDeleteAct = viewModel::deleteAct
+    )
 }
 
 @Composable
@@ -62,8 +57,7 @@ private fun MainContent(
     content: HomeContent,
     switchContent: (HomeContent) -> Unit,
     onRowClick: (Act) -> Unit,
-    onDeleteAct: (Act) -> Unit,
-    dispose: DefaultFunction
+    onDeleteAct: (Act) -> Unit
 ) {
     Row(modifier = Modifier.fillMaxSize()) {
         when (content) {
@@ -73,8 +67,7 @@ private fun MainContent(
                 onEdit = { switchContent(ActEditor(it)) },
                 onDelete = onDeleteAct,
                 viewElements = { switchContent(ElementsView) },
-                startActCreation = { switchContent(ActCreator) },
-                dispose = dispose
+                startActCreation = { switchContent(ActCreator) }
             )
             is ElementsView -> ElementsView(onDone = { switchContent(ActsView) })
             is ActEditor -> ActEditorView(act = content.act, onDone = { switchContent(ActsView) })
@@ -90,8 +83,7 @@ private fun ActsView(
     onEdit: (Act) -> Unit,
     onDelete: (Act) -> Unit,
     viewElements: DefaultFunction,
-    startActCreation: DefaultFunction,
-    dispose: DefaultFunction
+    startActCreation: DefaultFunction
 ) = Column {
     HeaderRow {
         OutlinedButton(onClick = viewElements, modifier = Modifier.withFocusCursor()) {
@@ -110,10 +102,7 @@ private fun ActsView(
             ColumnItem(items = acts) { act ->
                 ContentListRow(
                     contentText = act.name,
-                    onClick = {
-                        onRowClick(act)
-                        dispose()
-                    },
+                    onClick = { onRowClick(act) },
                     buttonBuilders = listOf(
                         ImageButtonBuilder(content = imageFromIconRes("edit_icon"), onClick = { onEdit(act) }),
                         ImageButtonBuilder(content = imageFromIconRes("delete_icon"), onClick = { onDelete(act) })

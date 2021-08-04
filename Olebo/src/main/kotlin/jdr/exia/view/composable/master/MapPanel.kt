@@ -12,7 +12,9 @@ import jdr.exia.view.tools.event.addMouseEnteredListener
 import jdr.exia.view.tools.event.addMouseExitedListener
 import jdr.exia.view.tools.event.addMouseMovedListener
 import jdr.exia.view.tools.event.addMouseReleasedListener
-import jdr.exia.viewModel.MainViewModel
+import jdr.exia.viewModel.ABSOLUTE_HEIGHT
+import jdr.exia.viewModel.ABSOLUTE_WIDTH
+import jdr.exia.viewModel.MasterViewModel
 import java.awt.*
 import java.awt.event.MouseEvent
 import java.awt.event.MouseMotionAdapter
@@ -21,7 +23,7 @@ import javax.swing.SwingUtilities
 import javax.swing.ToolTipManager
 import kotlin.math.abs
 
-class MapPanel(private val isParentMaster: Boolean, private val viewModel: MainViewModel) : JComponent() {
+class MapPanel(private val isParentMaster: Boolean, private val viewModel: MasterViewModel) : JComponent() {
     private var selectedArea: Rectangle? = null
 
     init {
@@ -112,28 +114,28 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: MainV
      * Translates an X coordinate in 1600:900px to proportional coords according to this window's size
      */
     private fun relativeX(absoluteX: Int): Int {
-        return (absoluteX * this.width) / MainViewModel.ABSOLUTE_WIDTH
+        return (absoluteX * this.width) / ABSOLUTE_WIDTH
     }
 
     /**
      * Translates a y coordinate in 1600:900px to proportional coords according to this window's size
      */
     private fun relativeY(absoluteY: Int): Int {
-        return (absoluteY * this.height) / MainViewModel.ABSOLUTE_HEIGHT
+        return (absoluteY * this.height) / ABSOLUTE_HEIGHT
     }
 
     /**
      * Translates an X coordinate from this window into a 1600:900 X coord
      */
     private fun absoluteX(relativeX: Int): Int {
-        return (((relativeX.toFloat() / this.width.toFloat())) * MainViewModel.ABSOLUTE_WIDTH).toInt()
+        return (((relativeX.toFloat() / this.width.toFloat())) * ABSOLUTE_WIDTH).toInt()
     }
 
     /**
      * Translates an Y coordinate from this window into a 1600:900 Y coord
      */
     private fun absoluteY(relativeY: Int): Int {
-        return (((relativeY.toFloat() / this.height.toFloat())) * MainViewModel.ABSOLUTE_HEIGHT).toInt()
+        return (((relativeY.toFloat() / this.height.toFloat())) * ABSOLUTE_HEIGHT).toInt()
     }
 
     val Point.absolutePosition
