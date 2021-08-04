@@ -12,7 +12,7 @@ import java.awt.Dimension
 import java.util.*
 import javax.swing.JMenuBar
 
-object WindowManager {
+object WindowStateManager {
     val composeWindows = mutableListOf<SwingState>()
 
     val currentFocusedState
@@ -73,10 +73,10 @@ fun ApplicationScope.Window(
         DisposableEffect(Unit) {
             val swingState = SwingState(window)
 
-            WindowManager.composeWindows += swingState
+            WindowStateManager.composeWindows += swingState
 
             onDispose {
-                WindowManager.composeWindows -= swingState
+                WindowStateManager.composeWindows -= swingState
             }
         }
 

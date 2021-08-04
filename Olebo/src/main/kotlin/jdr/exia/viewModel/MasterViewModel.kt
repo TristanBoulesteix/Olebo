@@ -15,7 +15,7 @@ import jdr.exia.model.element.Type
 import jdr.exia.model.tools.callCommandManager
 import jdr.exia.model.tools.doIfContainsSingle
 import jdr.exia.model.type.Point
-import jdr.exia.view.WindowManager
+import jdr.exia.view.WindowStateManager
 import jdr.exia.view.composable.editor.ElementsView
 import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.tools.DefaultFunction
@@ -214,7 +214,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     fun showBlueprintEditor() {
         selectedElements = emptyList()
 
-        JDialog(WindowManager.currentFocusedState?.window, true).apply {
+        JDialog(WindowStateManager.currentFocusedState?.window, true).apply {
             DIMENSION_MAIN_WINDOW.let {
                 this.size = it
                 this.minimumSize = it

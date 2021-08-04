@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.input.pointer.pointerMoveFilter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import jdr.exia.view.WindowManager
+import jdr.exia.view.WindowStateManager
 import jdr.exia.view.ui.roundedShape
 
 /**
@@ -143,11 +143,11 @@ fun Modifier.addRoundedBorder() =
 
 fun Modifier.withFocusCursor() = this.pointerMoveFilter(
     onEnter = {
-        WindowManager.currentFocusedState?.hasItemhovered(true)
+        WindowStateManager.currentFocusedState?.hasItemhovered(true)
         false
     },
     onExit = {
-        WindowManager.currentFocusedState?.hasItemhovered(false)
+        WindowStateManager.currentFocusedState?.hasItemhovered(false)
         false
     }
 )
