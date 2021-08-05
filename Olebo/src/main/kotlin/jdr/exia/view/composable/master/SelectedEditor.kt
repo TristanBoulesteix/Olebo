@@ -19,7 +19,6 @@ import jdr.exia.model.element.Element
 import jdr.exia.model.element.Priority
 import jdr.exia.model.element.Size
 import jdr.exia.model.tools.isCharacter
-import jdr.exia.model.tools.toMutableState
 import jdr.exia.model.tools.withSetter
 import jdr.exia.view.element.CustomTextField
 import jdr.exia.view.element.IntTextField
@@ -111,14 +110,17 @@ private fun LabelField(selectedElements: List<Element>, repaint: DefaultFunction
     if (selectedElements.size == 1) {
         var value by remember(selectedElements.size, selectedElements.firstOrNull()) {
             if (selectedElements.size == 1) {
-                selectedElements.first()::alias.toMutableState(repaint)
+                mutableStateOf(selectedElements.first().alias) withSetter {
+                    transaction { selectedElements.first().alias = it }
+                    repaint()
+                }
             } else mutableStateOf("")
         }
 
         CustomTextField(
             value = value,
             onValueChange = {
-                if (selectedElements.size == 1)
+                if (selectedElements.size == 1 && it.length <= 20)
                     value = it
             },
             placeholder = StringLocale[STR_LABEL],
@@ -140,7 +142,7 @@ private fun SizeSelector(selectedElements: List<Element>, repaint: DefaultFuncti
     var selectedSize by remember(selectedElements) {
         mutableStateOf(
             selectedElements.getElementProperty(
-                elementPropertyGetter = Element::size.getter,
+                elementPropertyGetter = Element::size,
                 defaultValue = Size.DEFAULT
             )
         ) withSetter { newSize ->
@@ -165,7 +167,7 @@ private fun LayerSelector(selectedElements: List<Element>, repaint: DefaultFunct
     var selectedLayer by remember(selectedElements) {
         mutableStateOf(
             selectedElements.getElementProperty(
-                elementPropertyGetter = Element::priority.getter,
+                elementPropertyGetter = Element::priority,
                 defaultValue = Priority.REGULAR
             )
         ) withSetter { newPriority ->
@@ -220,7 +222,7 @@ private fun VisibilityButtons(
     var isVisible by remember(selectedElements) {
         mutableStateOf(
             selectedElements.getElementProperty(
-                elementPropertyGetter = Element::isVisible.getter,
+                elementPropertyGetter = Element::isVisible,
                 defaultValue = true
             )
         ) withSetter { newVisiblity ->
