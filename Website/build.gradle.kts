@@ -1,5 +1,7 @@
 @file:Suppress("PropertyName")
 
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 val ktor_version: String by project
 val logback_version: String by project
 
@@ -27,4 +29,8 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation(project(":Update"))
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions.jdkHome = System.getenv("JDK_16")
 }
