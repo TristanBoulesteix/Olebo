@@ -59,7 +59,7 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: DefaultFunction) {
         }
 
         LaunchedEffect(Unit) {
-            menuBar.togglePlayerWindow = { playerDialogData.togglePlayerWindow(it) }
+            menuBar.togglePlayerWindow = playerDialogData::togglePlayerWindow
 
             window.addKeyPressedListener {
                 when (it.keyCode) {
