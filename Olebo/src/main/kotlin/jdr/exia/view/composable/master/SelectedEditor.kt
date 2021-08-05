@@ -110,8 +110,10 @@ private fun LabelField(selectedElements: List<Element>, repaint: DefaultFunction
     if (selectedElements.size == 1) {
         var value by remember(selectedElements.size, selectedElements.firstOrNull()) {
             if (selectedElements.size == 1) {
-                mutableStateOf(selectedElements.first().alias) withSetter {
-                    transaction { selectedElements.first().alias = it }
+                val element = selectedElements.first()
+
+                mutableStateOf(element.alias) withSetter {
+                    transaction { element.alias = it }
                     repaint()
                 }
             } else mutableStateOf("")
