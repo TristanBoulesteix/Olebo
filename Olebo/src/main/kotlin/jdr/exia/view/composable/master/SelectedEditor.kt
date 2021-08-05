@@ -24,7 +24,8 @@ import jdr.exia.view.element.CustomTextField
 import jdr.exia.view.element.IntTextField
 import jdr.exia.view.element.TitledDropdownMenu
 import jdr.exia.view.tools.DefaultFunction
-import jdr.exia.view.tools.withFocusCursor
+import jdr.exia.view.tools.applyIf
+import jdr.exia.view.tools.withHandCursor
 import org.jetbrains.exposed.sql.transactions.transaction
 
 @Composable
@@ -126,7 +127,7 @@ private fun LabelField(selectedElements: List<Element>, repaint: DefaultFunction
                     value = it
             },
             placeholder = StringLocale[STR_LABEL],
-            modifier = modifier.withFocusCursor()
+            modifier = modifier.withHandCursor()
         )
     } else {
         Text(StringLocale[STR_LABEL], modifier = modifier)
@@ -195,13 +196,15 @@ private fun OrientationButtons(
     repaint: DefaultFunction,
     commandManager: CommandManager
 ) = ColumnEditor {
+    val isEnabled = selectedElements.isNotEmpty()
+
     OutlinedButton(
         onClick = {
             Element.cmdOrientationToRight(commandManager, selectedElements)
             repaint()
         },
-        modifier = Modifier.width(buttonsWidth),
-        enabled = selectedElements.isNotEmpty()
+        modifier = Modifier.width(buttonsWidth).applyIf(isEnabled, modifier = Modifier::withHandCursor),
+        enabled = isEnabled
     ) { Text(StringLocale[STR_ROTATE_TO_RIGHT]) }
 
     OutlinedButton(
@@ -209,8 +212,8 @@ private fun OrientationButtons(
             Element.cmdOrientationToRight(commandManager, selectedElements)
             repaint()
         },
-        modifier = Modifier.width(buttonsWidth),
-        enabled = selectedElements.isNotEmpty()
+        modifier = Modifier.width(buttonsWidth).applyIf(isEnabled, modifier = Modifier::withHandCursor),
+        enabled = isEnabled
     ) { Text(StringLocale[STR_ROTATE_TO_LEFT]) }
 }
 
@@ -239,16 +242,18 @@ private fun VisibilityButtons(
         StringLocale[if (isVisible) STR_HIDE else STR_SHOW]
     }
 
+    val isEnabled = selectedElements.isNotEmpty()
+
     OutlinedButton(
         onClick = { isVisible = !isVisible },
-        modifier = Modifier.width(buttonsWidth),
-        enabled = selectedElements.isNotEmpty()
+        modifier = Modifier.width(buttonsWidth).applyIf(isEnabled, modifier = Modifier::withHandCursor),
+        enabled = isEnabled
     ) { Text(visibilityText) }
 
     OutlinedButton(
         onClick = deleteSelectedElement,
-        modifier = Modifier.width(buttonsWidth),
-        enabled = selectedElements.isNotEmpty()
+        modifier = Modifier.width(buttonsWidth).applyIf(isEnabled, modifier = Modifier::withHandCursor),
+        enabled = isEnabled
     ) { Text(StringLocale[STR_DELETE]) }
 }
 

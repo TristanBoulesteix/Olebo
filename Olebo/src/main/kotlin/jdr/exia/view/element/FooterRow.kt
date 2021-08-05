@@ -18,7 +18,7 @@ import jdr.exia.model.tools.Result
 import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.MessageType
 import jdr.exia.view.tools.showMessage
-import jdr.exia.view.tools.withFocusCursor
+import jdr.exia.view.tools.withHandCursor
 
 @Composable
 fun FooterRow(
@@ -39,13 +39,13 @@ fun FooterRow(
         },
         enabled = isEnabled,
         content = { Text(text = StringLocale[STR_CONFIRM]) },
-        modifier = Modifier.withFocusCursor()
+        modifier = Modifier.withHandCursor()
     )
     OutlinedButton(
         onClick = if (!isEnabled) onCancel else onDone,
         content = {
             Text(text = StringLocale[STR_CANCEL])
         },
-        modifier = Modifier.withFocusCursor()
+        modifier = Modifier.withHandCursor()
     )
 }

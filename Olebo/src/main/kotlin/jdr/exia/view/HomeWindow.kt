@@ -27,7 +27,7 @@ import jdr.exia.view.menubar.FileMenu
 import jdr.exia.view.tools.BorderBuilder
 import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.border
-import jdr.exia.view.tools.withFocusCursor
+import jdr.exia.view.tools.withHandCursor
 import jdr.exia.view.ui.HOME_WINDOWS_SIZE
 import jdr.exia.view.ui.blue
 import jdr.exia.viewModel.home.*
@@ -86,10 +86,10 @@ private fun ActsView(
     startActCreation: DefaultFunction
 ) = Column {
     HeaderRow {
-        OutlinedButton(onClick = viewElements, modifier = Modifier.withFocusCursor()) {
+        OutlinedButton(onClick = viewElements, modifier = Modifier.withHandCursor()) {
             Text(text = StringLocale[STR_ELEMENTS])
         }
-        OutlinedButton(onClick = startActCreation, modifier = Modifier.withFocusCursor()) {
+        OutlinedButton(onClick = startActCreation, modifier = Modifier.withHandCursor()) {
             Text(text = StringLocale[STR_ADD_ACT])
         }
     }

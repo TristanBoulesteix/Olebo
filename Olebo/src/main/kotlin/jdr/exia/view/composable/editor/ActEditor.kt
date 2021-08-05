@@ -184,7 +184,7 @@ private fun EditSceneRow(
 ) = Column(
     modifier = modifier.applyIf(
         condition = showButtons,
-        mod = { border(bottom = BorderBuilder.defaultBorder) }
+        modifier = { border(bottom = BorderBuilder.defaultBorder) }
     )
 ) {
     val defaultModifier = remember { Modifier.fillMaxWidth().padding(horizontal = 10.dp) }
@@ -218,8 +218,8 @@ private fun ImagePreviewContent(
 
     Box(
         modifier = Modifier.padding(10.dp).sizeIn(maxWidth = 600.dp, maxHeight = 600.dp)
-            .applyIf(condition = !imgExist, mod = Modifier::addRoundedBorder)
-            .applyIf(condition = !imgExist, mod = { this.size(600.dp) })
+            .applyIf(condition = !imgExist, modifier = Modifier::addRoundedBorder)
+            .applyIf(condition = !imgExist, modifier = { this.size(600.dp) })
     ) {
         if (imgExist) {
             Image(
@@ -245,7 +245,7 @@ private fun ImagePreviewContent(
                     onUpdateData(data.copy(img = Img(fileChooser.selectedFile.absolutePath)))
                 }
             },
-            modifier = Modifier.padding(10.dp).align(Alignment.Center).matchParentSize().withFocusCursor(),
+            modifier = Modifier.padding(10.dp).align(Alignment.Center).matchParentSize().withHandCursor(),
             content = { Text(text = StringLocale[if (imgExist) STR_IMPORT_NEW_IMG else STR_IMPORT_IMG]) }
         )
     }

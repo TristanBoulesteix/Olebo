@@ -22,8 +22,8 @@ import jdr.exia.view.ui.roundedShape
  * Apply modification to [Modifier] only if condition is true
  */
 @Stable
-inline fun Modifier.applyIf(condition: Boolean, mod: Modifier.() -> Modifier) =
-    if (condition) this.mod() else this
+inline fun Modifier.applyIf(condition: Boolean, modifier: Modifier.() -> Modifier) =
+    if (condition) this.modifier() else this
 
 @Immutable
 data class BorderBuilder(val strokeWidth: Dp, val color: Color) {
@@ -144,7 +144,7 @@ fun Modifier.addRoundedBorder() =
     this.border(border = BorderStroke(2.dp, Color.Black), shape = roundedShape)
 
 @OptIn(ExperimentalComposeUiApi::class)
-fun Modifier.withFocusCursor() = this.pointerIcon(PointerIcon(handCursor))
+fun Modifier.withHandCursor() = this.pointerIcon(PointerIcon(handCursor))
 
 fun Modifier.clickableWithCursor(enabled: Boolean = true, onClick: DefaultFunction) =
-    this.clickable(onClick = onClick, enabled = enabled).applyIf(enabled) { withFocusCursor() }
+    this.clickable(onClick = onClick, enabled = enabled).applyIf(enabled) { withHandCursor() }

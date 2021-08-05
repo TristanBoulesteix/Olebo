@@ -24,7 +24,7 @@ fun ContentListRow(
     removeBottomBorder: Boolean = false
 ) = Row(
     modifier = modifier.fillMaxWidth().size(65.dp)
-        .applyIf(condition = !removeBottomBorder, mod = { border(bottom = BorderBuilder.defaultBorder) }),
+        .applyIf(condition = !removeBottomBorder, modifier = { border(bottom = BorderBuilder.defaultBorder) }),
     horizontalArrangement = Arrangement.End
 ) {
     var boxModifier = Modifier.fillMaxHeight().weight(1f, fill = true)
@@ -39,7 +39,7 @@ fun ContentListRow(
             contentBuilder = it,
             modifier = Modifier.applyIf(
                 condition = removeBottomBorder,
-                mod = { border(bottom = BorderBuilder.defaultBorder) })
+                modifier = { border(bottom = BorderBuilder.defaultBorder) })
         )
     }
 }

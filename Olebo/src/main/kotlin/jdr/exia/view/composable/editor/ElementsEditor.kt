@@ -55,7 +55,7 @@ fun ElementsView(onDone: DefaultFunction, closeText: String = StringLocale[STR_B
                             fontWeight = FontWeight.Bold.takeIf { tabViewModel.currentTab == tab },
                             modifier = Modifier.applyIf(
                                 condition = tabViewModel.currentTab == tab,
-                                mod = { border(bottom = BorderBuilder(5.dp, Color.Black)) }
+                                modifier = { border(bottom = BorderBuilder(5.dp, Color.Black)) }
                             ).clickableWithCursor { tabViewModel.onSelectTab(tab) }.padding(20.dp)
                         )
                     }
@@ -83,7 +83,7 @@ fun ElementsView(onDone: DefaultFunction, closeText: String = StringLocale[STR_B
                     content = {
                         Text(text = if (contentViewModel.currentEditBlueprint == null && contentViewModel.blueprintInCreation == null) closeText else StringLocale[STR_CANCEL])
                     },
-                    modifier = Modifier.withFocusCursor()
+                    modifier = Modifier.withHandCursor()
                 )
             }
         }
@@ -121,7 +121,7 @@ private fun Content(viewModel: ElementsEditorViewModel, innerPadding: PaddingVal
                         OutlinedButton(
                             onClick = viewModel::startBlueprintCreation,
                             content = { Text(StringLocale[STR_ADD_ELEMENT]) },
-                            modifier = Modifier.align(Alignment.CenterHorizontally).withFocusCursor()
+                            modifier = Modifier.align(Alignment.CenterHorizontally).withHandCursor()
                         )
                     }
                 }
@@ -246,7 +246,7 @@ private fun ColumnScope.CreateBlueprint(
         Box(
             modifier = Modifier
                 .fillMaxWidth(0.70f)
-                .applyIf(condition = !imgExist, mod = { size(200.dp).clip(roundedShape).addRoundedBorder() })
+                .applyIf(condition = !imgExist, modifier = { size(200.dp).clip(roundedShape).addRoundedBorder() })
         ) {
             if (imgExist) {
                 Image(
