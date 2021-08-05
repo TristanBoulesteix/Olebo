@@ -43,7 +43,7 @@ fun SelectedEditor(
     ImagePreview(selectedElements)
 
     ColumnEditor {
-        val size = 250.dp
+        val size = 225.dp
 
         NameElement(selectedElements = selectedElements, modifier = Modifier.width(size))
         LabelField(selectedElements = selectedElements, repaint = repaint, modifier = Modifier.width(size))
