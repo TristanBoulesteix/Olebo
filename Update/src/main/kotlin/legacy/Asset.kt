@@ -1,4 +1,4 @@
-package jdr.exia.update
+package jdr.exia.update.legacy
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

@@ -6,8 +6,8 @@ import androidx.compose.ui.window.application
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.model.dao.option.Settings
-import jdr.exia.update.currentChangeLogs
-import jdr.exia.update.getUpdaterForCurrentOsAsync
+import jdr.exia.update.legacy.currentChangeLogs
+import jdr.exia.update.legacy.getUpdaterForCurrentOsAsync
 import jdr.exia.view.HomeWindow
 import jdr.exia.view.MasterWindow
 import jdr.exia.view.ui.OleboTheme

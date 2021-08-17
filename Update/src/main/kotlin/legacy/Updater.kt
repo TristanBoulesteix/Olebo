@@ -1,4 +1,5 @@
-package jdr.exia.update
+package jdr.exia.update.legacy
+
 
 import jdr.exia.system.OLEBO_DIRECTORY
 import jdr.exia.system.OS

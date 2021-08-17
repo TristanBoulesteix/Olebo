@@ -1,5 +1,6 @@
 package fr.olebo.plugins
 
+import fr.olebo.update.releaseRouting
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.routing.*
@@ -9,5 +10,6 @@ fun Application.configureRouting() {
         get("/") {
             call.respondText("Hello World!")
         }
+        releaseRouting()
     }
 }
