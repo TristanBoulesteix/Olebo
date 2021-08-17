@@ -26,5 +26,6 @@ dependencies {
     implementation("io.ktor:ktor-server-netty:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation(project(":Update"))
+    implementation(project(":System", "default"))
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
 }
