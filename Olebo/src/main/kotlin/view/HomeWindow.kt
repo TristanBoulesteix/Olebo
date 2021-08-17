@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.ApplicationScope
-import jdr.exia.OLEBO_VERSION
+import jdr.exia.OLEBO_VERSION_NAME
 import jdr.exia.localization.STR_ADD_ACT
 import jdr.exia.localization.STR_ELEMENTS
 import jdr.exia.localization.STR_VERSION
@@ -35,7 +35,7 @@ import javax.swing.JMenuBar
 
 @Composable
 fun ApplicationScope.HomeWindow(startAct: (Act) -> Unit) = Window(
-    title = "Olebo - ${StringLocale[STR_VERSION]} $OLEBO_VERSION",
+    title = "Olebo - ${StringLocale[STR_VERSION]} $OLEBO_VERSION_NAME",
     size = HOME_WINDOWS_SIZE,
     minimumSize = HOME_WINDOWS_SIZE,
     menuBar = remember { JMenuBar().apply { add(FileMenu()) } }

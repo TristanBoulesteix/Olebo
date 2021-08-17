@@ -1,6 +1,6 @@
 package jdr.exia.view.menubar
 
-import jdr.exia.OLEBO_VERSION
+import jdr.exia.OLEBO_VERSION_NAME
 import jdr.exia.localization.*
 import jdr.exia.model.dao.loadOleboZipData
 import jdr.exia.model.dao.option.Settings
@@ -131,7 +131,7 @@ class FileMenu : JMenu(StringLocale[STR_FILES]) {
             this.addActionListener {
                 JOptionPane.showMessageDialog(
                     null,
-                    "Olebo - ${StringLocale[STR_APP_VERSION]} $OLEBO_VERSION - ${StringLocale[STR_DATABASE_VERSION]} ${Settings.databaseVersion}",
+                    "Olebo - ${StringLocale[STR_APP_VERSION]} $OLEBO_VERSION_NAME - ${StringLocale[STR_DATABASE_VERSION]} ${Settings.databaseVersion}",
                     StringLocale[STR_ABOUT],
                     JOptionPane.INFORMATION_MESSAGE
                 )

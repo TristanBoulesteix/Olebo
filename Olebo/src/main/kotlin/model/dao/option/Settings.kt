@@ -1,6 +1,6 @@
 package jdr.exia.model.dao.option
 
-import jdr.exia.OLEBO_VERSION
+import jdr.exia.OLEBO_VERSION_NAME
 import jdr.exia.localization.ST_UNKNOWN_DATABASE_VERSION
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.dao.DAO
@@ -105,10 +105,10 @@ class Settings(id: EntityID<Int>) : IntEntity(id) {
 
         var wasJustUpdated
             get() = transaction(DAO.database) {
-                this@Companion[CHANGELOGS_VERSION] == OLEBO_VERSION
+                this@Companion[CHANGELOGS_VERSION] == OLEBO_VERSION_NAME
             }
             set(value) = transaction(DAO.database) {
-                this@Companion[CHANGELOGS_VERSION] = if (value) OLEBO_VERSION else null
+                this@Companion[CHANGELOGS_VERSION] = if (value) OLEBO_VERSION_NAME else null
             }
 
         operator fun get(setting: String) = this.find { SettingsTable.name eq setting }.firstOrNull()?.value

@@ -1,3 +1,4 @@
+@file:Suppress("PropertyName")
 
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
@@ -5,6 +6,7 @@ typealias JavaPath = java.nio.file.Path
 
 val kotlinVersion: String by System.getProperties()
 val coroutineVersion: String by System.getProperties()
+val ktor_version: String by project
 
 plugins {
     kotlin("jvm")
@@ -34,6 +36,9 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", coroutineVersion)
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-swing", coroutineVersion)
+    implementation("io.ktor:ktor-client-core:$ktor_version")
+    implementation("io.ktor:ktor-client-cio:$ktor_version")
+    implementation("io.ktor:ktor-client-serialization:$ktor_version")
     implementation(compose.desktop.currentOs)
 }
 
