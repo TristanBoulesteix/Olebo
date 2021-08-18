@@ -4,7 +4,6 @@ import androidx.compose.desktop.DesktopMaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.window.application
 import jdr.exia.localization.StringLocale
-import jdr.exia.model.act.Act
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.update.Release
 import jdr.exia.update.checkForUpdate
@@ -23,12 +22,6 @@ const val OLEBO_VERSION_NAME = "0.1.0"
  * This code must be unique between releases and must be incremented for each one
  */
 const val OLEBO_VERSION_CODE = 1
-
-sealed class WindowState {
-    object HomeWindow : WindowState()
-
-    class MasterWindow(val act: Act) : WindowState()
-}
 
 var release by mutableStateOf<Release?>(null)
 
