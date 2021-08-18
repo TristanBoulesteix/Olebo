@@ -179,6 +179,8 @@ class StringLocaleBundle : StringLocale() {
         STR_SIZE to "size:",
         STR_PRIORITY to "layer:",
         STR_CLOSE to "close",
+        STR_DOWNLOAD_UPDATE to "download of the update",
+        STR_DOWNLOAD to "download:",
     )
 }
 
@@ -360,5 +362,7 @@ class StringLocaleBundle_fr : StringLocale() {
         STR_SIZE to "taille :",
         STR_PRIORITY to "plan :",
         STR_CLOSE to "fermer",
+        STR_DOWNLOAD_UPDATE to "téléchargement de la mise à jour",
+        STR_DOWNLOAD to "téléchargement :",
     )
 }

@@ -34,18 +34,19 @@ fun main(): Unit = application {
     // Initialize translations
     StringLocale(Settings.Companion::activeLanguage)
 
-// Manage update
-    LaunchedEffect(Unit) {
-        release = checkForUpdate()
-    }
-
-    release?.let {
-        UpdateUI(it)
-    }
-
-    // Start of the main UI
+    // Initialize themes
     OleboTheme {
         DesktopMaterialTheme {
+            // Manage update
+            LaunchedEffect(Unit) {
+                release = checkForUpdate()
+            }
+
+            release?.let {
+                UpdateUI(it)
+            }
+
+            // Start of the main UI
             var windowState by remember { mutableStateOf<WindowState>(WindowState.HomeWindow) }
 
             when (val currentWindow = windowState) {

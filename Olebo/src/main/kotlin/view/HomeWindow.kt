@@ -21,8 +21,8 @@ import jdr.exia.view.composable.editor.ActEditorView
 import jdr.exia.view.composable.editor.ElementsView
 import jdr.exia.view.element.ContentListRow
 import jdr.exia.view.element.HeaderRow
-import jdr.exia.view.element.ImageButtonBuilder
 import jdr.exia.view.element.ScrollableColumn
+import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.menubar.FileMenu
 import jdr.exia.view.tools.BorderBuilder
 import jdr.exia.view.tools.DefaultFunction

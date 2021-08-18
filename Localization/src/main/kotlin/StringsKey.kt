@@ -131,6 +131,8 @@ const val STR_ADD_ELEMENT = "add_blueprint"
 const val STR_SIZE = "size_of_items"
 const val STR_PRIORITY = "priority_of_items"
 const val STR_CLOSE = "close"
+const val STR_DOWNLOAD_UPDATE = "download_update"
+const val STR_DOWNLOAD = "download"
 
 // -- Sentences
 

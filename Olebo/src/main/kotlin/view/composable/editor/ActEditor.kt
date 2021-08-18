@@ -24,6 +24,7 @@ import jdr.exia.model.type.imageFromFile
 import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.view.WindowStateManager
 import jdr.exia.view.element.*
+import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.tools.*
 import jdr.exia.view.ui.blue
 import jdr.exia.view.ui.roundedShape

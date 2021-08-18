@@ -1,55 +1,120 @@
 package jdr.exia.view
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.window.Notification
-import androidx.compose.ui.window.Tray
-import androidx.compose.ui.window.rememberNotification
-import androidx.compose.ui.window.rememberTrayState
-import jdr.exia.localization.STR_UPDATE_AVAILABLE
-import jdr.exia.localization.ST_NEW_VERSION_AVAILABLE
-import jdr.exia.localization.StringLocale
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.ApplicationScope
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.rememberDialogState
+import jdr.exia.localization.*
+import jdr.exia.model.dao.option.Settings
 import jdr.exia.update.Release
-import jdr.exia.view.tools.showMessage
+import jdr.exia.update.getInstallerExecutable
+import jdr.exia.view.element.PromptDialog
+import jdr.exia.view.element.builder.ContentButtonBuilder
+import jdr.exia.view.tools.DefaultFunction
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
-fun UpdateUI(release: Release) {
-    TrayUpdate()
+fun ApplicationScope.UpdateUI(release: Release) {
+    PromptUpdate(release.versionId)
 }
 
 @Composable
-private fun TrayUpdate() {
-    val trayState = rememberTrayState()
-    val notification = rememberNotification(
+private fun ApplicationScope.PromptUpdate(versionCode: Int) {
+    var askForUpdateDialogIsVisible by remember { mutableStateOf(true) }
+    var restartDialogIsVisible by remember { mutableStateOf(false) }
+    var updateIsStarted by remember { mutableStateOf(false) }
+
+    PromptDialog(
+        visible = askForUpdateDialogIsVisible,
+        onCloseRequest = { askForUpdateDialogIsVisible = false },
         title = StringLocale[STR_UPDATE_AVAILABLE],
         message = StringLocale[ST_NEW_VERSION_AVAILABLE],
-        type = Notification.Type.Info
+        width = 600.dp,
+        buttonBuilders = listOf(
+            ContentButtonBuilder(content = StringLocale[STR_YES], onClick = {
+                askForUpdateDialogIsVisible = false
+                restartDialogIsVisible = true
+            }),
+            ContentButtonBuilder(content = StringLocale[STR_NO], onClick = { askForUpdateDialogIsVisible = false }),
+            ContentButtonBuilder(content = StringLocale[ST_NEVER_ASK_UPDATE], onClick = {
+                Settings.updateWarn = versionCode.toString()
+            })
+        )
     )
 
-    Tray(
-        state = trayState,
-        icon = TrayIcon,
-        menu = {
-            Item("Hi", onClick = {})
-        },
-        onAction = {
-            showMessage("Hi")
+    if (restartDialogIsVisible) {
+        val close = remember {
+            fun() {
+                restartDialogIsVisible = false
+                updateIsStarted = true
+            }
         }
-    )
 
-    LaunchedEffect(Unit) {
-        trayState.sendNotification(notification)
+        PromptDialog(
+            visible = restartDialogIsVisible,
+            onCloseRequest = close,
+            title = StringLocale[STR_PREPARE_UPDATE],
+            message = StringLocale[ST_UPDATE_OLEBO_RESTART],
+            buttonBuilders = listOf(
+                ContentButtonBuilder(content = "OK", onClick = close)
+            )
+        )
+    }
+
+    if (updateIsStarted) {
+        InstallerDownloader(exitApplication = ::exitApplication)
     }
 }
 
-private object TrayIcon : Painter() {
-    override val intrinsicSize = Size(256f, 256f)
+@OptIn(DelicateCoroutinesApi::class)
+@Composable
+private fun InstallerDownloader(exitApplication: DefaultFunction) {
+    var isVisible by remember { mutableStateOf(true) }
 
-    override fun DrawScope.onDraw() {
-        drawOval(Color(0xFFFFA500))
+    if (isVisible) {
+        val dialogState = rememberDialogState(height = 150.dp)
+        var progress by remember { mutableStateOf(0f) }
+
+        Dialog(title = StringLocale[STR_DOWNLOAD_UPDATE], onCloseRequest = {}, resizable = false, state = dialogState) {
+            this.window.isModal = true
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxSize().padding(end = 10.dp)
+            ) {
+                val padding = Modifier.padding(horizontal = 10.dp)
+
+                LinearProgressIndicator(modifier = Modifier.fillMaxWidth().then(padding), progress = progress)
+                Text(StringLocale[STR_DOWNLOAD] + " $progress %", modifier = padding)
+            }
+        }
+
+        LaunchedEffect(Unit) {
+            launch(Dispatchers.IO) {
+                getInstallerExecutable(onUpdateProgress = { progress = it.toFloat() }).onSuccess {
+                    isVisible = false
+
+                    Settings.wasJustUpdated = true
+
+                    // Run executable installer generated by Inno Setup
+                    Runtime.getRuntime().addShutdownHook(Thread {
+                        ProcessBuilder(it.absolutePath, "/SP-", "/silent", "/noicons").start()
+                    })
+
+                    exitApplication()
+                }
+            }
+        }
     }
 }

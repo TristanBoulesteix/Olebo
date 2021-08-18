@@ -6,11 +6,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.dp
+import jdr.exia.view.element.builder.ComposableContentBuilder
+import jdr.exia.view.element.builder.ContentBuilder
+import jdr.exia.view.element.builder.ContentButtonBuilder
+import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.tools.*
 import jdr.exia.view.ui.typography
 
@@ -60,51 +62,6 @@ fun ContentListRow(
 @Composable
 fun ContentText(contentText: String) =
     Text(text = contentText, style = typography.h1, modifier = Modifier.padding(10.dp))
-
-interface ContentBuilder {
-    val content: Any?
-
-    val enabled: Boolean
-
-    val onChange: DefaultFunction
-}
-
-object EmptyContent : ContentBuilder {
-    override val content: Nothing? = null
-
-    override val enabled = false
-
-    override val onChange = {}
-}
-
-@Stable
-data class ImageButtonBuilder(
-    override val content: ImageBitmap,
-    override val enabled: Boolean = true,
-    val onClick: DefaultFunction
-) : ContentBuilder {
-    override val onChange by ::onClick
-
-    constructor(content: ImageBitmap) : this(content, enabled = false, onClick = {})
-}
-
-data class ContentButtonBuilder(
-    override val content: String,
-    override val enabled: Boolean = false,
-    val onClick: DefaultFunction = {}
-) : ContentBuilder {
-    override val onChange by ::onClick
-
-    constructor(content: Any) : this(content = content.toString())
-}
-
-data class ComposableContentBuilder(
-    override val content: @Composable DefaultFunction
-) : ContentBuilder {
-    override val enabled = true
-
-    override val onChange = {}
-}
 
 @Composable
 private fun RowButton(contentBuilder: ContentBuilder, modifier: Modifier) {

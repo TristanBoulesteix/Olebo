@@ -21,8 +21,8 @@ import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
 import jdr.exia.model.type.imageFromFile
 import jdr.exia.view.element.ContentListRow
-import jdr.exia.view.element.ImageButtonBuilder
 import jdr.exia.view.element.ScrollableColumn
+import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.tools.clickableWithCursor
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File

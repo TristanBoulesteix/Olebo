@@ -27,6 +27,10 @@ import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.model.type.savePathToImage
 import jdr.exia.view.WindowStateManager
 import jdr.exia.view.element.*
+import jdr.exia.view.element.builder.ComposableContentBuilder
+import jdr.exia.view.element.builder.ContentButtonBuilder
+import jdr.exia.view.element.builder.EmptyContent
+import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.tools.*
 import jdr.exia.view.ui.blue
 import jdr.exia.view.ui.roundedShape
