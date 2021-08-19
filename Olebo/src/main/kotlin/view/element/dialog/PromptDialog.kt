@@ -1,4 +1,4 @@
-package jdr.exia.view.element
+package jdr.exia.view.element.dialog
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.OutlinedButton

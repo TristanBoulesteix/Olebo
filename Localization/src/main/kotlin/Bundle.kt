@@ -181,6 +181,7 @@ class StringLocaleBundle : StringLocale() {
         STR_CLOSE to "close",
         STR_DOWNLOAD_UPDATE to "download of the update",
         STR_DOWNLOAD to "download:",
+        ST_OLEBO_SEARCH_FOR_UPDATE to "Olebo is checking for update",
     )
 }
 
@@ -364,5 +365,6 @@ class StringLocaleBundle_fr : StringLocale() {
         STR_CLOSE to "fermer",
         STR_DOWNLOAD_UPDATE to "téléchargement de la mise à jour",
         STR_DOWNLOAD to "téléchargement :",
+        ST_OLEBO_SEARCH_FOR_UPDATE to "Olebo recherche les mises à jour",
     )
 }

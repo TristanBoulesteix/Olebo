@@ -57,7 +57,7 @@ suspend fun getInstallerExecutable(onUpdateProgress: (Long) -> Unit): Result<Fil
 
     if (response.status.isSuccess()) {
         response.content.copyAndClose(fileToWrite.writeChannel())
-    }
+    } else return Result.failure(IllegalStateException("Response status : ${response.status.value}"))
 
     return Result.success(fileToWrite)
 }

@@ -2,18 +2,24 @@ package jdr.exia
 
 import androidx.compose.desktop.DesktopMaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.window.ApplicationScope
+import androidx.compose.ui.window.Tray
 import androidx.compose.ui.window.application
+import androidx.compose.ui.window.rememberTrayState
+import jdr.exia.localization.STR_PREPARE_UPDATE
+import jdr.exia.localization.ST_OLEBO_SEARCH_FOR_UPDATE
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.update.Release
 import jdr.exia.update.checkForUpdate
-import jdr.exia.update.legacy.currentChangeLogs
 import jdr.exia.view.HomeWindow
 import jdr.exia.view.MasterWindow
 import jdr.exia.view.UpdateUI
 import jdr.exia.view.ui.OleboTheme
-import kotlinx.coroutines.launch
-import javax.swing.JOptionPane
 import javax.swing.UIManager
 
 const val OLEBO_VERSION_NAME = "0.1.0"
@@ -23,9 +29,7 @@ const val OLEBO_VERSION_NAME = "0.1.0"
  */
 const val OLEBO_VERSION_CODE = 1
 
-var release by mutableStateOf<Release?>(null)
-
-fun main(): Unit = application {
+fun main() = application {
     // Set look and feel for Swing (less mandatory with compose)
     UIManager.setLookAndFeel(
         UIManager.getSystemLookAndFeelClassName()
@@ -38,41 +42,73 @@ fun main(): Unit = application {
     OleboTheme {
         DesktopMaterialTheme {
             // Manage update
+            val trayState = rememberTrayState()
+
+            var release by remember { mutableStateOf<Release?>(null) }
+            var updateChecked by remember { mutableStateOf(false) }
+
+            if (!updateChecked || release != null) {
+                val trayHint by remember(release) { derivedStateOf { if (release == null) StringLocale[ST_OLEBO_SEARCH_FOR_UPDATE] else StringLocale[STR_PREPARE_UPDATE] } }
+
+                Tray(icon = UpdateTrayIcon, state = trayState, hint = trayHint)
+            }
+
             LaunchedEffect(Unit) {
                 release = checkForUpdate()
+                updateChecked = true
             }
 
             release?.let {
-                UpdateUI(it)
+                UpdateUI(release = it, notifify = trayState::sendNotification, hideTray = { release = null })
             }
 
-            // Start of the main UI
-            var windowState by remember { mutableStateOf<WindowState>(WindowState.HomeWindow) }
+            // Start of the main UI if automatic update are disabled
+            if (!Settings.autoUpdate || (Settings.autoUpdate && updateChecked && (release == null))) {
+                MainUI()
+            }
 
-            when (val currentWindow = windowState) {
-                is WindowState.HomeWindow -> HomeWindow(startAct = { windowState = WindowState.MasterWindow(it) })
-                is WindowState.MasterWindow -> {
-                    MasterWindow(
-                        act = currentWindow.act,
-                        onExit = { windowState = WindowState.HomeWindow }
-                    )
+/*            rememberCoroutineScope().launch {
+                if (Settings.wasJustUpdated) {
+                    currentChangeLogs.takeIf { !it.isNullOrBlank() }?.let {
+                        JOptionPane.showMessageDialog(
+                            null,
+                            it,
+                            "Changelogs",
+                            JOptionPane.INFORMATION_MESSAGE
+                        )
+
+                        Settings.wasJustUpdated = false
+                    }
                 }
-            }
+            }*/
         }
     }
+}
 
-    rememberCoroutineScope().launch {
-        if (Settings.wasJustUpdated) {
-            currentChangeLogs.takeIf { !it.isNullOrBlank() }?.let {
-                JOptionPane.showMessageDialog(
-                    null,
-                    it,
-                    "Changelogs",
-                    JOptionPane.INFORMATION_MESSAGE
-                )
+@Composable
+fun ApplicationScope.MainUI() {
+    var windowState by remember { mutableStateOf<WindowState>(WindowState.HomeWindow) }
 
-                Settings.wasJustUpdated = false
-            }
+    when (val currentWindow = windowState) {
+        is WindowState.HomeWindow -> HomeWindow(startAct = { windowState = WindowState.MasterWindow(it) })
+        is WindowState.MasterWindow -> {
+            MasterWindow(
+                act = currentWindow.act,
+                onExit = { windowState = WindowState.HomeWindow }
+            )
         }
+    }
+}
+
+/**
+ * Icon of the tray used to show update status
+ *
+ * TODO : Add a real icon
+ */
+private object UpdateTrayIcon : Painter() {
+    override val intrinsicSize = Size(256f, 256f)
+
+    override fun DrawScope.onDraw() {
+        drawOval(Color(0xFFFFA500))
     }
 }
