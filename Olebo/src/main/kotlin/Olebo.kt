@@ -14,12 +14,16 @@ import jdr.exia.localization.STR_PREPARE_UPDATE
 import jdr.exia.localization.ST_OLEBO_SEARCH_FOR_UPDATE
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.dao.option.Settings
+import jdr.exia.update.Changelogs
 import jdr.exia.update.Release
 import jdr.exia.update.checkForUpdate
+import jdr.exia.update.getChangelogs
 import jdr.exia.view.HomeWindow
 import jdr.exia.view.MasterWindow
 import jdr.exia.view.UpdateUI
 import jdr.exia.view.ui.OleboTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.swing.UIManager
 
 const val OLEBO_VERSION_NAME = "0.1.0"
@@ -64,23 +68,23 @@ fun main() = application {
 
             // Start of the main UI if automatic update are disabled
             if (!Settings.autoUpdate || (Settings.autoUpdate && updateChecked && (release == null))) {
-                MainUI()
-            }
+                var changelogs: String? by remember { mutableStateOf(null) }
 
-/*            rememberCoroutineScope().launch {
-                if (Settings.wasJustUpdated) {
-                    currentChangeLogs.takeIf { !it.isNullOrBlank() }?.let {
-                        JOptionPane.showMessageDialog(
-                            null,
-                            it,
-                            "Changelogs",
-                            JOptionPane.INFORMATION_MESSAGE
-                        )
-
-                        Settings.wasJustUpdated = false
+                LaunchedEffect(Unit) {
+                    launch(Dispatchers.IO) {
+                        if (Settings.wasJustUpdated) {
+                            changelogs = getChangelogs()
+                        }
                     }
                 }
-            }*/
+
+                MainUI()
+
+                if (changelogs != null && remember { Settings.wasJustUpdated }) {
+                    Changelogs(changelogs!!)
+                    //Settings.wasJustUpdated = false
+                }
+            }
         }
     }
 }
