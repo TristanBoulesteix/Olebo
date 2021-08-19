@@ -32,7 +32,6 @@ fun ApplicationScope.UpdateUI(release: Release) {
 @Composable
 private fun ApplicationScope.PromptUpdate(versionCode: Int) {
     var askForUpdateDialogIsVisible by remember { mutableStateOf(true) }
-    var restartDialogIsVisible by remember { mutableStateOf(false) }
     var updateIsStarted by remember { mutableStateOf(false) }
 
     PromptDialog(
@@ -44,7 +43,7 @@ private fun ApplicationScope.PromptUpdate(versionCode: Int) {
         buttonBuilders = listOf(
             ContentButtonBuilder(content = StringLocale[STR_YES], onClick = {
                 askForUpdateDialogIsVisible = false
-                restartDialogIsVisible = true
+                updateIsStarted = true
             }),
             ContentButtonBuilder(content = StringLocale[STR_NO], onClick = { askForUpdateDialogIsVisible = false }),
             ContentButtonBuilder(content = StringLocale[ST_NEVER_ASK_UPDATE], onClick = {
@@ -52,25 +51,6 @@ private fun ApplicationScope.PromptUpdate(versionCode: Int) {
             })
         )
     )
-
-    if (restartDialogIsVisible) {
-        val close = remember {
-            fun() {
-                restartDialogIsVisible = false
-                updateIsStarted = true
-            }
-        }
-
-        PromptDialog(
-            visible = restartDialogIsVisible,
-            onCloseRequest = close,
-            title = StringLocale[STR_PREPARE_UPDATE],
-            message = StringLocale[ST_UPDATE_OLEBO_RESTART],
-            buttonBuilders = listOf(
-                ContentButtonBuilder(content = "OK", onClick = close)
-            )
-        )
-    }
 
     if (updateIsStarted) {
         InstallerDownloader(exitApplication = ::exitApplication)
