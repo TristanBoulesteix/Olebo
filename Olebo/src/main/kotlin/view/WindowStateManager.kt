@@ -23,7 +23,7 @@ fun ApplicationScope.Window(
     size: WindowSize,
     minimumSize: WindowSize? = null,
     placement: WindowPlacement = WindowPlacement.Floating,
-    content: @Composable FrameWindowScope. () -> Unit
+    content: @Composable FrameWindowScope.() -> Unit
 ) {
     val windowState = rememberWindowState(
         size = size,
