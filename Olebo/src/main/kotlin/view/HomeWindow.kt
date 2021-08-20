@@ -2,6 +2,7 @@ package jdr.exia.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -21,7 +22,7 @@ import jdr.exia.view.composable.editor.ActEditorView
 import jdr.exia.view.composable.editor.ElementsView
 import jdr.exia.view.element.ContentListRow
 import jdr.exia.view.element.HeaderRow
-import jdr.exia.view.element.ScrollableColumn
+import jdr.exia.view.element.LazyScrollableColumn
 import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.menubar.FileMenu
 import jdr.exia.view.tools.BorderBuilder
@@ -98,11 +99,10 @@ private fun ActsView(
     }
 
     Box(modifier = Modifier.fillMaxSize().background(blue).padding(15.dp)) {
-        ScrollableColumn(
-            modifier = Modifier.padding(20.dp).fillMaxSize().background(Color.White)
-                .border(BorderBuilder.defaultBorder)
+        LazyScrollableColumn(
+            modifier = Modifier.padding(20.dp).fillMaxSize().background(Color.White).border(BorderBuilder.defaultBorder)
         ) {
-            ColumnItem(items = acts) { act ->
+            items(items = acts) { act ->
                 ContentListRow(
                     contentText = act.name,
                     onClick = { onRowClick(act) },

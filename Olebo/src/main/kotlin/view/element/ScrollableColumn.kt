@@ -4,6 +4,10 @@ package jdr.exia.view.element
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,3 +37,15 @@ fun ScrollableColumn(
     )
 }
 
+@Composable
+fun LazyScrollableColumn(
+    modifier: Modifier = Modifier,
+    scrollState: LazyListState = rememberLazyListState(),
+    content: LazyListScope.() -> Unit
+) = Box(modifier = modifier) {
+    LazyColumn(content = content, state = scrollState)
+    VerticalScrollbar(
+        modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight(),
+        adapter = rememberScrollbarAdapter(scrollState)
+    )
+}
