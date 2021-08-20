@@ -82,7 +82,7 @@ fun main() = application {
 
                 if (changelogs != null && remember { Settings.wasJustUpdated }) {
                     Changelogs(changelogs!!)
-                    //Settings.wasJustUpdated = false
+                    Settings.wasJustUpdated = false
                 }
             }
         }
