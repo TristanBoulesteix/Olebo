@@ -1,10 +1,1 @@
-- test1
-- test2
-- test3
-- Modification du nombre de lignes
-autre ligne
-autre ligne
-etc
-...
-
-TODO : Add real changelogs befoe release
+TODO : Add real changelogs before release
