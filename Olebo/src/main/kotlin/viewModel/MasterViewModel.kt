@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.awt.ComposePanel
 import jdr.exia.localization.STR_CLOSE
-import jdr.exia.localization.STR_MANAGE_BLUEPRINTS
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
@@ -215,7 +214,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     fun showBlueprintEditor() {
         selectedElements = emptyList()
 
-        JDialog(WindowStateManager.currentFocusedState, true).apply {
+        JDialog(WindowStateManager.currentFocusedWindow, true).apply {
             DIMENSION_MAIN_WINDOW.let {
                 this.size = it
                 this.minimumSize = it

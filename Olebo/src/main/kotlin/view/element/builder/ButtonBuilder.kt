@@ -35,12 +35,12 @@ data class ImageButtonBuilder(
 @Immutable
 data class ContentButtonBuilder(
     override val content: String,
-    override val enabled: Boolean = false,
+    override val enabled: Boolean = true,
     val onClick: DefaultFunction = {}
 ) : ContentBuilder {
     override val onChange by ::onClick
 
-    constructor(content: Any) : this(content = content.toString())
+    constructor(content: Any, enabled: Boolean = false) : this(content = content.toString(), enabled = enabled)
 }
 
 @Immutable

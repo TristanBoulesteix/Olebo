@@ -152,16 +152,19 @@ private fun HeaderContent(
             if (viewModel.blueprints.isNotEmpty()) {
                 if (currentType.type.typeElement != Type.OBJECT) listOf(
                     ContentButtonBuilder(
-                        content = StringLocale[STR_HP]
+                        content = StringLocale[STR_HP],
+                        enabled = false
                     ),
                     ContentButtonBuilder(
-                        content = StringLocale[STR_MP]
+                        content = StringLocale[STR_MP],
+                        enabled = false
                     )
                 ) else {
                     emptyList()
                 } + listOf(
                     ContentButtonBuilder(
-                        content = StringLocale[STR_IMG]
+                        content = StringLocale[STR_IMG],
+                        enabled = false
                     ),
                     EmptyContent
                 )
@@ -238,7 +241,7 @@ private fun ColumnScope.CreateBlueprint(
                     this.isAcceptAllFileFilterUsed = false
                 }
 
-                if (file.showSaveDialog(WindowStateManager.currentFocusedState) == JFileChooser.APPROVE_OPTION) {
+                if (file.showSaveDialog(WindowStateManager.currentFocusedWindow) == JFileChooser.APPROVE_OPTION) {
                     onUpdate(blueprint.copy(img = Image(file.selectedFile.absolutePath)))
                 }
             },

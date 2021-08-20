@@ -240,7 +240,7 @@ private fun ImagePreviewContent(
                     this.isAcceptAllFileFilterUsed = false
                 }
 
-                val result = fileChooser.showSaveDialog(WindowStateManager.currentFocusedState)
+                val result = fileChooser.showSaveDialog(WindowStateManager.currentFocusedWindow)
 
                 if (result == JFileChooser.APPROVE_OPTION && fileChooser.selectedFile.let { it.exists() && it.isFile }) {
                     onUpdateData(data.copy(img = Img(fileChooser.selectedFile.absolutePath)))

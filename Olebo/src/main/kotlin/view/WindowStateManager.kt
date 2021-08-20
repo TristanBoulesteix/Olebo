@@ -12,7 +12,7 @@ import javax.swing.JMenuBar
 object WindowStateManager {
     val composeWindows = mutableListOf<ComposeWindow>()
 
-    val currentFocusedState
+    val currentFocusedWindow
         get() = composeWindows.find { it.isFocused }
 }
 

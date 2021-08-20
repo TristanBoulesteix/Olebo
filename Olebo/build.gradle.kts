@@ -10,7 +10,7 @@ val ktor_version: String by project
 
 plugins {
     kotlin("jvm")
-    id("org.jetbrains.compose") version "1.0.0-alpha3"
+    id("org.jetbrains.compose") version "1.0.0-alpha4-build315"
 }
 
 version = "0.1.0"

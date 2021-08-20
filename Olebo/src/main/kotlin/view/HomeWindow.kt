@@ -40,6 +40,9 @@ fun ApplicationScope.HomeWindow(startAct: (Act) -> Unit) = Window(
     minimumSize = HOME_WINDOWS_SIZE,
     menuBar = remember { JMenuBar().apply { add(FileMenu()) } }
 ) {
+    // TODO : Use this menubar when Jetbrains fix the keyboard shortcut
+    //MainMenuBar(::exitApplication)
+
     val viewModel = remember { HomeViewModel() }
 
     MainContent(

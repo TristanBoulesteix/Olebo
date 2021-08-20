@@ -15,17 +15,18 @@ import jdr.exia.view.element.builder.ComposableContentBuilder
 import jdr.exia.view.element.builder.ContentBuilder
 import jdr.exia.view.element.builder.ContentButtonBuilder
 import jdr.exia.view.tools.DefaultFunction
+import jdr.exia.view.tools.applyIf
 import jdr.exia.view.tools.withHandCursor
 
 @Composable
 fun PromptDialog(
-    visible: Boolean,
     title: String,
     message: String,
     onCloseRequest: DefaultFunction,
     buttonBuilders: List<ContentBuilder>,
     width: Dp = 400.dp,
-    height: Dp = 150.dp
+    height: Dp = 200.dp,
+    visible: Boolean = true,
 ) = PromptDialog(
     visible = visible,
     title = title,
@@ -40,12 +41,12 @@ fun PromptDialog(
 
 @Composable
 fun PromptDialog(
-    visible: Boolean,
     title: String,
     onCloseRequest: DefaultFunction,
     buttonBuilders: List<ContentBuilder>,
     width: Dp = 400.dp,
-    height: Dp = 150.dp,
+    height: Dp = 200.dp,
+    visible: Boolean = true,
     content: @Composable DefaultFunction
 ) {
     if (visible) {
@@ -54,7 +55,11 @@ fun PromptDialog(
         Dialog(onCloseRequest = onCloseRequest, title = title, resizable = false, state = state) {
             this.window.isModal = true
 
-            Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween, horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Box(modifier = Modifier.weight(1f).padding(10.dp).padding(top = 5.dp)) {
                     content()
                 }
@@ -63,7 +68,11 @@ fun PromptDialog(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     buttonBuilders.forEach {
-                        OutlinedButton(onClick = it.onChange, modifier = Modifier.withHandCursor()) {
+                        OutlinedButton(
+                            onClick = it.onChange,
+                            modifier = Modifier.applyIf(condition = it.enabled, modifier = Modifier::withHandCursor),
+                            enabled = it.enabled
+                        ) {
                             when (it) {
                                 is ContentButtonBuilder -> Text(text = it.content)
                                 is ComposableContentBuilder -> it.content()
