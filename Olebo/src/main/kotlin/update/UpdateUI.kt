@@ -1,4 +1,4 @@
-package jdr.exia.view
+package jdr.exia.update
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,8 +14,6 @@ import androidx.compose.ui.window.*
 import jdr.exia.MainUI
 import jdr.exia.localization.*
 import jdr.exia.model.dao.option.Settings
-import jdr.exia.update.Release
-import jdr.exia.update.getInstallerExecutable
 import jdr.exia.view.element.builder.ContentButtonBuilder
 import jdr.exia.view.element.dialog.PromptDialog
 import jdr.exia.view.tools.DefaultFunction

@@ -20,7 +20,7 @@ import jdr.exia.update.checkForUpdate
 import jdr.exia.update.getChangelogs
 import jdr.exia.view.HomeWindow
 import jdr.exia.view.MasterWindow
-import jdr.exia.view.UpdateUI
+import jdr.exia.update.UpdateUI
 import jdr.exia.view.ui.OleboTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
