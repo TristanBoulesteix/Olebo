@@ -85,7 +85,7 @@ class StringLocaleBundle : StringLocale() {
         STR_NO_SELECTED_ELEMENT to "no element selected",
         STR_HP to "HP",
         STR_MP to "MP",
-        STR_IMG to "element icon",
+        STR_IMG to "icon",
         STR_SMALL_IMG to "img",
         STR_WARNING to "warning!",
         ST_SCENE_ALREADY_EXISTS to "A scene with the same name already exists.",
