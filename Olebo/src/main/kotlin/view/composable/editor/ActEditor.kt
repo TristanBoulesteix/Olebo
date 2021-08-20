@@ -4,6 +4,7 @@ package jdr.exia.view.composable.editor
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.OutlinedButton
@@ -120,8 +121,8 @@ fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
                 modifier = contentModifier
             )
         } else {
-            ScrollableColumn(modifier = contentModifier) {
-                ColumnItem(items = viewModel.scenes) { scene ->
+            LazyScrollableColumn(modifier = contentModifier) {
+                items(items = viewModel.scenes) { scene ->
                     if (viewModel.currentEditScene isValidAndEqualTo scene) {
                         val (tempCurrentEditedScene, setTempCurrentEditScene) = remember { mutableStateOf(scene) }
 
