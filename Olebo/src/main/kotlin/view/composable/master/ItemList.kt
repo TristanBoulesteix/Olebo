@@ -6,6 +6,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -21,7 +22,7 @@ import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
 import jdr.exia.model.type.imageFromFile
 import jdr.exia.view.element.ContentListRow
-import jdr.exia.view.element.ScrollableColumn
+import jdr.exia.view.element.LazyScrollableColumn
 import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.tools.clickableWithCursor
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -49,31 +50,43 @@ private fun ItemList(
     items: Map<Type, List<Blueprint>>,
     searchString: String,
     createElement: (Blueprint) -> Unit
-) = ScrollableColumn {
-    items.forEach { (type, list) ->
-        ContentListRow(contentText = type.localizedName, modifier = Modifier.background(Color.Cyan))
+) {
+    val itemsFiltered by remember(items, searchString) {
+        derivedStateOf {
+            items.mapValues { (_, list) ->
+                transaction { list.filter { it.realName.contains(searchString, ignoreCase = true) } }
+            }
+        }
+    }
 
-        val filtered = transaction { list.filter { it.realName.contains(searchString, ignoreCase = true) } }
+    LazyScrollableColumn {
+        itemsFiltered.forEach { (type, list) ->
+            item(type) {
+                ContentListRow(contentText = type.localizedName, modifier = Modifier.background(Color.Cyan))
+            }
 
-        if (filtered.isEmpty()) {
-            ContentListRow(contentText = StringLocale[STR_NO_ELEMENT])
-        } else {
-            ColumnItem(items = filtered) {
-                val name = transaction { it.realName }
+            if (list.isEmpty()) {
+                item(type to list) {
+                    ContentListRow(contentText = StringLocale[STR_NO_ELEMENT])
+                }
+            } else {
+                items(items = list) {
+                    val name = transaction { it.realName }
 
-                ContentListRow(
-                    modifier = Modifier.clickableWithCursor { createElement(it) },
-                    contentText = name,
-                    buttonBuilders =
-                    listOf(
-                        ImageButtonBuilder(
-                            if (type == Type.BASIC)
-                                useResource("sprites/${it.sprite}", ::loadImageBitmap)
-                            else
-                                imageFromFile(File(it.sprite))
+                    ContentListRow(
+                        modifier = Modifier.clickableWithCursor { createElement(it) },
+                        contentText = name,
+                        buttonBuilders =
+                        listOf(
+                            ImageButtonBuilder(
+                                if (type == Type.BASIC)
+                                    useResource("sprites/${it.sprite}", ::loadImageBitmap)
+                                else
+                                    imageFromFile(File(it.sprite))
+                            )
                         )
                     )
-                )
+                }
             }
         }
     }
