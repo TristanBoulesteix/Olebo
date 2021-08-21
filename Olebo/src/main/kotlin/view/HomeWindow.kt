@@ -24,7 +24,6 @@ import jdr.exia.view.element.ContentListRow
 import jdr.exia.view.element.HeaderRow
 import jdr.exia.view.element.LazyScrollableColumn
 import jdr.exia.view.element.builder.ImageButtonBuilder
-import jdr.exia.view.menubar.FileMenu
 import jdr.exia.view.menubar.MainMenuBar
 import jdr.exia.view.tools.BorderBuilder
 import jdr.exia.view.tools.DefaultFunction
@@ -33,14 +32,12 @@ import jdr.exia.view.tools.withHandCursor
 import jdr.exia.view.ui.HOME_WINDOWS_SIZE
 import jdr.exia.view.ui.blue
 import jdr.exia.viewModel.home.*
-import javax.swing.JMenuBar
 
 @Composable
 fun ApplicationScope.HomeWindow(startAct: (Act) -> Unit) = Window(
     title = "Olebo - ${StringLocale[STR_VERSION]} $OLEBO_VERSION_NAME",
     size = HOME_WINDOWS_SIZE,
-    minimumSize = HOME_WINDOWS_SIZE,
-    menuBar = remember { JMenuBar().apply { add(FileMenu()) } }
+    minimumSize = HOME_WINDOWS_SIZE
 ) {
     MainMenuBar(::exitApplication)
 

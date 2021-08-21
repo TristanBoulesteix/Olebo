@@ -18,7 +18,6 @@ import jdr.exia.model.type.Point
 import jdr.exia.view.WindowStateManager
 import jdr.exia.view.composable.editor.ElementsView
 import jdr.exia.view.composable.master.MapPanel
-import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.applyAndAddTo
 import jdr.exia.view.tools.getTokenFromPosition
 import jdr.exia.view.tools.positionOf
@@ -65,8 +64,6 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
         private set
 
     var cursor: Point? by mutableStateOf(null)
-
-    lateinit var reloadMenuBar: DefaultFunction
 
     /**
      * Returns true if there is at least one element at the given position
@@ -237,8 +234,6 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
         withContext(Dispatchers.IO) {
             tokens = transaction { scene.elements }
         }
-
-        reloadMenuBar()
 
         panel.repaint()
     }

@@ -19,8 +19,11 @@ import jdr.exia.view.composable.master.SelectedEditor
 import jdr.exia.view.menubar.MasterMenuBar
 import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.event.addKeyPressedListener
+import jdr.exia.view.tools.screens
 import jdr.exia.view.ui.MASTER_WINDOW_SIZE
 import jdr.exia.viewModel.MasterViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.event.KeyEvent
 
@@ -30,38 +33,48 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: DefaultFunction) {
 
     val viewModel = remember { MasterViewModel(act = act, scope = scope) }
 
-    val menuBar = remember { MasterMenuBar(closeAct = onExit, viewModel = viewModel) }
-
     Window(
         title = transaction { StringLocale[ST_STR1_DM_WINDOW_NAME, act.name] },
         size = MASTER_WINDOW_SIZE,
         minimumSize = MASTER_WINDOW_SIZE,
         placement = WindowPlacement.Maximized
     ) {
-        MasterMenuBar(::exitApplication, viewModel)
+        var playerFrameOpenedByDefault by remember { mutableStateOf(Settings.playerFrameOpenedByDefault) }
 
         val playerDialogData = remember {
             PlayerDialog.PlayerDialogData(
                 title = transaction { act.name },
                 mapPanel = MapPanel(isParentMaster = false, viewModel = viewModel),
-                onHide = { menuBar.togglePlayerFrameMenuItem.isSelected = false },
+                onHide = { playerFrameOpenedByDefault = false },
                 getMasterWindowScreen = { window.graphicsConfiguration.device }
             )
         }
 
-        DisposableEffect(Unit) {
-            if (Settings.playerFrameOpenedByDefault) {
-                playerDialogData.togglePlayerWindow(true)
-            }
+        LaunchedEffect(playerFrameOpenedByDefault) {
+            playerDialogData.togglePlayerWindow((playerFrameOpenedByDefault))
 
+            if (screens.size > 1)
+                launch {
+                    delay(150)
+                    window.requestFocus()
+                }
+        }
+
+        MasterMenuBar(
+            exitApplication = ::exitApplication,
+            closeAct = onExit,
+            playerFrameOpenedByDefault = playerFrameOpenedByDefault,
+            setPlayerFrameOpenedByDefault = { playerFrameOpenedByDefault = it },
+            viewModel = viewModel
+        )
+
+        DisposableEffect(Unit) {
             onDispose {
                 playerDialogData.togglePlayerWindow(false)
             }
         }
 
         LaunchedEffect(Unit) {
-            menuBar.togglePlayerWindow = playerDialogData::togglePlayerWindow
-
             window.addKeyPressedListener {
                 when (it.keyCode) {
                     KeyEvent.VK_UP -> viewModel.select()

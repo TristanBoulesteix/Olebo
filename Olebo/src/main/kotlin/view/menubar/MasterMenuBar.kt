@@ -7,6 +7,7 @@ import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.window.FrameWindowScope
 import androidx.compose.ui.window.MenuBar
 import androidx.compose.ui.window.MenuBarScope
+import androidx.compose.ui.window.rememberTrayState
 import jdr.exia.localization.*
 import jdr.exia.model.act.Scene
 import jdr.exia.model.command.CommandManager
@@ -25,15 +26,26 @@ import java.awt.event.KeyEvent
 import javax.swing.*
 
 @Composable
-fun FrameWindowScope.MasterMenuBar(exitApplication: DefaultFunction, viewModel: MasterViewModel) = MenuBar {
-    MainMenus(exitApplication)
-    ToolsMenu(viewModel)
+fun FrameWindowScope.MasterMenuBar(
+    exitApplication: DefaultFunction,
+    closeAct: DefaultFunction,
+    playerFrameOpenedByDefault: Boolean,
+    setPlayerFrameOpenedByDefault: (Boolean) -> Unit,
+    viewModel: MasterViewModel
+) = MenuBar {
+    MainMenus(exitApplication = exitApplication)
+    ToolsMenu(viewModel = viewModel)
+    WindowMenu(
+        closeAct = closeAct,
+        playerFrameOpenedByDefault = playerFrameOpenedByDefault,
+        setPlayerFrameOpenedByDefault = setPlayerFrameOpenedByDefault
+    )
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MenuBarScope.ToolsMenu(viewModel: MasterViewModel) = Menu(text = StringLocale[STR_TOOLS], mnemonic = 't') {
-    var cursorEnabled by remember { mutableStateOf(Settings.cursorEnabled) } withSetter { Settings.cursorEnabled = it }
+    var cursorEnabled by remember { mutableStateOf(Settings.cursorEnabled) withSetter { Settings.cursorEnabled = it } }
 
     CheckboxItem(
         text = StringLocale[STR_ENABLE_CURSOR],
@@ -64,6 +76,32 @@ fun MenuBarScope.ToolsMenu(viewModel: MasterViewModel) = Menu(text = StringLocal
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun MenuBarScope.WindowMenu(
+    closeAct: DefaultFunction,
+    playerFrameOpenedByDefault: Boolean,
+    setPlayerFrameOpenedByDefault: (Boolean) -> Unit,
+) =
+    Menu(text = StringLocale[STR_WINDOW], mnemonic = 'w') {
+        Item(text = StringLocale[STR_CLOSE_ACT], shortcut = KeyShortcut(key = Key.Q, ctrl = true), onClick = closeAct)
+
+        Separator()
+
+        CheckboxItem(
+            text = StringLocale[STR_TOGGLE_PLAYER_FRAME],
+            shortcut = KeyShortcut(Key.O, ctrl = true),
+            checked = playerFrameOpenedByDefault,
+            onCheckedChange = setPlayerFrameOpenedByDefault
+        )
+
+        Separator()
+
+        Menu(text = StringLocale[STR_CHOOSE_SCENE]) {
+            val scenes = rememberTrayState()
+        }
+    }
+
 /**
  * This is the DM Window menu bar (situated at the top)
  */
@@ -80,8 +118,6 @@ class MasterMenuBar(closeAct: DefaultFunction, private val viewModel: MasterView
         get() = this.windowAncestor
 
     init {
-        viewModel.reloadMenuBar = this::reloadCommandItemLabel
-
         this.add(FileMenu())
 
         JMenu(StringLocale[STR_TOOLS]).applyAndAddTo(this) {
