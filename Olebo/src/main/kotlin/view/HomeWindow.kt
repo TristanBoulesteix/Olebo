@@ -25,6 +25,7 @@ import jdr.exia.view.element.HeaderRow
 import jdr.exia.view.element.LazyScrollableColumn
 import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.menubar.FileMenu
+import jdr.exia.view.menubar.MainMenuBar
 import jdr.exia.view.tools.BorderBuilder
 import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.border
@@ -41,8 +42,7 @@ fun ApplicationScope.HomeWindow(startAct: (Act) -> Unit) = Window(
     minimumSize = HOME_WINDOWS_SIZE,
     menuBar = remember { JMenuBar().apply { add(FileMenu()) } }
 ) {
-    // TODO : Use this menubar when Jetbrains fix the keyboard shortcut
-    //MainMenuBar(::exitApplication)
+    MainMenuBar(::exitApplication)
 
     val viewModel = remember { HomeViewModel() }
 

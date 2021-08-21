@@ -37,7 +37,7 @@ fun ApplicationScope.Window(
                 window.minimumSize = Dimension(width.value.toInt(), height.value.toInt())
             }
 
-            window.jMenuBar = menuBar
+            //window.jMenuBar = menuBar
         }
 
         DisposableEffect(Unit) {
