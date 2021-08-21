@@ -36,9 +36,10 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: DefaultFunction) {
         title = transaction { StringLocale[ST_STR1_DM_WINDOW_NAME, act.name] },
         size = MASTER_WINDOW_SIZE,
         minimumSize = MASTER_WINDOW_SIZE,
-        menuBar = menuBar,
         placement = WindowPlacement.Maximized
     ) {
+        MasterMenuBar(::exitApplication, viewModel)
+
         val playerDialogData = remember {
             PlayerDialog.PlayerDialogData(
                 title = transaction { act.name },

@@ -1,10 +1,18 @@
 package jdr.exia.view.menubar
 
+import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyShortcut
+import androidx.compose.ui.window.FrameWindowScope
+import androidx.compose.ui.window.MenuBar
+import androidx.compose.ui.window.MenuBarScope
 import jdr.exia.localization.*
 import jdr.exia.model.act.Scene
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.tools.forElse
+import jdr.exia.model.tools.withSetter
 import jdr.exia.view.tools.*
 import jdr.exia.view.ui.CTRL
 import jdr.exia.view.ui.CTRLSHIFT
@@ -16,6 +24,46 @@ import java.awt.event.ItemEvent
 import java.awt.event.KeyEvent
 import javax.swing.*
 
+@Composable
+fun FrameWindowScope.MasterMenuBar(exitApplication: DefaultFunction, viewModel: MasterViewModel) = MenuBar {
+    MainMenus(exitApplication)
+    ToolsMenu(viewModel)
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun MenuBarScope.ToolsMenu(viewModel: MasterViewModel) = Menu(text = StringLocale[STR_TOOLS], mnemonic = 't') {
+    var cursorEnabled by remember { mutableStateOf(Settings.cursorEnabled) } withSetter { Settings.cursorEnabled = it }
+
+    CheckboxItem(
+        text = StringLocale[STR_ENABLE_CURSOR],
+        checked = cursorEnabled,
+        onCheckedChange = { cursorEnabled = it }
+    )
+
+    Separator()
+
+    val commandManager by remember { mutableStateOf(CommandManager(transaction { viewModel.act.currentScene.id })) }
+
+    Item(
+        text = StringLocale[STR_CANCEL] + if (commandManager.undoLabel.isNullOrBlank()) "" else " (${commandManager.undoLabel})",
+        shortcut = KeyShortcut(Key.Z, ctrl = true),
+        enabled = commandManager.hasUndoAction
+    ) {
+        CommandManager(transaction { viewModel.act.currentScene.id }).undo()
+        viewModel.repaint()
+    }
+
+    Item(
+        text = StringLocale[STR_RESTORE] + if (commandManager.redoLabel.isNullOrBlank()) "" else " (${commandManager.redoLabel})",
+        shortcut = KeyShortcut(Key.Y, ctrl = true),
+        enabled = commandManager.hasRedoAction
+    ) {
+        CommandManager(transaction { viewModel.act.currentScene.id }).redo()
+        viewModel.repaint()
+    }
+}
+
 /**
  * This is the DM Window menu bar (situated at the top)
  */
@@ -26,7 +74,7 @@ class MasterMenuBar(closeAct: DefaultFunction, private val viewModel: MasterView
 
     val togglePlayerFrameMenuItem: JCheckBoxMenuItem
 
-    lateinit var togglePlayerWindow : (Boolean) -> Unit
+    lateinit var togglePlayerWindow: (Boolean) -> Unit
 
     private val windowParent
         get() = this.windowAncestor

@@ -1,11 +1,15 @@
 package jdr.exia.model.command
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class CommandManager private constructor() : MutableList<Command> by mutableListOf() {
+class CommandManager private constructor() : MutableList<Command> by mutableStateListOf() {
     companion object {
-        private var managerInstance: Pair<Int, CommandManager>? = null
+        private var managerInstance by mutableStateOf<Pair<Int, CommandManager>?>(null)
 
         operator fun invoke(sceneId: Int): CommandManager {
             managerInstance?.let {
@@ -27,7 +31,13 @@ class CommandManager private constructor() : MutableList<Command> by mutableList
     val redoLabel
         get() = getOrNull(pointer + 1)?.label
 
-    private var pointer = -1
+    val hasUndoAction
+        get() = getOrNull(pointer) != null
+
+    val hasRedoAction
+        get() = getOrNull(pointer + 1) != null
+
+    private var pointer by mutableStateOf(-1)
 
     operator fun plusAssign(command: Command) {
         if (size >= 1) {

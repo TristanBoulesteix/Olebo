@@ -7,7 +7,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.window.*
 import java.awt.Dimension
-import javax.swing.JMenuBar
 
 object WindowStateManager {
     val composeWindows = mutableListOf<ComposeWindow>()
@@ -18,7 +17,6 @@ object WindowStateManager {
 
 @Composable
 fun ApplicationScope.Window(
-    menuBar: JMenuBar,
     title: String = "",
     size: WindowSize,
     minimumSize: WindowSize? = null,
@@ -36,8 +34,6 @@ fun ApplicationScope.Window(
             minimumSize?.let { (width, height) ->
                 window.minimumSize = Dimension(width.value.toInt(), height.value.toInt())
             }
-
-            //window.jMenuBar = menuBar
         }
 
         DisposableEffect(Unit) {
