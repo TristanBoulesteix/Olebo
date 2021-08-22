@@ -10,7 +10,6 @@ import androidx.compose.ui.window.MenuBar
 import androidx.compose.ui.window.MenuBarScope
 import jdr.exia.localization.*
 import jdr.exia.model.act.Scene
-import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
 import jdr.exia.model.tools.withSetter
@@ -59,23 +58,21 @@ private fun MenuBarScope.ToolsMenu(viewModel: MasterViewModel) = Menu(text = Str
 
     Separator()
 
-    val commandManager by remember { mutableStateOf(CommandManager(transaction { viewModel.act.currentScene.id })) }
-
     Item(
-        text = StringLocale[STR_CANCEL] + if (commandManager.undoLabel.isNullOrBlank()) "" else " (${commandManager.undoLabel})",
+        text = StringLocale[STR_CANCEL] + if (viewModel.commandManager.undoLabel.isNullOrBlank()) "" else " (${viewModel.commandManager.undoLabel})",
         shortcut = KeyShortcut(Key.Z, ctrl = true),
-        enabled = commandManager.hasUndoAction
+        enabled = viewModel.commandManager.hasUndoAction
     ) {
-        CommandManager(transaction { viewModel.act.currentScene.id }).undo()
+        viewModel.commandManager.undo()
         viewModel.repaint()
     }
 
     Item(
-        text = StringLocale[STR_RESTORE] + if (commandManager.redoLabel.isNullOrBlank()) "" else " (${commandManager.redoLabel})",
+        text = StringLocale[STR_RESTORE] + if (viewModel.commandManager.redoLabel.isNullOrBlank()) "" else " (${viewModel.commandManager.redoLabel})",
         shortcut = KeyShortcut(Key.Y, ctrl = true),
-        enabled = commandManager.hasRedoAction
+        enabled = viewModel.commandManager.hasRedoAction
     ) {
-        CommandManager(transaction { viewModel.act.currentScene.id }).redo()
+        viewModel.commandManager.redo()
         viewModel.repaint()
     }
 }

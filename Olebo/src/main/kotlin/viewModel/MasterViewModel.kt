@@ -1,6 +1,7 @@
 package jdr.exia.viewModel
 
 
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -41,8 +42,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
         transaction { act.currentScene = it }
     }
 
-    val commandManager
-        get() = transaction { currentScene.commandManager }
+    val commandManager by derivedStateOf { currentScene.commandManager }
 
     val panel = MapPanel(isParentMaster = true, viewModel = this)
 

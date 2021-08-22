@@ -86,7 +86,7 @@ private fun ImagePreview(selectedElements: List<Element>) {
 
     if (selectedElements.size == 1) {
         Image(
-            bitmap = selectedElements[0].spriteBitmap,
+            bitmap = selectedElements.first().spriteBitmap,
             contentDescription = null,
             modifier = modifier
         )
