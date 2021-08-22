@@ -58,8 +58,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     var tokens = transaction { currentScene.elements }
         private set
 
-    var backGroundImage: BufferedImage = transaction { ImageIO.read(File(currentScene.background)) }
-        private set
+    val backGroundImage: BufferedImage by derivedStateOf { transaction { ImageIO.read(File(currentScene.background)) } }
 
     var cursor: Point? by mutableStateOf(null)
 
@@ -198,7 +197,6 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     fun switchScene(scene: Scene) {
         this.currentScene = scene
         selectedElements = emptyList()
-        backGroundImage = transaction { ImageIO.read(File(scene.background)) }
         repaint()
     }
 
