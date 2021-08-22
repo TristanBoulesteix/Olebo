@@ -121,14 +121,14 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
     }
 
     /**
-     * Translates an X coordinate from this window into a 1600:900 X coord
+     * Translates an X coordinate from this window into a 1600:900 X coordinate
      */
     private fun absoluteX(relativeX: Int): Int {
         return (((relativeX.toFloat() / this.width.toFloat())) * ABSOLUTE_WIDTH).toInt()
     }
 
     /**
-     * Translates an Y coordinate from this window into a 1600:900 Y coord
+     * Translates an Y coordinate from this window into a 1600:900 Y coordinate
      */
     private fun absoluteY(relativeY: Int): Int {
         return (((relativeY.toFloat() / this.height.toFloat())) * ABSOLUTE_HEIGHT).toInt()
@@ -257,7 +257,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
     /**
      * Show alias on mouse hover
      */
-    override fun getToolTipText() = mousePosition?.let {
-        if (isParentMaster) viewModel.tokens.getTokenFromPosition(Point(it).absolutePosition)?.alias else null
+    override fun getToolTipText() = mousePosition?.let { point ->
+        if (isParentMaster) viewModel.tokens.getTokenFromPosition(Point(point).absolutePosition)?.alias.takeIf { !it.isNullOrBlank() } else null
     }
 }
