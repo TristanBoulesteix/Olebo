@@ -144,7 +144,7 @@ private fun <T> List<Element>.getElementProperty(elementPropertyGetter: Element.
 
 @Composable
 private fun SizeSelector(selectedElements: List<Element>, repaint: DefaultFunction, commandManager: CommandManager) {
-    var selectedSize by remember(selectedElements) {
+    var selectedSize by remember(selectedElements, commandManager.composeKey) {
         mutableStateOf(
             selectedElements.getElementProperty(
                 elementPropertyGetter = Element::size,
