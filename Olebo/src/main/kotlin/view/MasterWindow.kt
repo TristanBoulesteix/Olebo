@@ -1,12 +1,10 @@
 package jdr.exia.view
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.awt.SwingPanel
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.WindowPlacement
 import jdr.exia.localization.STR_DELETION
@@ -121,9 +119,16 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
     )
 
     Column(modifier = Modifier.weight(.80f).fillMaxSize()) {
-        Box(modifier = Modifier.weight(.85f).fillMaxSize()) {
+        /*Box(modifier = Modifier.weight(.85f).fillMaxSize()) {
             SwingPanel(factory = viewModel::panel)
-        }
+        }*/
+        MapPanel(
+            modifier = Modifier.weight(.85f).fillMaxSize(),
+            isParentMaster = true,
+            background = viewModel.backGroundImage,
+            tokens = viewModel.tokens,
+            selectedElement = viewModel.selectedElements
+        )
         SelectedEditor(
             modifier = Modifier.weight(.15f).fillMaxSize(),
             commandManager = viewModel.commandManager,
