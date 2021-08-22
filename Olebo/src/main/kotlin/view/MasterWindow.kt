@@ -50,12 +50,12 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: DefaultFunction) {
                 title = transaction { act.name },
                 mapPanel = MapPanel(isParentMaster = false, viewModel = viewModel),
                 onHide = { playerFrameOpenedByDefault = false },
-                getMasterWindowScreen = { window.graphicsConfiguration.device }
+                getMasterWindowScreen = window.graphicsConfiguration::getDevice
             )
         }
 
         LaunchedEffect(playerFrameOpenedByDefault) {
-            playerDialogData.togglePlayerWindow((playerFrameOpenedByDefault))
+            playerDialogData.togglePlayerWindow(playerFrameOpenedByDefault)
 
             if (screens.size > 1)
                 launch {
@@ -102,11 +102,8 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: DefaultFunction) {
                 onCloseRequest = { viewModel.confirmClearElement = false }
             ) {
                 transaction {
-                    for (token in Scene[viewModel.act.currentScene.id].elements) {
-                        viewModel.removeElements(listOf(token))
-                        transaction { token.delete() }
-                        Thread.sleep(100)
-                    }
+                    viewModel.removeElements(Scene[viewModel.act.currentScene.id].elements)
+                    Thread.sleep(100)
                 }
             }
         }
