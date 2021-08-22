@@ -39,6 +39,11 @@ class CommandManager private constructor() : MutableList<Command> by mutableStat
 
     private var pointer by mutableStateOf(-1)
 
+    /**
+     * Public key to be used as key to recompose Composable that depend on commands
+     */
+    val composeKey get() = pointer
+
     operator fun plusAssign(command: Command) {
         if (size >= 1) {
             for (i in size - 1 downTo pointer + 1) {

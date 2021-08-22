@@ -40,7 +40,7 @@ fun SelectedEditor(
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.SpaceBetween
 ) {
-    ImagePreview(selectedElements)
+    ImagePreview(selectedElements = selectedElements, commandManager = commandManager)
 
     ColumnEditor {
         val size = 225.dp
@@ -79,8 +79,10 @@ inline fun ColumnEditor(modifier: Modifier = Modifier, content: @Composable Colu
 )
 
 @Composable
-private fun ImagePreview(selectedElements: List<Element>) {
-    val borderColor = if (selectedElements.all { it.isVisible }) Color.Black else Color.Blue
+private fun ImagePreview(selectedElements: List<Element>, commandManager: CommandManager) {
+    val borderColor = remember(selectedElements, commandManager.composeKey) {
+        if (selectedElements.all { it.isVisible }) Color.Black else Color.Blue
+    }
 
     val modifier = Modifier.padding(15.dp).size(150.dp).border(BorderStroke(10.dp, borderColor))
 
@@ -224,7 +226,7 @@ private fun VisibilityButtons(
     repaint: DefaultFunction,
     commandManager: CommandManager
 ) = ColumnEditor {
-    var isVisible by remember(selectedElements) {
+    var isVisible by remember(selectedElements, commandManager.composeKey) {
         mutableStateOf(
             selectedElements.getElementProperty(
                 elementPropertyGetter = Element::isVisible,
