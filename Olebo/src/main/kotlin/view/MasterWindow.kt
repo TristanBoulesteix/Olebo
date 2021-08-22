@@ -9,13 +9,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.SwingPanel
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.WindowPlacement
+import jdr.exia.localization.STR_DELETION
+import jdr.exia.localization.ST_CONFIRM_CLEAR_BOARD
 import jdr.exia.localization.ST_STR1_DM_WINDOW_NAME
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
+import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.view.composable.master.ItemList
 import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.composable.master.SelectedEditor
+import jdr.exia.view.element.dialog.ConfirmMessage
 import jdr.exia.view.menubar.MasterMenuBar
 import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.event.addKeyPressedListener
@@ -86,6 +90,26 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: DefaultFunction) {
         }
 
         MainContent(viewModel = viewModel)
+
+        if (viewModel.blueprintEditorDialogVisible) {
+            BlueprintEditorDialog(onCloseRequest = viewModel::hideBlueprintEditor)
+        }
+
+        if (viewModel.confirmClearElement) {
+            ConfirmMessage(
+                message = StringLocale[ST_CONFIRM_CLEAR_BOARD],
+                title = StringLocale[STR_DELETION],
+                onCloseRequest = { viewModel.confirmClearElement = false }
+            ) {
+                transaction {
+                    for (token in Scene[viewModel.act.currentScene.id].elements) {
+                        viewModel.removeElements(listOf(token))
+                        transaction { token.delete() }
+                        Thread.sleep(100)
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -108,7 +132,7 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
             commandManager = viewModel.commandManager,
             selectedElements = viewModel.selectedElements,
             repaint = viewModel::repaint,
-            deleteSelectedElement = viewModel::deleteSelectedElement
+            deleteSelectedElement = viewModel::removeElements
         )
     }
 }

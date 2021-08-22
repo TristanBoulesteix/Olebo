@@ -23,9 +23,11 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
          * @param element The element to move
          * @param scene The destination scene
          */
-        fun moveElementToScene(element: Element, scene: Scene) {
+        fun moveElementToScene(scene: Scene, element: List<Element>) {
             transaction {
-                element.scene = scene
+                element.forEach {
+                    it.scene = scene
+                }
             }
         }
     }

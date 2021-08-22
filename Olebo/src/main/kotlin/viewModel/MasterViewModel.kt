@@ -4,9 +4,6 @@ package jdr.exia.viewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.awt.ComposePanel
-import jdr.exia.localization.STR_CLOSE
-import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.element.Blueprint
@@ -16,14 +13,9 @@ import jdr.exia.model.tools.callCommandManager
 import jdr.exia.model.tools.doIfContainsSingle
 import jdr.exia.model.tools.withSetter
 import jdr.exia.model.type.Point
-import jdr.exia.view.WindowStateManager
-import jdr.exia.view.composable.editor.ElementsView
 import jdr.exia.view.composable.master.MapPanel
-import jdr.exia.view.tools.applyAndAddTo
 import jdr.exia.view.tools.getTokenFromPosition
 import jdr.exia.view.tools.positionOf
-import jdr.exia.view.ui.DIMENSION_MAIN_WINDOW
-import jdr.exia.view.ui.setThemedContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,13 +25,17 @@ import java.awt.Rectangle
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
-import javax.swing.JDialog
 
 class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     companion object {
         const val ABSOLUTE_WIDTH = 1600
         const val ABSOLUTE_HEIGHT = 900
     }
+
+    var blueprintEditorDialogVisible by mutableStateOf(false)
+        private set
+
+    var confirmClearElement by mutableStateOf(false)
 
     var currentScene by mutableStateOf(transaction { act.currentScene }) withSetter {
         transaction { act.currentScene = it }
@@ -147,12 +143,6 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
         repaint()
     }
 
-    fun removeElements(elements: List<Element> = selectedElements) { //removes given token from MutableList
-        selectedElements = emptyList()
-        currentScene.callCommandManager(elements, Element::cmdDelete)
-        repaint()
-    }
-
     private fun unselectElements() {
         selectedElements = emptyList()
         repaint()
@@ -189,10 +179,12 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
         repaint()
     }
 
-    fun deleteSelectedElement() {
-        val elementsToDelete = selectedElements
+    /**
+     * Remove all elements given as parameter. If no parameter is provided, remove all selected elements
+     */
+    fun removeElements(elements: List<Element> = selectedElements) { //removes given token from MutableList
         unselectElements()
-        Element.cmdDelete(commandManager, elementsToDelete)
+        currentScene.callCommandManager(elements, Element::cmdDelete)
         repaint()
     }
 
@@ -213,20 +205,11 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     fun showBlueprintEditor() {
         selectedElements = emptyList()
 
-        JDialog(WindowStateManager.currentFocusedWindow, true).apply {
-            DIMENSION_MAIN_WINDOW.let {
-                this.size = it
-                this.minimumSize = it
-            }
+        blueprintEditorDialogVisible = true
+    }
 
-            setLocationRelativeTo(null)
-
-            ComposePanel().applyAndAddTo(this) {
-                setThemedContent {
-                    ElementsView(onDone = { dispose() }, closeText = StringLocale[STR_CLOSE])
-                }
-            }
-        }.isVisible = true
+    fun hideBlueprintEditor() {
+        blueprintEditorDialogVisible = false
 
         blueprintsGrouped = loadBlueprints()
         repaint()
