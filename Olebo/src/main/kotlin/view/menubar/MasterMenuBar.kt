@@ -7,7 +7,6 @@ import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.window.FrameWindowScope
 import androidx.compose.ui.window.MenuBar
 import androidx.compose.ui.window.MenuBarScope
-import androidx.compose.ui.window.rememberTrayState
 import jdr.exia.localization.*
 import jdr.exia.model.act.Scene
 import jdr.exia.model.command.CommandManager
@@ -38,7 +37,10 @@ fun FrameWindowScope.MasterMenuBar(
     WindowMenu(
         closeAct = closeAct,
         playerFrameOpenedByDefault = playerFrameOpenedByDefault,
-        setPlayerFrameOpenedByDefault = setPlayerFrameOpenedByDefault
+        setPlayerFrameOpenedByDefault = setPlayerFrameOpenedByDefault,
+        currentScene = viewModel.currentScene,
+        scenes = transaction { viewModel.act.scenes.toList() },
+        onSwitchScene = viewModel::switchScene
     )
 }
 
@@ -82,25 +84,34 @@ fun MenuBarScope.WindowMenu(
     closeAct: DefaultFunction,
     playerFrameOpenedByDefault: Boolean,
     setPlayerFrameOpenedByDefault: (Boolean) -> Unit,
-) =
-    Menu(text = StringLocale[STR_WINDOW], mnemonic = 'w') {
-        Item(text = StringLocale[STR_CLOSE_ACT], shortcut = KeyShortcut(key = Key.Q, ctrl = true), onClick = closeAct)
+    currentScene: Scene,
+    scenes: List<Scene>,
+    onSwitchScene: (Scene) -> Unit
+) = Menu(text = StringLocale[STR_WINDOW], mnemonic = 'w') {
+    Item(text = StringLocale[STR_CLOSE_ACT], shortcut = KeyShortcut(key = Key.Q, ctrl = true), onClick = closeAct)
 
-        Separator()
+    Separator()
 
-        CheckboxItem(
-            text = StringLocale[STR_TOGGLE_PLAYER_FRAME],
-            shortcut = KeyShortcut(Key.O, ctrl = true),
-            checked = playerFrameOpenedByDefault,
-            onCheckedChange = setPlayerFrameOpenedByDefault
-        )
+    CheckboxItem(
+        text = StringLocale[STR_TOGGLE_PLAYER_FRAME],
+        shortcut = KeyShortcut(Key.O, ctrl = true),
+        checked = playerFrameOpenedByDefault,
+        onCheckedChange = setPlayerFrameOpenedByDefault
+    )
 
-        Separator()
+    Separator()
 
-        Menu(text = StringLocale[STR_CHOOSE_SCENE]) {
-            val scenes = rememberTrayState()
+    Menu(text = StringLocale[STR_CHOOSE_SCENE]) {
+        scenes.forEachIndexed { index, scene ->
+            val isCurrentScene by remember(currentScene) { derivedStateOf { scene.id == currentScene.id } }
+            val itemText by remember(isCurrentScene) { derivedStateOf { "${index + 1} ${scene.name}" + if (isCurrentScene) " (${StringLocale[STR_IS_CURRENT_SCENE, StringStates.NORMAL]})" else "" } }
+
+            Item(text = itemText, enabled = !isCurrentScene) {
+                onSwitchScene(scene)
+            }
         }
     }
+}
 
 /**
  * This is the DM Window menu bar (situated at the top)

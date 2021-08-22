@@ -14,6 +14,7 @@ import jdr.exia.model.element.Element
 import jdr.exia.model.element.Type
 import jdr.exia.model.tools.callCommandManager
 import jdr.exia.model.tools.doIfContainsSingle
+import jdr.exia.model.tools.withSetter
 import jdr.exia.model.type.Point
 import jdr.exia.view.WindowStateManager
 import jdr.exia.view.composable.editor.ElementsView
@@ -40,11 +41,12 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
         const val ABSOLUTE_HEIGHT = 900
     }
 
-    private val scene
-        get() = transaction { act.currentScene }
+    var currentScene by mutableStateOf(transaction { act.currentScene }) withSetter {
+        transaction { act.currentScene = it }
+    }
 
     val commandManager
-        get() = transaction { scene.commandManager }
+        get() = transaction { currentScene.commandManager }
 
     val panel = MapPanel(isParentMaster = true, viewModel = this)
 
@@ -57,10 +59,10 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     /**
      * These are all the [Blueprint] placed on  the current map
      */
-    var tokens = transaction { scene.elements }
+    var tokens = transaction { currentScene.elements }
         private set
 
-    var backGroundImage: BufferedImage = transaction { ImageIO.read(File(scene.background)) }
+    var backGroundImage: BufferedImage = transaction { ImageIO.read(File(currentScene.background)) }
         private set
 
     var cursor: Point? by mutableStateOf(null)
@@ -68,13 +70,13 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     /**
      * Returns true if there is at least one element at the given position
      */
-    fun hasElementAtPosition(position: Point) = scene.elements.getTokenFromPosition(position) != null
+    fun hasElementAtPosition(position: Point) = currentScene.elements.getTokenFromPosition(position) != null
 
     fun selectElementsAtPosition(position: Point, addToExistingElements: Boolean = false) {
         if (!addToExistingElements) {
-            selectedElements = scene.elements.getTokenFromPosition(position)?.let { listOf(it) } ?: emptyList()
+            selectedElements = currentScene.elements.getTokenFromPosition(position)?.let { listOf(it) } ?: emptyList()
         } else {
-            scene.elements.getTokenFromPosition(position)?.let { selectedElements = selectedElements + it }
+            currentScene.elements.getTokenFromPosition(position)?.let { selectedElements = selectedElements + it }
         }
         repaint()
     }
@@ -114,7 +116,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
         if (selectedElements.isNotEmpty()) {
             if (selectedElements.size == 1) {
                 selectedElements.first()
-                    .cmdPosition(selectedElements.first().positionOf(newPosition), scene.commandManager)
+                    .cmdPosition(selectedElements.first().positionOf(newPosition), currentScene.commandManager)
             } else {
                 val originElement = selectedElements.find { it === origin } ?: selectedElements.first()
 
@@ -124,7 +126,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
                     mapOf(originElement to originElement.positionOf(newPosition)) + selectedElements.filterNot { it === originElement }
                         .map { it to it.positionOf((it.centerPoint + diffPosition).checkBound()) }
 
-                scene.callCommandManager(elementToPoint, Element::cmdPosition)
+                currentScene.callCommandManager(elementToPoint, Element::cmdPosition)
             }
         }
 
@@ -134,7 +136,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     fun selectElements(rec: Rectangle) {
         val elements = mutableListOf<Element>()
 
-        scene.elements.forEach {
+        currentScene.elements.forEach {
             if (rec.contains(panel.getRelativeRectangleOfToken(it))) {
                 elements += it
             }
@@ -147,7 +149,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
 
     fun removeElements(elements: List<Element> = selectedElements) { //removes given token from MutableList
         selectedElements = emptyList()
-        scene.callCommandManager(elements, Element::cmdDelete)
+        currentScene.callCommandManager(elements, Element::cmdDelete)
         repaint()
     }
 
@@ -157,8 +159,8 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     }
 
     fun select(up: Boolean = true) = transaction {
-        if (selectedElements.isEmpty() && scene.elements.isNotEmpty()) {
-            scene.elements.first()
+        if (selectedElements.isEmpty() && currentScene.elements.isNotEmpty()) {
+            currentScene.elements.first()
         } else {
             val operation = if (up) fun Int.(list: List<Element>): Int {
                 return if (this == list.size - 1) 0 else this + 1
@@ -167,7 +169,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
             }
 
             selectedElements = selectedElements.doIfContainsSingle(emptyList()) { blueprint ->
-                val elements = scene.elements
+                val elements = currentScene.elements
 
                 if (elements.getOrNull(elements.indexOfFirst { it.id == blueprint.id }
                         .operation(elements)) != null) {
@@ -196,13 +198,13 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
 
     fun addNewElement(blueprint: Blueprint) = scope.launch {
         withContext(Dispatchers.IO) {
-            scene.addElement(blueprint)
+            currentScene.addElement(blueprint)
         }
         repaint()
     }
 
     fun switchScene(scene: Scene) {
-        transaction { act.currentScene = scene }
+        this.currentScene = scene
         selectedElements = emptyList()
         backGroundImage = transaction { ImageIO.read(File(scene.background)) }
         repaint()
@@ -232,7 +234,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
 
     fun repaint() = scope.launch {
         withContext(Dispatchers.IO) {
-            tokens = transaction { scene.elements }
+            tokens = transaction { currentScene.elements }
         }
 
         panel.repaint()
