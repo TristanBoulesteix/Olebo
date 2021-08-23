@@ -1,9 +1,31 @@
 package jdr.exia.view.composable.master
 
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalDesktopApi
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.input.pointer.consumeAllChanges
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import jdr.exia.model.dao.option.SerializableColor
 import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
+import jdr.exia.view.tools.coerceAtLeast
+import jdr.exia.view.tools.coerceAtMost
 import jdr.exia.model.element.Size
 import jdr.exia.model.type.Point
 import jdr.exia.view.tools.compareTo
@@ -16,13 +38,8 @@ import jdr.exia.view.tools.getTokenFromPosition
 import jdr.exia.viewModel.MasterViewModel
 import jdr.exia.viewModel.MasterViewModel.Companion.ABSOLUTE_HEIGHT
 import jdr.exia.viewModel.MasterViewModel.Companion.ABSOLUTE_WIDTH
-import java.awt.*
-import java.awt.event.MouseEvent
-import java.awt.event.MouseMotionAdapter
-import javax.swing.JComponent
-import javax.swing.SwingUtilities
-import javax.swing.ToolTipManager
-import kotlin.math.abs
+import org.jetbrains.skija.*
+import org.jetbrains.skija.Color as SkijaColor
 
 class MapPanel(private val isParentMaster: Boolean, private val viewModel: MasterViewModel) : JComponent() {
     private var selectedArea: Rectangle? = null

@@ -58,7 +58,11 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     var tokens = transaction { currentScene.elements }
         private set
 
-    val backGroundImage: BufferedImage by derivedStateOf { transaction { ImageIO.read(File(currentScene.background)) } }
+    val backGroundImage: BufferedImage by derivedStateOf {
+        transaction {
+            ImageIO.read(File(currentScene.background))//.toComposeBitmap()
+        }
+    }
 
     var cursor: Point? by mutableStateOf(null)
 
