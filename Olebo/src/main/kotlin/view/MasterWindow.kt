@@ -17,7 +17,6 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.view.composable.master.ItemList
 import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.composable.master.SelectedEditor
-import jdr.exia.view.composable.master.temp.MapPanel
 import jdr.exia.view.element.dialog.ConfirmMessage
 import jdr.exia.view.menubar.MasterMenuBar
 import jdr.exia.view.tools.DefaultFunction

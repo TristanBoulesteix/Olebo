@@ -15,7 +15,7 @@ import jdr.exia.model.tools.callCommandManager
 import jdr.exia.model.tools.doIfContainsSingle
 import jdr.exia.model.tools.withSetter
 import jdr.exia.model.type.Point
-import jdr.exia.view.composable.master.temp.MapPanel
+import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.tools.getTokenFromPosition
 import jdr.exia.view.tools.positionOf
 import kotlinx.coroutines.CoroutineScope
