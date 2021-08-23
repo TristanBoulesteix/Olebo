@@ -1,6 +1,5 @@
 package jdr.exia.view.tools
 
-import androidx.compose.ui.geometry.Offset
 import jdr.exia.model.element.Element
 import jdr.exia.model.type.Point
 import java.awt.*
@@ -95,11 +94,3 @@ operator fun Dimension.component2() = this.height
 
 val screens: Array<GraphicsDevice>
     get() = GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices
-
-/**
- * Apply [Float::coerceAtMost] on each coordinate between each [Offset]
- *
- */
-fun Offset.coerceAtMost(other: Offset) = Offset(x.coerceAtMost(other.x), y.coerceAtMost(other.y))
-
-fun Offset.coerceAtLeast(other: Offset) = Offset(x.coerceAtLeast(other.x), y.coerceAtLeast(other.y))

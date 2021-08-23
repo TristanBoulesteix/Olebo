@@ -24,8 +24,6 @@ import jdr.exia.model.dao.option.SerializableColor
 import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
-import jdr.exia.view.tools.coerceAtLeast
-import jdr.exia.view.tools.coerceAtMost
 import jdr.exia.viewModel.MasterViewModel.Companion.ABSOLUTE_HEIGHT
 import jdr.exia.viewModel.MasterViewModel.Companion.ABSOLUTE_WIDTH
 import org.jetbrains.skija.*
@@ -56,8 +54,8 @@ fun MapPanel(
             onDrag = { change, _ ->
                 change.consumeAllChanges()
                 selectedArea = Rect(
-                    topLeft = start.coerceAtMost(change.position),
-                    bottomRight = change.position.coerceAtLeast(start)
+                    topLeft = start,
+                    bottomRight = change.position
                 )
             },
             onDragEnd = {
