@@ -144,7 +144,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
 
         // Draw background image
         (g as Graphics2D).drawImage(
-            viewModel.backGroundImage,
+            viewModel.backGroundImage as? Image,
             0,
             0,
             this.width,
