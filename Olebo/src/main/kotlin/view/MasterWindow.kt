@@ -124,6 +124,13 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
         Box(modifier = Modifier.weight(.85f).fillMaxSize()) {
             SwingPanel(factory = viewModel::panel)
         }
+/*        MapPanel(
+            modifier = Modifier.weight(.85f).fillMaxSize(),
+            isParentMaster = true,
+            background = viewModel.backGroundImage,
+            tokens = viewModel.tokens,
+            selectedElement = viewModel.selectedElements
+        )*/
         SelectedEditor(
             modifier = Modifier.weight(.15f).fillMaxSize(),
             commandManager = viewModel.commandManager,

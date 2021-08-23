@@ -55,8 +55,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     /**
      * These are all the [Blueprint] placed on  the current map
      */
-    var tokens = transaction { currentScene.elements }
-        private set
+    var tokens by mutableStateOf(transaction { currentScene.elements })
 
     val backGroundImage: BufferedImage by derivedStateOf {
         transaction {
