@@ -2,7 +2,7 @@ package jdr.exia.view
 
 import jdr.exia.localization.STR_PLAYER_TITLE_FRAME
 import jdr.exia.localization.StringLocale
-import jdr.exia.view.composable.master.MapPanel
+import jdr.exia.view.composable.master.temp.MapPanel
 import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.event.addKeyPressedListener
 import jdr.exia.view.tools.screens
