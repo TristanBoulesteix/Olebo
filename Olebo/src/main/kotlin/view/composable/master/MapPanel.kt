@@ -1,21 +1,10 @@
 package jdr.exia.view.composable.master
 
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
 import jdr.exia.model.dao.option.SerializableColor
 import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
+import jdr.exia.model.element.Size
 import jdr.exia.model.type.Point
 import jdr.exia.view.tools.compareTo
 import jdr.exia.view.tools.drawCircleWithCenterCoordinates
@@ -34,80 +23,6 @@ import javax.swing.JComponent
 import javax.swing.SwingUtilities
 import javax.swing.ToolTipManager
 import kotlin.math.abs
-
-@Composable
-fun MapPanel(
-    modifier: Modifier,
-    isParentMaster: Boolean,
-    background: ImageBitmap,
-    tokens: List<Element>,
-    selectedElement: List<Element>
-) =
-    Canvas(modifier = modifier.drawWithCache {
-        onDrawBehind {
-            drawImage(image = background, dstSize = IntSize(size.width.toInt(), size.height.toInt()))
-        }
-    }.pointerInput(selectedElement) {
-        detectTapGestures {
-            
-        }
-    }) {
-        tokens.forEach { token ->
-            if (isParentMaster || token.isVisible) {
-                if (!token.isVisible) {
-                    drawMarker(
-                        color = androidx.compose.ui.graphics.Color.Blue,
-                        coordinatesDiff = 3,
-                        sizeDiff = 6,
-                        token = token
-                    )
-                }
-
-                if (selectedElement.isNotEmpty() && token in selectedElement) {
-                    drawMarker(
-                        color = androidx.compose.ui.graphics.Color.Red,
-                        coordinatesDiff = 4,
-                        sizeDiff = 8,
-                        token = token
-                    )
-                }
-
-                // draw the element
-                drawImage(
-                    image = token.spriteBitmap,
-                    dstOffset = IntOffset(
-                        relativeX(token.referencePoint.x).toInt(),
-                        relativeY(token.referencePoint.y).toInt()
-                    ),
-                    dstSize = IntSize(relativeX(token.hitBox.width).toInt(), relativeY(token.hitBox.height).toInt())
-                )
-            }
-        }
-    }
-
-fun DrawScope.drawMarker(
-    color: androidx.compose.ui.graphics.Color,
-    coordinatesDiff: Int,
-    sizeDiff: Int,
-    token: Element
-) = drawRect(
-    color = color,
-    topLeft = Offset(
-        relativeX(token.referencePoint.x) - coordinatesDiff,
-        relativeY(token.referencePoint.y) - coordinatesDiff
-    ),
-    size = Size(relativeX(token.hitBox.width) + sizeDiff, relativeY(token.hitBox.height) + sizeDiff)
-)
-
-/**
- * Translates an X coordinate in 1600:900px to proportional coords according to this window's size
- */
-private fun DrawScope.relativeX(absoluteX: Int) = (absoluteX * this.size.width) / ABSOLUTE_WIDTH
-
-/**
- * Translates a y coordinate in 1600:900px to proportional coords according to this window's size
- */
-private fun DrawScope.relativeY(absoluteY: Int) = (absoluteY * this.size.height) / ABSOLUTE_HEIGHT
 
 class MapPanel(private val isParentMaster: Boolean, private val viewModel: MasterViewModel) : JComponent() {
     private var selectedArea: Rectangle? = null
@@ -167,11 +82,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
             }
 
             selectedArea?.let {
-                if (it.size >= Dimension(
-                        jdr.exia.model.element.Size.XS.size.absoluteSizeValue,
-                        jdr.exia.model.element.Size.XS.size.absoluteSizeValue
-                    )
-                )
+                if (it.size >= Dimension(Size.XS.size.absoluteSizeValue, Size.XS.size.absoluteSizeValue))
                     viewModel.selectElements(it)
                 else repaint()
                 selectedArea = null
@@ -231,7 +142,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
 
         // Draw background image
         (g as Graphics2D).drawImage(
-            viewModel.backGroundImage as? Image,
+            viewModel.backGroundImage,
             0,
             0,
             this.width,

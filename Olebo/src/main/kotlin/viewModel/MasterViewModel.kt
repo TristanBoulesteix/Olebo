@@ -5,7 +5,6 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.toComposeBitmap
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.element.Blueprint
@@ -24,6 +23,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
+import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
 
@@ -55,13 +55,10 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     /**
      * These are all the [Blueprint] placed on  the current map
      */
-    var tokens by mutableStateOf(transaction { currentScene.elements })
+    var tokens = transaction { currentScene.elements }
+        private set
 
-    val backGroundImage by derivedStateOf {
-        transaction {
-            ImageIO.read(File(currentScene.background)).toComposeBitmap()
-        }
-    }
+    val backGroundImage: BufferedImage by derivedStateOf { transaction { ImageIO.read(File(currentScene.background)) } }
 
     var cursor: Point? by mutableStateOf(null)
 
