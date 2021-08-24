@@ -29,9 +29,11 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: D
             playerDialog?.dispose()
 
             if (isVisible) {
-                PlayerDialog(data.mapPanel, data.onHide, data.title).apply {
+                playerDialog = PlayerDialog(data.mapPanel, data.onHide, data.title).apply {
+                    val currentScreenOfMasterWindow = data.getMasterWindowScreen()
+
                     // If there is only 1 screen, we display both frames there
-                    if (screens.size == 1) {
+                    if (screens.size == 1 || currentScreenOfMasterWindow == null) {
                         this.isUndecorated = false
                         this.isResizable = true
                         this.preferredSize = MASTER_WINDOW_SIZE.let { (height, width) ->
@@ -42,7 +44,7 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: D
                         this.isVisible = true
                     } else { //If 2 screens are present, we display the player frame in fullscreen on the 2nd screen
                         for (screen in screens) {
-                            if (data.getMasterWindowScreen() != screen) {
+                            if (currentScreenOfMasterWindow != screen) {
                                 // Sets the frame's size as exactly the size of the screen.
                                 this.setSize(
                                     screen.displayMode.width,
@@ -65,8 +67,6 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: D
                             }
                         }
                     }
-
-                    playerDialog = this
                 }
             } else {
                 playerDialog = null
@@ -114,6 +114,6 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: D
         val title: String,
         val mapPanel: MapPanel,
         val onHide: DefaultFunction,
-        val getMasterWindowScreen: () -> GraphicsDevice
+        val getMasterWindowScreen: () -> GraphicsDevice?
     )
 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.awt.SwingPanel
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.WindowPlacement
@@ -29,6 +30,7 @@ import jdr.exia.viewModel.MasterViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.awt.GraphicsDevice
 import java.awt.event.KeyEvent
 
 @Composable
@@ -50,7 +52,7 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: DefaultFunction) {
                 title = transaction { act.name },
                 mapPanel = MapPanel(isParentMaster = false, viewModel = viewModel),
                 onHide = { playerFrameOpenedByDefault = false },
-                getMasterWindowScreen = window.graphicsConfiguration::getDevice
+                getMasterWindowScreen = window::getCurrentSceen
             )
         }
 
@@ -132,4 +134,34 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
             deleteSelectedElement = viewModel::removeElements
         )
     }
+}
+
+/**
+ * Function to find current screen of the window.
+ * The function [GraphicsConfiguration::getDevice] is not enough since it returns only the screen where the window was opened.
+ *
+ * @return The current GraphicsDevice of the Window or null if it was unable to get the current screen
+ */
+private fun ComposeWindow.getCurrentSceen(): GraphicsDevice? {
+    val windowBounds = bounds
+
+    var lastArea = 0
+    var device: GraphicsDevice? = null
+
+    this.graphicsConfiguration.device
+
+    screens.forEach { graphicsDevice ->
+        graphicsDevice.configurations.forEach { graphicsConfiguration ->
+            val area = windowBounds.intersection(graphicsConfiguration.bounds).let { it.width * it.height }
+
+            if (area != 0) {
+                if (area > lastArea) {
+                    lastArea = area
+                    device = graphicsDevice
+                }
+            }
+        }
+    }
+
+    return device
 }
