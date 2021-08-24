@@ -15,7 +15,6 @@ import jdr.exia.localization.ST_CONFIRM_CLEAR_BOARD
 import jdr.exia.localization.ST_STR1_DM_WINDOW_NAME
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
-import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.view.composable.master.ItemList
 import jdr.exia.view.composable.master.MapPanel
@@ -101,13 +100,9 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: DefaultFunction) {
             ConfirmMessage(
                 message = StringLocale[ST_CONFIRM_CLEAR_BOARD],
                 title = StringLocale[STR_DELETION],
-                onCloseRequest = { viewModel.confirmClearElement = false }
-            ) {
-                transaction {
-                    viewModel.removeElements(Scene[viewModel.act.currentScene.id].elements)
-                    Thread.sleep(100)
-                }
-            }
+                onCloseRequest = { viewModel.confirmClearElement = false },
+                onConfirm = { viewModel.removeElements(viewModel.currentScene.elements) }
+            )
         }
     }
 }
