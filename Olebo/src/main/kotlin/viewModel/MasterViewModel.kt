@@ -128,6 +128,12 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
         repaint()
     }
 
+    fun selectAllElements() {
+        selectedElements = currentScene.elements
+
+        repaint()
+    }
+
     fun selectElements(rec: Rectangle) {
         val elements = mutableListOf<Element>()
 

@@ -86,6 +86,7 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: DefaultFunction) {
                     KeyEvent.VK_DOWN -> viewModel.select(false)
                     KeyEvent.VK_RIGHT -> viewModel.rotateRight()
                     KeyEvent.VK_LEFT -> viewModel.rotateLeft()
+                    KeyEvent.VK_A -> if (it.isControlDown) viewModel.selectAllElements()
                 }
             }
         }
