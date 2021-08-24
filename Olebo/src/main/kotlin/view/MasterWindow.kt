@@ -45,19 +45,19 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: DefaultFunction) {
         minimumSize = MASTER_WINDOW_SIZE,
         placement = WindowPlacement.Maximized
     ) {
-        var playerFrameOpenedByDefault by remember { mutableStateOf(Settings.playerFrameOpenedByDefault) }
+        var playerFrameVisible by remember { mutableStateOf(Settings.playerFrameOpenedByDefault) }
 
         val playerDialogData = remember {
             PlayerDialog.PlayerDialogData(
                 title = transaction { act.name },
                 mapPanel = MapPanel(isParentMaster = false, viewModel = viewModel),
-                onHide = { playerFrameOpenedByDefault = false },
+                onHide = { playerFrameVisible = false },
                 getMasterWindowScreen = window::getCurrentSceen
             )
         }
 
-        LaunchedEffect(playerFrameOpenedByDefault) {
-            playerDialogData.togglePlayerWindow(playerFrameOpenedByDefault)
+        LaunchedEffect(playerFrameVisible) {
+            playerDialogData.togglePlayerWindow(playerFrameVisible)
 
             if (screens.size > 1)
                 launch {
@@ -69,8 +69,8 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: DefaultFunction) {
         MasterMenuBar(
             exitApplication = ::exitApplication,
             closeAct = onExit,
-            playerFrameOpenedByDefault = playerFrameOpenedByDefault,
-            setPlayerFrameOpenedByDefault = { playerFrameOpenedByDefault = it },
+            playerFrameOpenedByDefault = playerFrameVisible,
+            setPlayerFrameOpenedByDefault = { playerFrameVisible = it },
             viewModel = viewModel
         )
 
