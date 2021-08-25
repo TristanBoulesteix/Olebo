@@ -12,6 +12,7 @@ import jdr.exia.model.tools.CharacterException
 import jdr.exia.model.tools.isCharacter
 import jdr.exia.model.type.Image
 import jdr.exia.model.type.Point
+import jdr.exia.view.tools.rotateImage
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -21,6 +22,8 @@ import java.awt.Rectangle
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
+import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
 
 class Element(id: EntityID<Int>) : Entity<Int>(id) {
     companion object : EntityClass<Int, Element>(InstanceTable) {
@@ -188,15 +191,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     var isDeleted by InstanceTable.deleted
 
     // Value from the Blueprint
-    val sprite: BufferedImage by lazy {
-        transaction {
-            if (blueprint.type == Type.BASIC) {
-                ImageIO.read(Element::class.java.classLoader.getResourceAsStream("sprites/${blueprint.sprite}"))
-            } else {
-                ImageIO.read(File(blueprint.sprite))
-            }
-        }
-    }
+    val sprite by lazyRotatedSprite()
 
     val spriteBitmap
         get() = transaction {
@@ -309,4 +304,33 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     override fun equals(other: Any?) = other is Element && this.id == other.id
 
     override fun hashCode() = this.id.value
+
+    private fun lazyRotatedSprite() = object : ReadOnlyProperty<Element, BufferedImage> {
+        val originalImage by lazy {
+            transaction {
+                if (blueprint.type == Type.BASIC) {
+                    ImageIO.read(Element::class.java.classLoader.getResourceAsStream("sprites/${blueprint.sprite}"))
+                } else {
+                    ImageIO.read(File(blueprint.sprite))
+                }
+            }
+        }
+
+        var rotation: Float = 0f
+
+        lateinit var rotatedImage: BufferedImage
+
+        override fun getValue(thisRef: Element, property: KProperty<*>): BufferedImage {
+            if (rotation != orientation || !::rotatedImage.isInitialized) {
+                reloadRotatedImage()
+            }
+
+            return rotatedImage
+        }
+
+        fun reloadRotatedImage() {
+            rotatedImage = originalImage.rotateImage(orientation)
+            rotation = orientation
+        }
+    }
 }

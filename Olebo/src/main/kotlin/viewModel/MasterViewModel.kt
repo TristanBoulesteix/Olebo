@@ -1,6 +1,5 @@
 package jdr.exia.viewModel
 
-
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

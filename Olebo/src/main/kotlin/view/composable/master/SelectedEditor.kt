@@ -211,7 +211,7 @@ private fun OrientationButtons(
 
     OutlinedButton(
         onClick = {
-            Element.cmdOrientationToRight(commandManager, selectedElements)
+            Element.cmdOrientationToLeft(commandManager, selectedElements)
             repaint()
         },
         modifier = Modifier.width(buttonsWidth).applyIf(isEnabled, modifier = Modifier::withHandCursor),

@@ -6,10 +6,13 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Size
 import jdr.exia.model.type.Point
-import jdr.exia.view.tools.*
+import jdr.exia.view.tools.compareTo
+import jdr.exia.view.tools.drawCircleWithCenterCoordinates
 import jdr.exia.view.tools.event.addMouseExitedListener
 import jdr.exia.view.tools.event.addMouseMovedListener
 import jdr.exia.view.tools.event.addMouseReleasedListener
+import jdr.exia.view.tools.fillCircleWithCenterCoordinates
+import jdr.exia.view.tools.getTokenFromPosition
 import jdr.exia.viewModel.MasterViewModel
 import jdr.exia.viewModel.MasterViewModel.Companion.ABSOLUTE_HEIGHT
 import jdr.exia.viewModel.MasterViewModel.Companion.ABSOLUTE_WIDTH
@@ -241,7 +244,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
 
     private fun Graphics.drawToken(token: Element) {
         drawImage(
-            token.sprite.rotateImage(token.orientation),
+            token.sprite,
             relativeX(token.referencePoint.x),
             relativeY(token.referencePoint.y),
             relativeX(token.hitBox.width),
