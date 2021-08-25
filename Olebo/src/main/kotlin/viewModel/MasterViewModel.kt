@@ -189,14 +189,23 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     fun removeElements(elements: List<Element> = selectedElements) { //removes given token from MutableList
         unselectElements()
         currentScene.callCommandManager(elements, Element::cmdDelete)
-        repaint(reloadTokens = true)
+
+        tokens = tokens.toMutableList().also {
+            it -= elements
+        }
+
+        repaint()
     }
 
     fun addNewElement(blueprint: Blueprint) = scope.launch {
         withContext(Dispatchers.IO) {
-            currentScene.addElement(blueprint)
+            val newElement = currentScene.addElement(blueprint)
+            tokens = tokens.toMutableList().also {
+                it += newElement
+            }
         }
-        repaint(reloadTokens = true)
+
+        repaint()
     }
 
     fun switchScene(scene: Scene) {

@@ -51,25 +51,27 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
      *
      * @param blueprint The Blueprint to instantiate
      */
-    fun addElement(blueprint: Blueprint) {
-        val id = Element.createElement(blueprint).id
+    fun addElement(blueprint: Blueprint): Element {
+        val element = Element.createElement(blueprint)
 
         commandManager += object : Command {
             override val label by StringDelegate(STR_NEW_ELEMENT)
 
             override fun exec(): Unit = transaction {
-                InstanceTable.update({ InstanceTable.id eq id }) {
+                InstanceTable.update({ InstanceTable.id eq element.id }) {
                     it[idScene] = this@Scene.id.value
                     it[deleted] = false
                 }
             }
 
             override fun cancelExec(): Unit = transaction {
-                InstanceTable.update({ InstanceTable.id eq id }) {
+                InstanceTable.update({ InstanceTable.id eq element.id }) {
                     it[deleted] = true
                 }
             }
         }
+
+        return element
     }
 
     override fun delete() {
