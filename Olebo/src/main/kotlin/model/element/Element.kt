@@ -10,7 +10,6 @@ import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.tools.CharacterException
 import jdr.exia.model.tools.isCharacter
-import jdr.exia.model.tools.rotate
 import jdr.exia.model.type.Image
 import jdr.exia.model.type.Point
 import org.jetbrains.exposed.dao.Entity
@@ -19,8 +18,9 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
+import java.awt.image.BufferedImage
+import java.io.File
 import javax.imageio.ImageIO
-import javax.swing.ImageIcon
 
 class Element(id: EntityID<Int>) : Entity<Int>(id) {
     companion object : EntityClass<Int, Element>(InstanceTable) {
@@ -177,7 +177,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     private var visibleValue by InstanceTable.visible
     private var currentHP by InstanceTable.currentHP
     private var currentMP by InstanceTable.currentMP
-    private var orientation by InstanceTable.orientation
+    var orientation by InstanceTable.orientation
 
     private var x by InstanceTable.x
     private var y by InstanceTable.y
@@ -188,13 +188,13 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     var isDeleted by InstanceTable.deleted
 
     // Value from the Blueprint
-    val sprite by lazy {
+    val sprite: BufferedImage by lazy {
         transaction {
             if (blueprint.type == Type.BASIC) {
-                ImageIcon(ImageIO.read(Element::class.java.classLoader.getResourceAsStream("sprites/${blueprint.sprite}")))
+                ImageIO.read(Element::class.java.classLoader.getResourceAsStream("sprites/${blueprint.sprite}"))
             } else {
-                ImageIcon(blueprint.sprite)
-            }.rotate(orientation)
+                ImageIO.read(File(blueprint.sprite))
+            }
         }
     }
 

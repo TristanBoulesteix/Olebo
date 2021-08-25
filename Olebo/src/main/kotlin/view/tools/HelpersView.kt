@@ -3,10 +3,12 @@ package jdr.exia.view.tools
 import jdr.exia.model.element.Element
 import jdr.exia.model.type.Point
 import java.awt.*
+import java.awt.image.BufferedImage
 import javax.swing.SwingUtilities
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
+
 
 @OptIn(ExperimentalContracts::class)
 inline fun <T : Container> T.applyAndAddTo(
@@ -94,3 +96,36 @@ operator fun Dimension.component2() = this.height
 
 val screens: Array<GraphicsDevice>
     get() = GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices
+
+fun BufferedImage.rotateImage(rotationAngle: Float): BufferedImage {
+    val theta = Math.PI * 2 / 360 * rotationAngle
+    val width = width
+    val height = height
+
+    val dest: BufferedImage = if (rotationAngle == 90f || rotationAngle == 270f) {
+        BufferedImage(height, width, type)
+    } else {
+        BufferedImage(width, height, type)
+    }
+
+    val graphics2D = dest.createGraphics()
+
+    when (rotationAngle) {
+        90f -> {
+            graphics2D.translate((height - width) / 2, (height - width) / 2)
+            graphics2D.rotate(theta, (height / 2).toDouble(), (width / 2).toDouble())
+        }
+        270f -> {
+            graphics2D.translate((width - height) / 2, (width - height) / 2)
+            graphics2D.rotate(theta, (height / 2).toDouble(), (width / 2).toDouble())
+        }
+        else -> {
+            graphics2D.translate(0, 0)
+            graphics2D.rotate(theta, (width / 2).toDouble(), (height / 2).toDouble())
+        }
+    }
+
+    graphics2D.drawRenderedImage(this, null)
+
+    return dest
+}

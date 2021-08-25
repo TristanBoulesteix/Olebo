@@ -6,10 +6,6 @@ import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Type
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.awt.Graphics
-import java.awt.geom.AffineTransform
-import java.awt.image.BufferedImage
-import javax.swing.ImageIcon
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
@@ -48,26 +44,6 @@ fun Blueprint?.isCharacter(): Boolean {
     val blueprint = this@isCharacter
 
     return transaction { blueprint != null && (blueprint.type == Type.PNJ || blueprint.type == Type.PJ) }
-}
-
-fun ImageIcon.rotate(degs: Float) = with(BufferedImage(this.iconWidth, this.iconHeight, BufferedImage.TYPE_INT_ARGB)) {
-    fun ImageIcon.toBufferedImage() = BufferedImage(
-        this.iconWidth,
-        this.iconHeight,
-        BufferedImage.TYPE_INT_ARGB
-    ).apply {
-        val g: Graphics = createGraphics()
-        paintIcon(null, g, 0, 0)
-        g.dispose()
-    }
-
-    createGraphics().apply {
-        val transform = AffineTransform()
-        transform.rotate(degs / 180 * Math.PI, iconWidth / 2.0, iconHeight / 2.0)
-        drawRenderedImage(toBufferedImage(), transform)
-    }.dispose()
-
-    ImageIcon(this)
 }
 
 inline fun Scene?.callCommandManager(elements: List<Element>, func: (CommandManager, List<Element>) -> Unit) =
