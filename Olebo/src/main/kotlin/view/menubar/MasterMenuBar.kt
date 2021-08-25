@@ -41,7 +41,7 @@ fun FrameWindowScope.MasterMenuBar(
         currentScene = viewModel.currentScene,
         deleteSelectedToken = viewModel::removeElements,
         onClearTokens = { viewModel.confirmClearElement = true },
-        repaint = viewModel::repaint
+        moveElements = viewModel::moveElementsFromScene
     )
 }
 
@@ -120,7 +120,7 @@ private fun MenuBarScope.TokenMenu(
     currentScene: Scene,
     deleteSelectedToken: DefaultFunction,
     onClearTokens: DefaultFunction,
-    repaint: DefaultFunction
+    moveElements: (List<Element>) -> Unit
 ) = Menu(text = StringLocale[STR_TOKENS], mnemonic = 'b') {
     Item(
         text = StringLocale[STR_MANAGE_BLUEPRINTS],
@@ -128,7 +128,7 @@ private fun MenuBarScope.TokenMenu(
         onClick = showBlueprintEditorDialog
     )
 
-    MenuImportFromScene(scenes = scenes, currentScene = currentScene, repaint = repaint)
+    MenuImportFromScene(scenes = scenes, currentScene = currentScene, moveElements = moveElements)
 
     Separator()
 
@@ -146,7 +146,11 @@ private fun MenuBarScope.TokenMenu(
 }
 
 @Composable
-private fun MenuBarScope.MenuImportFromScene(scenes: List<Scene>, currentScene: Scene, repaint: DefaultFunction) =
+private fun MenuBarScope.MenuImportFromScene(
+    scenes: List<Scene>,
+    currentScene: Scene,
+    moveElements: (List<Element>) -> Unit
+) =
     Menu(text = StringLocale[STR_IMPORT_FROM_SCENE], enabled = scenes.count() > 1) {
         scenes.forEach {
             /*
@@ -159,16 +163,20 @@ private fun MenuBarScope.MenuImportFromScene(scenes: List<Scene>, currentScene: 
                 Menu(text = it.name, enabled = elements.isNotEmpty()) {
                     if (elements.isNotEmpty()) {
                         Item(text = StringLocale[STR_IMPORT_ALL_ELEMENTS]) {
-                            elements.moveElementToSceneAndUpdateState(currentScene, it.elements)
-                            repaint()
+                            elements.moveElementToSceneAndUpdateState(
+                                elements = it.elements,
+                                moveElements = moveElements
+                            )
                         }
 
                         Separator()
 
                         elements.forEach { token ->
                             Item(text = "${token.name} (${token.type.localizedName})") {
-                                elements.moveElementToSceneAndUpdateState(currentScene, listOf(token))
-                                repaint()
+                                elements.moveElementToSceneAndUpdateState(
+                                    elements = listOf(token),
+                                    moveElements = moveElements
+                                )
                             }
                         }
                     }
@@ -177,7 +185,10 @@ private fun MenuBarScope.MenuImportFromScene(scenes: List<Scene>, currentScene: 
         }
     }
 
-private fun SnapshotStateList<Element>.moveElementToSceneAndUpdateState(scene: Scene, elements: List<Element>) {
-    Scene.moveElementToScene(scene, elements)
+private fun SnapshotStateList<Element>.moveElementToSceneAndUpdateState(
+    elements: List<Element>,
+    moveElements: (List<Element>) -> Unit
+) {
+    moveElements(elements)
     this.removeAll(elements)
 }

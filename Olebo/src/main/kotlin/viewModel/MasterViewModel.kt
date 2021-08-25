@@ -199,7 +199,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
 
     fun addNewElement(blueprint: Blueprint) {
         val newElement = currentScene.addElement(blueprint)
-        
+
         tokens = tokens.toMutableList().also {
             it += newElement
         }
@@ -223,7 +223,18 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
         blueprintEditorDialogVisible = false
 
         blueprintsGrouped = loadBlueprints()
+
         repaint(reloadTokens = true)
+    }
+
+    fun moveElementsFromScene(elements: List<Element>) {
+        Scene.moveElementToScene(currentScene, elements)
+
+        tokens = tokens.toMutableList().also {
+            it += elements
+        }
+
+        repaint()
     }
 
     fun repaint(reloadTokens: Boolean = false) = scope.launch {
