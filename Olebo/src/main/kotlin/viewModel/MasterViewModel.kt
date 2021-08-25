@@ -215,7 +215,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
         blueprintEditorDialogVisible = false
 
         blueprintsGrouped = loadBlueprints()
-        repaint()
+        repaint(reloadTokens = true)
     }
 
     fun repaint(reloadTokens: Boolean = false) = scope.launch {
