@@ -197,12 +197,11 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
         repaint()
     }
 
-    fun addNewElement(blueprint: Blueprint) = scope.launch {
-        withContext(Dispatchers.IO) {
-            val newElement = currentScene.addElement(blueprint)
-            tokens = tokens.toMutableList().also {
-                it += newElement
-            }
+    fun addNewElement(blueprint: Blueprint) {
+        val newElement = currentScene.addElement(blueprint)
+        
+        tokens = tokens.toMutableList().also {
+            it += newElement
         }
 
         repaint()
