@@ -4,9 +4,12 @@ import jdr.exia.localization.*
 import jdr.exia.model.element.Element
 import jdr.exia.model.tools.DatabaseException
 import jdr.exia.system.OLEBO_DIRECTORY
-import jdr.exia.update.legacy.forceUpdate
+import jdr.exia.update.downloadAndExit
 import jdr.exia.view.tools.showConfirmMessage
 import jdr.exia.view.tools.windowAncestor
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.select
@@ -76,11 +79,17 @@ object DAO {
         throw DatabaseException(e)
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun showUpdateMessageWarn() {
         val update = JButton(StringLocale[STR_UPDATE]).apply {
             this.addActionListener {
                 windowAncestor?.dispose()
-                forceUpdate()
+                GlobalScope.launch {
+                    downloadAndExit(
+                        onExitSuccess = { exitProcess(0) },
+                        onDownloadFailure = { error("Unable to update"); }
+                    )
+                }
             }
         }
 
