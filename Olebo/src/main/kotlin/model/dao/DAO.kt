@@ -87,7 +87,7 @@ object DAO {
                 GlobalScope.launch {
                     downloadAndExit(
                         onExitSuccess = { exitProcess(0) },
-                        onDownloadFailure = { error("Unable to update"); }
+                        onDownloadFailure = { error("Unable to update") }
                     )
                 }
             }

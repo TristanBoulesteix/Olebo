@@ -157,7 +157,7 @@ private fun MenuBarScope.MenuImportFromScene(
             Since moving elements needs to trigger recomposition, we create a mutableStateList from the list of elements.
             This list only needs to be refreshed when current scene is changing.
              */
-            val elements = remember(currentScene) { it.elements.toMutableStateList() }
+            val elements = remember(currentScene, it.elements) { it.elements.toMutableStateList() }
 
             if (it.id != currentScene.id) {
                 Menu(text = it.name, enabled = elements.isNotEmpty()) {
