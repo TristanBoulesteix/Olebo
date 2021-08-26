@@ -67,7 +67,7 @@ private fun ItemList(
 
             if (list.isEmpty()) {
                 item(type to list) {
-                    ContentListRow(contentText = StringLocale[STR_NO_ELEMENT])
+                    ContentListRow(contentText = StringLocale[STR_NO_ELEMENT], enabled = false)
                 }
             } else {
                 items(items = list) {

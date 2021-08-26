@@ -8,6 +8,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import jdr.exia.view.element.builder.ComposableContentBuilder
 import jdr.exia.view.element.builder.ContentBuilder
@@ -22,6 +23,7 @@ fun ContentListRow(
     content: @Composable DefaultFunction,
     onClick: DefaultFunction? = null,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     buttonBuilders: List<ContentBuilder> = emptyList(),
     removeBottomBorder: Boolean = false
 ) = Row(
@@ -32,7 +34,7 @@ fun ContentListRow(
     var boxModifier = Modifier.fillMaxHeight().weight(1f, fill = true)
 
     if (onClick != null)
-        boxModifier = boxModifier.clickableWithCursor(onClick = onClick)
+        boxModifier = boxModifier.clickableWithCursor(enabled = enabled, onClick = onClick)
 
     Box(modifier = boxModifier, contentAlignment = Alignment.CenterStart) { content() }
 
@@ -41,7 +43,8 @@ fun ContentListRow(
             contentBuilder = it,
             modifier = Modifier.applyIf(
                 condition = removeBottomBorder,
-                modifier = { border(bottom = BorderBuilder.defaultBorder) })
+                modifier = { border(bottom = BorderBuilder.defaultBorder) }
+            )
         )
     }
 }
@@ -51,17 +54,24 @@ fun ContentListRow(
     contentText: String,
     onClick: DefaultFunction? = null,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     buttonBuilders: List<ContentBuilder> = emptyList()
 ) = ContentListRow(
-    content = { ContentText(contentText) },
+    content = { ContentText(contentText = contentText, enabled = enabled) },
     onClick = onClick,
     modifier = modifier,
-    buttonBuilders = buttonBuilders
+    buttonBuilders = buttonBuilders,
+    enabled = enabled
 )
 
 @Composable
-fun ContentText(contentText: String) =
-    Text(text = contentText, style = typography.h1, modifier = Modifier.padding(10.dp))
+fun ContentText(contentText: String, enabled: Boolean = true) =
+    Text(
+        text = contentText,
+        style = typography.h1,
+        modifier = Modifier.padding(10.dp),
+        color = if (enabled) Color.Unspecified else Color.Gray
+    )
 
 @Composable
 private fun RowButton(contentBuilder: ContentBuilder, modifier: Modifier) {
