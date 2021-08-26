@@ -146,5 +146,6 @@ fun Modifier.addRoundedBorder() =
 @OptIn(ExperimentalComposeUiApi::class)
 fun Modifier.withHandCursor() = this.pointerIcon(PointerIcon(handCursor))
 
+@Stable
 fun Modifier.clickableWithCursor(enabled: Boolean = true, onClick: DefaultFunction) =
-    this.clickable(onClick = onClick, enabled = enabled).applyIf(enabled) { withHandCursor() }
+    this.clickable(onClick = onClick, enabled = enabled).applyIf(enabled, modifier = Modifier::withHandCursor)

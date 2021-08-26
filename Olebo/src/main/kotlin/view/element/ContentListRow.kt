@@ -78,7 +78,10 @@ private fun RowButton(contentBuilder: ContentBuilder, modifier: Modifier) {
     Box(
         modifier = modifier.size(65.dp)
             .border(start = BorderBuilder.defaultBorder)
-            .clickableWithCursor(onClick = contentBuilder.onChange, enabled = contentBuilder.enabled),
+            .applyIf(condition = contentBuilder.enabled) {
+                // We don't use the parameter "enabled" of clickable because it prevents clickable from parent even if disabled
+                clickableWithCursor(onClick = contentBuilder.onChange)
+            },
         contentAlignment = Alignment.CenterStart
     ) {
         when (contentBuilder) {
