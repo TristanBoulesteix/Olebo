@@ -99,7 +99,8 @@ class ElementsEditorViewModel(private val type: Type) {
             .any { it.name == name }
 
     private fun Blueprint.remove() = transaction {
-        val countUsage = Element.find { InstanceTable.idBlueprint eq this@remove.id.value }.count()
+        val countUsage =
+            Element.find { InstanceTable.idBlueprint eq this@remove.id.value }.distinctBy { it.scene.id }.count()
 
         fun deleteAndClearState() {
             delete()
@@ -111,7 +112,7 @@ class ElementsEditorViewModel(private val type: Type) {
         if (countUsage > 0) {
             showConfirmMessage(
                 null,
-                if (countUsage == 1L)
+                if (countUsage == 1)
                     StringLocale[ST_OCCURENCE_BLUEPRINT_TO_DELETE]
                 else
                     StringLocale[ST_INT1_OCCURENCE_BLUEPRINT_TO_DELETE, countUsage],
@@ -121,8 +122,6 @@ class ElementsEditorViewModel(private val type: Type) {
         } else {
             deleteAndClearState()
         }
-
-
     }
 
     private fun (Blueprint.BlueprintData).create() = transaction {
