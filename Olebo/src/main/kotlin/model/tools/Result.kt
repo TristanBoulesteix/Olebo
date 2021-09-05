@@ -3,10 +3,10 @@ package jdr.exia.model.tools
 import jdr.exia.localization.ST_UNKNOWN_ERROR
 import jdr.exia.localization.StringDelegate
 
-sealed class Result {
-    object Success : Result()
+sealed interface Result {
+    object Success : Result
 
-    sealed class Failure : Result() {
+    sealed class Failure : Result {
         companion object : Failure() {
             override val causeUnknown = true
 
