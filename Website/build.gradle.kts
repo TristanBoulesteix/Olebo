@@ -1,7 +1,7 @@
 @file:Suppress("PropertyName")
 
-val ktor_version: String by project
-val logback_version: String by project
+val ktorVersion: String by project.parent!!
+val logbackVersion: String by project.parent!!
 
 plugins {
     application
@@ -21,11 +21,11 @@ repositories {
 }
 
 dependencies {
-    implementation("io.ktor:ktor-server-core:$ktor_version")
-    implementation("io.ktor:ktor-serialization:$ktor_version")
-    implementation("io.ktor:ktor-server-netty:$ktor_version")
-    implementation("ch.qos.logback:logback-classic:$logback_version")
+    implementation("io.ktor:ktor-server-core:$ktorVersion")
+    implementation("io.ktor:ktor-serialization:$ktorVersion")
+    implementation("io.ktor:ktor-server-netty:$ktorVersion")
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation(project(":Update"))
     implementation(project(":System", "default"))
-    testImplementation("io.ktor:ktor-server-tests:$ktor_version")
+    testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
 }
