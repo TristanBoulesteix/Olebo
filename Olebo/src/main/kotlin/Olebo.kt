@@ -43,7 +43,7 @@ fun main() = application {
 
             if (!updateChecked || release != null) {
                 val trayHint = remember(release) {
-                    if (release == null) StringLocale[ST_OLEBO_SEARCH_FOR_UPDATE].also { println(it) } else StringLocale[STR_PREPARE_UPDATE].also { println(it) }
+                    if (release == null) StringLocale[ST_OLEBO_SEARCH_FOR_UPDATE] else StringLocale[STR_PREPARE_UPDATE]
                 }
 
                 Tray(icon = UpdateTrayIcon, state = trayState, hint = trayHint)

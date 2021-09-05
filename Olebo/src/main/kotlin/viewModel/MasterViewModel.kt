@@ -87,25 +87,33 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
         /**
          * Return a new [Point] inside the borders of the map
          */
-        fun Point.checkBound(): Point {
+        fun Point.checkBoundOf(element: Element?): Point {
             var newPosition = this
 
-            if (point.x < 0) {
-                newPosition = newPosition.copy(x = 0)
+            val height: Int
+            val width: Int
+
+            element?.hitBox.let {
+                height = (it?.height ?: 0) / 2
+                width = (it?.width ?: 0) / 2
+            }
+
+            if (newPosition.x < 0) {
+                newPosition = newPosition.copy(x = 0 + width)
             } else if (newPosition.x > ABSOLUTE_WIDTH) {
-                newPosition = newPosition.copy(x = ABSOLUTE_WIDTH)
+                newPosition = newPosition.copy(x = ABSOLUTE_WIDTH - width)
             }
 
             if (newPosition.y < 0) {
-                newPosition = newPosition.copy(y = 0)
+                newPosition = newPosition.copy(y = 0 + height)
             } else if (newPosition.y > ABSOLUTE_HEIGHT) {
-                newPosition = newPosition.copy(y = ABSOLUTE_HEIGHT)
+                newPosition = newPosition.copy(y = ABSOLUTE_HEIGHT - height)
             }
 
             return newPosition
         }
 
-        val newPosition = point.checkBound()
+        val newPosition = point.checkBoundOf(origin)
 
         if (selectedElements.isNotEmpty()) {
             if (selectedElements.size == 1) {
@@ -118,7 +126,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
 
                 val elementToPoint =
                     mapOf(originElement to originElement.positionOf(newPosition)) + selectedElements.filterNot { it === originElement }
-                        .map { it to it.positionOf((it.centerPoint + diffPosition).checkBound()) }
+                        .map { it to it.positionOf((it.centerPoint + diffPosition).checkBoundOf(it)) }
 
                 currentScene.callCommandManager(elementToPoint, Element::cmdPosition)
             }
