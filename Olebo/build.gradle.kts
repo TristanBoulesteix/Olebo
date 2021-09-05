@@ -1,5 +1,3 @@
-@file:Suppress("PropertyName")
-
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 val kotlinVersion: String by System.getProperties()

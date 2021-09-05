@@ -1,5 +1,3 @@
-@file:Suppress("PropertyName")
-
 val ktorVersion: String by project.parent!!
 val logbackVersion: String by project.parent!!
 
