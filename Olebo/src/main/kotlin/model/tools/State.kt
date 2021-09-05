@@ -4,7 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 
-infix fun <T> MutableState<T>.withSetter(setter: (newValue: T) -> Unit) = object : MutableState<T> {
+inline infix fun <T> MutableState<T>.withSetter(crossinline setter: (newValue: T) -> Unit) = object : MutableState<T> {
     private var delegatedValue by this@withSetter
 
     override var value
@@ -16,5 +16,5 @@ infix fun <T> MutableState<T>.withSetter(setter: (newValue: T) -> Unit) = object
 
     override fun component1() = value
 
-    override fun component2() = this::value.setter
+    override fun component2(): (T) -> Unit = this::value.setter
 }
