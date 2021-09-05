@@ -51,11 +51,9 @@ private fun ItemList(
     searchString: String,
     createElement: (Blueprint) -> Unit
 ) {
-    val itemsFiltered by remember(items, searchString) {
-        derivedStateOf {
-            items.mapValues { (_, list) ->
-                transaction { list.filter { it.realName.contains(searchString, ignoreCase = true) } }
-            }
+    val itemsFiltered = remember(items, searchString) {
+        items.mapValues { (_, list) ->
+            transaction { list.filter { it.realName.contains(searchString, ignoreCase = true) } }
         }
     }
 

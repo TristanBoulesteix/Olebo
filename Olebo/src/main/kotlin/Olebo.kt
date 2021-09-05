@@ -42,7 +42,9 @@ fun main() = application {
             var updateChecked by remember { mutableStateOf(false) }
 
             if (!updateChecked || release != null) {
-                val trayHint by remember(release) { derivedStateOf { if (release == null) StringLocale[ST_OLEBO_SEARCH_FOR_UPDATE] else StringLocale[STR_PREPARE_UPDATE] } }
+                val trayHint = remember(release) {
+                    if (release == null) StringLocale[ST_OLEBO_SEARCH_FOR_UPDATE].also { println(it) } else StringLocale[STR_PREPARE_UPDATE].also { println(it) }
+                }
 
                 Tray(icon = UpdateTrayIcon, state = trayState, hint = trayHint)
             }
