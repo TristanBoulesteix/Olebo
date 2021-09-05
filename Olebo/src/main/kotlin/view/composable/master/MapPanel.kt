@@ -63,6 +63,8 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
                             abs(start.y - end.y)
                         )
 
+                        repaintLocked = true
+
                         this@MapPanel.repaint()
                     }
                 }
@@ -70,6 +72,8 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
         })
 
         addMouseReleasedListener { me ->
+            repaintLocked = false
+
             val releasedPosition = Point(me.point).absolutePosition
 
             when (me.button) {
@@ -258,5 +262,14 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
      */
     override fun getToolTipText() = mousePosition?.let { point ->
         if (isParentMaster) viewModel.tokens.getTokenFromPosition(Point(point).absolutePosition)?.alias.takeIf { !it.isNullOrBlank() } else null
+    }
+
+    override fun repaint() {
+        if (isParentMaster || !repaintLocked)
+            super.repaint()
+    }
+
+    private companion object {
+        var repaintLocked = false
     }
 }
