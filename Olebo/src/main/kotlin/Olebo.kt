@@ -14,13 +14,9 @@ import jdr.exia.localization.STR_PREPARE_UPDATE
 import jdr.exia.localization.ST_OLEBO_SEARCH_FOR_UPDATE
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.dao.option.Settings
-import jdr.exia.update.Changelogs
-import jdr.exia.update.Release
-import jdr.exia.update.checkForUpdate
-import jdr.exia.update.getChangelogs
+import jdr.exia.update.*
 import jdr.exia.view.HomeWindow
 import jdr.exia.view.MasterWindow
-import jdr.exia.update.UpdateUI
 import jdr.exia.view.ui.OleboTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -95,12 +91,10 @@ fun ApplicationScope.MainUI() {
 
     when (val currentWindow = windowState) {
         is WindowState.HomeWindow -> HomeWindow(startAct = { windowState = WindowState.MasterWindow(it) })
-        is WindowState.MasterWindow -> {
-            MasterWindow(
-                act = currentWindow.act,
-                onExit = { windowState = WindowState.HomeWindow }
-            )
-        }
+        is WindowState.MasterWindow -> MasterWindow(
+            act = currentWindow.act,
+            onExit = { windowState = WindowState.HomeWindow }
+        )
     }
 }
 
