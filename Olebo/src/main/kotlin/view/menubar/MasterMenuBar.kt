@@ -103,8 +103,10 @@ private fun MenuBarScope.WindowMenu(
 
     Menu(text = StringLocale[STR_CHOOSE_SCENE]) {
         scenes.forEachIndexed { index, scene ->
-            val isCurrentScene by remember(currentScene) { derivedStateOf { scene.id == currentScene.id } }
-            val itemText by remember(isCurrentScene) { derivedStateOf { "${index + 1} ${scene.name}" + if (isCurrentScene) " (${StringLocale[STR_IS_CURRENT_SCENE, StringStates.NORMAL]})" else "" } }
+            val isCurrentScene = remember(currentScene) { scene.id == currentScene.id }
+            val itemText = remember(isCurrentScene) {
+                "${index + 1} ${scene.name}" + if (isCurrentScene) " (${StringLocale[STR_IS_CURRENT_SCENE, StringStates.NORMAL]})" else ""
+            }
 
             Item(text = itemText, enabled = !isCurrentScene) {
                 onSwitchScene(scene)
