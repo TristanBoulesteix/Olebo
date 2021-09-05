@@ -264,12 +264,18 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
         if (isParentMaster) viewModel.tokens.getTokenFromPosition(Point(point).absolutePosition)?.alias.takeIf { !it.isNullOrBlank() } else null
     }
 
+    /**
+     * Call [JComponent.repaint] only if [repaintLocked] is set to [false].
+     */
     override fun repaint() {
         if (isParentMaster || !repaintLocked)
             super.repaint()
     }
 
     private companion object {
+        /**
+         * If set to [true], the [MapPanel] of the PlayerDialog will not be repainted.
+         */
         var repaintLocked = false
     }
 }
