@@ -20,7 +20,6 @@ import jdr.exia.view.MasterWindow
 import jdr.exia.view.ui.OleboTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import javax.swing.UIManager
 
 const val OLEBO_VERSION_NAME = "0.1.0"
 
@@ -30,11 +29,6 @@ const val OLEBO_VERSION_NAME = "0.1.0"
 const val OLEBO_VERSION_CODE = 1
 
 fun main() = application {
-    // Set look and feel for Swing (less mandatory with compose)
-    UIManager.setLookAndFeel(
-        UIManager.getSystemLookAndFeelClassName()
-    )
-
     // Initialize translations
     StringLocale(Settings.Companion::activeLanguage)
 
