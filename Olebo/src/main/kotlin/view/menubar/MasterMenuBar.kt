@@ -8,6 +8,7 @@ import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.window.FrameWindowScope
 import androidx.compose.ui.window.MenuBar
 import androidx.compose.ui.window.MenuBarScope
+import androidx.compose.ui.window.MenuScope
 import jdr.exia.localization.*
 import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.option.Settings
@@ -146,44 +147,43 @@ private fun MenuBarScope.TokenMenu(
 }
 
 @Composable
-private fun MenuBarScope.MenuImportFromScene(
+private fun MenuScope.MenuImportFromScene(
     scenes: List<Scene>,
     currentScene: Scene,
     moveElements: (List<Element>) -> Unit
-) =
-    Menu(text = StringLocale[STR_IMPORT_FROM_SCENE], enabled = scenes.count() > 1) {
-        scenes.forEach {
-            /*
-            Since moving elements needs to trigger recomposition, we create a mutableStateList from the list of elements.
-            This list only needs to be refreshed when current scene is changing.
-             */
-            val elements = remember(currentScene, it.elements) { it.elements.toMutableStateList() }
+) = Menu(text = StringLocale[STR_IMPORT_FROM_SCENE], enabled = scenes.count() > 1) {
+    scenes.forEach {
+        /*
+        Since moving elements needs to trigger recomposition, we create a mutableStateList from the list of elements.
+        This list only needs to be refreshed when current scene is changing.
+         */
+        val elements = remember(currentScene, it.elements) { it.elements.toMutableStateList() }
 
-            if (it.id != currentScene.id) {
-                Menu(text = it.name, enabled = elements.isNotEmpty()) {
-                    if (elements.isNotEmpty()) {
-                        Item(text = StringLocale[STR_IMPORT_ALL_ELEMENTS]) {
+        if (it.id != currentScene.id) {
+            Menu(text = it.name, enabled = elements.isNotEmpty()) {
+                if (elements.isNotEmpty()) {
+                    Item(text = StringLocale[STR_IMPORT_ALL_ELEMENTS]) {
+                        elements.moveElementToSceneAndUpdateState(
+                            elements = it.elements,
+                            moveElements = moveElements
+                        )
+                    }
+
+                    Separator()
+
+                    elements.forEach { token ->
+                        Item(text = "${token.name} (${token.type.localizedName})") {
                             elements.moveElementToSceneAndUpdateState(
-                                elements = it.elements,
+                                elements = listOf(token),
                                 moveElements = moveElements
                             )
-                        }
-
-                        Separator()
-
-                        elements.forEach { token ->
-                            Item(text = "${token.name} (${token.type.localizedName})") {
-                                elements.moveElementToSceneAndUpdateState(
-                                    elements = listOf(token),
-                                    moveElements = moveElements
-                                )
-                            }
                         }
                     }
                 }
             }
         }
     }
+}
 
 private fun SnapshotStateList<Element>.moveElementToSceneAndUpdateState(
     elements: List<Element>,
