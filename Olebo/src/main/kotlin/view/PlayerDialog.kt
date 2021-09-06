@@ -95,7 +95,7 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: (
         repaintJob = CoroutineScope(Dispatchers.Swing).launch {
             while (isActive) {
                 mapPanel.repaint()
-                delay(80L)
+                delay(60L)
             }
         }
     }
