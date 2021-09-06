@@ -8,12 +8,11 @@ import jdr.exia.localization.STR_CLOSE
 import jdr.exia.localization.STR_MANAGE_BLUEPRINTS
 import jdr.exia.localization.StringLocale
 import jdr.exia.view.composable.editor.ElementsView
-import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.ui.HOME_WINDOWS_SIZE
 import java.awt.Dimension
 
 @Composable
-fun BlueprintEditorDialog(onCloseRequest: DefaultFunction) {
+fun BlueprintEditorDialog(onCloseRequest: () -> Unit) {
     val state = rememberDialogState(size = HOME_WINDOWS_SIZE)
 
     Dialog(onCloseRequest = onCloseRequest, title = StringLocale[STR_MANAGE_BLUEPRINTS], state = state) {

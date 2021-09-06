@@ -44,7 +44,7 @@ import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
 @Composable
-fun ElementsView(onDone: DefaultFunction, closeText: String = StringLocale[STR_BACK]) = Column {
+fun ElementsView(onDone: () -> Unit, closeText: String = StringLocale[STR_BACK]) = Column {
     val tabViewModel = remember { ElementsTabViewModel() }
 
     val contentViewModel = remember(tabViewModel.currentTab) { ElementsEditorViewModel(tabViewModel.currentTab) }

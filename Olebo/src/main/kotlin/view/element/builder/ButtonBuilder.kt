@@ -3,14 +3,13 @@ package jdr.exia.view.element.builder
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.ImageBitmap
-import jdr.exia.view.tools.DefaultFunction
 
 sealed interface ContentBuilder {
     val content: Any?
 
     val enabled: Boolean
 
-    val onChange: DefaultFunction
+    val onChange: () -> Unit
 }
 
 object EmptyContent : ContentBuilder {
@@ -25,7 +24,7 @@ object EmptyContent : ContentBuilder {
 data class ImageButtonBuilder(
     override val content: ImageBitmap,
     override val enabled: Boolean = true,
-    val onClick: DefaultFunction
+    val onClick: () -> Unit
 ) : ContentBuilder {
     override val onChange by ::onClick
 
@@ -36,7 +35,7 @@ data class ImageButtonBuilder(
 data class ContentButtonBuilder(
     override val content: String,
     override val enabled: Boolean = true,
-    val onClick: DefaultFunction = {}
+    val onClick: () -> Unit = {}
 ) : ContentBuilder {
     override val onChange by ::onClick
 
@@ -45,7 +44,7 @@ data class ContentButtonBuilder(
 
 @Immutable
 data class ComposableContentBuilder(
-    override val content: @Composable DefaultFunction
+    override val content: @Composable () -> Unit
 ) : ContentBuilder {
     override val enabled = true
 

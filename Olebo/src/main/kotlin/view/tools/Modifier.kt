@@ -15,7 +15,6 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerIcon
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import jdr.exia.view.ui.handCursor
 import jdr.exia.view.ui.roundedShape
 
 /**
@@ -145,8 +144,8 @@ fun Modifier.addRoundedBorder() =
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Stable
-fun Modifier.withHandCursor() = this.pointerIcon(PointerIcon(handCursor))
+fun Modifier.withHandCursor() = this.pointerIcon(PointerIcon.Hand)
 
 @Stable
-fun Modifier.clickableWithCursor(enabled: Boolean = true, onClick: DefaultFunction) =
+fun Modifier.clickableWithCursor(enabled: Boolean = true, onClick: () -> Unit) =
     this.clickable(onClick = onClick, enabled = enabled).applyIf(enabled, modifier = Modifier::withHandCursor)

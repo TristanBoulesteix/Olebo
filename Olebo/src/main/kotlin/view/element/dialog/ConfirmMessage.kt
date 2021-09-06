@@ -13,11 +13,10 @@ import jdr.exia.localization.STR_CANCEL
 import jdr.exia.localization.STR_CONFIRM
 import jdr.exia.localization.StringLocale
 import jdr.exia.view.element.builder.ContentButtonBuilder
-import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.withHandCursor
 
 @Composable
-fun ConfirmMessage(message: String, title: String, onCloseRequest: DefaultFunction, onConfirm: DefaultFunction) {
+fun ConfirmMessage(message: String, title: String, onCloseRequest: () -> Unit, onConfirm: () -> Unit) {
     var checked by remember { mutableStateOf(false) }
 
     PromptDialog(

@@ -14,7 +14,6 @@ import jdr.exia.OLEBO_VERSION_CODE
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.system.OLEBO_DIRECTORY
 import jdr.exia.system.OS
-import jdr.exia.view.tools.DefaultFunction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -68,9 +67,9 @@ suspend fun getInstallerExecutable(onUpdateProgress: (Long) -> Unit): Result<Fil
 }
 
 suspend fun downloadAndExit(
-    onExitSuccess: DefaultFunction,
+    onExitSuccess: () -> Unit,
     onProgressUpdate: (Long) -> Unit = {},
-    onDownloadSuccess: DefaultFunction = {},
+    onDownloadSuccess: () -> Unit = {},
     onDownloadFailure: (Throwable) -> Unit = {}
 ) = coroutineScope {
     this.launch(Dispatchers.IO) {

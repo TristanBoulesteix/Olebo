@@ -14,14 +14,17 @@ import jdr.exia.view.element.builder.ComposableContentBuilder
 import jdr.exia.view.element.builder.ContentBuilder
 import jdr.exia.view.element.builder.ContentButtonBuilder
 import jdr.exia.view.element.builder.ImageButtonBuilder
-import jdr.exia.view.tools.*
+import jdr.exia.view.tools.BorderBuilder
+import jdr.exia.view.tools.applyIf
+import jdr.exia.view.tools.border
+import jdr.exia.view.tools.clickableWithCursor
 import jdr.exia.view.ui.typography
 
 
 @Composable
 fun ContentListRow(
-    content: @Composable DefaultFunction,
-    onClick: DefaultFunction? = null,
+    content: @Composable () -> Unit,
+    onClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     buttonBuilders: List<ContentBuilder> = emptyList(),
@@ -52,7 +55,7 @@ fun ContentListRow(
 @Composable
 fun ContentListRow(
     contentText: String,
-    onClick: DefaultFunction? = null,
+    onClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     buttonBuilders: List<ContentBuilder> = emptyList()

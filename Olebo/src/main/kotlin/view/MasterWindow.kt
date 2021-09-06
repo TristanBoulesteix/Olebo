@@ -21,7 +21,6 @@ import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.composable.master.SelectedEditor
 import jdr.exia.view.element.dialog.ConfirmMessage
 import jdr.exia.view.menubar.MasterMenuBar
-import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.event.addKeyPressedListener
 import jdr.exia.view.tools.screens
 import jdr.exia.view.ui.MASTER_WINDOW_SIZE
@@ -33,7 +32,7 @@ import java.awt.GraphicsDevice
 import java.awt.event.KeyEvent
 
 @Composable
-fun ApplicationScope.MasterWindow(act: Act, onExit: DefaultFunction) {
+fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
     val scope = rememberCoroutineScope()
 
     val viewModel = remember { MasterViewModel(act = act, scope = scope) }

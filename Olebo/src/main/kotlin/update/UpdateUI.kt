@@ -16,12 +16,11 @@ import jdr.exia.localization.*
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.view.element.builder.ContentButtonBuilder
 import jdr.exia.view.element.dialog.PromptDialog
-import jdr.exia.view.tools.DefaultFunction
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.delay
 
 @Composable
-fun ApplicationScope.UpdateUI(release: Release, notifify: (Notification) -> Unit, hideTray: DefaultFunction) {
+fun ApplicationScope.UpdateUI(release: Release, notifify: (Notification) -> Unit, hideTray: () -> Unit) {
     val id = release.versionId
 
     if (Settings.autoUpdate) {
@@ -51,7 +50,7 @@ fun ApplicationScope.UpdateUI(release: Release, notifify: (Notification) -> Unit
 }
 
 @Composable
-private fun ApplicationScope.PromptUpdate(versionCode: Int, onUpdateRefused: DefaultFunction) {
+private fun ApplicationScope.PromptUpdate(versionCode: Int, onUpdateRefused: () -> Unit) {
     var askForUpdateDialogIsVisible by remember { mutableStateOf(true) }
     var updateIsStarted by remember { mutableStateOf(false) }
 
@@ -85,7 +84,7 @@ private fun ApplicationScope.PromptUpdate(versionCode: Int, onUpdateRefused: Def
 
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
-private fun InstallerDownloader(exitApplication: DefaultFunction) {
+private fun InstallerDownloader(exitApplication: () -> Unit) {
     var isVisible by remember { mutableStateOf(true) }
 
     if (isVisible) {

@@ -16,7 +16,6 @@ import jdr.exia.model.tools.Result
 import jdr.exia.view.OptionDialog
 import jdr.exia.view.WindowStateManager
 import jdr.exia.view.element.dialog.ConfirmMessage
-import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.MessageType
 import jdr.exia.view.tools.showMessage
 import jdr.exia.view.tools.windowAncestor
@@ -29,13 +28,13 @@ import javax.swing.JOptionPane
 import javax.swing.filechooser.FileNameExtensionFilter
 
 @Composable
-fun FrameWindowScope.MainMenuBar(exitApplication: DefaultFunction) = MenuBar {
+fun FrameWindowScope.MainMenuBar(exitApplication: () -> Unit) = MenuBar {
     MainMenus(exitApplication)
 }
 
 @OptIn(DelicateCoroutinesApi::class, androidx.compose.ui.ExperimentalComposeUiApi::class)
 @Composable
-fun MenuBarScope.MainMenus(exitApplication: DefaultFunction) = Menu(text = StringLocale[STR_FILES], mnemonic = 'f') {
+fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLocale[STR_FILES], mnemonic = 'f') {
     Item(text = StringLocale[STR_EXPORT_DATA]) {
         val extension = "olebo"
         JFileChooser().apply {

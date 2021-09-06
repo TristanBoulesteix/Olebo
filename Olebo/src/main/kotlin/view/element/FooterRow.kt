@@ -15,7 +15,6 @@ import jdr.exia.localization.STR_CANCEL
 import jdr.exia.localization.STR_CONFIRM
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.tools.Result
-import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.MessageType
 import jdr.exia.view.tools.showMessage
 import jdr.exia.view.tools.withHandCursor
@@ -24,8 +23,8 @@ import jdr.exia.view.tools.withHandCursor
 fun FooterRow(
     lazyResult: Lazy<Result>,
     isEnabled: Boolean = true,
-    onDone: DefaultFunction,
-    onCancel: DefaultFunction = onDone
+    onDone: () -> Unit,
+    onCancel: () -> Unit = onDone
 ) = Row(
     horizontalArrangement = Arrangement.SpaceAround,
     modifier = Modifier.fillMaxWidth().padding(15.dp)

@@ -14,7 +14,6 @@ import androidx.compose.ui.window.rememberDialogState
 import jdr.exia.view.element.builder.ComposableContentBuilder
 import jdr.exia.view.element.builder.ContentBuilder
 import jdr.exia.view.element.builder.ContentButtonBuilder
-import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.applyIf
 import jdr.exia.view.tools.withHandCursor
 
@@ -22,7 +21,7 @@ import jdr.exia.view.tools.withHandCursor
 fun PromptDialog(
     title: String,
     message: String,
-    onCloseRequest: DefaultFunction,
+    onCloseRequest: () -> Unit,
     buttonBuilders: List<ContentBuilder>,
     width: Dp = 400.dp,
     height: Dp = 200.dp,
@@ -42,12 +41,12 @@ fun PromptDialog(
 @Composable
 fun PromptDialog(
     title: String,
-    onCloseRequest: DefaultFunction,
+    onCloseRequest: () -> Unit,
     buttonBuilders: List<ContentBuilder>,
     width: Dp = 400.dp,
     height: Dp = 200.dp,
     visible: Boolean = true,
-    content: @Composable DefaultFunction
+    content: @Composable () -> Unit
 ) {
     if (visible) {
         val state = rememberDialogState(size = WindowSize(width, height))

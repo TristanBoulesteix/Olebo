@@ -3,7 +3,6 @@ package jdr.exia.view
 import jdr.exia.localization.STR_PLAYER_TITLE_FRAME
 import jdr.exia.localization.StringLocale
 import jdr.exia.view.composable.master.MapPanel
-import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.event.addKeyPressedListener
 import jdr.exia.view.tools.screens
 import jdr.exia.view.ui.MASTER_WINDOW_SIZE
@@ -20,7 +19,7 @@ import javax.swing.JDialog
 /**
  * PlayerFrame is the Frame the Players can see, it shares its content with MasterFrame
  */
-class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: DefaultFunction, title: String) :
+class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: () -> Unit, title: String) :
     JDialog(null as Window?) {
     companion object {
         private var playerDialog: PlayerDialog? = null
@@ -113,7 +112,7 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: D
     data class PlayerDialogData(
         val title: String,
         val mapPanel: MapPanel,
-        val onHide: DefaultFunction,
+        val onHide: () -> Unit,
         val getMasterWindowScreen: () -> GraphicsDevice?
     )
 }

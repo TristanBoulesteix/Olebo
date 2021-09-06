@@ -23,7 +23,6 @@ import jdr.exia.model.tools.withSetter
 import jdr.exia.view.element.CustomTextField
 import jdr.exia.view.element.IntTextField
 import jdr.exia.view.element.TitledDropdownMenu
-import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.applyIf
 import jdr.exia.view.tools.withHandCursor
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -33,8 +32,8 @@ fun SelectedEditor(
     modifier: Modifier,
     commandManager: CommandManager,
     selectedElements: List<Element>,
-    deleteSelectedElement: DefaultFunction,
-    repaint: DefaultFunction
+    deleteSelectedElement: () -> Unit,
+    repaint: () -> Unit
 ) = Row(
     modifier = modifier,
     verticalAlignment = Alignment.CenterVertically,
@@ -109,7 +108,7 @@ private fun NameElement(selectedElements: List<Element>, modifier: Modifier) {
 }
 
 @Composable
-private fun LabelField(selectedElements: List<Element>, repaint: DefaultFunction, modifier: Modifier) {
+private fun LabelField(selectedElements: List<Element>, repaint: () -> Unit, modifier: Modifier) {
     if (selectedElements.size == 1) {
         var value by remember(selectedElements.size, selectedElements.firstOrNull()) {
             if (selectedElements.size == 1) {
@@ -143,7 +142,7 @@ private fun <T> List<Element>.getElementProperty(elementPropertyGetter: Element.
 }
 
 @Composable
-private fun SizeSelector(selectedElements: List<Element>, repaint: DefaultFunction, commandManager: CommandManager) {
+private fun SizeSelector(selectedElements: List<Element>, repaint: () -> Unit, commandManager: CommandManager) {
     var selectedSize by remember(selectedElements, commandManager.composeKey) {
         mutableStateOf(
             selectedElements.getElementProperty(
@@ -168,7 +167,7 @@ private fun SizeSelector(selectedElements: List<Element>, repaint: DefaultFuncti
 }
 
 @Composable
-private fun LayerSelector(selectedElements: List<Element>, repaint: DefaultFunction) {
+private fun LayerSelector(selectedElements: List<Element>, repaint: () -> Unit) {
     var selectedLayer by remember(selectedElements) {
         mutableStateOf(
             selectedElements.getElementProperty(
@@ -195,7 +194,7 @@ private fun LayerSelector(selectedElements: List<Element>, repaint: DefaultFunct
 @Composable
 private fun OrientationButtons(
     selectedElements: List<Element>,
-    repaint: DefaultFunction,
+    repaint: () -> Unit,
     commandManager: CommandManager
 ) = ColumnEditor {
     val isEnabled = selectedElements.isNotEmpty()
@@ -222,8 +221,8 @@ private fun OrientationButtons(
 @Composable
 private fun VisibilityButtons(
     selectedElements: List<Element>,
-    deleteSelectedElement: DefaultFunction,
-    repaint: DefaultFunction,
+    deleteSelectedElement: () -> Unit,
+    repaint: () -> Unit,
     commandManager: CommandManager
 ) = ColumnEditor {
     var isVisible by remember(selectedElements, commandManager.composeKey) {

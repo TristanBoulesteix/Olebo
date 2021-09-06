@@ -37,7 +37,7 @@ import javax.swing.filechooser.FileNameExtensionFilter
 import jdr.exia.model.type.Image as Img
 
 @Composable
-fun ActEditorView(act: Act? = null, onDone: DefaultFunction) = Column {
+fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
     val viewModel = remember { ActEditorViewModel(act) }
 
     HeaderRow {
@@ -181,8 +181,8 @@ private fun EditSceneRow(
     updateData: (Act.SceneData) -> Unit,
     modifier: Modifier = Modifier,
     showButtons: Boolean = true,
-    onConfirmed: DefaultFunction? = null,
-    onCanceled: DefaultFunction? = null
+    onConfirmed: (() -> Unit)? = null,
+    onCanceled: (() -> Unit)? = null
 ) = Column(
     modifier = modifier.applyIf(
         condition = showButtons,

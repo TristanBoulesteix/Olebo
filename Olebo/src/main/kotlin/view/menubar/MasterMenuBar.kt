@@ -14,14 +14,13 @@ import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
 import jdr.exia.model.tools.withSetter
-import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.viewModel.MasterViewModel
 import org.jetbrains.exposed.sql.transactions.transaction
 
 @Composable
 fun FrameWindowScope.MasterMenuBar(
-    exitApplication: DefaultFunction,
-    closeAct: DefaultFunction,
+    exitApplication: () -> Unit,
+    closeAct: () -> Unit,
     playerFrameOpenedByDefault: Boolean,
     setPlayerFrameOpenedByDefault: (Boolean) -> Unit,
     viewModel: MasterViewModel
@@ -81,7 +80,7 @@ private fun MenuBarScope.ToolsMenu(viewModel: MasterViewModel) = Menu(text = Str
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun MenuBarScope.WindowMenu(
-    closeAct: DefaultFunction,
+    closeAct: () -> Unit,
     playerFrameOpenedByDefault: Boolean,
     setPlayerFrameOpenedByDefault: (Boolean) -> Unit,
     currentScene: Scene,
@@ -118,11 +117,11 @@ private fun MenuBarScope.WindowMenu(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun MenuBarScope.TokenMenu(
-    showBlueprintEditorDialog: DefaultFunction,
+    showBlueprintEditorDialog: () -> Unit,
     scenes: List<Scene>,
     currentScene: Scene,
-    deleteSelectedToken: DefaultFunction,
-    onClearTokens: DefaultFunction,
+    deleteSelectedToken: () -> Unit,
+    onClearTokens: () -> Unit,
     moveElements: (List<Element>) -> Unit
 ) = Menu(text = StringLocale[STR_TOKENS], mnemonic = 'b') {
     Item(

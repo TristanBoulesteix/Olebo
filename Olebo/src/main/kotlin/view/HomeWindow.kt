@@ -26,7 +26,6 @@ import jdr.exia.view.element.LazyScrollableColumn
 import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.menubar.MainMenuBar
 import jdr.exia.view.tools.BorderBuilder
-import jdr.exia.view.tools.DefaultFunction
 import jdr.exia.view.tools.border
 import jdr.exia.view.tools.withHandCursor
 import jdr.exia.view.ui.HOME_WINDOWS_SIZE
@@ -83,8 +82,8 @@ private fun ActsView(
     onRowClick: (Act) -> Unit,
     onEdit: (Act) -> Unit,
     onDelete: (Act) -> Unit,
-    viewElements: DefaultFunction,
-    startActCreation: DefaultFunction
+    viewElements: () -> Unit,
+    startActCreation: () -> Unit
 ) = Column {
     HeaderRow {
         OutlinedButton(onClick = viewElements, modifier = Modifier.withHandCursor()) {
