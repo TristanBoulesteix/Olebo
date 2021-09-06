@@ -7,7 +7,7 @@ import javax.swing.JButton
 import javax.swing.JCheckBox
 import javax.swing.JOptionPane
 
-enum class MessageType(val title: String, val OptionPaneType: Int) {
+enum class MessageType(val title: String, val optionPaneType: Int) {
     INFO(StringLocale[STR_INFO], JOptionPane.INFORMATION_MESSAGE),
     WARNING(StringLocale[STR_WARNING], JOptionPane.WARNING_MESSAGE),
     ERROR(StringLocale[STR_ERROR], JOptionPane.INFORMATION_MESSAGE)
@@ -21,7 +21,7 @@ fun showMessage(message: String, parent: Component? = null, messageType: Message
         parent,
         message,
         messageType.title,
-        messageType.OptionPaneType
+        messageType.optionPaneType
     )
 
 inline fun showConfirmMessage(

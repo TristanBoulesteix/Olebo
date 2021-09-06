@@ -69,29 +69,27 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
             JFileChooser().apply {
                 this.dialogTitle = StringLocale[STR_IMPORT_DATA]
                 this.fileFilter = FileNameExtensionFilter(StringLocale[STR_OLEBO_FILE], "olebo")
-                if (this.showOpenDialog(this.windowAncestor) == JFileChooser.APPROVE_OPTION) {
-                    if (!this.selectedFile.isDirectory && this.selectedFile.exists()) {
-                        when (val result = loadOleboZipData(this.selectedFile)) {
-                            is Result.Success -> {
-                                showMessage(
-                                    StringLocale[ST_CONFIGURATION_IMPORTED],
-                                    this.windowAncestor
-                                )
+                if (this.showOpenDialog(this.windowAncestor) == JFileChooser.APPROVE_OPTION && !this.selectedFile.isDirectory && this.selectedFile.exists()) {
+                    when (val result = loadOleboZipData(this.selectedFile)) {
+                        is Result.Success -> {
+                            showMessage(
+                                StringLocale[ST_CONFIGURATION_IMPORTED],
+                                this.windowAncestor
+                            )
 
-                                // close all composable windows and then restart the main function
-                                exitApplication()
+                            // close all composable windows and then restart the main function
+                            exitApplication()
 
-                                GlobalScope.launch {
-                                    main()
-                                }
+                            GlobalScope.launch {
+                                main()
                             }
-                            is Result.Failure -> {
-                                showMessage(
-                                    if (result.causeUnknown) "${StringLocale[ST_UNKNOWN_ERROR]} ${StringLocale[ST_FILE_MAY_BE_CORRUPTED]}" else result.message,
-                                    this.windowAncestor,
-                                    MessageType.ERROR
-                                )
-                            }
+                        }
+                        is Result.Failure -> {
+                            showMessage(
+                                if (result.causeUnknown) "${StringLocale[ST_UNKNOWN_ERROR]} ${StringLocale[ST_FILE_MAY_BE_CORRUPTED]}" else result.message,
+                                this.windowAncestor,
+                                MessageType.ERROR
+                            )
                         }
                     }
                 }

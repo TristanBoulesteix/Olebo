@@ -8,6 +8,7 @@ val exposedVersion: String by project.parent!!
 plugins {
     kotlin("jvm")
     id("org.jetbrains.compose") version "1.0.0-alpha4-build331"
+    id("org.sonarqube") version "3.3"
 }
 
 version = "0.1.0"

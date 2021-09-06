@@ -127,14 +127,14 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
      * Translates an X coordinate from this window into a 1600:900 X coordinate
      */
     private fun absoluteX(relativeX: Int): Int {
-        return (((relativeX.toFloat() / this.width.toFloat())) * ABSOLUTE_WIDTH).toInt()
+        return ((relativeX.toFloat() / this.width.toFloat()) * ABSOLUTE_WIDTH).toInt()
     }
 
     /**
      * Translates an Y coordinate from this window into a 1600:900 Y coordinate
      */
     private fun absoluteY(relativeY: Int): Int {
-        return (((relativeY.toFloat() / this.height.toFloat())) * ABSOLUTE_HEIGHT).toInt()
+        return ((relativeY.toFloat() / this.height.toFloat()) * ABSOLUTE_HEIGHT).toInt()
     }
 
     val Point.absolutePosition
