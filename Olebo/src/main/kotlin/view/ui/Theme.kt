@@ -36,8 +36,3 @@ fun OleboTheme(darkTheme: Boolean = false, content: @Composable () -> Unit) {
     )
 }
 
-fun ComposePanel.setThemedContent(content: @Composable () -> Unit) = setContent {
-    OleboTheme {
-        DesktopMaterialTheme(content = content)
-    }
-}
