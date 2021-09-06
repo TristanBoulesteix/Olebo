@@ -144,6 +144,7 @@ fun Modifier.addRoundedBorder() =
     this.border(border = BorderStroke(2.dp, Color.Black), shape = roundedShape)
 
 @OptIn(ExperimentalComposeUiApi::class)
+@Stable
 fun Modifier.withHandCursor() = this.pointerIcon(PointerIcon(handCursor))
 
 @Stable
