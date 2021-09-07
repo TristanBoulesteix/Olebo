@@ -95,7 +95,9 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: (
         repaintJob = CoroutineScope(Dispatchers.Swing).launch {
             while (isActive) {
                 mapPanel.repaint()
-                delay(60L)
+                // The delay must be greater than or equal to 120.
+                // Since the repaint method of MapPanel last on average 120 milliseconds, if the delay is inferior, the Swing thread can be slowed down or locked
+                delay(120L)
             }
         }
     }
