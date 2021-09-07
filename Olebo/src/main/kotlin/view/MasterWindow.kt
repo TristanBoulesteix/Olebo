@@ -143,8 +143,6 @@ private fun ComposeWindow.getCurrentSceen(): GraphicsDevice? {
     var lastArea = 0
     var device: GraphicsDevice? = null
 
-    this.graphicsConfiguration.device
-
     screens.forEach { graphicsDevice ->
         graphicsDevice.configurations.forEach { graphicsConfiguration ->
             val area = windowBounds.intersection(graphicsConfiguration.bounds).let { it.width * it.height }
