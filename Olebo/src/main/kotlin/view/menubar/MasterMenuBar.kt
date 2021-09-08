@@ -47,7 +47,7 @@ fun FrameWindowScope.MasterMenuBar(
         selectAll = viewModel::selectAllElements,
         rotateRight = viewModel::rotateRight,
         rotateLeft = viewModel::rotateLeft,
-        hasItemsSelected = viewModel.selectedElements.isNotEmpty()
+        hasItemsSelected = viewModel.hasSelectedElement
     )
 }
 

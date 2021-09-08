@@ -48,6 +48,8 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     var selectedElements: List<Element> by mutableStateOf(emptyList())
         private set
 
+    val hasSelectedElement by derivedStateOf { selectedElements.isNotEmpty() }
+
     var blueprintsGrouped by mutableStateOf(loadBlueprints())
         private set
 
