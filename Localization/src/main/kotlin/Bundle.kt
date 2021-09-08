@@ -182,6 +182,9 @@ internal class StringLocaleBundle : StringLocale() {
         STR_DOWNLOAD_UPDATE to "download of the update",
         STR_DOWNLOAD to "download:",
         ST_OLEBO_SEARCH_FOR_UPDATE to "Olebo is checking for update",
+        STR_SELECT_DOWN to "select previous token",
+        STR_SELECT_UP to "select next token",
+        STR_SELECT_ALL to "select all tokens",
     )
 }
 
@@ -366,5 +369,8 @@ internal class StringLocaleBundle_fr : StringLocale() {
         STR_DOWNLOAD_UPDATE to "téléchargement de la mise à jour",
         STR_DOWNLOAD to "téléchargement :",
         ST_OLEBO_SEARCH_FOR_UPDATE to "Olebo recherche les mises à jour",
+        STR_SELECT_DOWN to "élément précédent",
+        STR_SELECT_UP to "élément suivant",
+        STR_SELECT_ALL to "tout sélectionner",
     )
 }

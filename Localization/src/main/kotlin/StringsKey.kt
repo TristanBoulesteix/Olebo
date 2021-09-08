@@ -133,6 +133,9 @@ const val STR_PRIORITY = "priority_of_items"
 const val STR_CLOSE = "close"
 const val STR_DOWNLOAD_UPDATE = "download_update"
 const val STR_DOWNLOAD = "download"
+const val STR_SELECT_DOWN = "select_down"
+const val STR_SELECT_UP = "select_up"
+const val STR_SELECT_ALL = "select_all"
 
 // -- Sentences
 

@@ -161,8 +161,8 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     }
 
     fun select(up: Boolean = true) = transaction {
-        if (selectedElements.isEmpty() && tokens.isNotEmpty()) {
-            tokens.first()
+        selectedElements = if (selectedElements.isEmpty() && tokens.isNotEmpty()) {
+            listOf(tokens.first())
         } else {
             val operation = if (up) fun Int.(list: List<Element>): Int {
                 return if (this == list.size - 1) 0 else this + 1
@@ -170,7 +170,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
                 return if (this == 0) list.size - 1 else this - 1
             }
 
-            selectedElements = selectedElements.doIfContainsSingle(emptyList()) { blueprint ->
+            selectedElements.doIfContainsSingle(emptyList()) { blueprint ->
                 val elements = tokens
 
                 if (elements.getOrNull(elements.indexOfFirst { it.id == blueprint.id }

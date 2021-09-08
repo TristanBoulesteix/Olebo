@@ -21,7 +21,6 @@ import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.composable.master.SelectedEditor
 import jdr.exia.view.element.dialog.ConfirmMessage
 import jdr.exia.view.menubar.MasterMenuBar
-import jdr.exia.view.tools.event.addKeyPressedListener
 import jdr.exia.view.tools.screens
 import jdr.exia.view.ui.MASTER_WINDOW_SIZE
 import jdr.exia.viewModel.MasterViewModel
@@ -29,7 +28,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.GraphicsDevice
-import java.awt.event.KeyEvent
 
 @Composable
 fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
@@ -75,18 +73,6 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
         DisposableEffect(Unit) {
             onDispose {
                 playerDialogData.togglePlayerWindow(false)
-            }
-        }
-
-        LaunchedEffect(Unit) {
-            window.addKeyPressedListener {
-                when (it.keyCode) {
-                    KeyEvent.VK_UP -> viewModel.select()
-                    KeyEvent.VK_DOWN -> viewModel.select(false)
-                    KeyEvent.VK_RIGHT -> viewModel.rotateRight()
-                    KeyEvent.VK_LEFT -> viewModel.rotateLeft()
-                    KeyEvent.VK_A -> if (it.isControlDown) viewModel.selectAllElements()
-                }
             }
         }
 

@@ -1,5 +1,3 @@
-@file:Suppress("FunctionName")
-
 package jdr.exia.view.composable.master
 
 import androidx.compose.foundation.BorderStroke
@@ -52,8 +50,6 @@ fun SelectedEditor(
         SizeSelector(selectedElements = selectedElements, repaint = repaint, commandManager = commandManager)
         LayerSelector(selectedElements = selectedElements, repaint = repaint)
     }
-
-    OrientationButtons(selectedElements = selectedElements, repaint = repaint, commandManager = commandManager)
 
     VisibilityButtons(
         selectedElements = selectedElements,
@@ -189,33 +185,6 @@ private fun LayerSelector(selectedElements: List<Element>, repaint: () -> Unit) 
         selectedItem = selectedLayer,
         isEnabled = isEnabled
     )
-}
-
-@Composable
-private fun OrientationButtons(
-    selectedElements: List<Element>,
-    repaint: () -> Unit,
-    commandManager: CommandManager
-) = ColumnEditor {
-    val isEnabled = selectedElements.isNotEmpty()
-
-    OutlinedButton(
-        onClick = {
-            Element.cmdOrientationToRight(commandManager, selectedElements)
-            repaint()
-        },
-        modifier = Modifier.width(buttonsWidth).applyIf(isEnabled, modifier = Modifier::withHandCursor),
-        enabled = isEnabled
-    ) { Text(StringLocale[STR_ROTATE_TO_RIGHT]) }
-
-    OutlinedButton(
-        onClick = {
-            Element.cmdOrientationToLeft(commandManager, selectedElements)
-            repaint()
-        },
-        modifier = Modifier.width(buttonsWidth).applyIf(isEnabled, modifier = Modifier::withHandCursor),
-        enabled = isEnabled
-    ) { Text(StringLocale[STR_ROTATE_TO_LEFT]) }
 }
 
 @Composable

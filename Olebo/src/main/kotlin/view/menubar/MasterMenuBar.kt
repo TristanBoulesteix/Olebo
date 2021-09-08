@@ -41,7 +41,13 @@ fun FrameWindowScope.MasterMenuBar(
         currentScene = viewModel.currentScene,
         deleteSelectedToken = viewModel::removeElements,
         onClearTokens = { viewModel.confirmClearElement = true },
-        moveElements = viewModel::moveElementsFromScene
+        moveElements = viewModel::moveElementsFromScene,
+        selectNext = viewModel::select,
+        selectPevious = { viewModel.select(false) },
+        selectAll = viewModel::selectAllElements,
+        rotateRight = viewModel::rotateRight,
+        rotateLeft = viewModel::rotateLeft,
+        hasItemsSelected = viewModel.selectedElements.isNotEmpty()
     )
 }
 
@@ -122,7 +128,13 @@ private fun MenuBarScope.TokenMenu(
     currentScene: Scene,
     deleteSelectedToken: () -> Unit,
     onClearTokens: () -> Unit,
-    moveElements: (List<Element>) -> Unit
+    moveElements: (List<Element>) -> Unit,
+    rotateRight: () -> Unit,
+    rotateLeft: () -> Unit,
+    selectAll: () -> Unit,
+    selectNext: () -> Unit,
+    selectPevious: () -> Unit,
+    hasItemsSelected: Boolean
 ) = Menu(text = StringLocale[STR_TOKENS], mnemonic = 'b') {
     Item(
         text = StringLocale[STR_MANAGE_BLUEPRINTS],
@@ -131,6 +143,42 @@ private fun MenuBarScope.TokenMenu(
     )
 
     MenuImportFromScene(scenes = scenes, currentScene = currentScene, moveElements = moveElements)
+
+    Separator()
+
+    Item(
+        text = StringLocale[STR_ROTATE_TO_RIGHT],
+        shortcut = KeyShortcut(key = Key.DirectionRight),
+        onClick = rotateRight,
+        enabled = hasItemsSelected
+    )
+
+    Item(
+        text = StringLocale[STR_ROTATE_TO_LEFT],
+        shortcut = KeyShortcut(key = Key.DirectionLeft),
+        onClick = rotateLeft,
+        enabled = hasItemsSelected
+    )
+
+    Separator()
+
+    Item(
+        text = StringLocale[STR_SELECT_DOWN],
+        shortcut = KeyShortcut(key = Key.DirectionDown),
+        onClick = selectPevious
+    )
+
+    Item(
+        text = StringLocale[STR_SELECT_UP],
+        shortcut = KeyShortcut(key = Key.DirectionUp),
+        onClick = selectNext
+    )
+
+    Item(
+        text = StringLocale[STR_SELECT_ALL],
+        shortcut = KeyShortcut(key = Key.A, ctrl = true),
+        onClick = selectAll
+    )
 
     Separator()
 
