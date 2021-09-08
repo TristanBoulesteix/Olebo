@@ -38,9 +38,7 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
         get() = CommandManager(id)
 
     val elements
-        get() = transaction {
-            elementIterable.filter { !it.isDeleted }.sortedBy { it.priority }
-        }
+        get() = transaction { elementIterable.filter { !it.isDeleted } }
 
     var name by SceneTable.name
     var background by SceneTable.background

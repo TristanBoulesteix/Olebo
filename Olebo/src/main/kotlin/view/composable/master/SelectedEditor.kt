@@ -31,6 +31,7 @@ fun SelectedEditor(
     commandManager: CommandManager,
     selectedElements: List<Element>,
     deleteSelectedElement: () -> Unit,
+    setPriority: (Priority) -> Unit,
     repaint: () -> Unit
 ) = Row(
     modifier = modifier,
@@ -48,7 +49,7 @@ fun SelectedEditor(
 
     ColumnEditor {
         SizeSelector(selectedElements = selectedElements, repaint = repaint, commandManager = commandManager)
-        LayerSelector(selectedElements = selectedElements, repaint = repaint)
+        LayerSelector(selectedElements = selectedElements, setPriority = setPriority)
     }
 
     VisibilityButtons(
@@ -163,17 +164,14 @@ private fun SizeSelector(selectedElements: List<Element>, repaint: () -> Unit, c
 }
 
 @Composable
-private fun LayerSelector(selectedElements: List<Element>, repaint: () -> Unit) {
+private inline fun LayerSelector(selectedElements: List<Element>, crossinline setPriority: (Priority) -> Unit) {
     var selectedLayer by remember(selectedElements) {
         mutableStateOf(
             selectedElements.getElementProperty(
                 elementPropertyGetter = Element::priority,
                 defaultValue = Priority.REGULAR
             )
-        ) withSetter { newPriority ->
-            selectedElements.forEach { it.priority = newPriority }
-            repaint()
-        }
+        ) withSetter setPriority
     }
 
     val isEnabled = selectedElements.isNotEmpty()

@@ -112,7 +112,8 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
             commandManager = viewModel.commandManager,
             selectedElements = viewModel.selectedElements,
             repaint = viewModel::repaint,
-            deleteSelectedElement = viewModel::removeElements
+            deleteSelectedElement = viewModel::removeElements,
+            setPriority = viewModel::changePriority
         )
     }
 }

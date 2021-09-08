@@ -8,6 +8,7 @@ import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
+import jdr.exia.model.element.Priority
 import jdr.exia.model.element.Type
 import jdr.exia.model.tools.callCommandManager
 import jdr.exia.model.tools.doIfContainsSingle
@@ -245,6 +246,11 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
         }
 
         repaint()
+    }
+
+    fun changePriority(newPriority: Priority) {
+        selectedElements.forEach { it.priority = newPriority }
+        repaint(reloadTokens = true)
     }
 
     fun repaint(reloadTokens: Boolean = false) = scope.launch {
