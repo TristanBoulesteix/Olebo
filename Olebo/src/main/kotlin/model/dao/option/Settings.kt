@@ -18,105 +18,104 @@ import jdr.exia.model.dao.SettingsTable.PLAYER_FRAME_ENABLED
 import jdr.exia.model.dao.SettingsTable.UPDATE_WARN
 import jdr.exia.model.tools.MessageException
 import jdr.exia.model.tools.toBoolean
-import org.jetbrains.exposed.dao.EntityClass
-import org.jetbrains.exposed.dao.IntEntity
-import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 import java.util.*
 
-class Settings(id: EntityID<Int>) : IntEntity(id) {
-    companion object : EntityClass<Int, Settings>(SettingsTable) {
-        var databaseVersion
-            get() = transaction(DAO.database) {
-                this@Companion[BASE_VERSION]?.toIntOrNull()
-                    ?: throw MessageException(StringLocale[ST_UNKNOWN_DATABASE_VERSION])
-            }
-            set(value) {
-                transaction(DAO.database) {
-                    this@Companion[BASE_VERSION] = value
-                }
-            }
-
-        var autoUpdate
-            get() = transaction(DAO.database) { this@Companion[AUTO_UPDATE] }.toBoolean()
-            set(value) {
-                transaction(DAO.database) {
-                    this@Companion[AUTO_UPDATE] = value
-                }
-            }
-
-        var updateWarn
-            get() = transaction(DAO.database) { this@Companion[UPDATE_WARN] } ?: ""
-            set(value) = transaction(DAO.database) {
-                this@Companion[UPDATE_WARN] = value
-            }
-
-        var cursorEnabled
-            get() = transaction(DAO.database) { this@Companion[CURSOR_ENABLED].toBoolean() }
-            set(value) = transaction(DAO.database) {
-                this@Companion[CURSOR_ENABLED] = value
-            }
-
-        var language: Locale
-            get() = try {
-                transaction(DAO.database) { Locale(this@Companion[CURRENT_LANGUAGE]) }
-            } catch (e: Exception) {
-                Locale.getDefault()
-            }
-            set(value) = transaction(DAO.database) {
-                this@Companion[CURRENT_LANGUAGE] = value.language
-            }
-
-        val activeLanguage by lazy { language }
-
-        var cursorColor
-            get() = transaction(DAO.database) {
-                SerializableColor[this@Companion[CURSOR_COLOR]!!]
-            }
-            set(value) = transaction(DAO.database) {
-                this@Companion[CURSOR_COLOR] = value.encode()
-            }
-
-        var playerFrameOpenedByDefault
-            get() = transaction(DAO.database) { this@Companion[PLAYER_FRAME_ENABLED].toBoolean() }
-            set(value) = transaction(DAO.database) {
-                this@Companion[PLAYER_FRAME_ENABLED] = value
-            }
-
-        var defaultElementVisibility
-            get() = transaction(DAO.database) { this@Companion[DEFAULT_ELEMENT_VISIBILITY].toBoolean() }
-            set(value) = transaction(DAO.database) {
-                this@Companion[DEFAULT_ELEMENT_VISIBILITY] = value
-            }
-
-        var labelState
-            get() = transaction(DAO.database) { SerializableLabelState[this@Companion[LABEL_STATE]!!] }
-            set(value) = transaction(DAO.database) {
-                this@Companion[LABEL_STATE] = value.encode()
-            }
-
-        var labelColor
-            get() = transaction(DAO.database) {
-                SerializableColor[this@Companion[LABEL_COLOR]!!]
-            }
-            set(value) = transaction(DAO.database) {
-                this@Companion[LABEL_COLOR] = value.encode()
-            }
-
-        var wasJustUpdated
-            get() = transaction(DAO.database) {
-                this@Companion[CHANGELOGS_VERSION] == OLEBO_VERSION_CODE.toString()
-            }
-            set(value) = transaction(DAO.database) {
-                this@Companion[CHANGELOGS_VERSION] = if (value) OLEBO_VERSION_CODE else null
-            }
-
-        operator fun get(setting: String) = this.find { SettingsTable.name eq setting }.firstOrNull()?.value
-
-        operator fun set(setting: String, value: Any?) {
-            this.find { SettingsTable.name eq setting }.firstOrNull()?.value = value?.toString() ?: ""
+object Settings {
+    var databaseVersion
+        get() = transaction(DAO.database) {
+            this@Settings[BASE_VERSION]?.toIntOrNull()
+                ?: throw MessageException(StringLocale[ST_UNKNOWN_DATABASE_VERSION])
         }
-    }
+        set(value) {
+            transaction(DAO.database) {
+                this@Settings[BASE_VERSION] = value
+            }
+        }
 
-    private var value by SettingsTable.value
+    var autoUpdate
+        get() = transaction(DAO.database) { this@Settings[AUTO_UPDATE] }.toBoolean()
+        set(value) {
+            transaction(DAO.database) {
+                this@Settings[AUTO_UPDATE] = value
+            }
+        }
+
+    var updateWarn
+        get() = transaction(DAO.database) { this@Settings[UPDATE_WARN] } ?: ""
+        set(value) = transaction(DAO.database) {
+            this@Settings[UPDATE_WARN] = value
+        }
+
+    var cursorEnabled
+        get() = transaction(DAO.database) { this@Settings[CURSOR_ENABLED].toBoolean() }
+        set(value) = transaction(DAO.database) {
+            this@Settings[CURSOR_ENABLED] = value
+        }
+
+    var language: Locale
+        get() = try {
+            transaction(DAO.database) { Locale(this@Settings[CURRENT_LANGUAGE]) }
+        } catch (e: Exception) {
+            Locale.getDefault()
+        }
+        set(value) = transaction(DAO.database) {
+            this@Settings[CURRENT_LANGUAGE] = value.language
+        }
+
+    val activeLanguage by lazy { language }
+
+    var cursorColor
+        get() = transaction(DAO.database) {
+            SerializableColor[this@Settings[CURSOR_COLOR]!!]
+        }
+        set(value) = transaction(DAO.database) {
+            this@Settings[CURSOR_COLOR] = value.encode()
+        }
+
+    var playerFrameOpenedByDefault
+        get() = transaction(DAO.database) { this@Settings[PLAYER_FRAME_ENABLED].toBoolean() }
+        set(value) = transaction(DAO.database) {
+            this@Settings[PLAYER_FRAME_ENABLED] = value
+        }
+
+    var defaultElementVisibility
+        get() = transaction(DAO.database) { this@Settings[DEFAULT_ELEMENT_VISIBILITY].toBoolean() }
+        set(value) = transaction(DAO.database) {
+            this@Settings[DEFAULT_ELEMENT_VISIBILITY] = value
+        }
+
+    var labelState
+        get() = transaction(DAO.database) { SerializableLabelState[this@Settings[LABEL_STATE]!!] }
+        set(value) = transaction(DAO.database) {
+            this@Settings[LABEL_STATE] = value.encode()
+        }
+
+    var labelColor
+        get() = transaction(DAO.database) {
+            SerializableColor[this@Settings[LABEL_COLOR]!!]
+        }
+        set(value) = transaction(DAO.database) {
+            this@Settings[LABEL_COLOR] = value.encode()
+        }
+
+    var wasJustUpdated
+        get() = transaction(DAO.database) {
+            this@Settings[CHANGELOGS_VERSION] == OLEBO_VERSION_CODE.toString()
+        }
+        set(value) = transaction(DAO.database) {
+            this@Settings[CHANGELOGS_VERSION] = if (value) OLEBO_VERSION_CODE else null
+        }
+
+    operator fun get(setting: String) =
+        SettingsTable.select { SettingsTable.name eq setting }.firstOrNull()?.get(SettingsTable.value)
+
+    operator fun set(setting: String, value: Any?) {
+        SettingsTable.update(
+            where = { SettingsTable.name eq setting },
+            body = { it[SettingsTable.value] = value?.toString() ?: "" }
+        )
+    }
 }

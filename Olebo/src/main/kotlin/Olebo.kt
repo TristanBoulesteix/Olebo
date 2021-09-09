@@ -30,7 +30,7 @@ const val OLEBO_VERSION_CODE = 1
 
 fun main() = application {
     // Initialize translations
-    StringLocale(Settings.Companion::activeLanguage)
+    StringLocale(Settings::activeLanguage)
 
     // Initialize themes
     OleboTheme {
