@@ -30,6 +30,12 @@ subprojects {
         kotlinOptions.jvmTarget = "16"
         kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
     }
+
+    kotlin {
+        jvmToolchain {
+            (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(16))
+        }
+    }
 }
 
 tasks.register("buildOlebo") {

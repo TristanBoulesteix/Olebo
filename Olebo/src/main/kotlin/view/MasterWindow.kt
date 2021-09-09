@@ -87,7 +87,7 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
                 message = StringLocale[ST_CONFIRM_CLEAR_BOARD],
                 title = StringLocale[STR_DELETION],
                 onCloseRequest = { viewModel.confirmClearElement = false },
-                onConfirm = { viewModel.removeElements(viewModel.tokens) }
+                onConfirm = { viewModel.removeElements(viewModel.elements) }
             )
         }
     }

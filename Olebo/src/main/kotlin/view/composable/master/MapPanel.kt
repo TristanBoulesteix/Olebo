@@ -157,7 +157,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
         val labelState = Settings.labelState
 
         //Display every token one by one
-        for (token in viewModel.tokens.sortedBy { it.priority }) {
+        for (token in viewModel.elements) {
             //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
             if (isParentMaster || token.isVisible) {
                 // Draw token and visibility indicator
@@ -261,7 +261,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
      * Show alias on mouse hover
      */
     override fun getToolTipText() = mousePosition?.let { point ->
-        if (isParentMaster) viewModel.tokens.getTokenFromPosition(Point(point).absolutePosition)?.alias.takeIf { !it.isNullOrBlank() } else null
+        if (isParentMaster) viewModel.elements.getTokenFromPosition(Point(point).absolutePosition)?.alias.takeIf { !it.isNullOrBlank() } else null
     }
 
     /**

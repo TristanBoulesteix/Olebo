@@ -57,8 +57,10 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     /**
      * These are all the [Blueprint] placed on  the current map
      */
-    var tokens = transaction { currentScene.elements }
-        private set
+    var elements = transaction { currentScene.elements.sortedBy { it.priority } }
+        private set(tokens) {
+            field = tokens.sortedBy { it.priority }
+        }
 
     val backGroundImage: BufferedImage by derivedStateOf { transaction { ImageIO.read(File(currentScene.background)) } }
 
@@ -67,13 +69,13 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     /**
      * Returns true if there is at least one element at the given position
      */
-    fun hasElementAtPosition(position: Point) = tokens.getTokenFromPosition(position) != null
+    fun hasElementAtPosition(position: Point) = elements.getTokenFromPosition(position) != null
 
     fun selectElementsAtPosition(position: Point, addToExistingElements: Boolean = false) {
         if (!addToExistingElements) {
-            selectedElements = tokens.getTokenFromPosition(position)?.let { listOf(it) } ?: emptyList()
+            selectedElements = elements.getTokenFromPosition(position)?.let { listOf(it) } ?: emptyList()
         } else {
-            tokens.getTokenFromPosition(position)?.let { selectedElements = selectedElements + it }
+            elements.getTokenFromPosition(position)?.let { selectedElements = selectedElements + it }
         }
         repaint()
     }
@@ -139,7 +141,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     }
 
     fun selectAllElements() {
-        selectedElements = tokens
+        selectedElements = elements
 
         repaint()
     }
@@ -147,7 +149,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     fun selectElements(rec: Rectangle) {
         val elements = mutableListOf<Element>()
 
-        tokens.forEach {
+        this.elements.forEach {
             if (rec.contains(panel.getRelativeRectangleOfToken(it))) {
                 elements += it
             }
@@ -164,8 +166,8 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     }
 
     fun select(up: Boolean = true) = transaction {
-        selectedElements = if (selectedElements.isEmpty() && tokens.isNotEmpty()) {
-            listOf(tokens.first())
+        selectedElements = if (selectedElements.isEmpty() && elements.isNotEmpty()) {
+            listOf(elements.first())
         } else {
             val operation = if (up) fun Int.(list: List<Element>): Int {
                 return if (this == list.size - 1) 0 else this + 1
@@ -174,7 +176,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
             }
 
             selectedElements.doIfContainsSingle(emptyList()) { blueprint ->
-                val elements = tokens
+                val elements = elements
 
                 if (elements.getOrNull(elements.indexOfFirst { it.id == blueprint.id }
                         .operation(elements)) != null) {
@@ -201,7 +203,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
         unselectElements()
         currentScene.callCommandManager(elements, Element::cmdDelete)
 
-        tokens = tokens.toMutableList().also {
+        this.elements = this.elements.toMutableList().also {
             it -= elements
         }
 
@@ -211,7 +213,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     fun addNewElement(blueprint: Blueprint) {
         val newElement = currentScene.addElement(blueprint)
 
-        tokens = tokens.toMutableList().also {
+        elements = elements.toMutableList().also {
             it += newElement
         }
 
@@ -241,7 +243,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     fun moveElementsFromScene(elements: List<Element>) {
         Scene.moveElementToScene(currentScene, elements)
 
-        tokens = tokens.toMutableList().also {
+        this.elements = this.elements.toMutableList().also {
             it += elements
         }
 
@@ -249,14 +251,18 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
     }
 
     fun changePriority(newPriority: Priority) {
-        selectedElements.forEach { it.priority = newPriority }
-        repaint(reloadTokens = true)
+        elements = elements.onEach {
+            if (it in selectedElements) {
+                it.priority = newPriority
+            }
+        }.sortedBy { it.priority }
+        repaint()
     }
 
     fun repaint(reloadTokens: Boolean = false) = scope.launch {
         if (reloadTokens)
             withContext(Dispatchers.IO) {
-                tokens = transaction { currentScene.elements }
+                elements = transaction { currentScene.elements }
             }
 
         panel.repaint()
