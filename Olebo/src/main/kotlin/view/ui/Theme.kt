@@ -1,5 +1,3 @@
-@file:Suppress("FunctionName")
-
 package jdr.exia.view.ui
 
 import androidx.compose.desktop.DesktopMaterialTheme

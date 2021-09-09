@@ -1,5 +1,3 @@
-@file:Suppress("FunctionName")
-
 package jdr.exia.view.element
 
 import androidx.compose.foundation.VerticalScrollbar

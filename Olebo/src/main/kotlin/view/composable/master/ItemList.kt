@@ -1,5 +1,3 @@
-@file:Suppress("FunctionName")
-
 package jdr.exia.view.composable.master
 
 import androidx.compose.foundation.BorderStroke

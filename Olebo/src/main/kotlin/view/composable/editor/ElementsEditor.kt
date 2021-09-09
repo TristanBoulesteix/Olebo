@@ -1,5 +1,3 @@
-@file:Suppress("FunctionName")
-
 package jdr.exia.view.composable.editor
 
 import androidx.compose.foundation.Image
