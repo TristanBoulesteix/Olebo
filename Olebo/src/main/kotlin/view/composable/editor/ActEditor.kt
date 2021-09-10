@@ -44,25 +44,7 @@ import jdr.exia.model.type.Image as Img
 fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
     val viewModel = remember { ActEditorViewModel(act) }
 
-    /*
-    Header of the Act Editor View.
-    It contains a text field to write the name of the act.
-     */
-    HeaderRow {
-        val roundedShape = remember { RoundedCornerShape(25) }
-
-        BasicTextField(
-            value = viewModel.actName,
-            onValueChange = { viewModel.actName = it },
-            modifier = Modifier.fillMaxWidth().clip(roundedShape).background(Color.White)
-                .border(BorderStroke(2.dp, Color.Black), roundedShape).padding(10.dp),
-            singleLine = true,
-            decorationBox = { composableContent ->
-                if (viewModel.actName.isEmpty()) Text(text = act?.name ?: StringLocale[STR_INSERT_ACT_NAME])
-                composableContent()
-            }
-        )
-    }
+    Header(viewModel = viewModel, act = act)
 
     // List of all the scenes of the edited act
     Column(modifier = Modifier.fillMaxSize().background(blue).padding(15.dp)) {
@@ -141,6 +123,29 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
             getEditedSceneData = { currentEditedScene },
             act = act,
             onDone = onDone
+        )
+    }
+}
+
+/**
+ * Header of the Act Editor View.
+ * It contains a text field to write the name of the act.
+ */
+@Composable
+private fun Header(viewModel: ActEditorViewModel, act: Act?) {
+    HeaderRow {
+        val roundedShape = remember { RoundedCornerShape(25) }
+
+        BasicTextField(
+            value = viewModel.actName,
+            onValueChange = { viewModel.actName = it },
+            modifier = Modifier.fillMaxWidth().clip(roundedShape).background(Color.White)
+                .border(BorderStroke(2.dp, Color.Black), roundedShape).padding(10.dp),
+            singleLine = true,
+            decorationBox = { composableContent ->
+                if (viewModel.actName.isEmpty()) Text(text = act?.name ?: StringLocale[STR_INSERT_ACT_NAME])
+                composableContent()
+            }
         )
     }
 }
