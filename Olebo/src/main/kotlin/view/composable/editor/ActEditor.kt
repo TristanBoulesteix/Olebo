@@ -126,43 +126,12 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
                 modifier = contentModifier
             )
         } else {
-            LazyScrollableColumn(modifier = contentModifier) {
-                items(items = viewModel.scenes) { scene ->
-                    if (viewModel.currentEditScene isValidAndEqualTo scene) {
-                        val (tempCurrentEditedScene, setTempCurrentEditScene) = remember {
-                            mutableStateOf(scene) withSetter {
-                                currentEditedScene = it
-                            }
-                        }
-
-                        EditSceneRow(
-                            data = tempCurrentEditedScene,
-                            updateData = setTempCurrentEditScene,
-                            onConfirmed = {
-                                viewModel.submitEditedScene(tempCurrentEditedScene)
-                            },
-                            onCanceled = viewModel::onEditDone
-                        )
-                    } else {
-                        ContentListRow(
-                            contentText = scene.name,
-                            buttonBuilders = listOf(
-                                ImageButtonBuilder(
-                                    content = imageFromIconRes("edit_icon"),
-                                    onClick = {
-                                        viewModel.onEditItemSelected(scene)
-                                        setSceneInCreation(null)
-                                    }
-                                ),
-                                ImageButtonBuilder(
-                                    content = imageFromIconRes("delete_icon"),
-                                    onClick = { viewModel.onRemoveScene(scene) }
-                                )
-                            )
-                        )
-                    }
-                }
-            }
+            Scenes(
+                contentModifier = contentModifier,
+                viewModel = viewModel,
+                setSceneInCreation = setSceneInCreation,
+                setCurrentEditedScene = { currentEditedScene = it }
+            )
         }
 
         Footer(
@@ -173,6 +142,50 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
             act = act,
             onDone = onDone
         )
+    }
+}
+
+@Composable
+private fun Scenes(
+    contentModifier: Modifier,
+    viewModel: ActEditorViewModel,
+    setCurrentEditedScene: (Act.SceneData) -> Unit,
+    setSceneInCreation: (Act.SceneData?) -> Unit
+) = LazyScrollableColumn(modifier = contentModifier) {
+    items(items = viewModel.scenes) { scene ->
+        if (viewModel.currentEditScene isValidAndEqualTo scene) {
+            val (tempCurrentEditedScene, setTempCurrentEditScene) = remember {
+                mutableStateOf(scene) withSetter {
+                    setCurrentEditedScene(it)
+                }
+            }
+
+            EditSceneRow(
+                data = tempCurrentEditedScene,
+                updateData = setTempCurrentEditScene,
+                onConfirmed = {
+                    viewModel.submitEditedScene(tempCurrentEditedScene)
+                },
+                onCanceled = viewModel::onEditDone
+            )
+        } else {
+            ContentListRow(
+                contentText = scene.name,
+                buttonBuilders = listOf(
+                    ImageButtonBuilder(
+                        content = imageFromIconRes("edit_icon"),
+                        onClick = {
+                            viewModel.onEditItemSelected(scene)
+                            setSceneInCreation(null)
+                        }
+                    ),
+                    ImageButtonBuilder(
+                        content = imageFromIconRes("delete_icon"),
+                        onClick = { viewModel.onRemoveScene(scene) }
+                    )
+                )
+            )
+        }
     }
 }
 
