@@ -9,9 +9,7 @@ import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Type
 import jdr.exia.model.element.isValid
-import jdr.exia.model.tools.Result
-import jdr.exia.model.tools.assignIfDifferent
-import jdr.exia.model.tools.isCharacter
+import jdr.exia.model.tools.*
 import jdr.exia.model.type.saveImgAndGetPath
 import jdr.exia.view.tools.showConfirmMessage
 import org.jetbrains.exposed.dao.id.EntityID
@@ -41,12 +39,12 @@ class ElementsEditorViewModel(private val type: Type) {
         blueprint.remove()
     }
 
-    fun onEditConfirmed(data: Blueprint.BlueprintData) = transaction {
-        val blueprint = currentEditBlueprint ?: return@transaction Result.Failure
+    fun onEditConfirmed(data: Blueprint.BlueprintData): SimpleResult = transaction {
+        val blueprint = currentEditBlueprint ?: return@transaction Result.failure
 
         if (data.isValid() && blueprint.id == data.id) {
             if (blueprintWithNameExist(data.name, data.id))
-                return@transaction Result.Failure(StringLocale[ST_ELEMENT_ALREADY_EXISTS])
+                return@transaction Result.failure(IllegalStateException(StringLocale[ST_ELEMENT_ALREADY_EXISTS]))
 
             blueprint.apply {
                 if (data.name.isNotBlank()) {
@@ -65,8 +63,8 @@ class ElementsEditorViewModel(private val type: Type) {
 
             onEditDone()
 
-            Result.Success
-        } else Result.Failure
+            Result.success
+        } else Result.failure
     }
 
     fun startBlueprintCreation() {
@@ -74,7 +72,7 @@ class ElementsEditorViewModel(private val type: Type) {
             Blueprint.BlueprintData.let { if (type == Type.OBJECT) it.defaultObject() else it.defaultCharacter(type) }
     }
 
-    fun cancelBluprintCreation() {
+    fun cancelBlueprintCreation() {
         blueprintInCreation = null
     }
 
@@ -82,16 +80,16 @@ class ElementsEditorViewModel(private val type: Type) {
         currentEditPosition = -1
     }
 
-    fun onSubmitBlueprint(): Result {
-        val blueprint = blueprintInCreation ?: return Result.Failure
+    fun onSubmitBlueprint(): SimpleResult {
+        val blueprint = blueprintInCreation ?: return Result.failure
 
         if (!blueprint.isValid())
-            return Result.Failure
+            return Result.failure
 
         return if (transaction { !blueprintWithNameExist(blueprint.name) }) {
             blueprint.create()
-            Result.Success
-        } else Result.Failure
+            Result.success
+        } else Result.failure
     }
 
     private fun blueprintWithNameExist(name: String, excludedId: EntityID<Int>? = null) =

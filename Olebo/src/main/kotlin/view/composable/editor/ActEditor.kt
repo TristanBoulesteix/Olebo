@@ -1,6 +1,9 @@
 package jdr.exia.view.composable.editor
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,6 +21,9 @@ import androidx.compose.ui.unit.dp
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.isValidAndEqualTo
+import jdr.exia.model.tools.SimpleResult
+import jdr.exia.model.tools.failure
+import jdr.exia.model.tools.success
 import jdr.exia.model.tools.withSetter
 import jdr.exia.model.type.imageFromFile
 import jdr.exia.model.type.imageFromIconRes
@@ -38,6 +44,10 @@ import jdr.exia.model.type.Image as Img
 fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
     val viewModel = remember { ActEditorViewModel(act) }
 
+    /*
+    Header of the Act Editor View.
+    It contains a text field to write the name of the act.
+     */
     HeaderRow {
         val roundedShape = remember { RoundedCornerShape(25) }
 
@@ -54,9 +64,8 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
         )
     }
 
+    // List of all the scenes of the edited act
     Column(modifier = Modifier.fillMaxSize().background(blue).padding(15.dp)) {
-        val headerScrollState = rememberScrollState()
-
         val contentModifier = remember {
             Modifier.padding(bottom = 20.dp, end = 20.dp, start = 20.dp)
                 .background(Color.White)
@@ -73,43 +82,41 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
                 .fillMaxWidth()
                 .border(BorderBuilder.defaultBorder)
         ) {
-            Box(modifier = Modifier.verticalScroll(headerScrollState).fillMaxSize()) {
-                Column {
-                    ContentListRow(
-                        contentText = StringLocale[STR_SCENES],
-                        modifier = Modifier.background(Color.White).border(BorderBuilder.defaultBorder),
-                        buttonBuilders =
-                        if (sceneInCreation == null) {
-                            listOf(
-                                ImageButtonBuilder(
-                                    content = imageFromIconRes("create_icon"),
-                                    onClick = { setSceneInCreation(Act.SceneData.default()) })
-                            )
-                        } else {
-                            listOf(
-                                ImageButtonBuilder(
-                                    content = imageFromIconRes("confirm_icon"),
-                                    onClick = {
-                                        if (viewModel.onAddScene(sceneInCreation)) {
-                                            setSceneInCreation(null)
-                                        } else {
-                                            showMessage(
-                                                StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID],
-                                                messageType = MessageType.WARNING
-                                            )
-                                        }
-                                    }
-                                ),
-                                ImageButtonBuilder(
-                                    content = imageFromIconRes("exit_icon"),
-                                    onClick = { setSceneInCreation(null) }
-                                )
-                            )
-                        }
+            ContentListRow(
+                contentText = StringLocale[STR_SCENES],
+                modifier = Modifier.background(Color.White).border(BorderBuilder.defaultBorder),
+                buttonBuilders =
+                if (sceneInCreation == null) {
+                    listOf(
+                        ImageButtonBuilder(
+                            content = imageFromIconRes("create_icon"),
+                            onClick = { setSceneInCreation(Act.SceneData.default()) })
+                    )
+                } else {
+                    listOf(
+                        ImageButtonBuilder(
+                            content = imageFromIconRes("confirm_icon"),
+                            onClick = {
+                                viewModel.onAddScene(sceneInCreation).onSuccess {
+                                    setSceneInCreation(null)
+                                }.onFailure {
+                                    showMessage(
+                                        StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID],
+                                        messageType = MessageType.WARNING
+                                    )
+                                }
+                            }
+                        ),
+                        ImageButtonBuilder(
+                            content = imageFromIconRes("exit_icon"),
+                            onClick = { setSceneInCreation(null) }
+                        )
                     )
                 }
-            }
+            )
         }
+
+        var currentEditedScene: Act.SceneData? = null
 
         if (sceneInCreation != null) {
             EditSceneRow(
@@ -122,18 +129,17 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
             LazyScrollableColumn(modifier = contentModifier) {
                 items(items = viewModel.scenes) { scene ->
                     if (viewModel.currentEditScene isValidAndEqualTo scene) {
-                        val (tempCurrentEditedScene, setTempCurrentEditScene) = remember { mutableStateOf(scene) }
+                        val (tempCurrentEditedScene, setTempCurrentEditScene) = remember {
+                            mutableStateOf(scene) withSetter {
+                                currentEditedScene = it
+                            }
+                        }
 
                         EditSceneRow(
                             data = tempCurrentEditedScene,
                             updateData = setTempCurrentEditScene,
                             onConfirmed = {
-                                if (!viewModel.onEditConfirmed(tempCurrentEditedScene)) {
-                                    showMessage(
-                                        StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID],
-                                        messageType = MessageType.WARNING
-                                    )
-                                }
+                                viewModel.submitEditedScene(tempCurrentEditedScene)
                             },
                             onCanceled = viewModel::onEditDone
                         )
@@ -159,19 +165,53 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
             }
         }
 
-        val isEditing = sceneInCreation != null || viewModel.currentEditScene != null
-
-        FooterRow(
-            lazyResult = lazy(viewModel::submitAct),
-            isEnabled = !isEditing,
-            onDone = onDone,
-            onCancel = {
-                setSceneInCreation(null)
-                viewModel.onEditDone()
-            }
-        )
+        when {
+            sceneInCreation != null -> FooterRow(
+                confirmText = StringLocale[STR_CONFIRM_CREATE_SCENE],
+                onConfirm = { viewModel.onAddScene(sceneInCreation) },
+                onDone = { setSceneInCreation(null) },
+                onFailure = {
+                    showMessage(
+                        StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID],
+                        messageType = MessageType.WARNING
+                    )
+                }
+            )
+            viewModel.currentEditScene != null -> FooterRow(
+                confirmText = StringLocale[STR_CONFIRM_EDIT_SCENE],
+                onConfirm = {
+                    currentEditedScene.let {
+                        if (it != null)
+                            viewModel.submitEditedScene(it)
+                        else {
+                            viewModel.onEditDone()
+                            Result.success
+                        }
+                    }
+                },
+                onDone = {
+                    setSceneInCreation(null)
+                    viewModel.onEditDone()
+                }
+            )
+            else -> FooterRow(
+                confirmText = StringLocale[if (act == null) STR_CONFIRM_CREATE_ACT else STR_CONFIRM_EDIT_ACT],
+                onConfirm = viewModel::submitAct,
+                onDone = onDone
+            )
+        }
     }
 }
+
+private fun ActEditorViewModel.submitEditedScene(tempCurrentEditedScene: Act.SceneData): SimpleResult =
+    if (!onEditConfirmed(tempCurrentEditedScene)) {
+        showMessage(
+            StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID],
+            messageType = MessageType.WARNING
+        )
+
+        Result.failure
+    } else Result.success
 
 @Composable
 private fun EditSceneRow(
@@ -206,7 +246,7 @@ private fun EditSceneRow(
             ) else emptyList()
     )
 
-    ImagePreviewContent(data = data, onUpdateData = { updateData(it) })
+    ImagePreviewContent(data = data, onUpdateData = updateData)
 }
 
 @Composable

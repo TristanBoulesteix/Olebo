@@ -4,7 +4,8 @@ import jdr.exia.localization.ST_WARNING_MISSING_CONF_FILES
 import jdr.exia.localization.ST_WARNING_PREVIOUS_VERSION_FILE
 import jdr.exia.localization.StringLocale
 import jdr.exia.main
-import jdr.exia.model.tools.Result
+import jdr.exia.model.tools.SimpleResult
+import jdr.exia.model.tools.success
 import jdr.exia.system.OLEBO_DIRECTORY
 import java.io.BufferedOutputStream
 import java.io.File
@@ -57,16 +58,16 @@ fun zipOleboDirectory(fileDestination: File) {
     outputTempZip.copyRecursively(fileDestination)
 }
 
-fun loadOleboZipData(zipFile: File): Result = try {
+fun loadOleboZipData(zipFile: File): SimpleResult = try {
     ZipFile(zipFile).use { zip ->
         with(zip.entries().asSequence().toList()) {
             if (this.none { it.name == "db/${DAO.DATABASE_NAME}" } || this.none { it.name == OLEBO_MANIFEST_NAME })
-                return Result.Failure(StringLocale[ST_WARNING_MISSING_CONF_FILES])
+                return Result.failure(IllegalStateException(StringLocale[ST_WARNING_MISSING_CONF_FILES]))
 
             this.find { it.name == OLEBO_MANIFEST_NAME }?.let { entry ->
                 zip.getInputStream(entry).use { stream ->
                     if (String(stream.readBytes()).toIntOrNull()?.let { it > DAO.DATABASE_VERSION } != false)
-                        return Result.Failure(StringLocale[ST_WARNING_PREVIOUS_VERSION_FILE])
+                        return Result.failure(IllegalStateException(StringLocale[ST_WARNING_PREVIOUS_VERSION_FILE]))
                 }
             }
 
@@ -91,10 +92,10 @@ fun loadOleboZipData(zipFile: File): Result = try {
         }
     }
 
-    Result.Success
+    Result.success
 } catch (e: Exception) {
     e.printStackTrace()
-    Result.Failure
+    Result.failure(e)
 }
 
 fun reset() = File(OLEBO_DIRECTORY).let {

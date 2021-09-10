@@ -185,6 +185,10 @@ internal class StringLocaleBundle : StringLocale() {
         STR_SELECT_DOWN to "select previous token",
         STR_SELECT_UP to "select next token",
         STR_SELECT_ALL to "select all tokens",
+        STR_CONFIRM_CREATE_SCENE to "save scene",
+        STR_CONFIRM_EDIT_SCENE to "save scene",
+        STR_CONFIRM_CREATE_ACT to "save scenario",
+        STR_CONFIRM_EDIT_ACT to "save scenario",
     )
 }
 
@@ -372,5 +376,9 @@ internal class StringLocaleBundle_fr : StringLocale() {
         STR_SELECT_DOWN to "élément précédent",
         STR_SELECT_UP to "élément suivant",
         STR_SELECT_ALL to "tout sélectionner",
+        STR_CONFIRM_CREATE_SCENE to "sauvegarder la scène",
+        STR_CONFIRM_EDIT_SCENE to "sauvegarder la scène",
+        STR_CONFIRM_CREATE_ACT to "sauvegarder le scénario",
+        STR_CONFIRM_EDIT_ACT to "sauvegarder le scénario",
     )
 }

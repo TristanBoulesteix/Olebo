@@ -12,7 +12,6 @@ import jdr.exia.main
 import jdr.exia.model.dao.loadOleboZipData
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.dao.zipOleboDirectory
-import jdr.exia.model.tools.Result
 import jdr.exia.view.OptionDialog
 import jdr.exia.view.WindowStateManager
 import jdr.exia.view.element.dialog.ConfirmMessage
@@ -70,27 +69,25 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
                 this.dialogTitle = StringLocale[STR_IMPORT_DATA]
                 this.fileFilter = FileNameExtensionFilter(StringLocale[STR_OLEBO_FILE], "olebo")
                 if (this.showOpenDialog(this.windowAncestor) == JFileChooser.APPROVE_OPTION && !this.selectedFile.isDirectory && this.selectedFile.exists()) {
-                    when (val result = loadOleboZipData(this.selectedFile)) {
-                        is Result.Success -> {
-                            showMessage(
-                                StringLocale[ST_CONFIGURATION_IMPORTED],
-                                this.windowAncestor
-                            )
+                    loadOleboZipData(this.selectedFile).onSuccess {
+                        showMessage(
+                            StringLocale[ST_CONFIGURATION_IMPORTED],
+                            this.windowAncestor
+                        )
 
-                            // close all composable windows and then restart the main function
-                            exitApplication()
+                        // close all composable windows and then restart the main function
+                        exitApplication()
 
-                            GlobalScope.launch {
-                                main()
-                            }
+                        GlobalScope.launch {
+                            main()
                         }
-                        is Result.Failure -> {
-                            showMessage(
-                                if (result.causeUnknown) "${StringLocale[ST_UNKNOWN_ERROR]} ${StringLocale[ST_FILE_MAY_BE_CORRUPTED]}" else result.message,
-                                this.windowAncestor,
-                                MessageType.ERROR
-                            )
-                        }
+                    }.onFailure {
+                        showMessage(
+                            if (it !is IllegalStateException) "${StringLocale[ST_UNKNOWN_ERROR]} ${StringLocale[ST_FILE_MAY_BE_CORRUPTED]}" else it.message
+                                ?: "",
+                            this.windowAncestor,
+                            MessageType.ERROR
+                        )
                     }
                 }
             }

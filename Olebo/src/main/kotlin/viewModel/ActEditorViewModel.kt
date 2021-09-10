@@ -11,9 +11,10 @@ import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.act.isValid
 import jdr.exia.model.act.isValidAndEqualTo
+import jdr.exia.model.tools.SimpleResult
+import jdr.exia.model.tools.success
 import jdr.exia.model.type.Image
 import jdr.exia.model.type.saveImgAndGetPath
-import jdr.exia.model.tools.Result
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.emptySized
 import org.jetbrains.exposed.sql.mapLazy
@@ -34,10 +35,11 @@ class ActEditorViewModel(private val act: Act?) {
     val currentEditScene
         get() = scenes.getOrNull(currentEditPosition)
 
-    fun onAddScene(sceneData: Act.SceneData) = if (sceneData.isValid() && !sceneWithNameExist(sceneData.name)) {
-        scenes = scenes + listOf(sceneData)
-        true
-    } else false
+    fun onAddScene(sceneData: Act.SceneData): SimpleResult =
+        if (sceneData.isValid() && !sceneWithNameExist(sceneData.name)) {
+            scenes = scenes + listOf(sceneData)
+            Result.success
+        } else Result.failure(IllegalArgumentException("Scene data invalid"))
 
     fun onEditItemSelected(sceneData: Act.SceneData) {
         currentEditPosition = scenes.indexOf(sceneData)
@@ -69,13 +71,13 @@ class ActEditorViewModel(private val act: Act?) {
         currentEditPosition = -1
     }
 
-    fun submitAct(): Result {
+    fun submitAct(): SimpleResult {
         if (scenes.isEmpty())
-            return Result.Failure(StringLocale[ST_ACT_WITHOUT_SCENE])
+            return Result.failure(IllegalStateException(StringLocale[ST_ACT_WITHOUT_SCENE]))
 
         if (actName.isBlank()) {
             if (act == null) {
-                return Result.Failure(StringLocale[ST_ACT_WITHOUT_NAME])
+                return Result.failure(IllegalStateException(StringLocale[ST_ACT_WITHOUT_NAME]))
             } else {
                 actName = act.name
             }
@@ -85,7 +87,7 @@ class ActEditorViewModel(private val act: Act?) {
                 (act != null && Act.all().filterNot { it.id == act.id }
                     .any { it.name == actName }) || (act == null && Act.all().any { it.name == actName })
             })
-            return Result.Failure(StringLocale[ST_ACT_ALREADY_EXISTS])
+            return Result.failure(IllegalStateException(StringLocale[ST_ACT_ALREADY_EXISTS]))
 
         val act = transaction { act?.also { it.name = actName } ?: Act.new { this.name = actName } }
 
@@ -106,7 +108,7 @@ class ActEditorViewModel(private val act: Act?) {
             }
         }
 
-        return Result.Success
+        return Result.success
     }
 
     private fun sceneWithNameExist(name: String, excludedId: EntityID<Int>? = null) =

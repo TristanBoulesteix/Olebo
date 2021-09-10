@@ -12,37 +12,36 @@ import androidx.compose.ui.unit.dp
 import jdr.exia.localization.STR_CANCEL
 import jdr.exia.localization.STR_CONFIRM
 import jdr.exia.localization.StringLocale
-import jdr.exia.model.tools.Result
+import jdr.exia.model.tools.SimpleResult
 import jdr.exia.view.tools.MessageType
 import jdr.exia.view.tools.showMessage
 import jdr.exia.view.tools.withHandCursor
 
 @Composable
 fun FooterRow(
-    lazyResult: Lazy<Result>,
-    isEnabled: Boolean = true,
+    confirmText: String = StringLocale[STR_CONFIRM],
+    onConfirm: () -> SimpleResult,
+    cancelText: String = StringLocale[STR_CANCEL],
     onDone: () -> Unit,
-    onCancel: () -> Unit = onDone
+    onFailure: (Throwable) -> Unit = {
+        if (it.message != null)
+            showMessage(message = it.message!!, messageType = MessageType.WARNING)
+    }
 ) = Row(
     horizontalArrangement = Arrangement.SpaceAround,
     modifier = Modifier.fillMaxWidth().padding(15.dp)
 ) {
     OutlinedButton(
         onClick = {
-            when (val result = lazyResult.value) {
-                is Result.Failure -> showMessage(message = result.message, messageType = MessageType.WARNING)
-                is Result.Success -> onDone()
-            }
+            onConfirm().onSuccess { onDone() }.onFailure(onFailure)
         },
-        enabled = isEnabled,
-        content = { Text(text = StringLocale[STR_CONFIRM]) },
+        content = { Text(text = confirmText) },
         modifier = Modifier.withHandCursor()
     )
+
     OutlinedButton(
-        onClick = if (!isEnabled) onCancel else onDone,
-        content = {
-            Text(text = StringLocale[STR_CANCEL])
-        },
+        onClick = onDone,
+        content = { Text(text = cancelText) },
         modifier = Modifier.withHandCursor()
     )
 }

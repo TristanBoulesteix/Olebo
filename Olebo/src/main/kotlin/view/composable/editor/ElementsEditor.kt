@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import jdr.exia.localization.*
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Type
-import jdr.exia.model.tools.Result
+import jdr.exia.model.tools.SimpleResult
 import jdr.exia.model.tools.isCharacter
 import jdr.exia.model.type.Image
 import jdr.exia.model.type.imageFromFile
@@ -80,7 +80,7 @@ fun ElementsView(onDone: () -> Unit, closeText: String = StringLocale[STR_BACK])
                 OutlinedButton(
                     onClick = when {
                         contentViewModel.currentEditBlueprint != null -> contentViewModel::onEditDone
-                        contentViewModel.blueprintInCreation != null -> contentViewModel::cancelBluprintCreation
+                        contentViewModel.blueprintInCreation != null -> contentViewModel::cancelBlueprintCreation
                         else -> onDone
                     },
                     content = {
@@ -180,9 +180,8 @@ private fun HeaderContent(
                 ImageButtonBuilder(
                     content = imageFromIconRes("confirm_icon"),
                     onClick = {
-                        when (viewModel.onSubmitBlueprint()) {
-                            is Result.Success -> viewModel.cancelBluprintCreation()
-                            else -> showMessage(
+                        viewModel.onSubmitBlueprint().onSuccess { viewModel.cancelBlueprintCreation() }.onFailure {
+                            showMessage(
                                 StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID],
                                 messageType = MessageType.WARNING
                             )
@@ -191,7 +190,7 @@ private fun HeaderContent(
                 ),
                 ImageButtonBuilder(
                     content = imageFromIconRes("exit_icon"),
-                    onClick = viewModel::cancelBluprintCreation
+                    onClick = viewModel::cancelBlueprintCreation
                 )
             )
         }
@@ -320,7 +319,7 @@ private fun Blueprint.BlueprintData?.getButtons(
             content = imageFromIconRes("edit_icon"),
             onClick = {
                 viewModel.onEditItemSelected(blueprint)
-                viewModel.cancelBluprintCreation()
+                viewModel.cancelBlueprintCreation()
             }
         ),
         ImageButtonBuilder(
@@ -363,7 +362,7 @@ private fun Blueprint.BlueprintData?.getButtons(
         ),
         ImageButtonBuilder(
             content = imageFromIconRes("confirm_icon"),
-            onClick = { submitData(viewModel) }
+            onClick = { submitData(onEditConfirmed = viewModel::onEditConfirmed, onEditDone = viewModel::onEditDone) }
         ),
         ImageButtonBuilder(
             content = imageFromIconRes("exit_icon"),
@@ -372,10 +371,13 @@ private fun Blueprint.BlueprintData?.getButtons(
     )
 }
 
-private fun (Blueprint.BlueprintData).submitData(viewModel: ElementsEditorViewModel) {
-    when (val result = viewModel.onEditConfirmed(this)) {
-        is Result.Failure -> showMessage(result.message, messageType = MessageType.WARNING)
-        else -> viewModel.onEditDone()
+private inline fun (Blueprint.BlueprintData).submitData(
+    onEditConfirmed: (Blueprint.BlueprintData) -> SimpleResult,
+    onEditDone: () -> Unit
+) {
+    onEditConfirmed(this).onSuccess { onEditDone() }.onFailure {
+        if (it.message != null)
+            showMessage(it.message!!, messageType = MessageType.WARNING)
     }
 }
 

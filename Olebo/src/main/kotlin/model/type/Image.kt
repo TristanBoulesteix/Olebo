@@ -26,8 +26,10 @@ value class Image(val path: String) {
     fun toBitmap() = imageFromFile(File(path))
 }
 
+@Stable
 fun imageFromIconRes(name: String) = useResource("icons/$name.png", ::loadImageBitmap)
 
+@Stable
 fun imageFromFile(file: File) = SkijaImage.makeFromEncoded(file.readBytes()).asImageBitmap()
 
 /**

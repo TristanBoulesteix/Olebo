@@ -136,6 +136,10 @@ const val STR_DOWNLOAD = "download"
 const val STR_SELECT_DOWN = "select_down"
 const val STR_SELECT_UP = "select_up"
 const val STR_SELECT_ALL = "select_all"
+const val STR_CONFIRM_CREATE_SCENE = "confirm_create_scene"
+const val STR_CONFIRM_EDIT_SCENE = "confirm_edit_scene"
+const val STR_CONFIRM_CREATE_ACT = "confirm_create_act"
+const val STR_CONFIRM_EDIT_ACT = "confirm_edit_act"
 
 // -- Sentences
 

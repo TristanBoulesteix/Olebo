@@ -58,6 +58,7 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
  * This function can be infix if the smartcast isn't required.
  */
 @OptIn(ExperimentalContracts::class)
+@Stable
 infix fun Act.SceneData?.isValidAndEqualTo(sceneData: Act.SceneData?): Boolean {
     contract {
         returns(true) implies (sceneData != null && this@isValidAndEqualTo != null)
