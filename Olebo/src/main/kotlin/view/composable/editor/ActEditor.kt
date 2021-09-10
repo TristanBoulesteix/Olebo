@@ -73,12 +73,14 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
                     listOf(
                         ImageButtonBuilder(
                             content = imageFromIconRes("create_icon"),
+                            tooltip = StringLocale[STR_NEW_SCENE],
                             onClick = { setSceneInCreation(Act.SceneData.default()) })
                     )
                 } else {
                     listOf(
                         ImageButtonBuilder(
                             content = imageFromIconRes("confirm_icon"),
+                            tooltip = StringLocale[STR_CONFIRM_CREATE_SCENE],
                             onClick = {
                                 viewModel.onAddScene(sceneInCreation).onSuccess {
                                     setSceneInCreation(null)
@@ -89,6 +91,7 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
                         ),
                         ImageButtonBuilder(
                             content = imageFromIconRes("exit_icon"),
+                            tooltip = StringLocale[STR_CANCEL],
                             onClick = { setSceneInCreation(null) }
                         )
                     )
@@ -187,6 +190,7 @@ private fun Scenes(
                 buttonBuilders = listOf(
                     ImageButtonBuilder(
                         content = imageFromIconRes("edit_icon"),
+                        tooltip = StringLocale[STR_EDIT_SCENE_TOOLTIP],
                         onClick = {
                             viewModel.onEditItemSelected(scene)
                             setSceneInCreation(null)
@@ -194,6 +198,7 @@ private fun Scenes(
                     ),
                     ImageButtonBuilder(
                         content = imageFromIconRes("delete_icon"),
+                        tooltip = StringLocale[STR_DELETE_SCENE_TOOLTIP],
                         onClick = { viewModel.onRemoveScene(scene) }
                     )
                 )
@@ -233,14 +238,22 @@ private fun EditSceneRow(
                 data.name,
                 onValueChange = { updateData(data.copy(name = it)) },
                 modifier = defaultModifier,
-                placeholder = data.name.takeIf { it.isNotBlank() } ?: StringLocale[ST_ENTER_SCENE_NAME]
+                placeholder = data.name.takeIf(String::isNotBlank) ?: StringLocale[ST_ENTER_SCENE_NAME]
             )
         },
         removeBottomBorder = false,
         buttonBuilders = if (showButtons && onConfirmed != null && onCanceled != null)
             listOf(
-                ImageButtonBuilder(content = imageFromIconRes("confirm_icon"), onClick = onConfirmed),
-                ImageButtonBuilder(content = imageFromIconRes("exit_icon"), onClick = onCanceled)
+                ImageButtonBuilder(
+                    content = imageFromIconRes("confirm_icon"),
+                    tooltip = StringLocale[STR_CONFIRM_EDIT_SCENE],
+                    onClick = onConfirmed
+                ),
+                ImageButtonBuilder(
+                    content = imageFromIconRes("exit_icon"),
+                    tooltip = StringLocale[STR_CANCEL],
+                    onClick = onCanceled
+                )
             ) else emptyList()
     )
 

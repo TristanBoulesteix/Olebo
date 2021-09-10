@@ -190,7 +190,9 @@ internal class StringLocaleBundle : StringLocale() {
         STR_CONFIRM_CREATE_ACT to "save scenario",
         STR_CONFIRM_EDIT_ACT to "save scenario",
         STR_OPEN_ACT_TOOLTIP to "open the scenario",
-        STR_EDIT_ACT_TOOLTIP to "edit scenario"
+        STR_EDIT_ACT_TOOLTIP to "edit scenario",
+        STR_EDIT_SCENE_TOOLTIP to "edit scene",
+        STR_DELETE_SCENE_TOOLTIP to "delete scene"
     )
 }
 
@@ -384,5 +386,7 @@ internal class StringLocaleBundle_fr : StringLocale() {
         STR_CONFIRM_EDIT_ACT to "sauvegarder le scénario",
         STR_OPEN_ACT_TOOLTIP to "ouvrir le scénario",
         STR_EDIT_ACT_TOOLTIP to "éditer le scenario",
+        STR_EDIT_SCENE_TOOLTIP to "éditer la scène",
+        STR_DELETE_SCENE_TOOLTIP to "supprimer la scène"
     )
 }

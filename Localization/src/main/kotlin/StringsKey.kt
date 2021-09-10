@@ -142,6 +142,8 @@ const val STR_CONFIRM_CREATE_ACT = "confirm_create_act"
 const val STR_CONFIRM_EDIT_ACT = "confirm_edit_act"
 const val STR_OPEN_ACT_TOOLTIP = "open_act_tooltip"
 const val STR_EDIT_ACT_TOOLTIP = "edit_act_tooltip"
+const val STR_EDIT_SCENE_TOOLTIP = "edit_scene_tooltip"
+const val STR_DELETE_SCENE_TOOLTIP = "delete_scene_tooltip"
 
 // -- Sentences
 
