@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -20,6 +21,7 @@ import jdr.exia.view.element.builder.ContentButtonBuilder
 import jdr.exia.view.tools.applyIf
 import jdr.exia.view.tools.withHandCursor
 
+@Stable
 private fun defaultButton(action: () -> Unit) = listOf(ContentButtonBuilder("OK", onClick = action))
 
 @Composable
