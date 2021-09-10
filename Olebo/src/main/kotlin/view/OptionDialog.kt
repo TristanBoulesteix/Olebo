@@ -42,7 +42,7 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, StringLocale[ST
         this.isSelected = Settings.autoUpdate
     }
 
-    private val checkBoxPlayerFrameOpenedByDefault = JCheckBox(StringLocale[STR_PLAYERFRAME_OPENED]).apply {
+    private val checkBoxPlayerFrameOpenedByDefault = JCheckBox(StringLocale[STR_PLAYER_FRAME_OPENED]).apply {
         this.isSelected = Settings.playerFrameOpenedByDefault
     }
 

@@ -7,6 +7,8 @@ import androidx.compose.ui.graphics.ImageBitmap
 sealed interface ContentBuilder {
     val content: Any?
 
+    val tooltip: String?
+
     val enabled: Boolean
 
     val onChange: () -> Unit
@@ -14,6 +16,8 @@ sealed interface ContentBuilder {
 
 object EmptyContent : ContentBuilder {
     override val content: Nothing? = null
+
+    override val tooltip: Nothing? = null
 
     override val enabled = false
 
@@ -23,6 +27,7 @@ object EmptyContent : ContentBuilder {
 @Immutable
 data class ImageButtonBuilder(
     override val content: ImageBitmap,
+    override val tooltip: String? = null,
     override val enabled: Boolean = true,
     val onClick: () -> Unit
 ) : ContentBuilder {
@@ -34,6 +39,7 @@ data class ImageButtonBuilder(
 @Immutable
 data class ContentButtonBuilder(
     override val content: String,
+    override val tooltip: String? = null,
     override val enabled: Boolean = true,
     val onClick: () -> Unit = {}
 ) : ContentBuilder {
@@ -44,7 +50,8 @@ data class ContentButtonBuilder(
 
 @Immutable
 data class ComposableContentBuilder(
-    override val content: @Composable () -> Unit
+    override val content: @Composable () -> Unit,
+    override val tooltip: String? = null
 ) : ContentBuilder {
     override val enabled = true
 

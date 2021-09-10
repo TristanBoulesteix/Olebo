@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -12,10 +13,7 @@ import jdr.exia.view.element.builder.ComposableContentBuilder
 import jdr.exia.view.element.builder.ContentBuilder
 import jdr.exia.view.element.builder.ContentButtonBuilder
 import jdr.exia.view.element.builder.ImageButtonBuilder
-import jdr.exia.view.tools.BorderBuilder
-import jdr.exia.view.tools.applyIf
-import jdr.exia.view.tools.border
-import jdr.exia.view.tools.clickableWithCursor
+import jdr.exia.view.tools.*
 import jdr.exia.view.ui.typography
 
 
@@ -50,15 +48,19 @@ fun ContentListRow(
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ContentListRow(
     contentText: String,
+    contentTooltip: String? = null,
     onClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     buttonBuilders: List<ContentBuilder> = emptyList()
 ) = ContentListRow(
-    content = { ContentText(contentText = contentText, enabled = enabled) },
+    content = {
+        BoxWithTooltipIfNotNull(tooltip = contentTooltip) { ContentText(contentText = contentText, enabled = enabled) }
+    },
     onClick = onClick,
     modifier = modifier,
     buttonBuilders = buttonBuilders,
@@ -70,7 +72,7 @@ fun ContentText(contentText: String, enabled: Boolean = true) =
     Text(
         text = contentText,
         style = typography.h1,
-        modifier = Modifier.padding(10.dp),
+        modifier = Modifier.padding(start = 10.dp),
         color = if (enabled) Color.Unspecified else Color.Gray
     )
 
@@ -85,16 +87,21 @@ private fun RowButton(contentBuilder: ContentBuilder, modifier: Modifier) {
             },
         contentAlignment = Alignment.CenterStart
     ) {
-        when (contentBuilder) {
-            is ImageButtonBuilder -> Image(
-                bitmap = contentBuilder.content,
-                contentDescription = "button",
-                modifier = Modifier.align(Alignment.Center)
-            )
-            is ContentButtonBuilder -> Text(text = contentBuilder.content, modifier = Modifier.align(Alignment.Center))
-            is ComposableContentBuilder -> contentBuilder.content()
-            else -> {
-                // Do nothing
+        BoxWithTooltipIfNotNull(contentBuilder.tooltip) {
+            when (contentBuilder) {
+                is ImageButtonBuilder -> Image(
+                    bitmap = contentBuilder.content,
+                    contentDescription = "button",
+                    modifier = Modifier.align(Alignment.Center)
+                )
+                is ContentButtonBuilder -> Text(
+                    text = contentBuilder.content,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+                is ComposableContentBuilder -> contentBuilder.content()
+                else -> {
+                    // Do nothing
+                }
             }
         }
     }

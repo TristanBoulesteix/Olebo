@@ -12,10 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.ApplicationScope
 import jdr.exia.OLEBO_VERSION_NAME
-import jdr.exia.localization.STR_ADD_ACT
-import jdr.exia.localization.STR_ELEMENTS
-import jdr.exia.localization.STR_VERSION
-import jdr.exia.localization.StringLocale
+import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.view.composable.editor.ActEditorView
@@ -101,10 +98,19 @@ private fun ActsView(
             items(items = acts) { act ->
                 ContentListRow(
                     contentText = act.name,
+                    contentTooltip = StringLocale[STR_OPEN_ACT_TOOLTIP],
                     onClick = { onRowClick(act) },
                     buttonBuilders = listOf(
-                        ImageButtonBuilder(content = imageFromIconRes("edit_icon"), onClick = { onEdit(act) }),
-                        ImageButtonBuilder(content = imageFromIconRes("delete_icon"), onClick = { onDelete(act) })
+                        ImageButtonBuilder(
+                            content = imageFromIconRes("edit_icon"),
+                            tooltip = StringLocale[STR_EDIT_ACT_TOOLTIP],
+                            onClick = { onEdit(act) }
+                        ),
+                        ImageButtonBuilder(
+                            content = imageFromIconRes("delete_icon"),
+                            tooltip = StringLocale[STR_DELETE_ACT],
+                            onClick = { onDelete(act) }
+                        )
                     )
                 )
             }

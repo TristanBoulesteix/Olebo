@@ -111,9 +111,9 @@ class ElementsEditorViewModel(private val type: Type) {
             showConfirmMessage(
                 null,
                 if (countUsage == 1)
-                    StringLocale[ST_OCCURENCE_BLUEPRINT_TO_DELETE]
+                    StringLocale[ST_OCCURRENCE_BLUEPRINT_TO_DELETE]
                 else
-                    StringLocale[ST_INT1_OCCURENCE_BLUEPRINT_TO_DELETE, countUsage],
+                    StringLocale[ST_INT1_OCCURRENCE_BLUEPRINT_TO_DELETE, countUsage],
                 StringLocale[STR_WARNING],
                 okAction = ::deleteAndClearState
             )

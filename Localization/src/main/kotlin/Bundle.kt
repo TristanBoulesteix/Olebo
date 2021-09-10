@@ -126,7 +126,7 @@ internal class StringLocaleBundle : StringLocale() {
         STR_WHITE_WITH_BLACK_BORDER to "white with black border",
         STR_BLACK_WITH_WHITE_BORDER to "black with white border",
         STR_SELECT_COLOR to "pick a color",
-        STR_PLAYERFRAME_OPENED to "automatically open the players window",
+        STR_PLAYER_FRAME_OPENED to "automatically open the players window",
         STR_DOUBLE_CLICK_OPEN_ACT to "double click to open the scenario",
         STR_DEFAULT_ELEMENT_VISIBILITY to "tokens visible for players by default",
         STR_YELLOW to "yellow",
@@ -153,11 +153,11 @@ internal class StringLocaleBundle : StringLocale() {
         ST_NAME_OF_BLUEPRINT_REQUIRED to "The name of the element is required.",
         ST_IMG_BLUEPRINT_REQUIRED to "An image is required for an element.",
         ST_IMG_BLUEPRINT_NOT_EXIST_OR_INVALID to "The selected image doesn't exist or is invalid.",
-        ST_INT1_OCCURENCE_BLUEPRINT_TO_DELETE to """
+        ST_INT1_OCCURRENCE_BLUEPRINT_TO_DELETE to """
             This element is used in %s scene(s).
             Are you sure you want to delete it? This action cannot be cancelled.
         """.trimIndent(),
-        ST_OCCURENCE_BLUEPRINT_TO_DELETE to """
+        ST_OCCURRENCE_BLUEPRINT_TO_DELETE to """
             This element is used in 1 scene.
             Are you sure you want to delete it? This action cannot be cancelled.
         """.trimIndent(),
@@ -189,6 +189,8 @@ internal class StringLocaleBundle : StringLocale() {
         STR_CONFIRM_EDIT_SCENE to "save scene",
         STR_CONFIRM_CREATE_ACT to "save scenario",
         STR_CONFIRM_EDIT_ACT to "save scenario",
+        STR_OPEN_ACT_TOOLTIP to "open the scenario",
+        STR_EDIT_ACT_TOOLTIP to "edit scenario"
     )
 }
 
@@ -317,7 +319,7 @@ internal class StringLocaleBundle_fr : StringLocale() {
         STR_WHITE_WITH_BLACK_BORDER to "blanc avec une bordure noire",
         STR_BLACK_WITH_WHITE_BORDER to "noir avec une bordure blanche",
         STR_SELECT_COLOR to "choisissez une couleur",
-        STR_PLAYERFRAME_OPENED to "ouvrir automatiquement la fenêtre joueurs",
+        STR_PLAYER_FRAME_OPENED to "ouvrir automatiquement la fenêtre joueurs",
         STR_DOUBLE_CLICK_OPEN_ACT to "double cliquez pour ouvir le scénario",
         STR_DEFAULT_ELEMENT_VISIBILITY to "éléments visibles pour les joueurs par défaut",
         STR_YELLOW to "jaune",
@@ -342,13 +344,13 @@ internal class StringLocaleBundle_fr : StringLocale() {
         STR_BACK to "retour",
         STR_LOADING to "chargement",
         ST_NAME_OF_BLUEPRINT_REQUIRED to "Le nom de l'élément est requis.",
-        ST_IMG_BLUEPRINT_REQUIRED to "Un élément doit possèder une image.",
+        ST_IMG_BLUEPRINT_REQUIRED to "Un élément doit posséder une image.",
         ST_IMG_BLUEPRINT_NOT_EXIST_OR_INVALID to "L'image sélectionnée n'existe pas ou est invalide.",
-        ST_INT1_OCCURENCE_BLUEPRINT_TO_DELETE to """
+        ST_INT1_OCCURRENCE_BLUEPRINT_TO_DELETE to """
             Cet élément est utilisé dans %s scènes.
             Êtes-vous sûr de le supprimer? Cette action est irréversible.
         """.trimIndent(),
-        ST_OCCURENCE_BLUEPRINT_TO_DELETE to """
+        ST_OCCURRENCE_BLUEPRINT_TO_DELETE to """
             Cet élément est utilisé dans 1 scène.
             Êtes-vous sûr de le supprimer? Cette action est irréversible.
         """.trimIndent(),
@@ -380,5 +382,7 @@ internal class StringLocaleBundle_fr : StringLocale() {
         STR_CONFIRM_EDIT_SCENE to "sauvegarder la scène",
         STR_CONFIRM_CREATE_ACT to "sauvegarder le scénario",
         STR_CONFIRM_EDIT_ACT to "sauvegarder le scénario",
+        STR_OPEN_ACT_TOOLTIP to "ouvrir le scénario",
+        STR_EDIT_ACT_TOOLTIP to "éditer le scenario",
     )
 }
