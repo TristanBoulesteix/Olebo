@@ -30,6 +30,7 @@ import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.view.WindowStateManager
 import jdr.exia.view.element.*
 import jdr.exia.view.element.builder.ImageButtonBuilder
+import jdr.exia.view.element.dialog.PromptDialog
 import jdr.exia.view.tools.*
 import jdr.exia.view.ui.blue
 import jdr.exia.view.ui.roundedShape
@@ -82,10 +83,7 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
                                 viewModel.onAddScene(sceneInCreation).onSuccess {
                                     setSceneInCreation(null)
                                 }.onFailure {
-                                    showMessage(
-                                        StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID],
-                                        messageType = MessageType.WARNING
-                                    )
+                                    viewModel.errorMessage = StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID]
                                 }
                             }
                         ),
@@ -123,6 +121,16 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
             getEditedSceneData = { currentEditedScene },
             act = act,
             onDone = onDone
+        )
+    }
+
+    if (viewModel.errorMessage.isNotBlank()) {
+        PromptDialog(
+            title = StringLocale[STR_WARNING],
+            message = viewModel.errorMessage,
+            onCloseRequest = { viewModel.errorMessage = "" },
+            width = 450.dp,
+            height = 175.dp
         )
     }
 }
@@ -169,7 +177,7 @@ private fun Scenes(
                 data = tempCurrentEditedScene,
                 updateData = setTempCurrentEditScene,
                 onConfirmed = {
-                    viewModel.submitEditedScene(tempCurrentEditedScene)
+                    viewModel.submitEditedScene(tempCurrentEditedScene) { viewModel.errorMessage = it }
                 },
                 onCanceled = viewModel::onEditDone
             )
@@ -194,13 +202,12 @@ private fun Scenes(
     }
 }
 
-private fun ActEditorViewModel.submitEditedScene(tempCurrentEditedScene: Act.SceneData): SimpleResult =
+private inline fun ActEditorViewModel.submitEditedScene(
+    tempCurrentEditedScene: Act.SceneData,
+    showError: (String) -> Unit
+): SimpleResult =
     if (!onEditConfirmed(tempCurrentEditedScene)) {
-        showMessage(
-            StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID],
-            messageType = MessageType.WARNING
-        )
-
+        showError(StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID])
         Result.failure
     } else Result.success
 
@@ -297,10 +304,7 @@ private fun Footer(
             onConfirm = { viewModel.onAddScene(sceneInCreation) },
             onDone = { setSceneInCreation(null) },
             onFailure = {
-                showMessage(
-                    StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID],
-                    messageType = MessageType.WARNING
-                )
+                viewModel.errorMessage = StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID]
             }
         )
         viewModel.currentEditScene != null -> FooterRow(
@@ -308,7 +312,7 @@ private fun Footer(
             onConfirm = {
                 getEditedSceneData().let {
                     if (it != null)
-                        viewModel.submitEditedScene(it)
+                        viewModel.submitEditedScene(it) { errorMessage -> viewModel.errorMessage = errorMessage }
                     else {
                         viewModel.onEditDone()
                         Result.success

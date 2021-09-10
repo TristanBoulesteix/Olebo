@@ -25,6 +25,8 @@ class ActEditorViewModel(private val act: Act?) {
 
     var actName by mutableStateOf(act?.name ?: "")
 
+    var errorMessage by mutableStateOf("")
+
     var scenes by transaction {
         mutableStateOf((act?.scenes ?: emptySized()).mapLazy {
             Act.SceneData(it.name, Image(it.background), it.id)

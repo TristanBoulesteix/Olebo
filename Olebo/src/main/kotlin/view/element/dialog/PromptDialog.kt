@@ -5,7 +5,10 @@ import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.key
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -17,12 +20,14 @@ import jdr.exia.view.element.builder.ContentButtonBuilder
 import jdr.exia.view.tools.applyIf
 import jdr.exia.view.tools.withHandCursor
 
+private fun defaultButton(action: () -> Unit) = listOf(ContentButtonBuilder("OK", onClick = action))
+
 @Composable
 fun PromptDialog(
     title: String,
     message: String,
     onCloseRequest: () -> Unit,
-    buttonBuilders: List<ContentBuilder>,
+    buttonBuilders: List<ContentBuilder> = defaultButton(onCloseRequest),
     width: Dp = 400.dp,
     height: Dp = 200.dp,
     visible: Boolean = true,
@@ -38,11 +43,12 @@ fun PromptDialog(
     },
 )
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun PromptDialog(
     title: String,
     onCloseRequest: () -> Unit,
-    buttonBuilders: List<ContentBuilder>,
+    buttonBuilders: List<ContentBuilder> = defaultButton(onCloseRequest),
     width: Dp = 400.dp,
     height: Dp = 200.dp,
     visible: Boolean = true,
@@ -51,7 +57,16 @@ fun PromptDialog(
     if (visible) {
         val state = rememberDialogState(size = WindowSize(width, height))
 
-        Dialog(onCloseRequest = onCloseRequest, title = title, resizable = false, state = state) {
+        Dialog(
+            onCloseRequest = onCloseRequest,
+            title = title,
+            resizable = false,
+            state = state,
+            onPreviewKeyEvent = {
+                if (it.key == Key.Escape || it.key == Key.Enter)
+                    onCloseRequest()
+                false
+            }) {
             this.window.isModal = true
 
             Column(
