@@ -165,41 +165,14 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
             }
         }
 
-        when {
-            sceneInCreation != null -> FooterRow(
-                confirmText = StringLocale[STR_CONFIRM_CREATE_SCENE],
-                onConfirm = { viewModel.onAddScene(sceneInCreation) },
-                onDone = { setSceneInCreation(null) },
-                onFailure = {
-                    showMessage(
-                        StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID],
-                        messageType = MessageType.WARNING
-                    )
-                }
-            )
-            viewModel.currentEditScene != null -> FooterRow(
-                confirmText = StringLocale[STR_CONFIRM_EDIT_SCENE],
-                onConfirm = {
-                    currentEditedScene.let {
-                        if (it != null)
-                            viewModel.submitEditedScene(it)
-                        else {
-                            viewModel.onEditDone()
-                            Result.success
-                        }
-                    }
-                },
-                onDone = {
-                    setSceneInCreation(null)
-                    viewModel.onEditDone()
-                }
-            )
-            else -> FooterRow(
-                confirmText = StringLocale[if (act == null) STR_CONFIRM_CREATE_ACT else STR_CONFIRM_EDIT_ACT],
-                onConfirm = viewModel::submitAct,
-                onDone = onDone
-            )
-        }
+        Footer(
+            sceneInCreation = sceneInCreation,
+            viewModel = viewModel,
+            setSceneInCreation = setSceneInCreation,
+            getEditedSceneData = { currentEditedScene },
+            act = act,
+            onDone = onDone
+        )
     }
 }
 
@@ -287,6 +260,52 @@ private fun ImagePreviewContent(
             },
             modifier = Modifier.padding(10.dp).align(Alignment.Center).matchParentSize().withHandCursor(),
             content = { Text(text = StringLocale[if (imgExist) STR_IMPORT_NEW_IMG else STR_IMPORT_IMG]) }
+        )
+    }
+}
+
+@Composable
+private fun Footer(
+    sceneInCreation: Act.SceneData?,
+    viewModel: ActEditorViewModel,
+    setSceneInCreation: (Act.SceneData?) -> Unit,
+    getEditedSceneData: () -> Act.SceneData?,
+    act: Act?,
+    onDone: () -> Unit
+) {
+    when {
+        sceneInCreation != null -> FooterRow(
+            confirmText = StringLocale[STR_CONFIRM_CREATE_SCENE],
+            onConfirm = { viewModel.onAddScene(sceneInCreation) },
+            onDone = { setSceneInCreation(null) },
+            onFailure = {
+                showMessage(
+                    StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID],
+                    messageType = MessageType.WARNING
+                )
+            }
+        )
+        viewModel.currentEditScene != null -> FooterRow(
+            confirmText = StringLocale[STR_CONFIRM_EDIT_SCENE],
+            onConfirm = {
+                getEditedSceneData().let {
+                    if (it != null)
+                        viewModel.submitEditedScene(it)
+                    else {
+                        viewModel.onEditDone()
+                        Result.success
+                    }
+                }
+            },
+            onDone = {
+                setSceneInCreation(null)
+                viewModel.onEditDone()
+            }
+        )
+        else -> FooterRow(
+            confirmText = StringLocale[if (act == null) STR_CONFIRM_CREATE_ACT else STR_CONFIRM_EDIT_ACT],
+            onConfirm = viewModel::submitAct,
+            onDone = onDone
         )
     }
 }
