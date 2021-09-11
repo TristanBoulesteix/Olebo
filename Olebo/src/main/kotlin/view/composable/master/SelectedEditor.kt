@@ -198,8 +198,8 @@ private fun VisibilityButtons(
                 elementPropertyGetter = Element::isVisible,
                 defaultValue = true
             )
-        ) withSetter { newVisiblity ->
-            Element.cmdVisiblity(newVisiblity, commandManager, selectedElements)
+        ) withSetter { newVisibility ->
+            Element.cmdVisiblity(newVisibility, commandManager, selectedElements)
             repaint()
         }
     }
