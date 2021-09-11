@@ -104,6 +104,7 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
     )
 
     Column(modifier = Modifier.weight(.80f).fillMaxSize()) {
+        //ComposeMapPanel(modifier = Modifier.weight(.85f).fillMaxSize(), viewModel = viewModel)
         Box(modifier = Modifier.weight(.85f).fillMaxSize()) {
             SwingPanel(factory = viewModel::panel)
         }

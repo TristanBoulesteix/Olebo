@@ -7,7 +7,7 @@ import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.res.useResource
 import jdr.exia.system.OLEBO_DIRECTORY
 import java.io.File
-import org.jetbrains.skija.Image as SkijaImage
+import org.jetbrains.skia.Image as SkiaImage
 
 private val imgPath = OLEBO_DIRECTORY + "img${File.separator}"
 
@@ -30,7 +30,7 @@ value class Image(val path: String) {
 fun imageFromIconRes(name: String) = useResource("icons/$name.png", ::loadImageBitmap)
 
 @Stable
-fun imageFromFile(file: File) = SkijaImage.makeFromEncoded(file.readBytes()).asImageBitmap()
+fun imageFromFile(file: File) = SkiaImage.makeFromEncoded(file.readBytes()).asImageBitmap()
 
 /**
  * Save a picture to img folder
