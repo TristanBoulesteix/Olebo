@@ -43,7 +43,7 @@ fun zipOleboDirectory(fileDestination: File) {
             val zipFileName = file.absolutePath.removePrefix(oleboDirectory.absolutePath).removePrefix(File.separator)
                 .replace('\\', '/')
 
-            if (zipFileName.isNotBlank() && file.nameWithoutExtension != "oleboUpdater" && file.extension != OLEBO_MANIFEST_EXTENSION) {
+            if (zipFileName.isNotBlank() && file.nameWithoutExtension != "olebo_updater" && file.extension != OLEBO_MANIFEST_EXTENSION) {
                 val entry = ZipEntry("$zipFileName${(if (file.isDirectory) "/" else "")}")
                 zos.putNextEntry(entry)
                 if (file.isFile) {
