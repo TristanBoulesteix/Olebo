@@ -20,6 +20,7 @@ import jdr.exia.view.tools.positionOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.swing.Swing
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
@@ -27,7 +28,7 @@ import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
 
-class MasterViewModel(val act: Act, val scope: CoroutineScope) {
+class MasterViewModel(val act: Act) : CoroutineScope by CoroutineScope(Dispatchers.Swing) {
     companion object {
         const val ABSOLUTE_WIDTH = 1600
         const val ABSOLUTE_HEIGHT = 900
@@ -259,7 +260,7 @@ class MasterViewModel(val act: Act, val scope: CoroutineScope) {
         repaint()
     }
 
-    fun repaint(reloadTokens: Boolean = false) = scope.launch {
+    fun repaint(reloadTokens: Boolean = false) = launch {
         if (reloadTokens)
             withContext(Dispatchers.IO) {
                 elements = transaction { currentScene.elements }

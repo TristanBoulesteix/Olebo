@@ -31,9 +31,7 @@ import java.awt.GraphicsDevice
 
 @Composable
 fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
-    val scope = rememberCoroutineScope()
-
-    val viewModel = remember { MasterViewModel(act = act, scope = scope) }
+    val viewModel = remember { MasterViewModel(act) }
 
     Window(
         title = transaction { StringLocale[ST_STR1_DM_WINDOW_NAME, act.name] },
