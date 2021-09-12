@@ -1,6 +1,7 @@
 package jdr.exia.view.menubar
 
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.window.FrameWindowScope
@@ -19,6 +20,7 @@ import jdr.exia.view.element.dialog.LoadingDialog
 import jdr.exia.view.tools.MessageType
 import jdr.exia.view.tools.showMessage
 import jdr.exia.view.tools.windowAncestor
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -32,7 +34,7 @@ fun FrameWindowScope.MainMenuBar(exitApplication: () -> Unit) = MenuBar {
     MainMenus(exitApplication)
 }
 
-@OptIn(DelicateCoroutinesApi::class, androidx.compose.ui.ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLocale[STR_FILES], mnemonic = 'f') {
     val longProcessRunningMessage = remember { mutableStateOf("") }
@@ -78,30 +80,30 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
                 this.fileFilter = FileNameExtensionFilter(StringLocale[STR_OLEBO_FILE], "olebo")
                 if (this.showOpenDialog(this.windowAncestor) == JFileChooser.APPROVE_OPTION && !this.selectedFile.isDirectory && this.selectedFile.exists()) {
                     longProcessRunningMessage.executeBlockingProcess(StringLocale[STR_IMPORT_DATA]) {
-                        loadOleboZipData(this.selectedFile).onSuccess {
+                        loadOleboZipData(selectedFile).onSuccess {
                             if (it == null) {
                                 showMessage(
                                     StringLocale[ST_CONFIGURATION_IMPORTED],
-                                    this.windowAncestor
+                                    windowAncestor
                                 )
 
                                 // close all composable windows and then restart the main function
                                 exitApplication()
 
-                                GlobalScope.launch {
+                                launch {
                                     main()
                                 }
                             } else {
                                 showMessage(
                                     it,
-                                    this.windowAncestor,
+                                    windowAncestor,
                                     MessageType.ERROR
                                 )
                             }
                         }.onFailure {
                             showMessage(
                                 "${StringLocale[ST_UNKNOWN_ERROR]} ${StringLocale[ST_FILE_MAY_BE_CORRUPTED]}",
-                                this.windowAncestor,
+                                windowAncestor,
                                 MessageType.ERROR
                             )
                         }
@@ -164,7 +166,7 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
 @OptIn(DelicateCoroutinesApi::class)
 private inline fun MutableState<String>.executeBlockingProcess(
     reasonMessage: String,
-    crossinline process: suspend () -> Unit
+    crossinline process: suspend CoroutineScope.() -> Unit
 ) = GlobalScope.launch {
     value = reasonMessage
     process()
