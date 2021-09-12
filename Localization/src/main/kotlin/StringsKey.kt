@@ -15,7 +15,6 @@ const val STR_AUTO_UPDATE = "auto_update"
 const val STR_OLEBO_FILE = "olebo_file"
 const val STR_ABOUT = "about"
 const val STR_APP_VERSION = "app_version"
-const val STR_DATABASE_VERSION = "dtb_version"
 const val STR_ELEMENTS = "element"
 const val STR_ADD_ACT = "add_act"
 const val STR_OBJECT_LIST = "objects_list"
@@ -144,6 +143,8 @@ const val STR_OPEN_ACT_TOOLTIP = "open_act_tooltip"
 const val STR_EDIT_ACT_TOOLTIP = "edit_act_tooltip"
 const val STR_EDIT_SCENE_TOOLTIP = "edit_scene_tooltip"
 const val STR_DELETE_SCENE_TOOLTIP = "delete_scene_tooltip"
+const val STR_CONTINUE = "continue"
+const val STR_VERSION_CODE = "version_code"
 
 // -- Sentences
 

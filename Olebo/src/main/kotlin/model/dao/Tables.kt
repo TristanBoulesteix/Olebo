@@ -31,31 +31,35 @@ sealed interface Initializable {
     fun initialize()
 }
 
+/**
+ * Table where the database infos are stored. This table must be initialized before the others in order to check database version.
+ */
 object BaseInfo : Table(), Initializable {
     private const val BASE_VERSION = "base_version"
 
-    val keyInfo = varchar("key_info", 50)
+    private val keyInfo = varchar("key_info", 50)
     val value = varchar("value", 50)
 
     override val primaryKey = PrimaryKey(keyInfo)
 
-    val baseVersionWhere
-        get() = keyInfo eq BASE_VERSION
+    val versionBase
+        get() = BaseInfo.select(keyInfo eq BASE_VERSION).firstOrNull()?.getOrNull(value)
+            ?.toIntOrNull()
 
     override fun initialize() {
-        if (BaseInfo.select(baseVersionWhere).count() <= 0) {
+        if (BaseInfo.select(keyInfo eq BASE_VERSION).count() <= 0) {
             BaseInfo.insert {
                 it[keyInfo] = BASE_VERSION
                 it[value] = OLEBO_VERSION_CODE.toString()
             }
         } else {
-            BaseInfo.update({ baseVersionWhere }) { it[value] = OLEBO_VERSION_CODE.toString() }
+            BaseInfo.update({ keyInfo eq BASE_VERSION }) { it[value] = OLEBO_VERSION_CODE.toString() }
         }
     }
 }
 
 /**
- * Table where user settings are stored. This table must be initialized before the others in order to check database version
+ * Table where user settings are stored.
  */
 object SettingsTable : IntIdTable(), Initializable {
     const val BASE_VERSION = "baseVersion"

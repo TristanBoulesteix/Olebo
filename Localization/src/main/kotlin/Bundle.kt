@@ -24,7 +24,6 @@ internal class StringLocaleBundle : StringLocale() {
         ST_FILE_MAY_BE_CORRUPTED to "This file may be corrupted.",
         STR_ABOUT to "about",
         STR_APP_VERSION to "app version:",
-        STR_DATABASE_VERSION to "database version:",
         STR_ELEMENTS to "elements",
         STR_ADD_ACT to "new scenario",
         STR_OBJECT_LIST to "Objects list",
@@ -195,7 +194,9 @@ internal class StringLocaleBundle : StringLocale() {
         STR_OPEN_ACT_TOOLTIP to "open the scenario",
         STR_EDIT_ACT_TOOLTIP to "edit scenario",
         STR_EDIT_SCENE_TOOLTIP to "edit scene",
-        STR_DELETE_SCENE_TOOLTIP to "delete scene"
+        STR_DELETE_SCENE_TOOLTIP to "delete scene",
+        STR_CONTINUE to "continue",
+        STR_VERSION_CODE to "version code:",
     )
 }
 
@@ -222,7 +223,6 @@ internal class StringLocaleBundle_fr : StringLocale() {
         ST_FILE_MAY_BE_CORRUPTED to "Le fichier peut être corrompu.",
         STR_ABOUT to "à propos",
         STR_APP_VERSION to "version de l'application :",
-        STR_DATABASE_VERSION to "version de la base de données :",
         STR_ELEMENTS to "éléments",
         STR_ADD_ACT to "ajouter un scénario",
         STR_OBJECT_LIST to "liste des objets",
@@ -343,7 +343,7 @@ internal class StringLocaleBundle_fr : StringLocale() {
         STR_DB_VERSION_MISMATCH to "erreur d'initialisation de la base de données",
         ST_DB_VERSION_MISMATCH_MESSAGE to """
             La base de données sur cet ordinateur provient d'une version ultérieur de Olebo. Pour pouvoir charger ces données, veuillez mettre à jour l'application ou la réinitialiser.
-            Si vous choississez de continuer sans mettre à jour, certaines données risques d'être perdues et certaines fonctionnalités pourront être manquantes.
+            Si vous choississez de continuer sans mettre à jour, certaines données risques d'être perdues et certaines fonctionnalités pourront ne pas fonctionner.
         """.trimIndent(),
         STR_EXIT to "quitter",
         STR_UPDATE to "mettre à jour",
@@ -393,6 +393,8 @@ internal class StringLocaleBundle_fr : StringLocale() {
         STR_OPEN_ACT_TOOLTIP to "ouvrir le scénario",
         STR_EDIT_ACT_TOOLTIP to "éditer le scenario",
         STR_EDIT_SCENE_TOOLTIP to "éditer la scène",
-        STR_DELETE_SCENE_TOOLTIP to "supprimer la scène"
+        STR_DELETE_SCENE_TOOLTIP to "supprimer la scène",
+        STR_CONTINUE to "continuer",
+        STR_VERSION_CODE to "code de version :",
     )
 }

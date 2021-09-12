@@ -1,12 +1,9 @@
 package jdr.exia.model.dao.option
 
 import jdr.exia.OLEBO_VERSION_CODE
-import jdr.exia.localization.ST_UNKNOWN_DATABASE_VERSION
-import jdr.exia.localization.StringLocale
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.SettingsTable
 import jdr.exia.model.dao.SettingsTable.AUTO_UPDATE
-import jdr.exia.model.dao.SettingsTable.BASE_VERSION
 import jdr.exia.model.dao.SettingsTable.CHANGELOGS_VERSION
 import jdr.exia.model.dao.SettingsTable.CURRENT_LANGUAGE
 import jdr.exia.model.dao.SettingsTable.CURSOR_COLOR
@@ -16,7 +13,6 @@ import jdr.exia.model.dao.SettingsTable.LABEL_COLOR
 import jdr.exia.model.dao.SettingsTable.LABEL_STATE
 import jdr.exia.model.dao.SettingsTable.PLAYER_FRAME_ENABLED
 import jdr.exia.model.dao.SettingsTable.UPDATE_WARN
-import jdr.exia.model.tools.MessageException
 import jdr.exia.model.tools.toBoolean
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -24,17 +20,6 @@ import org.jetbrains.exposed.sql.update
 import java.util.*
 
 object Settings {
-    var databaseVersion
-        get() = transaction(DAO.database) {
-            this@Settings[BASE_VERSION]?.toIntOrNull()
-                ?: throw MessageException(StringLocale[ST_UNKNOWN_DATABASE_VERSION])
-        }
-        set(value) {
-            transaction(DAO.database) {
-                this@Settings[BASE_VERSION] = value
-            }
-        }
-
     var autoUpdate
         get() = transaction(DAO.database) { this@Settings[AUTO_UPDATE] }.toBoolean()
         set(value) {

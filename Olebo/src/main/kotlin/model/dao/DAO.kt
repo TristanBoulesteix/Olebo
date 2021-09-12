@@ -13,7 +13,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
@@ -38,44 +37,34 @@ object DAO {
         Database.connect(url, "org.sqlite.JDBC").also {
             TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
 
-            val result = transaction {
+            transaction {
                 // Check database version
                 SchemaUtils.createMissingTablesAndColumns(BaseInfo)
 
-                val version =
-                    BaseInfo.select(BaseInfo.baseVersionWhere).firstOrNull()?.getOrNull(BaseInfo.value)
-                        ?.toIntOrNull()
+                val version = BaseInfo.versionBase
 
-                if (version != null && OLEBO_VERSION_CODE < version)
-                    return@transaction false
+                if (version == null || OLEBO_VERSION_CODE >= version || showUpdateMessageWarn()) {
+                    BaseInfo.initialize()
 
-                BaseInfo.initialize()
+                    SchemaUtils.createMissingTablesAndColumns(*tables)
+                    tables.forEach {
+                        if (it is Initializable)
+                            it.initialize()
+                    }
 
-                SchemaUtils.createMissingTablesAndColumns(*tables)
-                tables.forEach {
-                    if (it is Initializable)
-                        it.initialize()
+                    // Delete all elements that where removed from scenes
+                    Element.find { InstanceTable.deleted eq true }.forEach(Element::delete)
                 }
-
-                // Delete all elements that where removed from scenes
-                Element.find { InstanceTable.deleted eq true }.forEach(Element::delete)
-
-                return@transaction true
-            }
-
-            // If result is false, the database version does not match
-            if (!result) {
-                showUpdateMessageWarn()
-                exitProcess(100)
             }
         }
-
     } catch (e: Exception) {
         throw DatabaseException(e)
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    private fun showUpdateMessageWarn() {
+    private fun showUpdateMessageWarn(): Boolean {
+        var userContinue = false
+
         val update = JButton(StringLocale[STR_UPDATE]).apply {
             this.addActionListener {
                 windowAncestor?.dispose()
@@ -103,6 +92,13 @@ object DAO {
             }
         }
 
+        val continueButton = JButton(StringLocale[STR_CONTINUE]).apply {
+            this.addActionListener {
+                windowAncestor?.dispose()
+                userContinue = true
+            }
+        }
+
         val exit = JButton(StringLocale[STR_EXIT]).apply { this.addActionListener { windowAncestor?.dispose() } }
 
         JOptionPane.showOptionDialog(
@@ -112,8 +108,10 @@ object DAO {
             JOptionPane.NO_OPTION,
             JOptionPane.ERROR_MESSAGE,
             null,
-            arrayOf(update, reset, exit),
+            arrayOf(update, reset, continueButton, exit),
             exit
         )
+
+        return if (!userContinue) exitProcess(100) else userContinue
     }
 }

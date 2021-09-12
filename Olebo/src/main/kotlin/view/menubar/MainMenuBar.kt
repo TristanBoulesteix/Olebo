@@ -6,11 +6,11 @@ import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.window.FrameWindowScope
 import androidx.compose.ui.window.MenuBar
 import androidx.compose.ui.window.MenuBarScope
+import jdr.exia.OLEBO_VERSION_CODE
 import jdr.exia.OLEBO_VERSION_NAME
 import jdr.exia.localization.*
 import jdr.exia.main
 import jdr.exia.model.dao.loadOleboZipData
-import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.dao.zipOleboDirectory
 import jdr.exia.view.OptionDialog
 import jdr.exia.view.WindowStateManager
@@ -137,7 +137,7 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
     Item(text = StringLocale[STR_ABOUT], shortcut = KeyShortcut(Key.F1)) {
         JOptionPane.showMessageDialog(
             null,
-            "Olebo - ${StringLocale[STR_APP_VERSION]} $OLEBO_VERSION_NAME - ${StringLocale[STR_DATABASE_VERSION]} ${Settings.databaseVersion}",
+            "Olebo - ${StringLocale[STR_APP_VERSION]} $OLEBO_VERSION_NAME - ${StringLocale[STR_VERSION_CODE]} $OLEBO_VERSION_CODE",
             StringLocale[STR_ABOUT],
             JOptionPane.INFORMATION_MESSAGE
         )
