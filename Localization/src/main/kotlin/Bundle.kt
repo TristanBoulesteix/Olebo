@@ -143,7 +143,10 @@ internal class StringLocaleBundle : StringLocale() {
         STR_PRIORITY_COMBO_TOOLTIP to "set the priority level of the element",
         STR_LABEL_TOOLTIP to "add a custom label to the element",
         STR_DB_VERSION_MISMATCH to "error during database initialization",
-        ST_DB_VERSION_MISMATCH_MESSAGE to "The database on this computer come is from a later version of Olebo. To lose the data, please update the application or reset it.",
+        ST_DB_VERSION_MISMATCH_MESSAGE to """
+            The database on this computer come is from a later version of Olebo. To lose the data, please update the application or reset it.
+            If you choose to continue without update the software, some data could be lost and some features may be missing.
+        """.trimIndent(),
         STR_EXIT to "exit",
         STR_UPDATE to "update",
         STR_RESET to "reset",
@@ -338,7 +341,10 @@ internal class StringLocaleBundle_fr : StringLocale() {
         STR_PRIORITY_COMBO_TOOLTIP to "change le niveau de prorité de l'élément",
         STR_LABEL_TOOLTIP to "ajoute un label personalisé à l'élément",
         STR_DB_VERSION_MISMATCH to "erreur d'initialisation de la base de données",
-        ST_DB_VERSION_MISMATCH_MESSAGE to "La base de données sur cet ordinateur provient d'une version ultérieur de Olebo. Pour pouvoir charger ces données, veuillez mettre à jour l'application ou la réinitialiser.",
+        ST_DB_VERSION_MISMATCH_MESSAGE to """
+            La base de données sur cet ordinateur provient d'une version ultérieur de Olebo. Pour pouvoir charger ces données, veuillez mettre à jour l'application ou la réinitialiser.
+            Si vous choississez de continuer sans mettre à jour, certaines données risques d'être perdues et certaines fonctionnalités pourront être manquantes.
+        """.trimIndent(),
         STR_EXIT to "quitter",
         STR_UPDATE to "mettre à jour",
         STR_RESET to "réinitialiser",

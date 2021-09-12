@@ -1,5 +1,6 @@
 package jdr.exia.model.dao
 
+import jdr.exia.OLEBO_VERSION_CODE
 import jdr.exia.localization.ST_WARNING_MISSING_CONF_FILES
 import jdr.exia.localization.ST_WARNING_PREVIOUS_VERSION_FILE
 import jdr.exia.localization.StringLocale
@@ -33,7 +34,7 @@ fun zipOleboDirectory(fileDestination: File) {
 
     ZipOutputStream(BufferedOutputStream(FileOutputStream(outputTempZip))).use { zos ->
         File.createTempFile("o_manifest_", null).apply {
-            this.writeText(DAO.DATABASE_VERSION.toString())
+            this.writeText(OLEBO_VERSION_CODE.toString())
             zos.putNextEntry(ZipEntry(OLEBO_MANIFEST_NAME))
             this.inputStream().use { it.copyTo(zos) }
         }
@@ -66,7 +67,7 @@ fun loadOleboZipData(zipFile: File): SimpleResult = try {
 
             this.find { it.name == OLEBO_MANIFEST_NAME }?.let { entry ->
                 zip.getInputStream(entry).use { stream ->
-                    if (String(stream.readBytes()).toIntOrNull()?.let { it > DAO.DATABASE_VERSION } != false)
+                    if (String(stream.readBytes()).toIntOrNull()?.let { it > OLEBO_VERSION_CODE } != false)
                         return Result.failure(IllegalStateException(StringLocale[ST_WARNING_PREVIOUS_VERSION_FILE]))
                 }
             }
@@ -74,9 +75,9 @@ fun loadOleboZipData(zipFile: File): SimpleResult = try {
             reset()
 
             this.filter { it.name != OLEBO_MANIFEST_NAME }.forEach { entry ->
-                val fileString = entry.name.removeSuffix('/'.toString()).split('/').let { splitedName ->
-                    splitedName.dropLast(1).joinToString('/'.toString()).replace('/', File.separatorChar).let {
-                        OLEBO_DIRECTORY + it + (if (it.isNotBlank()) File.separator else "") + splitedName.last()
+                val fileString = entry.name.removeSuffix('/'.toString()).split('/').let { splitName ->
+                    splitName.dropLast(1).joinToString('/'.toString()).replace('/', File.separatorChar).let {
+                        OLEBO_DIRECTORY + it + (if (it.isNotBlank()) File.separator else "") + splitName.last()
                     }
                 }
                 if (entry.isDirectory) {

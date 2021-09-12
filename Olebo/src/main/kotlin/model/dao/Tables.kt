@@ -1,5 +1,6 @@
 package jdr.exia.model.dao
 
+import jdr.exia.OLEBO_VERSION_CODE
 import jdr.exia.model.dao.option.SerializableColor
 import jdr.exia.model.dao.option.SerializableLabelState
 import org.jetbrains.exposed.dao.id.EntityID
@@ -15,6 +16,7 @@ import java.util.*
  */
 val tables by lazy {
     arrayOf(
+        SettingsTable,
         ActTable,
         SceneTable,
         TypeTable,
@@ -27,6 +29,29 @@ val tables by lazy {
 
 sealed interface Initializable {
     fun initialize()
+}
+
+object BaseInfo : Table(), Initializable {
+    private const val BASE_VERSION = "base_version"
+
+    val keyInfo = varchar("key_info", 50)
+    val value = varchar("value", 50)
+
+    override val primaryKey = PrimaryKey(keyInfo)
+
+    val baseVersionWhere
+        get() = keyInfo eq BASE_VERSION
+
+    override fun initialize() {
+        if (BaseInfo.select(baseVersionWhere).count() <= 0) {
+            BaseInfo.insert {
+                it[keyInfo] = BASE_VERSION
+                it[value] = OLEBO_VERSION_CODE.toString()
+            }
+        } else {
+            BaseInfo.update({ baseVersionWhere }) { it[value] = OLEBO_VERSION_CODE.toString() }
+        }
+    }
 }
 
 /**
@@ -48,43 +73,29 @@ object SettingsTable : IntIdTable(), Initializable {
     val name = varchar("name", 255)
     val value = varchar("value", 255).default("")
 
-    val baseVersionWhere = (id eq 1) and (name eq BASE_VERSION)
+    override fun initialize() = initializeDefault(true)
 
-    override fun initialize() {
-        if (SettingsTable.select(baseVersionWhere).count() <= 0) {
-            SettingsTable.insert {
-                it[id] = EntityID(1, SettingsTable)
-                it[name] = BASE_VERSION
-                it[value] = DAO.DATABASE_VERSION.toString()
-            }
-        } else {
-            SettingsTable.update({ baseVersionWhere }) { it[value] = DAO.DATABASE_VERSION.toString() }
-        }
-
-        initializeDefault(true)
+    fun initializeDefault(insertOnlyIfNotExists: Boolean = false) {
+        insertOptionIfNotExists(2, AUTO_UPDATE, true, insertOnlyIfNotExists)
+        insertOptionIfNotExists(3, UPDATE_WARN, "", insertOnlyIfNotExists)
+        insertOptionIfNotExists(4, CURSOR_ENABLED, true, insertOnlyIfNotExists)
+        insertOptionIfNotExists(5, CURRENT_LANGUAGE, Locale.getDefault().language, insertOnlyIfNotExists)
+        insertOptionIfNotExists(6, CURSOR_COLOR, "", insertOnlyIfNotExists)
+        insertOptionIfNotExists(7, PLAYER_FRAME_ENABLED, false, insertOnlyIfNotExists)
+        insertOptionIfNotExists(8, DEFAULT_ELEMENT_VISIBILITY, false, insertOnlyIfNotExists)
+        insertOptionIfNotExists(9, LABEL_STATE, SerializableLabelState.ONLY_FOR_MASTER.encode(), insertOnlyIfNotExists)
+        insertOptionIfNotExists(10, LABEL_COLOR, SerializableColor.BLACK.encode(), insertOnlyIfNotExists)
+        insertOptionIfNotExists(11, CHANGELOGS_VERSION, "", insertOnlyIfNotExists)
     }
 
-    fun initializeDefault(insertOnlyIfnotExists: Boolean = false) {
-        insertOptionIfNotExists(2, AUTO_UPDATE, true, insertOnlyIfnotExists)
-        insertOptionIfNotExists(3, UPDATE_WARN, "", insertOnlyIfnotExists)
-        insertOptionIfNotExists(4, CURSOR_ENABLED, true, insertOnlyIfnotExists)
-        insertOptionIfNotExists(5, CURRENT_LANGUAGE, Locale.getDefault().language, insertOnlyIfnotExists)
-        insertOptionIfNotExists(6, CURSOR_COLOR, "", insertOnlyIfnotExists)
-        insertOptionIfNotExists(7, PLAYER_FRAME_ENABLED, false, insertOnlyIfnotExists)
-        insertOptionIfNotExists(8, DEFAULT_ELEMENT_VISIBILITY, false, insertOnlyIfnotExists)
-        insertOptionIfNotExists(9, LABEL_STATE, SerializableLabelState.ONLY_FOR_MASTER.encode(), insertOnlyIfnotExists)
-        insertOptionIfNotExists(10, LABEL_COLOR, SerializableColor.BLACK.encode(), insertOnlyIfnotExists)
-        insertOptionIfNotExists(11, CHANGELOGS_VERSION, "", insertOnlyIfnotExists)
-    }
-
-    private fun insertOptionIfNotExists(id: Int, name: String, value: Any, insertOnlyIfnotExists: Boolean) {
+    private fun insertOptionIfNotExists(id: Int, name: String, value: Any, insertOnlyIfNotExists: Boolean) {
         fun insertOrUpdate(builder: UpdateBuilder<Int>) {
             builder[SettingsTable.id] = EntityID(id, SettingsTable)
             builder[SettingsTable.name] = name
             builder[SettingsTable.value] = value.toString()
         }
 
-        if (!insertOnlyIfnotExists) {
+        if (!insertOnlyIfNotExists) {
             SettingsTable.update({ SettingsTable.id eq id }) {
                 insertOrUpdate(it)
             }

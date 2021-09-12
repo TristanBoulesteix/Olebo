@@ -1,5 +1,6 @@
 package jdr.exia.model.dao
 
+import jdr.exia.OLEBO_VERSION_CODE
 import jdr.exia.localization.*
 import jdr.exia.model.element.Element
 import jdr.exia.model.tools.DatabaseException
@@ -22,13 +23,6 @@ import javax.swing.JOptionPane
 import kotlin.system.exitProcess
 
 object DAO {
-    /**
-     * Version of the database
-     *
-     * Must be incremented each time the database structure is modified
-     */
-    const val DATABASE_VERSION = 4
-
     const val DATABASE_NAME = "database.db"
 
     private val filePath = "${OLEBO_DIRECTORY}db${File.separator}$DATABASE_NAME"
@@ -46,22 +40,23 @@ object DAO {
 
             val result = transaction {
                 // Check database version
-                SchemaUtils.createMissingTablesAndColumns(SettingsTable)
+                SchemaUtils.createMissingTablesAndColumns(BaseInfo)
 
                 val version =
-                    SettingsTable.select(SettingsTable.baseVersionWhere).firstOrNull()?.getOrNull(SettingsTable.value)
+                    BaseInfo.select(BaseInfo.baseVersionWhere).firstOrNull()?.getOrNull(BaseInfo.value)
                         ?.toIntOrNull()
 
-                if (version != null && DATABASE_VERSION < version)
+                if (version != null && OLEBO_VERSION_CODE < version)
                     return@transaction false
 
-                SettingsTable.initialize()
+                BaseInfo.initialize()
 
                 SchemaUtils.createMissingTablesAndColumns(*tables)
                 tables.forEach {
                     if (it is Initializable)
                         it.initialize()
                 }
+
                 // Delete all elements that where removed from scenes
                 Element.find { InstanceTable.deleted eq true }.forEach(Element::delete)
 
