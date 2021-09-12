@@ -15,6 +15,7 @@ import jdr.exia.model.dao.zipOleboDirectory
 import jdr.exia.view.OptionDialog
 import jdr.exia.view.WindowStateManager
 import jdr.exia.view.element.dialog.ConfirmMessage
+import jdr.exia.view.element.dialog.LoadingDialog
 import jdr.exia.view.tools.MessageType
 import jdr.exia.view.tools.showMessage
 import jdr.exia.view.tools.windowAncestor
@@ -34,6 +35,11 @@ fun FrameWindowScope.MainMenuBar(exitApplication: () -> Unit) = MenuBar {
 @OptIn(DelicateCoroutinesApi::class, androidx.compose.ui.ExperimentalComposeUiApi::class)
 @Composable
 fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLocale[STR_FILES], mnemonic = 'f') {
+    val longProcessRunningMessage = remember { mutableStateOf("") }
+
+    if (longProcessRunningMessage.value.isNotBlank())
+        LoadingDialog(reasonMessage = longProcessRunningMessage.value)
+
     Item(text = StringLocale[STR_EXPORT_DATA]) {
         val extension = "olebo"
         JFileChooser().apply {
@@ -45,15 +51,17 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
                 else
                     File("${this.selectedFile.parentFile.absolutePath}${File.separator}${this.selectedFile.nameWithoutExtension}.$extension")
 
-                if (fileToSave.exists()) {
-                    val result = JOptionPane.showConfirmDialog(
+                if (!fileToSave.exists() || JOptionPane.showConfirmDialog(
                         null,
                         StringLocale[ST_FILE_ALREADY_EXISTS],
                         StringLocale[STR_SAVE_AS],
                         JOptionPane.YES_NO_OPTION
-                    )
-                    if (result == JOptionPane.YES_OPTION) zipOleboDirectory(fileToSave)
-                } else zipOleboDirectory(fileToSave)
+                    ) == JOptionPane.YES_OPTION
+                ) {
+                    longProcessRunningMessage.executeBlockingProcess(StringLocale[STR_EXPORT_DATA]) {
+                        zipOleboDirectory(fileToSave)
+                    }
+                }
             }
         }
     }
@@ -69,25 +77,34 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
                 this.dialogTitle = StringLocale[STR_IMPORT_DATA]
                 this.fileFilter = FileNameExtensionFilter(StringLocale[STR_OLEBO_FILE], "olebo")
                 if (this.showOpenDialog(this.windowAncestor) == JFileChooser.APPROVE_OPTION && !this.selectedFile.isDirectory && this.selectedFile.exists()) {
-                    loadOleboZipData(this.selectedFile).onSuccess {
-                        showMessage(
-                            StringLocale[ST_CONFIGURATION_IMPORTED],
-                            this.windowAncestor
-                        )
+                    longProcessRunningMessage.executeBlockingProcess(StringLocale[STR_IMPORT_DATA]) {
+                        loadOleboZipData(this.selectedFile).onSuccess {
+                            if (it == null) {
+                                showMessage(
+                                    StringLocale[ST_CONFIGURATION_IMPORTED],
+                                    this.windowAncestor
+                                )
 
-                        // close all composable windows and then restart the main function
-                        exitApplication()
+                                // close all composable windows and then restart the main function
+                                exitApplication()
 
-                        GlobalScope.launch {
-                            main()
+                                GlobalScope.launch {
+                                    main()
+                                }
+                            } else {
+                                showMessage(
+                                    it,
+                                    this.windowAncestor,
+                                    MessageType.ERROR
+                                )
+                            }
+                        }.onFailure {
+                            showMessage(
+                                "${StringLocale[ST_UNKNOWN_ERROR]} ${StringLocale[ST_FILE_MAY_BE_CORRUPTED]}",
+                                this.windowAncestor,
+                                MessageType.ERROR
+                            )
                         }
-                    }.onFailure {
-                        showMessage(
-                            if (it !is IllegalStateException) "${StringLocale[ST_UNKNOWN_ERROR]} ${StringLocale[ST_FILE_MAY_BE_CORRUPTED]}" else it.message
-                                ?: "",
-                            this.windowAncestor,
-                            MessageType.ERROR
-                        )
                     }
                 }
             }
@@ -142,4 +159,14 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
             JOptionPane.INFORMATION_MESSAGE
         )
     }
+}
+
+@OptIn(DelicateCoroutinesApi::class)
+private inline fun MutableState<String>.executeBlockingProcess(
+    reasonMessage: String,
+    crossinline process: suspend () -> Unit
+) = GlobalScope.launch {
+    value = reasonMessage
+    process()
+    value = ""
 }

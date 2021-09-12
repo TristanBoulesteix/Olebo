@@ -50,7 +50,7 @@ fun PromptDialog(
 fun PromptDialog(
     title: String,
     onCloseRequest: () -> Unit,
-    buttonBuilders: List<ContentBuilder> = defaultButton(onCloseRequest),
+    buttonBuilders: List<ContentBuilder> = emptyList(),
     width: Dp = 400.dp,
     height: Dp = 200.dp,
     visible: Boolean = true,
