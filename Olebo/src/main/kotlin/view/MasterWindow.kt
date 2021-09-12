@@ -48,7 +48,7 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
                 title = transaction { act.name },
                 mapPanel = MapPanel(isParentMaster = false, viewModel = viewModel),
                 onHide = { playerFrameVisible = false },
-                getMasterWindowScreen = window::getCurrentSceen
+                getMasterWindowScreen = window::getCurrentScreen
             )
         }
 
@@ -125,7 +125,7 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
  *
  * @return The current GraphicsDevice of the Window or null if it was unable to get the current screen
  */
-private fun ComposeWindow.getCurrentSceen(): GraphicsDevice? {
+private fun ComposeWindow.getCurrentScreen(): GraphicsDevice? {
     val windowBounds = bounds
 
     var lastArea = 0
