@@ -25,7 +25,7 @@ internal class StringLocaleBundle : StringLocale() {
         STR_ABOUT to "about",
         STR_APP_VERSION to "app version:",
         STR_ELEMENTS to "elements",
-        STR_ADD_ACT to "new scenario",
+        STR_ADD_ACT to "create a new scenario",
         STR_OBJECT_LIST to "Objects list",
         STR_OBJECTS to "Objects",
         STR_PC to "PC",
@@ -197,6 +197,8 @@ internal class StringLocaleBundle : StringLocale() {
         STR_DELETE_SCENE_TOOLTIP to "delete scene",
         STR_CONTINUE to "continue",
         STR_VERSION_CODE to "version code:",
+        STR_NO_ACT to "no scenario",
+        STR_NO_SCENE to "no scene",
     )
 }
 
@@ -396,5 +398,7 @@ internal class StringLocaleBundle_fr : StringLocale() {
         STR_DELETE_SCENE_TOOLTIP to "supprimer la scène",
         STR_CONTINUE to "continuer",
         STR_VERSION_CODE to "code de version :",
+        STR_NO_ACT to "aucun scénario",
+        STR_NO_SCENE to "aucune scène",
     )
 }

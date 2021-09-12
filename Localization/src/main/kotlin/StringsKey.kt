@@ -145,6 +145,8 @@ const val STR_EDIT_SCENE_TOOLTIP = "edit_scene_tooltip"
 const val STR_DELETE_SCENE_TOOLTIP = "delete_scene_tooltip"
 const val STR_CONTINUE = "continue"
 const val STR_VERSION_CODE = "version_code"
+const val STR_NO_ACT = "no_act"
+const val STR_NO_SCENE = "no_scene"
 
 // -- Sentences
 

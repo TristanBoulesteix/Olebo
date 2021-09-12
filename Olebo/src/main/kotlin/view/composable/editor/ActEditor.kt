@@ -17,7 +17,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.isValidAndEqualTo
@@ -167,43 +169,58 @@ private fun Scenes(
     viewModel: ActEditorViewModel,
     setCurrentEditedScene: (Act.SceneData) -> Unit,
     setSceneInCreation: (Act.SceneData?) -> Unit
-) = LazyScrollableColumn(modifier = contentModifier) {
-    items(items = viewModel.scenes) { scene ->
-        if (viewModel.currentEditScene isValidAndEqualTo scene) {
-            val (tempCurrentEditedScene, setTempCurrentEditScene) = remember {
-                mutableStateOf(scene) withSetter {
-                    setCurrentEditedScene(it)
+) = when {
+    viewModel.scenes.isNotEmpty() -> LazyScrollableColumn(modifier = contentModifier) {
+        items(items = viewModel.scenes) { scene ->
+            if (viewModel.currentEditScene isValidAndEqualTo scene) {
+                val (tempCurrentEditedScene, setTempCurrentEditScene) = remember {
+                    mutableStateOf(scene) withSetter {
+                        setCurrentEditedScene(it)
+                    }
                 }
-            }
 
-            EditSceneRow(
-                data = tempCurrentEditedScene,
-                updateData = setTempCurrentEditScene,
-                onConfirmed = {
-                    viewModel.submitEditedScene(tempCurrentEditedScene) { viewModel.errorMessage = it }
-                },
-                onCanceled = viewModel::onEditDone
-            )
-        } else {
-            ContentListRow(
-                contentText = scene.name,
-                buttonBuilders = listOf(
-                    ImageButtonBuilder(
-                        content = imageFromIconRes("edit_icon"),
-                        tooltip = StringLocale[STR_EDIT_SCENE_TOOLTIP],
-                        onClick = {
-                            viewModel.onEditItemSelected(scene)
-                            setSceneInCreation(null)
-                        }
-                    ),
-                    ImageButtonBuilder(
-                        content = imageFromIconRes("delete_icon"),
-                        tooltip = StringLocale[STR_DELETE_SCENE_TOOLTIP],
-                        onClick = { viewModel.onRemoveScene(scene) }
+                EditSceneRow(
+                    data = tempCurrentEditedScene,
+                    updateData = setTempCurrentEditScene,
+                    onConfirmed = {
+                        viewModel.submitEditedScene(tempCurrentEditedScene) { viewModel.errorMessage = it }
+                    },
+                    onCanceled = viewModel::onEditDone
+                )
+            } else {
+                ContentListRow(
+                    contentText = scene.name,
+                    buttonBuilders = listOf(
+                        ImageButtonBuilder(
+                            content = imageFromIconRes("edit_icon"),
+                            tooltip = StringLocale[STR_EDIT_SCENE_TOOLTIP],
+                            onClick = {
+                                viewModel.onEditItemSelected(scene)
+                                setSceneInCreation(null)
+                            }
+                        ),
+                        ImageButtonBuilder(
+                            content = imageFromIconRes("delete_icon"),
+                            tooltip = StringLocale[STR_DELETE_SCENE_TOOLTIP],
+                            onClick = { viewModel.onRemoveScene(scene) }
+                        )
                     )
                 )
-            )
+            }
         }
+    }
+    else -> Column(modifier = contentModifier, verticalArrangement = Arrangement.Center) {
+        Text(
+            text = StringLocale[STR_NO_SCENE],
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            fontWeight = FontWeight.Bold,
+            fontSize = 30.sp
+        )
+        OutlinedButton(
+            onClick = { setSceneInCreation(Act.SceneData.default()) },
+            content = { Text(StringLocale[STR_NEW_SCENE]) },
+            modifier = Modifier.align(Alignment.CenterHorizontally).withHandCursor()
+        )
     }
 }
 

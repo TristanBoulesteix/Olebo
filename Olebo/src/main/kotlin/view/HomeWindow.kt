@@ -7,9 +7,12 @@ import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.ApplicationScope
 import jdr.exia.OLEBO_VERSION_NAME
 import jdr.exia.localization.*
@@ -92,26 +95,46 @@ private fun ActsView(
     }
 
     Box(modifier = Modifier.fillMaxSize().background(blue).padding(15.dp)) {
-        LazyScrollableColumn(
-            modifier = Modifier.padding(20.dp).fillMaxSize().background(Color.White).border(BorderBuilder.defaultBorder)
-        ) {
-            items(items = acts) { act ->
-                ContentListRow(
-                    contentText = act.name,
-                    contentTooltip = StringLocale[STR_OPEN_ACT_TOOLTIP],
-                    onClick = { onRowClick(act) },
-                    buttonBuilders = listOf(
-                        ImageButtonBuilder(
-                            content = imageFromIconRes("edit_icon"),
-                            tooltip = StringLocale[STR_EDIT_ACT_TOOLTIP],
-                            onClick = { onEdit(act) }
-                        ),
-                        ImageButtonBuilder(
-                            content = imageFromIconRes("delete_icon"),
-                            tooltip = StringLocale[STR_DELETE_ACT],
-                            onClick = { onDelete(act) }
+        val contentModifier =
+            Modifier.padding(20.dp).fillMaxSize().background(Color.White).border(BorderBuilder.defaultBorder)
+
+        when {
+            acts.isNotEmpty() -> {
+                LazyScrollableColumn(
+                    modifier = contentModifier
+                ) {
+                    items(items = acts) { act ->
+                        ContentListRow(
+                            contentText = act.name,
+                            contentTooltip = StringLocale[STR_OPEN_ACT_TOOLTIP],
+                            onClick = { onRowClick(act) },
+                            buttonBuilders = listOf(
+                                ImageButtonBuilder(
+                                    content = imageFromIconRes("edit_icon"),
+                                    tooltip = StringLocale[STR_EDIT_ACT_TOOLTIP],
+                                    onClick = { onEdit(act) }
+                                ),
+                                ImageButtonBuilder(
+                                    content = imageFromIconRes("delete_icon"),
+                                    tooltip = StringLocale[STR_DELETE_ACT],
+                                    onClick = { onDelete(act) }
+                                )
+                            )
                         )
-                    )
+                    }
+                }
+            }
+            else -> Column(modifier = contentModifier, verticalArrangement = Arrangement.Center) {
+                Text(
+                    text = StringLocale[STR_NO_ACT],
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 30.sp
+                )
+                OutlinedButton(
+                    onClick = startActCreation,
+                    content = { Text(StringLocale[STR_ADD_ACT]) },
+                    modifier = Modifier.align(Alignment.CenterHorizontally).withHandCursor()
                 )
             }
         }
