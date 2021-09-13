@@ -8,9 +8,7 @@ import jdr.exia.system.OLEBO_DIRECTORY
 import jdr.exia.update.downloadAndExit
 import jdr.exia.view.tools.showConfirmMessage
 import jdr.exia.view.tools.windowAncestor
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.Table
@@ -22,7 +20,7 @@ import javax.swing.JButton
 import javax.swing.JOptionPane
 import kotlin.system.exitProcess
 
-object DAO {
+object DAO : CoroutineScope by CoroutineScope(Dispatchers.IO) {
     const val DATABASE_NAME = "database.db"
 
     private val filePath = "${OLEBO_DIRECTORY}db${File.separator}$DATABASE_NAME"
@@ -48,14 +46,15 @@ object DAO {
                     BaseInfo.initialize()
 
                     SchemaUtils.createMissingTablesAndColumns(*tables)
-                    SchemaUtils.drop(object : Table("Priority") {})
                     tables.forEach {
                         if (it is Initializable)
                             it.initialize()
                     }
 
+                    dropLegacyTables()
+
                     // Delete all elements that where removed from scenes
-                    Element.find { InstanceTable.deleted eq true }.forEach(Element::delete)
+                    launch { transaction { Element.find { InstanceTable.deleted eq true }.forEach(Element::delete) } }
                 }
             }
         }
@@ -115,5 +114,15 @@ object DAO {
         )
 
         return if (!userContinue) exitProcess(100) else userContinue
+    }
+
+    @OptIn(ExperimentalStdlibApi::class)
+    fun dropLegacyTables() = launch {
+        transaction {
+            val legacyTables = buildList {
+                add(object : Table("Priority") {})
+            }.toTypedArray()
+            SchemaUtils.drop(*legacyTables)
+        }
     }
 }
