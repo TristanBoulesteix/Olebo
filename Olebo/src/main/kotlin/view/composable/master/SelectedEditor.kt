@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import jdr.exia.localization.*
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.element.Element
-import jdr.exia.model.element.Priority
+import jdr.exia.model.element.Layer
 import jdr.exia.model.element.Size
 import jdr.exia.model.tools.isCharacter
 import jdr.exia.model.tools.withSetter
@@ -31,7 +31,7 @@ fun SelectedEditor(
     commandManager: CommandManager,
     selectedElements: List<Element>,
     deleteSelectedElement: () -> Unit,
-    setPriority: (Priority) -> Unit,
+    setPriority: (Layer) -> Unit,
     repaint: () -> Unit
 ) = Row(
     modifier = modifier,
@@ -164,12 +164,12 @@ private fun SizeSelector(selectedElements: List<Element>, repaint: () -> Unit, c
 }
 
 @Composable
-private inline fun LayerSelector(selectedElements: List<Element>, crossinline setPriority: (Priority) -> Unit) {
+private inline fun LayerSelector(selectedElements: List<Element>, crossinline setPriority: (Layer) -> Unit) {
     var selectedLayer by remember(selectedElements) {
         mutableStateOf(
             selectedElements.getElementProperty(
                 elementPropertyGetter = Element::priority,
-                defaultValue = Priority.REGULAR
+                defaultValue = Layer.REGULAR
             )
         ) withSetter setPriority
     }
@@ -178,7 +178,7 @@ private inline fun LayerSelector(selectedElements: List<Element>, crossinline se
 
     TitledDropdownMenu(
         title = StringLocale[STR_PRIORITY],
-        items = Priority.values(),
+        items = Layer.values(),
         onValueChanged = { selectedLayer = it },
         selectedItem = selectedLayer,
         isEnabled = isEnabled

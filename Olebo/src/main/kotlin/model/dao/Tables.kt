@@ -3,6 +3,7 @@ package jdr.exia.model.dao
 import jdr.exia.OLEBO_VERSION_CODE
 import jdr.exia.model.dao.option.SerializableColor
 import jdr.exia.model.dao.option.SerializableLabelState
+import jdr.exia.model.element.Layer
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
@@ -21,7 +22,7 @@ val tables by lazy {
         SceneTable,
         TypeTable,
         BlueprintTable,
-        PriorityTable,
+        LayerTable,
         SizeTable,
         InstanceTable,
     )
@@ -62,7 +63,6 @@ object BaseInfo : Table(), Initializable {
  * Table where user settings are stored.
  */
 object SettingsTable : IntIdTable(), Initializable {
-    const val BASE_VERSION = "baseVersion"
     const val AUTO_UPDATE = "autoUpdate"
     const val UPDATE_WARN = "updateWarn"
     const val CURSOR_ENABLED = "cursorEnabled"
@@ -207,28 +207,17 @@ object TypeTable : IntIdTable(), Initializable {
     }
 }
 
-object PriorityTable : IntIdTable(), Initializable {
-    val priority = varchar("priority", 10)
+object LayerTable : IntIdTable(), Initializable {
+    val layerValue = enumeration<Layer>("layer")
 
     override fun initialize() {
-        if (PriorityTable.select((id eq 1) and (priority eq "LOW")).count() <= 0) {
-            PriorityTable.insert {
-                it[id] = EntityID(1, PriorityTable)
-                it[priority] = "LOW"
-            }
-        }
-
-        if (PriorityTable.select((id eq 2) and (priority eq "NORMAL")).count() <= 0) {
-            PriorityTable.insert {
-                it[id] = EntityID(2, PriorityTable)
-                it[priority] = "NORMAL"
-            }
-        }
-
-        if (PriorityTable.select((id eq 3) and (priority eq "HIGH")).count() <= 0) {
-            PriorityTable.insert {
-                it[id] = EntityID(3, PriorityTable)
-                it[priority] = "HIGH"
+        enumValues<Layer>().forEachIndexed { index, layer ->
+            val idLayer = index + 1
+            if (select { (id eq idLayer) and (layerValue eq layer) }.count() <= 0) {
+                insert {
+                    it[id] = idLayer
+                    it[layerValue] = layer
+                }
             }
         }
     }
@@ -242,8 +231,8 @@ object InstanceTable : IntIdTable() {
     val idSize = reference("ID_Size", SizeTable, onDelete = ReferenceOption.CASCADE).default(EntityID(2, SizeTable))
     val visible = bool("Visible").default(false)
     val orientation = float("Orientation").default(0f)
-    val priority =
-        reference("id_priority", PriorityTable, onDelete = ReferenceOption.CASCADE).default(EntityID(2, PriorityTable))
+    val layer =
+        reference("id_priority", LayerTable, onDelete = ReferenceOption.CASCADE).default(EntityID(2, LayerTable))
     val idScene = integer("ID_Scene").references(SceneTable.id).default(0)
     val idBlueprint = integer("id_blueprint").references(BlueprintTable.id).default(0)
     val deleted = bool("deleted").default(false)
@@ -304,3 +293,5 @@ object SizeTable : IntIdTable(), Initializable {
         }
     }
 }
+
+private inline fun <reified T : Enum<T>> Table.enumeration(name: String): Column<T> = enumeration(name, T::class)

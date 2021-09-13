@@ -8,7 +8,7 @@ import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
-import jdr.exia.model.element.Priority
+import jdr.exia.model.element.Layer
 import jdr.exia.model.element.Type
 import jdr.exia.model.tools.callCommandManager
 import jdr.exia.model.tools.doIfContainsSingle
@@ -251,10 +251,10 @@ class MasterViewModel(val act: Act) : CoroutineScope by CoroutineScope(Dispatche
         repaint()
     }
 
-    fun changePriority(newPriority: Priority) {
+    fun changePriority(newLayer: Layer) {
         elements = elements.onEach {
             if (it in selectedElements) {
-                it.priority = newPriority
+                it.priority = newLayer
             }
         }.sortedBy { it.priority }
         repaint()

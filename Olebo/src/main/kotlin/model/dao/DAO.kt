@@ -13,6 +13,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
@@ -47,6 +48,7 @@ object DAO {
                     BaseInfo.initialize()
 
                     SchemaUtils.createMissingTablesAndColumns(*tables)
+                    SchemaUtils.drop(object : Table("Priority") {})
                     tables.forEach {
                         if (it is Initializable)
                             it.initialize()

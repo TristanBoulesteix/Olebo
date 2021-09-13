@@ -185,7 +185,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     private var x by InstanceTable.x
     private var y by InstanceTable.y
     private var sizeElement by Size.SizeElement referencedOn InstanceTable.idSize
-    private var priorityElement by Priority.PriorityElement referencedOn InstanceTable.priority
+    private var layerEntity by Layer.LayerEntity referencedOn InstanceTable.layer
 
     var alias by InstanceTable.alias
     var isDeleted by InstanceTable.deleted
@@ -241,9 +241,9 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         }
 
     var priority
-        get() = transaction { priorityElement.priorityElement }
+        get() = transaction { layerEntity.layer }
         set(value) {
-            transaction { priorityElement = value.priority }
+            transaction { layerEntity = Layer.LayerEntity[value] }
         }
 
     var referencePoint

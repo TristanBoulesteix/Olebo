@@ -22,7 +22,7 @@ class MessageException(message: String) : Exception(message) {
 class CharacterException(kClass: KClass<*>, varName: String?) :
     Exception("Cet objet n'est pas un personnage !" + varName?.let { " Impossible d'accéder à la variable $varName dans ${kClass.qualifiedName}" })
 
-class DatabaseException(e: Exception) : Exception(e) {
+class DatabaseException(e: Throwable) : Exception(e) {
     init {
         JOptionPane.showMessageDialog(
             null,
