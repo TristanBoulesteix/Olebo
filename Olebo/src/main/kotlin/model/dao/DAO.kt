@@ -26,7 +26,15 @@ object DAO : CoroutineScope by CoroutineScope(Dispatchers.IO) {
     private val filePath = "${OLEBO_DIRECTORY}db${File.separator}$DATABASE_NAME"
     private val url = "jdbc:sqlite:$filePath"
 
-    val database: Database = try {
+    var database: Database = getDatabase()
+        private set
+
+    fun refreshDatabase() {
+        database = getDatabase()
+    }
+
+    @JvmName("get")
+    private fun getDatabase() = try {
         File(filePath).apply {
             this.parentFile.mkdirs()
             this.createNewFile()

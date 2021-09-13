@@ -11,6 +11,7 @@ import jdr.exia.OLEBO_VERSION_CODE
 import jdr.exia.OLEBO_VERSION_NAME
 import jdr.exia.localization.*
 import jdr.exia.main
+import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.loadOleboZipData
 import jdr.exia.model.dao.zipOleboDirectory
 import jdr.exia.view.OptionDialog
@@ -91,6 +92,7 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
                                 exitApplication()
 
                                 launch {
+                                    DAO.refreshDatabase()
                                     main()
                                 }
                             } else {
