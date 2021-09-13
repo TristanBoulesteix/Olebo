@@ -4,6 +4,7 @@ import jdr.exia.OLEBO_VERSION_CODE
 import jdr.exia.model.dao.option.SerializableColor
 import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.element.Layer
+import jdr.exia.model.element.SizeElement
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
@@ -41,16 +42,11 @@ sealed class EnumInitializable<E : Enum<E>>(private val values: Array<E>) : IntI
 
             if (select { (id eq idEnum) and (enumValue eq enum) }.count() <= 0) {
                 insert {
-                    it[id] = idEnum
+                    it[id] = EntityID(idEnum, this@EnumInitializable)
                     it[enumValue] = enum
                 }
             }
-            //initialize(index + 1, enum)
         }
-    }
-
-    fun initialize(id: Int, value: E) {
-
     }
 }
 
@@ -249,59 +245,11 @@ object InstanceTable : IntIdTable() {
     val alias = varchar("alias", 255).default("")
 }
 
-object SizeTable : IntIdTable(), Initializable {
-    val size = varchar("Size", 10)
-    val value = integer("Value")
-
-    override fun initialize() {
-        if (SizeTable.select((id eq 1) and (size eq "XS") and (value eq 30)).count() <= 0) {
-            SizeTable.insert {
-                it[id] = EntityID(1, SizeTable)
-                it[size] = "XS"
-                it[value] = 30
-            }
-        }
-
-        if (SizeTable.select((id eq 2) and (size eq "S") and (value eq 60)).count() <= 0) {
-            SizeTable.insert {
-                it[id] = EntityID(2, SizeTable)
-                it[size] = "S"
-                it[value] = 60
-            }
-        }
-
-        if (SizeTable.select((id eq 3) and (size eq "M") and (value eq 120)).count() <= 0) {
-            SizeTable.insert {
-                it[id] = EntityID(3, SizeTable)
-                it[size] = "M"
-                it[value] = 120
-            }
-        }
-
-        if (SizeTable.select((id eq 4) and (size eq "L") and (value eq 200)).count() <= 0) {
-            SizeTable.insert {
-                it[id] = EntityID(4, TypeTable)
-                it[size] = "L"
-                it[value] = 200
-            }
-        }
-
-        if (SizeTable.select((id eq 5) and (size eq "XL") and (value eq 300)).count() <= 0) {
-            SizeTable.insert {
-                it[id] = EntityID(5, TypeTable)
-                it[size] = "XL"
-                it[value] = 300
-            }
-        }
-
-        if (SizeTable.select((id eq 6) and (size eq "XXL") and (value eq 400)).count() <= 0) {
-            SizeTable.insert {
-                it[id] = EntityID(6, TypeTable)
-                it[size] = "XXL"
-                it[value] = 400
-            }
-        }
-    }
+object SizeTable : EnumInitializable<SizeElement>(enumValues()) {
+    override val enumValue = enumerationByName<SizeElement>("size")
 }
 
 private inline fun <reified T : Enum<T>> Table.enumeration(name: String): Column<T> = enumeration(name, T::class)
+
+private inline fun <reified T : Enum<T>> Table.enumerationByName(name: String, length: Int = 50): Column<T> =
+    enumerationByName(name, length, T::class)

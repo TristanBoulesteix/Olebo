@@ -116,7 +116,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             }
         }
 
-        fun cmdDimension(size: Size, manager: CommandManager, elements: List<Element>) {
+        fun cmdDimension(size: SizeElement, manager: CommandManager, elements: List<Element>) {
             val elementsFiltered = elements.filter { it.size != size }
 
             val previousSize = elementsFiltered.map { it.size }
@@ -184,7 +184,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
     private var x by InstanceTable.x
     private var y by InstanceTable.y
-    private var sizeElement by Size.SizeElement referencedOn InstanceTable.idSize
+    private var sizeEntity by SizeElement.SizeEntity referencedOn InstanceTable.idSize
     private var layerEntity by Layer.LayerEntity referencedOn InstanceTable.layer
 
     var alias by InstanceTable.alias
@@ -223,8 +223,8 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             Rectangle(
                 x,
                 y,
-                sizeElement.absoluteSizeValue,
-                sizeElement.absoluteSizeValue
+                size.value,
+                size.value
             )
         }
 
@@ -235,9 +235,9 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         }
 
     var size
-        get() = transaction { sizeElement.sizeElement }
+        get() = transaction { sizeEntity.size }
         private set(value) {
-            transaction { sizeElement = value.size }
+            transaction { sizeEntity = SizeElement.SizeEntity[value] }
         }
 
     var priority

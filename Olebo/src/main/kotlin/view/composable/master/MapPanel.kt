@@ -4,7 +4,7 @@ import jdr.exia.model.dao.option.SerializableColor
 import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
-import jdr.exia.model.element.Size
+import jdr.exia.model.element.SizeElement
 import jdr.exia.model.type.Point
 import jdr.exia.view.tools.compareTo
 import jdr.exia.view.tools.drawCircleWithCenterCoordinates
@@ -86,7 +86,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
             }
 
             selectedArea?.let {
-                if (it.size >= Dimension(Size.XS.size.absoluteSizeValue, Size.XS.size.absoluteSizeValue))
+                if (it.size >= Dimension(SizeElement.XS.value, SizeElement.XS.value))
                     viewModel.selectElements(it)
                 else repaint()
                 selectedArea = null

@@ -15,7 +15,7 @@ import jdr.exia.localization.*
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Layer
-import jdr.exia.model.element.Size
+import jdr.exia.model.element.SizeElement
 import jdr.exia.model.tools.isCharacter
 import jdr.exia.model.tools.withSetter
 import jdr.exia.view.element.CustomTextField
@@ -144,7 +144,7 @@ private fun SizeSelector(selectedElements: List<Element>, repaint: () -> Unit, c
         mutableStateOf(
             selectedElements.getElementProperty(
                 elementPropertyGetter = Element::size,
-                defaultValue = Size.DEFAULT
+                defaultValue = SizeElement.DEFAULT
             )
         ) withSetter { newSize ->
             Element.cmdDimension(newSize, commandManager, selectedElements)
@@ -156,7 +156,7 @@ private fun SizeSelector(selectedElements: List<Element>, repaint: () -> Unit, c
 
     TitledDropdownMenu(
         title = StringLocale[STR_SIZE],
-        items = Size.values(),
+        items = SizeElement.values(),
         onValueChanged = { selectedSize = it },
         selectedItem = selectedSize,
         isEnabled = isEnabled
