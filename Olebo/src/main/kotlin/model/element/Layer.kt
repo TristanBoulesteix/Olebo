@@ -19,6 +19,6 @@ enum class Layer(private val translationKey: String) {
     class LayerEntity(id: EntityID<Int>) : Entity<Int>(id) {
         companion object : EnumEntity<LayerEntity, Layer>(LayerTable)
 
-        val layer by LayerTable.layerValue
+        val layer by LayerTable.enumValue
     }
 }

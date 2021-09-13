@@ -32,6 +32,28 @@ sealed interface Initializable {
     fun initialize()
 }
 
+sealed class EnumInitializable<E : Enum<E>>(private val values: Array<E>) : IntIdTable(), Initializable {
+    abstract val enumValue: Column<E>
+
+    final override fun initialize() {
+        values.forEachIndexed { index, enum ->
+            val idEnum = index + 1
+
+            if (select { (id eq idEnum) and (enumValue eq enum) }.count() <= 0) {
+                insert {
+                    it[id] = idEnum
+                    it[enumValue] = enum
+                }
+            }
+            //initialize(index + 1, enum)
+        }
+    }
+
+    fun initialize(id: Int, value: E) {
+
+    }
+}
+
 /**
  * Table where the database infos are stored. This table must be initialized before the others in order to check database version.
  */
@@ -207,20 +229,8 @@ object TypeTable : IntIdTable(), Initializable {
     }
 }
 
-object LayerTable : IntIdTable(), Initializable {
-    val layerValue = enumeration<Layer>("layer")
-
-    override fun initialize() {
-        enumValues<Layer>().forEachIndexed { index, layer ->
-            val idLayer = index + 1
-            if (select { (id eq idLayer) and (layerValue eq layer) }.count() <= 0) {
-                insert {
-                    it[id] = idLayer
-                    it[layerValue] = layer
-                }
-            }
-        }
-    }
+object LayerTable : EnumInitializable<Layer>(enumValues()) {
+    override val enumValue = enumeration<Layer>("layer")
 }
 
 object InstanceTable : IntIdTable() {
