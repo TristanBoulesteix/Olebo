@@ -9,7 +9,7 @@ import jdr.exia.model.act.Scene
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Layer
-import jdr.exia.model.element.Type
+import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.callCommandManager
 import jdr.exia.model.tools.doIfContainsSingle
 import jdr.exia.model.tools.withSetter
@@ -269,9 +269,9 @@ class MasterViewModel(val act: Act) : CoroutineScope by CoroutineScope(Dispatche
         panel.repaint()
     }
 
-    private fun loadBlueprints(): Map<Type, List<Blueprint>> = transaction {
+    private fun loadBlueprints(): Map<TypeElement, List<Blueprint>> = transaction {
         val items = Blueprint.all().groupBy { it.type }
 
-        (Type.values() + items.keys).associateWith { items[it] ?: emptyList() }
+        (TypeElement.values() + items.keys).associateWith { items[it] ?: emptyList() }
     }
 }

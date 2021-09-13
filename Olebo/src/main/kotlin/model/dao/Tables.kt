@@ -5,6 +5,7 @@ import jdr.exia.model.dao.option.SerializableColor
 import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.element.Layer
 import jdr.exia.model.element.SizeElement
+import jdr.exia.model.element.TypeElement
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
@@ -191,38 +192,8 @@ object BlueprintTable : IntIdTable(), Initializable {
     }
 }
 
-object TypeTable : IntIdTable(), Initializable {
-    val name = varchar("type", 50)
-
-    override fun initialize() {
-        if (TypeTable.select((id eq 1) and (name eq "Object")).count() <= 0) {
-            TypeTable.insert {
-                it[id] = EntityID(1, TypeTable)
-                it[name] = "Object"
-            }
-        }
-
-        if (TypeTable.select((id eq 2) and (name eq "PJ")).count() <= 0) {
-            TypeTable.insert {
-                it[id] = EntityID(2, TypeTable)
-                it[name] = "PJ"
-            }
-        }
-
-        if (TypeTable.select((id eq 3) and (name eq "PNJ")).count() <= 0) {
-            TypeTable.insert {
-                it[id] = EntityID(3, TypeTable)
-                it[name] = "PNJ"
-            }
-        }
-
-        if (TypeTable.select((id eq 4) and (name eq "Basic")).count() <= 0) {
-            TypeTable.insert {
-                it[id] = EntityID(4, TypeTable)
-                it[name] = "Basic"
-            }
-        }
-    }
+object TypeTable : EnumInitializable<TypeElement>(enumValues()) {
+    override val enumValue = enumerationByName<TypeElement>("type")
 }
 
 object LayerTable : EnumInitializable<Layer>(enumValues()) {

@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import jdr.exia.localization.*
 import jdr.exia.model.element.Blueprint
-import jdr.exia.model.element.Type
+import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.SimpleResult
 import jdr.exia.model.tools.isCharacter
 import jdr.exia.model.type.Image
@@ -101,7 +101,7 @@ private val ColumnScope.contentModifier
         .border(BorderBuilder.defaultBorder)
 
 @Composable
-private fun Content(viewModel: ElementsEditorViewModel, innerPadding: PaddingValues, currentType: Type) =
+private fun Content(viewModel: ElementsEditorViewModel, innerPadding: PaddingValues, currentType: TypeElement) =
     Box(modifier = Modifier.padding(innerPadding)) {
         Column(modifier = Modifier.fillMaxSize().padding(15.dp)) {
             HeaderContent(currentType, viewModel)
@@ -128,14 +128,14 @@ private fun Content(viewModel: ElementsEditorViewModel, innerPadding: PaddingVal
                         )
                     }
                 }
-                else -> ScrolableContent(viewModel)
+                else -> ScrollableContent(viewModel)
             }
         }
     }
 
 @Composable
 private fun HeaderContent(
-    currentType: Type,
+    currentType: TypeElement,
     viewModel: ElementsEditorViewModel
 ) = Box(
     modifier = Modifier.padding(top = 20.dp, end = 20.dp, start = 20.dp)
@@ -149,7 +149,7 @@ private fun HeaderContent(
         buttonBuilders =
         if (viewModel.blueprintInCreation == null) {
             if (viewModel.blueprints.isNotEmpty()) {
-                if (currentType.type.typeElement != Type.OBJECT) listOf(
+                if (currentType != TypeElement.Object) listOf(
                     ContentButtonBuilder(
                         content = StringLocale[STR_HP],
                         enabled = false
@@ -215,7 +215,7 @@ private fun ColumnScope.CreateBlueprint(
         CustomTextField(value = blueprint.name, onValueChange = { onUpdate(blueprint.copy(name = it)) })
     }
 
-    if (blueprint.type != Type.OBJECT) {
+    if (blueprint.type != TypeElement.Object) {
         RowField {
             Text(StringLocale[STR_MAX_HEALTH])
             IntTextField(value = blueprint.life ?: 0, onValueChange = { onUpdate(blueprint.copy(life = it)) })
@@ -266,7 +266,7 @@ private fun ColumnScope.CreateBlueprint(
 }
 
 @Composable
-private fun ColumnScope.ScrolableContent(viewModel: ElementsEditorViewModel) {
+private fun ColumnScope.ScrollableContent(viewModel: ElementsEditorViewModel) {
     LazyScrollableColumn(modifier = contentModifier) {
         items(viewModel.blueprints) { blueprint ->
             var editedData by (viewModel.currentEditBlueprint == blueprint).let { isEditing ->

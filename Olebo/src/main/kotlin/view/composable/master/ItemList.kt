@@ -17,7 +17,7 @@ import jdr.exia.localization.STR_NO_ELEMENT
 import jdr.exia.localization.STR_SEARCH
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.element.Blueprint
-import jdr.exia.model.element.Type
+import jdr.exia.model.element.TypeElement
 import jdr.exia.model.type.imageFromFile
 import jdr.exia.view.element.ContentListRow
 import jdr.exia.view.element.LazyScrollableColumn
@@ -27,7 +27,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
 
 @Composable
-fun ItemList(modifier: Modifier, items: Map<Type, List<Blueprint>>, createElement: (Blueprint) -> Unit) = Column(
+fun ItemList(modifier: Modifier, items: Map<TypeElement, List<Blueprint>>, createElement: (Blueprint) -> Unit) = Column(
     modifier = modifier.widthIn(max = 450.dp).fillMaxHeight().border(BorderStroke(1.dp, Color.Black))
 ) {
     var searchString by remember { mutableStateOf("") }
@@ -45,7 +45,7 @@ fun ItemList(modifier: Modifier, items: Map<Type, List<Blueprint>>, createElemen
 
 @Composable
 private fun ItemList(
-    items: Map<Type, List<Blueprint>>,
+    items: Map<TypeElement, List<Blueprint>>,
     searchString: String,
     createElement: (Blueprint) -> Unit
 ) {
@@ -75,7 +75,7 @@ private fun ItemList(
                         buttonBuilders =
                         listOf(
                             ImageButtonBuilder(
-                                if (type == Type.BASIC)
+                                if (type == TypeElement.Basic)
                                     useResource("sprites/${it.sprite}", ::loadImageBitmap)
                                 else
                                     imageFromFile(File(it.sprite))

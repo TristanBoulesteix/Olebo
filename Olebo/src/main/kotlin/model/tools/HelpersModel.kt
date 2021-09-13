@@ -4,7 +4,7 @@ import jdr.exia.model.act.Scene
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
-import jdr.exia.model.element.Type
+import jdr.exia.model.element.TypeElement
 import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
@@ -27,7 +27,7 @@ fun Element?.isCharacter(): Boolean {
         returns(true) implies (this@isCharacter != null)
     }
 
-    return this != null && (this.type == Type.PNJ || this.type == Type.PJ)
+    return this != null && (this.type == TypeElement.PNJ || this.type == TypeElement.PJ)
 }
 
 /**
@@ -43,7 +43,7 @@ fun Blueprint?.isCharacter(): Boolean {
 
     val blueprint = this@isCharacter
 
-    return transaction { blueprint != null && (blueprint.type == Type.PNJ || blueprint.type == Type.PJ) }
+    return transaction { blueprint != null && (blueprint.type == TypeElement.PNJ || blueprint.type == TypeElement.PJ) }
 }
 
 inline fun Scene?.callCommandManager(elements: List<Element>, func: (CommandManager, List<Element>) -> Unit) =

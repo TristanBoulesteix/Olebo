@@ -7,7 +7,7 @@ import jdr.exia.localization.*
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
-import jdr.exia.model.element.Type
+import jdr.exia.model.element.TypeElement
 import jdr.exia.model.element.isValid
 import jdr.exia.model.tools.*
 import jdr.exia.model.type.saveImgAndGetPath
@@ -15,7 +15,7 @@ import jdr.exia.view.tools.showConfirmMessage
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class ElementsEditorViewModel(private val type: Type) {
+class ElementsEditorViewModel(private val type: TypeElement) {
     private var currentEditPosition by mutableStateOf(-1)
 
     var blueprints by mutableStateOf(transaction { Blueprint.all().filter { it.type == type } })
@@ -69,7 +69,7 @@ class ElementsEditorViewModel(private val type: Type) {
 
     fun startBlueprintCreation() {
         blueprintInCreation =
-            Blueprint.BlueprintData.let { if (type == Type.OBJECT) it.defaultObject() else it.defaultCharacter(type) }
+            Blueprint.BlueprintData.let { if (type == TypeElement.Object) it.defaultObject() else it.defaultCharacter(type) }
     }
 
     fun cancelBlueprintCreation() {
@@ -126,7 +126,7 @@ class ElementsEditorViewModel(private val type: Type) {
         val blueprint = Blueprint.new {
             this.type = this@create.type
             this.name = this@create.name
-            if (this@create.type != Type.OBJECT) {
+            if (this@create.type != TypeElement.Object) {
                 this.HP = this@create.life!!
                 this.MP = this@create.mana!!
             }

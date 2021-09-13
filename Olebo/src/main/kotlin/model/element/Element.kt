@@ -196,7 +196,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     val spriteBitmap
         get() = transaction {
             Image(blueprint.sprite).let {
-                if (blueprint.type == Type.BASIC) {
+                if (blueprint.type == TypeElement.Basic) {
                     useResource("sprites/${it.path}", ::loadImageBitmap)
                 } else {
                     it.toBitmap()
@@ -308,7 +308,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     private fun lazyRotatedSprite() = object : ReadOnlyProperty<Element, BufferedImage> {
         val originalImage by lazy {
             transaction {
-                if (blueprint.type == Type.BASIC) {
+                if (blueprint.type == TypeElement.Basic) {
                     ImageIO.read(Element::class.java.classLoader.getResourceAsStream("sprites/${blueprint.sprite}"))
                 } else {
                     ImageIO.read(File(blueprint.sprite))
