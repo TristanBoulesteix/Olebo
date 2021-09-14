@@ -17,8 +17,8 @@ import java.util.*
  * List of all tables in the database
  * Put them in order of initialization
  */
-val tables by lazy {
-    arrayOf(
+val tables
+    get() = arrayOf(
         SettingsTable,
         ActTable,
         SceneTable,
@@ -28,7 +28,7 @@ val tables by lazy {
         SizeTable,
         InstanceTable,
     )
-}
+
 
 sealed interface Initializable {
     fun initialize()
