@@ -127,7 +127,7 @@ object DAO : CoroutineScope by CoroutineScope(Dispatchers.IO) {
     }
 
     @OptIn(ExperimentalStdlibApi::class)
-    fun dropLegacyTables() = launch {
+    private fun dropLegacyTables() = launch {
         transaction {
             val legacyTables = buildList {
                 add(object : Table("Priority") {})
