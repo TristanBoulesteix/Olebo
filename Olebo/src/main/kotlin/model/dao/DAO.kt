@@ -53,8 +53,10 @@ object DAO : CoroutineScope by CoroutineScope(Dispatchers.IO) {
                 if (version == null || OLEBO_VERSION_CODE >= version || showUpdateMessageWarn()) {
                     BaseInfo.initialize()
 
-                    SchemaUtils.createMissingTablesAndColumns(*tables)
-                    tables.forEach {
+                    val oleboTables = tables
+
+                    SchemaUtils.createMissingTablesAndColumns(*oleboTables)
+                    oleboTables.forEach {
                         if (it is Initializable)
                             it.initialize()
                     }
