@@ -90,7 +90,11 @@ internal class StringLocaleBundle : StringLocale() {
         ST_SCENE_ALREADY_EXISTS to "A scene with the same name already exists.",
         ST_ELEMENT_ALREADY_EXISTS to "An element with this name already exists.",
         STR_CRITICAL_ERROR to "critical error",
-        ST_ERROR_LOADING_DATABASE to "We are unable to launch Olebo. Database cannot be loaded.",
+        ST_ERROR_LOADING_DATABASE to """
+            A critical error has occurred. Unable to launch Olebo.
+            If the error persists, you can try resetting the database.
+            Warning : This action will erase permanently all your data.
+        """.trimIndent(),
         STR_ERROR to "error",
         ST_NEW_VERSION_AVAILABLE to "A new version of the Olebo software is available. Do you want to install it?",
         STR_UPDATE_AVAILABLE to "update available",
@@ -291,7 +295,11 @@ internal class StringLocaleBundle_fr : StringLocale() {
         ST_SCENE_ALREADY_EXISTS to "Une scène avec le même nom existe déjà.",
         ST_ELEMENT_ALREADY_EXISTS to "Un élément avec ce nom existe déjà.",
         STR_CRITICAL_ERROR to "erreur critique",
-        ST_ERROR_LOADING_DATABASE to "Une erreur s'est produite lors du chargement de la base de données. Impossible de lancer Olebo.",
+        ST_ERROR_LOADING_DATABASE to """
+            Une erreur s'est produite lors du chargement de la base de données. Impossible de lancer Olebo.
+            Si l'erreur persiste, vous pouvez essayer de réinitialiser la base de données.
+            Attention : Cette opération effacera toute vos données définitivement.
+        """.trimIndent(),
         STR_ERROR to "erreur",
         ST_NEW_VERSION_AVAILABLE to "Une mise à jour de Olebo est disponible. Voulez-vous l'installer ?",
         STR_UPDATE_AVAILABLE to "mise à jour disponible",
