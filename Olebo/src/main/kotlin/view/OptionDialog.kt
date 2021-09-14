@@ -1,6 +1,5 @@
 package jdr.exia.view
 
-import jdr.exia.localization.availableLocales
 import jdr.exia.localization.*
 import jdr.exia.model.dao.SettingsTable
 import jdr.exia.model.dao.option.SerializableColor
