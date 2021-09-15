@@ -51,7 +51,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
         // --- Command functions ---
 
-        fun cmdVisiblity(visibility: Boolean, manager: CommandManager, elements: List<Element>) {
+        fun cmdVisibility(visibility: Boolean, manager: CommandManager, elements: List<Element>) {
             val previousVisibilities = elements.map { it.isVisible }
 
             manager += object : Command {

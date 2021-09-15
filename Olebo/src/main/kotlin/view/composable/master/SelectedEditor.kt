@@ -199,7 +199,7 @@ private fun VisibilityButtons(
                 defaultValue = true
             )
         ) withSetter { newVisibility ->
-            Element.cmdVisiblity(newVisibility, commandManager, selectedElements)
+            Element.cmdVisibility(newVisibility, commandManager, selectedElements)
             repaint()
         }
     }

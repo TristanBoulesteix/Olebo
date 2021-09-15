@@ -20,7 +20,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.delay
 
 @Composable
-fun ApplicationScope.UpdateUI(release: Release, notifify: (Notification) -> Unit, hideTray: () -> Unit) {
+fun ApplicationScope.UpdateUI(release: Release, notify: (Notification) -> Unit, hideTray: () -> Unit) {
     val id = release.versionId
 
     if (Settings.autoUpdate) {
@@ -30,13 +30,13 @@ fun ApplicationScope.UpdateUI(release: Release, notifify: (Notification) -> Unit
         var failedToUpdate by remember { mutableStateOf(false) }
 
         LaunchedEffect(Unit) {
-            notifify(notification)
+            notify(notification)
             delay(2_000)
             downloadAndExit(
                 onExitSuccess = ::exitApplication,
                 onDownloadFailure = {
                     failedToUpdate = true
-                    notifify(Notification(StringLocale[STR_ERROR], StringLocale[ST_UPDATE_FAILED]))
+                    notify(Notification(StringLocale[STR_ERROR], StringLocale[ST_UPDATE_FAILED]))
                 }
             )
         }

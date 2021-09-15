@@ -43,7 +43,7 @@ fun FrameWindowScope.MasterMenuBar(
         onClearTokens = { viewModel.confirmClearElement = true },
         moveElements = viewModel::moveElementsFromScene,
         selectNext = viewModel::select,
-        selectPevious = { viewModel.select(false) },
+        selectPrevious = { viewModel.select(false) },
         selectAll = viewModel::selectAllElements,
         rotateRight = viewModel::rotateRight,
         rotateLeft = viewModel::rotateLeft,
@@ -133,7 +133,7 @@ private fun MenuBarScope.TokenMenu(
     rotateLeft: () -> Unit,
     selectAll: () -> Unit,
     selectNext: () -> Unit,
-    selectPevious: () -> Unit,
+    selectPrevious: () -> Unit,
     hasItemsSelected: Boolean
 ) = Menu(text = StringLocale[STR_TOKENS], mnemonic = 'b') {
     Item(
@@ -165,7 +165,7 @@ private fun MenuBarScope.TokenMenu(
     Item(
         text = StringLocale[STR_SELECT_DOWN],
         shortcut = KeyShortcut(key = Key.DirectionDown),
-        onClick = selectPevious
+        onClick = selectPrevious
     )
 
     Item(

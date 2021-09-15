@@ -10,7 +10,7 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
 import java.awt.Color
 
-fun Color.toFormatedString() = "(r = $red, g = $green, b = $blue)"
+fun Color.toFormattedString() = "(r = $red, g = $green, b = $blue)"
 
 @Suppress("ClassName")
 @Polymorphic

@@ -55,7 +55,7 @@ fun main() = application {
             }
 
             release?.let {
-                UpdateUI(release = it, notifify = trayState::sendNotification, hideTray = { release = null })
+                UpdateUI(release = it, notify = trayState::sendNotification, hideTray = { release = null })
             }
 
             // Start of the main UI if automatic update are disabled

@@ -5,7 +5,7 @@ import jdr.exia.model.dao.SettingsTable
 import jdr.exia.model.dao.option.SerializableColor
 import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.dao.option.Settings
-import jdr.exia.model.dao.option.toFormatedString
+import jdr.exia.model.dao.option.toFormattedString
 import jdr.exia.view.tools.applyAndAddTo
 import jdr.exia.view.tools.gridBagConstraintsOf
 import jdr.exia.view.tools.showMessage
@@ -242,9 +242,9 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, StringLocale[ST
         private val customLabel
             get() = when (selectedSerializableColor) {
                 null -> optionPropertyColor.get().let {
-                    if (it is SerializableColor.Custom) custom + " " + it.contentColor.toFormatedString() else custom
+                    if (it is SerializableColor.Custom) custom + " " + it.contentColor.toFormattedString() else custom
                 }
-                is SerializableColor.Custom -> custom + " " + selectedSerializableColor!!.contentColor.toFormatedString()
+                is SerializableColor.Custom -> custom + " " + selectedSerializableColor!!.contentColor.toFormattedString()
                 else -> custom
             }
 
