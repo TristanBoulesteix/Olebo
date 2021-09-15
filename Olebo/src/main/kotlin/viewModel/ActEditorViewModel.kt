@@ -86,11 +86,14 @@ class ActEditorViewModel(private val act: Act?) {
             }
         }
 
-        if (transaction {
-                (act != null && Act.all().filterNot { it.id == act.id }
-                    .any { it.name == actName }) || (act == null && Act.all().any { it.name == actName })
-            })
+        val actExists = transaction {
+            (act != null && Act.all().filterNot { it.id == act.id }
+                .any { it.name == actName }) || (act == null && Act.all().any { it.name == actName })
+        }
+
+        if (actExists) {
             return Result.failure(IllegalStateException(StringLocale[ST_ACT_ALREADY_EXISTS]))
+        }
 
         val act = transaction { act?.also { it.name = actName } ?: Act.new { this.name = actName } }
 
