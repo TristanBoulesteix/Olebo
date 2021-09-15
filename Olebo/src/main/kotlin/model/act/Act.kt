@@ -20,7 +20,7 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
 
     val scenes by Scene referrersOn SceneTable.idAct
 
-    private var sceneId by ActTable.idScene
+    var currentScene by Scene referencedOn ActTable.idScene
 
     override fun delete() {
         scenes.forEach {
@@ -29,18 +29,6 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
 
         super.delete()
     }
-
-    var currentScene
-        get() = scenes.findWithId(sceneId) ?: scenes.first()
-        set(value) {
-            sceneId = value.id.value
-        }
-
-
-    /**
-     * Find a scene with its id from all scenes stored in an Act
-     */
-    private fun SizedIterable<Scene>.findWithId(id: Int) = this.find { it.id.value == id }
 
     /**
      * Temporary scene
