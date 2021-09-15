@@ -22,6 +22,7 @@ import jdr.exia.view.element.CustomTextField
 import jdr.exia.view.element.IntTextField
 import jdr.exia.view.element.TitledDropdownMenu
 import jdr.exia.view.tools.applyIf
+import jdr.exia.view.tools.rememberUpdatableState
 import jdr.exia.view.tools.withHandCursor
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -107,16 +108,20 @@ private fun NameElement(selectedElements: List<Element>, modifier: Modifier) {
 @Composable
 private fun LabelField(selectedElements: List<Element>, repaint: () -> Unit, modifier: Modifier) {
     if (selectedElements.size == 1) {
-        var value by remember(selectedElements.size, selectedElements.firstOrNull()) {
-            if (selectedElements.size == 1) {
+        var value by rememberUpdatableState(
+            key = selectedElements.firstOrNull(),
+            calculation = {
                 val element = selectedElements.first()
 
-                mutableStateOf(element.alias) withSetter {
-                    transaction { element.alias = it }
-                    repaint()
-                }
-            } else mutableStateOf("")
-        }
+                mutableStateOf(element.alias)
+            },
+            onChange = {
+                val element = selectedElements.first()
+
+                element.alias = it
+            },
+            onUpdated = { repaint() }
+        )
 
         CustomTextField(
             value = value,
