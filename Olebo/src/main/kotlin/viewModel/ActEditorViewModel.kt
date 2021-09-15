@@ -29,9 +29,11 @@ class ActEditorViewModel(private val act: Act?) {
     var errorMessage by mutableStateOf("")
 
     var scenes by transaction {
-        mutableStateOf((act?.scenes ?: emptySized()).mapLazy {
-            SceneData(it.name, Image(it.background), it.id)
-        }.toList())
+        mutableStateOf(
+            (act?.scenes ?: emptySized()).mapLazy {
+                SceneData(it.name, Image(it.background), it.id)
+            }.toList()
+        )
     }
         private set
 
