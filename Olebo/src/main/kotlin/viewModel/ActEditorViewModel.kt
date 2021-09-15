@@ -9,8 +9,9 @@ import jdr.exia.localization.ST_ACT_WITHOUT_SCENE
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
-import jdr.exia.model.act.isValid
-import jdr.exia.model.act.isValidAndEqualTo
+import jdr.exia.model.act.data.SceneData
+import jdr.exia.model.act.data.isValid
+import jdr.exia.model.act.data.isValidAndEqualTo
 import jdr.exia.model.tools.SimpleResult
 import jdr.exia.model.tools.success
 import jdr.exia.model.type.Image
@@ -29,7 +30,7 @@ class ActEditorViewModel(private val act: Act?) {
 
     var scenes by transaction {
         mutableStateOf((act?.scenes ?: emptySized()).mapLazy {
-            Act.SceneData(it.name, Image(it.background), it.id)
+            SceneData(it.name, Image(it.background), it.id)
         }.toList())
     }
         private set
@@ -37,17 +38,17 @@ class ActEditorViewModel(private val act: Act?) {
     val currentEditScene
         get() = scenes.getOrNull(currentEditPosition)
 
-    fun onAddScene(sceneData: Act.SceneData): SimpleResult =
+    fun onAddScene(sceneData: SceneData): SimpleResult =
         if (sceneData.isValid() && !sceneWithNameExist(sceneData.name)) {
             scenes = scenes + listOf(sceneData)
             Result.success
         } else Result.failure(IllegalArgumentException("Scene data invalid"))
 
-    fun onEditItemSelected(sceneData: Act.SceneData) {
+    fun onEditItemSelected(sceneData: SceneData) {
         currentEditPosition = scenes.indexOf(sceneData)
     }
 
-    fun onEditConfirmed(sceneData: Act.SceneData): Boolean {
+    fun onEditConfirmed(sceneData: SceneData): Boolean {
         if (currentEditScene isValidAndEqualTo sceneData && !sceneWithNameExist(sceneData.name, sceneData.id)) {
             scenes = scenes.toMutableList().also {
                 it[currentEditPosition] = sceneData
@@ -61,7 +62,7 @@ class ActEditorViewModel(private val act: Act?) {
         return false
     }
 
-    fun onRemoveScene(sceneData: Act.SceneData) {
+    fun onRemoveScene(sceneData: SceneData) {
         scenes = scenes.toMutableList().also {
             it.remove(sceneData)
         }

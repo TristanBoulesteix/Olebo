@@ -22,7 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
-import jdr.exia.model.act.isValidAndEqualTo
+import jdr.exia.model.act.data.SceneData
+import jdr.exia.model.act.data.isValidAndEqualTo
 import jdr.exia.model.tools.SimpleResult
 import jdr.exia.model.tools.failure
 import jdr.exia.model.tools.success
@@ -59,7 +60,7 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
                 .border(BorderBuilder.defaultBorder)
         }
 
-        val (sceneInCreation, setSceneInCreation) = remember { mutableStateOf<Act.SceneData?>(null) withSetter { newValue -> if (newValue != null) viewModel.onEditDone() } }
+        val (sceneInCreation, setSceneInCreation) = remember { mutableStateOf<SceneData?>(null) withSetter { newValue -> if (newValue != null) viewModel.onEditDone() } }
 
         Box(
             modifier = Modifier.padding(top = 20.dp, end = 20.dp, start = 20.dp)
@@ -76,7 +77,7 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
                         ImageButtonBuilder(
                             content = imageFromIconRes("create_icon"),
                             tooltip = StringLocale[STR_NEW_SCENE],
-                            onClick = { setSceneInCreation(Act.SceneData.default()) })
+                            onClick = { setSceneInCreation(SceneData.default()) })
                     )
                 } else {
                     listOf(
@@ -101,7 +102,7 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
             )
         }
 
-        var currentEditedScene: Act.SceneData? = null
+        var currentEditedScene: SceneData? = null
 
         if (sceneInCreation != null) {
             EditSceneRow(
@@ -167,8 +168,8 @@ private fun Header(viewModel: ActEditorViewModel, act: Act?) {
 private fun Scenes(
     contentModifier: Modifier,
     viewModel: ActEditorViewModel,
-    setCurrentEditedScene: (Act.SceneData) -> Unit,
-    setSceneInCreation: (Act.SceneData?) -> Unit
+    setCurrentEditedScene: (SceneData) -> Unit,
+    setSceneInCreation: (SceneData?) -> Unit
 ) = when {
     viewModel.scenes.isNotEmpty() -> LazyScrollableColumn(modifier = contentModifier) {
         items(items = viewModel.scenes) { scene ->
@@ -217,7 +218,7 @@ private fun Scenes(
             fontSize = 30.sp
         )
         OutlinedButton(
-            onClick = { setSceneInCreation(Act.SceneData.default()) },
+            onClick = { setSceneInCreation(SceneData.default()) },
             content = { Text(StringLocale[STR_NEW_SCENE]) },
             modifier = Modifier.align(Alignment.CenterHorizontally).withHandCursor()
         )
@@ -225,7 +226,7 @@ private fun Scenes(
 }
 
 private inline fun ActEditorViewModel.submitEditedScene(
-    tempCurrentEditedScene: Act.SceneData,
+    tempCurrentEditedScene: SceneData,
     showError: (String) -> Unit
 ): SimpleResult =
     if (!onEditConfirmed(tempCurrentEditedScene)) {
@@ -235,8 +236,8 @@ private inline fun ActEditorViewModel.submitEditedScene(
 
 @Composable
 private fun EditSceneRow(
-    data: Act.SceneData,
-    updateData: (Act.SceneData) -> Unit,
+    data: SceneData,
+    updateData: (SceneData) -> Unit,
     modifier: Modifier = Modifier,
     showButtons: Boolean = true,
     onConfirmed: (() -> Unit)? = null,
@@ -279,8 +280,8 @@ private fun EditSceneRow(
 
 @Composable
 private fun ImagePreviewContent(
-    data: Act.SceneData,
-    onUpdateData: (Act.SceneData) -> Unit
+    data: SceneData,
+    onUpdateData: (SceneData) -> Unit
 ) {
     val imgExist = !data.img.isUnspecified() && File(data.img.path).let { it.exists() && it.isFile }
 
@@ -321,10 +322,10 @@ private fun ImagePreviewContent(
 
 @Composable
 private fun Footer(
-    sceneInCreation: Act.SceneData?,
+    sceneInCreation: SceneData?,
     viewModel: ActEditorViewModel,
-    setSceneInCreation: (Act.SceneData?) -> Unit,
-    getEditedSceneData: () -> Act.SceneData?,
+    setSceneInCreation: (SceneData?) -> Unit,
+    getEditedSceneData: () -> SceneData?,
     act: Act?,
     onDone: () -> Unit
 ) {
