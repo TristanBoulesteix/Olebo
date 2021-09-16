@@ -13,7 +13,7 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
 
     val scenes by Scene referrersOn SceneTable.idAct
 
-    var currentScene by Scene referencedOn ActTable.idScene
+    var currentScene by Scene referencedOn ActTable.scene
 
     override fun delete() {
         scenes.forEach {

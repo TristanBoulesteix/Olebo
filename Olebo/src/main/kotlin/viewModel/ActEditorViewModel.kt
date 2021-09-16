@@ -12,6 +12,7 @@ import jdr.exia.model.act.Scene
 import jdr.exia.model.act.data.SceneData
 import jdr.exia.model.act.data.isValid
 import jdr.exia.model.act.data.isValidAndEqualTo
+import jdr.exia.model.dao.SceneTable
 import jdr.exia.model.tools.SimpleResult
 import jdr.exia.model.tools.success
 import jdr.exia.model.type.Image
@@ -97,12 +98,12 @@ class ActEditorViewModel(private val act: Act?) {
             return Result.failure(IllegalStateException(StringLocale[ST_ACT_ALREADY_EXISTS]))
         }
 
-        val act = transaction { act?.also { it.name = actName } ?: Act.new { this.name = actName } }
+        val updatedAct = transaction { act?.also { it.name = actName } ?: Act.new { this.name = actName } }
 
         val idList = scenes.mapNotNull { it.id }
 
         transaction {
-            act.scenes.filter { it.id !in idList }.forEach(Scene::delete)
+            updatedAct.scenes.filter { it.id !in idList }.forEach(Scene::delete)
 
             scenes.forEach {
                 if (it.id != null) with(Scene[it.id]) {
@@ -111,7 +112,11 @@ class ActEditorViewModel(private val act: Act?) {
                 } else Scene.new {
                     this.name = it.name
                     this.background = it.img.saveImgAndGetPath()
-                    this.idAct = act.id.value
+                    this.idAct = updatedAct.id.value
+                }
+
+                if (act == null) {
+
                 }
             }
         }

@@ -132,7 +132,7 @@ object SettingsTable : IntIdTable(), Initializable {
 
 object ActTable : IntIdTable() {
     val name = varchar("name", 50)
-    val idScene = integer("id_scene").references(SceneTable.id).default(0)
+    val scene = reference("id_scene", SceneTable).default(EntityID(0, SceneTable))
 }
 
 object SceneTable : IntIdTable() {
