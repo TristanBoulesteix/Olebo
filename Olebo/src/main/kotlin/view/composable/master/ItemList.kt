@@ -32,6 +32,14 @@ fun ItemList(modifier: Modifier, items: Map<TypeElement, List<Blueprint>>, creat
 ) {
     var searchString by remember { mutableStateOf("") }
 
+    val itemsFiltered by remember {
+        derivedStateOf {
+            items.mapValues { (_, list) ->
+                transaction { list.filter { it.realName.contains(searchString, ignoreCase = true) } }
+            }
+        }
+    }
+
     OutlinedTextField(
         value = searchString,
         onValueChange = { searchString = it },
@@ -40,23 +48,16 @@ fun ItemList(modifier: Modifier, items: Map<TypeElement, List<Blueprint>>, creat
         singleLine = true
     )
 
-    ItemList(items = items, searchString = searchString, createElement = createElement)
+    ItemList(items = itemsFiltered, createElement = createElement)
 }
 
 @Composable
 private fun ItemList(
     items: Map<TypeElement, List<Blueprint>>,
-    searchString: String,
     createElement: (Blueprint) -> Unit
 ) {
-    val itemsFiltered = remember(items, searchString) {
-        items.mapValues { (_, list) ->
-            transaction { list.filter { it.realName.contains(searchString, ignoreCase = true) } }
-        }
-    }
-
     LazyScrollableColumn {
-        itemsFiltered.forEach { (type, list) ->
+        items.forEach { (type, list) ->
             item(type) {
                 ContentListRow(contentText = type.localizedName, modifier = Modifier.background(Color.Cyan))
             }
