@@ -8,6 +8,8 @@ import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.dao.SceneTable
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -49,7 +51,7 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
      *
      * @param blueprint The Blueprint to instantiate
      */
-    fun addElement(blueprint: Blueprint): Element {
+    suspend fun addElement(blueprint: Blueprint): Element = withContext(Dispatchers.IO) {
         val element = Element.createElement(blueprint)
 
         commandManager += object : Command {
@@ -69,7 +71,7 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
             }
         }
 
-        return element
+        return@withContext element
     }
 
     override fun delete() {

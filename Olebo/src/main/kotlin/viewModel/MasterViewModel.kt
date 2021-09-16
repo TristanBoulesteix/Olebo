@@ -205,13 +205,13 @@ class MasterViewModel(val act: Act) : CoroutineScope by CoroutineScope(Dispatche
         currentScene.callCommandManager(elements, Element::cmdDelete)
 
         this.elements = this.elements.toMutableList().also {
-            it -= elements
+            it -= elements.toSet()
         }
 
         repaint()
     }
 
-    fun addNewElement(blueprint: Blueprint) {
+    fun addNewElement(blueprint: Blueprint) = launch {
         val newElement = currentScene.addElement(blueprint)
 
         elements = elements.toMutableList().also {
