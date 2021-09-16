@@ -23,7 +23,6 @@ import javax.swing.JComponent
 import javax.swing.SwingUtilities
 import javax.swing.ToolTipManager
 import kotlin.math.abs
-import kotlin.system.measureTimeMillis
 
 class MapPanel(private val isParentMaster: Boolean, private val viewModel: MasterViewModel) : JComponent() {
     private var selectedArea: Rectangle? = null
@@ -157,8 +156,6 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
         val labelColor = Settings.labelColor
         val labelState = Settings.labelState
 
-        var test = 0L
-
         //Display every token one by one
         for (token in viewModel.elements) {
             //IF this isn't the GM's map, and if the object is not set to visible, then we don't draw it
@@ -175,14 +172,12 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
                     }
                 }
 
-                test += measureTimeMillis { g.drawToken(token) }
+                g.drawToken(token)
 
                 if ((isParentMaster && labelState.isVisible) || labelState == SerializableLabelState.FOR_BOTH)
                     g.drawLabel(token, labelColor)
             }
         }
-
-        println(test)
 
         // Draw select area
         if (selectedArea != null) {
