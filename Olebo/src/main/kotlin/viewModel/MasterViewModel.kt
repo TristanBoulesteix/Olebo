@@ -22,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.swing.Swing
 import kotlinx.coroutines.withContext
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
 import java.awt.image.BufferedImage
@@ -263,7 +264,7 @@ class MasterViewModel(val act: Act) : CoroutineScope by CoroutineScope(Dispatche
     fun repaint(reloadTokens: Boolean = false) = launch {
         if (reloadTokens)
             withContext(Dispatchers.IO) {
-                elements = transaction { currentScene.elements }
+                elements = newSuspendedTransaction { currentScene.elements }
             }
 
         panel.repaint()
