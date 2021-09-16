@@ -114,10 +114,10 @@ class ActEditorViewModel(private val act: Act?) {
                     this.background = it.img.saveImgAndGetPath()
                     this.idAct = updatedAct.id.value
                 }
+            }
 
-                if (act == null) {
-
-                }
+            if (act == null) {
+                updatedAct.currentScene = Scene.find { SceneTable.idAct eq updatedAct.id.value }.first()
             }
         }
 
