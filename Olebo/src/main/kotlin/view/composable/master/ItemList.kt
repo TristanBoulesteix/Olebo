@@ -55,35 +55,33 @@ fun ItemList(modifier: Modifier, items: Map<TypeElement, List<Blueprint>>, creat
 private fun ItemList(
     items: Map<TypeElement, List<Blueprint>>,
     createElement: (Blueprint) -> Unit
-) {
-    LazyScrollableColumn {
-        items.forEach { (type, list) ->
-            item(type) {
-                ContentListRow(contentText = type.localizedName, modifier = Modifier.background(Color.Cyan))
+) = LazyScrollableColumn {
+    items.forEach { (type, list) ->
+        item(type) {
+            ContentListRow(contentText = type.localizedName, modifier = Modifier.background(Color.Cyan))
+        }
+
+        if (list.isEmpty()) {
+            item(type to list) {
+                ContentListRow(contentText = StringLocale[STR_NO_ELEMENT], enabled = false)
             }
+        } else {
+            items(items = list) {
+                val name = transaction { it.realName }
 
-            if (list.isEmpty()) {
-                item(type to list) {
-                    ContentListRow(contentText = StringLocale[STR_NO_ELEMENT], enabled = false)
-                }
-            } else {
-                items(items = list) {
-                    val name = transaction { it.realName }
-
-                    ContentListRow(
-                        modifier = Modifier.clickableWithCursor { createElement(it) },
-                        contentText = name,
-                        buttonBuilders =
-                        listOf(
-                            ImageButtonBuilder(
-                                if (type == TypeElement.Basic)
-                                    useResource("sprites/${it.sprite}", ::loadImageBitmap)
-                                else
-                                    imageFromFile(File(it.sprite))
-                            )
+                ContentListRow(
+                    modifier = Modifier.clickableWithCursor { createElement(it) },
+                    contentText = name,
+                    buttonBuilders =
+                    listOf(
+                        ImageButtonBuilder(
+                            if (type == TypeElement.Basic)
+                                useResource("sprites/${it.sprite}", ::loadImageBitmap)
+                            else
+                                imageFromFile(File(it.sprite))
                         )
                     )
-                }
+                )
             }
         }
     }
