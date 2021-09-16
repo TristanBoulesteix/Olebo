@@ -1,7 +1,7 @@
 package jdr.exia.model.act
 
 import jdr.exia.localization.STR_NEW_ELEMENT
-import jdr.exia.localization.StringDelegate
+import jdr.exia.localization.StringLocale
 import jdr.exia.model.command.Command
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.InstanceTable
@@ -55,7 +55,7 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
         val element = Element.createElement(blueprint)
 
         commandManager += object : Command {
-            override val label by StringDelegate(STR_NEW_ELEMENT)
+            override val label = StringLocale[STR_NEW_ELEMENT]
 
             override fun exec(): Unit = transaction {
                 InstanceTable.update({ InstanceTable.id eq element.id }) {

@@ -17,7 +17,7 @@ enum class TypeElement(typeNameKey: String) {
     PNJ(STR_NPC),
     Basic(STR_BASE_ELEMENT);
 
-    val localizedName by StringDelegate(typeNameKey)
+    val localizedName = StringLocale[typeNameKey]
 
     /**
      * This class is the link between the enum and the database
@@ -25,6 +25,6 @@ enum class TypeElement(typeNameKey: String) {
     class TypeEntity(id: EntityID<Int>) : Entity<Int>(id) {
         companion object : EnumEntity<TypeEntity, TypeElement>(TypeTable)
 
-         val type by TypeTable.enumValue
+        val type by TypeTable.enumValue
     }
 }

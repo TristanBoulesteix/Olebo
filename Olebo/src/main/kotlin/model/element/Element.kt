@@ -55,7 +55,8 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             val previousVisibilities = elements.map { it.isVisible }
 
             manager += object : Command {
-                override val label by StringDelegate(if (elements.size == 1) ST_CHANGE_VISIBILITY else ST_CHANGE_VISIBILITY_PLR)
+                override val label =
+                    StringLocale[if (elements.size == 1) ST_CHANGE_VISIBILITY else ST_CHANGE_VISIBILITY_PLR]
 
                 override fun exec() {
                     elements.forEach {
@@ -77,7 +78,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             val previousOrientation = elements.map { it.orientation }
 
             manager += object : Command {
-                override val label by StringDelegate(STR_ROTATE_TO_RIGHT)
+                override val label = StringLocale[STR_ROTATE_TO_RIGHT]
 
                 override fun exec() {
                     elements.forEach {
@@ -100,7 +101,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             val previousOrientation = elements.map { it.orientation }
 
             manager += object : Command {
-                override val label by StringDelegate(STR_ROTATE_TO_LEFT)
+                override val label = StringLocale[STR_ROTATE_TO_LEFT]
 
                 override fun exec() = elements.forEach {
                     if (it.stillExist())
@@ -123,7 +124,8 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
             if (elementsFiltered.isNotEmpty())
                 manager += object : Command {
-                    override val label by StringDelegate(if (elements.size == 1) STR_RESIZE_ELEMENT else STR_RESIZE_ELEMENT_PLR)
+                    override val label =
+                        StringLocale[if (elements.size == 1) STR_RESIZE_ELEMENT else STR_RESIZE_ELEMENT_PLR]
 
                     override fun exec() = elementsFiltered.forEach {
                         if (it.stillExist())
@@ -141,7 +143,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             val previousPoints = elementsToPoint.mapValues { it.key.referencePoint }
 
             manager += object : Command {
-                override val label by StringDelegate(STR_MOVE_ELEMENTS)
+                override val label = StringLocale[STR_MOVE_ELEMENTS]
 
                 override fun exec() = elementsToPoint.forEach { (element, newPoint) ->
                     element.referencePoint = newPoint
@@ -155,7 +157,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
         fun cmdDelete(manager: CommandManager, elements: List<Element>) {
             manager += object : Command {
-                override val label by StringDelegate(STR_DELETE_SELECTED_TOKENS)
+                override val label = StringLocale[STR_DELETE_SELECTED_TOKENS]
 
                 override fun exec() = transaction {
                     elements.forEach {
@@ -283,7 +285,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         val previousPosition = this.referencePoint
 
         manager += object : Command {
-            override val label by StringDelegate(STR_MOVE_ELEMENT)
+            override val label = StringLocale[STR_MOVE_ELEMENT]
 
             override fun exec() {
                 this@Element.referencePoint = point

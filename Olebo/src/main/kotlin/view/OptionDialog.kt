@@ -19,7 +19,8 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, StringLocale[ST
     private val comboLanguageItems =
         availableLocales.map { it ->
             it.getDisplayLanguage(it)
-            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Settings.language) else it.toString() } }
+                .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Settings.language) else it.toString() }
+        }
 
     private val comboLanguage =
         JComboBox<String>().apply {
@@ -237,7 +238,7 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, StringLocale[ST
         private val optionPropertyColor: KMutableProperty0<SerializableColor>,
         vararg serializableColors: SerializableColor
     ) : JComboBox<String>() {
-        private val custom by StringDelegate(STR_CUSTOM_COLOR)
+        private val custom = StringLocale[STR_CUSTOM_COLOR]
 
         private val customLabel
             get() = when (selectedSerializableColor) {
