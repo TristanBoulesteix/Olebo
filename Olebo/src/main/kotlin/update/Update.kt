@@ -19,7 +19,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.io.File
 
-private const val SERVER_URL = "http://localhost:8080/"
+private const val SERVER_URL = "http://olebo.fr/"
 
 private val client = HttpClient {
     install(JsonFeature) {
