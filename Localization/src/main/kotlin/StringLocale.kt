@@ -42,7 +42,7 @@ sealed class StringLocale : ListResourceBundle() {
         operator fun get(key: String, vararg args: Any?) = get(key, StringStates.CAPITALIZE, *args)
 
         /**
-         * @param resourceName The name of the resource
+         * @param resourceName The name of the resource or its path
          * @param extension The extension of the resource (For example "txt")
          * @param classLoader The [ClassLoader] to load the resource
          *
