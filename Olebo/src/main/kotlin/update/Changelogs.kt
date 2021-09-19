@@ -15,13 +15,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import jdr.exia.localization.StringLocale
 import jdr.exia.main
 import jdr.exia.view.element.builder.ContentButtonBuilder
 import jdr.exia.view.element.dialog.PromptDialog
 import java.io.InputStreamReader
 
 fun getChangelogs(): String? =
-    ::main.javaClass.classLoader.getResourceAsStream("changelogs.txt")?.reader()?.use(InputStreamReader::readText)
+    StringLocale.getLocalizedResource("changelogs", "txt", ::main.javaClass.classLoader)?.reader()
+        ?.use(InputStreamReader::readText)
 
 @Composable
 fun Changelogs(changelogs: String) {

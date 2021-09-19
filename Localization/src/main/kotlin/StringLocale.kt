@@ -1,5 +1,6 @@
 package jdr.exia.localization
 
+import java.io.InputStream
 import java.util.*
 import kotlin.reflect.KProperty0
 
@@ -39,6 +40,24 @@ sealed class StringLocale : ListResourceBundle() {
         }
 
         operator fun get(key: String, vararg args: Any?) = get(key, StringStates.CAPITALIZE, *args)
+
+        /**
+         * @param resourceName The name of the resource
+         * @param extension The extension of the resource (For example "txt")
+         * @param classLoader The [ClassLoader] to load the resource
+         *
+         * @return The [InputStream] of a resource according to the current active [Locale].
+         */
+        fun getLocalizedResource(resourceName: String, extension: String, classLoader: ClassLoader): InputStream? {
+            val control: Control = Control.getControl(Control.FORMAT_DEFAULT)
+            val locales: List<Locale> = control.getCandidateLocales(resourceName, localeHandler.activeLanguage)
+
+            return locales.mapNotNull {
+                val bundleName: String = control.toBundleName(resourceName, it)
+
+                classLoader.getResourceAsStream(control.toResourceName(bundleName, extension))
+            }.firstOrNull()
+        }
     }
 
     protected abstract val contents: Map<String, String>
