@@ -2,7 +2,6 @@ package jdr.exia.localization
 
 import java.io.InputStream
 import java.util.*
-import kotlin.reflect.KProperty0
 
 /**
  * Parent class of Bundles which contains translations of all the StringLocale of Olebo. They are retrieved with the get operator.
@@ -12,19 +11,20 @@ sealed class StringLocale : ListResourceBundle() {
      * The [invoke] method of the companion object need to be called in order to initialize the right locale to use
      */
     companion object {
-        private var localeHandler = LocaleHandler(::defaultLocale)
+        @PublishedApi
+        internal var activeLanguage = defaultLocale
 
         /**
          * To set a default locale, this method need to be called by the main module
          */
-        operator fun invoke(kPropertyLocale: KProperty0<Locale>) {
-            localeHandler = LocaleHandler(kPropertyLocale)
+        inline operator fun invoke(getLocale: () -> Locale) {
+            activeLanguage = getLocale()
         }
 
         private val langBundle
             get() = ResourceBundle.getBundle(
                 StringLocaleBundle::class.java.canonicalName,
-                localeHandler.activeLanguage,
+                activeLanguage,
                 Control.getNoFallbackControl(Control.FORMAT_DEFAULT)
             )
 
@@ -34,7 +34,7 @@ sealed class StringLocale : ListResourceBundle() {
             key
         }.let { string ->
             when (state) {
-                StringStates.CAPITALIZE -> string.replaceFirstChar { if (it.isLowerCase()) it.titlecase(localeHandler.activeLanguage) else it.toString() }
+                StringStates.CAPITALIZE -> string.replaceFirstChar { if (it.isLowerCase()) it.titlecase(activeLanguage) else it.toString() }
                 StringStates.NORMAL -> string
             }.format(*args)
         }
@@ -50,7 +50,7 @@ sealed class StringLocale : ListResourceBundle() {
          */
         fun getLocalizedResource(resourceName: String, extension: String, classLoader: ClassLoader): InputStream? {
             val control: Control = Control.getControl(Control.FORMAT_DEFAULT)
-            val locales: List<Locale> = control.getCandidateLocales(resourceName, localeHandler.activeLanguage)
+            val locales: List<Locale> = control.getCandidateLocales(resourceName, activeLanguage)
 
             return locales.mapNotNull {
                 val bundleName: String = control.toBundleName(resourceName, it)
@@ -63,8 +63,4 @@ sealed class StringLocale : ListResourceBundle() {
     protected abstract val contents: Map<String, String>
 
     override fun getContents() = contents.map { it.toPair().toList().toTypedArray() }.toTypedArray()
-
-    internal class LocaleHandler(kPropertyLocale: KProperty0<Locale>) {
-        val activeLanguage by kPropertyLocale
-    }
 }
