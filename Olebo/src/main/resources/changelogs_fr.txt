@@ -2,7 +2,7 @@
 - Optimisation et amélioration des fonctionnalités de base de Olebo
 - Nouveau système de mise à jour : Un nouveau serveur est utilisé pour les mises à jour permettant d'affiner la gestion des préférences utilisateurs et d'optimiser les mises à jour.
 - Nouveau système de versions : Les numéros de versions changent à partir de cette version pour mieux correspondre aux conventions. La version 1.9.0-BETA devient donc 0.1.0
-- Nouvel installeur qui permet de mettre et à jour et d'installer Olebo plus facilement. Celui-ci permet même à l'utilisateur de personnaliser ses préférences d'installation
+- Nouvel installeur qui permet de mettre et à jour et d'installer Olebo plus facilement. Celui-ci permet même à l'utilisateur de personnaliser l'emplacement d'installation de l'application
 - Executable natif : Olebo prend maintenant la forme d'un fichier exe. Cela permet de faciliter l'installation et les mises à jour du programme. De plus, Olebo peut dorénavant utiliser les ressources du processeur graphique pour automatiquement optimiser et améliorer ses performances. De plus, la présence d'un JRE n'est plus nécessaire.
 - Correction de bugs critiques faisant crasher l'application
 - Correction de bugs mineurs
