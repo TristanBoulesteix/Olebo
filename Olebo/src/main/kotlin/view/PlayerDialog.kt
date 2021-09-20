@@ -10,6 +10,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.swing.Swing
 import java.awt.Dimension
 import java.awt.GraphicsDevice
+import java.awt.GraphicsEnvironment
 import java.awt.Window
 import java.awt.event.KeyEvent
 import java.awt.event.WindowAdapter
@@ -38,7 +39,7 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: (
                         this.preferredSize = MASTER_WINDOW_SIZE.let { (height, width) ->
                             Dimension(width.value.toInt(), height.value.toInt())
                         }
-                        this.pack()
+                        this.bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().maximumWindowBounds
                         this.setLocationRelativeTo(null)
                         this.isVisible = true
                     } else { //If 2 screens are present, we display the player frame in fullscreen on the 2nd screen
