@@ -10,3 +10,4 @@
 - Amélioration de la structure de la base de données
 - Amélioration de la gestion de la mémoire : L'application gère mieux ses ressources
 - Correction orthographiques mineures
+- [Régression] Suppression de la compatibilité avec les systèmes macOs et GNU/Linux

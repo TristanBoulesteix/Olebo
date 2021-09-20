@@ -8,3 +8,4 @@
 - Fix minor bugs
 - New keyboard shortcut : All elements can be selected at the same time (Ctrl+A)
 - Fix some typos mistakes
+- [Regression] Remove compatibility with macOS and GNU/Linux system
