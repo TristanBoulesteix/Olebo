@@ -40,7 +40,7 @@ fun ApplicationScope.HomeWindow(startAct: (Act) -> Unit) = Window(
 ) {
     MainMenuBar(::exitApplication)
 
-    val viewModel = remember { HomeViewModel() }
+    val viewModel = remember(::HomeViewModel)
 
     MainContent(
         acts = viewModel.acts,
