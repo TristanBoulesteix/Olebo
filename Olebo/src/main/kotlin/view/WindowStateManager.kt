@@ -17,7 +17,7 @@ object WindowStateManager {
 
 @Composable
 fun ApplicationScope.Window(
-    title: String = "",
+    title: String,
     size: WindowSize,
     minimumSize: WindowSize? = null,
     placement: WindowPlacement = WindowPlacement.Floating,
