@@ -11,13 +11,14 @@ import org.jetbrains.exposed.dao.id.EntityID
  *
  * @param typeNameKey This is used to translate the name of the [TypeElement]
  */
-enum class TypeElement(typeNameKey: String) {
+enum class TypeElement(private val typeNameKey: String) {
     Object(STR_OBJECT),
     PJ(STR_PC),
     PNJ(STR_NPC),
     Basic(STR_BASE_ELEMENT);
 
-    val localizedName = StringLocale[typeNameKey]
+    val localizedName
+        get() = StringLocale[typeNameKey]
 
     /**
      * This class is the link between the enum and the database

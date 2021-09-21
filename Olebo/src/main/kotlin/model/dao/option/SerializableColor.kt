@@ -16,7 +16,7 @@ fun Color.toFormattedString() = "(r = $red, g = $green, b = $blue)"
 @Polymorphic
 @Serializable
 sealed class SerializableColor(
-    val name: String,
+    private val nameKey: String,
     @Serializable(with = ColorAsStringSerializer::class) val contentColor: Color,
     @Serializable(with = ColorAsStringSerializer::class) val borderColor: Color
 ) {
@@ -29,7 +29,10 @@ sealed class SerializableColor(
         }
     }
 
-    constructor(name: String, color: Color) : this(name, color, color)
+    val name
+        get() = StringLocale[nameKey]
+
+    constructor(nameKey: String, color: Color) : this(nameKey, color, color)
 
     operator fun component1() = contentColor
 
@@ -37,29 +40,29 @@ sealed class SerializableColor(
 
     @Serializable
     object BLACK_WHITE :
-        SerializableColor(StringLocale[STR_BLACK_WITH_WHITE_BORDER], Color.BLACK, Color.WHITE)
+        SerializableColor(STR_BLACK_WITH_WHITE_BORDER, Color.BLACK, Color.WHITE)
 
     @Serializable
     object WHITE_BLACK :
-        SerializableColor(StringLocale[STR_WHITE_WITH_BLACK_BORDER], Color.WHITE, Color.BLACK)
+        SerializableColor(STR_WHITE_WITH_BLACK_BORDER, Color.WHITE, Color.BLACK)
 
     @Serializable
     object BLACK :
-        SerializableColor(StringLocale[STR_BLACK], Color.BLACK)
+        SerializableColor(STR_BLACK, Color.BLACK)
 
     @Serializable
-    object PURPLE : SerializableColor(StringLocale[STR_PURPLE], Color(168, 50, 143))
+    object PURPLE : SerializableColor(STR_PURPLE, Color(168, 50, 143))
 
     @Serializable
-    object YELLOW : SerializableColor(StringLocale[STR_YELLOW], Color.YELLOW)
+    object YELLOW : SerializableColor(STR_YELLOW, Color.YELLOW)
 
     @Serializable
-    object RED : SerializableColor(StringLocale[STR_RED], Color.RED)
+    object RED : SerializableColor(STR_RED, Color.RED)
 
     @Suppress("CanBeParameter")
     @Serializable
     class Custom(@Serializable(with = ColorAsStringSerializer::class) private val customColor: Color) :
-        SerializableColor(StringLocale[STR_CUSTOM_COLOR], customColor)
+        SerializableColor(STR_CUSTOM_COLOR, customColor)
 
     /**
      * Encode a [SerializableColor] to json [String] to be uploaded to the database

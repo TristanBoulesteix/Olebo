@@ -291,7 +291,7 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, StringLocale[ST
         private fun refreshItems(serializableColor: SerializableColor) {
             isRefreshing = true
             this.removeAllItems()
-            comboColorItems.map { it.name }.forEach(this::addItem)
+            comboColorItems.map(SerializableColor::name).forEach(this::addItem)
             this.addItem(customLabel)
             this.selectedItem = selectedItemFromCursorColor(serializableColor.name)?.name ?: customLabel
             isRefreshing = false
