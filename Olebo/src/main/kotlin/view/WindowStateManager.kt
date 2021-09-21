@@ -30,7 +30,7 @@ fun ApplicationScope.Window(
     )
 
     Window(onCloseRequest = ::exitApplication, state = windowState, title = title, focusable = true) {
-        LaunchedEffect(Unit) {
+        LaunchedEffect(minimumSize) {
             minimumSize?.let { (width, height) ->
                 window.minimumSize = Dimension(width.value.toInt(), height.value.toInt())
             }
