@@ -72,7 +72,7 @@ fun main() = application {
 
                 MainUI()
 
-                if (changelogs != null && remember { Settings.wasJustUpdated }) {
+                if (changelogs != null && Settings.wasJustUpdated) {
                     Changelogs(changelogs!!)
                     Settings.wasJustUpdated = false
                 }
