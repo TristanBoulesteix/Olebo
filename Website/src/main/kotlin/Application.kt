@@ -8,7 +8,7 @@ import java.io.File
 import java.security.KeyStore
 
 fun main() {
-    val keyStoreFile = File("")
+    val keyStoreFile = File("/etc/letsencrypt/live/olebo.fr/keystore.jks")
     val keyStore: KeyStore = KeyStore.getInstance(keyStoreFile, "".toCharArray())
 
     val environment = applicationEngineEnvironment {
@@ -17,11 +17,11 @@ fun main() {
         }
         sslConnector(
             keyStore = keyStore,
-            keyAlias = "alias",
+            keyAlias = "olebo",
             keyStorePassword = { "".toCharArray() },
             privateKeyPassword = { "".toCharArray() }
         ) {
-            port = 0
+            port = 8443
             keyStorePath = keyStoreFile
         }
         module {
