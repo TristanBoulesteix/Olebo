@@ -1,10 +1,7 @@
 package jdr.exia.update
 
 import androidx.compose.foundation.VerticalScrollbar
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.foundation.verticalScroll
@@ -12,9 +9,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import jdr.exia.OLEBO_VERSION_CODE
+import jdr.exia.OLEBO_VERSION_NAME
 import jdr.exia.localization.StringLocale
 import jdr.exia.main
 import jdr.exia.view.element.builder.ContentButtonBuilder
@@ -34,11 +35,26 @@ fun Changelogs(changelogs: String) {
         title = "Changelogs",
         buttonBuilders = listOf(ContentButtonBuilder(content = "Ok", onClick = { changelogsVisible = false })),
         onCloseRequest = { changelogsVisible = false },
-        height = 300.dp,
+        height = 340.dp,
         width = 500.dp
     ) {
         Column {
-            Text("Changelogs :", fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)
+            Text(
+                "Changelogs :",
+                fontWeight = FontWeight.Bold,
+                textDecoration = TextDecoration.Underline,
+                fontSize = 30.sp
+            )
+
+            Spacer(Modifier.height(10.dp))
+
+            Text(
+                "Version $OLEBO_VERSION_NAME - Code $OLEBO_VERSION_CODE",
+                fontSize = 10.sp,
+                fontStyle = FontStyle.Italic
+            )
+
+            Spacer(Modifier.height(10.dp))
 
             val scrollState = rememberScrollState()
 
