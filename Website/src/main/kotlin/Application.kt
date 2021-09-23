@@ -2,6 +2,7 @@ package fr.olebo
 
 import fr.olebo.plugins.configureRouting
 import fr.olebo.plugins.configureSerialization
+import fr.olebo.plugins.httpsRedirect
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import java.io.File
@@ -32,6 +33,7 @@ fun main() {
             keyStorePath = keyStoreFile
         }
         module {
+            httpsRedirect()
             configureRouting()
             configureSerialization()
         }
