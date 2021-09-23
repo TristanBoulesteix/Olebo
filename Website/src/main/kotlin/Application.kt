@@ -6,10 +6,17 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import java.io.File
 import java.security.KeyStore
+import java.util.*
 
 fun main() {
+    val prop = Properties().apply {
+        File("/var/opt/olebo/config.properties").inputStream().use(this::load)
+    }
+
+    val pwd: String by prop
     val keyStoreFile = File("/etc/letsencrypt/live/olebo.fr/keystore.jks")
-    val keyStore: KeyStore = KeyStore.getInstance(keyStoreFile, "".toCharArray())
+    val keyStore: KeyStore = KeyStore.getInstance(keyStoreFile, pwd.toCharArray())
+
 
     val environment = applicationEngineEnvironment {
         connector {
@@ -18,8 +25,8 @@ fun main() {
         sslConnector(
             keyStore = keyStore,
             keyAlias = "olebo",
-            keyStorePassword = { "".toCharArray() },
-            privateKeyPassword = { "".toCharArray() }
+            keyStorePassword = pwd::toCharArray,
+            privateKeyPassword = pwd::toCharArray
         ) {
             port = 8443
             keyStorePath = keyStoreFile
