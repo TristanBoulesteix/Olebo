@@ -260,7 +260,6 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, StringLocale[ST
 
         var selectedSerializableColor: SerializableColor? = null
 
-
         init {
             this.refreshItems(optionPropertyColor.get())
             this.addActionListener {
