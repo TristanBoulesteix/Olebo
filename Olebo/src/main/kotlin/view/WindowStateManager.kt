@@ -12,7 +12,7 @@ object WindowStateManager {
     val composeWindows = mutableListOf<ComposeWindow>()
 
     val currentFocusedWindow
-        get() = composeWindows.find { it.isFocused }
+        get() = composeWindows.find(ComposeWindow::isFocused)
 }
 
 @Composable
