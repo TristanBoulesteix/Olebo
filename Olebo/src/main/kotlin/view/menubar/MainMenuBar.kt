@@ -14,7 +14,7 @@ import jdr.exia.main
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.loadOleboZipData
 import jdr.exia.model.dao.zipOleboDirectory
-import jdr.exia.view.OptionDialog
+import jdr.exia.view.SettingsDialog
 import jdr.exia.view.WindowStateManager
 import jdr.exia.view.element.dialog.ConfirmMessage
 import jdr.exia.view.element.dialog.LoadingDialog
@@ -121,9 +121,17 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
 
     Separator()
 
+    var isSettingsDialogVisible by remember { mutableStateOf(false) }
+
+    if (isSettingsDialogVisible) {
+        SettingsDialog {
+            isSettingsDialogVisible = false
+            WindowStateManager.currentFocusedWindow?.repaint()
+        }
+    }
+
     Item(text = StringLocale[STR_OPTIONS]) {
-        OptionDialog(WindowStateManager.currentFocusedWindow).isVisible = true
-        WindowStateManager.currentFocusedWindow?.repaint()
+        isSettingsDialogVisible = true
     }
 
     Item(text = StringLocale[STR_TAKE_SCREENSHOT], enabled = false, shortcut = KeyShortcut(Key.P, ctrl = true)) {

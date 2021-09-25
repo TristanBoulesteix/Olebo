@@ -69,6 +69,8 @@ sealed class SerializableColor(
      */
     @OptIn(ExperimentalSerializationApi::class)
     fun encode() = Json.encodeToString(this)
+
+    override fun toString() = name
 }
 
 private object ColorAsStringSerializer : KSerializer<Color> {

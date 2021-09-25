@@ -1,4 +1,4 @@
-package jdr.exia.view.element
+package jdr.exia.view.element.form
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -13,12 +13,12 @@ import javax.swing.JComboBox
 
 @Suppress("UNCHECKED_CAST")
 @Composable
-fun <T> TitledDropdownMenu(
+fun <T : Any> TitledDropdownMenu(
     title: String,
     items: Array<T>,
     selectedItem: T,
     onValueChanged: (T) -> Unit,
-    isEnabled: Boolean
+    isEnabled: Boolean = true
 ) = Row(
     horizontalArrangement = Arrangement.SpaceBetween,
     modifier = Modifier.width(180.dp)

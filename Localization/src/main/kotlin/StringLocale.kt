@@ -17,14 +17,14 @@ sealed class StringLocale : ListResourceBundle() {
         /**
          * To set a default locale, this method need to be called by the main module
          */
-        inline operator fun invoke(getLocale: () -> Locale) {
-            activeLanguage = getLocale()
+        inline operator fun invoke(getLanguage: () -> Language) {
+            activeLanguage = getLanguage()
         }
 
         private val langBundle
             get() = ResourceBundle.getBundle(
                 StringLocaleBundle::class.java.canonicalName,
-                activeLanguage,
+                activeLanguage.locale,
                 Control.getNoFallbackControl(Control.FORMAT_DEFAULT)
             )
 
@@ -34,7 +34,7 @@ sealed class StringLocale : ListResourceBundle() {
             key
         }.let { string ->
             when (state) {
-                StringStates.CAPITALIZE -> string.replaceFirstChar { if (it.isLowerCase()) it.titlecase(activeLanguage) else it.toString() }
+                StringStates.CAPITALIZE -> string.replaceFirstChar { if (it.isLowerCase()) it.titlecase(activeLanguage.locale) else it.toString() }
                 StringStates.NORMAL -> string
             }.format(*args)
         }
@@ -46,11 +46,11 @@ sealed class StringLocale : ListResourceBundle() {
          * @param extension The extension of the resource (For example "txt")
          * @param classLoader The [ClassLoader] to load the resource
          *
-         * @return The [InputStream] of a resource according to the current active [Locale].
+         * @return The [InputStream] of a resource according to the current active [Language].
          */
         fun getLocalizedResource(resourceName: String, extension: String, classLoader: ClassLoader): InputStream? {
             val control: Control = Control.getControl(Control.FORMAT_DEFAULT)
-            val locales: List<Locale> = control.getCandidateLocales(resourceName, activeLanguage)
+            val locales: List<Locale> = control.getCandidateLocales(resourceName, activeLanguage.locale)
 
             return locales.mapNotNull {
                 val bundleName: String = control.toBundleName(resourceName, it)

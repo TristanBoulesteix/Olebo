@@ -1,6 +1,8 @@
 package jdr.exia.model.dao.option
 
 import jdr.exia.OLEBO_VERSION_CODE
+import jdr.exia.localization.Language
+import jdr.exia.localization.languageCode
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.SettingsTable
 import jdr.exia.model.dao.SettingsTable.AUTO_UPDATE
@@ -17,7 +19,6 @@ import jdr.exia.model.tools.toBoolean
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
-import java.util.*
 
 object Settings {
     var autoUpdate
@@ -40,14 +41,14 @@ object Settings {
             this@Settings[CURSOR_ENABLED] = value
         }
 
-    var language: Locale
+    var language: Language
         get() = try {
-            transaction(DAO.database) { Locale(this@Settings[CURRENT_LANGUAGE]) }
+            transaction(DAO.database) { Language(this@Settings[CURRENT_LANGUAGE].orEmpty()) }
         } catch (e: Exception) {
-            Locale.getDefault()
+            Language.getDefault()
         }
         set(value) = transaction(DAO.database) {
-            this@Settings[CURRENT_LANGUAGE] = value.language
+            this@Settings[CURRENT_LANGUAGE] = value.languageCode
         }
 
     val activeLanguage by lazy { language }

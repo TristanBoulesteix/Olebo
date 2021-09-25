@@ -19,8 +19,8 @@ import jdr.exia.model.element.SizeElement
 import jdr.exia.model.tools.isCharacter
 import jdr.exia.model.tools.withSetter
 import jdr.exia.view.element.CustomTextField
-import jdr.exia.view.element.IntTextField
-import jdr.exia.view.element.TitledDropdownMenu
+import jdr.exia.view.element.form.IntTextField
+import jdr.exia.view.element.form.TitledDropdownMenu
 import jdr.exia.view.tools.applyIf
 import jdr.exia.view.tools.rememberUpdatableState
 import jdr.exia.view.tools.withHandCursor

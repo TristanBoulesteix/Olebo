@@ -11,10 +11,10 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 @Serializable
-enum class SerializableLabelState(val text: String) {
-    ONLY_FOR_MASTER(StringLocale[STR_LABEL_VISIBLE_FOR_MASTER]),
-    FOR_BOTH(StringLocale[STR_LABEL_VISIBLE]),
-    HIDDEN(StringLocale[STR_LABEL_HIDDEN]);
+enum class SerializableLabelState(private val stringKey: String) {
+    ONLY_FOR_MASTER(STR_LABEL_VISIBLE_FOR_MASTER),
+    FOR_BOTH(STR_LABEL_VISIBLE),
+    HIDDEN(STR_LABEL_HIDDEN);
 
     companion object {
         @OptIn(ExperimentalSerializationApi::class)
@@ -33,4 +33,6 @@ enum class SerializableLabelState(val text: String) {
      */
     @OptIn(ExperimentalSerializationApi::class)
     fun encode() = Json.encodeToString(this)
+
+    override fun toString() = StringLocale[stringKey]
 }

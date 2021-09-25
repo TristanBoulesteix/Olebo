@@ -18,8 +18,8 @@ import kotlin.reflect.KMutableProperty0
 class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, StringLocale[STR_OPTIONS], true) {
     private val comboLanguageItems =
         availableLocales.map { it ->
-            it.getDisplayLanguage(it)
-                .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Settings.language) else it.toString() }
+            it.locale.getDisplayLanguage(it.locale)
+                .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Settings.language.locale) else it.toString() }
         }
 
     private val comboLanguage =
@@ -27,7 +27,7 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, StringLocale[ST
             comboLanguageItems.forEach(this::addItem)
             val itemSelectedBase = comboLanguageItems.find {
                 it.equals(
-                    Settings.language.getDisplayLanguage(Settings.language),
+                    Settings.language.locale.getDisplayLanguage(Settings.language.locale),
                     ignoreCase = true
                 )
             } ?: comboLanguageItems[0]
@@ -228,7 +228,7 @@ class OptionDialog(parent: Window?) : JDialog(parent as? JFrame, StringLocale[ST
             val oldRender = this.getRenderer()
             this.setRenderer { list, state, index, isSelected, cellHasFocus ->
                 oldRender.getListCellRendererComponent(list, state, index, isSelected, cellHasFocus).also {
-                    (it as JLabel).text = state.text
+                    //(it as JLabel).text = state.text
                 }
             }
         }
