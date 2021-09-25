@@ -18,7 +18,6 @@ fun main() {
     val keyStoreFile = File("/etc/letsencrypt/live/olebo.fr/keystore.jks")
     val keyStore: KeyStore = KeyStore.getInstance(keyStoreFile, pwd.toCharArray())
 
-
     val environment = applicationEngineEnvironment {
         connector {
             port = 8080

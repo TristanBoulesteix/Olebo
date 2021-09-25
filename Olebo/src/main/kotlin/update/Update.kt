@@ -2,6 +2,7 @@ package jdr.exia.update
 
 import io.ktor.client.*
 import io.ktor.client.call.*
+import io.ktor.client.engine.apache.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
@@ -18,19 +19,43 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.io.File
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
+import javax.net.ssl.SSLContext
+import javax.net.ssl.X509TrustManager
 
-private const val SERVER_URL = "http://olebo.fr/"
+private const val SERVER_URL = "https://olebo.fr/"
 
-private val client = HttpClient {
-    install(JsonFeature) {
-        serializer = KotlinxSerializer()
-    }
+/**
+ * This is a certificate manager to allow Olebo to access to the API without verifying its certificate.
+ *
+ * TODO: Remove this when the certificate for olebo.fr is fixed
+ */
+private class TrustAllX509TrustManager : X509TrustManager {
+    override fun getAcceptedIssuers(): Array<X509Certificate> = emptyArray()
+
+    override fun checkClientTrusted(certs: Array<X509Certificate?>?, authType: String?) = Unit
+
+    override fun checkServerTrusted(certs: Array<X509Certificate?>?, authType: String?) = Unit
 }
+
+private val client
+    get() = HttpClient(Apache) {
+        engine {
+            sslContext = SSLContext.getInstance("TLS").apply {
+                init(null, arrayOf(TrustAllX509TrustManager()), SecureRandom())
+            }
+        }
+        install(JsonFeature) {
+            serializer = KotlinxSerializer()
+        }
+    }
 
 suspend fun checkForUpdate(): Release? {
     val response = try {
-        client.get<HttpResponse>("${SERVER_URL}releases/last")
+        client.use { it.get<HttpResponse>("${SERVER_URL}releases/last") }
     } catch (e: Exception) {
+        e.printStackTrace()
         return null
     }
 
@@ -47,12 +72,14 @@ suspend fun getInstallerExecutable(onUpdateProgress: (Long) -> Unit): Result<Fil
     val os = OS.current
 
     val response = try {
-        client.get<HttpResponse>("${SERVER_URL}releases/last/download") {
-            parameter("os", os.name)
+        client.use {
+            it.get<HttpResponse>("${SERVER_URL}releases/last/download") {
+                parameter("os", os.name)
 
-            onDownload { bytesSentTotal, contentLength ->
-                val percentage = (bytesSentTotal / contentLength) * 100
-                onUpdateProgress(percentage)
+                onDownload { bytesSentTotal, contentLength ->
+                    val percentage = (bytesSentTotal / contentLength) * 100
+                    onUpdateProgress(percentage)
+                }
             }
         }
     } catch (e: Exception) {
