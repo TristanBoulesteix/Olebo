@@ -50,7 +50,7 @@ fun main() = application {
             }
 
             LaunchedEffect(Unit) {
-                release = checkForUpdate()
+                checkForUpdate().onSuccess { release = it }.onFailure(Throwable::printStackTrace)
                 updateChecked = true
             }
 

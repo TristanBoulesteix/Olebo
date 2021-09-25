@@ -51,19 +51,19 @@ private val client
         }
     }
 
-suspend fun checkForUpdate(): Release? {
+suspend fun checkForUpdate(): Result<Release> {
     val response = try {
         client.use { it.get<HttpResponse>("${SERVER_URL}releases/last") }
-    } catch (e: Exception) {
-        e.printStackTrace()
-        return null
+    } catch (e: Throwable) {
+        return Result.failure(e)
     }
 
     if (response.status.isSuccess()) {
-        return response.receive<Release>().takeIf { it.versionId > OLEBO_VERSION_CODE }
+        return response.receive<Release>().takeIf { it.versionId > OLEBO_VERSION_CODE }?.let { Result.success(it) }
+            ?: Result.failure(Throwable())
     }
 
-    return null
+    return Result.failure(Throwable())
 }
 
 suspend fun getInstallerExecutable(onUpdateProgress: (Long) -> Unit): Result<File> {
