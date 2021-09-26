@@ -14,7 +14,7 @@ import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.view.tools.withHandCursor
 
 @Composable
-fun <T : Any> DropDownMenu(items: List<T>, selectedItem: T, onItemSelected: (T) -> Unit, label: String? = null) =
+fun <T : Any> DropdownMenu(items: List<T>, selectedItem: T, onItemSelected: (T) -> Unit, label: String? = null) =
     Row(verticalAlignment = Alignment.CenterVertically) {
         if (label != null) {
             Text(label)

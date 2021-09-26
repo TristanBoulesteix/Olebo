@@ -20,7 +20,7 @@ import jdr.exia.model.dao.SettingsTable
 import jdr.exia.model.dao.option.SerializableColor
 import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.dao.option.Settings
-import jdr.exia.view.element.form.DropDownMenu
+import jdr.exia.view.element.form.DropdownMenu
 import jdr.exia.view.element.form.LabeledCheckbox
 import jdr.exia.view.tools.withHandCursor
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -59,7 +59,7 @@ private fun GeneralSettings(settingsData: SettingsData, updateSettings: (Setting
     SettingsSection(StringLocale[STR_GENERAL]) {
         val locales = remember { availableLocales }
 
-        DropDownMenu(
+        DropdownMenu(
             items = locales,
             selectedItem = settingsData.language,
             onItemSelected = { updateSettings(settingsData.copy(language = it)) },
@@ -101,7 +101,7 @@ private fun LookAndFeelSettings(settingsData: SettingsData, updateSettings: (Set
             ) + baseColor
         }
 
-        DropDownMenu(
+        DropdownMenu(
             items = cursorColors,
             selectedItem = settingsData.cursorColor,
             onItemSelected = { updateSettings(settingsData.copy(cursorColor = it)) },
@@ -116,7 +116,7 @@ private fun LookAndFeelSettings(settingsData: SettingsData, updateSettings: (Set
 
         val labelStates = remember { SerializableLabelState.values().toList() }
 
-        DropDownMenu(
+        DropdownMenu(
             items = labelStates,
             selectedItem = settingsData.labelState,
             onItemSelected = { updateSettings(settingsData.copy(labelState = it)) },
@@ -129,7 +129,7 @@ private fun LookAndFeelSettings(settingsData: SettingsData, updateSettings: (Set
             listOf(SerializableColor.BLACK) + baseColor
         }
 
-        DropDownMenu(
+        DropdownMenu(
             items = labelColor,
             selectedItem = settingsData.labelColor,
             onItemSelected = { updateSettings(settingsData.copy(labelColor = it)) },
