@@ -51,28 +51,31 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
      *
      * @param blueprint The Blueprint to instantiate
      */
-    suspend fun addElement(blueprint: Blueprint): Element = withContext(Dispatchers.IO) {
-        val element = Element.createElement(blueprint)
+    suspend fun addElement(blueprint: Blueprint, onAdded: (Element) -> Unit, onCanceled: (Element) -> Unit) =
+        withContext(Dispatchers.IO) {
+            val element = Element.createElement(blueprint)
 
-        commandManager += object : Command {
-            override val label = StringLocale[STR_NEW_ELEMENT]
+            commandManager += object : Command {
+                override val label = StringLocale[STR_NEW_ELEMENT]
 
-            override fun exec(): Unit = transaction {
-                InstanceTable.update({ InstanceTable.id eq element.id }) {
-                    it[idScene] = this@Scene.id.value
-                    it[deleted] = false
+                override fun exec(): Unit = transaction {
+                    InstanceTable.update({ InstanceTable.id eq element.id }) {
+                        it[idScene] = this@Scene.id.value
+                        it[deleted] = false
+                    }
+
+                    onAdded(element)
                 }
-            }
 
-            override fun cancelExec(): Unit = transaction {
-                InstanceTable.update({ InstanceTable.id eq element.id }) {
-                    it[deleted] = true
+                override fun cancelExec(): Unit = transaction {
+                    InstanceTable.update({ InstanceTable.id eq element.id }) {
+                        it[deleted] = true
+                    }
+
+                    onCanceled(element)
                 }
             }
         }
-
-        return@withContext element
-    }
 
     override fun delete() {
         File(background).delete()

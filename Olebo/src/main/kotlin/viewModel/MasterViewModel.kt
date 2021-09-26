@@ -213,11 +213,23 @@ class MasterViewModel(val act: Act) : CoroutineScope by CoroutineScope(Dispatche
     }
 
     fun addNewElement(blueprint: Blueprint) = launch {
-        val newElement = currentScene.addElement(blueprint)
+        currentScene.addElement(
+            blueprint = blueprint,
+            onAdded = { newElement ->
+                elements = elements.toMutableList().also {
+                    it += newElement
+                }
 
-        elements = elements.toMutableList().also {
-            it += newElement
-        }
+                selectedElements = listOf(newElement)
+            },
+            onCanceled = { elementToRemove ->
+                this@MasterViewModel.elements = this@MasterViewModel.elements.toMutableList().also {
+                    it -= elementToRemove
+                }
+                unselectElements()
+                repaint()
+            }
+        )
 
         repaint()
     }

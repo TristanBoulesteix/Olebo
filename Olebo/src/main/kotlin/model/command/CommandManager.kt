@@ -23,6 +23,10 @@ class CommandManager private constructor() : MutableList<Command> by mutableStat
         operator fun invoke(sceneId: EntityID<Int>) = transaction {
             CommandManager(sceneId.value)
         }
+
+        fun clear() {
+            managerInstance = null
+        }
     }
 
     val undoLabel

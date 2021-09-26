@@ -15,6 +15,7 @@ import jdr.exia.localization.ST_CONFIRM_CLEAR_BOARD
 import jdr.exia.localization.ST_STR1_DM_WINDOW_NAME
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
+import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.view.composable.master.ItemList
 import jdr.exia.view.composable.master.MapPanel
@@ -71,6 +72,7 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
         DisposableEffect(Unit) {
             onDispose {
                 playerDialogData.togglePlayerWindow(false)
+                CommandManager.clear()
             }
         }
 

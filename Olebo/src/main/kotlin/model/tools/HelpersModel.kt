@@ -48,7 +48,7 @@ fun Blueprint?.isCharacter(): Boolean {
 
 inline fun Scene?.callCommandManager(elements: List<Element>, func: (CommandManager, List<Element>) -> Unit) =
     this?.let { scene ->
-        func(CommandManager(scene.id.value), elements)
+        func(CommandManager(scene.id), elements)
     }
 
 inline fun <T> Scene?.callCommandManager(
@@ -56,5 +56,5 @@ inline fun <T> Scene?.callCommandManager(
     func: (Map<Element, T>, CommandManager) -> Unit
 ) =
     this?.let { scene ->
-        func(elementWithData, CommandManager(scene.id.value))
+        func(elementWithData, CommandManager(scene.id))
     }
