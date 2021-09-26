@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.WindowSize
 import androidx.compose.ui.window.rememberDialogState
@@ -26,7 +27,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 @Composable
 fun SettingsDialog(onCloseRequest: () -> Unit) {
-    val state = rememberDialogState(size = WindowSize(550.dp, 450.dp))
+    val state = rememberDialogState(size = WindowSize(550.dp, 460.dp))
 
     val originalSettings = remember { dataFromSettings }
 
@@ -64,6 +65,10 @@ private fun GeneralSettings(settingsData: SettingsData, updateSettings: (Setting
             onItemSelected = { updateSettings(settingsData.copy(language = it)) },
             label = StringLocale[STR_SOFTWARE_LANGUAGE_LABEL]
         )
+
+        if (settingsData.language != Settings.language) {
+            Text(text = StringLocale[ST_LANGUAGE_CHANGE_ON_RESTART], color = Color.Red, fontSize = 12.sp)
+        }
 
         LabeledCheckbox(
             checked = settingsData.autoUpdateEnabled,
@@ -144,7 +149,7 @@ private inline fun SettingsSection(sectionTitle: String, content: @Composable Co
 
 @Composable
 private fun RowButton(data: SettingsData, refresh: () -> Unit, close: () -> Unit, closeAndReset: () -> Unit) =
-    Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.padding(5.dp)) {
+    Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth().padding(5.dp)) {
         val buttonModifier = Modifier.padding(4.dp).withHandCursor()
 
         OutlinedButton(
