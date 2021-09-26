@@ -28,8 +28,10 @@ import org.jetbrains.exposed.sql.transactions.transaction
 fun SettingsDialog(onCloseRequest: () -> Unit) {
     val state = rememberDialogState(size = WindowSize(550.dp, 450.dp))
 
+    val originalSettings = remember { dataFromSettings }
+
     var settings by remember {
-        mutableStateOf(dataFromSettings)
+        mutableStateOf(originalSettings)
     }
 
     Dialog(onCloseRequest = onCloseRequest, state = state, resizable = false, title = StringLocale[STR_OPTIONS]) {
@@ -38,7 +40,15 @@ fun SettingsDialog(onCloseRequest: () -> Unit) {
             Spacer(Modifier.height(10.dp))
             LookAndFeelSettings(settingsData = settings, updateSettings = { settings = it })
             Spacer(Modifier.height(10.dp))
-            RowButton(close = onCloseRequest, data = settings, refresh = { settings = dataFromSettings })
+            RowButton(
+                close = onCloseRequest,
+                data = settings,
+                refresh = { settings = dataFromSettings },
+                closeAndReset = {
+                    originalSettings.save()
+                    onCloseRequest()
+                }
+            )
         }
     }
 }
@@ -133,7 +143,7 @@ private inline fun SettingsSection(sectionTitle: String, content: @Composable Co
 )
 
 @Composable
-private fun RowButton(data: SettingsData, refresh: () -> Unit, close: () -> Unit) =
+private fun RowButton(data: SettingsData, refresh: () -> Unit, close: () -> Unit, closeAndReset: () -> Unit) =
     Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.padding(5.dp)) {
         val buttonModifier = Modifier.padding(4.dp).withHandCursor()
 
@@ -145,7 +155,7 @@ private fun RowButton(data: SettingsData, refresh: () -> Unit, close: () -> Unit
             modifier = buttonModifier,
             content = { Text(StringLocale[STR_SAVE]) }
         )
-        OutlinedButton(onClick = close, modifier = buttonModifier) { Text(StringLocale[STR_CANCEL]) }
+        OutlinedButton(onClick = closeAndReset, modifier = buttonModifier) { Text(StringLocale[STR_CANCEL]) }
         OutlinedButton(
             onClick = {
                 transaction { SettingsTable.initializeDefault() }
