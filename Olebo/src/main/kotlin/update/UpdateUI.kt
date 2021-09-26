@@ -46,6 +46,8 @@ fun ApplicationScope.UpdateUI(release: Release, notify: (Notification) -> Unit, 
 
     } else if (id.toString() != Settings.updateWarn) {
         PromptUpdate(versionCode = id, onUpdateRefused = hideTray)
+    } else {
+        SideEffect(hideTray)
     }
 }
 

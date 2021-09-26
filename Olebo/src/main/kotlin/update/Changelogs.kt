@@ -27,7 +27,7 @@ fun getChangelogs(): String? =
         ?.use(InputStreamReader::readText)
 
 @Composable
-fun Changelogs(changelogs: String) {
+fun ChangelogsDialog(changelogs: String) {
     var changelogsVisible by remember { mutableStateOf(true) }
 
     PromptDialog(
