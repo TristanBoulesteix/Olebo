@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.SwingPanel
 import androidx.compose.ui.unit.dp
@@ -21,6 +22,7 @@ fun <T : Any> TitledDropdownMenu(
     isEnabled: Boolean = true
 ) = Row(
     horizontalArrangement = Arrangement.SpaceBetween,
+    verticalAlignment = Alignment.CenterVertically,
     modifier = Modifier.width(180.dp)
 ) {
     Text(title)
