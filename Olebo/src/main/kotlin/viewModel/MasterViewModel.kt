@@ -252,12 +252,15 @@ class MasterViewModel(val act: Act) : CoroutineScope by CoroutineScope(Dispatche
         repaint()
     }
 
-    fun changePriority(newLayer: Layer) {
-        elements = elements.onEach {
-            if (it in selectedElements) {
-                it.priority = newLayer
-            }
-        }.sortedBy { it.priority }
+    suspend fun changePriority(newLayer: Layer) {
+        withContext(Dispatchers.IO) {
+            elements = elements.onEach {
+                if (it in selectedElements) {
+                    it.priority = newLayer
+                }
+            }.sortedBy { it.priority }
+        }
+
         repaint()
     }
 

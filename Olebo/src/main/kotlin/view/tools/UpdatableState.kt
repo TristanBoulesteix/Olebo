@@ -2,13 +2,14 @@ package jdr.exia.view.tools
 
 import androidx.compose.runtime.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.Transaction
-import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 /**
  * Remember a state and update model when it changes.
  *
- * @param key A key used know when the recalculation needs to happen
+ * @param key1 A key used know when the recalculation needs to happen
+ * @param key1 (Optional) A key used know when the recalculation needs to happen
  * @param calculation The calculation to remember. It should return a [MutableState]
  * @param onChange An action called each time the state changes. It is called in the IO thread and is a [Transaction].
  * @param onUpdated An action called when the model is successfully updated. It can be used to refresh the UI.
@@ -16,15 +17,16 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
  */
 @Composable
 inline fun <T> rememberUpdatableState(
-    key: Any?,
+    key1: Any?,
+    key2: Any? = null,
     calculation: @DisallowComposableCalls () -> MutableState<T>,
-    crossinline onChange: @DisallowComposableCalls suspend Transaction.(T) -> Unit,
-    crossinline onUpdated: @DisallowComposableCalls suspend () -> Unit
+    crossinline onChange: @DisallowComposableCalls suspend (T) -> Unit,
+    crossinline onUpdated: @DisallowComposableCalls suspend () -> Unit = {}
 ): MutableState<T> {
-    val state = remember(key1 = key, calculation)
+    val state = remember(key1 = key1, key2 = key2, calculation)
 
-    LaunchedEffect(key, state.value) {
-        newSuspendedTransaction(Dispatchers.IO) {
+    LaunchedEffect(key1 = key1, key2 = key2, key3 = state.value) {
+        withContext(Dispatchers.IO) {
             onChange(state.value)
         }
 

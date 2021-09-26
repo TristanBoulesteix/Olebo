@@ -24,6 +24,7 @@ import jdr.exia.view.element.form.TitledDropdownMenu
 import jdr.exia.view.tools.applyIf
 import jdr.exia.view.tools.rememberUpdatableState
 import jdr.exia.view.tools.withHandCursor
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
 @Composable
@@ -32,7 +33,7 @@ fun SelectedEditor(
     commandManager: CommandManager,
     selectedElements: List<Element>,
     deleteSelectedElement: () -> Unit,
-    setPriority: (Layer) -> Unit,
+    setPriority: suspend (Layer) -> Unit,
     repaint: () -> Unit
 ) = Row(
     modifier = modifier,
@@ -109,7 +110,7 @@ private fun NameElement(selectedElements: List<Element>, modifier: Modifier) {
 private fun LabelField(selectedElements: List<Element>, repaint: () -> Unit, modifier: Modifier) {
     if (selectedElements.size == 1) {
         var value by rememberUpdatableState(
-            key = selectedElements.firstOrNull(),
+            key1 = selectedElements.firstOrNull(),
             calculation = {
                 val element = selectedElements.first()
 
@@ -118,7 +119,7 @@ private fun LabelField(selectedElements: List<Element>, repaint: () -> Unit, mod
             onChange = {
                 val element = selectedElements.first()
 
-                element.alias = it
+                newSuspendedTransaction { element.alias = it }
             },
             onUpdated = { repaint() }
         )
@@ -145,17 +146,22 @@ private fun <T> List<Element>.getElementProperty(elementPropertyGetter: Element.
 
 @Composable
 private fun SizeSelector(selectedElements: List<Element>, repaint: () -> Unit, commandManager: CommandManager) {
-    var selectedSize by remember(selectedElements, commandManager.composeKey) {
-        mutableStateOf(
-            selectedElements.getElementProperty(
-                elementPropertyGetter = Element::size,
-                defaultValue = SizeElement.DEFAULT
+    var selectedSize by rememberUpdatableState(
+        key1 = selectedElements,
+        key2 = commandManager.composeKey,
+        calculation = {
+            mutableStateOf(
+                selectedElements.getElementProperty(
+                    elementPropertyGetter = Element::size,
+                    defaultValue = SizeElement.DEFAULT
+                )
             )
-        ) withSetter { newSize ->
-            Element.cmdDimension(newSize, commandManager, selectedElements)
-            repaint()
-        }
-    }
+        },
+        onChange = {
+            Element.cmdDimension(it, commandManager, selectedElements)
+        },
+        onUpdated = { repaint() }
+    )
 
     val isEnabled = selectedElements.isNotEmpty()
 
@@ -169,15 +175,19 @@ private fun SizeSelector(selectedElements: List<Element>, repaint: () -> Unit, c
 }
 
 @Composable
-private inline fun LayerSelector(selectedElements: List<Element>, crossinline setPriority: (Layer) -> Unit) {
-    var selectedLayer by remember(selectedElements) {
-        mutableStateOf(
-            selectedElements.getElementProperty(
-                elementPropertyGetter = Element::priority,
-                defaultValue = Layer.REGULAR
+private inline fun LayerSelector(selectedElements: List<Element>, crossinline setPriority: suspend (Layer) -> Unit) {
+    var selectedLayer by rememberUpdatableState(
+        key1 = selectedElements,
+        calculation = {
+            mutableStateOf(
+                selectedElements.getElementProperty(
+                    elementPropertyGetter = Element::priority,
+                    defaultValue = Layer.REGULAR
+                )
             )
-        ) withSetter setPriority
-    }
+        },
+        onChange = setPriority
+    )
 
     val isEnabled = selectedElements.isNotEmpty()
 
