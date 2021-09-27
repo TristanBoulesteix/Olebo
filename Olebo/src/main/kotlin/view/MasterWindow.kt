@@ -28,7 +28,9 @@ import jdr.exia.viewModel.MasterViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.awt.GraphicsConfiguration
 import java.awt.GraphicsDevice
+import java.awt.Rectangle
 
 @Composable
 fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
@@ -121,18 +123,18 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
 
 /**
  * Function to find current screen of the window.
- * The function [GraphicsConfiguration::getDevice] is not enough since it returns only the screen where the window was opened.
+ * The function [GraphicsConfiguration.getDevice] is not enough since it returns only the screen where the window was opened.
  *
  * @return The current GraphicsDevice of the Window or null if it was unable to get the current screen
  */
 private fun ComposeWindow.getCurrentScreen(): GraphicsDevice? {
-    val windowBounds = bounds
+    val windowBounds: Rectangle = bounds
 
     var lastArea = 0
     var device: GraphicsDevice? = null
 
     screens.forEach { graphicsDevice ->
-        graphicsDevice.configurations.forEach { graphicsConfiguration ->
+        graphicsDevice.configurations.forEach { graphicsConfiguration: GraphicsConfiguration ->
             val area = windowBounds.intersection(graphicsConfiguration.bounds).let { it.width * it.height }
 
             if (area != 0) {

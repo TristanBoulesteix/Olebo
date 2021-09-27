@@ -204,7 +204,7 @@ class MasterViewModel(val act: Act) : CoroutineScope by CoroutineScope(Dispatche
     /**
      * Remove all elements given as parameter. If no parameter is provided, remove all selected elements
      */
-    fun removeElements(elements: List<Element> = selectedElements) { //removes given token from MutableList
+    fun removeElements(elements: List<Element> = selectedElements) {
         commandManager += object : Command {
             override val label = StringLocale[STR_DELETE_SELECTED_TOKENS]
 
