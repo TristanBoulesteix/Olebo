@@ -154,24 +154,6 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
                 }
             }
         }
-
-        fun cmdDelete(manager: CommandManager, elements: List<Element>) {
-            manager += object : Command {
-                override val label = StringLocale[STR_DELETE_SELECTED_TOKENS]
-
-                override fun exec() = transaction {
-                    elements.forEach {
-                        it.isDeleted = true
-                    }
-                }
-
-                override fun cancelExec() = transaction {
-                    elements.forEach {
-                        it.isDeleted = false
-                    }
-                }
-            }
-        }
     }
 
     // Value stored into the database

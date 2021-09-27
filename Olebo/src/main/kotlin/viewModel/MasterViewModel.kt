@@ -4,8 +4,11 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import jdr.exia.localization.STR_DELETE_SELECTED_TOKENS
+import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
+import jdr.exia.model.command.Command
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Layer
@@ -202,14 +205,33 @@ class MasterViewModel(val act: Act) : CoroutineScope by CoroutineScope(Dispatche
      * Remove all elements given as parameter. If no parameter is provided, remove all selected elements
      */
     fun removeElements(elements: List<Element> = selectedElements) { //removes given token from MutableList
-        unselectElements()
-        currentScene.callCommandManager(elements, Element::cmdDelete)
+        commandManager += object : Command {
+            override val label = StringLocale[STR_DELETE_SELECTED_TOKENS]
 
-        this.elements = this.elements.toMutableList().also {
-            it -= elements.toSet()
+            override fun exec(): Unit = transaction {
+                elements.forEach {
+                    it.isDeleted = true
+                }
+
+                this@MasterViewModel.elements = this@MasterViewModel.elements.toMutableList().also {
+                    it -= elements.toSet()
+                }
+
+                repaint()
+            }
+
+            override fun cancelExec() = transaction {
+                elements.forEach {
+                    it.isDeleted = false
+                }
+
+                this@MasterViewModel.elements = this@MasterViewModel.elements.toMutableList().also {
+                    it += elements.toSet()
+                }
+
+                unselectElements()
+            }
         }
-
-        repaint()
     }
 
     fun addNewElement(blueprint: Blueprint) = launch {

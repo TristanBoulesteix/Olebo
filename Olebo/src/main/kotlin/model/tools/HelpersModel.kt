@@ -46,11 +46,6 @@ fun Blueprint?.isCharacter(): Boolean {
     return transaction { blueprint != null && (blueprint.type == TypeElement.PNJ || blueprint.type == TypeElement.PJ) }
 }
 
-inline fun Scene?.callCommandManager(elements: List<Element>, func: (CommandManager, List<Element>) -> Unit) =
-    this?.let { scene ->
-        func(CommandManager(scene.id), elements)
-    }
-
 inline fun <T> Scene?.callCommandManager(
     elementWithData: Map<Element, T>,
     func: (Map<Element, T>, CommandManager) -> Unit
