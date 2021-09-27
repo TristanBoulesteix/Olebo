@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.res.useResource
 import androidx.compose.ui.unit.dp
@@ -67,10 +68,15 @@ private fun ItemList(
             }
         } else {
             items(items = list) {
+                val focusManager = LocalFocusManager.current
+
                 val name = transaction { it.realName }
 
                 ContentListRow(
-                    modifier = Modifier.clickableWithCursor { createElement(it) },
+                    modifier = Modifier.clickableWithCursor {
+                        createElement(it)
+                        focusManager.clearFocus()
+                    },
                     contentText = name,
                     buttonBuilders =
                     listOf(

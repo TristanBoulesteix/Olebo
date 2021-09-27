@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.awt.SwingPanel
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.WindowPlacement
 import jdr.exia.localization.STR_DELETION
@@ -22,6 +23,7 @@ import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.composable.master.SelectedEditor
 import jdr.exia.view.element.dialog.ConfirmMessage
 import jdr.exia.view.menubar.MasterMenuBar
+import jdr.exia.view.tools.event.addMousePressedListener
 import jdr.exia.view.tools.screens
 import jdr.exia.view.ui.MASTER_WINDOW_SIZE
 import jdr.exia.viewModel.MasterViewModel
@@ -108,6 +110,14 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
     Column(modifier = Modifier.weight(.80f).fillMaxSize()) {
         //ComposeMapPanel(modifier = Modifier.weight(.85f).fillMaxSize(), viewModel = viewModel)
         Box(modifier = Modifier.weight(.85f).fillMaxSize()) {
+            val focusManager = LocalFocusManager.current
+
+            LaunchedEffect(focusManager) {
+                viewModel.panel.addMousePressedListener {
+                    focusManager.clearFocus()
+                }
+            }
+
             SwingPanel(factory = viewModel::panel)
         }
         SelectedEditor(
