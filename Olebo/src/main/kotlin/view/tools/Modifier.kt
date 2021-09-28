@@ -25,7 +25,7 @@ inline fun Modifier.applyIf(condition: Boolean, modifier: Modifier.() -> Modifie
     if (condition) this.modifier() else this
 
 @Immutable
-data class BorderBuilder(val strokeWidth: Dp, val color: Color) {
+class BorderBuilder(val strokeWidth: Dp, val color: Color) {
     companion object {
         @Stable
         val defaultBorder = BorderBuilder(2.dp, Color.Black)
