@@ -1,7 +1,7 @@
 package jdr.exia.view.tools
 
+import androidx.compose.ui.geometry.Offset
 import jdr.exia.model.element.Element
-import jdr.exia.model.type.Point
 import java.awt.*
 import java.awt.image.BufferedImage
 import javax.swing.SwingUtilities
@@ -67,28 +67,28 @@ fun gridBagConstraintsOf(
 val Component.windowAncestor: Window?
     inline get() = SwingUtilities.getWindowAncestor(this)
 
-fun Graphics.fillCircleWithCenterCoordinates(x: Int, y: Int, radius: Int) =
-    fillOval(x - radius, y - radius, radius * 2, radius * 2)
+fun Graphics.fillCircleWithCenterCoordinates(x: Float, y: Float, radius: Int) =
+    fillOval((x - radius).toInt(), (y - radius).toInt(), radius * 2, radius * 2)
 
-fun Graphics2D.drawCircleWithCenterCoordinates(x: Int, y: Int, radius: Int) {
+fun Graphics2D.drawCircleWithCenterCoordinates(x: Float, y: Float, radius: Int) {
     val previousStroke = this.stroke
     this.stroke = BasicStroke(3F)
-    this.drawOval(x - radius, y - radius, radius * 2, radius * 2)
+    this.drawOval((x - radius).toInt(), (y - radius).toInt(), radius * 2, radius * 2)
     this.stroke = previousStroke
 }
 
 /**
  * Return the first element to correspond to the given position or null
  */
-fun List<Element>.getTokenFromPosition(point: Point) = point.let { (x, y) ->
-    this.filter { it.hitBox.contains(x, y) }.maxByOrNull { it.priority }
+fun List<Element>.getTokenFromPosition(point: Offset) = point.let { (x, y) ->
+    this.filter { it.hitBox.contains(x.toInt(), y.toInt()) }.maxByOrNull { it.priority }
 }
 
 /**
  * Get position of hitbox from coordinate clicked
  */
-fun Element.positionOf(point: Point) =
-    Point(point.x - hitBox.width / 2, point.y - hitBox.height / 2)
+fun Element.positionOf(offset: Offset) =
+    Offset(offset.x - hitBox.width / 2f, offset.y - hitBox.height / 2f)
 
 operator fun Dimension.component1() = this.width
 

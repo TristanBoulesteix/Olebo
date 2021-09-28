@@ -26,7 +26,7 @@ fun ComposeMapPanel(modifier: Modifier, viewModel: MasterViewModel) = Box(modifi
         viewModel.elements.forEach {
             drawImage(
                 image = it.sprite.toComposeBitmap(),
-                srcOffset = IntOffset(relativeX(it.referencePoint.x), relativeY(it.referencePoint.y)),
+                srcOffset = IntOffset(relativeX(it.referencePoint.x.toInt()), relativeY(it.referencePoint.y.toInt())),
                 srcSize = IntSize(relativeX(it.hitBox.width), relativeY(it.hitBox.height))
             )
 
@@ -38,12 +38,12 @@ fun ComposeMapPanel(modifier: Modifier, viewModel: MasterViewModel) = Box(modifi
  * Translates an X coordinate in 1600:900px to proportional coords according to this window's size
  */
 private fun DrawScope.relativeX(absoluteX: Int): Int {
-    return (absoluteX * this.size.width).toInt() / MasterViewModel.ABSOLUTE_WIDTH
+    return (absoluteX * this.size.width).toInt() / MasterViewModel.ABSOLUTE_WIDTH.toInt()
 }
 
 /**
  * Translates a y coordinate in 1600:900px to proportional coords according to this window's size
  */
 private fun DrawScope.relativeY(absoluteY: Int): Int {
-    return (absoluteY * this.size.height).toInt() / MasterViewModel.ABSOLUTE_HEIGHT
+    return (absoluteY * this.size.height).toInt() / MasterViewModel.ABSOLUTE_HEIGHT.toInt()
 }

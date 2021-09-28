@@ -1,5 +1,6 @@
 package jdr.exia.model.element
 
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.res.useResource
 import jdr.exia.localization.*
@@ -11,7 +12,6 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.tools.CharacterException
 import jdr.exia.model.tools.isCharacter
 import jdr.exia.model.type.Image
-import jdr.exia.model.type.Point
 import jdr.exia.view.tools.rotateImage
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
@@ -139,7 +139,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
                 }
         }
 
-        fun cmdPosition(elementsToPoint: Map<Element, Point>, manager: CommandManager) {
+        fun cmdPosition(elementsToPoint: Map<Element, Offset>, manager: CommandManager) {
             val previousPoints = elementsToPoint.mapValues { it.key.referencePoint }
 
             manager += object : Command {
@@ -231,16 +231,16 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         }
 
     var referencePoint
-        get() = Point(x, y)
+        get() = Offset(x.toFloat(), y.toFloat())
         private set(value) {
             transaction {
-                x = value.x
-                y = value.y
+                x = value.x.toInt()
+                y = value.y.toInt()
             }
         }
 
     val centerPoint
-        get() = Point(this.hitBox.centerX.toInt(), this.hitBox.centerY.toInt())
+        get() = Offset(this.hitBox.centerX.toFloat(), this.hitBox.centerY.toFloat())
 
     var currentHealth
         get() = if (this.isCharacter()) currentHP!! else throw Exception("Cet élément n'est pas un personnage !")
@@ -263,7 +263,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
     // --- Command functions ---
 
-    fun cmdPosition(point: Point, manager: CommandManager) {
+    fun cmdPosition(point: Offset, manager: CommandManager) {
         val previousPosition = this.referencePoint
 
         manager += object : Command {

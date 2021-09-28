@@ -1,11 +1,12 @@
 package jdr.exia.view.composable.master
 
+import androidx.compose.ui.geometry.Offset
 import jdr.exia.model.dao.option.SerializableColor
 import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.SizeElement
-import jdr.exia.model.type.Point
+import jdr.exia.model.type.Offset
 import jdr.exia.view.tools.compareTo
 import jdr.exia.view.tools.drawCircleWithCenterCoordinates
 import jdr.exia.view.tools.event.addMouseExitedListener
@@ -39,28 +40,28 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
      * init only for DM window
      */
     private fun initializeForMaster() {
-        var start = Point()
-        var movePoint: Point? = null
+        var start = Offset(0f, 0f)
+        var movePoint: Offset? = null
 
         this.addMouseMotionListener(object : MouseMotionAdapter() {
             override fun mouseMoved(me: MouseEvent) {
-                start = me.point
+                start = Offset(me.point)
             }
 
             override fun mouseDragged(me: MouseEvent) {
                 if (SwingUtilities.isLeftMouseButton(me)) {
-                    val end = me.point
+                    val end = Offset(me.point)
 
-                    if (viewModel.hasElementAtPosition(Point(start).absolutePosition)) {
-                        movePoint = Point(end)
+                    if (viewModel.hasElementAtPosition(start.absolutePosition)) {
+                        movePoint = end
                         selectedArea = null
                     } else {
                         movePoint = null
                         selectedArea = Rectangle(
-                            start.x.coerceAtMost(end.x),
-                            start.y.coerceAtMost(end.y),
-                            abs(start.x - end.x),
-                            abs(start.y - end.y)
+                            start.x.coerceAtMost(end.x).toInt(),
+                            start.y.coerceAtMost(end.y).toInt(),
+                            abs(start.x - end.x).toInt(),
+                            abs(start.y - end.y).toInt()
                         )
 
                         repaintLocked = true
@@ -74,7 +75,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
         addMouseReleasedListener { me ->
             repaintLocked = false
 
-            val releasedPosition = Point(me.point).absolutePosition
+            val releasedPosition = Offset(me.point).absolutePosition
 
             when (me.button) {
                 MouseEvent.BUTTON1 -> if (movePoint == null && selectedArea == null) viewModel.selectElementsAtPosition(
@@ -92,14 +93,14 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
             }
 
             movePoint?.absolutePosition?.let {
-                viewModel.moveTokensTo(it, Point(start).absolutePosition)
-                start = it.toJPoint()
+                viewModel.moveTokensTo(it, start.absolutePosition)
+                start = it
                 movePoint = null
             }
         }
 
         addMouseMovedListener { me ->
-            viewModel.cursor = Point(me.point).absolutePosition
+            viewModel.cursor = Offset(me.point).absolutePosition
         }
 
         addMouseExitedListener {
@@ -112,33 +113,33 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
     /**
      * Translates an X coordinate in 1600:900px to proportional coords according to this window's size
      */
-    private fun relativeX(absoluteX: Int): Int {
+    private fun relativeX(absoluteX: Float): Float {
         return (absoluteX * this.width) / ABSOLUTE_WIDTH
     }
 
     /**
      * Translates a y coordinate in 1600:900px to proportional coords according to this window's size
      */
-    private fun relativeY(absoluteY: Int): Int {
+    private fun relativeY(absoluteY: Float): Float {
         return (absoluteY * this.height) / ABSOLUTE_HEIGHT
     }
 
     /**
      * Translates an X coordinate from this window into a 1600:900 X coordinate
      */
-    private fun absoluteX(relativeX: Int): Int {
-        return ((relativeX.toFloat() / this.width.toFloat()) * ABSOLUTE_WIDTH).toInt()
+    private fun absoluteX(relativeX: Float): Float {
+        return (relativeX / this.width.toFloat()) * ABSOLUTE_WIDTH
     }
 
     /**
      * Translates an Y coordinate from this window into a 1600:900 Y coordinate
      */
-    private fun absoluteY(relativeY: Int): Int {
-        return ((relativeY.toFloat() / this.height.toFloat()) * ABSOLUTE_HEIGHT).toInt()
+    private fun absoluteY(relativeY: Float): Float {
+        return (relativeY / this.height.toFloat()) * ABSOLUTE_HEIGHT
     }
 
-    val Point.absolutePosition
-        get() = Point(absoluteX(x), absoluteY(y))
+    val Offset.absolutePosition
+        get() = Offset(absoluteX(x), absoluteY(y))
 
     override fun paintComponent(g: Graphics) {
         super.paintComponent(g)
@@ -206,10 +207,10 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
         color = Color.RED
         setPaintMode()
         drawRect( //Draws a 1 pixel thick rectangle
-            relativeX(token.referencePoint.x) - 4,
-            relativeY(token.referencePoint.y) - 4,
-            relativeX(token.hitBox.width) + 8,
-            relativeY(token.hitBox.height) + 8
+            (relativeX(token.referencePoint.x) - 4).toInt(),
+            (relativeY(token.referencePoint.y) - 4).toInt(),
+            (relativeX(token.hitBox.width.toFloat()) + 8).toInt(),
+            (relativeY(token.hitBox.height.toFloat()) + 8).toInt()
         )
     }
 
@@ -220,10 +221,10 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
         font = Font("Arial", Font.BOLD, 24)
         color = labelColor.contentColor
 
-        val x = relativeX(refX) + (relativeX(token.hitBox.width) - fontMetrics.stringWidth(alias)) / 2
+        val x = relativeX(refX) + (relativeX(token.hitBox.width.toFloat()) - fontMetrics.stringWidth(alias)) / 2
         val y = relativeY(refY) - 10
 
-        drawString(alias, x, y)
+        drawString(alias, x.toInt(), y.toInt())
     }
 
     /**
@@ -232,27 +233,27 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
     private fun Graphics.drawInvisibleMarker(token: Element) {
         color = Color.BLUE
         drawRect( //Draws a 1 pixel thick rectangle
-            (relativeX(token.referencePoint.x) - 3),
-            (relativeY(token.referencePoint.y) - 3),
-            (relativeX(token.hitBox.width) + 6),
-            (relativeY(token.hitBox.height) + 6)
+            (relativeX(token.referencePoint.x) - 3).toInt(),
+            (relativeY(token.referencePoint.y) - 3).toInt(),
+            (relativeX(token.hitBox.width.toFloat()) + 6).toInt(),
+            (relativeY(token.hitBox.height.toFloat()) + 6).toInt()
         )
     }
 
     fun getRelativeRectangleOfToken(token: Element) = Rectangle(
-        relativeX(token.referencePoint.x),
-        relativeY(token.referencePoint.y),
-        relativeX(token.hitBox.width),
-        relativeY(token.hitBox.height)
+        relativeX(token.referencePoint.x).toInt(),
+        relativeY(token.referencePoint.y).toInt(),
+        relativeX(token.hitBox.width.toFloat()).toInt(),
+        relativeY(token.hitBox.height.toFloat()).toInt()
     )
 
     private fun Graphics.drawToken(token: Element) {
         drawImage(
             token.sprite,
-            relativeX(token.referencePoint.x),
-            relativeY(token.referencePoint.y),
-            relativeX(token.hitBox.width),
-            relativeY(token.hitBox.height),
+            relativeX(token.referencePoint.x).toInt(),
+            relativeY(token.referencePoint.y).toInt(),
+            relativeX(token.hitBox.width.toFloat()).toInt(),
+            relativeY(token.hitBox.height.toFloat()).toInt(),
             null
         )
     }
@@ -261,7 +262,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
      * Show alias on mouse hover
      */
     override fun getToolTipText() = mousePosition?.let { point ->
-        if (isParentMaster) viewModel.elements.getTokenFromPosition(Point(point).absolutePosition)?.alias.takeIf { !it.isNullOrBlank() } else null
+        if (isParentMaster) viewModel.elements.getTokenFromPosition(Offset(point).absolutePosition)?.alias.takeIf { !it.isNullOrBlank() } else null
     }
 
     /**

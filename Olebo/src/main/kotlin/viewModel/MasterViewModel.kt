@@ -4,6 +4,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.geometry.Offset
 import jdr.exia.localization.STR_DELETE_SELECTED_TOKENS
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
@@ -16,7 +17,7 @@ import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.callCommandManager
 import jdr.exia.model.tools.doIfContainsSingle
 import jdr.exia.model.tools.withSetter
-import jdr.exia.model.type.Point
+import jdr.exia.model.type.contains
 import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.tools.getTokenFromPosition
 import jdr.exia.view.tools.positionOf
@@ -34,8 +35,8 @@ import javax.imageio.ImageIO
 
 class MasterViewModel(val act: Act) : CoroutineScope by CoroutineScope(Dispatchers.Swing) {
     companion object {
-        const val ABSOLUTE_WIDTH = 1600
-        const val ABSOLUTE_HEIGHT = 900
+        const val ABSOLUTE_WIDTH = 1600f
+        const val ABSOLUTE_HEIGHT = 900f
     }
 
     var blueprintEditorDialogVisible by mutableStateOf(false)
@@ -69,14 +70,14 @@ class MasterViewModel(val act: Act) : CoroutineScope by CoroutineScope(Dispatche
 
     val backGroundImage: BufferedImage by derivedStateOf { transaction { ImageIO.read(File(currentScene.background)) } }
 
-    var cursor: Point? by mutableStateOf(null)
+    var cursor: Offset? by mutableStateOf(null)
 
     /**
      * Returns true if there is at least one element at the given position
      */
-    fun hasElementAtPosition(position: Point) = elements.getTokenFromPosition(position) != null
+    fun hasElementAtPosition(position: Offset) = elements.getTokenFromPosition(position) != null
 
-    fun selectElementsAtPosition(position: Point, addToExistingElements: Boolean = false) {
+    fun selectElementsAtPosition(position: Offset, addToExistingElements: Boolean = false) {
         if (!addToExistingElements) {
             selectedElements = elements.getTokenFromPosition(position)?.let { listOf(it) } ?: emptyList()
         } else {
@@ -88,7 +89,7 @@ class MasterViewModel(val act: Act) : CoroutineScope by CoroutineScope(Dispatche
     /**
      * Changes tokens position without dropping them (a moved token stays selected), intended for small steps
      */
-    fun moveTokensTo(point: Point, from: Point? = null) {
+    fun moveTokensTo(point: Offset, from: Offset? = null) {
         val origin = from?.let { pos ->
             selectedElements.find { it.hitBox in pos } ?: selectElementsAtPosition(pos)
                 .let { selectedElements.firstOrNull() }
@@ -97,7 +98,7 @@ class MasterViewModel(val act: Act) : CoroutineScope by CoroutineScope(Dispatche
         /**
          * Return a new [Point] inside the borders of the map
          */
-        fun Point.checkBoundOf(element: Element?): Point {
+        fun Offset.checkBoundOf(element: Element?): Offset {
             var newPosition = this
 
             val height: Int
@@ -109,13 +110,13 @@ class MasterViewModel(val act: Act) : CoroutineScope by CoroutineScope(Dispatche
             }
 
             if (newPosition.x < 0) {
-                newPosition = newPosition.copy(x = 0 + width)
+                newPosition = newPosition.copy(x = 0f + width)
             } else if (newPosition.x > ABSOLUTE_WIDTH) {
                 newPosition = newPosition.copy(x = ABSOLUTE_WIDTH - width)
             }
 
             if (newPosition.y < 0) {
-                newPosition = newPosition.copy(y = 0 + height)
+                newPosition = newPosition.copy(y = 0f + height)
             } else if (newPosition.y > ABSOLUTE_HEIGHT) {
                 newPosition = newPosition.copy(y = ABSOLUTE_HEIGHT - height)
             }
