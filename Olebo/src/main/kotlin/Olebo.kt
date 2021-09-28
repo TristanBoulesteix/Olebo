@@ -50,7 +50,10 @@ fun main() = application {
             }
 
             LaunchedEffect(Unit) {
-                checkForUpdate().onSuccess { release = it }.onFailure(Throwable::printStackTrace)
+                checkForUpdate().onSuccess { release = it }.onFailure {
+                    if (it is Exception)
+                        it.printStackTrace()
+                }
                 updateChecked = true
             }
 

@@ -58,21 +58,19 @@ private fun MainContent(
     switchContent: (HomeContent) -> Unit,
     onRowClick: (Act) -> Unit,
     onDeleteAct: (Act) -> Unit
-) {
-    Row(modifier = Modifier.fillMaxSize()) {
-        when (content) {
-            is ActsView -> ActsView(
-                acts = acts,
-                onRowClick = onRowClick,
-                onEdit = { switchContent(ActEditor(it)) },
-                onDelete = onDeleteAct,
-                viewElements = { switchContent(ElementsView) },
-                startActCreation = { switchContent(ActCreator) }
-            )
-            is ElementsView -> ElementsView(onDone = { switchContent(ActsView) })
-            is ActEditor -> ActEditorView(act = content.act, onDone = { switchContent(ActsView) })
-            is ActCreator -> ActEditorView(onDone = { switchContent(ActsView) })
-        }
+) = Box(modifier = Modifier.fillMaxSize()) {
+    when (content) {
+        is ActsView -> ActsView(
+            acts = acts,
+            onRowClick = onRowClick,
+            onEdit = { switchContent(ActEditor(it)) },
+            onDelete = onDeleteAct,
+            viewElements = { switchContent(ElementsView) },
+            startActCreation = { switchContent(ActCreator) }
+        )
+        is ElementsView -> ElementsView(onDone = { switchContent(ActsView) })
+        is ActEditor -> ActEditorView(act = content.act, onDone = { switchContent(ActsView) })
+        is ActCreator -> ActEditorView(onDone = { switchContent(ActsView) })
     }
 }
 
