@@ -205,8 +205,8 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     val hitBox
         get() = transaction {
             Rectangle(
-                x,
-                y,
+                x.toInt(),
+                y.toInt(),
                 size.value,
                 size.value
             )
@@ -231,11 +231,11 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         }
 
     var referencePoint
-        get() = Offset(x.toFloat(), y.toFloat())
+        get() = Offset(x, y)
         private set(value) {
             transaction {
-                x = value.x.toInt()
-                y = value.y.toInt()
+                x = value.x
+                y = value.y
             }
         }
 

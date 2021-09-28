@@ -203,8 +203,8 @@ object LayerTable : EnumInitializable<Layer>(enumValues()) {
 object InstanceTable : IntIdTable() {
     val currentHP = integer("current_HP").nullable()
     val currentMP = integer("current_MP").nullable()
-    val x = integer("x").default(10)
-    val y = integer("y").default(10)
+    val x = float("x").default(10f)
+    val y = float("y").default(10f)
     val idSize = reference("ID_Size", SizeTable, onDelete = ReferenceOption.CASCADE).default(EntityID(2, SizeTable))
     val visible = bool("Visible").default(false)
     val orientation = float("Orientation").default(0f)
