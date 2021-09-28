@@ -5,29 +5,6 @@ import jdr.exia.model.element.Element
 import java.awt.*
 import java.awt.image.BufferedImage
 import javax.swing.SwingUtilities
-import kotlin.contracts.ExperimentalContracts
-import kotlin.contracts.InvocationKind
-import kotlin.contracts.contract
-
-
-@OptIn(ExperimentalContracts::class)
-inline fun <T : Container> T.applyAndAddTo(
-    parent: Container,
-    constraints: Any? = null,
-    block: T.() -> Unit
-): T {
-    contract {
-        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-    }
-
-    this.apply(block)
-
-    if (constraints != null)
-        parent.add(this, constraints)
-    else parent.add(this)
-
-    return this
-}
 
 private val Dimension.area
     inline get() = width * height
@@ -36,33 +13,6 @@ private val Dimension.area
  * Compare area of dimensions
  */
 operator fun Dimension.compareTo(dimension: Dimension) = this.area.compareTo(dimension.area)
-
-/**
- * [GridBagConstraints] builder
- *
- * @return The [GridBagConstraints] built with the parameters
- */
-fun gridBagConstraintsOf(
-    gridx: Int? = null,
-    gridy: Int? = null,
-    gridHeight: Int? = null,
-    gridWidth: Int? = null,
-    weightx: Double? = null,
-    weighty: Double? = null,
-    fill: Int = GridBagConstraints.NONE,
-    anchor: Int = GridBagConstraints.CENTER,
-    insets: Insets? = null
-) = GridBagConstraints().apply {
-    gridx?.let { this.gridx = it }
-    gridy?.let { this.gridy = it }
-    gridHeight?.let { this.gridheight = it }
-    gridWidth?.let { this.gridwidth = it }
-    weightx?.let { this.weightx = it }
-    weighty?.let { this.weighty = it }
-    this.fill = fill
-    this.anchor = anchor
-    insets?.let { this.insets = it }
-}
 
 val Component.windowAncestor: Window?
     inline get() = SwingUtilities.getWindowAncestor(this)
