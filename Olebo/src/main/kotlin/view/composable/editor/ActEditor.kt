@@ -28,8 +28,8 @@ import jdr.exia.model.tools.SimpleResult
 import jdr.exia.model.tools.failure
 import jdr.exia.model.tools.success
 import jdr.exia.model.tools.withSetter
-import jdr.exia.model.type.imageFromFile
 import jdr.exia.model.type.imageFromIconRes
+import jdr.exia.model.type.imageFromPath
 import jdr.exia.view.WindowStateManager
 import jdr.exia.view.element.*
 import jdr.exia.view.element.builder.ImageButtonBuilder
@@ -292,7 +292,7 @@ private fun ImagePreviewContent(
     ) {
         if (imgExist) {
             Image(
-                bitmap = imageFromFile(File(data.img.path)),
+                bitmap = imageFromPath(data.img.path),
                 contentDescription = null,
                 Modifier.clip(roundedShape).addRoundedBorder().align(Alignment.Center)
             )

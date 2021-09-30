@@ -19,13 +19,12 @@ import jdr.exia.localization.STR_SEARCH
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.TypeElement
-import jdr.exia.model.type.imageFromFile
+import jdr.exia.model.type.imageFromPath
 import jdr.exia.view.element.ContentListRow
 import jdr.exia.view.element.LazyScrollableColumn
 import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.tools.clickableWithCursor
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.io.File
 
 @Composable
 fun ItemList(modifier: Modifier, items: Map<TypeElement, List<Blueprint>>, createElement: (Blueprint) -> Unit) = Column(
@@ -84,7 +83,7 @@ private fun ItemList(
                             if (type == TypeElement.Basic)
                                 useResource("sprites/${it.sprite}", ::loadImageBitmap)
                             else
-                                imageFromFile(File(it.sprite))
+                                imageFromPath(it.sprite)
                         )
                     )
                 )

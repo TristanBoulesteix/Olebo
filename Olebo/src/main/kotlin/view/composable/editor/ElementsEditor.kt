@@ -21,8 +21,8 @@ import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.SimpleResult
 import jdr.exia.model.tools.isCharacter
 import jdr.exia.model.type.Image
-import jdr.exia.model.type.imageFromFile
 import jdr.exia.model.type.imageFromIconRes
+import jdr.exia.model.type.imageFromPath
 import jdr.exia.model.type.savePathToImage
 import jdr.exia.view.WindowStateManager
 import jdr.exia.view.element.*
@@ -314,7 +314,7 @@ private fun Blueprint.BlueprintData?.getButtons(
         emptyList()
     } + listOf(
         ImageButtonBuilder(
-            content = imageFromFile(File(blueprint.sprite))
+            content = imageFromPath(blueprint.sprite)
         ),
         ImageButtonBuilder(
             content = imageFromIconRes("edit_icon"),
@@ -358,7 +358,7 @@ private fun Blueprint.BlueprintData?.getButtons(
         emptyList()
     } + listOf(
         ImageButtonBuilder(
-            content = imageFromFile(File(img.path)),
+            content = imageFromPath(img.path),
             onClick = { updateImage(onUpdate) }
         ),
         ImageButtonBuilder(

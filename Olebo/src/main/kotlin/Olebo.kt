@@ -20,6 +20,7 @@ import jdr.exia.view.MasterWindow
 import jdr.exia.view.ui.OleboTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
 
 const val OLEBO_VERSION_NAME = "0.1.0"
 

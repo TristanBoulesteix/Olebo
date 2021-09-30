@@ -12,6 +12,9 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.tools.CharacterException
 import jdr.exia.model.tools.isCharacter
 import jdr.exia.model.type.Image
+import jdr.exia.model.type.checkedImgPath
+import jdr.exia.model.type.inputStreamOrNotFound
+import jdr.exia.model.type.toImgPath
 import jdr.exia.view.tools.rotateImage
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
@@ -20,7 +23,6 @@ import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
 import java.awt.image.BufferedImage
-import java.io.File
 import javax.imageio.ImageIO
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
@@ -290,12 +292,16 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     override fun hashCode() = this.id.value
 
     private fun lazyRotatedSprite() = object : ReadOnlyProperty<Element, BufferedImage> {
+        private fun getResourceAsStream(name: String) = Element::class.java.classLoader.getResourceAsStream(name)
+
         val originalImage by lazy {
             transaction {
                 if (blueprint.type == TypeElement.Basic) {
-                    ImageIO.read(Element::class.java.classLoader.getResourceAsStream("sprites/${blueprint.sprite}"))
+                    ImageIO.read(getResourceAsStream("sprites/${blueprint.sprite}"))
                 } else {
-                    ImageIO.read(File(blueprint.sprite))
+                    ImageIO.read(
+                        blueprint.sprite.toImgPath().checkedImgPath()?.toFile().inputStreamOrNotFound()
+                    )
                 }
             }
         }

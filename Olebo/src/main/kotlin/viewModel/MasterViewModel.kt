@@ -17,7 +17,10 @@ import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.callCommandManager
 import jdr.exia.model.tools.doIfContainsSingle
 import jdr.exia.model.tools.withSetter
+import jdr.exia.model.type.checkedImgPath
 import jdr.exia.model.type.contains
+import jdr.exia.model.type.inputStreamOrNotFound
+import jdr.exia.model.type.toImgPath
 import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.tools.getTokenFromPosition
 import jdr.exia.view.tools.positionOf
@@ -30,7 +33,6 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
 import java.awt.image.BufferedImage
-import java.io.File
 import javax.imageio.ImageIO
 
 class MasterViewModel(val act: Act) : CoroutineScope by CoroutineScope(Dispatchers.Swing) {
@@ -68,7 +70,11 @@ class MasterViewModel(val act: Act) : CoroutineScope by CoroutineScope(Dispatche
             field = tokens.sortedBy { it.priority }
         }
 
-    val backGroundImage: BufferedImage by derivedStateOf { transaction { ImageIO.read(File(currentScene.background)) } }
+    val backGroundImage: BufferedImage by derivedStateOf {
+        transaction {
+            ImageIO.read(currentScene.background.toImgPath().checkedImgPath()?.toFile().inputStreamOrNotFound())
+        }
+    }
 
     var cursor: Offset? by mutableStateOf(null)
 
