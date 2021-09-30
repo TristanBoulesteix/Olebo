@@ -77,7 +77,7 @@ fun main() = application {
 
             if (changelogs != null && Settings.wasJustUpdated) {
                 ChangelogsDialog(changelogs!!)
-                Settings.wasJustUpdated = false
+                SideEffect { Settings.wasJustUpdated = false }
             }
         }
     }
