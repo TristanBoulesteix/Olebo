@@ -7,6 +7,7 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.SizeElement
 import jdr.exia.model.type.Offset
+import jdr.exia.model.type.toJColor
 import jdr.exia.view.tools.compareTo
 import jdr.exia.view.tools.drawCircleWithCenterCoordinates
 import jdr.exia.view.tools.event.addMouseExitedListener
@@ -193,9 +194,9 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
             viewModel.cursor?.let {
                 val (cursorColor, borderCursorColor) = Settings.cursorColor
 
-                g.color = cursorColor
+                g.color = cursorColor.toJColor()
                 g.fillCircleWithCenterCoordinates(relativeX(it.x), relativeY(it.y), 15)
-                g.color = borderCursorColor
+                g.color = borderCursorColor.toJColor()
                 g.drawCircleWithCenterCoordinates(relativeX(it.x), relativeY(it.y), 15)
             }
     }
@@ -219,7 +220,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
         val alias = token.alias
 
         font = Font("Arial", Font.BOLD, 24)
-        color = labelColor.contentColor
+        color = labelColor.contentColor.toJColor()
 
         val x = relativeX(refX) + (relativeX(token.hitBox.width.toFloat()) - fontMetrics.stringWidth(alias)) / 2
         val y = relativeY(refY) - 10

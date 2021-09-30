@@ -1,5 +1,6 @@
 package jdr.exia.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,10 +21,14 @@ import jdr.exia.model.dao.SettingsTable
 import jdr.exia.model.dao.option.SerializableColor
 import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.dao.option.Settings
+import jdr.exia.model.type.JColor
+import jdr.exia.model.type.toColor
+import jdr.exia.model.type.toJColor
 import jdr.exia.view.element.form.DropdownMenu
 import jdr.exia.view.element.form.LabeledCheckbox
 import jdr.exia.view.tools.withHandCursor
 import org.jetbrains.exposed.sql.transactions.transaction
+import javax.swing.JColorChooser
 
 @Composable
 fun SettingsDialog(onCloseRequest: () -> Unit) {
@@ -98,13 +103,19 @@ private fun LookAndFeelSettings(settingsData: SettingsData, updateSettings: (Set
             listOf(
                 SerializableColor.BLACK_WHITE,
                 SerializableColor.WHITE_BLACK,
-            ) + baseColor
+            ) + baseColor + SerializableColor.Custom.default
         }
 
         DropdownMenu(
             items = cursorColors,
             selectedItem = settingsData.cursorColor,
-            onItemSelected = { updateSettings(settingsData.copy(cursorColor = it)) },
+            selectedContent = selectedContentColor,
+            onItemSelected = { newColor ->
+                updateColor(
+                    newColor = newColor,
+                    defaultColor = settingsData.cursorColor,
+                    updateSettings = { updateSettings(settingsData.copy(cursorColor = it)) })
+            },
             label = StringLocale[STR_CURSOR_COLOR_LABEL]
         )
 
@@ -126,16 +137,51 @@ private fun LookAndFeelSettings(settingsData: SettingsData, updateSettings: (Set
         Spacer(Modifier.height(5.dp))
 
         val labelColor = remember {
-            listOf(SerializableColor.BLACK) + baseColor
+            listOf(SerializableColor.BLACK) + baseColor + SerializableColor.Custom.default
         }
 
         DropdownMenu(
             items = labelColor,
             selectedItem = settingsData.labelColor,
-            onItemSelected = { updateSettings(settingsData.copy(labelColor = it)) },
+            selectedContent = selectedContentColor,
+            onItemSelected = { newColor ->
+                updateColor(
+                    newColor = newColor,
+                    defaultColor = settingsData.labelColor,
+                    updateSettings = { updateSettings(settingsData.copy(labelColor = it)) })
+            },
             label = StringLocale[STR_LABEL_COLOR]
         )
     }
+
+@Stable
+private val selectedContentColor: @Composable RowScope.(SerializableColor) -> Unit
+    get() = {
+        Row(horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(it.toString())
+            if (it is SerializableColor.Custom) {
+                Spacer(Modifier.size(15.dp))
+                Spacer(Modifier.size(15.dp).background(it.color))
+            }
+        }
+    }
+
+private fun updateColor(
+    newColor: SerializableColor,
+    defaultColor: SerializableColor,
+    updateSettings: (SerializableColor) -> Unit
+) {
+    var selectedColor = newColor
+
+    if (newColor is SerializableColor.Custom) {
+        val customColor: JColor? =
+            JColorChooser.showDialog(null, StringLocale[STR_SELECT_COLOR], newColor.contentColor.toJColor())
+
+        selectedColor = if (customColor == null) defaultColor else SerializableColor.Custom(customColor.toColor())
+    }
+
+    updateSettings(selectedColor)
+}
 
 @Composable
 private inline fun SettingsSection(sectionTitle: String, content: @Composable ColumnScope.() -> Unit) = Column(

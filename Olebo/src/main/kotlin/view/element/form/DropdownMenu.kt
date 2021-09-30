@@ -14,41 +14,46 @@ import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.view.tools.withHandCursor
 
 @Composable
-fun <T : Any> DropdownMenu(items: List<T>, selectedItem: T, onItemSelected: (T) -> Unit, label: String? = null) =
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        if (label != null) {
-            Text(label)
-            Spacer(Modifier.width(10.dp))
+fun <T : Any> DropdownMenu(
+    items: List<T>,
+    selectedItem: T,
+    onItemSelected: (T) -> Unit,
+    selectedContent: @Composable RowScope. (T) -> Unit = { Text(it.toString()) },
+    label: String? = null
+) = Row(verticalAlignment = Alignment.CenterVertically) {
+    if (label != null) {
+        Text(label)
+        Spacer(Modifier.width(10.dp))
+    }
+
+    Box {
+        var expanded by remember { mutableStateOf(false) }
+
+        OutlinedButton(onClick = { expanded = !expanded }, modifier = Modifier.withHandCursor()) {
+            Row(modifier = Modifier, horizontalArrangement = Arrangement.SpaceAround) {
+                selectedContent(selectedItem)
+                Spacer(Modifier.width(10.dp))
+                Image(
+                    imageFromIconRes("arrow_dropdown"),
+                    contentDescription = null,
+                    modifier = Modifier.size(15.dp)
+                )
+            }
         }
 
-        Box {
-            var expanded by remember { mutableStateOf(false) }
-
-            OutlinedButton(onClick = { expanded = !expanded }, modifier = Modifier.withHandCursor()) {
-                Row(modifier = Modifier, horizontalArrangement = Arrangement.SpaceAround) {
-                    Text(selectedItem.toString())
-                    Spacer(Modifier.width(10.dp))
-                    Image(
-                        imageFromIconRes("arrow_dropdown"),
-                        contentDescription = null,
-                        modifier = Modifier.size(15.dp)
-                    )
-                }
-            }
-
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                items.forEach { item ->
-                    DropdownMenuItem(
-                        onClick = {
-                            onItemSelected(item)
-                            expanded = false
-                        },
-                        modifier = Modifier.withHandCursor()
-                    ) { Text(text = item.toString()) }
-                }
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            items.forEach { item ->
+                DropdownMenuItem(
+                    onClick = {
+                        onItemSelected(item)
+                        expanded = false
+                    },
+                    modifier = Modifier.withHandCursor()
+                ) { Text(text = item.toString()) }
             }
         }
     }
+}
