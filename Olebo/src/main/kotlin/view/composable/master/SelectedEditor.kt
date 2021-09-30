@@ -175,7 +175,7 @@ private fun SizeSelector(selectedElements: List<Element>, repaint: () -> Unit, c
 }
 
 @Composable
-private inline fun LayerSelector(selectedElements: List<Element>, crossinline setPriority: suspend (Layer) -> Unit) {
+private fun LayerSelector(selectedElements: List<Element>, setPriority: suspend (Layer) -> Unit) {
     var selectedLayer by rememberUpdatableState(
         key1 = selectedElements,
         calculation = {
@@ -186,7 +186,7 @@ private inline fun LayerSelector(selectedElements: List<Element>, crossinline se
                 )
             )
         },
-        onChange = setPriority
+        onChange = { setPriority(it) }
     )
 
     val isEnabled = selectedElements.isNotEmpty()
