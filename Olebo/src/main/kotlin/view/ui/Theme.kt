@@ -1,6 +1,6 @@
 package jdr.exia.view.ui
 
-import androidx.compose.material.MaterialTheme
+import androidx.compose.desktop.DesktopMaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
@@ -25,7 +25,7 @@ fun OleboTheme(darkTheme: Boolean = false, content: @Composable () -> Unit) {
         lightColorPalette
     }
 
-    MaterialTheme(
+    DesktopMaterialTheme(
         colors = colors,
         typography = typography,
         content = content

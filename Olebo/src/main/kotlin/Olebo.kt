@@ -1,6 +1,5 @@
 package jdr.exia
 
-import androidx.compose.desktop.DesktopMaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -36,51 +35,49 @@ fun main() = application {
 
     // Initialize themes
     OleboTheme {
-        DesktopMaterialTheme {
-            // Manage update
-            val trayState = rememberTrayState()
+        // Manage update
+        val trayState = rememberTrayState()
 
-            var release by remember { mutableStateOf<Release?>(null) }
-            var updateChecked by remember { mutableStateOf(false) }
+        var release by remember { mutableStateOf<Release?>(null) }
+        var updateChecked by remember { mutableStateOf(false) }
 
-            if (!updateChecked || release != null) {
-                val trayHint = remember(release) {
-                    if (release == null) StringLocale[ST_OLEBO_SEARCH_FOR_UPDATE] else StringLocale[STR_PREPARE_UPDATE]
-                }
-
-                Tray(icon = UpdateTrayIcon, state = trayState, hint = trayHint)
+        if (!updateChecked || release != null) {
+            val trayHint = remember(release) {
+                if (release == null) StringLocale[ST_OLEBO_SEARCH_FOR_UPDATE] else StringLocale[STR_PREPARE_UPDATE]
             }
+
+            Tray(icon = UpdateTrayIcon, state = trayState, hint = trayHint)
+        }
+
+        LaunchedEffect(Unit) {
+            checkForUpdate().onSuccess { release = it }.onFailure {
+                if (it is Exception)
+                    it.printStackTrace()
+            }
+            updateChecked = true
+        }
+
+        release?.let {
+            UpdateUI(release = it, notify = trayState::sendNotification, hideTray = { release = null })
+        }
+
+        // Start of the main UI if automatic update are disabled
+        if (!Settings.autoUpdate || (Settings.autoUpdate && updateChecked && (release == null))) {
+            var changelogs: String? by remember { mutableStateOf(null) }
 
             LaunchedEffect(Unit) {
-                checkForUpdate().onSuccess { release = it }.onFailure {
-                    if (it is Exception)
-                        it.printStackTrace()
-                }
-                updateChecked = true
-            }
-
-            release?.let {
-                UpdateUI(release = it, notify = trayState::sendNotification, hideTray = { release = null })
-            }
-
-            // Start of the main UI if automatic update are disabled
-            if (!Settings.autoUpdate || (Settings.autoUpdate && updateChecked && (release == null))) {
-                var changelogs: String? by remember { mutableStateOf(null) }
-
-                LaunchedEffect(Unit) {
-                    launch(Dispatchers.IO) {
-                        if (Settings.wasJustUpdated) {
-                            changelogs = getChangelogs()
-                        }
+                launch(Dispatchers.IO) {
+                    if (Settings.wasJustUpdated) {
+                        changelogs = getChangelogs()
                     }
                 }
+            }
 
-                MainUI()
+            MainUI()
 
-                if (changelogs != null && Settings.wasJustUpdated) {
-                    ChangelogsDialog(changelogs!!)
-                    Settings.wasJustUpdated = false
-                }
+            if (changelogs != null && Settings.wasJustUpdated) {
+                ChangelogsDialog(changelogs!!)
+                Settings.wasJustUpdated = false
             }
         }
     }
