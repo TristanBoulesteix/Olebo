@@ -248,18 +248,20 @@ private fun LifeField(selectedElements: List<Element>) = Row(
     if (selectedElements.size == 1 && selectedElements.first().isCharacter()) {
         val element = selectedElements.first()
 
-        IntTextField(
-            value = element.currentHealth,
-            onValueChange = {
-                if (it != null) {
-                    transaction { element.currentHealth = it }
-                }
-            },
-            maxSize = 3,
-            modifier = Modifier.width(80.dp)
-        )
+        key(element) {
+            IntTextField(
+                value = element.currentHealth,
+                onValueChange = {
+                    if (it != null) {
+                        transaction { element.currentHealth = it }
+                    }
+                },
+                maxSize = 3,
+                modifier = Modifier.width(80.dp)
+            )
 
-        Text(" / ${element.maxHP} ${StringLocale[STR_HP]}", modifier = Modifier)
+            Text(" / ${element.maxHP} ${StringLocale[STR_HP]}", modifier = Modifier)
+        }
     } else {
         Text("0 / 0 ${StringLocale[STR_HP]}", modifier = Modifier.fillMaxWidth())
     }
@@ -273,18 +275,20 @@ private fun ManaField(selectedElements: List<Element>) = Row(
     if (selectedElements.size == 1 && selectedElements.first().isCharacter()) {
         val element = selectedElements.first()
 
-        IntTextField(
-            value = element.currentMana,
-            onValueChange = {
-                if (it != null) {
-                    transaction { element.currentMana = it }
-                }
-            },
-            maxSize = 3,
-            modifier = Modifier.width(80.dp)
-        )
+        key(element) {
+            IntTextField(
+                value = element.currentMana,
+                onValueChange = {
+                    if (it != null) {
+                        transaction { element.currentMana = it }
+                    }
+                },
+                maxSize = 3,
+                modifier = Modifier.width(80.dp)
+            )
 
-        Text(" / ${element.maxMana} ${StringLocale[STR_MP]}", modifier = Modifier)
+            Text(" / ${element.maxMana} ${StringLocale[STR_MP]}", modifier = Modifier)
+        }
     } else {
         Text("0 / 0 ${StringLocale[STR_MP]}", modifier = Modifier.fillMaxWidth())
     }
