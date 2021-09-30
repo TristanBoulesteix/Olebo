@@ -18,8 +18,7 @@ import jdr.exia.view.SettingsDialog
 import jdr.exia.view.WindowStateManager
 import jdr.exia.view.element.dialog.ConfirmMessage
 import jdr.exia.view.element.dialog.LoadingDialog
-import jdr.exia.view.tools.MessageType
-import jdr.exia.view.tools.showMessage
+import jdr.exia.view.element.dialog.PromptDialog
 import jdr.exia.view.tools.windowAncestor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -71,6 +70,8 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
 
     var confirmedImport by remember { mutableStateOf(false) }
 
+    var infoMessage: String? by remember { mutableStateOf(null) }
+
     if (confirmedImport) {
         ConfirmMessage(
             message = StringLocale[ST_WARNING_CONFIG_RESET],
@@ -83,10 +84,7 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
                     longProcessRunningMessage.executeBlockingProcess(StringLocale[STR_IMPORT_DATA]) {
                         loadOleboZipData(selectedFile).onSuccess {
                             if (it == null) {
-                                showMessage(
-                                    StringLocale[ST_CONFIGURATION_IMPORTED],
-                                    windowAncestor
-                                )
+                                infoMessage = StringLocale[ST_CONFIGURATION_IMPORTED]
 
                                 // close all composable windows and then restart the main function
                                 exitApplication()
@@ -96,23 +94,19 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
                                     main()
                                 }
                             } else {
-                                showMessage(
-                                    it,
-                                    windowAncestor,
-                                    MessageType.ERROR
-                                )
+                                infoMessage = it
                             }
                         }.onFailure {
-                            showMessage(
-                                "${StringLocale[ST_UNKNOWN_ERROR]} ${StringLocale[ST_FILE_MAY_BE_CORRUPTED]}",
-                                windowAncestor,
-                                MessageType.ERROR
-                            )
+                            infoMessage = "${StringLocale[ST_UNKNOWN_ERROR]} ${StringLocale[ST_FILE_MAY_BE_CORRUPTED]}"
                         }
                     }
                 }
             }
         }
+    }
+
+    infoMessage?.let {
+        PromptDialog("Info", message = it, onCloseRequest = { infoMessage = null })
     }
 
     Item(text = StringLocale[STR_IMPORT_DATA]) {

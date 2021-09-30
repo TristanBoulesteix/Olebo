@@ -12,6 +12,7 @@ import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.nio.file.Path
+import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
@@ -28,14 +29,22 @@ const val OLEBO_MANIFEST_NAME = "manifest.$OLEBO_MANIFEST_EXTENSION"
 val jarPath: String
     get() = File(::main::class.java.protectionDomain.codeSource.location.toURI()).absolutePath
 
+private val File.property
+    get() = Properties().apply {
+        inputStream().use(this::load)
+    }
+
 suspend fun zipOleboDirectory(fileDestination: File) = withContext(Dispatchers.IO) {
     runCatching {
         val oleboDirectory = File(OLEBO_DIRECTORY)
         val outputTempZip = File.createTempFile("Olebo", ".olebo")
 
         ZipOutputStream(BufferedOutputStream(FileOutputStream(outputTempZip))).use { zos ->
-            File.createTempFile("o_manifest_", null).apply {
-                this.writeText(OLEBO_VERSION_CODE.toString())
+            File.createTempFile("o_manifest_", null).apply file@{
+                property.apply {
+                    setProperty("version", OLEBO_VERSION_CODE.toString())
+                    this@file.outputStream().use { store(it, "") }
+                }
                 zos.putNextEntry(ZipEntry(OLEBO_MANIFEST_NAME))
                 this.inputStream().use { it.copyTo(zos) }
             }
@@ -71,7 +80,10 @@ suspend fun loadOleboZipData(zipFile: File) = withContext(Dispatchers.IO) {
 
                 this.find { it.name == OLEBO_MANIFEST_NAME }?.let { entry ->
                     zip.getInputStream(entry).use { stream ->
-                        if (String(stream.readBytes()).toIntOrNull()?.let { it > OLEBO_VERSION_CODE } != false)
+                        val manifestVersion =
+                            Properties().apply { load(stream) }.getProperty("version", 0.toString()).toIntOrNull() ?: 0
+
+                        if (manifestVersion >= OLEBO_VERSION_CODE)
                             return@runCatching StringLocale[ST_WARNING_PREVIOUS_VERSION_FILE]
                     }
                 }
