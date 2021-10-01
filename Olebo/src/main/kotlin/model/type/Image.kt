@@ -8,9 +8,8 @@ import jdr.exia.system.OLEBO_DIRECTORY
 import java.io.File
 import java.nio.file.Path
 import java.nio.file.Paths
-import kotlin.io.path.Path
-import kotlin.io.path.div
-import kotlin.io.path.exists
+import java.util.*
+import kotlin.io.path.*
 
 private val imgPath = Path(OLEBO_DIRECTORY) / "img"
 
@@ -24,6 +23,7 @@ value class Image(val path: String) {
 
     fun isUnspecified() = path.isBlank()
 
+    @Stable
     fun toBitmap() = imageFromPath(path)
 
     val checkedImgPath
@@ -35,27 +35,25 @@ fun imageFromIconRes(name: String, format: String = "png") = useResource("icons/
 
 @Stable
 fun imageFromPath(path: String) =
-    path.toImgPath().checkedImgPath()?.toFile()?.inputStream()?.buffered()?.use(::loadImageBitmap)
+    path.toImgPath().checkedImgPath()?.inputStream()?.buffered()?.use(::loadImageBitmap)
         ?: imageFromIconRes("not_found", "jpg")
 
 fun Image.saveImgAndGetPath(suffix: String = "background"): String {
-    val img = File.createTempFile(
-        "img_",
-        "_$suffix.png",
-        imgPath.toFile().apply { this.mkdirs() }
-    )
+    imgPath.createDirectories()
+
+    val newImgPath = imgPath / "img_${UUID.randomUUID()}_$suffix.png"
 
     path.toImgPath().checkedImgPath()?.toFile().inputStreamOrNotFound().use { inputStream ->
-        img.outputStream().use {
+        newImgPath.outputStream().use {
             inputStream.copyTo(it)
         }
     }
 
-    return img.relativePath
+    return newImgPath.relativePath
 }
 
-private val File.relativePath: String
-    get() = imgPath.toUri().relativize(toURI()).path
+private val Path.relativePath: String
+    get() = imgPath.toUri().relativize(toUri()).path
 
 /**
  * @return The relative [Path] of the image or null if it not exists
