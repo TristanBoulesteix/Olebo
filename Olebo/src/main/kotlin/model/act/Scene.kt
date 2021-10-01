@@ -8,6 +8,8 @@ import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.dao.SceneTable
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
+import jdr.exia.model.type.checkedImgPath
+import jdr.exia.model.type.toImgPath
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,7 +20,7 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
-import java.io.File
+import kotlin.io.path.deleteIfExists
 
 class Scene(id: EntityID<Int>) : Entity<Int>(id) {
     companion object : EntityClass<Int, Scene>(SceneTable) {
@@ -81,7 +83,7 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
         }
 
     override fun delete() {
-        File(background).delete()
+        background.toImgPath().checkedImgPath()?.deleteIfExists()
 
         // Remove all instances linked to this scene. We can't do that with the SQL constraints CASCADE for legacy reasons
         elementIterable.forEach {

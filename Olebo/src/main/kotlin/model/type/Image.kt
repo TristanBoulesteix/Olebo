@@ -57,6 +57,9 @@ fun Image.saveImgAndGetPath(suffix: String = "background"): String {
 private val File.relativePath: String
     get() = imgPath.toUri().relativize(toURI()).path
 
+/**
+ * @return The relative [Path] of the image or null if it not exists
+ */
 fun Path.checkedImgPath(): Path? {
     val verifiedPath = if (isAbsolute) {
         if (exists()) this else {
