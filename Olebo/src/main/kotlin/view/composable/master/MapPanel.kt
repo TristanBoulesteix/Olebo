@@ -101,7 +101,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
         }
 
         addMouseMovedListener { me ->
-            viewModel.cursor = Offset(me.point).absolutePosition
+            viewModel.cursor = if (me.isAltDown) null else Offset(me.point).absolutePosition
         }
 
         addMouseExitedListener {
