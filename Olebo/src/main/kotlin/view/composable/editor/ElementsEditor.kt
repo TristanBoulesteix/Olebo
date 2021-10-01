@@ -268,7 +268,7 @@ private fun ColumnScope.CreateBlueprint(
 @Composable
 private fun ColumnScope.ScrollableContent(viewModel: ElementsEditorViewModel) {
     LazyScrollableColumn(modifier = contentModifier) {
-        items(viewModel.blueprints) { blueprint ->
+        items(viewModel.blueprints, key = { it.id }) { blueprint ->
             var editedData by (viewModel.currentEditBlueprint == blueprint).let { isEditing ->
                 remember(isEditing) { mutableStateOf(blueprint.takeIf { isEditing }?.toBlueprintData()) }
             }

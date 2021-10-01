@@ -101,7 +101,7 @@ private fun ActsView(
                 LazyScrollableColumn(
                     modifier = contentModifier
                 ) {
-                    items(items = acts) { act ->
+                    items(items = acts, key = { it.id }) { act ->
                         ContentListRow(
                             contentText = act.name,
                             contentTooltip = StringLocale[STR_OPEN_ACT_TOOLTIP],

@@ -168,7 +168,7 @@ private fun Scenes(
     setSceneInCreation: (SceneData?) -> Unit
 ) = when {
     viewModel.scenes.isNotEmpty() -> LazyScrollableColumn(modifier = contentModifier) {
-        items(items = viewModel.scenes) { scene ->
+        items(items = viewModel.scenes, key = { it }) { scene ->
             if (viewModel.currentEditScene == scene) {
                 val (tempCurrentEditedScene, setTempCurrentEditScene) = remember {
                     mutableStateOf(scene) withSetter {

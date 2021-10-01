@@ -66,7 +66,7 @@ private fun ItemList(
                 ContentListRow(contentText = StringLocale[STR_NO_ELEMENT], enabled = false)
             }
         } else {
-            items(items = list) {
+            items(items = list, key = { it.id }) {
                 val focusManager = LocalFocusManager.current
 
                 val name = transaction { it.realName }
