@@ -10,7 +10,9 @@ import jdr.exia.model.element.Element
 import jdr.exia.model.element.TypeElement
 import jdr.exia.model.element.isValid
 import jdr.exia.model.tools.*
+import jdr.exia.model.type.checkedImgPath
 import jdr.exia.model.type.saveImgAndGetPath
+import jdr.exia.model.type.toImgPath
 import jdr.exia.view.tools.showConfirmMessage
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -52,7 +54,9 @@ class ElementsEditorViewModel(private val type: TypeElement) {
                 }
 
                 if (sprite != data.img.path) {
-                    sprite = data.img.saveImgAndGetPath()
+                    val oldImg = sprite.toImgPath().checkedImgPath()?.toFile()
+                    sprite = data.img.saveImgAndGetPath("blueprint")
+                    oldImg?.delete()
                 }
 
                 if (isCharacter()) {
@@ -68,7 +72,11 @@ class ElementsEditorViewModel(private val type: TypeElement) {
 
     fun startBlueprintCreation() {
         blueprintInCreation =
-            Blueprint.BlueprintData.let { if (type == TypeElement.Object) it.defaultObject() else it.defaultCharacter(type) }
+            Blueprint.BlueprintData.let {
+                if (type == TypeElement.Object) it.defaultObject() else it.defaultCharacter(
+                    type
+                )
+            }
     }
 
     fun cancelBlueprintCreation() {

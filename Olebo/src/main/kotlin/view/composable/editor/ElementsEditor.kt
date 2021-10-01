@@ -23,7 +23,6 @@ import jdr.exia.model.tools.isCharacter
 import jdr.exia.model.type.Image
 import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.model.type.imageFromPath
-import jdr.exia.model.type.savePathToImage
 import jdr.exia.view.WindowStateManager
 import jdr.exia.view.element.*
 import jdr.exia.view.element.builder.ComposableContentBuilder
@@ -398,7 +397,7 @@ private inline fun (Blueprint.BlueprintData).updateImage(crossinline onUpdate: (
             val selectedFile = file.selectedFile
 
             if (selectedFile.exists()) {
-                onUpdate(copy(img = savePathToImage(selectedFile.absolutePath, "blueprint")))
+                onUpdate(copy(img = Image(selectedFile.absolutePath)))
             }
         }
     }

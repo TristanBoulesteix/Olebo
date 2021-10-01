@@ -2,6 +2,7 @@ package jdr.exia.model.act.data
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
+import jdr.exia.model.tools.isFileValid
 import jdr.exia.model.type.Image
 import org.jetbrains.exposed.dao.id.EntityID
 import kotlin.contracts.ExperimentalContracts
@@ -38,5 +39,5 @@ fun SceneData?.isValid(): Boolean {
     }
 
     return this != null && this.name.isNotBlank() && !this.img.isUnspecified() && this.img.checkedImgPath?.toFile()
-        .let { it != null && it.exists() && it.isFile }
+        .isFileValid()
 }

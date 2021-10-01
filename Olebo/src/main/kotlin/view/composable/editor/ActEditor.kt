@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.sp
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.data.SceneData
-import jdr.exia.model.act.data.isValidAndEqualTo
 import jdr.exia.model.tools.*
 import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.model.type.imageFromPath
@@ -170,7 +169,7 @@ private fun Scenes(
 ) = when {
     viewModel.scenes.isNotEmpty() -> LazyScrollableColumn(modifier = contentModifier) {
         items(items = viewModel.scenes) { scene ->
-            if (viewModel.currentEditScene isValidAndEqualTo scene) {
+            if (viewModel.currentEditScene == scene) {
                 val (tempCurrentEditedScene, setTempCurrentEditScene) = remember {
                     mutableStateOf(scene) withSetter {
                         setCurrentEditedScene(it)

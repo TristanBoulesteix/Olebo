@@ -38,27 +38,10 @@ fun imageFromPath(path: String) =
     path.toImgPath().checkedImgPath()?.toFile()?.inputStream()?.buffered()?.use(::loadImageBitmap)
         ?: imageFromIconRes("not_found", "jpg")
 
-/**
- * Save a picture to img folder
- *
- * @param path The path of the picture to save
- */
-fun savePathToImage(path: String, suffix: String = "background"): Image {
+fun Image.saveImgAndGetPath(suffix: String = "background"): String {
     val img = File.createTempFile(
         "img_",
         "_$suffix.png",
-        imgPath.toFile().apply { this.mkdirs() }
-    )
-
-    File(path).copyTo(img, true)
-
-    return Image(img.relativePath)
-}
-
-fun Image.saveImgAndGetPath(): String {
-    val img = File.createTempFile(
-        "img_",
-        "_background.png",
         imgPath.toFile().apply { this.mkdirs() }
     )
 

@@ -11,7 +11,6 @@ import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.act.data.SceneData
 import jdr.exia.model.act.data.isValid
-import jdr.exia.model.act.data.isValidAndEqualTo
 import jdr.exia.model.dao.SceneTable
 import jdr.exia.model.tools.SimpleResult
 import jdr.exia.model.tools.success
@@ -21,6 +20,7 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.emptySized
 import org.jetbrains.exposed.sql.mapLazy
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.io.File
 
 class ActEditorViewModel(private val act: Act?) {
     private var currentEditPosition by mutableStateOf(-1)
@@ -52,7 +52,11 @@ class ActEditorViewModel(private val act: Act?) {
     }
 
     fun onEditConfirmed(sceneData: SceneData): Boolean {
-        if (currentEditScene isValidAndEqualTo sceneData && !sceneWithNameExist(sceneData.name, sceneData.id)) {
+        if (currentEditScene?.id == sceneData.id && sceneData.isValid() && !sceneWithNameExist(
+                sceneData.name,
+                sceneData.id
+            )
+        ) {
             scenes = scenes.toMutableList().also {
                 it[currentEditPosition] = sceneData
             }
@@ -108,7 +112,12 @@ class ActEditorViewModel(private val act: Act?) {
             scenes.forEach {
                 if (it.id != null) with(Scene[it.id]) {
                     this.name = it.name
-                    this.background = it.img.saveImgAndGetPath()
+                    val oldImg = it.img.checkedImgPath?.toFile()
+                    val newImg = it.img.saveImgAndGetPath()
+                    if (oldImg != File(newImg)) {
+                        this.background = newImg
+                        oldImg?.delete()
+                    }
                 } else Scene.new {
                     this.name = it.name
                     this.background = it.img.saveImgAndGetPath()
