@@ -8,6 +8,8 @@ import jdr.exia.model.tools.CharacterException
 import jdr.exia.model.tools.isCharacter
 import jdr.exia.model.tools.isFileValid
 import jdr.exia.model.type.Image
+import jdr.exia.model.type.checkedImgPath
+import jdr.exia.model.type.toImgPath
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -15,6 +17,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
+import kotlin.io.path.deleteIfExists
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
@@ -53,7 +56,7 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
         get() = if (type == TypeElement.Basic) StringLocale[name] else name
 
     override fun delete() {
-        File(sprite).delete()
+        sprite.toImgPath().checkedImgPath()?.deleteIfExists()
         Element.find { InstanceTable.idBlueprint eq id.value }.forEach {
             it.delete()
         }
