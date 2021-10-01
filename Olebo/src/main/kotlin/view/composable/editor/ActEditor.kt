@@ -24,10 +24,7 @@ import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.data.SceneData
 import jdr.exia.model.act.data.isValidAndEqualTo
-import jdr.exia.model.tools.SimpleResult
-import jdr.exia.model.tools.failure
-import jdr.exia.model.tools.success
-import jdr.exia.model.tools.withSetter
+import jdr.exia.model.tools.*
 import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.model.type.imageFromPath
 import jdr.exia.view.WindowStateManager
@@ -283,7 +280,7 @@ private fun ImagePreviewContent(
     data: SceneData,
     onUpdateData: (SceneData) -> Unit
 ) {
-    val imgExist = !data.img.isUnspecified() && File(data.img.path).let { it.exists() && it.isFile }
+    val imgExist = !data.img.isUnspecified() && data.img.checkedImgPath?.toFile().isFileValid()
 
     Box(
         modifier = Modifier.padding(10.dp).sizeIn(maxWidth = 600.dp, maxHeight = 600.dp)
@@ -292,7 +289,8 @@ private fun ImagePreviewContent(
     ) {
         if (imgExist) {
             Image(
-                bitmap = imageFromPath(data.img.path),
+                bitmap = data.img.checkedImgPath?.toAbsolutePath()?.toString()?.let { imageFromPath(it) }
+                    ?: imageFromIconRes("not_found", "jpg"),
                 contentDescription = null,
                 Modifier.clip(roundedShape).addRoundedBorder().align(Alignment.Center)
             )

@@ -22,11 +22,12 @@ value class Image(val path: String) {
         val unspecified = Image("")
     }
 
-    fun isValid() = !isUnspecified() && File(path).let { it.exists() && it.isFile }
-
     fun isUnspecified() = path.isBlank()
 
     fun toBitmap() = imageFromPath(path)
+
+    val checkedImgPath
+        get() = path.toImgPath().checkedImgPath()
 }
 
 @Stable
@@ -61,7 +62,11 @@ fun Image.saveImgAndGetPath(): String {
         imgPath.toFile().apply { this.mkdirs() }
     )
 
-    File(path).copyTo(img, true)
+    path.toImgPath().checkedImgPath()?.toFile().inputStreamOrNotFound().use { inputStream ->
+        img.outputStream().use {
+            inputStream.copyTo(it)
+        }
+    }
 
     return img.relativePath
 }

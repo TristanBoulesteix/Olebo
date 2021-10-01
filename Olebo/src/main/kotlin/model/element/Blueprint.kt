@@ -6,6 +6,7 @@ import jdr.exia.model.dao.BlueprintTable
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.tools.CharacterException
 import jdr.exia.model.tools.isCharacter
+import jdr.exia.model.tools.isFileValid
 import jdr.exia.model.type.Image
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
@@ -110,6 +111,6 @@ fun Blueprint.BlueprintData?.isValid(): Boolean {
     }
 
     return this != null
-            && this.img.isValid()
-            && File(this.img.path).let { it.exists() && it.isFile }
+            && !this.img.isUnspecified()
+            && this.img.checkedImgPath?.toFile().isFileValid()
 }

@@ -60,11 +60,10 @@ class ElementsEditorViewModel(private val type: TypeElement) {
                     ::MP.assignIfDifferent(data.mana ?: MP)
                 }
             }
-
-            onEditDone()
-
             Result.success
-        } else Result.failure
+        } else {
+            Result.failure
+        }
     }
 
     fun startBlueprintCreation() {
