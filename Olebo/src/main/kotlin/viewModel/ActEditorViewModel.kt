@@ -15,12 +15,14 @@ import jdr.exia.model.dao.SceneTable
 import jdr.exia.model.tools.SimpleResult
 import jdr.exia.model.tools.success
 import jdr.exia.model.type.Image
+import jdr.exia.model.type.checkedImgPath
 import jdr.exia.model.type.saveImgAndGetPath
+import jdr.exia.model.type.toImgPath
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.emptySized
 import org.jetbrains.exposed.sql.mapLazy
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.io.File
+import kotlin.io.path.deleteIfExists
 
 class ActEditorViewModel(private val act: Act?) {
     private var currentEditPosition by mutableStateOf(-1)
@@ -112,12 +114,12 @@ class ActEditorViewModel(private val act: Act?) {
             scenes.forEach {
                 if (it.id != null) with(Scene[it.id]) {
                     this.name = it.name
-                    val oldImg = it.img.checkedImgPath?.toFile()
-                    val newImg = it.img.saveImgAndGetPath()
-                    if (oldImg != File(newImg)) {
-                        this.background = newImg
-                        oldImg?.delete()
+                    val oldImg = this.background.toImgPath().checkedImgPath()
+                    if (it.img.path != background) {
+                        this.background = it.img.saveImgAndGetPath()
+                        oldImg?.deleteIfExists()
                     }
+
                 } else Scene.new {
                     this.name = it.name
                     this.background = it.img.saveImgAndGetPath()
