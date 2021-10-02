@@ -33,4 +33,4 @@ jobs:
       - name: Create distributable
         run: './gradlew Olebo:createDistributable'
       - name: Create setup
-        run: 'iscc ./Olebo/Installer/OleboSetup.iss'
+        run: 'iscc Installer/OleboSetup.iss'
