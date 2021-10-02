@@ -5,9 +5,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ master ]
+    branches: [ Github-action ]
   pull_request:
-    branches: [ master ]
+    branches: [ Github-action ]
 
 jobs:
   build:
@@ -20,7 +20,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '11'
-        distribution: 'adopt'
+        distribution: 'open'
         cache: gradle
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
