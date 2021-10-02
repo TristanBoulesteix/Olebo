@@ -15,20 +15,24 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 16
-      uses: actions/setup-java@v2
-      with:
-        java-version: '16'
-        distribution: 'adopt'
-        cache: gradle
-    - name: Validate Gradle wrapper
-      uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Create distributable
-      run: './gradlew Olebo:createDistributable'
-    - name: Install Inno Setup
-      run: 'winget install -e --id JRSoftware.InnoSetup'
-    - name: Create setup
-      run: 'iscc Olebo\Installer\OleboSetup.iss'
+      - uses: actions/checkout@v2
+      - name: Set up JDK 16
+        uses: actions/setup-java@v2
+        with:
+          java-version: '16'
+          distribution: 'adopt'
+          cache: gradle
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Install Chocolatey
+        run: Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+      - name: Install Inno Setup
+        run: 'choco install innosetup'
+      - name: Create distributable
+        run: './gradlew Olebo:createDistributable'
+      - name: Install Inno Setup
+        run: 'winget install -e --id JRSoftware.InnoSetup'
+      - name: Create setup
+        run: 'iscc Olebo\Installer\OleboSetup.iss'
