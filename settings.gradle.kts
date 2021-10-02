@@ -7,6 +7,18 @@
  * in the user manual at https://docs.gradle.org/6.3/userguide/multi_project_builds.html
  */
 
+pluginManagement {
+    repositories {
+        google()
+        gradlePluginPortal()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    }
+}
+
 rootProject.name = "Olebo"
-include("OleboUpdater", "Olebo")
-include("CommonModule")
+include("Olebo")
+
+// Dependencies
+include("Localization", "Update")
+include("System")
+include("Website")

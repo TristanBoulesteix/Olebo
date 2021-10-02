@@ -1,0 +1,21 @@
+- New GUI: Olebo now use Jetpack Compose for Desktop. The UX and the design have been reworked
+
+- Optimisation and improvement of basic functionalities of Olebo
+
+- New update system: A new server is used to manage updates. It allows users to manage their preferences and improve the update process
+
+- New version system: Version number changes from this version to match conventions. The 1.0.0-BETA version becomes 0.1.0
+
+- New native installer to update and install Olebo. It allows the user to choose the installation directory
+
+- Native executable: Olebo is now an exe file. The installation will be easier for the user. The application will use the native ressources to automatically improve UI performances. In addition, the presence of a JRE is not required anymore
+
+- Fix critical bugs that could cause crashes of the application
+
+- Fix minor bugs
+
+- New keyboard shortcut : All elements can be selected at the same time (Ctrl+A)
+
+- Fix some typos mistakes
+
+- [Regression] Remove compatibility with macOS and GNU/Linux system
