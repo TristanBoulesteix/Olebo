@@ -8,11 +8,14 @@ on:
 
 jobs:
   build:
+
     runs-on: windows-latest
+
     steps:
-      - name: Install Chocolatey
-        run: 'Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))'
-      - name: Install Inno Setup
-        run: 'choco install innosetup'
-      - name: Test
-        run: 'iscc'
+    - uses: actions/checkout@v2
+    - name: Install Chocolatey
+      run: 'Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))'
+    - name: Install Inno Setup
+      run: 'choco install innosetup'
+    - name: Test
+      run: 'iscc'
