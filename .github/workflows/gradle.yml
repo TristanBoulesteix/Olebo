@@ -32,7 +32,5 @@ jobs:
         run: 'choco install innosetup'
       - name: Create distributable
         run: './gradlew Olebo:createDistributable'
-      - name: Install Inno Setup
-        run: 'winget install -e --id JRSoftware.InnoSetup'
       - name: Create setup
         run: 'iscc Olebo\Installer\OleboSetup.iss'
