@@ -31,15 +31,9 @@ jobs:
         run: './gradlew Olebo:createDistributable'
       - name: Create setup
         run: 'iscc Installer/OleboSetup.iss'
-      - name: Commit installer
-        run: |
-          git config --local user.email "tristan.boulesteix@gmail.com"
-          git config --local user.name "GitHub Action"
-          git add .
-          git commit -am "Add installer"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+      - uses: EndBug/add-and-commit@v7
         with:
-          branch: Github-action
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          force: true
+          add: Installer/OleboSetup.exe
+          author_name: Github action
+          author_email: tristan.boulesteix@gmail.com
+          
