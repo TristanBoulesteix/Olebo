@@ -1,0 +1,16 @@
+name: Create Olebo distributable
+
+on:
+  push:
+    branches: [ Github-action ]
+  pull_request:
+    branches: [ Github-action ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+      - name: Test
+        run: echo {GITHUB_WORKSPACE}
