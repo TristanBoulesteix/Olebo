@@ -34,3 +34,9 @@ jobs:
         run: './gradlew Olebo:createDistributable'
       - name: Create setup
         run: 'iscc Installer/OleboSetup.iss'
+      - name: Commit installer
+        run: |
+          git config --global user.name 'Github action'
+          git config --global user.email 'tristan.boulesteix@gmail.com'
+          git commit -am "Automated build + installer"
+          git push
