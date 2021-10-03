@@ -36,7 +36,7 @@ jobs:
         run: 'iscc Installer/OleboSetup.iss'
       - name: Commit installer
         run: |
-          git add .
+          git add {GITHUB_WORKSPACE}/Installer/Olebo.exe
           git config --global user.name 'Github action'
           git config --global user.email 'tristan.boulesteix@gmail.com'
           git commit -am "Automated build + installer"
