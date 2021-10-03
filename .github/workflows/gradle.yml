@@ -33,7 +33,13 @@ jobs:
         run: 'iscc Installer/OleboSetup.iss'
       - name: Commit installer
         run: |
-          git config --global user.name 'Github action'
-          git config --global user.email 'tristan.boulesteix@gmail.com'
-          git commit -am "Automated build + installer"
-          git push
+          git config --local user.email "tristan.boulesteix@gmail.com"
+          git config --local user.name "GitHub Action"
+          git add ./Installer/OleboSetup.exe
+          git commit -m "Add installer"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: Github-action
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
