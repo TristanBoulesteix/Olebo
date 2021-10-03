@@ -35,8 +35,7 @@ jobs:
         run: |
           git config --local user.email "tristan.boulesteix@gmail.com"
           git config --local user.name "GitHub Action"
-          git add ./Installer/OleboSetup.exe
-          git commit -m "Add installer"
+          git commit -ma "Add installer"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
