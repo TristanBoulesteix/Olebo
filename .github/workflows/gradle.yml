@@ -31,8 +31,11 @@ jobs:
         run: './gradlew Olebo:createDistributable'
       - name: Create setup
         run: 'iscc Installer\OleboSetup.iss'
+      - name: Test
+        run: New-Item -Path . -Name "test.txt" -ItemType "file" -Value "This is a text string."
       - uses: EndBug/add-and-commit@v7
         with:
+          add: .
           author_name: Github action
           author_email: tristan.boulesteix@gmail.com
 
