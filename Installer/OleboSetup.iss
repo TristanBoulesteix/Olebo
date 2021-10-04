@@ -20,7 +20,7 @@ ChangesAssociations=yes
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
-OutputDir=C:\Users\trist\Documents\Dev\Kotlin\Olebo\Installer
+OutputDir={#SourcePath}
 OutputBaseFilename=OleboSetup
 Compression=lzma
 SolidCompression=yes
