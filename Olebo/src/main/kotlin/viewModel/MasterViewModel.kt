@@ -59,8 +59,15 @@ class MasterViewModel(val act: Act) : CoroutineScope by CoroutineScope(Dispatche
 
     val hasSelectedElement by derivedStateOf { selectedElements.isNotEmpty() }
 
-    var blueprintsGrouped by mutableStateOf(loadBlueprints())
-        private set
+    private var blueprintsGrouped by mutableStateOf(loadBlueprints())
+
+    var searchString by mutableStateOf("")
+
+    val itemsFiltered by derivedStateOf {
+        blueprintsGrouped.mapValues { (_, list) ->
+            transaction { list.filter { it.realName.contains(searchString, ignoreCase = true) } }
+        }
+    }
 
     /**
      * These are all the [Blueprint] placed on  the current map

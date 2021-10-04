@@ -19,7 +19,7 @@ import jdr.exia.view.ui.typography
 
 @Composable
 fun ContentListRow(
-    content: @Composable () -> Unit,
+    content: @Composable BoxScope.() -> Unit,
     onClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -35,7 +35,7 @@ fun ContentListRow(
     if (onClick != null)
         boxModifier = boxModifier.clickableWithCursor(enabled = enabled, onClick = onClick)
 
-    Box(modifier = boxModifier, contentAlignment = Alignment.CenterStart) { content() }
+    Box(modifier = boxModifier, contentAlignment = Alignment.CenterStart, content = content)
 
     buttonBuilders.forEach {
         RowButton(

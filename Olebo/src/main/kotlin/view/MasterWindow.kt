@@ -1,9 +1,6 @@
 package jdr.exia.view
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeWindow
@@ -101,11 +98,7 @@ private fun PlayerDialog.PlayerDialogData.togglePlayerWindow(isVisible: Boolean)
 
 @Composable
 private fun MainContent(viewModel: MasterViewModel) = Row {
-    ItemList(
-        modifier = Modifier.weight(.20f),
-        createElement = viewModel::addNewElement,
-        items = viewModel.blueprintsGrouped
-    )
+    Items(viewModel)
 
     Column(modifier = Modifier.weight(.80f).fillMaxSize()) {
         //ComposeMapPanel(modifier = Modifier.weight(.85f).fillMaxSize(), viewModel = viewModel)
@@ -129,6 +122,20 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
             setPriority = viewModel::changePriority
         )
     }
+}
+
+/**
+ * The lateral list of items. It is on a separated function to prevent blink with Swing ComboBox on recomposition
+ */
+@Composable
+private fun RowScope.Items(viewModel: MasterViewModel) {
+    ItemList(
+        modifier = Modifier.Companion.weight(.20f),
+        createElement = viewModel::addNewElement,
+        items = viewModel.itemsFiltered,
+        searchString = viewModel.searchString,
+        onSearch = { viewModel.searchString = it }
+    )
 }
 
 /**
