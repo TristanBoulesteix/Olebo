@@ -36,5 +36,5 @@ jobs:
         with:
           add: .
           author_name: Github action
-          author_email: tristan.boulesteix@gmail.com
+          author_email: olebo.github@tb-lab.fr
 
