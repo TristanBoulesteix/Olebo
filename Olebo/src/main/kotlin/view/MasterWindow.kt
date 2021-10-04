@@ -142,7 +142,7 @@ private fun RowScope.Items(viewModel: MasterViewModel) {
  * Function to find current screen of the window.
  * The function [GraphicsConfiguration.getDevice] is not enough since it returns only the screen where the window was opened.
  *
- * @return The current GraphicsDevice of the Window or null if it was unable to get the current screen
+ * @return The current [GraphicsDevice] of the [Window] or null if it was unable to get the current screen
  */
 private fun ComposeWindow.getCurrentScreen(): GraphicsDevice? {
     val windowBounds: Rectangle = bounds
