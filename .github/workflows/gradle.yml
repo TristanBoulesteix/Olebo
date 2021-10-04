@@ -2,9 +2,9 @@ name: Create Olebo distributable
 
 on:
   push:
-    branches: [ Github-action ]
+    branches: [ master ]
   pull_request:
-    branches: [ Github-action ]
+    branches: [ master ]
 
 jobs:
   build:
@@ -31,7 +31,8 @@ jobs:
         run: './gradlew Olebo:createDistributable'
       - name: Create setup
         run: 'iscc Installer\OleboSetup.iss'
-      - uses: EndBug/add-and-commit@v7
+      - name: Commit and push installer
+        uses: EndBug/add-and-commit@v7
         with:
           add: .
           author_name: Github action
