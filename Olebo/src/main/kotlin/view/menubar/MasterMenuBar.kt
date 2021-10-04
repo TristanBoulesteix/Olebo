@@ -59,7 +59,8 @@ private fun MenuBarScope.ToolsMenu(viewModel: MasterViewModel) = Menu(text = Str
     CheckboxItem(
         text = StringLocale[STR_ENABLE_CURSOR],
         checked = cursorEnabled,
-        onCheckedChange = { cursorEnabled = it }
+        onCheckedChange = { cursorEnabled = it },
+        shortcut = KeyShortcut(Key.C, shift = true)
     )
 
     Separator()
