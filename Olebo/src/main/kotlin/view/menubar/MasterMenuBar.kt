@@ -30,7 +30,7 @@ fun FrameWindowScope.MasterMenuBar(
     WindowMenu(
         closeAct = closeAct,
         playerFrameOpenedByDefault = playerFrameOpenedByDefault,
-        setPlayerFrameOpenedByDefault = setPlayerFrameOpenedByDefault,
+        setPlayerFrameVisible = setPlayerFrameOpenedByDefault,
         currentScene = viewModel.currentScene,
         scenes = transaction { viewModel.act.scenes.toList() },
         onSwitchScene = viewModel::switchScene
@@ -89,7 +89,7 @@ private fun MenuBarScope.ToolsMenu(viewModel: MasterViewModel) = Menu(text = Str
 private fun MenuBarScope.WindowMenu(
     closeAct: () -> Unit,
     playerFrameOpenedByDefault: Boolean,
-    setPlayerFrameOpenedByDefault: (Boolean) -> Unit,
+    setPlayerFrameVisible: (Boolean) -> Unit,
     currentScene: Scene,
     scenes: List<Scene>,
     onSwitchScene: (Scene) -> Unit
@@ -102,7 +102,7 @@ private fun MenuBarScope.WindowMenu(
         text = StringLocale[STR_TOGGLE_PLAYER_FRAME],
         shortcut = KeyShortcut(Key.O, ctrl = true),
         checked = playerFrameOpenedByDefault,
-        onCheckedChange = setPlayerFrameOpenedByDefault
+        onCheckedChange = setPlayerFrameVisible
     )
 
     Separator()
