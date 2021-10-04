@@ -29,7 +29,7 @@ import jdr.exia.model.type.imageFromPath
 import jdr.exia.view.WindowStateManager
 import jdr.exia.view.element.*
 import jdr.exia.view.element.builder.ImageButtonBuilder
-import jdr.exia.view.element.dialog.PromptDialog
+import jdr.exia.view.element.dialog.MessageDialog
 import jdr.exia.view.tools.*
 import jdr.exia.view.ui.blue
 import jdr.exia.view.ui.roundedShape
@@ -127,7 +127,7 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
     }
 
     if (viewModel.errorMessage.isNotBlank()) {
-        PromptDialog(
+        MessageDialog(
             title = StringLocale[STR_WARNING],
             message = viewModel.errorMessage,
             onCloseRequest = { viewModel.errorMessage = "" },

@@ -15,7 +15,7 @@ import jdr.exia.localization.StringLocale
 
 @Composable
 fun LoadingDialog(reasonMessage: String = StringLocale[STR_LOADING]) =
-    PromptDialog(title = StringLocale[STR_LOADING], onCloseRequest = {}, height = 150.dp) {
+    MessageDialog(title = StringLocale[STR_LOADING], onCloseRequest = {}, height = 150.dp) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceAround,

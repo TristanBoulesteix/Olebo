@@ -25,7 +25,7 @@ import jdr.exia.view.tools.withHandCursor
 private fun defaultButton(action: () -> Unit) = listOf(ContentButtonBuilder("OK", onClick = action))
 
 @Composable
-fun PromptDialog(
+fun MessageDialog(
     title: String,
     message: String,
     onCloseRequest: () -> Unit,
@@ -33,7 +33,7 @@ fun PromptDialog(
     width: Dp = 400.dp,
     height: Dp = 200.dp,
     visible: Boolean = true,
-) = PromptDialog(
+) = MessageDialog(
     visible = visible,
     title = title,
     onCloseRequest = onCloseRequest,
@@ -47,7 +47,7 @@ fun PromptDialog(
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun PromptDialog(
+fun MessageDialog(
     title: String,
     onCloseRequest: () -> Unit,
     buttonBuilders: List<ContentBuilder> = emptyList(),

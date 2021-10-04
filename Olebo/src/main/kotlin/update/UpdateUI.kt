@@ -15,7 +15,7 @@ import jdr.exia.MainUI
 import jdr.exia.localization.*
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.view.element.builder.ContentButtonBuilder
-import jdr.exia.view.element.dialog.PromptDialog
+import jdr.exia.view.element.dialog.MessageDialog
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.delay
 
@@ -56,7 +56,7 @@ private fun ApplicationScope.PromptUpdate(versionCode: Int, onUpdateRefused: () 
     var askForUpdateDialogIsVisible by remember { mutableStateOf(true) }
     var updateIsStarted by remember { mutableStateOf(false) }
 
-    PromptDialog(
+    MessageDialog(
         visible = askForUpdateDialogIsVisible,
         onCloseRequest = { askForUpdateDialogIsVisible = false },
         title = StringLocale[STR_UPDATE_AVAILABLE],

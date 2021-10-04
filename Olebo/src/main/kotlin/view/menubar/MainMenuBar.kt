@@ -4,6 +4,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
 import androidx.compose.ui.window.MenuBar
 import androidx.compose.ui.window.MenuBarScope
@@ -18,7 +19,7 @@ import jdr.exia.view.SettingsDialog
 import jdr.exia.view.WindowStateManager
 import jdr.exia.view.element.dialog.ConfirmMessage
 import jdr.exia.view.element.dialog.LoadingDialog
-import jdr.exia.view.element.dialog.PromptDialog
+import jdr.exia.view.element.dialog.MessageDialog
 import jdr.exia.view.tools.windowAncestor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -106,7 +107,7 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
     }
 
     infoMessage?.let {
-        PromptDialog("Info", message = it, onCloseRequest = { infoMessage = null })
+        MessageDialog("Info", message = it, onCloseRequest = { infoMessage = null })
     }
 
     Item(text = StringLocale[STR_IMPORT_DATA]) {
@@ -157,12 +158,18 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
         }*/
     }
 
+    var aboutDialogVisible by remember { mutableStateOf(false) }
+
     Item(text = StringLocale[STR_ABOUT], shortcut = KeyShortcut(Key.F1)) {
-        JOptionPane.showMessageDialog(
-            null,
-            "Olebo - ${StringLocale[STR_APP_VERSION]} $OLEBO_VERSION_NAME - ${StringLocale[STR_VERSION_CODE]} $OLEBO_VERSION_CODE",
-            StringLocale[STR_ABOUT],
-            JOptionPane.INFORMATION_MESSAGE
+        aboutDialogVisible = true
+    }
+
+    if (aboutDialogVisible) {
+        MessageDialog(
+            title = StringLocale[STR_ABOUT],
+            message = "Olebo - ${StringLocale[STR_APP_VERSION]} $OLEBO_VERSION_NAME - ${StringLocale[STR_VERSION_CODE]} $OLEBO_VERSION_CODE",
+            onCloseRequest = { aboutDialogVisible = false },
+            height = 150.dp
         )
     }
 }

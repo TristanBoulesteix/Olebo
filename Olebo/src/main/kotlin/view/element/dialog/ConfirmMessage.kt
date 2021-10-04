@@ -12,7 +12,7 @@ import jdr.exia.view.element.form.LabeledCheckbox
 fun ConfirmMessage(message: String, title: String, onCloseRequest: () -> Unit, onConfirm: () -> Unit) {
     var checked by remember { mutableStateOf(false) }
 
-    PromptDialog(
+    MessageDialog(
         title = title,
         buttonBuilders = listOf(
             ContentButtonBuilder(

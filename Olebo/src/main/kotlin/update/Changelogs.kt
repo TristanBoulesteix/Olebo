@@ -19,7 +19,7 @@ import jdr.exia.OLEBO_VERSION_NAME
 import jdr.exia.localization.StringLocale
 import jdr.exia.main
 import jdr.exia.view.element.builder.ContentButtonBuilder
-import jdr.exia.view.element.dialog.PromptDialog
+import jdr.exia.view.element.dialog.MessageDialog
 import java.io.InputStreamReader
 
 fun getChangelogs(): String? =
@@ -30,7 +30,7 @@ fun getChangelogs(): String? =
 fun ChangelogsDialog(changelogs: String) {
     var changelogsVisible by remember { mutableStateOf(true) }
 
-    PromptDialog(
+    MessageDialog(
         visible = changelogsVisible,
         title = "Changelogs",
         buttonBuilders = listOf(ContentButtonBuilder(content = "Ok", onClick = { changelogsVisible = false })),
