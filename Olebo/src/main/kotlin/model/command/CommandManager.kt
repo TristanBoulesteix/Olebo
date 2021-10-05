@@ -9,19 +9,15 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 class CommandManager private constructor() : MutableList<Command> by mutableStateListOf() {
     companion object {
-        private var managerInstance by mutableStateOf<Pair<Int, CommandManager>?>(null)
-
-        operator fun invoke(sceneId: Int): CommandManager {
-            managerInstance?.let { (id, manager) ->
-                if (id == sceneId)
-                    return manager
-            }
-
-            return CommandManager().also { managerInstance = sceneId to it }
-        }
+        private var managerInstance by mutableStateOf<Pair<EntityID<Int>, CommandManager>?>(null)
 
         operator fun invoke(sceneId: EntityID<Int>) = transaction {
-            CommandManager(sceneId.value)
+            managerInstance?.let { (id, manager) ->
+                if (id == sceneId)
+                    return@transaction manager
+            }
+
+            CommandManager().also { managerInstance = sceneId to it }
         }
 
         fun clear() {
