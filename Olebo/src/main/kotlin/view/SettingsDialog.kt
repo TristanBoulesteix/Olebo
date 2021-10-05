@@ -32,7 +32,7 @@ import javax.swing.JColorChooser
 
 @Composable
 fun SettingsDialog(onCloseRequest: () -> Unit) {
-    val state = rememberDialogState(size = WindowSize(550.dp, 460.dp))
+    val state = rememberDialogState(size = WindowSize(580.dp, 600.dp))
 
     val originalSettings = remember { dataFromSettings }
 
