@@ -12,9 +12,9 @@ class CommandManager private constructor() : MutableList<Command> by mutableStat
         private var managerInstance by mutableStateOf<Pair<Int, CommandManager>?>(null)
 
         operator fun invoke(sceneId: Int): CommandManager {
-            managerInstance?.let {
-                if (it.first == sceneId)
-                    return it.second
+            managerInstance?.let { (id, manager) ->
+                if (id == sceneId)
+                    return manager
             }
 
             return CommandManager().also { managerInstance = sceneId to it }
