@@ -162,7 +162,10 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
     Item(text = StringLocale[STR_ABOUT], shortcut = KeyShortcut(Key.F1)) {
         JOptionPane.showMessageDialog(
             null,
-            "Olebo - ${StringLocale[STR_APP_VERSION]} $OLEBO_VERSION_NAME - ${StringLocale[STR_VERSION_CODE]} $OLEBO_VERSION_CODE",
+            """
+                Olebo - ${StringLocale[STR_APP_VERSION]} $OLEBO_VERSION_NAME - ${StringLocale[STR_VERSION_CODE]} $OLEBO_VERSION_CODE
+                ${StringLocale[ST_DEVELOPED_BY]}
+            """.trimIndent(),
             StringLocale[STR_ABOUT],
             JOptionPane.INFORMATION_MESSAGE
         )
