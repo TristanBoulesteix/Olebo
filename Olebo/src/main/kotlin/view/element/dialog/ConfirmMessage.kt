@@ -27,7 +27,7 @@ fun ConfirmMessage(message: String, title: String, onCloseRequest: () -> Unit, o
         ),
         onCloseRequest = onCloseRequest,
         width = 500.dp,
-        height = 160.dp
+        height = 190.dp
     ) {
         LabeledCheckbox(checked = checked, onCheckedChange = { checked = it }, label = message)
     }
