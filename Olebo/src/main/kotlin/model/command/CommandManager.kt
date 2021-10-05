@@ -5,20 +5,20 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import org.jetbrains.exposed.dao.id.EntityID
-import org.jetbrains.exposed.sql.transactions.transaction
 
 class CommandManager private constructor() : MutableList<Command> by mutableStateListOf() {
     companion object {
         private var managerInstance by mutableStateOf<Pair<EntityID<Int>, CommandManager>?>(null)
 
-        operator fun invoke(sceneId: EntityID<Int>) = transaction {
+        operator fun invoke(sceneId: EntityID<Int>): CommandManager {
             managerInstance?.let { (id, manager) ->
                 if (id == sceneId)
-                    return@transaction manager
+                    return manager
             }
 
-            CommandManager().also { managerInstance = sceneId to it }
+            return CommandManager().also { managerInstance = sceneId to it }
         }
+
 
         fun clear() {
             managerInstance = null
