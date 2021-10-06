@@ -1,25 +1,25 @@
-- Refonte graphique : Olebo utilise désormais Compose for Desktop. Le visuel et l'ergonomie de l'application ont été revus
+- La version 0.1.0 (anciennement 1.9.0-BETA) apporte une refonte de l'interface plus rapide et plus ergonomique
 
-- Optimisation et amélioration des fonctionnalités de base de Olebo
+- Nouveaux raccourcis clavier :
+    * CTRL + A → Sélectionne tous les éléments sur une scène
+    * CTRL + click → Ajoute un élément à la sélection
+    * Shift + C → Active / Désactive le curseur joueur
+    * Maintenir la touche Alt permet de désactiver le curseur joueur temporairement
 
-- Nouveau système de mise à jour : Un nouveau serveur est utilisé pour les mises à jour permettant d'affiner la gestion des préférences utilisateurs et d'optimiser les mises à jour.
+- Le processus d'installation est dorénavant plus performant et utilise un programme d'installation natif
 
-- Nouveau système de versions : Les numéros de versions changent à partir de cette version pour mieux correspondre aux conventions. La version 1.9.0-BETA devient donc 0.1.0
+- Application native : Plus besoin d'installer Java (JRE) ou de conserver Olebo dans un dossier sans droits administrateurs. Le programme d'installation s'en chargera
 
-- Nouvel installeur qui permet de mettre et à jour et d'installer Olebo plus facilement. Celui-ci permet même à l'utilisateur de personnaliser l'emplacement d'installation de l'application
+- Amélioration du processus de mises à jour
 
-- Executable natif : Olebo prend maintenant la forme d'un fichier exe. Cela permet de faciliter l'installation et les mises à jour du programme. De plus, Olebo peut dorénavant utiliser les ressources du processeur graphique pour automatiquement optimiser et améliorer ses performances. De plus, la présence d'un JRE n'est plus nécessaire.
+- Optimisations diverses de la gestion de la mémoire
 
-- Correction de bugs critiques faisant crasher l'application
+- Correction de nombreux bugs majeurs causant le crash de l'application, la corruption des sauvegardes et cassant la rétrocompatibilité
+
+- Correction de bugs ne supprimant pas les images qui n'étaient plus utilisées par Olebo. Ce correctif n'affectera pas les images déjà affectées par ce problème
 
 - Correction de bugs mineurs
 
-- Nouveau raccourcis clavier : Possibilité de sélectionner tous les éléments (Ctrl+A)
+- Corrections grammaticales en anglais et en français
 
-- Amélioration de la structure de la base de données
-
-- Amélioration de la gestion de la mémoire : L'application gère mieux ses ressources
-
-- Correction orthographiques mineures
-
-- [Régression] Suppression de la compatibilité avec les systèmes macOs et GNU/Linux
+- [Régression] Suppression temporaire de la compatibilité avec les systèmes macOs et GNU/Linux

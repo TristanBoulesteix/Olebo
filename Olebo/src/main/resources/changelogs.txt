@@ -1,21 +1,25 @@
-- New GUI: Olebo now use Jetpack Compose for Desktop. The UX and the design have been reworked
+- The 0.1.0 version (formerly 1.9.0-BETA) brings a faster and more ergonomic interface redesign
 
-- Optimisation and improvement of basic functionalities of Olebo
+- New keyboard shortcuts:
+    * CTRL + A → Select all elements in a scene
+    * CTRL + click → Add an element to the selection
+    * Shift + C → Enable / Disable the cursor on the player window
+    * Holding the Alt key disable temporarily the cursor on the player window
 
-- New update system: A new server is used to manage updates. It allows users to manage their preferences and improve the update process
+- The installation process is much more performant and use a native installer
 
-- New version system: Version number changes from this version to match conventions. The 1.0.0-BETA version becomes 0.1.0
+- Native app: No needs to install Java (JRE) or to put Olebo in a directory without admin rights. The installer will handle it
 
-- New native installer to update and install Olebo. It allows the user to choose the installation directory
+- Update process improvement
 
-- Native executable: Olebo is now an exe file. The installation will be easier for the user. The application will use the native ressources to automatically improve UI performances. In addition, the presence of a JRE is not required anymore
+- Various memory management optimisations
 
-- Fix critical bugs that could cause crashes of the application
+- Fixed many major bugs causing application crash, data corruption or break backward compatibility
 
-- Fix minor bugs
+- Fixed bugs not removing assets that were no longer used by Olebo. This fix will not affect images already affected by this issue
 
-- New keyboard shortcut : All elements can be selected at the same time (Ctrl+A)
+- Minor bugs fixes
 
-- Fix some typos mistakes
+- Grammar mistakes fixed in French and English
 
-- [Regression] Remove compatibility with macOS and GNU/Linux system
+- [Regression] Compatibility with macOS and GNU/Linux is temporarily removed
