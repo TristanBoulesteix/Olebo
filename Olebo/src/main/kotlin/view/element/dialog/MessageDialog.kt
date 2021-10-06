@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -11,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.WindowSize
@@ -28,6 +30,7 @@ private fun defaultButton(action: () -> Unit) = listOf(ContentButtonBuilder("OK"
 fun MessageDialog(
     title: String,
     message: String,
+    messageLineHeight: TextUnit = TextUnit.Unspecified,
     onCloseRequest: () -> Unit,
     buttonBuilders: List<ContentBuilder> = defaultButton(onCloseRequest),
     width: Dp = 400.dp,
@@ -41,7 +44,7 @@ fun MessageDialog(
     width = width,
     height = height,
     content = {
-        Text(text = message, modifier = Modifier.fillMaxWidth())
+        Text(text = message, modifier = Modifier.fillMaxWidth(), lineHeight = messageLineHeight)
     },
 )
 
@@ -70,6 +73,14 @@ fun MessageDialog(
                 false
             }) {
             this.window.isModal = true
+
+            DisposableEffect(Unit) {
+                DialogManager.dialogVisibleNum += 1
+
+                onDispose {
+                    DialogManager.dialogVisibleNum -= 1
+                }
+            }
 
             Column(
                 modifier = Modifier.fillMaxSize(),

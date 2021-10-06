@@ -4,6 +4,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.FrameWindowScope
 import androidx.compose.ui.window.MenuBar
 import androidx.compose.ui.window.MenuBarScope
@@ -171,29 +173,25 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
         }
     }
 
-    //var aboutDialogVisible by remember { mutableStateOf(false) }
+    var aboutDialogVisible by remember { mutableStateOf(false) }
 
     Item(text = StringLocale[STR_ABOUT], shortcut = KeyShortcut(Key.F1)) {
-        JOptionPane.showMessageDialog(
-            null,
-            """
+        aboutDialogVisible = true
+    }
+
+    if (aboutDialogVisible) {
+        MessageDialog(
+            title = StringLocale[STR_ABOUT],
+            message = """
                 Olebo - ${StringLocale[STR_APP_VERSION]} $OLEBO_VERSION_NAME - ${StringLocale[STR_VERSION_CODE]} $OLEBO_VERSION_CODE
                 ${StringLocale[ST_DEVELOPED_BY]}
             """.trimIndent(),
-            StringLocale[STR_ABOUT],
-            JOptionPane.INFORMATION_MESSAGE
-        )
-        //aboutDialogVisible = true
-    }
-
-    /*if (aboutDialogVisible) {
-        MessageDialog(
-            title = StringLocale[STR_ABOUT],
-            message = "Olebo - ${StringLocale[STR_APP_VERSION]} $OLEBO_VERSION_NAME - ${StringLocale[STR_VERSION_CODE]} $OLEBO_VERSION_CODE",
             onCloseRequest = { aboutDialogVisible = false },
-            height = 150.dp
+            width = 500.dp,
+            height = 215.dp,
+            messageLineHeight = 45.sp
         )
-    }*/
+    }
 }
 
 @OptIn(DelicateCoroutinesApi::class)

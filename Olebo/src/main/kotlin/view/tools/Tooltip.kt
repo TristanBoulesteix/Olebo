@@ -16,13 +16,14 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import jdr.exia.view.element.dialog.DialogManager
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BoxWithTooltipIfNotNull(
     tooltip: String? = null,
     content: @Composable () -> Unit
-) = if (tooltip != null) TooltipArea(
+) = if (tooltip != null && !DialogManager.areDialogVisible) TooltipArea(
     tooltip = {
         Surface(
             modifier = Modifier.shadow(4.dp),
