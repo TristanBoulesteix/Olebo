@@ -14,6 +14,8 @@ import jdr.exia.main
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.loadOleboZipData
 import jdr.exia.model.dao.zipOleboDirectory
+import jdr.exia.update.ChangelogsDialog
+import jdr.exia.update.getChangelogs
 import jdr.exia.view.SettingsDialog
 import jdr.exia.view.WindowStateManager
 import jdr.exia.view.element.dialog.ConfirmMessage
@@ -155,6 +157,18 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
                 } else saveImg()
             }
         }*/
+    }
+
+    var changelogs by remember { mutableStateOf("") }
+
+    Item(text = "Changelogs") {
+        changelogs = getChangelogs() ?: ""
+    }
+
+    if (changelogs.isNotBlank()) {
+        ChangelogsDialog(changelogs) {
+            changelogs = ""
+        }
     }
 
     //var aboutDialogVisible by remember { mutableStateOf(false) }

@@ -27,16 +27,21 @@ fun getChangelogs(): String? =
         ?.use(InputStreamReader::readText)
 
 @Composable
-fun ChangelogsDialog(changelogs: String) {
+fun ChangelogsDialog(changelogs: String, onClose: () -> Unit = {}) {
     var changelogsVisible by remember { mutableStateOf(true) }
+
+    LaunchedEffect(changelogsVisible) {
+        if(!changelogsVisible)
+            onClose()
+    }
 
     MessageDialog(
         visible = changelogsVisible,
         title = "Changelogs",
         buttonBuilders = listOf(ContentButtonBuilder(content = "Ok", onClick = { changelogsVisible = false })),
         onCloseRequest = { changelogsVisible = false },
-        height = 340.dp,
-        width = 500.dp
+        height = 400.dp,
+        width = 550.dp
     ) {
         Column {
             Text(
