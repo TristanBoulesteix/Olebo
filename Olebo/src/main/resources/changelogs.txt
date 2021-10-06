@@ -1,0 +1,25 @@
+- The 0.1.0 version (formerly 1.9.0-BETA) brings a faster and more ergonomic interface redesign
+
+- New keyboard shortcuts:
+    * CTRL + A → Select all elements in a scene
+    * CTRL + click → Add an element to the selection
+    * Shift + C → Enable / Disable the cursor on the player window
+    * Holding the Alt key disable temporarily the cursor on the player window
+
+- The installation process is much more performant and use a native installer
+
+- Native app: No needs to install Java (JRE) or to put Olebo in a directory without admin rights. The installer will handle it
+
+- Update process improvement
+
+- Various memory management optimisations
+
+- Fixed many major bugs causing application crash, data corruption or break backward compatibility
+
+- Fixed bugs not removing assets that were no longer used by Olebo. This fix will not affect images already affected by this issue
+
+- Minor bugs fixes
+
+- Grammar mistakes fixed in French and English
+
+- [Regression] Compatibility with macOS and GNU/Linux is temporarily removed
