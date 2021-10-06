@@ -95,10 +95,10 @@ object Settings {
             this@Settings[CHANGELOGS_VERSION] = if (value) OLEBO_VERSION_CODE else null
         }
 
-    operator fun get(setting: String) =
+    private operator fun get(setting: String) =
         SettingsTable.select { SettingsTable.name eq setting }.firstOrNull()?.get(SettingsTable.value)
 
-    operator fun set(setting: String, value: Any?) {
+    private operator fun set(setting: String, value: Any?) {
         SettingsTable.update(
             where = { SettingsTable.name eq setting },
             body = { it[SettingsTable.value] = value?.toString() ?: "" }
