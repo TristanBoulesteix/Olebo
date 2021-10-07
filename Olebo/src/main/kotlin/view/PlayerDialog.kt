@@ -46,15 +46,9 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: (
                         for (screen in screens) {
                             if (currentScreenOfMasterWindow != screen) {
                                 // Sets the frame's size as exactly the size of the screen.
-                                this.setSize(
-                                    screen.displayMode.width,
-                                    screen.displayMode.height
-                                )
-
                                 this.isUndecorated = true
                                 this.isResizable = false
 
-                                this.pack()
                                 screen.fullScreenWindow = this
 
                                 this.location = screen.defaultConfiguration.bounds.location.apply {
