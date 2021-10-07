@@ -52,12 +52,6 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: (
 
                                 screen.fullScreenWindow = this
 
-                                this.location = screen.defaultConfiguration.bounds.location.apply {
-                                    with(screen.defaultConfiguration.defaultTransform) {
-                                        x *= scaleX.toInt()
-                                        y *= scaleY.toInt()
-                                    }
-                                }
                                 break
                             }
                         }
