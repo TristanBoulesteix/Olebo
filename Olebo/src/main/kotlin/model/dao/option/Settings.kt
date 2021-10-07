@@ -14,6 +14,7 @@ import jdr.exia.model.dao.SettingsTable.DEFAULT_ELEMENT_VISIBILITY
 import jdr.exia.model.dao.SettingsTable.LABEL_COLOR
 import jdr.exia.model.dao.SettingsTable.LABEL_STATE
 import jdr.exia.model.dao.SettingsTable.PLAYER_FRAME_ENABLED
+import jdr.exia.model.dao.SettingsTable.SHOULD_OPEN_PLAYER_WINDOW_IN_FULL_SCREEN
 import jdr.exia.model.dao.SettingsTable.UPDATE_WARN
 import jdr.exia.model.tools.toBoolean
 import org.jetbrains.exposed.sql.select
@@ -93,6 +94,14 @@ object Settings {
         }
         set(value) = transaction(DAO.database) {
             this@Settings[CHANGELOGS_VERSION] = if (value) OLEBO_VERSION_CODE else null
+        }
+
+    var playerWindowShouldBeFullScreen
+        get() = transaction(DAO.database) {
+            this@Settings[SHOULD_OPEN_PLAYER_WINDOW_IN_FULL_SCREEN].toBoolean()
+        }
+        set(value) = transaction(DAO.database) {
+            this@Settings[SHOULD_OPEN_PLAYER_WINDOW_IN_FULL_SCREEN] = value
         }
 
     private operator fun get(setting: String) =

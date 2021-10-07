@@ -225,7 +225,8 @@ private data class SettingsData(
     val cursorColor: SerializableColor,
     val elementsAreVisibleByDefault: Boolean,
     val labelState: SerializableLabelState,
-    val labelColor: SerializableColor
+    val labelColor: SerializableColor,
+    val playerWindowFullScreen: Boolean
 )
 
 private fun SettingsData.save() {
@@ -236,6 +237,7 @@ private fun SettingsData.save() {
     Settings.defaultElementVisibility = elementsAreVisibleByDefault
     Settings.labelState = labelState
     Settings.labelColor = labelColor
+    Settings.playerWindowShouldBeFullScreen = playerWindowFullScreen
 }
 
 private val dataFromSettings
@@ -246,5 +248,6 @@ private val dataFromSettings
         Settings.cursorColor,
         Settings.defaultElementVisibility,
         Settings.labelState,
-        Settings.labelColor
+        Settings.labelColor,
+        Settings.playerWindowShouldBeFullScreen
     )
