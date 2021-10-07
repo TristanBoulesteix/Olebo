@@ -31,9 +31,10 @@ fun ApplicationScope.Window(
 
     Window(onCloseRequest = ::exitApplication, state = windowState, title = title, focusable = true) {
         LaunchedEffect(minimumSize) {
-            minimumSize?.let { (width, height) ->
-                window.minimumSize = Dimension(width.value.toInt(), height.value.toInt())
+            minimumSize?.let {
+                window.minimumSize = it.toDimension()
             }
+            window.preferredSize = size.toDimension()
         }
 
         DisposableEffect(Unit) {
@@ -47,3 +48,5 @@ fun ApplicationScope.Window(
         content()
     }
 }
+
+private fun WindowSize.toDimension() = Dimension(width.value.toInt(), height.value.toInt())
