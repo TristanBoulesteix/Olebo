@@ -27,6 +27,7 @@ import jdr.exia.viewModel.MasterViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.awt.Frame.MAXIMIZED_BOTH
 import java.awt.GraphicsConfiguration
 import java.awt.GraphicsDevice
 import java.awt.Rectangle
@@ -41,6 +42,10 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
         minimumSize = MASTER_WINDOW_SIZE,
         placement = WindowPlacement.Maximized
     ) {
+        LaunchedEffect(Unit) {
+            window.extendedState = MAXIMIZED_BOTH
+        }
+
         var playerFrameVisible by remember { mutableStateOf(Settings.playerFrameOpenedByDefault) }
 
         val playerDialogData = remember {

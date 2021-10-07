@@ -92,6 +92,7 @@ object SettingsTable : IntIdTable(), Initializable {
     const val LABEL_STATE = "label_enabled"
     const val LABEL_COLOR = "label_color"
     const val CHANGELOGS_VERSION = "changelogs_version"
+    const val SHOULD_OPEN_PLAYER_WINDOW_IN_FULL_SCREEN = "player_window_in_full_screen"
 
     val name = varchar("name", 255)
     val value = varchar("value", 255).default("")
@@ -109,6 +110,7 @@ object SettingsTable : IntIdTable(), Initializable {
         insertOptionIfNotExists(9, LABEL_STATE, SerializableLabelState.ONLY_FOR_MASTER.encode(), insertOnlyIfNotExists)
         insertOptionIfNotExists(10, LABEL_COLOR, SerializableColor.BLACK.encode(), insertOnlyIfNotExists)
         insertOptionIfNotExists(11, CHANGELOGS_VERSION, "", insertOnlyIfNotExists)
+        insertOptionIfNotExists(12, SHOULD_OPEN_PLAYER_WINDOW_IN_FULL_SCREEN, false, insertOnlyIfNotExists)
     }
 
     private fun insertOptionIfNotExists(id: Int, name: String, value: Any, insertOnlyIfNotExists: Boolean) {

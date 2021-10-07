@@ -2,6 +2,7 @@ package jdr.exia.view
 
 import jdr.exia.localization.STR_PLAYER_TITLE_FRAME
 import jdr.exia.localization.StringLocale
+import jdr.exia.model.dao.option.Settings
 import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.tools.event.addKeyPressedListener
 import jdr.exia.view.tools.screens
@@ -33,7 +34,7 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: (
                     val currentScreenOfMasterWindow = data.getMasterWindowScreen()
 
                     // If there is only 1 screen, we display both frames there
-                    if (screens.size == 1 || currentScreenOfMasterWindow == null) {
+                    if (!Settings.playerWindowShouldBeFullScreen || screens.size == 1 || currentScreenOfMasterWindow == null) {
                         this.isUndecorated = false
                         this.isResizable = true
                         this.preferredSize = MASTER_WINDOW_SIZE.let { (height, width) ->
@@ -46,23 +47,11 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: (
                         for (screen in screens) {
                             if (currentScreenOfMasterWindow != screen) {
                                 // Sets the frame's size as exactly the size of the screen.
-                                this.setSize(
-                                    screen.displayMode.width,
-                                    screen.displayMode.height
-                                )
-
                                 this.isUndecorated = true
                                 this.isResizable = false
 
-                                this.pack()
                                 screen.fullScreenWindow = this
 
-                                this.location = screen.defaultConfiguration.bounds.location.apply {
-                                    with(screen.defaultConfiguration.defaultTransform) {
-                                        x *= scaleX.toInt()
-                                        y *= scaleY.toInt()
-                                    }
-                                }
                                 break
                             }
                         }

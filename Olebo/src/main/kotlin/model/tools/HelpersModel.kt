@@ -10,13 +10,6 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
 /**
- * Convert a String to the corresponding boolean
- *
- * @return true if the value is "true"
- */
-fun String?.toBoolean(): Boolean = this?.lowercase() == "true"
-
-/**
  * Check if element is a PNJ or a PJ
  *
  * @return true if it's a character
