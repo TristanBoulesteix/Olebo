@@ -16,7 +16,6 @@ import jdr.exia.model.dao.SettingsTable.LABEL_STATE
 import jdr.exia.model.dao.SettingsTable.PLAYER_FRAME_ENABLED
 import jdr.exia.model.dao.SettingsTable.SHOULD_OPEN_PLAYER_WINDOW_IN_FULL_SCREEN
 import jdr.exia.model.dao.SettingsTable.UPDATE_WARN
-import jdr.exia.model.tools.toBoolean
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
@@ -113,4 +112,11 @@ object Settings {
             body = { it[SettingsTable.value] = value?.toString() ?: "" }
         )
     }
+
+    /**
+     * Convert a String to the corresponding boolean
+     *
+     * @return true if the value is "true"
+     */
+    private fun String?.toBoolean(): Boolean = this?.lowercase() == "true"
 }

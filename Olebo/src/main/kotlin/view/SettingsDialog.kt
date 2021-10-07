@@ -32,7 +32,7 @@ import javax.swing.JColorChooser
 
 @Composable
 fun SettingsDialog(onCloseRequest: () -> Unit) {
-    val state = rememberDialogState(size = WindowSize(580.dp, 600.dp))
+    val state = rememberDialogState(size = WindowSize(580.dp, 635.dp))
 
     val originalSettings = remember { dataFromSettings }
 
@@ -89,6 +89,12 @@ private fun LookAndFeelSettings(settingsData: SettingsData, updateSettings: (Set
             checked = settingsData.autoOpenPlayerDialog,
             onCheckedChange = { updateSettings(settingsData.copy(autoOpenPlayerDialog = it)) },
             label = StringLocale[STR_PLAYER_FRAME_OPENED]
+        )
+
+        LabeledCheckbox(
+            checked = settingsData.playerWindowFullScreen,
+            onCheckedChange = { updateSettings(settingsData.copy(playerWindowFullScreen = it)) },
+            label = StringLocale[ST_SHOULD_OPEN_PLAYER_FRAME_FULL_SCREEN]
         )
 
         val baseColor = remember {

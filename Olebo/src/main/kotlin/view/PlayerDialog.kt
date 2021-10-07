@@ -38,7 +38,7 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: (
                         this.isUndecorated = false
                         this.isResizable = true
                         this.preferredSize = MASTER_WINDOW_SIZE.let { (height, width) ->
-                            Dimension(width.value.toInt(), height.value.toInt()).also { println(it) }
+                            Dimension(width.value.toInt(), height.value.toInt())
                         }
                         this.bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().maximumWindowBounds
                         this.setLocationRelativeTo(null)

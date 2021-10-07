@@ -190,7 +190,7 @@ const val ST_CONFIRM_DELETE_ACT = "confirm_delete_act"
 const val ST_ACT_WITHOUT_NAME = "act_without_name"
 const val ST_OLEBO_SEARCH_FOR_UPDATE = "search_for_update"
 const val ST_DEVELOPED_BY = "developed_by"
-
+const val ST_SHOULD_OPEN_PLAYER_FRAME_FULL_SCREEN = "player_frame_full_screen"
 
 // -- Interpolatable StringLocale
 const val ST_INT1_OCCURRENCE_BLUEPRINT_TO_DELETE = "1_num_blueprint_to_delete"
