@@ -206,7 +206,7 @@ internal class StringLocaleBundle : StringLocale() {
         ST_DEVELOPED_BY to "Developed by BOULESTEIX Tristan and ONFRAY Vincent.",
         ST_SHOULD_OPEN_PLAYER_FRAME_FULL_SCREEN to """
             Open the player window if there is a second screen
-            This feature may not work with screens with different ratios / resolution
+            (This feature may be disable for screens with different ratios / resolution)
         """.trimIndent(),
     )
 }
@@ -416,7 +416,7 @@ internal class StringLocaleBundle_fr : StringLocale() {
         ST_DEVELOPED_BY to "Développé par Tristan BOULESTEIX et Vincent ONFRAY.",
         ST_SHOULD_OPEN_PLAYER_FRAME_FULL_SCREEN to """
             Ouvrir la fenêtre joueur en plein écran s'il y a un deuxième écran.
-            Cette fonctionnalité peu ne pas fonctionner avec des écrans avec une différence de ratio / résolution
+            (Cette fonctionnalité peut-être désactivée pour les écrans avec différentes résolutions / ratios)
         """.trimIndent(),
     )
 }

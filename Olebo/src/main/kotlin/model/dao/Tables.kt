@@ -110,7 +110,7 @@ object SettingsTable : IntIdTable(), Initializable {
         insertOptionIfNotExists(9, LABEL_STATE, SerializableLabelState.ONLY_FOR_MASTER.encode(), insertOnlyIfNotExists)
         insertOptionIfNotExists(10, LABEL_COLOR, SerializableColor.BLACK.encode(), insertOnlyIfNotExists)
         insertOptionIfNotExists(11, CHANGELOGS_VERSION, "", insertOnlyIfNotExists)
-        insertOptionIfNotExists(12, SHOULD_OPEN_PLAYER_WINDOW_IN_FULL_SCREEN, false, insertOnlyIfNotExists)
+        insertOptionIfNotExists(12, SHOULD_OPEN_PLAYER_WINDOW_IN_FULL_SCREEN, true, insertOnlyIfNotExists)
     }
 
     private fun insertOptionIfNotExists(id: Int, name: String, value: Any, insertOnlyIfNotExists: Boolean) {

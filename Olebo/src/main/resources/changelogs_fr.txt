@@ -1,3 +1,33 @@
-Correction de bugs graphiques.
+V0.1.0 :
 
-La fenêtre joueur ne s'ouvre plus en plein écran par défaut. Cela peut être changé dans le menu "Options"
+- La version 0.1.0 (anciennement 1.9.0-BETA) apporte une refonte de l'interface plus rapide et plus ergonomique
+
+- Nouveaux raccourcis clavier :
+    * CTRL + A → Sélectionne tous les éléments sur une scène
+    * CTRL + click → Ajoute un élément à la sélection
+    * Shift + C → Active / Désactive le curseur joueur
+    * Maintenir la touche Alt permet de désactiver le curseur joueur temporairement
+
+- Le processus d'installation est dorénavant plus performant et utilise un programme d'installation natif
+
+- Application native : Plus besoin d'installer Java (JRE) ou de conserver Olebo dans un dossier sans droits administrateurs. Le programme d'installation s'en chargera
+
+- Amélioration du processus de mises à jour
+
+- Optimisations diverses de la gestion de la mémoire
+
+- Correction de nombreux bugs majeurs causant le crash de l'application, la corruption des sauvegardes et cassant la rétrocompatibilité
+
+- Correction de bugs ne supprimant pas les images qui n'étaient plus utilisées par Olebo. Ce correctif n'affectera pas les images déjà affectées par ce problème
+
+- Correction de bugs mineurs
+
+- Corrections grammaticales en anglais et en français
+
+- [Régression] Suppression temporaire de la compatibilité avec les systèmes macOs et GNU/Linux
+
+V0.1.1 :
+
+- Correction de bugs graphiques
+
+- Une option a été ajoutée pour désactiver l'ouverture de la fenêtre joueur en plein écran. La fenêtre s'ouvrira sous la forme d'une fenêtre modale à la place. Cela peu permettre de régler des problèmes pour les écrans ayant une résolution / ratio incompatible
