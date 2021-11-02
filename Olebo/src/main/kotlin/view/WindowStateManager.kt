@@ -5,6 +5,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.awt.ComposeWindow
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.window.*
 import java.awt.Dimension
 
@@ -18,8 +19,8 @@ object WindowStateManager {
 @Composable
 fun ApplicationScope.Window(
     title: String,
-    size: WindowSize,
-    minimumSize: WindowSize? = null,
+    size: DpSize,
+    minimumSize: DpSize? = null,
     placement: WindowPlacement = WindowPlacement.Floating,
     content: @Composable FrameWindowScope.() -> Unit
 ) {
@@ -49,4 +50,4 @@ fun ApplicationScope.Window(
     }
 }
 
-private fun WindowSize.toDimension() = Dimension(width.value.toInt(), height.value.toInt())
+private fun DpSize.toDimension() = Dimension(width.value.toInt(), height.value.toInt())

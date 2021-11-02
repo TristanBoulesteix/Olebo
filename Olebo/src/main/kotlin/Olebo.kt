@@ -46,7 +46,7 @@ fun main() = application {
                 if (release == null) StringLocale[ST_OLEBO_SEARCH_FOR_UPDATE] else StringLocale[STR_PREPARE_UPDATE]
             }
 
-            Tray(icon = UpdateTrayIcon, state = trayState, hint = trayHint)
+            Tray(icon = UpdateTrayIcon, state = trayState, tooltip = trayHint)
         }
 
         LaunchedEffect(Unit) {

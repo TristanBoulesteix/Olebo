@@ -12,10 +12,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.input.pointer.PointerIcon
-import androidx.compose.ui.input.pointer.pointerIcon
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import jdr.exia.view.ui.roundedShape
+import java.awt.Cursor
 
 /**
  * Apply modification to [Modifier] only if condition is true
@@ -144,7 +145,7 @@ fun Modifier.addRoundedBorder() =
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Stable
-fun Modifier.withHandCursor() = this.pointerIcon(PointerIcon.Hand)
+fun Modifier.withHandCursor() = this.pointerHoverIcon(PointerIcon(Cursor(Cursor.HAND_CURSOR)))
 
 @Stable
 fun Modifier.clickableWithCursor(enabled: Boolean = true, onClick: () -> Unit) =
