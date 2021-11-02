@@ -2,21 +2,16 @@ package jdr.exia.view.tools
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.input.pointer.PointerIcon
-import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import jdr.exia.view.ui.roundedShape
-import java.awt.Cursor
 
 /**
  * Apply modification to [Modifier] only if condition is true
@@ -142,11 +137,3 @@ private fun DrawScope.drawEndBorder(
 @Stable
 fun Modifier.addRoundedBorder() =
     this.border(border = BorderStroke(2.dp, Color.Black), shape = roundedShape)
-
-@OptIn(ExperimentalComposeUiApi::class)
-@Stable
-fun Modifier.withHandCursor() = this.pointerHoverIcon(PointerIcon(Cursor(Cursor.HAND_CURSOR)))
-
-@Stable
-fun Modifier.clickableWithCursor(enabled: Boolean = true, onClick: () -> Unit) =
-    this.clickable(onClick = onClick, enabled = enabled).applyIf(enabled, modifier = Modifier::withHandCursor)

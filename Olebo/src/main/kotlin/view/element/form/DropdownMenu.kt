@@ -11,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import jdr.exia.model.type.imageFromIconRes
-import jdr.exia.view.tools.withHandCursor
 
 @Composable
 fun <T : Any> DropdownMenu(
@@ -29,7 +28,7 @@ fun <T : Any> DropdownMenu(
     Box {
         var expanded by remember { mutableStateOf(false) }
 
-        OutlinedButton(onClick = { expanded = !expanded }, modifier = Modifier.withHandCursor()) {
+        OutlinedButton(onClick = { expanded = !expanded }) {
             Row(modifier = Modifier, horizontalArrangement = Arrangement.SpaceAround) {
                 selectedContent(selectedItem)
                 Spacer(Modifier.width(10.dp))
@@ -50,8 +49,7 @@ fun <T : Any> DropdownMenu(
                     onClick = {
                         onItemSelected(item)
                         expanded = false
-                    },
-                    modifier = Modifier.withHandCursor()
+                    }
                 ) { Text(text = item.toString()) }
             }
         }

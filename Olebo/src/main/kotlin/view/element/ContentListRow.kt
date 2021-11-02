@@ -1,6 +1,7 @@
 package jdr.exia.view.element
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -13,7 +14,10 @@ import jdr.exia.view.element.builder.ComposableContentBuilder
 import jdr.exia.view.element.builder.ContentBuilder
 import jdr.exia.view.element.builder.ContentButtonBuilder
 import jdr.exia.view.element.builder.ImageButtonBuilder
-import jdr.exia.view.tools.*
+import jdr.exia.view.tools.BorderBuilder
+import jdr.exia.view.tools.BoxWithTooltipIfNotNull
+import jdr.exia.view.tools.applyIf
+import jdr.exia.view.tools.border
 import jdr.exia.view.ui.typography
 
 
@@ -33,7 +37,7 @@ fun ContentListRow(
     var boxModifier = Modifier.fillMaxHeight().weight(1f, fill = true)
 
     if (onClick != null)
-        boxModifier = boxModifier.clickableWithCursor(enabled = enabled, onClick = onClick)
+        boxModifier = boxModifier.clickable(enabled = enabled, onClick = onClick)
 
     Box(modifier = boxModifier, contentAlignment = Alignment.CenterStart, content = content)
 
@@ -83,7 +87,7 @@ private fun RowButton(contentBuilder: ContentBuilder, modifier: Modifier) {
             .border(start = BorderBuilder.defaultBorder)
             .applyIf(condition = contentBuilder.enabled) {
                 // We don't use the parameter "enabled" of clickable because it prevents clickable from parent even if disabled
-                clickableWithCursor(onClick = contentBuilder.onChange)
+                clickable(onClick = contentBuilder.onChange)
             },
         contentAlignment = Alignment.CenterStart
     ) {

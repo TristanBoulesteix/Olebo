@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import jdr.exia.view.tools.withHandCursor
 
 @Composable
  fun LabeledCheckbox(checked: Boolean, onCheckedChange: (Boolean) -> Unit, label: String) =
@@ -17,7 +16,7 @@ import jdr.exia.view.tools.withHandCursor
         Checkbox(
             checked = checked,
             onCheckedChange = onCheckedChange,
-            modifier = Modifier.padding(end = 10.dp).withHandCursor()
+            modifier = Modifier.padding(end = 10.dp)
         )
         Text(text = label, modifier = Modifier.fillMaxWidth())
     }

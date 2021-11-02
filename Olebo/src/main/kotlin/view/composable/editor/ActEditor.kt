@@ -216,7 +216,7 @@ private fun Scenes(
         OutlinedButton(
             onClick = { setSceneInCreation(SceneData.default()) },
             content = { Text(StringLocale[STR_NEW_SCENE]) },
-            modifier = Modifier.align(Alignment.CenterHorizontally).withHandCursor()
+            modifier = Modifier.align(Alignment.CenterHorizontally)
         )
     }
 }
@@ -311,7 +311,7 @@ private fun ImagePreviewContent(
                     onUpdateData(data.copy(img = Img(fileChooser.selectedFile.absolutePath)))
                 }
             },
-            modifier = Modifier.padding(10.dp).align(Alignment.Center).matchParentSize().withHandCursor(),
+            modifier = Modifier.padding(10.dp).align(Alignment.Center).matchParentSize(),
             content = { Text(text = StringLocale[if (imgExist) STR_IMPORT_NEW_IMG else STR_IMPORT_IMG]) }
         )
     }

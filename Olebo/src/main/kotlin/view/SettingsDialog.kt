@@ -11,10 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.WindowSize
 import androidx.compose.ui.window.rememberDialogState
 import jdr.exia.localization.*
 import jdr.exia.model.dao.SettingsTable
@@ -26,13 +26,12 @@ import jdr.exia.model.type.toColor
 import jdr.exia.model.type.toJColor
 import jdr.exia.view.element.form.DropdownMenu
 import jdr.exia.view.element.form.LabeledCheckbox
-import jdr.exia.view.tools.withHandCursor
 import org.jetbrains.exposed.sql.transactions.transaction
 import javax.swing.JColorChooser
 
 @Composable
 fun SettingsDialog(onCloseRequest: () -> Unit) {
-    val state = rememberDialogState(size = WindowSize(580.dp, 635.dp))
+    val state = rememberDialogState(size = DpSize(580.dp, 635.dp))
 
     val originalSettings = remember { dataFromSettings }
 
@@ -202,7 +201,7 @@ private inline fun SettingsSection(sectionTitle: String, content: @Composable Co
 @Composable
 private fun RowButton(data: SettingsData, refresh: () -> Unit, close: () -> Unit, closeAndReset: () -> Unit) =
     Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth().padding(5.dp)) {
-        val buttonModifier = Modifier.padding(4.dp).withHandCursor()
+        val buttonModifier = Modifier.padding(4.dp)
 
         OutlinedButton(
             onClick = {

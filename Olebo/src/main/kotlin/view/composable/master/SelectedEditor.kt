@@ -21,9 +21,7 @@ import jdr.exia.model.tools.withSetter
 import jdr.exia.view.element.CustomTextField
 import jdr.exia.view.element.form.IntTextField
 import jdr.exia.view.element.form.TitledDropdownMenu
-import jdr.exia.view.tools.applyIf
 import jdr.exia.view.tools.rememberUpdatableState
-import jdr.exia.view.tools.withHandCursor
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -131,7 +129,7 @@ private fun LabelField(selectedElements: List<Element>, repaint: () -> Unit, mod
                     value = it
             },
             placeholder = StringLocale[STR_LABEL],
-            modifier = modifier.withHandCursor()
+            modifier = modifier
         )
     } else {
         Text(StringLocale[STR_LABEL], modifier = modifier)
@@ -229,13 +227,13 @@ private fun VisibilityButtons(
 
     OutlinedButton(
         onClick = { isVisible = !isVisible },
-        modifier = Modifier.width(buttonsWidth).applyIf(isEnabled, modifier = Modifier::withHandCursor),
+        modifier = Modifier.width(buttonsWidth),
         enabled = isEnabled
     ) { Text(visibilityText) }
 
     OutlinedButton(
         onClick = deleteSelectedElement,
-        modifier = Modifier.width(buttonsWidth).applyIf(isEnabled, modifier = Modifier::withHandCursor),
+        modifier = Modifier.width(buttonsWidth),
         enabled = isEnabled
     ) { Text(StringLocale[STR_DELETE]) }
 }

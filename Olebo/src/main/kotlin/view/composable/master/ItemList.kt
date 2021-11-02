@@ -3,6 +3,7 @@ package jdr.exia.view.composable.master
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.OutlinedTextField
@@ -23,7 +24,6 @@ import jdr.exia.model.type.imageFromPath
 import jdr.exia.view.element.ContentListRow
 import jdr.exia.view.element.LazyScrollableColumn
 import jdr.exia.view.element.builder.ImageButtonBuilder
-import jdr.exia.view.tools.clickableWithCursor
 import org.jetbrains.exposed.sql.transactions.transaction
 
 @Composable
@@ -68,7 +68,7 @@ private fun ItemList(
                 val name = transaction { it.realName }
 
                 ContentListRow(
-                    modifier = Modifier.clickableWithCursor {
+                    modifier = Modifier.clickable {
                         createElement(it)
                         focusManager.clearFocus()
                     },
