@@ -26,18 +26,15 @@ fun <T> rememberUpdatableState(
     onChange: suspend (T) -> Unit,
     onUpdated: suspend () -> Unit = {}
 ): MutableState<T> {
-    val initialValue = remember(key1 = key1, key2 = key2) { calculation().value }
-
     val state = remember(key1 = key1, key2 = key2, calculation)
 
-    if (initialValue != state.value)
-        LaunchedEffect(key1 = key1, key2 = key2, key3 = state.value) {
-            withContext(Dispatchers.IO) {
-                onChange(state.value)
-            }
-
-            onUpdated()
+    LaunchedEffect(key1 = key1, key2 = key2, key3 = state.value) {
+        withContext(Dispatchers.IO) {
+            onChange(state.value)
         }
+
+        onUpdated()
+    }
 
     return state
 }
