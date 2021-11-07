@@ -99,7 +99,7 @@ suspend fun downloadAndExit(
     onDownloadSuccess: () -> Unit = {},
     onDownloadFailure: (Throwable) -> Unit = {}
 ) = coroutineScope {
-    this.launch(Dispatchers.IO) {
+    launch(Dispatchers.IO) {
         getInstallerExecutable(onUpdateProgress = onProgressUpdate).onSuccess {
             onDownloadSuccess()
 
