@@ -12,16 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.WindowSize
 import androidx.compose.ui.window.rememberDialogState
 import jdr.exia.view.element.builder.ComposableContentBuilder
 import jdr.exia.view.element.builder.ContentBuilder
 import jdr.exia.view.element.builder.ContentButtonBuilder
-import jdr.exia.view.tools.applyIf
-import jdr.exia.view.tools.withHandCursor
 
 @Stable
 private fun defaultButton(action: () -> Unit) = listOf(ContentButtonBuilder("OK", onClick = action))
@@ -60,7 +58,7 @@ fun MessageDialog(
     content: @Composable () -> Unit
 ) {
     if (visible) {
-        val state = rememberDialogState(size = WindowSize(width, height))
+        val state = rememberDialogState(size = DpSize(width, height))
 
         Dialog(
             onCloseRequest = onCloseRequest,
@@ -97,7 +95,6 @@ fun MessageDialog(
                     buttonBuilders.forEach {
                         OutlinedButton(
                             onClick = it.onChange,
-                            modifier = Modifier.applyIf(condition = it.enabled, modifier = Modifier::withHandCursor),
                             enabled = it.enabled
                         ) {
                             when (it) {

@@ -2,6 +2,7 @@ package jdr.exia.view.composable.editor
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
@@ -59,7 +60,7 @@ fun ElementsView(onDone: () -> Unit, closeText: String = StringLocale[STR_BACK])
                             modifier = Modifier.applyIf(
                                 condition = tabViewModel.currentTab == tab,
                                 modifier = { border(bottom = BorderBuilder(5.dp, Color.Black)) }
-                            ).clickableWithCursor { tabViewModel.onSelectTab(tab) }.padding(20.dp)
+                            ).clickable { tabViewModel.onSelectTab(tab) }.padding(20.dp)
                         )
                     }
                 }
@@ -85,8 +86,7 @@ fun ElementsView(onDone: () -> Unit, closeText: String = StringLocale[STR_BACK])
                     },
                     content = {
                         Text(text = if (contentViewModel.currentEditBlueprint == null && contentViewModel.blueprintInCreation == null) closeText else StringLocale[STR_CANCEL])
-                    },
-                    modifier = Modifier.withHandCursor()
+                    }
                 )
             }
         }
@@ -124,7 +124,7 @@ private fun Content(viewModel: ElementsEditorViewModel, innerPadding: PaddingVal
                         OutlinedButton(
                             onClick = viewModel::startBlueprintCreation,
                             content = { Text(StringLocale[STR_ADD_ELEMENT]) },
-                            modifier = Modifier.align(Alignment.CenterHorizontally).withHandCursor()
+                            modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
                     }
                 }

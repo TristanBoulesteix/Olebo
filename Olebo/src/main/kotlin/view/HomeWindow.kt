@@ -27,7 +27,6 @@ import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.menubar.MainMenuBar
 import jdr.exia.view.tools.BorderBuilder
 import jdr.exia.view.tools.border
-import jdr.exia.view.tools.withHandCursor
 import jdr.exia.view.ui.HOME_WINDOWS_SIZE
 import jdr.exia.view.ui.blue
 import jdr.exia.viewModel.home.*
@@ -84,10 +83,10 @@ private fun ActsView(
     startActCreation: () -> Unit
 ) = Column {
     HeaderRow {
-        OutlinedButton(onClick = viewElements, modifier = Modifier.withHandCursor()) {
+        OutlinedButton(onClick = viewElements) {
             Text(text = StringLocale[STR_ELEMENTS])
         }
-        OutlinedButton(onClick = startActCreation, modifier = Modifier.withHandCursor()) {
+        OutlinedButton(onClick = startActCreation) {
             Text(text = StringLocale[STR_ADD_ACT])
         }
     }
@@ -132,7 +131,7 @@ private fun ActsView(
                 OutlinedButton(
                     onClick = startActCreation,
                     content = { Text(StringLocale[STR_ADD_ACT]) },
-                    modifier = Modifier.align(Alignment.CenterHorizontally).withHandCursor()
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
         }
