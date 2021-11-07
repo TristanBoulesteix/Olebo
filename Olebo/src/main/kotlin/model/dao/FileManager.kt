@@ -83,7 +83,7 @@ suspend fun loadOleboZipData(zipFile: File) = withContext(Dispatchers.IO) {
                         val manifestVersion =
                             Properties().apply { load(stream) }.getProperty("version", 0.toString()).toIntOrNull() ?: 0
 
-                        if (manifestVersion >= OLEBO_VERSION_CODE)
+                        if (manifestVersion > OLEBO_VERSION_CODE)
                             return@runCatching StringLocale[ST_WARNING_PREVIOUS_VERSION_FILE]
                     }
                 }
