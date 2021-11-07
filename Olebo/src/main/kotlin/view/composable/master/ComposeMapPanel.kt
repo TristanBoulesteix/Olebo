@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.toComposeBitmap
+import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
@@ -16,7 +16,7 @@ import jdr.exia.viewModel.MasterViewModel
 @Composable
 fun ComposeMapPanel(modifier: Modifier, viewModel: MasterViewModel) = Box(modifier) {
     Image(
-        bitmap = viewModel.backGroundImage.toComposeBitmap(),
+        bitmap = viewModel.backGroundImage.toComposeImageBitmap(),
         contentDescription = null,
         modifier = Modifier.fillMaxSize(),
         contentScale = ContentScale.FillBounds
@@ -25,7 +25,7 @@ fun ComposeMapPanel(modifier: Modifier, viewModel: MasterViewModel) = Box(modifi
     Canvas(modifier = Modifier.fillMaxSize()) {
         viewModel.elements.forEach {
             drawImage(
-                image = it.sprite.toComposeBitmap(),
+                image = it.sprite.toComposeImageBitmap(),
                 srcOffset = IntOffset(relativeX(it.referencePoint.x.toInt()), relativeY(it.referencePoint.y.toInt())),
                 srcSize = IntSize(relativeX(it.hitBox.width), relativeY(it.hitBox.height))
             )
