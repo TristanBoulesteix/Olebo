@@ -12,7 +12,11 @@ import jdr.exia.view.element.HeaderTabSize
 import jdr.exia.view.element.TabPanel
 
 @Composable
-fun BottomPanel(modifier: Modifier, selectedEditor: @Composable () -> Unit) = Box(modifier) {
+fun BottomPanel(
+    modifier: Modifier,
+    selectedEditor: @Composable () -> Unit,
+    webConfig: @Composable () -> Unit
+) = Box(modifier) {
     val tabs = remember { BottomTab.values().toList() }
 
     TabPanel(
@@ -27,8 +31,7 @@ fun BottomPanel(modifier: Modifier, selectedEditor: @Composable () -> Unit) = Bo
             Box(modifier = Modifier.padding(padding)) {
                 when (currentTab) {
                     BottomTab.Select -> selectedEditor()
-                    else -> {
-                    }
+                    else -> webConfig()
                 }
             }
         }

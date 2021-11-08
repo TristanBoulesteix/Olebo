@@ -36,11 +36,6 @@ import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 
 class MasterViewModel(val act: Act) : CoroutineScope by CoroutineScope(Dispatchers.Swing) {
-    companion object {
-        const val ABSOLUTE_WIDTH = 1600f
-        const val ABSOLUTE_HEIGHT = 900f
-    }
-
     var blueprintEditorDialogVisible by mutableStateOf(false)
         private set
 
@@ -321,9 +316,19 @@ class MasterViewModel(val act: Act) : CoroutineScope by CoroutineScope(Dispatche
         panel.repaint()
     }
 
+    fun connectToServer(code: String) {
+        val cleanCode = code.trim()
+        println("Connecting to server with code $cleanCode")
+    }
+
     private fun loadBlueprints(): Map<TypeElement, List<Blueprint>> = transaction {
         val items = Blueprint.all().groupBy { it.type }
 
         (TypeElement.values() + items.keys).associateWith { items[it] ?: emptyList() }
+    }
+
+    companion object {
+        const val ABSOLUTE_WIDTH = 1600f
+        const val ABSOLUTE_HEIGHT = 900f
     }
 }

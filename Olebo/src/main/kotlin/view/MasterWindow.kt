@@ -15,10 +15,7 @@ import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.option.Settings
-import jdr.exia.view.composable.master.BottomPanel
-import jdr.exia.view.composable.master.ItemList
-import jdr.exia.view.composable.master.MapPanel
-import jdr.exia.view.composable.master.SelectedEditor
+import jdr.exia.view.composable.master.*
 import jdr.exia.view.element.dialog.ConfirmMessage
 import jdr.exia.view.menubar.MasterMenuBar
 import jdr.exia.view.tools.event.addMousePressedListener
@@ -128,6 +125,11 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
                     repaint = viewModel::repaint,
                     deleteSelectedElement = viewModel::removeElements,
                     setPriority = viewModel::changePriority
+                )
+            },
+            webConfig = {
+                WebConfig(
+                    connect = viewModel::connectToServer
                 )
             }
         )
