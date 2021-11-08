@@ -35,6 +35,7 @@ import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.element.form.IntTextField
 import jdr.exia.view.tools.*
 import jdr.exia.view.ui.blue
+import jdr.exia.view.ui.lightOrange
 import jdr.exia.view.ui.roundedShape
 import jdr.exia.viewModel.ElementsEditorViewModel
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -53,6 +54,7 @@ fun ElementsView(onDone: () -> Unit, closeText: String = StringLocale[STR_BACK])
         backgroundColor = blue,
         tabs = tabs,
         onTabChanged = { contentViewModel.currentType = it },
+        headerTabOption = HeaderTabOptions(backgroundColor = lightOrange),
         content = { currentTab, padding ->
             Content(
                 viewModel = contentViewModel,

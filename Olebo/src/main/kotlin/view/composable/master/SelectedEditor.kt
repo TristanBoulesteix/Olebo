@@ -27,14 +27,13 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 @Composable
 fun SelectedEditor(
-    modifier: Modifier,
     commandManager: CommandManager,
     selectedElements: List<Element>,
     deleteSelectedElement: () -> Unit,
     setPriority: suspend (Layer) -> Unit,
     repaint: () -> Unit
 ) = Row(
-    modifier = modifier,
+    modifier = Modifier.fillMaxWidth(),
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.SpaceBetween
 ) {

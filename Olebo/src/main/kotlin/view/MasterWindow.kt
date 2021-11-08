@@ -15,6 +15,7 @@ import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.option.Settings
+import jdr.exia.view.composable.master.BottomPanel
 import jdr.exia.view.composable.master.ItemList
 import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.composable.master.SelectedEditor
@@ -107,7 +108,7 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
 
     Column(modifier = Modifier.weight(.80f).fillMaxSize()) {
         //ComposeMapPanel(modifier = Modifier.weight(.85f).fillMaxSize(), viewModel = viewModel)
-        Box(modifier = Modifier.weight(.85f).fillMaxSize()) {
+        Box(modifier = Modifier.weight(.80f).fillMaxSize()) {
             val focusManager = LocalFocusManager.current
 
             LaunchedEffect(focusManager) {
@@ -118,13 +119,17 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
 
             SwingPanel(factory = viewModel::panel)
         }
-        SelectedEditor(
-            modifier = Modifier.weight(.15f).fillMaxSize(),
-            commandManager = viewModel.commandManager,
-            selectedElements = viewModel.selectedElements,
-            repaint = viewModel::repaint,
-            deleteSelectedElement = viewModel::removeElements,
-            setPriority = viewModel::changePriority
+        BottomPanel(
+            modifier = Modifier.weight(.20f).fillMaxSize(),
+            selectedEditor = {
+                SelectedEditor(
+                    commandManager = viewModel.commandManager,
+                    selectedElements = viewModel.selectedElements,
+                    repaint = viewModel::repaint,
+                    deleteSelectedElement = viewModel::removeElements,
+                    setPriority = viewModel::changePriority
+                )
+            }
         )
     }
 }
