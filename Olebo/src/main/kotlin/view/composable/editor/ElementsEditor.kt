@@ -2,11 +2,13 @@ package jdr.exia.view.composable.editor
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,7 +37,6 @@ import jdr.exia.view.tools.*
 import jdr.exia.view.ui.blue
 import jdr.exia.view.ui.roundedShape
 import jdr.exia.viewModel.ElementsEditorViewModel
-import jdr.exia.viewModel.ElementsTabViewModel
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
 import javax.imageio.ImageIO
@@ -43,37 +44,23 @@ import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
 @Composable
-fun ElementsView(onDone: () -> Unit, closeText: String = StringLocale[STR_BACK]) = Column {
-    val tabViewModel = remember { ElementsTabViewModel() }
+fun ElementsView(onDone: () -> Unit, closeText: String = StringLocale[STR_BACK]) {
+    val tabs = remember { listOf(TypeElement.Object, TypeElement.PJ, TypeElement.PNJ) }
 
-    val contentViewModel = remember(tabViewModel.currentTab) { ElementsEditorViewModel(tabViewModel.currentTab) }
+    val contentViewModel = remember { ElementsEditorViewModel(tabs.first()) }
 
-    Scaffold(
+    TabPanel(
         backgroundColor = blue,
-        topBar = {
-            HeaderRow {
-                Row(horizontalArrangement = Arrangement.SpaceAround, modifier = Modifier.fillMaxWidth()) {
-                    tabViewModel.tabs.forEach { tab ->
-                        Text(
-                            text = tab.localizedName,
-                            fontWeight = FontWeight.Bold.takeIf { tabViewModel.currentTab == tab },
-                            modifier = Modifier.applyIf(
-                                condition = tabViewModel.currentTab == tab,
-                                modifier = { border(bottom = BorderBuilder(5.dp, Color.Black)) }
-                            ).clickable { tabViewModel.onSelectTab(tab) }.padding(20.dp)
-                        )
-                    }
-                }
-            }
-        },
-        content = {
+        tabs = tabs,
+        onTabChanged = { contentViewModel.currentType = it },
+        content = { currentTab, padding ->
             Content(
                 viewModel = contentViewModel,
-                innerPadding = it,
-                currentType = tabViewModel.currentTab
+                innerPadding = padding,
+                currentType = currentTab
             )
         },
-        bottomBar = {
+        footer = {
             Box(
                 contentAlignment = Alignment.TopCenter,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 15.dp).padding(bottom = 20.dp)
@@ -89,7 +76,8 @@ fun ElementsView(onDone: () -> Unit, closeText: String = StringLocale[STR_BACK])
                     }
                 )
             }
-        }
+        },
+        tabNameProvider = TypeElement::localizedName
     )
 }
 

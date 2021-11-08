@@ -1,8 +1,6 @@
 package jdr.exia.viewModel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import jdr.exia.localization.*
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.element.Blueprint
@@ -17,10 +15,16 @@ import jdr.exia.view.tools.showConfirmMessage
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class ElementsEditorViewModel(private val type: TypeElement) {
+class ElementsEditorViewModel(InitialType: TypeElement) {
     private var currentEditPosition by mutableStateOf(-1)
 
-    var blueprints by mutableStateOf(transaction { Blueprint.all().filter { it.type == type } })
+    var currentType by mutableStateOf(InitialType)
+
+    val blueprints by derivedStateOf {
+        transaction {
+            Blueprint.all().filter { it.type == currentType }
+        }.toMutableStateList()
+    }
 
     val currentEditBlueprint
         get() = blueprints.getOrNull(currentEditPosition)
@@ -73,8 +77,8 @@ class ElementsEditorViewModel(private val type: TypeElement) {
     fun startBlueprintCreation() {
         blueprintInCreation =
             Blueprint.BlueprintData.let {
-                if (type == TypeElement.Object) it.defaultObject() else it.defaultCharacter(
-                    type
+                if (currentType == TypeElement.Object) it.defaultObject() else it.defaultCharacter(
+                    currentType
                 )
             }
     }
@@ -100,7 +104,7 @@ class ElementsEditorViewModel(private val type: TypeElement) {
     }
 
     private fun blueprintWithNameExist(name: String, excludedId: EntityID<Int>? = null) =
-        blueprints.filter { it.type == type && (excludedId == null || it.id != excludedId) }
+        blueprints.filter { it.type == currentType && (excludedId == null || it.id != excludedId) }
             .any { it.name == name }
 
     private fun Blueprint.remove() = transaction {
@@ -109,9 +113,7 @@ class ElementsEditorViewModel(private val type: TypeElement) {
 
         fun deleteAndClearState() {
             delete()
-            blueprints = blueprints.toMutableList().also {
-                it -= this@remove
-            }
+            blueprints -= this@remove
         }
 
         if (countUsage > 0) {
@@ -141,8 +143,6 @@ class ElementsEditorViewModel(private val type: TypeElement) {
             this.sprite = this@create.img.saveImgAndGetPath()
         }
 
-        blueprints = blueprints.toMutableList().also {
-            it += blueprint
-        }
+        blueprints += blueprint
     }
 }
