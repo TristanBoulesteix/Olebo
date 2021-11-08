@@ -17,6 +17,7 @@ fun BottomPanel(modifier: Modifier, selectedEditor: @Composable () -> Unit) = Bo
 
     TabPanel(
         tabs = tabs,
+        tabNameProvider = BottomTab::tabName,
         headerTabOption = HeaderTabOptions(
             paddingHeight = 1.dp,
             tabSize = HeaderTabSize.Small,
@@ -26,13 +27,14 @@ fun BottomPanel(modifier: Modifier, selectedEditor: @Composable () -> Unit) = Bo
             Box(modifier = Modifier.padding(padding)) {
                 when (currentTab) {
                     BottomTab.Select -> selectedEditor()
-                    else -> {}
+                    else -> {
+                    }
                 }
             }
         }
     )
 }
 
-private enum class BottomTab {
-    Select, Web
+private enum class BottomTab(val tabName: String) {
+    Select("Selection"), Web("Web (Alpha)")
 }
