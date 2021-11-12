@@ -34,8 +34,10 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
+import kotlin.coroutines.CoroutineContext
 
-class MasterViewModel(val act: Act) : CoroutineScope by CoroutineScope(Dispatchers.Swing) {
+class MasterViewModel(val act: Act) :
+    CoroutineScope by CoroutineScope(Dispatchers.Swing as CoroutineContext /* The cast is required because of a bug with IntelliJ */) {
     var blueprintEditorDialogVisible by mutableStateOf(false)
         private set
 
