@@ -11,13 +11,9 @@ repositories {
 }
 
 kotlin {
-    sourceSets {
-        val jvmMain by getting {
-            dependencies {
-                implementation(project(":System"))
-                implementation("org.apache.httpcomponents:httpclient:4.5.10")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
-            }
-        }
+    sourceSets["jvmMain"].dependencies {
+        implementation(project(":System"))
+        implementation("org.apache.httpcomponents:httpclient:4.5.10")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
     }
 }

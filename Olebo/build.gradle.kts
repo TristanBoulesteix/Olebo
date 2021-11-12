@@ -21,27 +21,23 @@ repositories {
 }
 
 kotlin {
-    sourceSets {
-        val jvmMain by getting {
-            dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
-                implementation("org.slf4j:slf4j-simple:2.0.0-alpha1")
-                implementation("org.xerial:sqlite-jdbc:3.28.0")
-                implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
-                implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
-                implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:$coroutineVersion")
-                implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("io.ktor:ktor-client-cio:$ktorVersion")
-                implementation("io.ktor:ktor-client-serialization:$ktorVersion")
-                implementation("io.ktor:ktor-client-apache:$ktorVersion")
-                implementation(project(":Localization"))
-                implementation(project(":Update"))
-                implementation(project(":System"))
-                implementation(compose.desktop.currentOs)
-            }
-        }
+    sourceSets["jvmMain"].dependencies {
+        implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
+        implementation("org.slf4j:slf4j-simple:2.0.0-alpha1")
+        implementation("org.xerial:sqlite-jdbc:3.28.0")
+        implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
+        implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
+        implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:$coroutineVersion")
+        implementation("io.ktor:ktor-client-core:$ktorVersion")
+        implementation("io.ktor:ktor-client-cio:$ktorVersion")
+        implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+        implementation("io.ktor:ktor-client-apache:$ktorVersion")
+        implementation(project(":Localization"))
+        implementation(project(":Update"))
+        implementation(project(":System"))
+        implementation(compose.desktop.currentOs)
     }
 }
 

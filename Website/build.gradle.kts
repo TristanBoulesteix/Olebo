@@ -19,16 +19,12 @@ repositories {
 }
 
 kotlin {
-    sourceSets {
-        val jvmMain by getting {
-            dependencies {
-                implementation("io.ktor:ktor-server-core:$ktorVersion")
-                implementation("io.ktor:ktor-serialization:$ktorVersion")
-                implementation("io.ktor:ktor-server-netty:$ktorVersion")
-                implementation("ch.qos.logback:logback-classic:$logbackVersion")
-                implementation(project(":Update"))
-                implementation(project(":System"))
-            }
-        }
+    sourceSets["jvmMain"].dependencies {
+        implementation("io.ktor:ktor-server-core:$ktorVersion")
+        implementation("io.ktor:ktor-serialization:$ktorVersion")
+        implementation("io.ktor:ktor-server-netty:$ktorVersion")
+        implementation("ch.qos.logback:logback-classic:$logbackVersion")
+        implementation(project(":Update"))
+        implementation(project(":System"))
     }
 }
