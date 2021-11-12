@@ -5,7 +5,7 @@ val serialisationVersion: String by project
 
 plugins {
     val kotlinVersion: String by System.getProperties()
-    kotlin("jvm") version kotlinVersion
+    kotlin("multiplatform") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion apply false
 }
 
@@ -15,16 +15,20 @@ repositories {
 
 allprojects {
     group = "jdr.exia"
+
+    apply(plugin = "org.jetbrains.kotlin.multiplatform")
+
+    kotlin {
+        jvm {
+            jvmToolchain {
+                (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(16))
+            }
+        }
+    }
 }
 
 subprojects {
-    apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
-
-    dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialisationVersion")
-    }
 
     tasks.withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "16"
@@ -32,8 +36,13 @@ subprojects {
     }
 
     kotlin {
-        jvmToolchain {
-            (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(16))
+        sourceSets {
+            val commonMain by getting {
+                dependencies {
+                    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialisationVersion")
+                }
+            }
+            val jvmMain by getting
         }
     }
 }

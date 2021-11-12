@@ -3,7 +3,7 @@ val logbackVersion: String by project.parent!!
 
 plugins {
     application
-    kotlin("jvm")
+    kotlin("multiplatform")
     id("org.jetbrains.kotlin.plugin.serialization")
 }
 
@@ -18,12 +18,17 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation("io.ktor:ktor-server-core:$ktorVersion")
-    implementation("io.ktor:ktor-serialization:$ktorVersion")
-    implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    implementation("ch.qos.logback:logback-classic:$logbackVersion")
-    implementation(project(":Update"))
-    implementation(project(":System", "default"))
-    testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
+kotlin {
+    sourceSets {
+        val jvmMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-server-core:$ktorVersion")
+                implementation("io.ktor:ktor-serialization:$ktorVersion")
+                implementation("io.ktor:ktor-server-netty:$ktorVersion")
+                implementation("ch.qos.logback:logback-classic:$logbackVersion")
+                implementation(project(":Update"))
+                implementation(project(":System"))
+            }
+        }
+    }
 }

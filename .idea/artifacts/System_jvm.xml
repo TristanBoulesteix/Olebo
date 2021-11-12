@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="System-jvm">
+    <output-path>$PROJECT_DIR$/System/build/libs</output-path>
+    <root id="archive" name="System-jvm.jar">
+      <element id="module-output" name="Olebo.System.jvmMain" />
+    </root>
+  </artifact>
+</component>
