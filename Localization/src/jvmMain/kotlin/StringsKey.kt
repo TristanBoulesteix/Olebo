@@ -147,6 +147,7 @@ const val STR_CONTINUE = "continue"
 const val STR_VERSION_CODE = "version_code"
 const val STR_NO_ACT = "no_act"
 const val STR_NO_SCENE = "no_scene"
+const val STR_START_OLEBO_WEB = "start_web_service"
 
 // -- Sentences
 
@@ -191,6 +192,7 @@ const val ST_ACT_WITHOUT_NAME = "act_without_name"
 const val ST_OLEBO_SEARCH_FOR_UPDATE = "search_for_update"
 const val ST_DEVELOPED_BY = "developed_by"
 const val ST_SHOULD_OPEN_PLAYER_FRAME_FULL_SCREEN = "player_frame_full_screen"
+const val ST_OLEBO_WEB_EXPLANATION = "web_explain"
 
 // -- Interpolatable StringLocale
 const val ST_INT1_OCCURRENCE_BLUEPRINT_TO_DELETE = "1_num_blueprint_to_delete"

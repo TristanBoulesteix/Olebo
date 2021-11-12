@@ -318,9 +318,8 @@ class MasterViewModel(val act: Act) :
         panel.repaint()
     }
 
-    fun connectToServer(code: String) {
-        val cleanCode = code.trim()
-        println("Connecting to server with code $cleanCode")
+    fun connectToServer() {
+        println("Connecting to server")
     }
 
     private fun loadBlueprints(): Map<TypeElement, List<Blueprint>> = transaction {

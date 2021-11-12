@@ -208,6 +208,12 @@ internal class StringLocaleBundle : StringLocale() {
             Open the player window if there is a second screen
             (This feature may be disable for screens with different ratios / resolution)
         """.trimIndent(),
+        ST_OLEBO_WEB_EXPLANATION to """
+            Olebo web is an experimental service that allows you to share in real time your scenes and scenarios with your player directly in their web browser.
+            This feature is currently in alpha and its behavior is not guaranteed.
+            This feature does not require the players to install a software.
+        """.trimIndent(),
+        STR_START_OLEBO_WEB to "start and connect",
     )
 }
 
@@ -418,5 +424,11 @@ internal class StringLocaleBundle_fr : StringLocale() {
             Ouvrir la fenêtre joueur en plein écran s'il y a un deuxième écran.
             (Cette fonctionnalité peut-être désactivée pour les écrans avec différentes résolutions / ratios)
         """.trimIndent(),
+        ST_OLEBO_WEB_EXPLANATION to """
+            Olebo Web est un service expérimental qui permet de partager en temps réel les scènes et les scénarios avec vos joueurs directement sur leur navigateur web.
+            Cette fonctionnalité est actuellement en cours de développement et son fonctionnement peur se révéler instable.
+            Cette fonctionnalité ne nécessite pas l'installation d'un programme pour les joueurs.
+        """.trimIndent(),
+        STR_START_OLEBO_WEB to "commencer et se connecter",
     )
 }
