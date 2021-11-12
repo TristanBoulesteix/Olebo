@@ -214,6 +214,7 @@ internal class StringLocaleBundle : StringLocale() {
             This feature does not require the players to install a software.
         """.trimIndent(),
         STR_START_OLEBO_WEB to "start and connect",
+        STR_LOGIN_OLEBO_WEB to "login...",
     )
 }
 
@@ -430,5 +431,6 @@ internal class StringLocaleBundle_fr : StringLocale() {
             Cette fonctionnalité ne nécessite pas l'installation d'un programme pour les joueurs.
         """.trimIndent(),
         STR_START_OLEBO_WEB to "commencer et se connecter",
+        STR_LOGIN_OLEBO_WEB to "connexion...",
     )
 }

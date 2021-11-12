@@ -129,7 +129,8 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
             },
             webConfig = {
                 WebConfig(
-                    connect = viewModel::connectToServer
+                    connect = viewModel::connectToServer,
+                    connectionState = viewModel.connectionState
                 )
             }
         )

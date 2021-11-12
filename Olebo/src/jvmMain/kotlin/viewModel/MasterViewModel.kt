@@ -21,6 +21,7 @@ import jdr.exia.model.type.checkedImgPath
 import jdr.exia.model.type.contains
 import jdr.exia.model.type.inputStreamOrNotFound
 import jdr.exia.model.type.toImgPath
+import jdr.exia.service.ConnectionState
 import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.tools.getTokenFromPosition
 import jdr.exia.view.tools.positionOf
@@ -65,6 +66,8 @@ class MasterViewModel(val act: Act) :
             transaction { list.filter { it.realName.contains(searchString, ignoreCase = true) } }
         }
     }
+
+    var connectionState by mutableStateOf(ConnectionState.Disconnected)
 
     /**
      * These are all the [Blueprint] placed on  the current map
@@ -319,7 +322,7 @@ class MasterViewModel(val act: Act) :
     }
 
     fun connectToServer() {
-        println("Connecting to server")
+        connectionState = ConnectionState.Login
     }
 
     private fun loadBlueprints(): Map<TypeElement, List<Blueprint>> = transaction {
