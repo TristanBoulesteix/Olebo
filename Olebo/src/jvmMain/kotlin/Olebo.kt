@@ -42,8 +42,8 @@ fun main() = application {
         var updateChecked by remember { mutableStateOf(false) }
 
         if (!updateChecked || release != null) {
-            val trayHint = remember(release) {
-                if (release == null) StringLocale[ST_OLEBO_SEARCH_FOR_UPDATE] else StringLocale[STR_PREPARE_UPDATE]
+            val trayHint by remember {
+                derivedStateOf { if (release == null) StringLocale[ST_OLEBO_SEARCH_FOR_UPDATE] else StringLocale[STR_PREPARE_UPDATE] }
             }
 
             Tray(icon = UpdateTrayIcon, state = trayState, tooltip = trayHint)
@@ -76,8 +76,7 @@ fun main() = application {
             MainUI()
 
             if (changelogs != null && Settings.wasJustUpdated) {
-                ChangelogsDialog(changelogs!!)
-                SideEffect { Settings.wasJustUpdated = false }
+                ChangelogsDialog(changelogs!!, onClose = { Settings.wasJustUpdated = false })
             }
         }
     }
