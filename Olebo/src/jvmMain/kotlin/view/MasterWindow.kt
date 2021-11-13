@@ -128,12 +128,10 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
                 )
             },
             webConfig = {
-                Box {
-                    WebConfig(
-                        connect = viewModel::connectToServer,
-                        connectionState = viewModel.connectionState
-                    )
-                }
+                WebConfig(
+                    connect = viewModel::connectToServer,
+                    connectionState = viewModel.connectionState
+                )
             }
         )
     }
