@@ -21,7 +21,7 @@ fun WebConfig(
     Row {
         Text(StringLocale[ST_OLEBO_WEB_EXPLANATION])
 
-        Spacer(Modifier.width(4.dp))
+        Spacer(Modifier.width(8.dp))
 
         Button(
             onClick = connect,
