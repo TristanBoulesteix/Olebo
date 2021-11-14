@@ -2,6 +2,7 @@ package fr.olebo
 
 import fr.olebo.plugins.configureRouting
 import fr.olebo.plugins.configureSerialization
+import fr.olebo.plugins.configureSession
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 
@@ -31,6 +32,7 @@ fun main() {
             //httpsRedirect()
             configureRouting()
             configureSerialization()
+            configureSession()
         }
     }
 
