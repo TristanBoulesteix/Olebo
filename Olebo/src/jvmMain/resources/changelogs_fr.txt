@@ -1,7 +1,3 @@
-- Amélioration générale des performances
+- Mise à jour de sécurité : Olebo accepte dorénavant le certificat SSl de Let's Encrypt pour le domaine "olebo.fr".
 
-- Correction d'un bug lié à l'import des fichiers
-
-- Amélioration de l'interface graphique
-
-- Mise à jour de la bibliothèque graphique (Compose for Desktop) vers la version Beta-5
+- Préparation de la fonctionnalité "olebo web" (disponible prochainement).

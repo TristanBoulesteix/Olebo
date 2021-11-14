@@ -1,7 +1,3 @@
-- Performances improvement
+- Security update: Olebo now accepts the SSL Let's Encrypt certificate for the domain "Olebo.fr".
 
-- Fix a bug with the import file functionality
-
-- Fix UI bugs
-
-- Upgrade the UI library (Compose for Desktop) to Beta 5 version
+- Preparation for the functionality "olebo web" (Coming soon).
