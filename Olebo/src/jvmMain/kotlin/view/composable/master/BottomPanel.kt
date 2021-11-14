@@ -39,5 +39,5 @@ fun BottomPanel(
 }
 
 private enum class BottomTab(val tabName: String) {
-    Select("Selection"), Web("Web (Alpha)")
+    Select("Selection"), Web("Web (Coming soon)")
 }

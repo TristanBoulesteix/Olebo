@@ -7,8 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import jdr.exia.localization.STR_LOGIN_OLEBO_WEB
-import jdr.exia.localization.STR_START_OLEBO_WEB
 import jdr.exia.localization.ST_OLEBO_WEB_EXPLANATION
 import jdr.exia.localization.StringLocale
 import jdr.exia.service.ConnectionState
@@ -26,9 +24,9 @@ fun WebConfig(
         Button(
             onClick = connect,
             modifier = Modifier.padding(horizontal = 8.dp),
-            enabled = connectionState == ConnectionState.Disconnected
+            enabled = /*connectionState == ConnectionState.Disconnected*/ false
         ) {
-            Text(StringLocale[if (connectionState == ConnectionState.Disconnected) STR_START_OLEBO_WEB else STR_LOGIN_OLEBO_WEB])
+            Text(/*StringLocale[if (connectionState == ConnectionState.Disconnected) STR_START_OLEBO_WEB else STR_LOGIN_OLEBO_WEB]*/ "Coming soon...")
         }
     }
 }
