@@ -23,6 +23,7 @@ kotlin {
         implementation("io.ktor:ktor-server-core:$ktorVersion")
         implementation("io.ktor:ktor-serialization:$ktorVersion")
         implementation("io.ktor:ktor-server-netty:$ktorVersion")
+        implementation("io.ktor:ktor-server-sessions:$ktorVersion")
         implementation("ch.qos.logback:logback-classic:$logbackVersion")
         implementation(project(":Update"))
         implementation(project(":System"))
