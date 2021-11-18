@@ -8,15 +8,17 @@ import jdr.exia.system.OS
 import jdr.exia.system.extension
 import java.io.File
 
-fun Route.releaseRouting() {
-    route("/releases") {
+fun Routing.releaseRouting() {
+    route("releases") {
         get {
             call.respond(releases)
         }
-        get("/last") {
-            call.respond(releases.last())
+        get("last") {
+            releases.lastOrNull()?.let {
+                call.respond(it)
+            } ?: call.respond(HttpStatusCode.InternalServerError)
         }
-        get("/last/download") {
+        get("last/download") {
             val os = try {
                 OS.valueOf(call.request.queryParameters["os"].orEmpty())
             } catch (e: IllegalArgumentException) {

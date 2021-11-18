@@ -1,5 +1,6 @@
 package fr.olebo.plugins
 
+import fr.olebo.sharescene.shareSceneRouting
 import fr.olebo.update.releaseRouting
 import io.ktor.application.*
 import io.ktor.response.*
@@ -11,5 +12,6 @@ fun Application.configureRouting() {
             call.respondText("Hello World!")
         }
         releaseRouting()
+        shareSceneRouting()
     }
 }
