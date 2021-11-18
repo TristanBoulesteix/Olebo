@@ -23,7 +23,7 @@ fun Route.releaseRouting() {
                 OS.OTHER
             }
 
-            val path = releases.last().paths.firstOrNull { it.extension in os.executableFileTypes }.orEmpty()
+            val path = releases.lastOrNull()?.paths?.firstOrNull { it.extension in os.executableFileTypes }.orEmpty()
 
             val fileToSend = File(path)
 
