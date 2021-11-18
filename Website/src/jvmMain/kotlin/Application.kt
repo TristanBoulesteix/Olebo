@@ -28,8 +28,8 @@ fun main() {
             keyStorePath = keyStoreFile
         }*/
         module {
-            configureRouting()
             configureFeatures()
+            configureRouting()
         }
     }
 
