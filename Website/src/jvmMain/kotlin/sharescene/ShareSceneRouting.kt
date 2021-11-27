@@ -1,6 +1,5 @@
 package fr.olebo.sharescene
 
-import fr.olebo.synchronizedConnectionsSet
 import fr.olebo.synchronizedSessionSet
 import io.ktor.http.cio.websocket.*
 import io.ktor.routing.*
@@ -21,27 +20,21 @@ fun Routing.shareSceneRouting() {
             it.masterConnection.send("New player joined with id: ${currentConnection.id}")
         } ?: ShareSceneSession(
             sessionId,
-            currentConnection,
-            synchronizedConnectionsSet()
+            currentConnection
         ).also { shareSceneSessions += it }
 
         for (frame in incoming) {
-            println("Hey")
-            frame.handleMessages()
+            when (frame) {
+                is Frame.Text -> println(frame.readText())
+                else -> Unit
+            }
         }
 
         // Handle session close
         if (currentConnection === currentSession.masterConnection) {
-            currentSession.playerConnections.forEach { it.close() }
-            println(shareSceneSessions.first() == currentSession)
-            shareSceneSessions -= currentSession
+            shareSceneSessions destroy currentSession
         } else {
             currentSession.playerConnections -= currentConnection
         }
     }
-}
-
-private fun Frame.handleMessages() = when (this) {
-    is Frame.Text -> println(readText())
-    else -> Unit
 }
