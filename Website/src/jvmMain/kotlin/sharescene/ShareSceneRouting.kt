@@ -13,25 +13,30 @@ fun Routing.shareSceneRouting() {
     webSocket("scene/{$ID_PARAM_NAME}") {
         val sessionId = call.parameters[ID_PARAM_NAME]!!
 
-        val currentConnection = Connection(this)
+        val currentConnection = Connection()
 
         val currentSession = shareSceneSessions.find { it.sessionId == sessionId }?.also {
             it.playerConnections += currentConnection
-            it.masterConnection.send("New player joined with id: ${currentConnection.id}")
         } ?: ShareSceneSession(
             sessionId,
             currentConnection
         ).also { shareSceneSessions += it }
 
+        val isMasterConnection = currentConnection === currentSession.masterConnection
+
         for (frame in incoming) {
             when (frame) {
-                is Frame.Text -> println(frame.readText())
+                is Frame.Text -> {
+                    /*when (Json.decodeFromString<Message>(frame.readText())) {
+                        else -> continue
+                    }*/
+                }
                 else -> Unit
             }
         }
 
         // Handle session close
-        if (currentConnection === currentSession.masterConnection) {
+        if (isMasterConnection) {
             shareSceneSessions destroy currentSession
         } else {
             currentSession.playerConnections -= currentConnection
