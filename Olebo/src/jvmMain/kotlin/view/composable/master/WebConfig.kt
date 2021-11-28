@@ -12,6 +12,7 @@ import jdr.exia.localization.STR_START_OLEBO_WEB
 import jdr.exia.localization.ST_OLEBO_WEB_EXPLANATION
 import jdr.exia.localization.StringLocale
 import jdr.exia.service.ConnectionState
+import jdr.exia.service.Disconnected
 
 @Composable
 fun WebConfig(
@@ -26,9 +27,9 @@ fun WebConfig(
         Button(
             onClick = connect,
             modifier = Modifier.padding(horizontal = 8.dp),
-            enabled = connectionState == ConnectionState.Disconnected
+            enabled = connectionState == Disconnected
         ) {
-            Text(StringLocale[if (connectionState == ConnectionState.Disconnected) STR_START_OLEBO_WEB else STR_LOGIN_OLEBO_WEB])
+            Text(StringLocale[if (connectionState == Disconnected) STR_START_OLEBO_WEB else STR_LOGIN_OLEBO_WEB])
         }
     }
 }

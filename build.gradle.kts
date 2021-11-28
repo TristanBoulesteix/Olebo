@@ -9,14 +9,14 @@ plugins {
     kotlin("plugin.serialization") version kotlinVersion apply false
 }
 
-repositories {
-    mavenCentral()
-}
-
 allprojects {
     group = "jdr.exia"
 
     apply(plugin = "org.jetbrains.kotlin.multiplatform")
+
+    repositories {
+        mavenCentral()
+    }
 
     kotlin {
         jvm {

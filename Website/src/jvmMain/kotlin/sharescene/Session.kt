@@ -2,10 +2,11 @@ package fr.olebo.sharescene
 
 import fr.olebo.synchronizedConnectionsSet
 import io.ktor.http.cio.websocket.*
+import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 
 data class ShareSceneSession(
-    val sessionId: String,
+    val sessionId: UUID = UUID.randomUUID(),
     val masterConnection: Connection,
     val playerConnections: MutableSet<Connection> = synchronizedConnectionsSet()
 )

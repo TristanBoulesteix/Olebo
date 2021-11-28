@@ -6,10 +6,6 @@ plugins {
 
 group = "jdr.exia"
 
-repositories {
-    mavenCentral()
-}
-
 kotlin {
     sourceSets["jvmMain"].dependencies {
         implementation(project(":System"))

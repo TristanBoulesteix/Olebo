@@ -14,7 +14,6 @@ plugins {
 version = "0.1.4"
 
 repositories {
-    mavenCentral()
     maven("https://dl.bintray.com/kotlin/exposed/")
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     google()
@@ -33,10 +32,11 @@ kotlin {
         implementation("io.ktor:ktor-client-core:$ktorVersion")
         implementation("io.ktor:ktor-client-cio:$ktorVersion")
         implementation("io.ktor:ktor-client-serialization:$ktorVersion")
-        implementation("io.ktor:ktor-client-apache:$ktorVersion")
+        implementation("io.ktor:ktor-client-websockets:$ktorVersion")
         implementation(project(":Localization"))
         implementation(project(":Update"))
         implementation(project(":System"))
+        implementation(project(":ShareScene"))
         implementation(compose.desktop.currentOs)
     }
 }

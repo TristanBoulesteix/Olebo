@@ -21,15 +21,12 @@ import jdr.exia.model.type.checkedImgPath
 import jdr.exia.model.type.contains
 import jdr.exia.model.type.inputStreamOrNotFound
 import jdr.exia.model.type.toImgPath
-import jdr.exia.service.ConnectionState
+import jdr.exia.service.*
 import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.tools.getTokenFromPosition
 import jdr.exia.view.tools.positionOf
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlinx.coroutines.swing.Swing
-import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
@@ -67,7 +64,7 @@ class MasterViewModel(val act: Act) :
         }
     }
 
-    var connectionState by mutableStateOf(ConnectionState.Disconnected)
+    var connectionState: ConnectionState by mutableStateOf(Disconnected)
 
     /**
      * These are all the [Blueprint] placed on  the current map
@@ -322,7 +319,22 @@ class MasterViewModel(val act: Act) :
     }
 
     fun connectToServer() {
-        connectionState = ConnectionState.Login
+        connectionState = Login
+        launch(Dispatchers.IO) {
+            ShareSceneManager().use {
+                it.initWebsocket(
+                    onConnected = { connectionState = Connected(it) },
+                    onDisconnected = {
+                        connectionState = Disconnected
+                        it.close()
+                    },
+                    onFailure = {
+                        connectionState = ConnectionFailed
+                        it.close()
+                    }
+                )
+            }
+        }
     }
 
     private fun loadBlueprints(): Map<TypeElement, List<Blueprint>> = transaction {

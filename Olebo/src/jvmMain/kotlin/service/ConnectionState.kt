@@ -1,5 +1,11 @@
 package jdr.exia.service
 
-enum class ConnectionState {
-    Disconnected, Login, Logged
-}
+sealed interface ConnectionState
+
+object Disconnected : ConnectionState
+
+object ConnectionFailed: ConnectionState
+
+object Login : ConnectionState
+
+class Connected(val manager: ShareSceneManager) : ConnectionState
