@@ -1,7 +1,6 @@
 package fr.olebo.sharescene
 
 import fr.olebo.synchronizedSessionSet
-import io.ktor.http.*
 import io.ktor.http.cio.websocket.*
 import io.ktor.routing.*
 import io.ktor.websocket.*
@@ -32,8 +31,7 @@ fun Routing.shareSceneRouting()  {
     // Web clients (Receivers)
     webSocket("share-scene/{$ID_PARAM_NAME}") {
         val sessionId: UUID = try {
-            val parameters: Parameters = call.parameters
-            UUID.fromString(parameters[ID_PARAM_NAME])
+            UUID.fromString(call.parameters[ID_PARAM_NAME])
         } catch (t: Throwable) {
             return@webSocket
         }
