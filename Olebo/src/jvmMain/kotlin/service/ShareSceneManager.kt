@@ -9,11 +9,11 @@ import java.io.Closeable
 import java.util.*
 
 class ShareSceneManager private constructor(private val client: HttpClient) : Closeable by client {
-    var idSession: UUID? = null
+    lateinit var idSession: UUID
         private set
 
     suspend fun initWebsocket(onConnected: () -> Unit, onDisconnected: () -> Unit, onFailure: () -> Unit) {
-        try{
+        try {
             client.webSocket(host = "localhost", port = 8080, path = "share-scene") {
                 for (frame in incoming) {
                     when (frame) {
