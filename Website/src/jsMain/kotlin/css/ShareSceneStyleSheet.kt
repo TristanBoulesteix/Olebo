@@ -3,6 +3,18 @@ package fr.olebo.sharescene.css
 import org.jetbrains.compose.web.css.*
 
 object ShareSceneStyleSheet : StyleSheet() {
+    val boxContainer by style {
+        display(DisplayStyle.Flex)
+        flexDirection(FlexDirection.Column)
+    }
+
+    val alignedForm by style {
+        width(100.percent)
+        display(DisplayStyle.Flex)
+        justifyContent(JustifyContent.SpaceBetween)
+        margin(bottom = 5.percent)
+    }
+
     val rootContainer by style {
         display(DisplayStyle.Flex)
         justifyContent(JustifyContent.Center)
@@ -19,7 +31,7 @@ object ShareSceneStyleSheet : StyleSheet() {
             width = 2.px
         }
         display(DisplayStyle.Flex)
-        flexFlow(FlexDirection.Column)
+        flexDirection(FlexDirection.Column)
     }
 
     val formTitle by style {
@@ -29,6 +41,6 @@ object ShareSceneStyleSheet : StyleSheet() {
     }
 
     val formContent by style {
-        margin(horizontal = 5.percent)
+        margin(horizontal = 5.percent, vertical = auto)
     }
 }

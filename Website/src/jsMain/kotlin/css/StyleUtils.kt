@@ -2,9 +2,15 @@ package fr.olebo.sharescene.css
 
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.AttrBuilderContext
-import org.w3c.dom.HTMLDivElement
+import org.w3c.dom.HTMLElement
 
-fun classes(vararg classes: String): AttrBuilderContext<HTMLDivElement> = { classes(*classes) }
+fun <T : HTMLElement> classes(vararg classes: String): AttrBuilderContext<T> = { classes(*classes) }
+
+inline val auto
+    get() = "auto".unsafeCast<CSSNumeric>()
+
+inline val zero
+    get() = 0.unsafeCast<CSSLengthOrPercentageValue>()
 
 fun StyleBuilder.margin(
     top: CSSNumeric? = null,
