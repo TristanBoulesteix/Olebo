@@ -7,16 +7,15 @@ val exposedVersion: String by project.parent!!
 
 plugins {
     kotlin("multiplatform")
-    id("org.jetbrains.compose") version "1.0.0"
-    id("org.sonarqube") version "3.3"
+
+    val composeVersion: String by System.getProperties()
+    id("org.jetbrains.compose") version composeVersion
 }
 
 version = "0.1.4"
 
 repositories {
     maven("https://dl.bintray.com/kotlin/exposed/")
-    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-    google()
 }
 
 kotlin {

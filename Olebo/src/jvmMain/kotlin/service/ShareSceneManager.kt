@@ -6,11 +6,12 @@ import io.ktor.client.*
 import io.ktor.client.features.websocket.*
 import io.ktor.http.cio.websocket.*
 import java.io.Closeable
-import java.util.*
 
 class ShareSceneManager private constructor(private val client: HttpClient) : Closeable by client {
-    lateinit var idSession: UUID
-        private set
+    private var codeSession: String? = null
+
+    val sceneUrl
+        get() = codeSession?.let { "localhost/share-scene/$it" }
 
     suspend fun initWebsocket(onConnected: () -> Unit, onDisconnected: () -> Unit, onFailure: () -> Unit) {
         try {
@@ -19,7 +20,7 @@ class ShareSceneManager private constructor(private val client: HttpClient) : Cl
                     when (frame) {
                         is Frame.Text -> when (val message = frame.getMessageOrNull()) {
                             is NewSessionCreated -> {
-                                idSession = message.id
+                                codeSession = message.code
                                 onConnected()
                             }
                         }

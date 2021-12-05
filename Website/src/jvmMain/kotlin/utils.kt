@@ -4,6 +4,8 @@ import fr.olebo.sharescene.Connection
 import fr.olebo.sharescene.ShareSceneSession
 import java.util.*
 
-fun synchronizedSessionSet(): MutableSet<ShareSceneSession> = Collections.synchronizedSet(LinkedHashSet())
+fun synchronizedSessionSet() = synchronizedSet<ShareSceneSession>()
 
-fun synchronizedConnectionsSet(): MutableSet<Connection> = Collections.synchronizedSet(LinkedHashSet())
+fun synchronizedConnectionsSet() = synchronizedSet<Connection>()
+
+fun <T> synchronizedSet(): MutableSet<T> = Collections.synchronizedSet(LinkedHashSet())

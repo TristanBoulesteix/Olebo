@@ -16,6 +16,7 @@ allprojects {
 
     repositories {
         mavenCentral()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
 
     kotlin {
@@ -36,6 +37,14 @@ subprojects {
     }
 
     kotlin {
+        js(IR) {
+            binaries.executable()
+            browser {
+                commonWebpackConfig {
+                    cssSupport.enabled = true
+                }
+            }
+        }
         sourceSets {
             val commonMain by getting {
                 dependencies {
@@ -43,6 +52,7 @@ subprojects {
                 }
             }
             val jvmMain by getting
+            val jsMain by getting
         }
     }
 }

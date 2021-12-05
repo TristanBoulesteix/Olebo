@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Update-js">
+    <output-path>$PROJECT_DIR$/Update/build/libs</output-path>
+    <root id="archive" name="Update-js.jar">
+      <element id="module-output" name="Olebo.Update.jsMain" />
+    </root>
+  </artifact>
+</component>

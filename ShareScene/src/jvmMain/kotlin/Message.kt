@@ -7,4 +7,4 @@ import java.util.*
 sealed class Message
 
 @Serializable
-class NewSessionCreated(@Serializable(with = UUIDSerializer::class) val id: UUID) : Message()
+class NewSessionCreated(@Serializable(with = UUIDSerializer::class) val id: UUID, val code: String) : Message()

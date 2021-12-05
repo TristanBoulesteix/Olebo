@@ -37,9 +37,9 @@ private fun WebConfig(connect: () -> Unit, connectionState: ConnectionState) = R
     Button(
         onClick = connect,
         modifier = Modifier.padding(horizontal = 8.dp),
-        enabled = connectionState == Disconnected
+        enabled = connectionState is Disconnected
     ) {
-        Text(StringLocale[if (connectionState == Disconnected) STR_START_OLEBO_WEB else STR_LOGIN_OLEBO_WEB])
+        Text(StringLocale[if (connectionState is Disconnected) STR_START_OLEBO_WEB else STR_LOGIN_OLEBO_WEB])
     }
 }
 
@@ -47,7 +47,7 @@ private fun WebConfig(connect: () -> Unit, connectionState: ConnectionState) = R
 private fun ShareSceneManagerScreen(manager: ShareSceneManager) = Column(modifier = Modifier.padding(start = 10.dp)) {
     Text("test")
 
-    Spacer(Modifier.width(25.dp))
+    Spacer(Modifier.height(25.dp))
 
-    OutlinedTextField(value = manager.idSession.toString(), onValueChange = {})
+    OutlinedTextField(value = manager.sceneUrl ?: "", onValueChange = {})
 }
