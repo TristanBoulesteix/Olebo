@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="Website-jvm-0.0.1">
-    <output-path>$PROJECT_DIR$/Website/build/libs</output-path>
-    <root id="archive" name="Website-jvm-0.0.1.jar">
-      <element id="module-output" name="Olebo.Website.jvmMain" />
-    </root>
-  </artifact>
-</component>
