@@ -1,9 +1,11 @@
 package fr.olebo.sharescene.css
 
+import org.jetbrains.compose.web.ExperimentalComposeWebApi
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.stringPresentation
 
 object MaterialStyleSheet : StyleSheet() {
+    @OptIn(ExperimentalComposeWebApi::class)
     val materialTextField by style {
         display(DisplayStyle.InlineBlock)
         overflow("hidden")
@@ -36,7 +38,7 @@ object MaterialStyleSheet : StyleSheet() {
             boxSizing("border-box")
             padding(7.px, zero, zero)
             color(rgbaMaterial(.6))
-            fontSize(75.percent)
+            fontSize(90.percent)
             lineHeight(18.px)
             property("pointer-events", "none")
             property("transition", "color 0.2s, font-size 0.2s, line-height 0.2s")
@@ -77,7 +79,7 @@ object MaterialStyleSheet : StyleSheet() {
         }
 
         child(self, adjacent(type("input") + focus, type("span") + after)) style {
-            property("transform", "scale(1)")
+            transform { scale(1) }
         }
 
         child(self, type("input") + disabled) style {
@@ -90,12 +92,11 @@ object MaterialStyleSheet : StyleSheet() {
         }
     }
 
-    private fun rgbaMaterial(opacity: Number) =
-        "rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), $opacity)".unsafeCast<CSSColorValue>()
+    private fun rgbaMaterial(opacity: Number) = rgba(0, 0, 0, opacity)
 
-    private fun rgbMaterialPrimary() = "rgb(var(--pure-material-primary-rgb, 33, 150, 243))".unsafeCast<CSSColorValue>()
+    private fun rgbMaterialPrimary() = rgb(33, 150, 243)
 
     init {
-        println(cssRules.joinToString(separator = "\n") { it.stringPresentation() })
+        println(cssRules.joinToString("\n") { it.stringPresentation() })
     }
 }

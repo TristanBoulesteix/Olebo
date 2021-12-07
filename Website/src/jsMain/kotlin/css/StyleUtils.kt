@@ -34,8 +34,3 @@ fun StyleBuilder.margin(
 fun StyleBuilder.margin(horizontal: CSSNumeric? = null, vertical: CSSNumeric? = null) {
     margin(top = vertical, start = horizontal, bottom = vertical, end = horizontal)
 }
-
-fun StyleBuilder.flexFlow(flexDirection: FlexDirection) = property(
-    "flex-flow",
-    flexDirection.value
-)

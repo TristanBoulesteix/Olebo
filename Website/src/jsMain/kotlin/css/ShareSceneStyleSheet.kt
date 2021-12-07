@@ -2,7 +2,7 @@ package fr.olebo.sharescene.css
 
 import org.jetbrains.compose.web.css.*
 
-object ShareSceneStyleSheet : StyleSheet() {
+object ShareSceneStyleSheet : StyleSheet(MaterialStyleSheet) {
     val boxContainer by style {
         display(DisplayStyle.Flex)
         flexDirection(FlexDirection.Column)
