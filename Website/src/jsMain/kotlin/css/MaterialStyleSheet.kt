@@ -4,6 +4,7 @@ import org.jetbrains.compose.web.ExperimentalComposeWebApi
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.stringPresentation
 
+@Suppress("WrapUnaryOperator")
 object MaterialStyleSheet : StyleSheet() {
     @OptIn(ExperimentalComposeWebApi::class)
     val materialTextField by style {
@@ -21,8 +22,10 @@ object MaterialStyleSheet : StyleSheet() {
             border(location = BorderLocation.Bottom, style = LineStyle.Solid, width = 1.px, color = rgbaMaterial(.6))
             padding(zero, zero, 4.px)
             width(100.percent)
+            height(inherit)
             color(rgbaMaterial(.87))
             backgroundColor(Color.transparent)
+            lineHeight("inherit")
             property("box-shadow", "none")
             property("caret-color", rgbMaterialPrimary())
             property("transition", "border-bottom 0.2s, background-color 0.2s")
@@ -44,8 +47,8 @@ object MaterialStyleSheet : StyleSheet() {
             property("transition", "color 0.2s, font-size 0.2s, line-height 0.2s")
         }
 
-        child(self, type("input") + after) style {
-            property("content", "")
+        child(self, adjacent(type("input"), type("span") + after)) style {
+            content()
             position(Position.Absolute)
             left(zero)
             bottom(zero)
@@ -54,7 +57,7 @@ object MaterialStyleSheet : StyleSheet() {
             height(2.px)
             backgroundColor(rgbMaterialPrimary())
             property("transform-origin", "bottom center")
-            property("transform", "scaleX(0)")
+            transform { scaleX(0) }
             property("transition", "transform 0.2s")
         }
 
@@ -92,9 +95,87 @@ object MaterialStyleSheet : StyleSheet() {
         }
     }
 
+    @OptIn(ExperimentalComposeWebApi::class)
+    val materialButton by style {
+        position(Position.Relative)
+        display(DisplayStyle.InlineBlock)
+        boxSizing("border-box")
+        border(width = 1.px, style = LineStyle.Solid, color = rgbaMaterial(.24))
+        borderRadius(4.px)
+        padding(zero, 16.px)
+        minWidth(64.px)
+        height(36.px)
+        property("vertical-align", "middle")
+        textAlign("center")
+        property("text-overflow", "ellipsis")
+        color(rgbMaterialPrimary())
+        backgroundColor(Color.transparent)
+        fontSize(14.px)
+        fontWeight("500")
+        lineHeight(34.px)
+        overflow("hidden")
+        outline("none")
+        cursor("pointer")
+
+        /*self + "::-moz-focus-inner" style {
+            border(style = LineStyle.None)
+        }*/
+
+        self + before style {
+            content()
+            position(Position.Absolute)
+            top(zero)
+            left(zero)
+            right(zero)
+            bottom(zero)
+            backgroundColor("currentColor".unsafeCast<CSSColorValue>())
+            opacity(0)
+            property("transition", "opacity 0.2s")
+        }
+
+        self + after style {
+            content()
+            position(Position.Absolute)
+            left(50.percent)
+            top(50.percent)
+            borderRadius(50.percent)
+            padding(50.percent)
+            width(32.px)
+            height(32.px)
+            backgroundColor("currentColor".unsafeCast<CSSColorValue>())
+            opacity(0)
+            transform {
+                translate(-50.percent, -50.percent)
+                scale(1)
+            }
+            property("transition", "opacity 1s, transform 0.5s")
+        }
+
+        self + hover + before style {
+            opacity(.04)
+        }
+
+        self + focus + before style {
+            opacity(.12)
+        }
+
+        self + hover + focus + before style {
+            opacity(.16)
+        }
+
+        self + active + after style {
+            opacity(.16)
+            transform {
+                translate(-50.percent, -50.percent)
+                scale(0)
+            }
+            property("transition", "transform 0s")
+        }
+    }
+
     private fun rgbaMaterial(opacity: Number) = rgba(0, 0, 0, opacity)
 
-    private fun rgbMaterialPrimary() = rgb(33, 150, 243)
+    private fun rgbMaterialPrimary() = rgb(158, 195, 255)
 
     init {
         println(cssRules.joinToString("\n") { it.stringPresentation() })
