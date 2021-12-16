@@ -118,7 +118,7 @@ private fun LabelField(selectedElements: List<Element>, repaint: () -> Unit, mod
 
                 newSuspendedTransaction { element.alias = it }
             },
-            onUpdated = { repaint() }
+            onUpdated = repaint
         )
 
         CustomTextField(
@@ -157,7 +157,7 @@ private fun SizeSelector(selectedElements: List<Element>, repaint: () -> Unit, c
         onChange = {
             Element.cmdDimension(it, commandManager, selectedElements)
         },
-        onUpdated = { repaint() }
+        onUpdated = repaint
     )
 
     val isEnabled = selectedElements.isNotEmpty()
@@ -183,7 +183,7 @@ private fun LayerSelector(selectedElements: List<Element>, setPriority: suspend 
                 )
             )
         },
-        onChange = { setPriority(it) }
+        onChange = setPriority
     )
 
     val isEnabled = selectedElements.isNotEmpty()

@@ -23,6 +23,7 @@ class ShareSceneManager private constructor(private val client: HttpClient) : Cl
                                 codeSession = message.code
                                 onConnected()
                             }
+                            else -> Unit
                         }
                         else -> Unit
                     }
