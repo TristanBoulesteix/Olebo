@@ -1,7 +1,6 @@
 package fr.olebo.sharescene.css
 
 import org.jetbrains.compose.web.css.*
-import org.jetbrains.compose.web.css.keywords.CSSAutoKeyword
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.w3c.dom.HTMLElement
 
@@ -9,12 +8,6 @@ fun <T : HTMLElement> classes(vararg classes: String): AttrBuilderContext<T> = {
 
 inline val auto
     get() = "auto".unsafeCast<CSSNumeric>()
-
-inline val zero
-    get() = 0.unsafeCast<CSSLengthOrPercentageValue>()
-
-inline val inherit
-    get() = "inherit".unsafeCast<CSSAutoKeyword>()
 
 fun StyleBuilder.margin(
     top: CSSNumeric? = null,
@@ -38,5 +31,3 @@ fun StyleBuilder.margin(
 fun StyleBuilder.margin(horizontal: CSSNumeric? = null, vertical: CSSNumeric? = null) {
     margin(top = vertical, start = horizontal, bottom = vertical, end = horizontal)
 }
-
-fun CSSBuilder.content() = property("content", "\"\"")
