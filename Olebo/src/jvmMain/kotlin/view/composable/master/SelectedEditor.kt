@@ -136,9 +136,9 @@ private fun LabelField(selectedElements: List<Element>, repaint: () -> Unit, mod
 }
 
 private fun <T> List<Element>.getElementProperty(elementPropertyGetter: Element.() -> T, defaultValue: T) = when {
-    this.isEmpty() -> defaultValue
-    this.size == 1 -> this.first().elementPropertyGetter()
-    else -> this.groupingBy(elementPropertyGetter).eachCount().maxByOrNull { it.value }?.key ?: defaultValue
+    isEmpty() -> defaultValue
+    size == 1 -> first().elementPropertyGetter()
+    else -> groupingBy(elementPropertyGetter).eachCount().maxByOrNull { it.value }?.key ?: defaultValue
 }
 
 @Composable

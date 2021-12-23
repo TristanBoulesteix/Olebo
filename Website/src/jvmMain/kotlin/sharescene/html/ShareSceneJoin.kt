@@ -13,6 +13,6 @@ fun HTML.connectToShareScene() {
     body {
         style = contentStyle
 
-        script(src = "/static/Website.js") {  }
+        script(src = "/static/Website.js") { }
     }
 }

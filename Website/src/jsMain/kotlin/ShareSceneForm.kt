@@ -1,7 +1,8 @@
 package fr.olebo.sharescene
 
 import androidx.compose.runtime.*
-import fr.olebo.sharescene.components.MaterialButton
+import dev.petuska.kmdc.button.MDCButton
+import dev.petuska.kmdc.button.MDCButtonOpts
 import fr.olebo.sharescene.components.MaterialTextField
 import fr.olebo.sharescene.css.ShareSceneStyleSheet
 import fr.olebo.sharescene.css.classes
@@ -20,7 +21,8 @@ fun ShareSceneForm() = Div(attrs = classes(ShareSceneStyleSheet.mainContainer)) 
         MaterialTextField(label = "Code de session :", value = sessionCode, onValueChange = { sessionCode = it })
         MaterialTextField(label = "Nom de joueur :", value = userName, onValueChange = { userName = it })
 
-        MaterialButton("Click") { window.alert("test") }
+        MDCButton(text = "click", opts = { type = MDCButtonOpts.Type.Outlined }) {
+            onClick { window.alert("click") }
+        }
     }
 }
-

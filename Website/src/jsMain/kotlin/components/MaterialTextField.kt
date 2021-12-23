@@ -1,25 +1,19 @@
 package fr.olebo.sharescene.components
 
 import androidx.compose.runtime.Composable
-import fr.olebo.sharescene.css.MaterialStyleSheet
+import dev.petuska.kmdc.textfield.MDCTextField
+import fr.olebo.sharescene.css.ShareSceneStyleSheet
 import fr.olebo.sharescene.css.classes
-import org.jetbrains.compose.web.attributes.InputType
-import org.jetbrains.compose.web.attributes.placeholder
-import org.jetbrains.compose.web.dom.Input
-import org.jetbrains.compose.web.dom.Label
-import org.jetbrains.compose.web.dom.Span
-import org.jetbrains.compose.web.dom.Text
+import org.jetbrains.compose.web.dom.Div
 
 @Composable
 fun MaterialTextField(
     label: String,
     value: String,
     onValueChange: (String) -> Unit
-) = Label(attrs = classes(MaterialStyleSheet.materialTextField)) {
-    Input(type = InputType.Text) {
-        placeholder(" ")
+) = Div(attrs = classes(ShareSceneStyleSheet.materialBottomMargin)) {
+    MDCTextField(opts = { this.label = label }) {
         value(value)
         onInput { onValueChange(it.value) }
     }
-    Span { Text(label) }
 }

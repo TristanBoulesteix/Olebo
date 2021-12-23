@@ -2,17 +2,10 @@ package fr.olebo.sharescene.css
 
 import org.jetbrains.compose.web.css.*
 
-object ShareSceneStyleSheet : StyleSheet(MaterialStyleSheet) {
+object ShareSceneStyleSheet : StyleSheet() {
     val boxContainer by style {
         display(DisplayStyle.Flex)
         flexDirection(FlexDirection.Column)
-    }
-
-    val alignedForm by style {
-        width(100.percent)
-        display(DisplayStyle.Flex)
-        justifyContent(JustifyContent.SpaceBetween)
-        margin(bottom = 5.percent)
     }
 
     val rootContainer by style {
@@ -42,5 +35,10 @@ object ShareSceneStyleSheet : StyleSheet(MaterialStyleSheet) {
 
     val formContent by style {
         margin(horizontal = 5.percent, vertical = auto)
+    }
+
+    val materialBottomMargin by style {
+        marginBottom(12.px)
+        display(DisplayStyle.Grid)
     }
 }

@@ -36,6 +36,7 @@ kotlin {
     }
     sourceSets["jsMain"].dependencies {
         implementation(compose.web.core)
+        implementation("dev.petuska:kmdc:0.0.1")
     }
 }
 
