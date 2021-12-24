@@ -3,6 +3,7 @@ package fr.olebo.sharescene.css
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.w3c.dom.HTMLElement
+import kotlin.properties.ReadOnlyProperty
 
 fun <T : HTMLElement> classes(vararg classes: String): AttrBuilderContext<T> = { classes(*classes) }
 
@@ -31,3 +32,9 @@ fun StyleBuilder.margin(
 fun StyleBuilder.margin(horizontal: CSSNumeric? = null, vertical: CSSNumeric? = null) {
     margin(top = vertical, start = horizontal, bottom = vertical, end = horizontal)
 }
+
+fun <TValue : StylePropertyValue> materialVariable() = ReadOnlyProperty<Any?, CSSStyleVariable<TValue>> { _, property ->
+    CSSStyleVariable(property.name.toKebabCase())
+}
+
+private fun String.toKebabCase() = Regex("(?<=[a-zA-Z])[A-Z]").replace(this) { "-${it.value}" }.lowercase()

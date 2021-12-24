@@ -3,6 +3,21 @@ package fr.olebo.sharescene.css
 import org.jetbrains.compose.web.css.*
 
 object ShareSceneStyleSheet : StyleSheet() {
+    private val mdcThemePrimary by materialVariable<CSSColorValue>()
+
+    init {
+        root style {
+            mdcThemePrimary(Color.blue)
+        }
+
+        desc(
+            className("mdc-text-field--focused") + not(className("mdc-text-field--disabled")),
+            className("mdc-floating-label")
+        ) style {
+            color(mdcThemePrimary.value())
+        }
+    }
+
     val boxContainer by style {
         display(DisplayStyle.Flex)
         flexDirection(FlexDirection.Column)
@@ -41,4 +56,8 @@ object ShareSceneStyleSheet : StyleSheet() {
         marginBottom(12.px)
         display(DisplayStyle.Grid)
     }
+
+    /*init {
+        println(cssRules.joinToString("\n") { it.stringPresentation() })
+    }*/
 }
