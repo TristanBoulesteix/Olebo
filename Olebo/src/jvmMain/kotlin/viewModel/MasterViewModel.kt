@@ -329,7 +329,7 @@ class MasterViewModel(val act: Act) :
                         it.close()
                     },
                     onFailure = {
-                        connectionState = ConnectionFailed
+                        connectionState = Disconnected.ConnectionFailed
                         it.close()
                     }
                 )

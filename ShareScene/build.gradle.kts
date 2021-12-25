@@ -7,7 +7,7 @@ plugins {
 group = "fr.olebo"
 
 kotlin {
-    sourceSets["jvmMain"].dependencies {
+    sourceSets["commonMain"].dependencies {
         implementation("io.ktor:ktor-websockets:$ktorVersion")
     }
 }

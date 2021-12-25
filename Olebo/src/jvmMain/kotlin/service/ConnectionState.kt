@@ -2,9 +2,11 @@ package jdr.exia.service
 
 sealed interface ConnectionState
 
-object Disconnected : ConnectionState
+sealed interface Disconnected : ConnectionState {
+    companion object : Disconnected
 
-object ConnectionFailed: ConnectionState
+    object ConnectionFailed: Disconnected
+}
 
 object Login : ConnectionState
 

@@ -41,7 +41,8 @@ fun Routing.shareSceneRouting() {
 
     // Web clients (Receivers)
     get(urlClients) {
-        if(shareSceneSessions.any { it.urlCode == call.parameters[SESSION_CODE_PARAM] }) {
+        val parameters: Parameters = call.parameters
+        if (shareSceneSessions.any { it.urlCode == parameters[SESSION_CODE_PARAM] }) {
             call.respondText("Test")
         } else {
             call.respond(HttpStatusCode.BadGateway)
@@ -49,8 +50,10 @@ fun Routing.shareSceneRouting() {
     }
 
     webSocket(urlClients) {
+        val parameters: Parameters = call.parameters
+
         val currentSession =
-            shareSceneSessions.find { it.urlCode == call.parameters[SESSION_CODE_PARAM] } ?: return@webSocket
+            shareSceneSessions.find { it.urlCode == parameters[SESSION_CODE_PARAM] } ?: return@webSocket
 
         val currentConnection = Connection()
 

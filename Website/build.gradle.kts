@@ -26,7 +26,7 @@ kotlin {
         implementation("io.ktor:ktor-serialization:$ktorVersion")
         implementation("io.ktor:ktor-server-netty:$ktorVersion")
         implementation("io.ktor:ktor-websockets:$ktorVersion")
-        implementation("io.ktor:ktor-http:$ktorVersion")
+        implementation("io.ktor:ktor-http-jvm:$ktorVersion")
         implementation("ch.qos.logback:logback-classic:$logbackVersion")
         implementation("io.ktor:ktor-html-builder:$ktorVersion")
         implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
@@ -36,6 +36,10 @@ kotlin {
     }
     sourceSets["jsMain"].dependencies {
         implementation(compose.web.core)
+        implementation("io.ktor:ktor-client-core:$ktorVersion")
+        implementation("io.ktor:ktor-client-js:$ktorVersion")
+        implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+        implementation("io.ktor:ktor-client-websockets:$ktorVersion")
         implementation("dev.petuska:kmdc:0.0.1")
     }
 }
