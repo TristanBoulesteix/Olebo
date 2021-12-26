@@ -5,6 +5,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
+import fr.olebo.sharescene.*
+import io.ktor.http.cio.websocket.*
 import jdr.exia.localization.STR_DELETE_SELECTED_TOKENS
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.act.Act
@@ -320,20 +322,34 @@ class MasterViewModel(val act: Act) :
 
     fun connectToServer() {
         connectionState = Login
+
         launch(Dispatchers.IO) {
-            ShareSceneManager().use {
-                it.initWebsocket(
-                    onConnected = { connectionState = Connected(it) },
-                    onDisconnected = {
-                        connectionState = Disconnected
-                        it.close()
-                    },
-                    onFailure = {
-                        connectionState = Disconnected.ConnectionFailed
-                        it.close()
+            initWebsocket(
+                socketClient,
+                onFailure = {
+                    connectionState = Disconnected.ConnectionFailed
+                    it.close()
+                },
+                socketBlock = { manager: ShareSceneManager, setSessionCode: (String) -> Unit ->
+                    for (frame in incoming) {
+                        when (frame) {
+                            is Frame.Text -> when (val message = frame.getMessageOrNull()) {
+                                is NewSessionCreated -> {
+                                    setSessionCode(message.code)
+                                    connectionState = Connected(manager)
+                                }
+                                else -> Unit
+                            }
+                            else -> Unit
+                        }
                     }
-                )
-            }
+
+                    withContext(Dispatchers.IO) {
+                        connectionState = Disconnected
+                        manager.close()
+                    }
+                }
+            )
         }
     }
 

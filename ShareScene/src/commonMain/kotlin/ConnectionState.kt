@@ -1,11 +1,11 @@
-package jdr.exia.service
+package fr.olebo.sharescene
 
 sealed interface ConnectionState
 
 sealed interface Disconnected : ConnectionState {
     companion object : Disconnected
 
-    object ConnectionFailed: Disconnected
+    object ConnectionFailed : Disconnected
 }
 
 object Login : ConnectionState
