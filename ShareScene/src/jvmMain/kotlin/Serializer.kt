@@ -7,6 +7,8 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import java.util.*
 
+actual typealias Id = UUID
+
 internal actual object IdSerializer : KSerializer<Id> {
     override val descriptor = PrimitiveSerialDescriptor("UUID", PrimitiveKind.STRING)
 

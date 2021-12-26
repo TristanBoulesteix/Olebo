@@ -5,8 +5,10 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
+actual typealias Id = Nothing
+
 internal actual object IdSerializer : KSerializer<Id> {
-    override fun deserialize(decoder: Decoder): Id {
+    override fun deserialize(decoder: Decoder): Nothing {
         TODO("Not yet implemented")
     }
 
