@@ -20,6 +20,7 @@ application {
 kotlin {
     sourceSets["commonMain"].dependencies {
         implementation(compose.runtime)
+        implementation(project(":ShareScene"))
     }
     sourceSets["jvmMain"].dependencies {
         implementation("io.ktor:ktor-server-core:$ktorVersion")
@@ -32,7 +33,6 @@ kotlin {
         implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
         implementation(project(":Update"))
         implementation(project(":System"))
-        implementation(project(":ShareScene"))
     }
     sourceSets["jsMain"].dependencies {
         implementation(compose.web.core)

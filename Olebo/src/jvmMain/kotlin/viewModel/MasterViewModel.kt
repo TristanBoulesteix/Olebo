@@ -325,7 +325,8 @@ class MasterViewModel(val act: Act) :
 
         launch(Dispatchers.IO) {
             initWebsocket(
-                socketClient,
+                client = socketClient,
+                path = "share-scene",
                 onFailure = {
                     connectionState = Disconnected.ConnectionFailed
                     it.close()

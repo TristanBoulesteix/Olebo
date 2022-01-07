@@ -6,6 +6,7 @@ import io.ktor.utils.io.core.*
 
 class ShareSceneManager internal constructor(
     private val client: HttpClient,
+    private val path: String,
     private val socketBlock: suspend DefaultClientWebSocketSession.(manager: ShareSceneManager, setSessionCode: (String) -> Unit) -> Unit,
     private val onFailure: (manager: ShareSceneManager) -> Unit
 ) : Closeable by client {
@@ -18,11 +19,16 @@ class ShareSceneManager internal constructor(
         val manager = this
 
         try {
-            client.webSocket(host = "localhost", port = 8080, path = "share-scene") {
+            client.webSocket(host = "localhost", port = 8080, path = path) {
                 socketBlock(manager) { codeSession = it }
             }
         } catch (t: Throwable) {
             onFailure(manager)
         }
+    }
+
+    override fun close() {
+        client.close()
+        println("client closed")
     }
 }

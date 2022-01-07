@@ -6,6 +6,7 @@ import dev.petuska.kmdc.button.MDCButtonOpts
 import fr.olebo.sharescene.components.MaterialTextField
 import fr.olebo.sharescene.css.ShareSceneStyleSheet
 import fr.olebo.sharescene.css.classes
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.web.attributes.disabled
 import org.jetbrains.compose.web.dom.Div
@@ -20,14 +21,12 @@ fun ShareSceneForm(connect: suspend (userName: String, sessionCode: String) -> U
             var sessionCode by remember { mutableStateOf("") }
             var userName by remember { mutableStateOf("") }
 
-            val scope = rememberCoroutineScope()
-
             MaterialTextField(label = "Code de session :", value = sessionCode, onValueChange = { sessionCode = it })
             MaterialTextField(label = "Nom de joueur :", value = userName, onValueChange = { userName = it })
 
             MDCButton(text = "Démarrer", opts = { type = MDCButtonOpts.Type.Outlined }) {
                 onClick {
-                    scope.launch {
+                    MainScope().launch {
                         connect(userName, sessionCode)
                     }
                 }

@@ -11,17 +11,18 @@ import kotlinx.serialization.json.Json
 suspend fun WebSocketSession.send(message: Message) = send(Json.encodeToString(message))
 
 fun Frame.Text.getMessageOrNull() = try {
-    Json.decodeFromString<Message>(this.readText())
+    Json.decodeFromString<Message>(readText())
 } catch (t: Throwable) {
     null
 }
 
 suspend fun initWebsocket(
     client: HttpClient,
+    path: String,
     socketBlock: suspend DefaultClientWebSocketSession.(manager: ShareSceneManager, setSessionCode: (String) -> Unit) -> Unit,
     onFailure: (manager: ShareSceneManager) -> Unit
 ) {
-    ShareSceneManager(client, socketBlock, onFailure).use {
+    ShareSceneManager(client, path, socketBlock, onFailure).use {
         it.initWebsocket()
     }
 }

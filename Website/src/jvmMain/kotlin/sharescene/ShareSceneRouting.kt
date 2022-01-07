@@ -6,10 +6,11 @@ import io.ktor.application.*
 import io.ktor.html.*
 import io.ktor.http.*
 import io.ktor.http.cio.websocket.*
-import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.websocket.*
 import kotlinx.html.HTML
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 private const val SESSION_CODE_PARAM = "sessionCode"
 
@@ -37,19 +38,7 @@ fun Routing.shareSceneRouting() {
         shareSceneSessions destroy currentSession
     }
 
-    val urlClients = "share-scene/{$SESSION_CODE_PARAM}"
-
-    // Web clients (Receivers)
-    get(urlClients) {
-        val parameters: Parameters = call.parameters
-        if (shareSceneSessions.any { it.urlCode == parameters[SESSION_CODE_PARAM] }) {
-            call.respondText("Test")
-        } else {
-            call.respond(HttpStatusCode.BadGateway)
-        }
-    }
-
-    webSocket(urlClients) {
+    webSocket("share-scene/{$SESSION_CODE_PARAM}") {
         val parameters: Parameters = call.parameters
 
         val currentSession =
@@ -62,9 +51,9 @@ fun Routing.shareSceneRouting() {
         for (frame in incoming) {
             when (frame) {
                 is Frame.Text -> {
-                    /*when (Json.decodeFromString<Message>(frame.readText())) {
+                    when (Json.decodeFromString<Message>(frame.readText())) {
                         else -> continue
-                    }*/
+                    }
                 }
                 else -> Unit
             }
