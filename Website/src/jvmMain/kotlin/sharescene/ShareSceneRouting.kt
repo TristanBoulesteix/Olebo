@@ -4,7 +4,6 @@ import fr.olebo.sharescene.html.connectToShareScene
 import fr.olebo.synchronizedSessionSet
 import io.ktor.application.*
 import io.ktor.html.*
-import io.ktor.http.*
 import io.ktor.http.cio.websocket.*
 import io.ktor.routing.*
 import io.ktor.websocket.*
@@ -39,10 +38,10 @@ fun Routing.shareSceneRouting() {
     }
 
     webSocket("share-scene/{$SESSION_CODE_PARAM}") {
-        val parameters: Parameters = call.parameters
-
         val currentSession =
-            shareSceneSessions.find { it.urlCode == parameters[SESSION_CODE_PARAM] } ?: return@webSocket
+            shareSceneSessions.find { it.urlCode == call.parameters[SESSION_CODE_PARAM] } ?: return@webSocket
+
+        val userName = call.request.queryParameters["name"] ?: return@webSocket
 
         val currentConnection = Connection()
 

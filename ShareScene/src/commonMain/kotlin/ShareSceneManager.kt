@@ -26,9 +26,4 @@ class ShareSceneManager internal constructor(
             onFailure(manager)
         }
     }
-
-    override fun close() {
-        client.close()
-        println("client closed")
-    }
 }

@@ -26,7 +26,7 @@ private fun Form(setConnectionState: (ConnectionState) -> Unit) {
     ShareSceneForm { userName, sessionCode ->
         initWebsocket(
             client = client,
-            path = "share-scene/$sessionCode",
+            path = "share-scene/$sessionCode?name=$userName",
             onFailure = {
                 setConnectionState(Disconnected.ConnectionFailed)
                 it.close()
