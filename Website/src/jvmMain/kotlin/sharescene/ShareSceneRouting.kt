@@ -1,6 +1,6 @@
 package fr.olebo.sharescene
 
-import fr.olebo.sharescene.html.connectToShareScene
+import fr.olebo.sharescene.html.shareSceneUi
 import fr.olebo.synchronizedSessionSet
 import io.ktor.application.*
 import io.ktor.html.*
@@ -16,8 +16,8 @@ private const val SESSION_CODE_PARAM = "sessionCode"
 fun Routing.shareSceneRouting() {
     val shareSceneSessions = synchronizedSessionSet()
 
-    get("share-scene") {
-        call.respondHtml(block = HTML::connectToShareScene)
+    get("share-scene/{?}") {
+        call.respondHtml(block = HTML::shareSceneUi)
     }
 
     // Olebo desktop app (Sender)

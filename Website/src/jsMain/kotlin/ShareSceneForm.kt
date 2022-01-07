@@ -6,6 +6,7 @@ import dev.petuska.kmdc.button.MDCButtonOpts
 import fr.olebo.sharescene.components.MaterialTextField
 import fr.olebo.sharescene.css.ShareSceneStyleSheet
 import fr.olebo.sharescene.css.classes
+import kotlinx.browser.document
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.web.attributes.disabled
@@ -18,7 +19,7 @@ fun ShareSceneForm(connect: suspend (userName: String, sessionCode: String) -> U
         Div(attrs = classes(ShareSceneStyleSheet.formTitle)) { Text("Olebo ShareScene") }
 
         Div(attrs = classes(ShareSceneStyleSheet.formContent, ShareSceneStyleSheet.boxContainer)) {
-            var sessionCode by remember { mutableStateOf("") }
+            var sessionCode by remember { mutableStateOf(document.location?.pathname?.split('/')?.last().orEmpty()) }
             var userName by remember { mutableStateOf("") }
 
             MaterialTextField(label = "Code de session :", value = sessionCode, onValueChange = { sessionCode = it })
