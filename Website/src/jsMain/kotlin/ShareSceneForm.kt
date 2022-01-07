@@ -12,21 +12,22 @@ import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.Text
 
 @Composable
-fun ShareSceneForm(connect: suspend (userName: String, sessionCode: String) -> Unit) =
-    Div(attrs = classes(ShareSceneStyleSheet.mainContainer)) {
-        Div(attrs = classes(ShareSceneStyleSheet.formTitle)) { Text("Olebo ShareScene") }
+fun ShareSceneForm(
+    connect: suspend (userName: String, sessionCode: String) -> Unit
+) = Div(attrs = classes(ShareSceneStyleSheet.mainContainer)) {
+    Div(attrs = classes(ShareSceneStyleSheet.formTitle)) { Text("Olebo ShareScene") }
 
-        Div(attrs = classes(ShareSceneStyleSheet.formContent, ShareSceneStyleSheet.boxContainer)) {
-            var sessionCode by remember { mutableStateOf(document.location?.pathname?.split('/')?.last().orEmpty()) }
-            var userName by remember { mutableStateOf("") }
+    Div(attrs = classes(ShareSceneStyleSheet.formContent, ShareSceneStyleSheet.boxContainer)) {
+        var sessionCode by remember { mutableStateOf(document.location?.pathname?.split('/')?.last().orEmpty()) }
+        var userName by remember { mutableStateOf("") }
 
-            MaterialTextField(label = "Code de session :", value = sessionCode, onValueChange = { sessionCode = it })
-            MaterialTextField(label = "Nom de joueur :", value = userName, onValueChange = { userName = it })
+        MaterialTextField(label = "Code de session :", value = sessionCode, onValueChange = { sessionCode = it })
+        MaterialTextField(label = "Nom de joueur :", value = userName, onValueChange = { userName = it })
 
-            MaterialButton(text = "Démarrer", enabled = sessionCode.isBlank() || userName.isBlank()) {
-                MainScope().launch {
-                    connect(userName, sessionCode)
-                }
+        MaterialButton(text = "Démarrer", enabled = sessionCode.isBlank() || userName.isBlank()) {
+            MainScope().launch {
+                connect(userName, sessionCode)
             }
         }
     }
+}
