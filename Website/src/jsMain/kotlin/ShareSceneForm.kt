@@ -18,7 +18,7 @@ fun ShareSceneForm(
     Div(attrs = classes(ShareSceneStyleSheet.formTitle)) { Text("Olebo ShareScene") }
 
     Div(attrs = classes(ShareSceneStyleSheet.formContent, ShareSceneStyleSheet.boxContainer)) {
-        var sessionCode by remember { mutableStateOf(document.location?.pathname?.split('/')?.last().orEmpty()) }
+        var sessionCode by remember { mutableStateOf(sessionCodeOnURL) }
         var userName by remember { mutableStateOf("") }
 
         MaterialTextField(label = "Code de session :", value = sessionCode, onValueChange = { sessionCode = it })
@@ -31,3 +31,6 @@ fun ShareSceneForm(
         }
     }
 }
+
+private val sessionCodeOnURL
+    get() = document.location?.pathname?.split('/')?.last().takeIf { it != "share-scene" }.orEmpty()
