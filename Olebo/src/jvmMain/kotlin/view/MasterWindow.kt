@@ -130,7 +130,7 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
             webConfig = {
                 ShareScenePanel(
                     connect = viewModel::connectToServer,
-                    connectionState = viewModel.connectionState
+                    shareSceneViewModel = viewModel.shareSceneViewModel
                 )
             }
         )

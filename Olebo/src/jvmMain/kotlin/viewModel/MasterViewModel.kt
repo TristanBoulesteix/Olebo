@@ -66,7 +66,7 @@ class MasterViewModel(val act: Act) :
         }
     }
 
-    var connectionState: ConnectionState by mutableStateOf(Disconnected)
+    val shareSceneViewModel = ShareSceneViewModel()
 
     /**
      * These are all the [Blueprint] placed on  the current map
@@ -321,14 +321,14 @@ class MasterViewModel(val act: Act) :
     }
 
     fun connectToServer() {
-        connectionState = Login
+        shareSceneViewModel.connectionState = Login
 
         launch(Dispatchers.IO) {
             initWebsocket(
                 client = socketClient,
                 path = "share-scene",
                 onFailure = {
-                    connectionState = Disconnected.ConnectionFailed
+                    shareSceneViewModel.connectionState = Disconnected.ConnectionFailed
                     it.close()
                 },
                 socketBlock = { manager: ShareSceneManager, setSessionCode: (String) -> Unit ->
@@ -337,7 +337,10 @@ class MasterViewModel(val act: Act) :
                             is Frame.Text -> when (val message = frame.getMessageOrNull()) {
                                 is NewSessionCreated -> {
                                     setSessionCode(message.code)
-                                    connectionState = Connected(manager)
+                                    shareSceneViewModel.connectionState = Connected(manager)
+                                }
+                                is NumberOfConnectedUser -> {
+                                    shareSceneViewModel.numberOfConnectedUser = message.value
                                 }
                                 else -> Unit
                             }
@@ -346,7 +349,7 @@ class MasterViewModel(val act: Act) :
                     }
 
                     withContext(Dispatchers.IO) {
-                        connectionState = Disconnected
+                        shareSceneViewModel.connectionState = Disconnected
                         manager.close()
                     }
                 }

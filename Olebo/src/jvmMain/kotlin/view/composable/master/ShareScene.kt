@@ -16,14 +16,15 @@ import jdr.exia.localization.STR_LOGIN_OLEBO_WEB
 import jdr.exia.localization.STR_START_OLEBO_WEB
 import jdr.exia.localization.ST_OLEBO_WEB_EXPLANATION
 import jdr.exia.localization.StringLocale
+import jdr.exia.viewModel.ShareSceneViewModel
 
 @Composable
 fun ShareScenePanel(
     connect: () -> Unit,
-    connectionState: ConnectionState
+    shareSceneViewModel: ShareSceneViewModel
 ) = Box(Modifier.padding(5.dp).fillMaxSize(), contentAlignment = Alignment.CenterStart) {
-    when (connectionState) {
-        is Connected -> ShareSceneManagerScreen(connectionState.manager)
+    when (val connectionState = shareSceneViewModel.connectionState) {
+        is Connected -> ShareSceneManagerScreen(connectionState.manager, shareSceneViewModel.numberOfConnectedUser)
         else -> WebConfig(connect, connectionState)
     }
 }
@@ -44,8 +45,11 @@ private fun WebConfig(connect: () -> Unit, connectionState: ConnectionState) = R
 }
 
 @Composable
-private fun ShareSceneManagerScreen(manager: ShareSceneManager) = Column(modifier = Modifier.padding(start = 10.dp)) {
-    Text("test")
+private fun ShareSceneManagerScreen(
+    manager: ShareSceneManager,
+    numberOfConnectedUser: Int
+) = Column(modifier = Modifier.padding(start = 10.dp)) {
+    Text("Number of connected user: $numberOfConnectedUser")
 
     Spacer(Modifier.height(25.dp))
 

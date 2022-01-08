@@ -46,6 +46,7 @@ fun Routing.shareSceneRouting() {
         val currentConnection = Connection()
 
         currentSession.playerConnections += currentConnection
+        currentSession.sendToMaster(NumberOfConnectedUser(currentSession.playerConnections.size))
 
         for (frame in incoming) {
             when (frame) {
@@ -60,5 +61,6 @@ fun Routing.shareSceneRouting() {
 
         // Handle session close
         currentSession.playerConnections -= currentConnection
+        currentSession.sendToMaster(NumberOfConnectedUser(currentSession.playerConnections.size))
     }
 }
