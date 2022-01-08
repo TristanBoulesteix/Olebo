@@ -32,6 +32,8 @@ data class ShareSceneSession(val masterConnection: Connection) {
 
     suspend fun sendToMaster(message: Message) = masterConnection.send(message)
 
+    suspend fun sendToPlayers(message: Message) = playerConnections.forEach { it.send(message) }
+
     companion object {
         private val ids = synchronizedSet<String>()
     }
