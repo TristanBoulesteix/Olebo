@@ -26,18 +26,20 @@ import jdr.exia.model.type.toImgPath
 import jdr.exia.service.*
 import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.tools.getTokenFromPosition
+import jdr.exia.view.tools.mutableClosableStateOf
 import jdr.exia.view.tools.positionOf
 import kotlinx.coroutines.*
-import kotlinx.coroutines.swing.Swing
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
 import java.awt.image.BufferedImage
+import java.io.ByteArrayOutputStream
+import java.util.*
 import javax.imageio.ImageIO
-import kotlin.coroutines.CoroutineContext
 
-class MasterViewModel(val act: Act) :
-    CoroutineScope by CoroutineScope(Dispatchers.Swing as CoroutineContext /* The cast is required because of a bug with IntelliJ */) {
+class MasterViewModel(val act: Act) {
+    private val scope = CoroutineScope(Dispatchers.Main)
+
     var blueprintEditorDialogVisible by mutableStateOf(false)
         private set
 
@@ -66,7 +68,7 @@ class MasterViewModel(val act: Act) :
         }
     }
 
-    val shareSceneViewModel = ShareSceneViewModel()
+    var shareSceneViewModel by mutableClosableStateOf(ShareSceneViewModel())
 
     /**
      * These are all the [Blueprint] placed on  the current map
@@ -79,6 +81,17 @@ class MasterViewModel(val act: Act) :
     val backGroundImage: BufferedImage by derivedStateOf {
         transaction {
             ImageIO.read(currentScene.background.toImgPath().checkedImgPath()?.toFile().inputStreamOrNotFound())
+                .also { image ->
+                    scope.launch(Dispatchers.IO) {
+                        val byteArrayOutputStream = ByteArrayOutputStream()
+
+                        Base64.getEncoder().wrap(byteArrayOutputStream).use {
+                            ImageIO.write(image, "png", it)
+                        }
+
+                        shareSceneViewModel.messages.send(NewSessionCreated(UUID.randomUUID(), String(byteArrayOutputStream.toByteArray())))
+                    }
+                }
         }
     }
 
@@ -247,7 +260,7 @@ class MasterViewModel(val act: Act) :
         }
     }
 
-    fun addNewElement(blueprint: Blueprint) = launch {
+    fun addNewElement(blueprint: Blueprint) = scope.launch {
         currentScene.addElement(
             blueprint = blueprint,
             onAdded = { newElement ->
@@ -311,7 +324,7 @@ class MasterViewModel(val act: Act) :
         repaint()
     }
 
-    fun repaint(reloadTokens: Boolean = false) = launch {
+    fun repaint(reloadTokens: Boolean = false) = scope.launch {
         if (reloadTokens)
             withContext(Dispatchers.IO) {
                 elements = newSuspendedTransaction { currentScene.elements }
@@ -321,14 +334,14 @@ class MasterViewModel(val act: Act) :
     }
 
     fun connectToServer() {
-        shareSceneViewModel.connectionState = Login
+        shareSceneViewModel = ShareSceneViewModel(Login)
 
-        launch(Dispatchers.IO) {
+        scope.launch(Dispatchers.IO) {
             initWebsocket(
                 client = socketClient,
                 path = "share-scene",
                 onFailure = {
-                    shareSceneViewModel.connectionState = Disconnected.ConnectionFailed
+                    shareSceneViewModel = ShareSceneViewModel(Disconnected.ConnectionFailed)
                     it.close()
                 },
                 socketBlock = { manager: ShareSceneManager, setSessionCode: (String) -> Unit ->
@@ -337,7 +350,13 @@ class MasterViewModel(val act: Act) :
                             is Frame.Text -> when (val message = frame.getMessageOrNull()) {
                                 is NewSessionCreated -> {
                                     setSessionCode(message.code)
-                                    shareSceneViewModel.connectionState = Connected(manager)
+                                    shareSceneViewModel = ShareSceneViewModel(Connected(manager))
+                                    launch {
+                                        for (messageToSend in shareSceneViewModel.messages) {
+                                            println((messageToSend as NewSessionCreated).code)
+                                            send(messageToSend)
+                                        }
+                                    }
                                 }
                                 is NumberOfConnectedUser -> {
                                     shareSceneViewModel.numberOfConnectedUser = message.value
@@ -349,7 +368,7 @@ class MasterViewModel(val act: Act) :
                     }
 
                     withContext(Dispatchers.IO) {
-                        shareSceneViewModel.connectionState = Disconnected
+                        shareSceneViewModel = ShareSceneViewModel(Disconnected)
                         manager.close()
                     }
                 }

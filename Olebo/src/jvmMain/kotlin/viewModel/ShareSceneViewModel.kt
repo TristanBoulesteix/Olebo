@@ -5,18 +5,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import fr.olebo.sharescene.ConnectionState
 import fr.olebo.sharescene.Disconnected
+import fr.olebo.sharescene.Message
+import kotlinx.coroutines.channels.Channel
+import java.io.Closeable
 
-class ShareSceneViewModel {
-    private var _connectionState: ConnectionState by mutableStateOf(Disconnected)
-
-    var connectionState
-        get() = _connectionState
-        set(value) {
-            if (value is Disconnected) {
-                numberOfConnectedUser = 0
-            }
-            _connectionState = value
-        }
+class ShareSceneViewModel(val connectionState: ConnectionState = Disconnected) : Closeable {
+    val messages = Channel<Message>()
 
     var numberOfConnectedUser by mutableStateOf(0)
+
+    override fun close() {
+        messages.close()
+    }
 }

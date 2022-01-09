@@ -23,22 +23,6 @@ import org.jetbrains.exposed.sql.update
 import kotlin.io.path.deleteIfExists
 
 class Scene(id: EntityID<Int>) : Entity<Int>(id) {
-    companion object : EntityClass<Int, Scene>(SceneTable) {
-        /**
-         * Move an element to a new scene
-         *
-         * @param element The element to move
-         * @param scene The destination scene
-         */
-        fun moveElementToScene(scene: Scene, element: List<Element>) {
-            transaction {
-                element.forEach {
-                    it.scene = scene
-                }
-            }
-        }
-    }
-
     private val elementIterable by Element referrersOn InstanceTable.idScene
 
     val commandManager
@@ -95,5 +79,21 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
         }
 
         super.delete()
+    }
+
+    companion object : EntityClass<Int, Scene>(SceneTable) {
+        /**
+         * Move an element to a new scene
+         *
+         * @param element The element to move
+         * @param scene The destination scene
+         */
+        fun moveElementToScene(scene: Scene, element: List<Element>) {
+            transaction {
+                element.forEach {
+                    it.scene = scene
+                }
+            }
+        }
     }
 }
