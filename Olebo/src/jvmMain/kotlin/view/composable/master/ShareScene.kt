@@ -16,6 +16,7 @@ import jdr.exia.localization.STR_LOGIN_OLEBO_WEB
 import jdr.exia.localization.STR_START_OLEBO_WEB
 import jdr.exia.localization.ST_OLEBO_WEB_EXPLANATION
 import jdr.exia.localization.StringLocale
+import jdr.exia.model.tools.saveToClipboard
 import jdr.exia.viewModel.ShareSceneViewModel
 
 @Composable
@@ -53,5 +54,19 @@ private fun ShareSceneManagerScreen(
 
     Spacer(Modifier.height(25.dp))
 
-    OutlinedTextField(value = manager.sceneUrl ?: "", onValueChange = {})
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        OutlinedTextField(value = manager.sceneUrl.orEmpty(), onValueChange = {})
+
+        Spacer(Modifier.width(25.dp))
+
+        Button(onClick = { saveToClipboard(manager.codeSession.orEmpty()) }) {
+            Text("Copy the code to the clipboard")
+        }
+
+        Spacer(Modifier.width(25.dp))
+
+        Button(onClick = { saveToClipboard(manager.sceneUrl.orEmpty()) }) {
+            Text("Copy url to the clipboard")
+        }
+    }
 }
