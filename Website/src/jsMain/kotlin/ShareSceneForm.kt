@@ -33,4 +33,4 @@ fun ShareSceneForm(
 }
 
 private val sessionCodeOnURL
-    get() = document.location?.pathname?.split('/')?.last().takeIf { it != "share-scene" }.orEmpty()
+    get() = document.location?.pathname?.split('/')?.getOrNull(2).orEmpty()
