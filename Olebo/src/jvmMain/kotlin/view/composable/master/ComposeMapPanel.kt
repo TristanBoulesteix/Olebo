@@ -16,7 +16,7 @@ import jdr.exia.viewModel.MasterViewModel
 @Composable
 fun ComposeMapPanel(modifier: Modifier, viewModel: MasterViewModel) = Box(modifier) {
     Image(
-        bitmap = viewModel.backGroundImage.toComposeImageBitmap(),
+        bitmap = viewModel.backgroundImage.toComposeImageBitmap(),
         contentDescription = null,
         modifier = Modifier.fillMaxSize(),
         contentScale = ContentScale.FillBounds
