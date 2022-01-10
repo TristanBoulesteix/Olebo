@@ -4,9 +4,13 @@ import androidx.compose.runtime.*
 import fr.olebo.sharescene.css.ShareSceneStyleSheet
 import fr.olebo.sharescene.css.classes
 import fr.olebo.sharescene.websocket.client
+import io.ktor.http.cio.websocket.*
 import org.jetbrains.compose.web.css.Style
 import org.jetbrains.compose.web.dom.Div
+import org.jetbrains.compose.web.dom.Img
 import org.jetbrains.compose.web.renderComposableInBody
+
+var image: String? by mutableStateOf(null)
 
 private fun main() {
     renderComposableInBody {
@@ -14,10 +18,14 @@ private fun main() {
 
         var connectionState: ConnectionState by remember { mutableStateOf(Disconnected) }
 
-        if (connectionState !is Connected)
+        if (connectionState !is Connected) {
             Div(attrs = classes(ShareSceneStyleSheet.rootContainer)) {
                 Form { connectionState = it }
             }
+        } else {
+            if (image != null)
+                Img(src = "data:image/jpeg;base64,$image")
+        }
     }
 }
 
@@ -37,7 +45,10 @@ private fun Form(setConnectionState: (ConnectionState) -> Unit) {
                     setSessionCode(sessionCode)
 
                     for (frame in incoming) {
-                        println(frame)
+                        if (frame is Frame.Text) {
+                            val a = frame.getMessageOrNull() as Test
+                            image = a.value
+                        }
                     }
                 } finally {
                     setConnectionState(Disconnected)

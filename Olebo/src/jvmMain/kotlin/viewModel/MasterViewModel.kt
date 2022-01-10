@@ -38,7 +38,7 @@ import java.util.*
 import javax.imageio.ImageIO
 
 class MasterViewModel(val act: Act) {
-    private val scope = CoroutineScope(Dispatchers.Main)
+    val scope = CoroutineScope(Dispatchers.Main)
 
     var blueprintEditorDialogVisible by mutableStateOf(false)
         private set
@@ -78,18 +78,22 @@ class MasterViewModel(val act: Act) {
             field = tokens.sortedBy { it.priority }
         }
 
-    val backGroundImage: BufferedImage by derivedStateOf {
+    val backgroundImage: BufferedImage by derivedStateOf {
         transaction {
             ImageIO.read(currentScene.background.toImgPath().checkedImgPath()?.toFile().inputStreamOrNotFound())
                 .also { image ->
-                    scope.launch(Dispatchers.IO) {
-                        val byteArrayOutputStream = ByteArrayOutputStream()
+                    if (shareSceneViewModel.connectionState is Connected) {
+                        scope.launch(Dispatchers.IO) {
+                            val imageInByte = ByteArrayOutputStream().use {
+                                ImageIO.write(image, "jpg", it)
+                                it.flush()
+                                it.toByteArray()
+                            }
 
-                        Base64.getEncoder().wrap(byteArrayOutputStream).use {
-                            ImageIO.write(image, "png", it)
+                            val base64Image = Base64.getEncoder().encode(imageInByte)
+
+                            shareSceneViewModel.messages.send(Test(String(base64Image)))
                         }
-
-                        shareSceneViewModel.messages.send(NewSessionCreated(UUID.randomUUID(), String(byteArrayOutputStream.toByteArray())))
                     }
                 }
         }
@@ -353,7 +357,6 @@ class MasterViewModel(val act: Act) {
                                     shareSceneViewModel = ShareSceneViewModel(Connected(manager))
                                     launch {
                                         for (messageToSend in shareSceneViewModel.messages) {
-                                            println((messageToSend as NewSessionCreated).code)
                                             send(messageToSend)
                                         }
                                     }

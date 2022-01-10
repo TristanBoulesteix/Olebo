@@ -30,6 +30,9 @@ fun Routing.shareSceneRouting() {
 
         for (frame in incoming) {
             when (frame) {
+                is Frame.Text -> {
+                    currentSession.sendToPlayers(frame.getMessageOrNull()!!)
+                }
                 else -> Unit
             }
         }

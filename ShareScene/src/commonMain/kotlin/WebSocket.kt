@@ -13,6 +13,7 @@ suspend fun WebSocketSession.send(message: Message) = send(Json.encodeToString(m
 fun Frame.Text.getMessageOrNull() = try {
     Json.decodeFromString<Message>(readText())
 } catch (t: Throwable) {
+    t.printStackTrace()
     null
 }
 
