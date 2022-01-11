@@ -337,6 +337,8 @@ class MasterViewModel(val act: Act) {
     }
 
     fun connectToServer() {
+        connectionState = Login
+
         scope.launch(Dispatchers.IO) {
             initWebsocket(
                 client = socketClient,
