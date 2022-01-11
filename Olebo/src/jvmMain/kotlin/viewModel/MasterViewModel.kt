@@ -26,7 +26,6 @@ import jdr.exia.model.type.toImgPath
 import jdr.exia.service.*
 import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.tools.getTokenFromPosition
-import jdr.exia.view.tools.mutableClosableStateOf
 import jdr.exia.view.tools.positionOf
 import kotlinx.coroutines.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
@@ -68,7 +67,7 @@ class MasterViewModel(val act: Act) {
         }
     }
 
-    var shareSceneViewModel by mutableClosableStateOf(ShareSceneViewModel())
+    var connectionState: ConnectionState by mutableStateOf(Disconnected)
 
     /**
      * These are all the [Blueprint] placed on  the current map
@@ -82,7 +81,7 @@ class MasterViewModel(val act: Act) {
         transaction {
             ImageIO.read(currentScene.background.toImgPath().checkedImgPath()?.toFile().inputStreamOrNotFound())
                 .also { image ->
-                    if (shareSceneViewModel.connectionState is Connected) {
+                    (connectionState as? Connected)?.let { connectedState ->
                         scope.launch(Dispatchers.IO) {
                             val imageInByte = ByteArrayOutputStream().use {
                                 ImageIO.write(image, "jpg", it)
@@ -92,7 +91,7 @@ class MasterViewModel(val act: Act) {
 
                             val base64Image = Base64.getEncoder().encode(imageInByte)
 
-                            shareSceneViewModel.messages.send(Test(String(base64Image)))
+                            connectedState.shareSceneViewModel.messages.send(Test(String(base64Image)))
                         }
                     }
                 }
@@ -338,14 +337,12 @@ class MasterViewModel(val act: Act) {
     }
 
     fun connectToServer() {
-        shareSceneViewModel = ShareSceneViewModel(Login)
-
         scope.launch(Dispatchers.IO) {
             initWebsocket(
                 client = socketClient,
                 path = "share-scene",
                 onFailure = {
-                    shareSceneViewModel = ShareSceneViewModel(Disconnected.ConnectionFailed)
+                    connectionState = Disconnected.ConnectionFailed
                     it.close()
                 },
                 socketBlock = { manager: ShareSceneManager, setSessionCode: (String) -> Unit ->
@@ -354,15 +351,20 @@ class MasterViewModel(val act: Act) {
                             is Frame.Text -> when (val message = frame.getMessageOrNull()) {
                                 is NewSessionCreated -> {
                                     setSessionCode(message.code)
-                                    shareSceneViewModel = ShareSceneViewModel(Connected(manager))
+
+                                    val connectedState = Connected(manager)
+                                    connectionState = connectedState
+
                                     launch {
-                                        for (messageToSend in shareSceneViewModel.messages) {
+                                        for (messageToSend in connectedState.shareSceneViewModel.messages) {
                                             send(messageToSend)
                                         }
                                     }
                                 }
                                 is NumberOfConnectedUser -> {
-                                    shareSceneViewModel.numberOfConnectedUser = message.value
+                                    (connectionState as? Connected)?.shareSceneViewModel?.let {
+                                        it.numberOfConnectedUser = message.value
+                                    }
                                 }
                                 else -> Unit
                             }
@@ -371,7 +373,7 @@ class MasterViewModel(val act: Act) {
                     }
 
                     withContext(Dispatchers.IO) {
-                        shareSceneViewModel = ShareSceneViewModel(Disconnected)
+                        connectionState = Disconnected
                         manager.close()
                     }
                 }

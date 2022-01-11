@@ -10,4 +10,6 @@ sealed interface Disconnected : ConnectionState {
 
 object Login : ConnectionState
 
-class Connected(val manager: ShareSceneManager) : ConnectionState
+class Connected(val manager: ShareSceneManager) : ConnectionState {
+    val shareSceneViewModel by manager::viewModel
+}

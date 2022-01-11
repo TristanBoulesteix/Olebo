@@ -17,15 +17,17 @@ import jdr.exia.localization.STR_START_OLEBO_WEB
 import jdr.exia.localization.ST_OLEBO_WEB_EXPLANATION
 import jdr.exia.localization.StringLocale
 import jdr.exia.model.tools.saveToClipboard
-import jdr.exia.viewModel.ShareSceneViewModel
 
 @Composable
 fun ShareScenePanel(
     connect: () -> Unit,
-    shareSceneViewModel: ShareSceneViewModel
+    connectionState: ConnectionState
 ) = Box(Modifier.padding(5.dp).fillMaxSize(), contentAlignment = Alignment.CenterStart) {
-    when (val connectionState = shareSceneViewModel.connectionState) {
-        is Connected -> ShareSceneManagerScreen(connectionState.manager, shareSceneViewModel.numberOfConnectedUser)
+    when (connectionState) {
+        is Connected -> ShareSceneManagerScreen(
+            connectionState.manager,
+            connectionState.shareSceneViewModel.numberOfConnectedUser
+        )
         else -> WebConfig(connect, connectionState)
     }
 }

@@ -9,12 +9,14 @@ class ShareSceneManager internal constructor(
     private val path: String,
     private val socketBlock: suspend DefaultClientWebSocketSession.(manager: ShareSceneManager, setSessionCode: (String) -> Unit) -> Unit,
     private val onFailure: (manager: ShareSceneManager) -> Unit
-) : Closeable by client {
+) : Closeable {
     var codeSession: String? = null
         private set
 
     val sceneUrl
         get() = codeSession?.let { "localhost:8080/share-scene/$it" }
+
+    internal val viewModel = ShareSceneViewModel()
 
     internal suspend fun initWebsocket() {
         val manager = this
@@ -26,5 +28,10 @@ class ShareSceneManager internal constructor(
         } catch (t: Throwable) {
             onFailure(manager)
         }
+    }
+
+    override fun close() {
+        client.close()
+        viewModel.close()
     }
 }
