@@ -33,7 +33,7 @@ fun Routing.shareSceneRouting() {
                 is Frame.Text -> {
                     currentSession.sendToPlayers(frame.getMessageOrNull()!!)
                 }
-                else -> Unit
+                else -> continue
             }
         }
 
@@ -58,7 +58,7 @@ fun Routing.shareSceneRouting() {
                         else -> continue
                     }
                 }
-                else -> Unit
+                else -> continue
             }
         }
 
