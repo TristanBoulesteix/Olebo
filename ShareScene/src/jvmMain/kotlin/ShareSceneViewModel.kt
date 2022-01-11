@@ -12,7 +12,6 @@ actual class ShareSceneViewModel : Closeable {
     var numberOfConnectedUser by mutableStateOf(0)
 
     override fun close() {
-        println("close")
         messages.close()
     }
 }

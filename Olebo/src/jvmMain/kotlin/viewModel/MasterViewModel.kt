@@ -18,6 +18,7 @@ import jdr.exia.model.element.Layer
 import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.callCommandManager
 import jdr.exia.model.tools.doIfContainsSingle
+import jdr.exia.model.tools.toBase64String
 import jdr.exia.model.tools.withSetter
 import jdr.exia.model.type.checkedImgPath
 import jdr.exia.model.type.contains
@@ -32,7 +33,6 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
 import java.awt.image.BufferedImage
-import java.io.ByteArrayOutputStream
 import java.util.*
 import javax.imageio.ImageIO
 
@@ -83,15 +83,7 @@ class MasterViewModel(val act: Act) {
                 .also { image ->
                     (connectionState as? Connected)?.let { connectedState ->
                         scope.launch(Dispatchers.IO) {
-                            val imageInByte = ByteArrayOutputStream().use {
-                                ImageIO.write(image, "jpg", it)
-                                it.flush()
-                                it.toByteArray()
-                            }
-
-                            val base64Image = Base64.getEncoder().encode(imageInByte)
-
-                            connectedState.shareSceneViewModel.messages.send(Test(String(base64Image)))
+                            connectedState.shareSceneViewModel.messages.send(BackgroundChanged(image.toBase64String()))
                         }
                     }
                 }
@@ -356,6 +348,8 @@ class MasterViewModel(val act: Act) {
 
                                     val connectedState = Connected(manager)
                                     connectionState = connectedState
+
+                                    send(BackgroundChanged(backgroundImage.toBase64String()))
 
                                     launch {
                                         for (messageToSend in connectedState.shareSceneViewModel.messages) {

@@ -14,7 +14,7 @@ class ShareSceneManager internal constructor(
         private set
 
     val sceneUrl
-        get() = codeSession?.let { "localhost:8080/share-scene/$it" }
+        get() = codeSession?.let { "http://localhost:8080/share-scene/$it" }
 
     internal val viewModel = ShareSceneViewModel()
 

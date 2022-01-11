@@ -12,4 +12,4 @@ class NewSessionCreated(@Serializable(with = IdSerializer::class) val id: Id, va
 class NumberOfConnectedUser(val value: Int) : Message()
 
 @Serializable
-class Test(val value: String) : Message()
+class BackgroundChanged(val value: String) : Message()
