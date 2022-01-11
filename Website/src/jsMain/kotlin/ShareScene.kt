@@ -24,7 +24,7 @@ private fun main() {
             }
         } else {
             if (image != null)
-                Img(src = "data:image/jpeg;base64,$image")
+                Img(src = image!!)
         }
     }
 }
@@ -47,7 +47,7 @@ private fun Form(setConnectionState: (ConnectionState) -> Unit) {
                     for (frame in incoming) {
                         if (frame is Frame.Text) {
                             val a = frame.getMessageOrNull() as BackgroundChanged
-                            image = a.value
+                            image = a.cssBase64ImageCode
                         }
                     }
                 } finally {

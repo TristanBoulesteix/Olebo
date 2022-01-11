@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
 import fr.olebo.sharescene.*
+import fr.olebo.sharescene.map.Base64Image
 import io.ktor.http.cio.websocket.*
 import jdr.exia.localization.STR_DELETE_SELECTED_TOKENS
 import jdr.exia.localization.StringLocale
@@ -18,7 +19,6 @@ import jdr.exia.model.element.Layer
 import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.callCommandManager
 import jdr.exia.model.tools.doIfContainsSingle
-import jdr.exia.model.tools.toBase64String
 import jdr.exia.model.tools.withSetter
 import jdr.exia.model.type.checkedImgPath
 import jdr.exia.model.type.contains
@@ -83,7 +83,7 @@ class MasterViewModel(val act: Act) {
                 .also { image ->
                     (connectionState as? Connected)?.let { connectedState ->
                         scope.launch(Dispatchers.IO) {
-                            connectedState.shareSceneViewModel.messages.send(BackgroundChanged(image.toBase64String()))
+                            connectedState.shareSceneViewModel.messages.send(BackgroundChanged(Base64Image(image)))
                         }
                     }
                 }
@@ -349,7 +349,7 @@ class MasterViewModel(val act: Act) {
                                     val connectedState = Connected(manager)
                                     connectionState = connectedState
 
-                                    send(BackgroundChanged(backgroundImage.toBase64String()))
+                                    send(BackgroundChanged(Base64Image(backgroundImage)))
 
                                     launch {
                                         for (messageToSend in connectedState.shareSceneViewModel.messages) {
