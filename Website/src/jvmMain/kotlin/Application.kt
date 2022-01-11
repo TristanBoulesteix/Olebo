@@ -11,7 +11,7 @@ fun main() {
     }
 
     val pwd: String by prop
-    val keyStoreFile = File("/etc/letsencrypt/live/olebo.fr/keystore.jks")
+    val keyStoreFile = File("/etc/letsencrypt/live/olebo.fr-0001/keystore.jks")
     val keyStore: KeyStore = KeyStore.getInstance(keyStoreFile, pwd.toCharArray())*/
 
     val environment = applicationEngineEnvironment {
