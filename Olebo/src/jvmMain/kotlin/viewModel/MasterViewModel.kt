@@ -348,7 +348,7 @@ class MasterViewModel(val act: Act) {
                                     val connectedState = Connected(manager)
                                     connectionState = connectedState
 
-                                    send(BackgroundChanged(Base64Image(backgroundImage)))
+                                    send(NewMap(Base64Image(backgroundImage), listOf()))
 
                                     launch {
                                         for (messageToSend in connectedState.shareSceneViewModel.messages) {

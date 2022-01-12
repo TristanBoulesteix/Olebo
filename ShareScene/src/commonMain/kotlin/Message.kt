@@ -15,4 +15,4 @@ class NumberOfConnectedUser(val value: Int) : Message()
 class BackgroundChanged(val image: Base64Image) : Message()
 
 @Serializable
-class NewMap()
+class NewMap(val backgroundImage: Base64Image, val tokens: List<Token>): Message()

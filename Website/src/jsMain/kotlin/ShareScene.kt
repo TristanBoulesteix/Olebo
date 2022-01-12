@@ -46,8 +46,14 @@ private fun Form(setConnectionState: (ConnectionState) -> Unit) {
 
                     for (frame in incoming) {
                         if (frame is Frame.Text) {
-                            val a = frame.getMessageOrNull() as BackgroundChanged
-                            image = a.image.cssBase64ImageCode
+                            when (val message = frame.getMessageOrNull()) {
+                                is NewMap -> {
+                                    image = message.backgroundImage.cssBase64ImageCode.also {
+                                        println(it)
+                                    }
+                                }
+                                else -> continue
+                            }
                         }
                     }
                 } finally {

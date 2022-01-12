@@ -13,6 +13,8 @@ data class ShareSceneSession(val masterConnection: Connection) {
 
     val urlCode: String
 
+    lateinit var map: Map
+
     init {
         val alphabet = 'a'..'z'
         val numbers = '1'..'9'

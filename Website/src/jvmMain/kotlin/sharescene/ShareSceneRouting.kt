@@ -31,7 +31,16 @@ fun Routing.shareSceneRouting() {
         for (frame in incoming) {
             when (frame) {
                 is Frame.Text -> {
-                    currentSession.sendToPlayers(frame.getMessageOrNull()!!)
+                    val message = frame.getMessageOrNull()
+
+                    when (message) {
+                        is NewMap -> {
+                            currentSession.map = Map(message.backgroundImage, message.tokens)
+                        }
+                        else -> continue
+                    }
+
+                    currentSession.sendToPlayers(message)
                 }
                 else -> continue
             }
@@ -50,6 +59,10 @@ fun Routing.shareSceneRouting() {
 
         currentSession.playerConnections += currentConnection
         currentSession.sendToMaster(NumberOfConnectedUser(currentSession.playerConnections.size))
+
+        val (background, tokens) = currentSession.map
+
+        currentSession.sendToPlayers(NewMap(background, tokens))
 
         for (frame in incoming) {
             when (frame) {
