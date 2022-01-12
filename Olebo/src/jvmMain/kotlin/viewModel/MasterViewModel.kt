@@ -352,7 +352,6 @@ class MasterViewModel(val act: Act) {
 
                                     launch {
                                         for (messageToSend in connectedState.shareSceneViewModel.messages) {
-                                            println(messageToSend)
                                             send(messageToSend)
                                         }
                                     }
