@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
 import fr.olebo.sharescene.*
-import fr.olebo.sharescene.map.Base64Image
 import io.ktor.http.cio.websocket.*
 import jdr.exia.localization.STR_DELETE_SELECTED_TOKENS
 import jdr.exia.localization.StringLocale

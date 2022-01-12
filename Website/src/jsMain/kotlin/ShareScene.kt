@@ -47,7 +47,7 @@ private fun Form(setConnectionState: (ConnectionState) -> Unit) {
                     for (frame in incoming) {
                         if (frame is Frame.Text) {
                             val a = frame.getMessageOrNull() as BackgroundChanged
-                            image = a.cssBase64ImageCode
+                            image = a.image.cssBase64ImageCode
                         }
                     }
                 } finally {

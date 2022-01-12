@@ -1,4 +1,4 @@
-package fr.olebo.sharescene.map
+package fr.olebo.sharescene
 
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
