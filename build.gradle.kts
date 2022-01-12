@@ -31,11 +31,6 @@ allprojects {
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
 
-    tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "16"
-        kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
-    }
-
     kotlin {
         js(IR) {
             binaries.executable()
@@ -51,8 +46,16 @@ subprojects {
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialisationVersion")
                 }
             }
-            val jvmMain by getting
+            val jvmMain by getting {
+                tasks.withType<KotlinCompile> {
+                    kotlinOptions.jvmTarget = "16"
+                }
+            }
             val jsMain by getting
+
+            all {
+                languageSettings.optIn("kotlin.RequiresOptIn")
+            }
         }
     }
 }

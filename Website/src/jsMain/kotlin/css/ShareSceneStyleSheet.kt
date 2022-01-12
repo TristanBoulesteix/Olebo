@@ -57,6 +57,11 @@ object ShareSceneStyleSheet : StyleSheet() {
         display(DisplayStyle.Grid)
     }
 
+    val oleboCanvasContainer by style {
+        width(100.percent)
+        height(100.percent)
+    }
+
     /*init {
         println(cssRules.joinToString("\n") { it.stringPresentation() })
     }*/

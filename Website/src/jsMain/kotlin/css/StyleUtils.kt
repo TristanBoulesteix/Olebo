@@ -1,5 +1,6 @@
 package fr.olebo.sharescene.css
 
+import fr.olebo.sharescene.Base64Image
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.w3c.dom.HTMLElement
@@ -38,3 +39,5 @@ fun <TValue : StylePropertyValue> materialVariable() = ReadOnlyProperty<Any?, CS
 }
 
 private fun String.toKebabCase() = Regex("(?<=[a-zA-Z])[A-Z]").replace(this) { "-${it.value}" }.lowercase()
+
+fun StyleBuilder.backgroundFitImage(image: Base64Image) = background("url('${image.cssBase64ImageCode}') no-repeat center center fixed")

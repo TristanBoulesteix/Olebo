@@ -7,10 +7,7 @@ import fr.olebo.sharescene.websocket.client
 import io.ktor.http.cio.websocket.*
 import org.jetbrains.compose.web.css.Style
 import org.jetbrains.compose.web.dom.Div
-import org.jetbrains.compose.web.dom.Img
 import org.jetbrains.compose.web.renderComposableInBody
-
-var image: String? by mutableStateOf(null)
 
 private fun main() {
     renderComposableInBody {
@@ -18,13 +15,11 @@ private fun main() {
 
         var connectionState: ConnectionState by remember { mutableStateOf(Disconnected) }
 
-        if (connectionState !is Connected) {
-            Div(attrs = classes(ShareSceneStyleSheet.rootContainer)) {
+        when (val state = connectionState) {
+            !is Connected -> Div(attrs = classes(ShareSceneStyleSheet.rootContainer)) {
                 Form { connectionState = it }
             }
-        } else {
-            if (image != null)
-                Img(src = image!!)
+            else -> OleboSceneCanvas(state.shareSceneViewModel.background, state.shareSceneViewModel.tokens)
         }
     }
 }
@@ -41,16 +36,16 @@ private fun Form(setConnectionState: (ConnectionState) -> Unit) {
             },
             socketBlock = { manager, setSessionCode ->
                 try {
-                    setConnectionState(Connected(manager))
-                    setSessionCode(sessionCode)
-
                     for (frame in incoming) {
                         if (frame is Frame.Text) {
                             when (val message = frame.getMessageOrNull()) {
                                 is NewMap -> {
-                                    image = message.backgroundImage.cssBase64ImageCode.also {
-                                        println(it)
-                                    }
+                                    val connectedState = Connected(manager)
+
+                                    setConnectionState(connectedState)
+                                    setSessionCode(sessionCode)
+
+                                    connectedState.shareSceneViewModel.background = message.backgroundImage
                                 }
                                 else -> continue
                             }
