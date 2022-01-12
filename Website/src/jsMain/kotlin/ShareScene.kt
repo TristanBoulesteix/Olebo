@@ -36,16 +36,19 @@ private fun Form(setConnectionState: (ConnectionState) -> Unit) {
             },
             socketBlock = { manager, setSessionCode ->
                 try {
+                    val connectedState = Connected(manager)
+
                     for (frame in incoming) {
                         if (frame is Frame.Text) {
                             when (val message = frame.getMessageOrNull()) {
                                 is NewMap -> {
-                                    val connectedState = Connected(manager)
-
                                     setConnectionState(connectedState)
                                     setSessionCode(sessionCode)
 
                                     connectedState.shareSceneViewModel.background = message.backgroundImage
+                                }
+                                is BackgroundChanged -> {
+                                    connectedState.shareSceneViewModel.background = message.image
                                 }
                                 else -> continue
                             }

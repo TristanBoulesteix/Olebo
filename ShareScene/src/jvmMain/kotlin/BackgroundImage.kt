@@ -9,7 +9,7 @@ fun Base64Image(bufferedImage: BufferedImage) = Base64Image(bufferedImage.toBase
 
 private fun BufferedImage.toBase64String(): String {
     val imageInByte = ByteArrayOutputStream().use {
-        ImageIO.write(this, "jpg", it)
+        ImageIO.write(this, "png", it)
         it.flush()
         it.toByteArray()
     }

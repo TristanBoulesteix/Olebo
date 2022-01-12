@@ -40,4 +40,4 @@ fun <TValue : StylePropertyValue> materialVariable() = ReadOnlyProperty<Any?, CS
 
 private fun String.toKebabCase() = Regex("(?<=[a-zA-Z])[A-Z]").replace(this) { "-${it.value}" }.lowercase()
 
-fun StyleBuilder.backgroundFitImage(image: Base64Image) = background("url('${image.cssBase64ImageCode}') no-repeat center center fixed")
+fun StyleBuilder.backgroundImage(image: Base64Image) = backgroundImage("url('${image.cssBase64ImageCode}')")

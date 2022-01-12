@@ -352,6 +352,7 @@ class MasterViewModel(val act: Act) {
 
                                     launch {
                                         for (messageToSend in connectedState.shareSceneViewModel.messages) {
+                                            println(messageToSend)
                                             send(messageToSend)
                                         }
                                     }
@@ -361,9 +362,9 @@ class MasterViewModel(val act: Act) {
                                         it.numberOfConnectedUser = message.value
                                     }
                                 }
-                                else -> Unit
+                                else -> continue
                             }
-                            else -> Unit
+                            else -> continue
                         }
                     }
 

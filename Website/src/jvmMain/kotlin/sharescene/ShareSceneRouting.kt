@@ -37,6 +37,9 @@ fun Routing.shareSceneRouting() {
                         is NewMap -> {
                             currentSession.map = Map(message.backgroundImage, message.tokens)
                         }
+                        is BackgroundChanged -> {
+                            currentSession.map.backgroundImage = message.image
+                        }
                         else -> continue
                     }
 
