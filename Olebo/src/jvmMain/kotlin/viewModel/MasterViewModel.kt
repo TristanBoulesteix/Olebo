@@ -19,10 +19,7 @@ import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.callCommandManager
 import jdr.exia.model.tools.doIfContainsSingle
 import jdr.exia.model.tools.withSetter
-import jdr.exia.model.type.checkedImgPath
-import jdr.exia.model.type.contains
-import jdr.exia.model.type.inputStreamOrNotFound
-import jdr.exia.model.type.toImgPath
+import jdr.exia.model.type.*
 import jdr.exia.service.*
 import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.tools.getTokenFromPosition
@@ -78,14 +75,13 @@ class MasterViewModel(val act: Act) {
 
     val backgroundImage: BufferedImage by derivedStateOf {
         transaction {
-            ImageIO.read(currentScene.background.toImgPath().checkedImgPath()?.toFile().inputStreamOrNotFound())
-                .also { image ->
-                    (connectionState as? Connected)?.let { connectedState ->
-                        scope.launch(Dispatchers.IO) {
-                            connectedState.shareSceneViewModel.messages.send(BackgroundChanged(Base64Image(image)))
-                        }
+            ImageIO.read(inputStreamFromString(currentScene.background)).also { image ->
+                (connectionState as? Connected)?.let { connectedState ->
+                    scope.launch(Dispatchers.IO) {
+                        connectedState.shareSceneViewModel.messages.send(BackgroundChanged(Base64Image(image)))
                     }
                 }
+            }
         }
     }
 

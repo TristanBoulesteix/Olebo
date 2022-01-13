@@ -12,9 +12,7 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.tools.CharacterException
 import jdr.exia.model.tools.isCharacter
 import jdr.exia.model.type.Image
-import jdr.exia.model.type.checkedImgPath
-import jdr.exia.model.type.inputStreamOrNotFound
-import jdr.exia.model.type.toImgPath
+import jdr.exia.model.type.inputStreamFromString
 import jdr.exia.view.tools.rotateImage
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
@@ -169,9 +167,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
                 if (blueprint.type == TypeElement.Basic) {
                     ImageIO.read(getResourceAsStream("sprites/${blueprint.sprite}"))
                 } else {
-                    ImageIO.read(
-                        blueprint.sprite.toImgPath().checkedImgPath()?.toFile().inputStreamOrNotFound()
-                    )
+                    ImageIO.read(inputStreamFromString(blueprint.sprite))
                 }
             }
         }
