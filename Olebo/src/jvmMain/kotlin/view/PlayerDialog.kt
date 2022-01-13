@@ -17,6 +17,7 @@ import java.awt.event.KeyEvent
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import javax.swing.JDialog
+import kotlin.coroutines.CoroutineContext
 
 /**
  * PlayerFrame is the Frame the Players can see, it shares its content with MasterFrame
@@ -82,7 +83,7 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: (
             }
         }
 
-        repaintJob = CoroutineScope(Dispatchers.Swing).launch {
+        repaintJob = CoroutineScope(Dispatchers.Swing as CoroutineContext).launch {
             while (isActive) {
                 mapPanel.repaint()
                 // The delay must be greater than or equal to 120.
