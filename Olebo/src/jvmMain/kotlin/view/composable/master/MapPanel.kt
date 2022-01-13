@@ -208,15 +208,15 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
         color = Color.RED
         setPaintMode()
         drawRect( //Draws a 1 pixel thick rectangle
-            (relativeX(token.referencePoint.x) - 4).toInt(),
-            (relativeY(token.referencePoint.y) - 4).toInt(),
+            (relativeX(token.referenceOffset.x) - 4).toInt(),
+            (relativeY(token.referenceOffset.y) - 4).toInt(),
             (relativeX(token.hitBox.width.toFloat()) + 8).toInt(),
             (relativeY(token.hitBox.height.toFloat()) + 8).toInt()
         )
     }
 
     private fun Graphics.drawLabel(token: Element, labelColor: SerializableColor) {
-        val (refX, refY) = token.referencePoint
+        val (refX, refY) = token.referenceOffset
         val alias = token.alias
 
         font = Font("Arial", Font.BOLD, 24)
@@ -234,16 +234,16 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
     private fun Graphics.drawInvisibleMarker(token: Element) {
         color = Color.BLUE
         drawRect( //Draws a 1 pixel thick rectangle
-            (relativeX(token.referencePoint.x) - 3).toInt(),
-            (relativeY(token.referencePoint.y) - 3).toInt(),
+            (relativeX(token.referenceOffset.x) - 3).toInt(),
+            (relativeY(token.referenceOffset.y) - 3).toInt(),
             (relativeX(token.hitBox.width.toFloat()) + 6).toInt(),
             (relativeY(token.hitBox.height.toFloat()) + 6).toInt()
         )
     }
 
     fun getRelativeRectangleOfToken(token: Element) = Rectangle(
-        relativeX(token.referencePoint.x).toInt(),
-        relativeY(token.referencePoint.y).toInt(),
+        relativeX(token.referenceOffset.x).toInt(),
+        relativeY(token.referenceOffset.y).toInt(),
         relativeX(token.hitBox.width.toFloat()).toInt(),
         relativeY(token.hitBox.height.toFloat()).toInt()
     )
@@ -251,8 +251,8 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
     private fun Graphics.drawToken(token: Element) {
         drawImage(
             token.sprite,
-            relativeX(token.referencePoint.x).toInt(),
-            relativeY(token.referencePoint.y).toInt(),
+            relativeX(token.referenceOffset.x).toInt(),
+            relativeY(token.referenceOffset.y).toInt(),
             relativeX(token.hitBox.width.toFloat()).toInt(),
             relativeY(token.hitBox.height.toFloat()).toInt(),
             null

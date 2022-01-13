@@ -152,11 +152,11 @@ class MasterViewModel(val act: Act) {
             } else {
                 val originElement = selectedElements.find { it === origin } ?: selectedElements.first()
 
-                val diffPosition = newPosition - originElement.centerPoint
+                val diffPosition = newPosition - originElement.centerOffset
 
                 val elementToPoint =
                     mapOf(originElement to originElement.positionOf(newPosition)) + selectedElements.filterNot { it === originElement }
-                        .map { it to it.positionOf((it.centerPoint + diffPosition).checkBoundOf(it)) }
+                        .map { it to it.positionOf((it.centerOffset + diffPosition).checkBoundOf(it)) }
 
                 currentScene.callCommandManager(elementToPoint, Element::cmdPosition)
             }
@@ -348,7 +348,7 @@ class MasterViewModel(val act: Act) {
                                     val connectedState = Connected(manager)
                                     connectionState = connectedState
 
-                                    send(NewMap(Base64Image(backgroundImage), listOf()))
+                                    send(NewMap(Base64Image(backgroundImage), elements.map { it.toShareSceneToken() }))
 
                                     launch {
                                         for (messageToSend in connectedState.shareSceneViewModel.messages) {
@@ -381,6 +381,9 @@ class MasterViewModel(val act: Act) {
 
         (TypeElement.values() + items.keys).associateWith { items[it] ?: emptyList() }
     }
+
+    private fun Element.toShareSceneToken() =
+        Token(Base64Image(sprite), Position(referenceOffset.x.toInt(), referenceOffset.y.toInt()))
 
     companion object {
         const val ABSOLUTE_WIDTH = 1600f
