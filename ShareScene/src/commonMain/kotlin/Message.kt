@@ -12,7 +12,4 @@ class NewSessionCreated(@Serializable(with = IdSerializer::class) val id: Id, va
 class NumberOfConnectedUser(val value: Int) : Message()
 
 @Serializable
-class BackgroundChanged(val image: Base64Image) : Message()
-
-@Serializable
 class NewMap(val backgroundImage: Base64Image, val tokens: List<Token>): Message()

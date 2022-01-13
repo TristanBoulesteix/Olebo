@@ -78,7 +78,12 @@ class MasterViewModel(val act: Act) {
             ImageIO.read(inputStreamFromString(currentScene.background)).also { image ->
                 (connectionState as? Connected)?.let { connectedState ->
                     scope.launch(Dispatchers.IO) {
-                        connectedState.shareSceneViewModel.messages.send(BackgroundChanged(Base64Image(image)))
+                        connectedState.shareSceneViewModel.messages.send(
+                            NewMap(
+                                Base64Image(image),
+                                elements.map { it.toShareSceneToken() }
+                            )
+                        )
                     }
                 }
             }

@@ -46,9 +46,7 @@ private fun Form(setConnectionState: (ConnectionState) -> Unit) {
                                     setSessionCode(sessionCode)
 
                                     connectedState.shareSceneViewModel.background = message.backgroundImage
-                                }
-                                is BackgroundChanged -> {
-                                    connectedState.shareSceneViewModel.background = message.image
+                                    connectedState.shareSceneViewModel.tokens = message.tokens
                                 }
                                 else -> continue
                             }
