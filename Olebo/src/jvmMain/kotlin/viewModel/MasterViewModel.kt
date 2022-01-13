@@ -339,13 +339,13 @@ class MasterViewModel(val act: Act) {
                     it.close()
                 },
                 socketBlock = { manager: ShareSceneManager, setSessionCode: (String) -> Unit ->
+                    val connectedState = Connected(manager)
+
                     for (frame in incoming) {
                         when (frame) {
                             is Frame.Text -> when (val message = frame.getMessageOrNull()) {
                                 is NewSessionCreated -> {
                                     setSessionCode(message.code)
-
-                                    val connectedState = Connected(manager)
                                     connectionState = connectedState
 
                                     send(NewMap(Base64Image(backgroundImage), elements.map { it.toShareSceneToken() }))
@@ -357,9 +357,7 @@ class MasterViewModel(val act: Act) {
                                     }
                                 }
                                 is NumberOfConnectedUser -> {
-                                    (connectionState as? Connected)?.shareSceneViewModel?.let {
-                                        it.numberOfConnectedUser = message.value
-                                    }
+                                    connectedState.shareSceneViewModel.numberOfConnectedUser = message.value
                                 }
                                 else -> continue
                             }
