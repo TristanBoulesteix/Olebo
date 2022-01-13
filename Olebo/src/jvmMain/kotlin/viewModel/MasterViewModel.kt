@@ -380,8 +380,11 @@ class MasterViewModel(val act: Act) {
         (TypeElement.values() + items.keys).associateWith { items[it] ?: emptyList() }
     }
 
-    private fun Element.toShareSceneToken() =
-        Token(Base64Image(sprite), Position(referenceOffset.x.toInt(), referenceOffset.y.toInt()))
+    private fun Element.toShareSceneToken() = Token(
+        Base64Image(sprite),
+        Position(referenceOffset.x.toInt(), referenceOffset.y.toInt()),
+        size.value
+    )
 
     companion object {
         const val ABSOLUTE_WIDTH = 1600f
