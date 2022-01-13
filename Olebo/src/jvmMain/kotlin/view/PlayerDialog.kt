@@ -62,7 +62,6 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: (
                 playerDialog = null
             }
         }
-
     }
 
     private val repaintJob: Job
