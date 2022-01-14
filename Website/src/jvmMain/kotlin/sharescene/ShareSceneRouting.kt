@@ -34,9 +34,8 @@ fun Routing.shareSceneRouting() {
                     val message = frame.getMessageOrNull()
 
                     when (message) {
-                        is NewMap -> {
-                            currentSession.map = Map(message.backgroundImage, message.tokens)
-                        }
+                        is NewMap -> currentSession.map = Map(message.backgroundImage, message.tokens)
+                        is TokenStateChanged -> currentSession.map = currentSession.map.copy(tokens = message.tokens)
                         else -> continue
                     }
 

@@ -76,16 +76,7 @@ class MasterViewModel(val act: Act) {
     val backgroundImage: BufferedImage by derivedStateOf {
         transaction {
             ImageIO.read(inputStreamFromString(currentScene.background)).also { image ->
-                (connectionState as? Connected)?.let { connectedState ->
-                    scope.launch(Dispatchers.IO) {
-                        connectedState.shareSceneViewModel.messages.send(
-                            NewMap(
-                                Base64Image(image),
-                                elements.map { it.toShareSceneToken() }
-                            )
-                        )
-                    }
-                }
+                sendMessageToShareScene(NewMap(Base64Image(image), elements.map { it.toShareSceneToken() }))
             }
         }
     }
@@ -325,6 +316,7 @@ class MasterViewModel(val act: Act) {
                 elements = newSuspendedTransaction { currentScene.elements }
             }
 
+        sendMessageToShareScene(TokenStateChanged(elements.map { it.toShareSceneToken() }))
         panel.repaint()
     }
 
@@ -386,6 +378,12 @@ class MasterViewModel(val act: Act) {
         Position(referenceOffset.x.toInt(), referenceOffset.y.toInt()),
         size.value
     )
+
+    private fun sendMessageToShareScene(message: Message) = (connectionState as? Connected)?.let { connectedState ->
+        scope.launch(Dispatchers.IO) {
+            connectedState.shareSceneViewModel.messages.send(message)
+        }
+    }
 
     companion object {
         const val ABSOLUTE_WIDTH = 1600f
