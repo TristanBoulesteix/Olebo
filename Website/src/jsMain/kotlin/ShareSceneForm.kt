@@ -13,6 +13,7 @@ import org.jetbrains.compose.web.dom.Text
 
 @Composable
 fun ShareSceneForm(
+    connectionState: ConnectionState,
     connect: suspend (userName: String, sessionCode: String) -> Unit
 ) = Div(attrs = classes(ShareSceneStyleSheet.mainContainer)) {
     Div(attrs = classes(ShareSceneStyleSheet.formTitle)) { Text("Olebo ShareScene") }
@@ -24,7 +25,10 @@ fun ShareSceneForm(
         MaterialTextField(label = "Code de session :", value = sessionCode, onValueChange = { sessionCode = it })
         MaterialTextField(label = "Nom de joueur :", value = userName, onValueChange = { userName = it })
 
-        MaterialButton(text = "Démarrer", enabled = sessionCode.isBlank() || userName.isBlank()) {
+        MaterialButton(
+            text = "Démarrer",
+            enabled = sessionCode.isNotBlank() || userName.isNotBlank() || connectionState !is Login
+        ) {
             MainScope().launch {
                 connect(userName, sessionCode)
             }

@@ -13,6 +13,6 @@ fun MaterialButton(
 ) = MDCButton(text = text, opts = { type = Type.Outlined }) {
     onClick { onclick() }
 
-    if (enabled)
+    if (!enabled)
         disabled()
 }
