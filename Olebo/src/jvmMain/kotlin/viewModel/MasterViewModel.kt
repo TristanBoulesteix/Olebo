@@ -76,11 +76,9 @@ class MasterViewModel(val act: Act) {
     val backgroundImage: BufferedImage by derivedStateOf {
         transaction {
             ImageIO.read(inputStreamFromString(currentScene.background)).also { image ->
-                sendMessageToShareScene(
-                    NewMap(
-                        Base64Image(image),
-                        elements.filter { it.isVisible }.map { it.toShareSceneToken() })
-                )
+                sendMessageToShareScene {
+                    NewMap(Base64Image(image), elements.filter { it.isVisible }.map { it.toShareSceneToken() })
+                }
             }
         }
     }
@@ -106,8 +104,8 @@ class MasterViewModel(val act: Act) {
      */
     fun moveTokensTo(point: Offset, from: Offset? = null) {
         val origin = from?.let { pos ->
-            selectedElements.find { it.hitBox in pos } ?: selectElementsAtPosition(pos)
-                .let { selectedElements.firstOrNull() }
+            selectedElements.find { it.hitBox in pos }
+                ?: selectElementsAtPosition(pos).let { selectedElements.firstOrNull() }
         }
 
         /**
@@ -199,8 +197,7 @@ class MasterViewModel(val act: Act) {
             selectedElements.doIfContainsSingle(emptyList()) { blueprint ->
                 val elements = elements
 
-                if (elements.getOrNull(elements.indexOfFirst { it.id == blueprint.id }
-                        .operation(elements)) != null) {
+                if (elements.getOrNull(elements.indexOfFirst { it.id == blueprint.id }.operation(elements)) != null) {
                     listOf(elements[elements.indexOfFirst { it.id == blueprint.id }.operation(elements)])
                 } else emptyList()
             }
@@ -251,23 +248,19 @@ class MasterViewModel(val act: Act) {
     }
 
     fun addNewElement(blueprint: Blueprint) = scope.launch {
-        currentScene.addElement(
-            blueprint = blueprint,
-            onAdded = { newElement ->
-                elements = elements.toMutableList().also {
-                    it += newElement
-                }
-
-                selectedElements = listOf(newElement)
-            },
-            onCanceled = { elementToRemove ->
-                this@MasterViewModel.elements = this@MasterViewModel.elements.toMutableList().also {
-                    it -= elementToRemove
-                }
-                unselectElements()
-                repaint()
+        currentScene.addElement(blueprint = blueprint, onAdded = { newElement ->
+            elements = elements.toMutableList().also {
+                it += newElement
             }
-        )
+
+            selectedElements = listOf(newElement)
+        }, onCanceled = { elementToRemove ->
+            this@MasterViewModel.elements = this@MasterViewModel.elements.toMutableList().also {
+                it -= elementToRemove
+            }
+            unselectElements()
+            repaint()
+        })
 
         repaint()
     }
@@ -316,13 +309,12 @@ class MasterViewModel(val act: Act) {
 
     fun repaint(reloadTokens: Boolean = false) = scope.launch {
         withContext(Dispatchers.IO) {
-            if (reloadTokens)
-                elements = newSuspendedTransaction { currentScene.elements }
+            if (reloadTokens) elements = newSuspendedTransaction { currentScene.elements }
 
-            launch {
-                sendMessageToShareScene(TokenStateChanged(elements.filter { it.isVisible }
-                    .map { it.toShareSceneToken() }))
+            sendMessageToShareScene {
+                TokenStateChanged(elements.filter { it.isVisible }.map { it.toShareSceneToken() })
             }
+
         }
 
         panel.repaint()
@@ -332,50 +324,43 @@ class MasterViewModel(val act: Act) {
         connectionState = Login
 
         scope.launch(Dispatchers.IO) {
-            initWebsocket(
-                client = socketClient,
-                path = "share-scene",
-                onFailure = {
-                    connectionState = Disconnected.ConnectionFailed
-                    it.close()
-                },
-                socketBlock = { manager: ShareSceneManager, setSessionCode: (String) -> Unit ->
-                    val connectedState = Connected(manager)
+            initWebsocket(client = socketClient, path = "share-scene", onFailure = {
+                connectionState = Disconnected.ConnectionFailed
+                it.close()
+            }, socketBlock = { manager: ShareSceneManager, setSessionCode: (String) -> Unit ->
+                val connectedState = Connected(manager)
 
-                    for (frame in incoming) {
-                        when (frame) {
-                            is Frame.Text -> when (val message = frame.getMessageOrNull()) {
-                                is NewSessionCreated -> {
-                                    setSessionCode(message.code)
-                                    connectionState = connectedState
+                for (frame in incoming) {
+                    when (frame) {
+                        is Frame.Text -> when (val message = frame.getMessageOrNull()) {
+                            is NewSessionCreated -> {
+                                setSessionCode(message.code)
+                                connectionState = connectedState
 
-                                    send(
-                                        NewMap(
-                                            Base64Image(backgroundImage),
-                                            elements.filter { it.isVisible }.map { it.toShareSceneToken() })
-                                    )
+                                send(NewMap(Base64Image(backgroundImage),
+                                    elements.filter { it.isVisible }.map { it.toShareSceneToken() })
+                                )
 
-                                    launch {
-                                        for (messageToSend in connectedState.shareSceneViewModel.messages) {
-                                            send(messageToSend)
-                                        }
+                                launch {
+                                    for (messageToSend in connectedState.shareSceneViewModel.messages) {
+                                        send(messageToSend)
                                     }
                                 }
-                                is NumberOfConnectedUser -> {
-                                    connectedState.shareSceneViewModel.numberOfConnectedUser = message.value
-                                }
-                                else -> continue
+                            }
+                            is NumberOfConnectedUser -> {
+                                connectedState.shareSceneViewModel.numberOfConnectedUser = message.value
                             }
                             else -> continue
                         }
-                    }
-
-                    withContext(Dispatchers.IO) {
-                        connectionState = Disconnected
-                        manager.close()
+                        else -> continue
                     }
                 }
-            )
+
+                withContext(Dispatchers.IO) {
+                    connectionState = Disconnected
+                    manager.close()
+                }
+            })
         }
     }
 
@@ -386,16 +371,15 @@ class MasterViewModel(val act: Act) {
     }
 
     private fun Element.toShareSceneToken() = Token(
-        Base64Image(sprite),
-        Position(referenceOffset.x.toInt(), referenceOffset.y.toInt()),
-        size.value
+        Base64Image(sprite), Position(referenceOffset.x.toInt(), referenceOffset.y.toInt()), size.value
     )
 
-    private fun sendMessageToShareScene(message: Message) = (connectionState as? Connected)?.let { connectedState ->
-        scope.launch(Dispatchers.IO) {
-            connectedState.shareSceneViewModel.messages.send(message)
+    private inline fun sendMessageToShareScene(crossinline message: () -> Message) =
+        (connectionState as? Connected)?.let { connectedState ->
+            scope.launch(Dispatchers.IO) {
+                connectedState.shareSceneViewModel.messages.send(message())
+            }
         }
-    }
 
     companion object {
         const val ABSOLUTE_WIDTH = 1600f
