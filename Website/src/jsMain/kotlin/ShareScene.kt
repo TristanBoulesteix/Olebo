@@ -49,12 +49,14 @@ private fun Form(connectionState: ConnectionState, setConnectionState: (Connecti
                                     connectedState.shareSceneViewModel.tokens = message.tokens
                                 }
                                 is TokenStateChanged -> connectedState.shareSceneViewModel.tokens = message.tokens
+                                is ConnectionRefused -> setConnectionState(Disconnected.ConnectionFailed)
                                 else -> continue
                             }
                         }
                     }
                 } finally {
-                    setConnectionState(Disconnected)
+                    if (connectionState !is Disconnected)
+                        setConnectionState(Disconnected)
                     manager.close()
                 }
             }

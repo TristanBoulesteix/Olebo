@@ -26,13 +26,16 @@ fun ShareSceneForm(
         MaterialTextField(label = "Nom de joueur :", value = userName, onValueChange = { userName = it })
 
         MaterialButton(
-            text = "Démarrer",
+            text = if (connectionState is Login) "Connection" else "Démarrer",
             enabled = sessionCode.isNotBlank() || userName.isNotBlank() || connectionState !is Login
         ) {
             MainScope().launch {
                 connect(userName, sessionCode)
             }
         }
+
+        if (connectionState is Disconnected.ConnectionFailed)
+            Text("The code is invalid")
     }
 }
 

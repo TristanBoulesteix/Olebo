@@ -16,3 +16,6 @@ class NewMap(val backgroundImage: Base64Image, val tokens: List<Token>) : Messag
 
 @Serializable
 class TokenStateChanged(val tokens: List<Token>) : Message()
+
+@Serializable
+object ConnectionRefused : Message()

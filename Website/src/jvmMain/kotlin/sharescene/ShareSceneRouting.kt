@@ -50,7 +50,10 @@ fun Routing.shareSceneRouting() {
 
     webSocket("share-scene/{$SESSION_CODE_PARAM}") {
         val currentSession =
-            shareSceneSessions.find { it.urlCode == call.parameters[SESSION_CODE_PARAM] } ?: return@webSocket
+            shareSceneSessions.find { it.urlCode == call.parameters[SESSION_CODE_PARAM] } ?: kotlin.run {
+                send(ConnectionRefused)
+                return@webSocket
+            }
 
         val userName = call.request.queryParameters["name"] ?: return@webSocket
 
