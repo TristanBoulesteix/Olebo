@@ -76,7 +76,11 @@ class MasterViewModel(val act: Act) {
     val backgroundImage: BufferedImage by derivedStateOf {
         transaction {
             ImageIO.read(inputStreamFromString(currentScene.background)).also { image ->
-                sendMessageToShareScene(NewMap(Base64Image(image), elements.map { it.toShareSceneToken() }))
+                sendMessageToShareScene(
+                    NewMap(
+                        Base64Image(image),
+                        elements.filter { it.isVisible }.map { it.toShareSceneToken() })
+                )
             }
         }
     }
@@ -311,12 +315,16 @@ class MasterViewModel(val act: Act) {
     }
 
     fun repaint(reloadTokens: Boolean = false) = scope.launch {
-        if (reloadTokens)
-            withContext(Dispatchers.IO) {
+        withContext(Dispatchers.IO) {
+            if (reloadTokens)
                 elements = newSuspendedTransaction { currentScene.elements }
-            }
 
-        sendMessageToShareScene(TokenStateChanged(elements.map { it.toShareSceneToken() }))
+            launch {
+                sendMessageToShareScene(TokenStateChanged(elements.filter { it.isVisible }
+                    .map { it.toShareSceneToken() }))
+            }
+        }
+
         panel.repaint()
     }
 
@@ -341,7 +349,11 @@ class MasterViewModel(val act: Act) {
                                     setSessionCode(message.code)
                                     connectionState = connectedState
 
-                                    send(NewMap(Base64Image(backgroundImage), elements.map { it.toShareSceneToken() }))
+                                    send(
+                                        NewMap(
+                                            Base64Image(backgroundImage),
+                                            elements.filter { it.isVisible }.map { it.toShareSceneToken() })
+                                    )
 
                                     launch {
                                         for (messageToSend in connectedState.shareSceneViewModel.messages) {
