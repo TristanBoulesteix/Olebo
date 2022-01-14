@@ -314,7 +314,6 @@ class MasterViewModel(val act: Act) {
             sendMessageToShareScene {
                 TokenStateChanged(elements.filter { it.isVisible }.map { it.toShareSceneToken() })
             }
-
         }
 
         panel.repaint()
