@@ -41,6 +41,7 @@ kotlin {
         implementation("io.ktor:ktor-client-serialization:$ktorVersion")
         implementation("io.ktor:ktor-client-websockets:$ktorVersion")
         implementation("dev.petuska:kmdc:0.0.1")
+        implementation(project(":Localization"))
     }
 }
 

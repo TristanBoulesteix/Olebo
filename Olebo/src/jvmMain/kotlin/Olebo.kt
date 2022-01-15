@@ -12,6 +12,7 @@ import androidx.compose.ui.window.rememberTrayState
 import jdr.exia.localization.STR_PREPARE_UPDATE
 import jdr.exia.localization.ST_OLEBO_SEARCH_FOR_UPDATE
 import jdr.exia.localization.StringLocale
+import jdr.exia.localization.invoke
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.update.*
 import jdr.exia.view.HomeWindow

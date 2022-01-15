@@ -5,11 +5,16 @@ import fr.olebo.sharescene.css.ShareSceneStyleSheet
 import fr.olebo.sharescene.css.classes
 import fr.olebo.sharescene.websocket.client
 import io.ktor.http.cio.websocket.*
+import jdr.exia.localization.StringLocale
+import jdr.exia.localization.getBrowserLanguage
+import jdr.exia.localization.invoke
 import org.jetbrains.compose.web.css.Style
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.renderComposableInBody
 
 private fun main() {
+    StringLocale(::getBrowserLanguage)
+
     renderComposableInBody {
         Style(ShareSceneStyleSheet)
 
