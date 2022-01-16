@@ -6,21 +6,15 @@ actual sealed class StringLocale {
      */
     actual companion object {
         @PublishedApi
-        internal actual var activeLanguage: Language
-            get() = TODO("Not yet implemented")
-            set(value) {}
+        internal actual var activeLanguage = defaultLocale
 
         internal actual val langBundle: ResourceBundle
-            get() = TODO("Not yet implemented")
-
-        actual operator fun get(
-            key: String,
-            state: StringStates,
-            vararg args: Any?
-        ): String {
-            TODO("Not yet implemented")
-        }
+            get() = ResourceBundle(activeLanguage)
     }
 
     internal actual abstract val contents: Map<String, String>
 }
+
+actual fun Char.titleCase(language: Language) = titlecase()
+
+actual fun String.format(vararg args: Any?) = this // TODO

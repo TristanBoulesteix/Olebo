@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import jdr.exia.localization.STR_CANCEL
 import jdr.exia.localization.STR_CONFIRM
 import jdr.exia.localization.StringLocale
+import jdr.exia.localization.get
 import jdr.exia.model.tools.SimpleResult
 import jdr.exia.view.tools.MessageType
 import jdr.exia.view.tools.showMessage

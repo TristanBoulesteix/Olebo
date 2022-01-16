@@ -1,7 +1,10 @@
+@file:JvmName("StringLocaleJvm")
+
 package jdr.exia.localization
 
 import java.io.InputStream
 import java.util.*
+import kotlin.text.format as jvmFormatString
 
 /**
  * Parent class of Bundles which contains translations of all the StringLocale of Olebo. They are retrieved with the get operator.
@@ -25,19 +28,6 @@ actual sealed class StringLocale : ListResourceBundle() {
                 Control.getNoFallbackControl(Control.FORMAT_DEFAULT)
             )
 
-        actual operator fun get(key: String, state: StringStates, vararg args: Any?): String = try {
-            langBundle.getString(key)
-        } catch (e: Exception) {
-            key
-        }.let { string ->
-            when (state) {
-                StringStates.CAPITALIZE -> string.replaceFirstChar { if (it.isLowerCase()) it.titlecase(activeLanguage.locale) else it.toString() }
-                StringStates.NORMAL -> string
-            }.format(*args)
-        }
-
-        operator fun get(key: String, vararg args: Any?) = get(key, StringStates.CAPITALIZE, *args)
-
         /**
          * @param resourceName The name of the resource or its path
          * @param extension The extension of the resource (For example "txt")
@@ -57,3 +47,7 @@ actual sealed class StringLocale : ListResourceBundle() {
         }
     }
 }
+
+actual fun Char.titleCase(language: Language) = titlecase(language.locale)
+
+actual fun String.format(vararg args: Any?) = jvmFormatString(*args)

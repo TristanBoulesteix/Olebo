@@ -4,6 +4,7 @@ import jdr.exia.OLEBO_VERSION_CODE
 import jdr.exia.localization.ST_WARNING_MISSING_CONF_FILES
 import jdr.exia.localization.ST_WARNING_PREVIOUS_VERSION_FILE
 import jdr.exia.localization.StringLocale
+import jdr.exia.localization.get
 import jdr.exia.main
 import jdr.exia.system.OLEBO_DIRECTORY
 import kotlinx.coroutines.Dispatchers

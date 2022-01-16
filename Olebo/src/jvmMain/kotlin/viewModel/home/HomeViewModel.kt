@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import jdr.exia.localization.STR_DELETE_ACT
 import jdr.exia.localization.ST_CONFIRM_DELETE_ACT
 import jdr.exia.localization.StringLocale
+import jdr.exia.localization.get
 import jdr.exia.model.act.Act
 import jdr.exia.model.tools.withSetter
 import jdr.exia.view.tools.showConfirmMessage

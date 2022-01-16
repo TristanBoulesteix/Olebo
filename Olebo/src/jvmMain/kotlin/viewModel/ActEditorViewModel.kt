@@ -3,10 +3,7 @@ package jdr.exia.viewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import jdr.exia.localization.ST_ACT_ALREADY_EXISTS
-import jdr.exia.localization.ST_ACT_WITHOUT_NAME
-import jdr.exia.localization.ST_ACT_WITHOUT_SCENE
-import jdr.exia.localization.StringLocale
+import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.act.data.SceneData

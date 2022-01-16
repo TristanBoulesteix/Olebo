@@ -9,6 +9,7 @@ import fr.olebo.sharescene.*
 import io.ktor.http.cio.websocket.*
 import jdr.exia.localization.STR_DELETE_SELECTED_TOKENS
 import jdr.exia.localization.StringLocale
+import jdr.exia.localization.get
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.command.Command

@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import jdr.exia.localization.STR_NO_ELEMENT
 import jdr.exia.localization.STR_SEARCH
 import jdr.exia.localization.StringLocale
+import jdr.exia.localization.get
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.TypeElement
 import jdr.exia.model.type.imageFromPath

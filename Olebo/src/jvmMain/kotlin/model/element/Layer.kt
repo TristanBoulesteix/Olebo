@@ -1,9 +1,6 @@
 package jdr.exia.model.element
 
-import jdr.exia.localization.STR_BACKGROUND
-import jdr.exia.localization.STR_DEFAULT
-import jdr.exia.localization.STR_FOREGROUND
-import jdr.exia.localization.StringLocale
+import jdr.exia.localization.*
 import jdr.exia.model.dao.EnumEntity
 import jdr.exia.model.dao.LayerTable
 import org.jetbrains.exposed.dao.Entity

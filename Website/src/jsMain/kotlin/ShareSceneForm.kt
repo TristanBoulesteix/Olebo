@@ -5,10 +5,12 @@ import fr.olebo.sharescene.components.MaterialButton
 import fr.olebo.sharescene.components.MaterialTextField
 import fr.olebo.sharescene.css.ShareSceneStyleSheet
 import fr.olebo.sharescene.css.classes
+import jdr.exia.localization.*
 import kotlinx.browser.document
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.web.dom.Div
+import org.jetbrains.compose.web.dom.Span
 import org.jetbrains.compose.web.dom.Text
 
 @Composable
@@ -22,11 +24,14 @@ fun ShareSceneForm(
         var sessionCode by remember { mutableStateOf(sessionCodeOnURL) }
         var userName by remember { mutableStateOf("") }
 
-        MaterialTextField(label = "Code de session :", value = sessionCode, onValueChange = { sessionCode = it })
-        MaterialTextField(label = "Nom de joueur :", value = userName, onValueChange = { userName = it })
+        MaterialTextField(
+            label = StringLocale[STR_SESSION_CODE],
+            value = sessionCode,
+            onValueChange = { sessionCode = it })
+        MaterialTextField(label = StringLocale[STR_PLAYER_NAME], value = userName, onValueChange = { userName = it })
 
         MaterialButton(
-            text = if (connectionState is Login) "Connection" else "Démarrer",
+            text = StringLocale[if (connectionState is Login) STR_LOGIN else STR_START],
             enabled = sessionCode.isNotBlank() || userName.isNotBlank() || connectionState !is Login
         ) {
             MainScope().launch {
@@ -35,7 +40,9 @@ fun ShareSceneForm(
         }
 
         if (connectionState is Disconnected.ConnectionFailed)
-            Text("The code is invalid")
+            Span(attrs = classes(ShareSceneStyleSheet.validationErrorText)) {
+                Text(StringLocale[ST_INVALID_SESSION_PARAM])
+            }
     }
 }
 

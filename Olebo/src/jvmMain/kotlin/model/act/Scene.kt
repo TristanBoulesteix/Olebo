@@ -2,6 +2,7 @@ package jdr.exia.model.act
 
 import jdr.exia.localization.STR_NEW_ELEMENT
 import jdr.exia.localization.StringLocale
+import jdr.exia.localization.get
 import jdr.exia.model.command.Command
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.InstanceTable

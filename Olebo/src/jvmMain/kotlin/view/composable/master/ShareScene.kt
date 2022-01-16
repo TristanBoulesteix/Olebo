@@ -12,10 +12,7 @@ import fr.olebo.sharescene.Connected
 import fr.olebo.sharescene.ConnectionState
 import fr.olebo.sharescene.Disconnected
 import fr.olebo.sharescene.ShareSceneManager
-import jdr.exia.localization.STR_LOGIN_OLEBO_WEB
-import jdr.exia.localization.STR_START_OLEBO_WEB
-import jdr.exia.localization.ST_OLEBO_WEB_EXPLANATION
-import jdr.exia.localization.StringLocale
+import jdr.exia.localization.*
 import jdr.exia.model.tools.saveToClipboard
 
 @Composable

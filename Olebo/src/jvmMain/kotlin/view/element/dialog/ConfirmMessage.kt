@@ -5,6 +5,7 @@ import androidx.compose.ui.unit.dp
 import jdr.exia.localization.STR_CANCEL
 import jdr.exia.localization.STR_CONFIRM
 import jdr.exia.localization.StringLocale
+import jdr.exia.localization.get
 import jdr.exia.view.element.builder.ContentButtonBuilder
 import jdr.exia.view.element.form.LabeledCheckbox
 

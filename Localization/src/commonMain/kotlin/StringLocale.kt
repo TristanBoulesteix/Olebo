@@ -11,12 +11,22 @@ expect sealed class StringLocale constructor() {
         internal var activeLanguage: Language
 
         internal val langBundle: ResourceBundle
-
-        operator fun get(key: String, state: StringStates = StringStates.CAPITALIZE, vararg args: Any?): String
     }
 }
 
-operator fun StringLocale.get(key: String, vararg args: Any?) = StringLocale.get(key, StringStates.CAPITALIZE, *args)
+operator fun StringLocale.Companion.get(key: String, state: StringStates, vararg args: Any?): String = try {
+    langBundle.getString(key)
+} catch (e: Exception) {
+    key
+}.let { string ->
+    when (state) {
+        StringStates.CAPITALIZE -> string.replaceFirstChar { if (it.isLowerCase()) it.titleCase(activeLanguage) else it.toString() }
+        StringStates.NORMAL -> string
+    }.format(*args)
+}
+
+operator fun StringLocale.Companion.get(key: String, vararg args: Any?) =
+    StringLocale.get(key, StringStates.CAPITALIZE, *args)
 
 /**
  * To set a default locale, this method need to be called by the main module
@@ -24,3 +34,7 @@ operator fun StringLocale.get(key: String, vararg args: Any?) = StringLocale.get
 inline operator fun StringLocale.Companion.invoke(getLanguage: () -> Language) {
     activeLanguage = getLanguage()
 }
+
+expect fun Char.titleCase(language: Language): String
+
+expect fun String.format(vararg args: Any?): String

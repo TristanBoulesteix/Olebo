@@ -8,10 +8,7 @@ import androidx.compose.ui.awt.SwingPanel
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.WindowPlacement
-import jdr.exia.localization.STR_DELETION
-import jdr.exia.localization.ST_CONFIRM_CLEAR_BOARD
-import jdr.exia.localization.ST_STR1_DM_WINDOW_NAME
-import jdr.exia.localization.StringLocale
+import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.option.Settings

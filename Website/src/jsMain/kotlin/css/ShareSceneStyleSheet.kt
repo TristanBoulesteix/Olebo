@@ -62,6 +62,10 @@ object ShareSceneStyleSheet : StyleSheet() {
         height(100.percent)
     }
 
+    val validationErrorText by style {
+        color(Color.red)
+    }
+
     /*init {
         println(cssRules.joinToString("\n") { it.stringPresentation() })
     }*/

@@ -2,6 +2,7 @@ package jdr.exia.model.element
 
 import androidx.compose.runtime.Immutable
 import jdr.exia.localization.StringLocale
+import jdr.exia.localization.get
 import jdr.exia.model.dao.BlueprintTable
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.tools.CharacterException
