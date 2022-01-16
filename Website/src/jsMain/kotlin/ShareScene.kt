@@ -31,7 +31,7 @@ private fun main() {
 
 @Composable
 private fun Form(connectionState: ConnectionState, setConnectionState: (ConnectionState) -> Unit) {
-    ShareSceneForm(connectionState) { userName, sessionCode ->
+    ShareSceneForm(connectionState, setConnectionState) { userName, sessionCode ->
         initWebsocket(
             client = client,
             path = "share-scene/$sessionCode?name=$userName",

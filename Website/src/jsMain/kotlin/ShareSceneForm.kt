@@ -16,6 +16,7 @@ import org.jetbrains.compose.web.dom.Text
 @Composable
 fun ShareSceneForm(
     connectionState: ConnectionState,
+    setConnectionState: (ConnectionState) -> Unit,
     connect: suspend (userName: String, sessionCode: String) -> Unit
 ) = Div(attrs = classes(ShareSceneStyleSheet.mainContainer)) {
     Div(attrs = classes(ShareSceneStyleSheet.formTitle)) { Text("Olebo ShareScene") }
@@ -32,8 +33,10 @@ fun ShareSceneForm(
 
         MaterialButton(
             text = StringLocale[if (connectionState is Login) STR_LOGIN else STR_START],
-            enabled = sessionCode.isNotBlank() || userName.isNotBlank() || connectionState !is Login
+            enabled = sessionCode.isNotBlank() && userName.isNotBlank() && connectionState !is Login
         ) {
+            setConnectionState(Login)
+
             MainScope().launch {
                 connect(userName, sessionCode)
             }
