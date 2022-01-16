@@ -14,7 +14,7 @@ expect sealed class StringLocale constructor() {
     }
 }
 
-operator fun StringLocale.Companion.get(key: String, state: StringStates, vararg args: Any?): String = try {
+operator fun StringLocale.Companion.get(key: String, state: StringStates, vararg args: Any): String = try {
     langBundle.getString(key)
 } catch (e: Exception) {
     key
@@ -25,7 +25,7 @@ operator fun StringLocale.Companion.get(key: String, state: StringStates, vararg
     }.format(*args)
 }
 
-operator fun StringLocale.Companion.get(key: String, vararg args: Any?) =
+operator fun StringLocale.Companion.get(key: String, vararg args: Any) =
     StringLocale.get(key, StringStates.CAPITALIZE, *args)
 
 /**
@@ -37,4 +37,4 @@ inline operator fun StringLocale.Companion.invoke(getLanguage: () -> Language) {
 
 expect fun Char.titleCase(language: Language): String
 
-expect fun String.format(vararg args: Any?): String
+expect fun String.format(vararg args: Any): String

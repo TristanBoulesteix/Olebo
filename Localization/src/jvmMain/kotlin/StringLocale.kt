@@ -50,4 +50,4 @@ actual sealed class StringLocale : ListResourceBundle() {
 
 actual fun Char.titleCase(language: Language) = titlecase(language.locale)
 
-actual fun String.format(vararg args: Any?) = jvmFormatString(*args)
+actual fun String.format(vararg args: Any) = jvmFormatString(*args)

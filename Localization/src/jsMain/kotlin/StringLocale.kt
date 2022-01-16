@@ -17,4 +17,12 @@ actual sealed class StringLocale {
 
 actual fun Char.titleCase(language: Language) = titlecase()
 
-actual fun String.format(vararg args: Any?) = this // TODO
+actual fun String.format(vararg args: Any): String {
+    var formattedString = this
+
+    args.forEach {
+        formattedString = formattedString.replaceFirst("{?}", it.toString())
+    }
+
+    return formattedString
+}
