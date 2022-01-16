@@ -60,6 +60,7 @@ suspend fun getInstallerExecutable(onUpdateProgress: (Long) -> Unit): Result<Fil
     return Result.success(fileToWrite)
 }
 
+@Suppress("BlockingMethodInNonBlockingContext")
 suspend fun downloadAndExit(
     onExitSuccess: () -> Unit,
     onProgressUpdate: (Long) -> Unit = {},
