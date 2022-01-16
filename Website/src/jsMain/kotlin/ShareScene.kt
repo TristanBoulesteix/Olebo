@@ -22,7 +22,9 @@ private fun main() {
 
         when (val state = connectionState) {
             !is Connected -> Div(attrs = classes(ShareSceneStyleSheet.rootContainer)) {
-                Form(state) { connectionState = it }
+                Form({ connectionState }) {
+                    connectionState = it
+                }
             }
             else -> OleboSceneCanvas(state.shareSceneViewModel.background, state.shareSceneViewModel.tokens)
         }
@@ -30,8 +32,8 @@ private fun main() {
 }
 
 @Composable
-private fun Form(connectionState: ConnectionState, setConnectionState: (ConnectionState) -> Unit) {
-    ShareSceneForm(connectionState, setConnectionState) { userName, sessionCode ->
+private fun Form(getConnectionState: () -> ConnectionState, setConnectionState: (ConnectionState) -> Unit) {
+    ShareSceneForm(getConnectionState(), setConnectionState) { userName, sessionCode ->
         initWebsocket(
             client = client,
             path = "share-scene/$sessionCode?name=$userName",
@@ -60,7 +62,7 @@ private fun Form(connectionState: ConnectionState, setConnectionState: (Connecti
                         }
                     }
                 } finally {
-                    if (connectionState !is Disconnected)
+                    if (getConnectionState() !is Disconnected)
                         setConnectionState(Disconnected)
                     manager.close()
                 }
