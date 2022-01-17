@@ -3,6 +3,7 @@ package fr.olebo.sharescene.components
 import androidx.compose.runtime.Composable
 import kotlinx.browser.window
 import org.jetbrains.compose.web.dom.AttrBuilderContext
+import org.jetbrains.compose.web.dom.ContentBuilder
 import org.jetbrains.compose.web.dom.ElementBuilder
 import org.jetbrains.compose.web.dom.TagElement
 import org.w3c.dom.CanvasRenderingContext2D
@@ -13,12 +14,16 @@ private val canvas = ElementBuilder.createBuilder<HTMLCanvasElement>("canvas")
 @Composable
 fun Canvas(
     attrs: AttrBuilderContext<HTMLCanvasElement>? = null,
-    drawWith: HTMLCanvasElement.(CanvasRenderingContext2D) -> Unit
+    drawWith: HTMLCanvasElement.(CanvasRenderingContext2D) -> Unit,
+    content: ContentBuilder<HTMLCanvasElement>? = null
 ) {
     TagElement(
         elementBuilder = canvas,
         applyAttrs = attrs,
         content = {
+            if(content != null)
+                content()
+
             DomSideEffect {
                 it.width = window.innerWidth
                 it.height = window.innerHeight

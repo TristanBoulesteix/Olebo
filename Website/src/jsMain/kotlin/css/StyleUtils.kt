@@ -11,6 +11,9 @@ fun <T : HTMLElement> classes(vararg classes: String): AttrBuilderContext<T> = {
 inline val auto
     get() = "auto".unsafeCast<CSSNumeric>()
 
+inline val zero
+    get() = 0.unsafeCast<CSSSizeValue<CSSUnitPercentage>>()
+
 fun StyleBuilder.margin(
     top: CSSNumeric? = null,
     start: CSSNumeric? = null,

@@ -2,6 +2,8 @@ package fr.olebo.sharescene
 
 import kotlinx.serialization.Serializable
 
+internal typealias Color = Triple<Int, Int, Int>
+
 @Serializable
 sealed class Message
 
@@ -19,3 +21,14 @@ class TokenStateChanged(val tokens: List<Token>) : Message()
 
 @Serializable
 object ConnectionRefused : Message()
+
+@Serializable
+class CursorMoved(val cursor: Cursor) : Message() {
+    @Serializable
+    data class Cursor(val position: Position, val color: Color, val borderColor: Color)
+
+    constructor(position: Position, color: Color, borderColor: Color) : this(Cursor(position, color, borderColor))
+}
+
+@Serializable
+object CursorHidden : Message()

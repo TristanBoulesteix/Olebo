@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import fr.olebo.sharescene.*
 import io.ktor.http.cio.websocket.*
 import jdr.exia.localization.STR_DELETE_SELECTED_TOKENS
@@ -13,6 +14,7 @@ import jdr.exia.localization.get
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.command.Command
+import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Layer
@@ -86,7 +88,24 @@ class MasterViewModel(val act: Act) {
         }
     }
 
-    var cursor: Offset? by mutableStateOf(null)
+    var cursor by mutableStateOf<Offset?>(null) withSetter {
+        fun Color.toTriple(): Triple<Int, Int, Int> {
+            val (r, g, b) = this
+            return Triple(r.toInt() * 255, g.toInt() * 255, b.toInt() * 255)
+        }
+
+        sendMessageToShareScene {
+            if (it == null || !Settings.cursorEnabled) CursorHidden else {
+                val (cursorColor, borderCursorColor) = Settings.cursorColor
+
+                CursorMoved(
+                    Position(it.x.toInt(), it.y.toInt()),
+                    cursorColor.toTriple(),
+                    borderCursorColor.toTriple()
+                )
+            }
+        }
+    }
 
     /**
      * Returns true if there is at least one element at the given position

@@ -36,6 +36,8 @@ fun Routing.shareSceneRouting() {
                     when (message) {
                         is NewMap -> currentSession.map = Map(message.backgroundImage, message.tokens)
                         is TokenStateChanged -> currentSession.map = currentSession.map.copy(tokens = message.tokens)
+                        is CursorHidden -> currentSession.cursor = null
+                        is CursorMoved -> currentSession.cursor = message.cursor
                         else -> continue
                     }
 

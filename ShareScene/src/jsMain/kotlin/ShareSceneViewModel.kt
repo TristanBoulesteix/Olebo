@@ -10,5 +10,7 @@ actual class ShareSceneViewModel : Closeable {
 
     var tokens by mutableStateOf(listOf<Token>())
 
+    var cursor by mutableStateOf<CursorMoved.Cursor?>(null)
+
     override fun close() = Unit
 }

@@ -60,6 +60,9 @@ object ShareSceneStyleSheet : StyleSheet() {
     val oleboCanvasContainer by style {
         width(100.percent)
         height(100.percent)
+        position(Position.Absolute)
+        top(zero)
+        left(zero)
     }
 
     val validationErrorText by style {

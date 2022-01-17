@@ -26,7 +26,7 @@ private fun main() {
                     connectionState = it
                 }
             }
-            else -> OleboSceneCanvas(state.shareSceneViewModel.background, state.shareSceneViewModel.tokens)
+            else -> OleboSceneCanvas(state.shareSceneViewModel)
         }
     }
 }
@@ -57,7 +57,9 @@ private fun Form(getConnectionState: () -> ConnectionState, setConnectionState: 
                                 }
                                 is TokenStateChanged -> connectedState.shareSceneViewModel.tokens = message.tokens
                                 is ConnectionRefused -> setConnectionState(Disconnected.ConnectionFailed)
-                                else -> continue
+                                is CursorHidden -> connectedState.shareSceneViewModel.cursor = null
+                                is CursorMoved -> connectedState.shareSceneViewModel.cursor = message.cursor
+                                null, is NewSessionCreated, is NumberOfConnectedUser -> continue
                             }
                         }
                     }

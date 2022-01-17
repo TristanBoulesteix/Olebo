@@ -15,6 +15,8 @@ data class ShareSceneSession(val masterConnection: Connection) {
 
     lateinit var map: Map
 
+    var cursor: CursorMoved.Cursor? = null
+
     init {
         val alphabet = 'a'..'z'
         val numbers = '1'..'9'
