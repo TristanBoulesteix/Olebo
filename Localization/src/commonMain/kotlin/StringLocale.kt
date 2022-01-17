@@ -37,4 +37,4 @@ inline operator fun StringLocale.Companion.invoke(getLanguage: () -> Language) {
 
 expect fun Char.titleCase(language: Language): String
 
-expect fun String.format(vararg args: Any): String
+internal expect fun String.format(vararg args: Any): String
