@@ -31,7 +31,7 @@ fun BottomPanel(
             Box(modifier = Modifier.padding(padding)) {
                 when (currentTab) {
                     BottomTab.Select -> selectedEditor()
-                    else -> shareScene()
+                    BottomTab.Web -> shareScene()
                 }
             }
         }
