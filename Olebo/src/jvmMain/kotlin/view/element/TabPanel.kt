@@ -66,6 +66,7 @@ fun <T : Any> TabPanel(
     )
 }
 
+@Immutable
 data class HeaderTabOptions(
     val backgroundColor: Color = Color.Unspecified,
     val paddingHeight: Dp = 15.dp,

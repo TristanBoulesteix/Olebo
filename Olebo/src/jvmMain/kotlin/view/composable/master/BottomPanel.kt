@@ -15,7 +15,7 @@ import jdr.exia.view.element.TabPanel
 fun BottomPanel(
     modifier: Modifier,
     selectedEditor: @Composable () -> Unit,
-    webConfig: @Composable () -> Unit
+    shareScene: @Composable () -> Unit
 ) = Box(modifier) {
     val tabs = remember { BottomTab.values().toList() }
 
@@ -31,7 +31,7 @@ fun BottomPanel(
             Box(modifier = Modifier.padding(padding)) {
                 when (currentTab) {
                     BottomTab.Select -> selectedEditor()
-                    else -> webConfig()
+                    else -> shareScene()
                 }
             }
         }

@@ -129,7 +129,7 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
                     setPriority = viewModel::changePriority
                 )
             },
-            webConfig = {
+            shareScene = {
                 ShareScenePanel(
                     connect = viewModel::connectToServer,
                     connectionState = viewModel.connectionState
