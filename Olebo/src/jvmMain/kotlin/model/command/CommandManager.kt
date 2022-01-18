@@ -67,7 +67,6 @@ class CommandManager private constructor() : MutableList<Command> by mutableStat
             return CommandManager().also { managerInstance = sceneId to it }
         }
 
-
         fun clear() {
             managerInstance = null
         }
