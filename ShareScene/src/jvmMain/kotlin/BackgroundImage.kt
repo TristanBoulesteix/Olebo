@@ -6,12 +6,12 @@ import java.io.ByteArrayOutputStream
 import java.util.*
 import javax.imageio.ImageIO
 
-fun Base64Image(bufferedImage: BufferedImage, resize: Boolean = true) =
-    Base64Image(bufferedImage.toBase64String(resize))
+fun Base64Image(bufferedImage: BufferedImage, newSize: Int? = null) =
+    Base64Image(bufferedImage.toBase64String(newSize))
 
-private fun BufferedImage.toBase64String(resize: Boolean): String {
+private fun BufferedImage.toBase64String(newSize: Int?): String {
     val imageInByte = ByteArrayOutputStream().use {
-        ImageIO.write(if (resize) resize(50, 50) else this, "png", it)
+        ImageIO.write(if (newSize != null) resize(newSize) else this, "png", it)
         it.flush()
         it.toByteArray()
     }
@@ -19,9 +19,9 @@ private fun BufferedImage.toBase64String(resize: Boolean): String {
     return String(Base64.getEncoder().encode(imageInByte))
 }
 
-private fun BufferedImage.resize(height: Int, width: Int): BufferedImage {
-    val tmp: Image = getScaledInstance(width, height, Image.SCALE_SMOOTH)
-    val resized = BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
+private fun BufferedImage.resize(size: Int): BufferedImage {
+    val tmp: Image = getScaledInstance(size, size, Image.SCALE_SMOOTH)
+    val resized = BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB)
     val g2d = resized.createGraphics()
     g2d.drawImage(tmp, 0, 0, null)
     g2d.dispose()

@@ -81,7 +81,7 @@ class MasterViewModel(val act: Act) {
             ImageIO.read(inputStreamFromString(currentScene.background)).also { image ->
                 sendMessageToShareScene {
                     NewMap(
-                        Base64Image(image, resize = false),
+                        Base64Image(image),
                         elements.filter { it.isVisible }.map { it.toShareSceneToken() })
                 }
             }
@@ -356,9 +356,8 @@ class MasterViewModel(val act: Act) {
                         is Frame.Text -> when (val message = frame.getMessageOrNull()) {
                             is NewSessionCreated -> {
                                 setSessionCode(message.code)
-                                connectionState = connectedState
 
-                                send(NewMap(Base64Image(backgroundImage, resize = false),
+                                send(NewMap(Base64Image(backgroundImage),
                                     elements.filter { it.isVisible }.map { it.toShareSceneToken() })
                                 )
 
@@ -367,6 +366,8 @@ class MasterViewModel(val act: Act) {
                                         send(messageToSend)
                                     }
                                 }
+
+                                connectionState = connectedState
                             }
                             is NumberOfConnectedUser -> {
                                 connectedState.shareSceneViewModel.numberOfConnectedUser = message.value
@@ -392,7 +393,7 @@ class MasterViewModel(val act: Act) {
     }
 
     private fun Element.toShareSceneToken() = Token(
-        Base64Image(sprite), Position(referenceOffset.x.toInt(), referenceOffset.y.toInt()), size.value
+        Base64Image(sprite, size.value), Position(referenceOffset.x.toInt(), referenceOffset.y.toInt()), size.value
     )
 
     private inline fun sendMessageToShareScene(crossinline message: () -> Message) =
