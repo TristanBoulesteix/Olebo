@@ -15,6 +15,7 @@ import fr.olebo.sharescene.Disconnected
 import fr.olebo.sharescene.ShareSceneManager
 import jdr.exia.localization.*
 import jdr.exia.model.tools.saveToClipboard
+import jdr.exia.view.element.FlowRow
 
 @Composable
 fun ShareScenePanel(
@@ -75,14 +76,16 @@ private fun ShareSceneManagerScreen(
 
         Spacer(Modifier.width(25.dp))
 
-        Button(onClick = { saveToClipboard(manager.codeSession.orEmpty()) }) {
-            Text("Copy the code to the clipboard")
-        }
+        FlowRow(Modifier.fillMaxWidth()) {
+            Button(onClick = { saveToClipboard(manager.codeSession.orEmpty()) }) {
+                Text("Copy the code to the clipboard")
+            }
 
-        Spacer(Modifier.width(25.dp))
+            Spacer(Modifier.width(25.dp))
 
-        Button(onClick = { saveToClipboard(manager.sceneUrl.orEmpty()) }) {
-            Text("Copy url to the clipboard")
+            Button(onClick = { saveToClipboard(manager.sceneUrl.orEmpty()) }) {
+                Text("Copy url to the clipboard")
+            }
         }
     }
 }

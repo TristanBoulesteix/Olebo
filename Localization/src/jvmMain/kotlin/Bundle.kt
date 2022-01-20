@@ -218,6 +218,8 @@ internal actual class StringLocaleBundle : StringLocale() {
         STR_START_OLEBO_WEB to "start and connect",
         STR_LOGIN_OLEBO_WEB to "login...",
         STR_ERROR_LOGIN_TO_OLEBO_WEB to "connection failed - please check your internet connection",
+        STR_EDIT_TAB to "Edition",
+        STR_OLEBO_WEB_TAB to "ShareScene (Olebo Web)",
     )
 }
 
@@ -438,5 +440,7 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
         STR_START_OLEBO_WEB to "commencer et se connecter",
         STR_LOGIN_OLEBO_WEB to "connexion...",
         STR_ERROR_LOGIN_TO_OLEBO_WEB to "la connexion a échoué - merci de vérifier votre connection internet",
+        STR_EDIT_TAB to "Édition",
+        STR_OLEBO_WEB_TAB to "ShareScene (Olebo Web)",
     )
 }

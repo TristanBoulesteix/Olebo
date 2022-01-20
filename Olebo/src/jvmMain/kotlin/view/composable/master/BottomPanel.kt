@@ -6,6 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import jdr.exia.localization.STR_EDIT_TAB
+import jdr.exia.localization.STR_OLEBO_WEB_TAB
+import jdr.exia.localization.StringLocale
+import jdr.exia.localization.get
 import jdr.exia.view.element.HeaderTabOptions
 import jdr.exia.view.element.HeaderTabPosition
 import jdr.exia.view.element.HeaderTabSize
@@ -39,5 +43,5 @@ fun BottomPanel(
 }
 
 private enum class BottomTab(val tabName: String) {
-    Select("Selection"), Web("Web (Alpha)")
+    Select(StringLocale[STR_EDIT_TAB]), Web(StringLocale[STR_OLEBO_WEB_TAB])
 }
