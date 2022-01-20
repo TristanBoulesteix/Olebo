@@ -7,6 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import fr.olebo.sharescene.Connected
 import fr.olebo.sharescene.ConnectionState
@@ -30,18 +31,34 @@ fun ShareScenePanel(
 }
 
 @Composable
-private fun WebConfig(connect: () -> Unit, connectionState: ConnectionState) = Row {
-    Text(StringLocale[ST_OLEBO_WEB_EXPLANATION])
-
-    Spacer(Modifier.width(8.dp))
-
-    Button(
-        onClick = connect,
-        modifier = Modifier.padding(horizontal = 8.dp),
-        enabled = connectionState is Disconnected
+private fun WebConfig(
+    connect: () -> Unit,
+    connectionState: ConnectionState
+) = Box(Modifier.fillMaxSize(), contentAlignment = Alignment.CenterStart) {
+    Row(
+        modifier = Modifier.padding(horizontal = 8.dp).fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(StringLocale[if (connectionState is Disconnected) STR_START_OLEBO_WEB else STR_LOGIN_OLEBO_WEB])
+        Text(StringLocale[ST_OLEBO_WEB_EXPLANATION])
+
+        Spacer(Modifier.width(8.dp))
+
+        Button(
+            onClick = connect,
+            modifier = Modifier.padding(horizontal = 8.dp),
+            enabled = connectionState is Disconnected
+        ) {
+            Text(StringLocale[if (connectionState is Disconnected) STR_START_OLEBO_WEB else STR_LOGIN_OLEBO_WEB])
+        }
     }
+
+    if (connectionState is Disconnected.ConnectionFailed)
+        Text(
+            StringLocale[STR_ERROR_LOGIN_TO_OLEBO_WEB],
+            Modifier.align(Alignment.BottomCenter).padding(bottom = 10.dp),
+            color = Color.Red
+        )
 }
 
 @Composable

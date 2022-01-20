@@ -209,12 +209,15 @@ internal actual class StringLocaleBundle : StringLocale() {
             (This feature may be disable for screens with different ratios / resolution)
         """.trimIndent(),
         ST_OLEBO_WEB_EXPLANATION to """
-            Olebo web is an experimental service that allows you to share in real time your scenes and scenarios with your player directly in their web browser.
-            This feature is currently in alpha and its behavior is not guaranteed.
-            This feature does not require the players to install a software.
+            ShareScene allows you to share the player view on the internet in real time.
+            Only a web browser and an internet connection is required for the players.
+            Please note that the token images will be compressed and may lose some quality.
+            
+            To start, press the button on the right and then share tot he players the URL provided.
         """.trimIndent(),
         STR_START_OLEBO_WEB to "start and connect",
         STR_LOGIN_OLEBO_WEB to "login...",
+        STR_ERROR_LOGIN_TO_OLEBO_WEB to "connection failed - please check your internet connection",
     )
 }
 
@@ -426,11 +429,14 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
             (Cette fonctionnalité peut-être désactivée pour les écrans avec différentes résolutions / ratios)
         """.trimIndent(),
         ST_OLEBO_WEB_EXPLANATION to """
-            Olebo Web est un service expérimental qui permet de partager en temps réel les scènes et les scénarios avec vos joueurs directement sur leur navigateur web.
-            Cette fonctionnalité est actuellement en cours de développement et son fonctionnement peur se révéler instable.
-            Cette fonctionnalité ne nécessite pas l'installation d'un programme pour les joueurs.
+            ShareScene vous permet de partager la vue joueur directement sur internet en temps réel.
+            Les joueurs doivent simplement posséder un navigateur web et une connection internet.
+            Veuillez noter que les images des tokens seront compressées et pourront perdre un peu en qualité.
+            
+            Pour commencer, appuyez sur le bouton à droite puis partagez l'adresse internet fournie aux joueurs.
         """.trimIndent(),
         STR_START_OLEBO_WEB to "commencer et se connecter",
         STR_LOGIN_OLEBO_WEB to "connexion...",
+        STR_ERROR_LOGIN_TO_OLEBO_WEB to "la connexion a échoué - merci de vérifier votre connection internet",
     )
 }

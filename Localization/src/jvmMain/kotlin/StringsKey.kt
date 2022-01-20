@@ -149,6 +149,7 @@ const val STR_NO_ACT = "no_act"
 const val STR_NO_SCENE = "no_scene"
 const val STR_START_OLEBO_WEB = "start_web_service"
 const val STR_LOGIN_OLEBO_WEB = "login_web_service"
+const val STR_ERROR_LOGIN_TO_OLEBO_WEB = "error_login_web_service"
 
 // -- Sentences
 
