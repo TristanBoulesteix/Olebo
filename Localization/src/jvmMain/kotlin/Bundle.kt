@@ -218,8 +218,11 @@ internal actual class StringLocaleBundle : StringLocale() {
         STR_START_OLEBO_WEB to "start and connect",
         STR_LOGIN_OLEBO_WEB to "login...",
         STR_ERROR_LOGIN_TO_OLEBO_WEB to "connection failed - please check your internet connection",
-        STR_EDIT_TAB to "Edition",
+        STR_EDIT_TAB to "edition",
         STR_OLEBO_WEB_TAB to "ShareScene (Olebo Web)",
+        ST_INT1_NUMBER_OF_CONNECTED_USER to "Number of connected player(s): %d",
+        STR_COPY_CODE to "copy the code to the clipboard",
+        STR_COPY_URL to "copy url to the clipboard",
     )
 }
 
@@ -440,7 +443,10 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
         STR_START_OLEBO_WEB to "commencer et se connecter",
         STR_LOGIN_OLEBO_WEB to "connexion...",
         STR_ERROR_LOGIN_TO_OLEBO_WEB to "la connexion a échoué - merci de vérifier votre connection internet",
-        STR_EDIT_TAB to "Édition",
+        STR_EDIT_TAB to "édition",
         STR_OLEBO_WEB_TAB to "ShareScene (Olebo Web)",
+        ST_INT1_NUMBER_OF_CONNECTED_USER to "Nombre de joueur connecté(s) : %d",
+        STR_COPY_CODE to "copier le code dans le presse-papier",
+        STR_COPY_URL to "copier l'adresse dans le presse-papier",
     )
 }

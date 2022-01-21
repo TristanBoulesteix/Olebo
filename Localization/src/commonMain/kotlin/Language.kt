@@ -1,6 +1,6 @@
 package jdr.exia.localization
 
-expect class Locale(code: String)
+expect class Locale
 
 expect value class Language(val locale: Locale) {
     companion object {
@@ -8,7 +8,5 @@ expect value class Language(val locale: Locale) {
         internal val french: Language
     }
 }
-
-fun Language(locale: String) = Language(Locale(locale))
 
 expect val Language.languageCode: String

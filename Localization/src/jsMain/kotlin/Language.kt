@@ -2,17 +2,17 @@ package jdr.exia.localization
 
 import kotlinx.browser.window
 
-actual class Locale actual constructor(val code: String)
+actual typealias Locale = String
 
 actual value class Language(val locale: Locale) {
     actual companion object {
-        internal actual val english = Language(Locale("en"))
-        internal actual val french = Language(Locale("fr"))
+        internal actual val english = Language("en")
+        internal actual val french = Language("fr")
     }
 }
 
 actual val Language.languageCode: String
-    get() = locale.code
+    get() = locale
 
 fun getBrowserLanguage(): Language {
     val navigator = window.navigator

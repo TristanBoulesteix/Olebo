@@ -152,6 +152,8 @@ const val STR_LOGIN_OLEBO_WEB = "login_web_service"
 const val STR_ERROR_LOGIN_TO_OLEBO_WEB = "error_login_web_service"
 const val STR_EDIT_TAB = "edit_tab"
 const val STR_OLEBO_WEB_TAB = "web_service_tab"
+const val STR_COPY_CODE = "copy_code"
+const val STR_COPY_URL = "copy_URL"
 
 // -- Sentences
 
@@ -201,3 +203,4 @@ const val ST_OLEBO_WEB_EXPLANATION = "web_explain"
 // -- Interpolatable StringLocale
 const val ST_INT1_OCCURRENCE_BLUEPRINT_TO_DELETE = "1_num_blueprint_to_delete"
 const val ST_STR1_DM_WINDOW_NAME = "1_dm_window_name"
+const val ST_INT1_NUMBER_OF_CONNECTED_USER = "1_number_of_connected_user"

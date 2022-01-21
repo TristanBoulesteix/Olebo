@@ -5,6 +5,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -14,8 +15,10 @@ import fr.olebo.sharescene.ConnectionState
 import fr.olebo.sharescene.Disconnected
 import fr.olebo.sharescene.ShareSceneManager
 import jdr.exia.localization.*
+import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.tools.saveToClipboard
 import jdr.exia.view.element.FlowRow
+import java.util.Locale
 
 @Composable
 fun ShareScenePanel(
@@ -67,24 +70,29 @@ private fun ShareSceneManagerScreen(
     manager: ShareSceneManager,
     numberOfConnectedUser: Int
 ) = Column(modifier = Modifier.padding(start = 10.dp)) {
-    Text("Number of connected user: $numberOfConnectedUser")
+    Text(StringLocale[ST_INT1_NUMBER_OF_CONNECTED_USER, numberOfConnectedUser])
 
     Spacer(Modifier.height(25.dp))
 
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
         OutlinedTextField(value = manager.sceneUrl.orEmpty(), onValueChange = {})
 
         Spacer(Modifier.width(25.dp))
 
         FlowRow(Modifier.fillMaxWidth()) {
-            Button(onClick = { saveToClipboard(manager.codeSession.orEmpty()) }) {
-                Text("Copy the code to the clipboard")
+            val buttonSizeModifier = remember {
+                val width = if ((Settings.language == Language(Locale.FRENCH))) 380.dp else 300.dp
+                Modifier.width(width)
+            }
+
+            Button(modifier = buttonSizeModifier, onClick = { saveToClipboard(manager.codeSession.orEmpty()) }) {
+                Text(StringLocale[STR_COPY_CODE])
             }
 
             Spacer(Modifier.width(25.dp))
 
-            Button(onClick = { saveToClipboard(manager.sceneUrl.orEmpty()) }) {
-                Text("Copy url to the clipboard")
+            Button(modifier = buttonSizeModifier, onClick = { saveToClipboard(manager.sceneUrl.orEmpty()) }) {
+                Text(StringLocale[STR_COPY_URL])
             }
         }
     }

@@ -22,5 +22,7 @@ actual value class Language(val locale: Locale) {
     }
 }
 
+fun Language(locale: String) = Language(Locale(locale))
+
 actual val Language.languageCode: String
     get() = locale.language
