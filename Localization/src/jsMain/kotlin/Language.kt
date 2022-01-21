@@ -12,7 +12,7 @@ actual value class Language(val locale: Locale) {
 }
 
 actual val Language.languageCode: String
-    get() = locale
+    inline get() = locale
 
 fun getBrowserLanguage(): Language {
     val navigator = window.navigator
