@@ -59,7 +59,7 @@ private fun Form(getConnectionState: () -> ConnectionState, setConnectionState: 
                                 is ConnectionRefused -> setConnectionState(Disconnected.ConnectionFailed)
                                 is CursorHidden -> connectedState.shareSceneViewModel.cursor = null
                                 is CursorMoved -> connectedState.shareSceneViewModel.cursor = message.cursor
-                                null, is NewSessionCreated, is NumberOfConnectedUser -> continue
+                                null, is NewSessionCreated, is PlayerAddedOrRemoved -> continue
                             }
                         }
                     }

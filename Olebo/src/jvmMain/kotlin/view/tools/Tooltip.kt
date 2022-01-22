@@ -4,7 +4,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.TooltipArea
 import androidx.compose.foundation.TooltipPlacement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
@@ -22,6 +21,8 @@ import jdr.exia.view.element.dialog.DialogManager
 @Composable
 fun BoxWithTooltipIfNotNull(
     tooltip: String? = null,
+    modifier: Modifier = Modifier,
+    tooltipAlignment: Alignment = Alignment.BottomEnd,
     content: @Composable () -> Unit
 ) = if (tooltip != null && !DialogManager.areDialogVisible) TooltipArea(
     tooltip = {
@@ -36,11 +37,12 @@ fun BoxWithTooltipIfNotNull(
             )
         }
     },
-    modifier = Modifier.fillMaxSize(),
+    modifier = modifier,
     tooltipPlacement = TooltipPlacement.CursorPoint(
-        offset = DpOffset(0.dp, 16.dp)
+        offset = DpOffset(0.dp, 16.dp),
+        alignment = tooltipAlignment
     ), content = {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.CenterStart) {
+        Box(modifier = modifier, contentAlignment = Alignment.CenterStart) {
             content()
         }
     }

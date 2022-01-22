@@ -10,14 +10,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import fr.olebo.sharescene.Connected
-import fr.olebo.sharescene.ConnectionState
-import fr.olebo.sharescene.Disconnected
-import fr.olebo.sharescene.ShareSceneManager
+import fr.olebo.sharescene.*
 import jdr.exia.localization.*
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.tools.saveToClipboard
 import jdr.exia.view.element.FlowRow
+import jdr.exia.view.tools.BoxWithTooltipIfNotNull
 import java.util.Locale
 
 @Composable
@@ -28,7 +26,7 @@ fun ShareScenePanel(
     when (connectionState) {
         is Connected -> ShareSceneManagerScreen(
             connectionState.manager,
-            connectionState.shareSceneViewModel.numberOfConnectedUser
+            connectionState.shareSceneViewModel
         )
         else -> WebConfig(connect, connectionState)
     }
@@ -68,9 +66,21 @@ private fun WebConfig(
 @Composable
 private fun ShareSceneManagerScreen(
     manager: ShareSceneManager,
-    numberOfConnectedUser: Int
+    shareSceneViewModel: ShareSceneViewModel
 ) = Column(modifier = Modifier.padding(start = 10.dp)) {
-    Text(StringLocale[ST_INT1_NUMBER_OF_CONNECTED_USER, numberOfConnectedUser])
+    val playersNameList = remember(shareSceneViewModel.connectedPlayers) {
+        if (shareSceneViewModel.connectedPlayers.isNotEmpty()) buildString {
+            appendLine(StringLocale[ST_INT1_NAME_OF_CONNECTED_PLAYERS, shareSceneViewModel.numberOfConnectedPlayers])
+
+            shareSceneViewModel.connectedPlayers.forEach {
+                appendLine("- ${it.name}")
+            }
+        } else null
+    }
+
+    BoxWithTooltipIfNotNull(playersNameList, tooltipAlignment = Alignment.CenterEnd) {
+        Text(StringLocale[ST_INT1_NUMBER_OF_CONNECTED_PLAYERS, shareSceneViewModel.numberOfConnectedPlayers])
+    }
 
     Spacer(Modifier.height(25.dp))
 
@@ -81,7 +91,7 @@ private fun ShareSceneManagerScreen(
 
         FlowRow(Modifier.fillMaxWidth()) {
             val buttonSizeModifier = remember {
-                val width = if ((Settings.language == Language(Locale.FRENCH))) 380.dp else 300.dp
+                val width = if (Settings.language == Language(Locale.FRENCH)) 380.dp else 300.dp
                 Modifier.width(width)
             }
 

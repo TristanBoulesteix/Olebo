@@ -38,16 +38,21 @@ data class ShareSceneSession(val masterConnection: Connection) {
 
     suspend fun sendToPlayers(message: Message) = playerConnections.forEach { it.send(message) }
 
+    fun getPlayers() = playerConnections.map { Player(it.name) }
+
     companion object {
         private val ids = synchronizedSet<String>()
     }
 }
 
-interface Connection : DefaultWebSocketSession {
+sealed interface Connection : DefaultWebSocketSession {
     val id: Int
+
+    val name: String
 }
 
-private class ConnectionImpl(session: DefaultWebSocketSession) : Connection, DefaultWebSocketSession by session {
+private class ConnectionImpl(session: DefaultWebSocketSession, override val name: String = "") : Connection,
+    DefaultWebSocketSession by session {
     companion object {
         private val lastId = AtomicInteger(0)
     }
@@ -56,6 +61,8 @@ private class ConnectionImpl(session: DefaultWebSocketSession) : Connection, Def
 }
 
 fun DefaultWebSocketSession.Connection(): Connection = ConnectionImpl(this)
+
+fun DefaultWebSocketSession.Connection(name: String): Connection = ConnectionImpl(this, name)
 
 suspend infix fun MutableSet<ShareSceneSession>.destroy(session: ShareSceneSession) {
     session.playerConnections.onEach { it.close() }.clear()

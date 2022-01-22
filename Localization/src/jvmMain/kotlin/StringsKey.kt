@@ -203,4 +203,5 @@ const val ST_OLEBO_WEB_EXPLANATION = "web_explain"
 // -- Interpolatable StringLocale
 const val ST_INT1_OCCURRENCE_BLUEPRINT_TO_DELETE = "1_num_blueprint_to_delete"
 const val ST_STR1_DM_WINDOW_NAME = "1_dm_window_name"
-const val ST_INT1_NUMBER_OF_CONNECTED_USER = "1_number_of_connected_user"
+const val ST_INT1_NUMBER_OF_CONNECTED_PLAYERS = "1_number_of_connected_players"
+const val ST_INT1_NAME_OF_CONNECTED_PLAYERS = "1_name_of_connected_players"

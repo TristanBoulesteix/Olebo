@@ -63,7 +63,10 @@ fun ContentListRow(
     buttonBuilders: List<ContentBuilder> = emptyList()
 ) = ContentListRow(
     content = {
-        BoxWithTooltipIfNotNull(tooltip = contentTooltip) { ContentText(contentText = contentText, enabled = enabled) }
+        BoxWithTooltipIfNotNull(
+            tooltip = contentTooltip,
+            modifier = Modifier.fillMaxSize()
+        ) { ContentText(contentText = contentText, enabled = enabled) }
     },
     onClick = onClick,
     modifier = modifier,
@@ -91,7 +94,7 @@ private fun RowButton(contentBuilder: ContentBuilder, modifier: Modifier) {
             },
         contentAlignment = Alignment.CenterStart
     ) {
-        BoxWithTooltipIfNotNull(contentBuilder.tooltip) {
+        BoxWithTooltipIfNotNull(contentBuilder.tooltip, Modifier.fillMaxSize()) {
             when (contentBuilder) {
                 is ImageButtonBuilder -> Image(
                     bitmap = contentBuilder.content,

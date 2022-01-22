@@ -59,10 +59,10 @@ fun Routing.shareSceneRouting() {
 
         val userName = call.request.queryParameters["name"] ?: return@webSocket
 
-        val currentConnection = Connection()
+        val currentConnection = Connection(userName)
 
         currentSession.playerConnections += currentConnection
-        currentSession.sendToMaster(NumberOfConnectedUser(currentSession.playerConnections.size))
+        currentSession.sendToMaster(PlayerAddedOrRemoved(currentSession.getPlayers()))
 
         val (background, tokens) = currentSession.map
 
@@ -81,6 +81,6 @@ fun Routing.shareSceneRouting() {
 
         // Handle session close
         currentSession.playerConnections -= currentConnection
-        currentSession.sendToMaster(NumberOfConnectedUser(currentSession.playerConnections.size))
+        currentSession.sendToMaster(PlayerAddedOrRemoved(currentSession.getPlayers()))
     }
 }

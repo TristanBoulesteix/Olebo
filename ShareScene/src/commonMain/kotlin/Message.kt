@@ -11,7 +11,7 @@ sealed class Message
 class NewSessionCreated(@Serializable(with = IdSerializer::class) val id: Id, val code: String) : Message()
 
 @Serializable
-class NumberOfConnectedUser(val value: Int) : Message()
+class PlayerAddedOrRemoved(val users: List<Player>) : Message()
 
 @Serializable
 class NewMap(val backgroundImage: Base64Image, val tokens: List<Token>) : Message()

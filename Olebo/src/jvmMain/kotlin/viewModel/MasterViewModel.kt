@@ -369,8 +369,8 @@ class MasterViewModel(val act: Act) {
 
                                 connectionState = connectedState
                             }
-                            is NumberOfConnectedUser -> {
-                                connectedState.shareSceneViewModel.numberOfConnectedUser = message.value
+                            is PlayerAddedOrRemoved -> {
+                                connectedState.shareSceneViewModel.connectedPlayers = message.users
                             }
                             else -> continue
                         }
