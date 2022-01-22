@@ -1,6 +1,8 @@
 package jdr.exia.localization
 
-expect sealed class StringLocale constructor() {
+import androidx.compose.runtime.Stable
+
+expect sealed class StringLocale() {
     internal abstract val contents: Map<String, String>
 
     /**
@@ -14,6 +16,7 @@ expect sealed class StringLocale constructor() {
     }
 }
 
+@Stable
 operator fun StringLocale.Companion.get(key: String, state: StringStates, vararg args: Any): String = try {
     langBundle.getString(key)
 } catch (e: Exception) {
@@ -25,6 +28,7 @@ operator fun StringLocale.Companion.get(key: String, state: StringStates, vararg
     }.format(*args)
 }
 
+@Stable
 operator fun StringLocale.Companion.get(key: String, vararg args: Any) =
     StringLocale.get(key, StringStates.CAPITALIZE, *args)
 
