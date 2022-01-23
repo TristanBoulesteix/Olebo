@@ -67,6 +67,7 @@ class MasterViewModel(val act: Act) {
     }
 
     var connectionState: ConnectionState by mutableStateOf(Disconnected)
+        private set
 
     /**
      * These are all the [Blueprint] placed on  the current map
