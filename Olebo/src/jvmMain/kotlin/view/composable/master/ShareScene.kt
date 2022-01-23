@@ -2,6 +2,7 @@ package jdr.exia.view.composable.master
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults.buttonColors
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -21,12 +22,14 @@ import java.util.Locale
 @Composable
 fun ShareScenePanel(
     connect: () -> Unit,
+    disconnect: () -> Unit,
     connectionState: ConnectionState
 ) = Box(Modifier.padding(5.dp).fillMaxSize(), contentAlignment = Alignment.CenterStart) {
     when (connectionState) {
         is Connected -> ShareSceneManagerScreen(
-            connectionState.manager,
-            connectionState.shareSceneViewModel
+            manager = connectionState.manager,
+            shareSceneViewModel = connectionState.shareSceneViewModel,
+            disconnect = disconnect
         )
         else -> WebConfig(connect, connectionState)
     }
@@ -66,28 +69,42 @@ private fun WebConfig(
 @Composable
 private fun ShareSceneManagerScreen(
     manager: ShareSceneManager,
-    shareSceneViewModel: ShareSceneViewModel
-) = Column(modifier = Modifier.padding(start = 10.dp)) {
-    val playersNameList = remember(shareSceneViewModel.connectedPlayers) {
-        if (shareSceneViewModel.connectedPlayers.isNotEmpty()) buildString {
-            appendLine(StringLocale[ST_INT1_NAME_OF_CONNECTED_PLAYERS, shareSceneViewModel.numberOfConnectedPlayers])
+    shareSceneViewModel: ShareSceneViewModel,
+    disconnect: () -> Unit
+) = Row(modifier = Modifier.padding(start = 10.dp)) {
+    Column(verticalArrangement = Arrangement.Center) {
+        Spacer(Modifier.height(12.dp))
 
-            shareSceneViewModel.connectedPlayers.forEach {
-                appendLine("- ${it.name}")
+        Box(contentAlignment = Alignment.Center) {
+            val playersNameList = remember(shareSceneViewModel.connectedPlayers) {
+                if (shareSceneViewModel.connectedPlayers.isNotEmpty()) buildString {
+                    appendLine(StringLocale[ST_INT1_NAME_OF_CONNECTED_PLAYERS, shareSceneViewModel.numberOfConnectedPlayers])
+
+                    shareSceneViewModel.connectedPlayers.forEach {
+                        appendLine("- ${it.name}")
+                    }
+                } else null
             }
-        } else null
-    }
 
-    BoxWithTooltipIfNotNull(playersNameList, tooltipAlignment = Alignment.CenterEnd) {
-        Text(StringLocale[ST_INT1_NUMBER_OF_CONNECTED_PLAYERS, shareSceneViewModel.numberOfConnectedPlayers])
-    }
+            BoxWithTooltipIfNotNull(playersNameList, tooltipAlignment = Alignment.CenterEnd) {
+                Text(StringLocale[ST_INT1_NUMBER_OF_CONNECTED_PLAYERS, shareSceneViewModel.numberOfConnectedPlayers])
+            }
+        }
 
-    Spacer(Modifier.height(25.dp))
+        Spacer(Modifier.height(13.dp))
 
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
         OutlinedTextField(value = manager.sceneUrl.orEmpty(), onValueChange = {})
+    }
 
-        Spacer(Modifier.width(25.dp))
+    Spacer(Modifier.width(25.dp))
+
+    Column {
+        Button(
+            onClick = disconnect,
+            colors = buttonColors(backgroundColor = Color.Red, contentColor = Color.White)
+        ) {
+            Text("Déconnection")
+        }
 
         FlowRow(Modifier.fillMaxWidth()) {
             val buttonSizeModifier = remember {

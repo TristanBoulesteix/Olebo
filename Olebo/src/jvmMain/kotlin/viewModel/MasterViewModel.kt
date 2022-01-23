@@ -386,6 +386,12 @@ class MasterViewModel(val act: Act) {
         }
     }
 
+    fun disconnectFromServer() {
+        val connectedState = connectionState as? Connected
+        connectionState = Disconnected
+        connectedState?.manager?.close()
+    }
+
     private fun loadBlueprints(): Map<TypeElement, List<Blueprint>> = transaction {
         val items = Blueprint.all().groupBy { it.type }
 

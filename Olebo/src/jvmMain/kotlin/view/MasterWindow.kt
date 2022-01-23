@@ -132,7 +132,8 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
             shareScene = {
                 ShareScenePanel(
                     connect = viewModel::connectToServer,
-                    connectionState = viewModel.connectionState
+                    connectionState = viewModel.connectionState,
+                    disconnect = viewModel::disconnectFromServer
                 )
             }
         )
