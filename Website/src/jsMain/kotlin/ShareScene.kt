@@ -38,8 +38,8 @@ private fun Form(getConnectionState: () -> ConnectionState, setConnectionState: 
             client = client,
             path = "share-scene/$sessionCode?name=$userName",
             onFailure = {
-                setConnectionState(Disconnected.ConnectionFailed)
-                it.close()
+                setConnectionState(Disconnected.ConnectionFailed(it))
+                close()
             },
             socketBlock = { manager, setSessionCode ->
                 try {
@@ -56,7 +56,7 @@ private fun Form(getConnectionState: () -> ConnectionState, setConnectionState: 
                                     connectedState.shareSceneViewModel.tokens = message.tokens
                                 }
                                 is TokenStateChanged -> connectedState.shareSceneViewModel.tokens = message.tokens
-                                is ConnectionRefused -> setConnectionState(Disconnected.ConnectionFailed)
+                                is ConnectionRefused -> setConnectionState(Disconnected.ConnectionFailed())
                                 is CursorHidden -> connectedState.shareSceneViewModel.cursor = null
                                 is CursorMoved -> connectedState.shareSceneViewModel.cursor = message.cursor
                                 null, is NewSessionCreated, is PlayerAddedOrRemoved -> continue

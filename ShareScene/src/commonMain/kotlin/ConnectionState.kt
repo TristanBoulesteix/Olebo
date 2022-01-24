@@ -5,7 +5,7 @@ sealed interface ConnectionState
 sealed interface Disconnected : ConnectionState {
     companion object : Disconnected
 
-    object ConnectionFailed : Disconnected
+    class ConnectionFailed(val error: Throwable? = null) : Disconnected
 }
 
 object Login : ConnectionState

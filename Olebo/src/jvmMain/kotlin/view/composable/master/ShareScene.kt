@@ -60,8 +60,8 @@ private fun WebConfig(
 
     if (connectionState is Disconnected.ConnectionFailed)
         Text(
-            StringLocale[STR_ERROR_LOGIN_TO_OLEBO_WEB],
-            Modifier.align(Alignment.BottomCenter).padding(bottom = 10.dp),
+            text = StringLocale[if (connectionState.error is IllegalStateException) ST_ERROR_OLEBO_WEB_VERSION_REQUIREMENT else STR_ERROR_LOGIN_TO_OLEBO_WEB],
+            modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 10.dp),
             color = Color.Red
         )
 }

@@ -8,7 +8,7 @@ class ShareSceneManager internal constructor(
     private val client: HttpClient,
     private val path: String,
     private val socketBlock: suspend DefaultClientWebSocketSession.(manager: ShareSceneManager, setSessionCode: (String) -> Unit) -> Unit,
-    private val onFailure: (manager: ShareSceneManager) -> Unit
+    private val onFailure: ShareSceneManager.(cause: Throwable) -> Unit
 ) : Closeable {
     var codeSession: String? = null
         private set
@@ -26,7 +26,7 @@ class ShareSceneManager internal constructor(
                 socketBlock(manager) { codeSession = it }
             }
         } catch (t: Throwable) {
-            onFailure(manager)
+            manager.onFailure(t)
         }
     }
 

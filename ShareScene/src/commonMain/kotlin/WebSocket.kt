@@ -21,7 +21,7 @@ suspend fun initWebsocket(
     client: HttpClient,
     path: String,
     socketBlock: suspend DefaultClientWebSocketSession.(manager: ShareSceneManager, setSessionCode: (String) -> Unit) -> Unit,
-    onFailure: (manager: ShareSceneManager) -> Unit
+    onFailure: ShareSceneManager.(cause: Throwable) -> Unit
 ) {
     ShareSceneManager(client, path, socketBlock, onFailure).use {
         it.initWebsocket()

@@ -8,7 +8,11 @@ internal typealias Color = Triple<Int, Int, Int>
 sealed class Message
 
 @Serializable
-class NewSessionCreated(@Serializable(with = IdSerializer::class) val id: Id, val code: String) : Message()
+class NewSessionCreated(
+    @Serializable(with = IdSerializer::class) val id: Id,
+    val code: String,
+    val minimalOleboVersion: Int
+) : Message()
 
 @Serializable
 class PlayerAddedOrRemoved(val users: List<Player>) : Message()

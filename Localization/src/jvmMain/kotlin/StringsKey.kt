@@ -200,6 +200,7 @@ const val ST_OLEBO_SEARCH_FOR_UPDATE = "search_for_update"
 const val ST_DEVELOPED_BY = "developed_by"
 const val ST_SHOULD_OPEN_PLAYER_FRAME_FULL_SCREEN = "player_frame_full_screen"
 const val ST_OLEBO_WEB_EXPLANATION = "web_explain"
+const val ST_ERROR_OLEBO_WEB_VERSION_REQUIREMENT = "error_web_requirement"
 
 // -- Interpolatable StringLocale
 const val ST_INT1_OCCURRENCE_BLUEPRINT_TO_DELETE = "1_num_blueprint_to_delete"

@@ -8,6 +8,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import fr.olebo.sharescene.*
 import io.ktor.http.cio.websocket.*
+import jdr.exia.OLEBO_VERSION_CODE
 import jdr.exia.localization.STR_DELETE_SELECTED_TOKENS
 import jdr.exia.localization.StringLocale
 import jdr.exia.localization.get
@@ -346,9 +347,9 @@ class MasterViewModel(val act: Act) {
         connectionState = Login
 
         scope.launch(Dispatchers.IO) {
-            initWebsocket(client = socketClient, path = "share-scene", onFailure = {
-                connectionState = Disconnected.ConnectionFailed
-                it.close()
+            initWebsocket(client = socketClient, path = "share-scene", onFailure = { error ->
+                connectionState = Disconnected.ConnectionFailed(error)
+                close()
             }, socketBlock = { manager: ShareSceneManager, setSessionCode: (String) -> Unit ->
                 val connectedState = Connected(manager)
 
@@ -356,6 +357,10 @@ class MasterViewModel(val act: Act) {
                     when (frame) {
                         is Frame.Text -> when (val message = frame.getMessageOrNull()) {
                             is NewSessionCreated -> {
+                                if (message.minimalOleboVersion > OLEBO_VERSION_CODE) {
+                                    error("Outdated Olebo version")
+                                }
+
                                 setSessionCode(message.code)
 
                                 send(NewMap(Base64Image(backgroundImage),
