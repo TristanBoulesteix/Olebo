@@ -15,7 +15,9 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.view.composable.master.*
 import jdr.exia.view.element.dialog.ConfirmMessage
 import jdr.exia.view.menubar.MasterMenuBar
+import jdr.exia.view.tools.event.MousePressedListener
 import jdr.exia.view.tools.event.addMousePressedListener
+import jdr.exia.view.tools.event.removeMousePressedListener
 import jdr.exia.view.tools.screens
 import jdr.exia.view.ui.MASTER_WINDOW_SIZE
 import jdr.exia.viewModel.MasterViewModel
@@ -110,9 +112,16 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
         Box(modifier = Modifier.weight(.80f).fillMaxSize()) {
             val focusManager = LocalFocusManager.current
 
-            LaunchedEffect(focusManager) {
-                viewModel.panel.addMousePressedListener {
+            DisposableEffect(focusManager) {
+                val panel = viewModel.panel
+                val event = MousePressedListener {
                     focusManager.clearFocus()
+                }
+
+                panel.addMousePressedListener(event)
+
+                onDispose {
+                    panel.removeMousePressedListener(event)
                 }
             }
 
