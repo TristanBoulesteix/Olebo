@@ -103,7 +103,7 @@ private fun ShareSceneManagerScreen(
             onClick = disconnect,
             colors = buttonColors(backgroundColor = Color.Red, contentColor = Color.White)
         ) {
-            Text("Déconnection")
+            Text(StringLocale[STR_LOGOUT])
         }
 
         FlowRow(Modifier.fillMaxWidth()) {

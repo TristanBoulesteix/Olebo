@@ -154,6 +154,7 @@ const val STR_EDIT_TAB = "edit_tab"
 const val STR_OLEBO_WEB_TAB = "web_service_tab"
 const val STR_COPY_CODE = "copy_code"
 const val STR_COPY_URL = "copy_URL"
+const val STR_LOGOUT = "logout"
 
 // -- Sentences
 

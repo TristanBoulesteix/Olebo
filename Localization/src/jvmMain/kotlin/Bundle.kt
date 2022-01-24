@@ -224,6 +224,7 @@ internal actual class StringLocaleBundle : StringLocale() {
         STR_COPY_CODE to "copy the code to the clipboard",
         STR_COPY_URL to "copy url to the clipboard",
         ST_INT1_NAME_OF_CONNECTED_PLAYERS to "Connected players (%d):",
+        STR_LOGOUT to "logout",
     )
 }
 
@@ -450,5 +451,6 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
         STR_COPY_CODE to "copier le code dans le presse-papier",
         STR_COPY_URL to "copier l'adresse dans le presse-papier",
         ST_INT1_NAME_OF_CONNECTED_PLAYERS to "Joueurs connectés (%d) :",
+        STR_LOGOUT to "déconnexion",
     )
 }
