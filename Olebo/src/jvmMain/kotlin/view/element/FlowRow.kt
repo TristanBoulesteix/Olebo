@@ -15,6 +15,7 @@ fun FlowRow(
     alignment: Alignment.Horizontal = Alignment.Start,
     verticalGap: Dp = 0.dp,
     horizontalGap: Dp = 0.dp,
+    onRowEvaluated: (rowsCount: Int) -> Unit = {},
     content: @Composable () -> Unit
 ) = Layout(content, modifier) { measurables, constraints ->
     val hGapPx = horizontalGap.roundToPx()
@@ -44,6 +45,8 @@ fun FlowRow(
 
     val width = rows.maxOfOrNull { row -> row.width } ?: 0
     val height = rows.sumOf { row -> row.height } + max(vGapPx.times(rows.size - 1), 0)
+
+    onRowEvaluated(rows.size)
 
     val coercedWidth = width.coerceIn(constraints.minWidth, constraints.maxWidth)
     val coercedHeight = height.coerceIn(constraints.minHeight, constraints.maxHeight)

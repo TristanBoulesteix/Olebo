@@ -5,8 +5,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults.buttonColors
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,16 +44,18 @@ private fun WebConfig(
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(StringLocale[ST_OLEBO_WEB_EXPLANATION])
+        Box(Modifier.weight(.7f), contentAlignment = Alignment.Center) {
+            Text(StringLocale[ST_OLEBO_WEB_EXPLANATION])
+        }
 
-        Spacer(Modifier.width(8.dp))
-
-        Button(
-            onClick = connect,
-            modifier = Modifier.padding(horizontal = 8.dp),
-            enabled = connectionState is Disconnected
-        ) {
-            Text(StringLocale[if (connectionState is Disconnected) STR_START_OLEBO_WEB else STR_LOGIN_OLEBO_WEB])
+        Box(Modifier.weight(.3f), contentAlignment = Alignment.Center) {
+            Button(
+                onClick = connect,
+                modifier = Modifier.padding(horizontal = 8.dp),
+                enabled = connectionState is Disconnected
+            ) {
+                Text(StringLocale[if (connectionState is Disconnected) STR_START_OLEBO_WEB else STR_LOGIN_OLEBO_WEB])
+            }
         }
     }
 
@@ -99,19 +100,22 @@ private fun ShareSceneManagerScreen(
     Spacer(Modifier.width(25.dp))
 
     Column {
+        val buttonSizeModifier = remember {
+            val width = if (Settings.language == Language(Locale.FRENCH)) 380.dp else 300.dp
+            Modifier.width(width)
+        }
+
+        var isSmallScreen by remember { mutableStateOf(false) }
+
         Button(
             onClick = disconnect,
-            colors = buttonColors(backgroundColor = Color.Red, contentColor = Color.White)
+            colors = buttonColors(backgroundColor = Color.Red, contentColor = Color.White),
+            modifier = if (isSmallScreen) buttonSizeModifier else Modifier
         ) {
             Text(StringLocale[STR_LOGOUT])
         }
 
-        FlowRow(Modifier.fillMaxWidth()) {
-            val buttonSizeModifier = remember {
-                val width = if (Settings.language == Language(Locale.FRENCH)) 380.dp else 300.dp
-                Modifier.width(width)
-            }
-
+        FlowRow(Modifier.fillMaxWidth(), onRowEvaluated = { isSmallScreen = it > 1 }) {
             Button(modifier = buttonSizeModifier, onClick = { saveToClipboard(manager.codeSession.orEmpty()) }) {
                 Text(StringLocale[STR_COPY_CODE])
             }
