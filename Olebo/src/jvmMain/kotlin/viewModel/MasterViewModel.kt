@@ -408,10 +408,11 @@ class MasterViewModel(val act: Act) {
         Base64Image(sprite, size.value), Position(referenceOffset.x.toInt(), referenceOffset.y.toInt()), size.value
     )
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private inline fun sendMessageToShareScene(crossinline message: () -> Message) =
         (connectionState as? Connected)?.let { connectedState ->
             scope.launch(Dispatchers.IO) {
-                connectedState.shareSceneViewModel.messages.send(message())
+                connectedState.shareSceneViewModel.messages.takeIf { !it.isClosedForSend }?.send(message())
             }
         }
 
