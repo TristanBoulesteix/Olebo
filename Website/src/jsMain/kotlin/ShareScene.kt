@@ -11,6 +11,7 @@ import io.ktor.http.cio.websocket.*
 import jdr.exia.localization.StringLocale
 import jdr.exia.localization.getBrowserLanguage
 import jdr.exia.localization.invoke
+import kotlinx.browser.window
 import org.jetbrains.compose.web.css.Style
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.renderComposableInBody
@@ -69,6 +70,7 @@ private fun Form(getConnectionState: () -> ConnectionState, setConnectionState: 
                     if (getConnectionState() !is Disconnected)
                         setConnectionState(Disconnected)
                     manager.close()
+                    window.location.replace("http://localhost:8080/share-scene/") // TODO : Update url
                 }
             }
         )

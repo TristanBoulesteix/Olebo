@@ -7,6 +7,7 @@ import io.ktor.html.*
 import io.ktor.http.cio.websocket.*
 import io.ktor.routing.*
 import io.ktor.websocket.*
+import kotlinx.coroutines.sync.withLock
 import kotlinx.html.HTML
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -62,7 +63,7 @@ fun Routing.shareSceneRouting() {
 
         val currentConnection = Connection(userName)
 
-        currentSession.playerConnections += currentConnection
+        currentSession.mutex.withLock { currentSession.playerConnections += currentConnection }
         currentSession.sendToMaster(PlayerAddedOrRemoved(currentSession.getPlayers()))
 
         val (background, tokens) = currentSession.map
@@ -81,7 +82,7 @@ fun Routing.shareSceneRouting() {
         }
 
         // Handle session close
-        currentSession.playerConnections -= currentConnection
+        currentSession.mutex.withLock { currentSession.playerConnections -= currentConnection }
         currentSession.sendToMaster(PlayerAddedOrRemoved(currentSession.getPlayers()))
     }
 }

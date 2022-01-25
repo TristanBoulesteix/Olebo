@@ -3,13 +3,18 @@ package fr.olebo.sharescene
 import fr.olebo.synchronizedConnectionsSet
 import fr.olebo.synchronizedSet
 import io.ktor.http.cio.websocket.*
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
+
 
 data class ShareSceneSession(val masterConnection: Connection) {
     val sessionId: UUID = UUID.randomUUID()
 
     val playerConnections = synchronizedConnectionsSet()
+
+    val mutex = Mutex()
 
     val urlCode: String
 
@@ -36,9 +41,9 @@ data class ShareSceneSession(val masterConnection: Connection) {
 
     suspend fun sendToMaster(message: Message) = masterConnection.send(message)
 
-    suspend fun sendToPlayers(message: Message) = playerConnections.forEach { it.send(message) }
+    suspend fun sendToPlayers(message: Message) = mutex.withLock { playerConnections.forEach { it.send(message) } }
 
-    fun getPlayers() = playerConnections.map { Player(it.name) }
+    suspend fun getPlayers() = mutex.withLock { playerConnections.map { Player(it.name) } }
 
     companion object {
         private val ids = synchronizedSet<String>()
@@ -65,6 +70,9 @@ fun DefaultWebSocketSession.Connection(): Connection = ConnectionImpl(this)
 fun DefaultWebSocketSession.Connection(name: String): Connection = ConnectionImpl(this, name)
 
 suspend infix fun MutableSet<ShareSceneSession>.destroy(session: ShareSceneSession) {
-    session.playerConnections.onEach { it.close() }.clear()
+    session.mutex.withLock {
+        session.playerConnections.onEach { it.close() }.clear()
+    }
+
     remove(session)
 }
