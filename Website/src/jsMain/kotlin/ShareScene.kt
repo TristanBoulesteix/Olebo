@@ -1,6 +1,9 @@
 package fr.olebo.sharescene
 
 import androidx.compose.runtime.*
+import fr.olebo.sharescene.connection.Connected
+import fr.olebo.sharescene.connection.ConnectionState
+import fr.olebo.sharescene.connection.Disconnected
 import fr.olebo.sharescene.css.ShareSceneStyleSheet
 import fr.olebo.sharescene.css.classes
 import fr.olebo.sharescene.websocket.client
@@ -37,9 +40,8 @@ private fun Form(getConnectionState: () -> ConnectionState, setConnectionState: 
         initWebsocket(
             client = client,
             path = "share-scene/$sessionCode?name=$userName",
-            onFailure = {
-                setConnectionState(Disconnected.ConnectionFailed(it))
-                close()
+            onFailure = { connectionError ->
+                setConnectionState(Disconnected.ConnectionFailed(connectionError))
             },
             socketBlock = { manager, setSessionCode ->
                 try {

@@ -10,7 +10,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import fr.olebo.sharescene.*
+import fr.olebo.sharescene.ShareSceneManager
+import fr.olebo.sharescene.ShareSceneViewModel
+import fr.olebo.sharescene.connection.Connected
+import fr.olebo.sharescene.connection.ConnectionError
+import fr.olebo.sharescene.connection.ConnectionState
+import fr.olebo.sharescene.connection.Disconnected
 import jdr.exia.localization.*
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.tools.saveToClipboard
@@ -59,12 +64,13 @@ private fun WebConfig(
         }
     }
 
-    if (connectionState is Disconnected.ConnectionFailed)
+    if (connectionState is Disconnected.ConnectionFailed && connectionState.error != ConnectionError.CANCELED) {
         Text(
-            text = StringLocale[if (connectionState.error is IllegalStateException) ST_ERROR_OLEBO_WEB_VERSION_REQUIREMENT else STR_ERROR_LOGIN_TO_OLEBO_WEB],
+            text = StringLocale[if (connectionState.error == ConnectionError.WRONG_VERSION) ST_ERROR_OLEBO_WEB_VERSION_REQUIREMENT else STR_ERROR_LOGIN_TO_OLEBO_WEB],
             modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 10.dp),
             color = Color.Red
         )
+    }
 }
 
 @Composable

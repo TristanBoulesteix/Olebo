@@ -1,5 +1,6 @@
 package fr.olebo.sharescene
 
+import fr.olebo.sharescene.connection.ConnectionError
 import io.ktor.client.*
 import io.ktor.client.features.websocket.*
 import io.ktor.http.cio.websocket.*
@@ -21,7 +22,7 @@ suspend fun initWebsocket(
     client: HttpClient,
     path: String,
     socketBlock: suspend DefaultClientWebSocketSession.(manager: ShareSceneManager, setSessionCode: (String) -> Unit) -> Unit,
-    onFailure: ShareSceneManager.(cause: Throwable) -> Unit
+    onFailure: (cause: ConnectionError) -> Unit
 ) {
     ShareSceneManager(client, path, socketBlock, onFailure).use {
         it.initWebsocket()

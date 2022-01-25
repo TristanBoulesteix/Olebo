@@ -3,6 +3,9 @@ package fr.olebo.sharescene
 import androidx.compose.runtime.*
 import fr.olebo.sharescene.components.MaterialButton
 import fr.olebo.sharescene.components.MaterialTextField
+import fr.olebo.sharescene.connection.ConnectionState
+import fr.olebo.sharescene.connection.Disconnected
+import fr.olebo.sharescene.connection.Login
 import fr.olebo.sharescene.css.ShareSceneStyleSheet
 import fr.olebo.sharescene.css.classes
 import jdr.exia.localization.*

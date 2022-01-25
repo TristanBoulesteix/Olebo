@@ -1,11 +1,13 @@
-package fr.olebo.sharescene
+package fr.olebo.sharescene.connection
+
+import fr.olebo.sharescene.ShareSceneManager
 
 sealed interface ConnectionState
 
 sealed interface Disconnected : ConnectionState {
     companion object : Disconnected
 
-    class ConnectionFailed(val error: Throwable? = null) : Disconnected
+    class ConnectionFailed(val error: ConnectionError = ConnectionError.CANCELED) : Disconnected
 }
 
 object Login : ConnectionState

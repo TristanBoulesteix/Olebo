@@ -1,5 +1,7 @@
 package fr.olebo.sharescene
 
+import fr.olebo.sharescene.connection.ConnectionError
+import fr.olebo.sharescene.connection.getConnectionError
 import io.ktor.client.*
 import io.ktor.client.features.websocket.*
 import io.ktor.utils.io.core.*
@@ -8,7 +10,7 @@ class ShareSceneManager internal constructor(
     private val client: HttpClient,
     private val path: String,
     private val socketBlock: suspend DefaultClientWebSocketSession.(manager: ShareSceneManager, setSessionCode: (String) -> Unit) -> Unit,
-    private val onFailure: ShareSceneManager.(cause: Throwable) -> Unit
+    private val onFailure: (cause: ConnectionError) -> Unit
 ) : Closeable {
     var codeSession: String? = null
         private set
@@ -26,7 +28,7 @@ class ShareSceneManager internal constructor(
                 socketBlock(manager) { codeSession = it }
             }
         } catch (t: Throwable) {
-            manager.onFailure(t)
+            onFailure(t.getConnectionError())
         }
     }
 

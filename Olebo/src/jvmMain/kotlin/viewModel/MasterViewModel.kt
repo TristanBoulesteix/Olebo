@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import fr.olebo.sharescene.*
+import fr.olebo.sharescene.connection.*
 import io.ktor.http.cio.websocket.*
 import jdr.exia.OLEBO_VERSION_CODE
 import jdr.exia.localization.STR_DELETE_SELECTED_TOKENS
@@ -69,6 +70,8 @@ class MasterViewModel(val act: Act) {
 
     var connectionState: ConnectionState by mutableStateOf(Disconnected)
         private set
+
+    private var shareSceneJob: Job? = null
 
     /**
      * These are all the [Blueprint] placed on  the current map
@@ -346,56 +349,56 @@ class MasterViewModel(val act: Act) {
     fun connectToServer() {
         connectionState = Login
 
-        scope.launch(Dispatchers.IO) {
+        shareSceneJob = scope.launch(Dispatchers.IO) {
             initWebsocket(client = socketClient, path = "share-scene", onFailure = { error ->
                 connectionState = Disconnected.ConnectionFailed(error)
-                close()
             }, socketBlock = { manager: ShareSceneManager, setSessionCode: (String) -> Unit ->
-                val connectedState = Connected(manager)
+                try {
+                    val connectedState = Connected(manager)
 
-                for (frame in incoming) {
-                    when (frame) {
-                        is Frame.Text -> when (val message = frame.getMessageOrNull()) {
-                            is NewSessionCreated -> {
-                                if (message.minimalOleboVersion > OLEBO_VERSION_CODE) {
-                                    error("Outdated Olebo version")
-                                }
-
-                                setSessionCode(message.code)
-
-                                send(NewMap(Base64Image(backgroundImage),
-                                    elements.filter { it.isVisible }.map { it.toShareSceneToken() })
-                                )
-
-                                launch {
-                                    for (messageToSend in connectedState.shareSceneViewModel.messages) {
-                                        send(messageToSend)
+                    for (frame in incoming) {
+                        when (frame) {
+                            is Frame.Text -> when (val message = frame.getMessageOrNull()) {
+                                is NewSessionCreated -> {
+                                    if (message.minimalOleboVersion > OLEBO_VERSION_CODE) {
+                                        triggerError(ConnectionError.WRONG_VERSION)
                                     }
-                                }
 
-                                connectionState = connectedState
-                            }
-                            is PlayerAddedOrRemoved -> {
-                                connectedState.shareSceneViewModel.connectedPlayers = message.users
+                                    setSessionCode(message.code)
+
+                                    send(NewMap(Base64Image(backgroundImage),
+                                        elements.filter { it.isVisible }.map { it.toShareSceneToken() })
+                                    )
+
+                                    launch {
+                                        for (messageToSend in connectedState.shareSceneViewModel.messages) {
+                                            send(messageToSend)
+                                        }
+                                    }
+
+                                    connectionState = connectedState
+                                }
+                                is PlayerAddedOrRemoved -> {
+                                    connectedState.shareSceneViewModel.connectedPlayers = message.users
+                                }
+                                else -> continue
                             }
                             else -> continue
                         }
-                        else -> continue
                     }
-                }
-
-                withContext(Dispatchers.IO) {
-                    connectionState = Disconnected
-                    manager.close()
+                } finally {
+                    withContext(Dispatchers.IO) {
+                        connectionState = Disconnected
+                        manager.close()
+                    }
                 }
             })
         }
     }
 
     fun disconnectFromServer() {
-        val connectedState = connectionState as? Connected
-        connectionState = Disconnected
-        connectedState?.manager?.close()
+        shareSceneJob?.cancel()
+        shareSceneJob = null
     }
 
     private fun loadBlueprints(): Map<TypeElement, List<Blueprint>> = transaction {
