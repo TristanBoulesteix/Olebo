@@ -9,45 +9,22 @@ import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 
 
-data class ShareSceneSession(val masterConnection: Connection) {
+class ShareSceneSession(private val masterConnection: Connection, val urlCode: String) {
     val sessionId: UUID = UUID.randomUUID()
 
     val playerConnections = synchronizedConnectionsSet()
 
     val mutex = Mutex()
 
-    val urlCode: String
-
     lateinit var map: Map
 
     var cursor: CursorMoved.Cursor? = null
-
-    init {
-        val alphabet = 'a'..'z'
-        val numbers = '1'..'9'
-
-        val list = alphabet + numbers
-
-        urlCode = buildString {
-            do {
-                clear()
-
-                repeat(6) {
-                    append(list.random())
-                }
-            } while (toString() in ids)
-        }.also { ids += it }
-    }
 
     suspend fun sendToMaster(message: Message) = masterConnection.send(message)
 
     suspend fun sendToPlayers(message: Message) = mutex.withLock { playerConnections.forEach { it.send(message) } }
 
     suspend fun getPlayers() = mutex.withLock { playerConnections.map { Player(it.name) } }
-
-    companion object {
-        private val ids = synchronizedSet<String>()
-    }
 }
 
 sealed interface Connection : DefaultWebSocketSession {
@@ -74,3 +51,28 @@ suspend infix fun MutableSet<ShareSceneSession>.destroy(session: ShareSceneSessi
 
     remove(session)
 }
+
+private object SessionIdManager {
+    private val mutex = Mutex()
+
+    private val ids = synchronizedSet<String>()
+
+    suspend fun generateUniqueId() = mutex.withLock {
+        val alphabet = 'a'..'z'
+        val numbers = '1'..'9'
+
+        val list = alphabet + numbers
+
+        buildString {
+            do {
+                clear()
+
+                repeat(6) {
+                    append(list.random())
+                }
+            } while (toString() in ids)
+        }.also { ids += it }
+    }
+}
+
+suspend fun Connection.createSession() = ShareSceneSession(this, SessionIdManager.generateUniqueId())

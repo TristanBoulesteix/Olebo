@@ -28,7 +28,7 @@ fun Routing.shareSceneRouting() {
     webSocket("share-scene") {
         val currentConnection = Connection()
 
-        val currentSession = ShareSceneSession(currentConnection).also {
+        val currentSession = currentConnection.createSession().also {
             mutexSession.withLock { shareSceneSessions += it }
         }
 
