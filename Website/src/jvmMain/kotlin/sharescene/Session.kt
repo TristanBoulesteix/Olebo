@@ -5,6 +5,7 @@ import fr.olebo.synchronizedSet
 import io.ktor.http.cio.websocket.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.yield
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -70,6 +71,8 @@ private object SessionIdManager {
                 repeat(6) {
                     append(list.random())
                 }
+
+                yield()
             } while (toString() in ids)
         }.also { ids += it }
     }
