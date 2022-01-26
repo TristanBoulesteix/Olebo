@@ -56,7 +56,7 @@ sealed interface Connection : DefaultWebSocketSession {
     val name: String
 }
 
-private class ConnectionImpl(session: DefaultWebSocketSession, override val name: String = "") : Connection,
+private class ConnectionImpl(session: DefaultWebSocketSession, override val name: String) : Connection,
     DefaultWebSocketSession by session {
     companion object {
         private val lastId = AtomicInteger(0)
@@ -65,9 +65,7 @@ private class ConnectionImpl(session: DefaultWebSocketSession, override val name
     override val id = lastId.incrementAndGet()
 }
 
-fun DefaultWebSocketSession.Connection(): Connection = ConnectionImpl(this)
-
-fun DefaultWebSocketSession.Connection(name: String): Connection = ConnectionImpl(this, name)
+fun DefaultWebSocketSession.Connection(name: String = ""): Connection = ConnectionImpl(this, name)
 
 suspend infix fun MutableSet<ShareSceneSession>.destroy(session: ShareSceneSession) {
     session.mutex.withLock {
