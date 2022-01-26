@@ -51,6 +51,7 @@ suspend infix fun MutableSet<ShareSceneSession>.destroy(session: ShareSceneSessi
     }
 
     remove(session)
+    SessionIdManager.removeId(session.urlCode)
 }
 
 private object SessionIdManager {
@@ -69,6 +70,7 @@ private object SessionIdManager {
                 clear()
 
                 repeat(6) {
+                    yield()
                     append(list.random())
                 }
 
@@ -76,6 +78,8 @@ private object SessionIdManager {
             } while (toString() in ids)
         }.also { ids += it }
     }
+
+    suspend fun removeId(id: String) = mutex.withLock { ids -= id }
 }
 
 suspend fun Connection.createSession() = ShareSceneSession(this, SessionIdManager.generateUniqueId())
