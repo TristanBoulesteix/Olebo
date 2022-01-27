@@ -86,7 +86,7 @@ class MasterViewModel(val act: Act) {
             ImageIO.read(inputStreamFromString(currentScene.background)).also { image ->
                 sendMessageToShareScene {
                     NewMap(
-                        Base64Image(image),
+                        Base64Image(image, 1600, 900),
                         elements.filter { it.isVisible }.map { it.toShareSceneToken() })
                 }
             }
@@ -373,7 +373,7 @@ class MasterViewModel(val act: Act) {
 
                                     setSessionCode(message.code)
 
-                                    send(NewMap(Base64Image(backgroundImage),
+                                    send(NewMap(Base64Image(backgroundImage, 1600, 900),
                                         elements.filter { it.isVisible }.map { it.toShareSceneToken() })
                                     )
 
