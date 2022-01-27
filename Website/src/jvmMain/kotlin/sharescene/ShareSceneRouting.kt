@@ -9,12 +9,13 @@ import io.ktor.routing.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.html.HTML
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 private const val SESSION_CODE_PARAM = "sessionCode"
-private const val MINIMAL_OLEBO_VERSION_COMPAT = 5
+private const val MINIMAL_OLEBO_VERSION_COMPAT = 6
 
 fun Routing.shareSceneRouting() {
     val shareSceneSessions = synchronizedSessionSet()
@@ -28,9 +29,14 @@ fun Routing.shareSceneRouting() {
     webSocket("share-scene") {
         val currentConnection = Connection()
 
-        val currentSession = currentConnection.createSession().also {
-            mutexSession.withLock { shareSceneSessions += it }
+        val currentSession = withTimeoutOrNull(60) {
+            currentConnection.createSession()
+        } ?: kotlin.run {
+            close(CloseReason(CloseReason.Codes.TRY_AGAIN_LATER, "Session creation failed - Session timeout"))
+            return@webSocket
         }
+
+        mutexSession.withLock { shareSceneSessions += currentSession }
 
         send(NewSessionCreated(currentSession.sessionId, currentSession.urlCode, MINIMAL_OLEBO_VERSION_COMPAT))
 

@@ -6,9 +6,9 @@ import io.ktor.utils.io.*
 internal class ConnectionException(val error: ConnectionError) : Throwable()
 
 internal fun Throwable.getConnectionError() = when (this) {
-    is CancellationException -> ConnectionError.CANCELED
+    is CancellationException -> ConnectionError.Canceled
     is ConnectionException -> error
-    else -> ConnectionError.CONNECTION_FAILED
+    else -> ConnectionError.ConnectionFailed
 }
 
 @Suppress("unused")

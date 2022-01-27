@@ -7,7 +7,7 @@ sealed interface ConnectionState
 sealed interface Disconnected : ConnectionState {
     companion object : Disconnected
 
-    class ConnectionFailed(val error: ConnectionError = ConnectionError.CANCELED) : Disconnected
+    class ConnectionFailed(val error: ConnectionError = ConnectionError.Canceled) : Disconnected
 }
 
 object Login : ConnectionState

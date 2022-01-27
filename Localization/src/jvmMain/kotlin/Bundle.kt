@@ -226,6 +226,10 @@ internal actual class StringLocaleBundle : StringLocale() {
         ST_INT1_NAME_OF_CONNECTED_PLAYERS to "Connected players (%d):",
         STR_LOGOUT to "logout",
         ST_ERROR_OLEBO_WEB_VERSION_REQUIREMENT to "This version of Olebo is incompatible with ShareScene. Please update the application.",
+        ST_STR1_OLEBO_WEB_SERVER_ERROR to """
+            A server error has occurred. Please, try again later.
+            Error: %s
+        """.trimIndent(),
     )
 }
 
@@ -454,5 +458,9 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
         ST_INT1_NAME_OF_CONNECTED_PLAYERS to "Joueurs connectés (%d) :",
         STR_LOGOUT to "déconnexion",
         ST_ERROR_OLEBO_WEB_VERSION_REQUIREMENT to "Cette version de Olebo est incompatible avec ShareScene. Veuillez mettre à jour l'application.",
+        ST_STR1_OLEBO_WEB_SERVER_ERROR to """
+            Une erreur de serveur est arrivée. Réessayez plus tard.
+            Erreur : %s
+        """.trimIndent(),
     )
 }

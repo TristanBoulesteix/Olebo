@@ -1,5 +1,8 @@
 package fr.olebo.sharescene.connection
 
-enum class ConnectionError {
-    CANCELED, WRONG_VERSION, CONNECTION_FAILED
+sealed interface ConnectionError {
+    object Canceled : ConnectionError
+    object WrongVersion : ConnectionError
+    object ConnectionFailed : ConnectionError
+    class ServerError(val message: String?) : ConnectionError
 }

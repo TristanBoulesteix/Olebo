@@ -352,16 +352,23 @@ class MasterViewModel(val act: Act) {
         shareSceneJob = scope.launch(Dispatchers.IO) {
             initWebsocket(client = socketClient, path = "share-scene", onFailure = { error ->
                 connectionState = Disconnected.ConnectionFailed(error)
-            }, socketBlock = { manager: ShareSceneManager, setSessionCode: (String) -> Unit ->
+            }, socketBlock = { manager, setSessionCode ->
                 try {
                     val connectedState = Connected(manager)
 
                     for (frame in incoming) {
                         when (frame) {
+                            is Frame.Close -> {
+                                val closeReason = frame.readReason()
+
+                                if (closeReason?.knownReason == CloseReason.Codes.NORMAL) {
+                                    triggerError(ConnectionError.ServerError(closeReason.message))
+                                }
+                            }
                             is Frame.Text -> when (val message = frame.getMessageOrNull()) {
                                 is NewSessionCreated -> {
                                     if (message.minimalOleboVersion > OLEBO_VERSION_CODE) {
-                                        triggerError(ConnectionError.WRONG_VERSION)
+                                        triggerError(ConnectionError.WrongVersion)
                                     }
 
                                     setSessionCode(message.code)

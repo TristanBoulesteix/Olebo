@@ -64,9 +64,11 @@ private fun WebConfig(
         }
     }
 
-    if (connectionState is Disconnected.ConnectionFailed && connectionState.error != ConnectionError.CANCELED) {
+    if (connectionState is Disconnected.ConnectionFailed && connectionState.error != ConnectionError.Canceled) {
         Text(
-            text = StringLocale[if (connectionState.error == ConnectionError.WRONG_VERSION) ST_ERROR_OLEBO_WEB_VERSION_REQUIREMENT else STR_ERROR_LOGIN_TO_OLEBO_WEB],
+            text = if (connectionState.error is ConnectionError.WrongVersion) StringLocale[ST_ERROR_OLEBO_WEB_VERSION_REQUIREMENT]
+            else (connectionState.error as? ConnectionError.ServerError)?.message?.let { StringLocale[ST_STR1_OLEBO_WEB_SERVER_ERROR, it] }
+                ?: StringLocale[STR_ERROR_LOGIN_TO_OLEBO_WEB],
             modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 10.dp),
             color = Color.Red
         )
