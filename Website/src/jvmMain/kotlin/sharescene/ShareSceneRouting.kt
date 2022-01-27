@@ -15,7 +15,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 private const val SESSION_CODE_PARAM = "sessionCode"
-private const val MINIMAL_OLEBO_VERSION_COMPAT = 6
+private const val MINIMAL_OLEBO_VERSION_COMPAT = 5
 
 fun Routing.shareSceneRouting() {
     val shareSceneSessions = synchronizedSessionSet()
