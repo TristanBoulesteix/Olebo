@@ -11,7 +11,5 @@ fun Application.configureFeatures() {
         json()
     }
     install(WebSockets)
-    install(CallLogging) {
-
-    }
+    install(CallLogging)
 }
