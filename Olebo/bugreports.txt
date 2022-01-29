@@ -1,7 +1,0 @@
-|Résolu| Issue #6 : Le carré vert ne suit pas l'objet qui se déplace
-|Résolu| Issue #7 : bug SQL à la création de l'objet
-|Résolu| ISSUE #8 : les objets s'ajoutent à la suite sans vider le premier
-|Résolu| ISSUE #9 : Quand on créé un objet, il faut restart le prog pour qu'il apparaisse
-|Résolu| ISSUE #11 : Les pions ne sont pas invisibles a la création
-|Résolu| ISSUE #10 : Sur les écrans à haute résolution (3000x2000), la MasterFRame ne s'ouvre sur les deux écrans et la PlayerFrame ne s'ouvre pas. Lorsqu'il n'y a qu'un seul écran connecté, la PlayerFrame s'affiche mais est plus grande que l'écran.
-|Résolu| ISSUE #12 : à la création d'un blueprint depuis la MasterFrame, le scenar doit etre restart pour avoir accès au nouveaux blueprints
