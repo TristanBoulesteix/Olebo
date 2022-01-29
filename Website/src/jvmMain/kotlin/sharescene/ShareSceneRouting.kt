@@ -1,5 +1,6 @@
 package fr.olebo.sharescene
 
+import fr.olebo.log.log
 import fr.olebo.sharescene.html.shareSceneUi
 import fr.olebo.synchronizedSessionSet
 import io.ktor.application.*
@@ -11,8 +12,6 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.html.HTML
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
 
 private const val SESSION_CODE_PARAM = "sessionCode"
 private const val MINIMAL_OLEBO_VERSION_COMPAT = 5
@@ -33,8 +32,11 @@ fun Routing.shareSceneRouting() {
             currentConnection.createSession()
         } ?: kotlin.run {
             close(CloseReason(CloseReason.Codes.TRY_AGAIN_LATER, "Session creation failed - Session timeout"))
+            log.error("Timeout - Unable to create a new session.")
             return@webSocket
         }
+
+        log.info("New session created (UUID=${currentSession.sessionId}).")
 
         mutexSession.withLock { shareSceneSessions += currentSession }
 
@@ -64,17 +66,27 @@ fun Routing.shareSceneRouting() {
 
     webSocket("share-scene/{$SESSION_CODE_PARAM}") {
         val currentSession = mutexSession.withLock {
-            shareSceneSessions.find { it.urlCode == call.parameters[SESSION_CODE_PARAM] } ?: kotlin.run {
+            val sessionCode = call.parameters[SESSION_CODE_PARAM]
+
+            shareSceneSessions.find { it.urlCode == sessionCode } ?: kotlin.run {
                 send(ConnectionRefused)
+                log.trace("Connection refused for player (sessionCode=$sessionCode).")
                 return@webSocket
             }
         }
 
-        val userName = call.request.queryParameters["name"] ?: return@webSocket
+        val userName = call.request.queryParameters["name"] ?: kotlin.run {
+            send(ConnectionRefused)
+            log.trace("Connection refused for player (Empty name).")
+            return@webSocket
+        }
 
         val currentConnection = Connection(userName)
 
         currentSession.mutex.withLock { currentSession.playerConnections += currentConnection }
+
+        log.info("New player connected (SessionUUID=${currentSession.sessionId}).")
+
         currentSession.sendToMaster(PlayerAddedOrRemoved(currentSession.getPlayers()))
 
         val (background, tokens) = currentSession.map
@@ -85,7 +97,7 @@ fun Routing.shareSceneRouting() {
         for (frame in incoming) {
             when (frame) {
                 is Frame.Text -> {
-                    when (Json.decodeFromString<Message>(frame.readText())) {
+                    when (frame.getMessageOrNull()) {
                         else -> continue
                     }
                 }
