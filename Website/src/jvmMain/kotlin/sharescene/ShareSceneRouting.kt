@@ -28,7 +28,7 @@ fun Routing.shareSceneRouting() {
     webSocket("share-scene") {
         val currentConnection = Connection()
 
-        val currentSession = withTimeoutOrNull(60) {
+        val currentSession = withTimeoutOrNull(10_000) {
             currentConnection.createSession()
         } ?: kotlin.run {
             close(CloseReason(CloseReason.Codes.TRY_AGAIN_LATER, "Session creation failed - Session timeout"))
