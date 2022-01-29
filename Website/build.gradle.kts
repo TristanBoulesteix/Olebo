@@ -11,13 +11,26 @@ plugins {
 }
 
 group = "fr.olebo"
-version = "0.0.1"
+version = "1.0.0"
 
 application {
     mainClass.set("fr.olebo.ApplicationKt")
 }
 
+distributions {
+    main {
+        contents {
+            from("$buildDir/libs") {
+                exclude(project.name)
+                rename("${project.name}-jvm", project.name)
+                into("lib")
+            }
+        }
+    }
+}
+
 kotlin {
+    jvm { withJava() } // Required to deploy app with Gradle distribution plugin
     sourceSets["commonMain"].dependencies {
         implementation(compose.runtime)
         implementation(project(":ShareScene"))

@@ -1,6 +1,6 @@
-FROM openjdk:8-jdk
+FROM openjdk:16
 EXPOSE 8080:8080
 RUN mkdir /app
-COPY ./build/install/docker/ /app/
+COPY ./Website/build/install/Website/ /app/
 WORKDIR /app/bin
-CMD ["./docker"]
+CMD ["./Website"]
