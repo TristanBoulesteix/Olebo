@@ -101,11 +101,11 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
         }
 
         addMouseMovedListener { me ->
-            viewModel.cursor = if (me.isAltDown) null else Offset(me.point).absolutePosition
+            viewModel.setCursor(if (me.isAltDown) null else Offset(me.point).absolutePosition)
         }
 
         addMouseExitedListener {
-            viewModel.cursor = null
+            viewModel.setCursor(null)
         }
 
         ToolTipManager.sharedInstance().registerComponent(this)

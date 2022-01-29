@@ -80,6 +80,7 @@ fun Routing.shareSceneRouting() {
         val (background, tokens) = currentSession.map
 
         currentSession.sendToPlayers(NewMap(background, tokens))
+        currentSession.cursor?.let { currentSession.sendToPlayers(CursorMoved(it)) }
 
         for (frame in incoming) {
             when (frame) {

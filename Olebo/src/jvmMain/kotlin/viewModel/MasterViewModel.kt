@@ -93,23 +93,29 @@ class MasterViewModel(val act: Act) {
         }
     }
 
-    var cursor by mutableStateOf<Offset?>(null) withSetter {
+    var cursor by mutableStateOf<Offset?>(null)
+        private set
+
+    @JvmName("update cursor state")
+    fun setCursor(cursor: Offset?) {
         fun Color.toTriple(): Triple<Int, Int, Int> {
             val (r, g, b) = this
             return Triple(r.toInt() * 255, g.toInt() * 255, b.toInt() * 255)
         }
 
         sendMessageToShareScene {
-            if (it == null || !Settings.cursorEnabled) CursorHidden else {
+            if (cursor == null || !Settings.cursorEnabled) CursorHidden else {
                 val (cursorColor, borderCursorColor) = Settings.cursorColor
 
                 CursorMoved(
-                    Position(it.x.toInt(), it.y.toInt()),
+                    Position(cursor.x.toInt(), cursor.y.toInt()),
                     cursorColor.toTriple(),
                     borderCursorColor.toTriple()
                 )
             }
         }
+
+        this.cursor = cursor
     }
 
     /**
