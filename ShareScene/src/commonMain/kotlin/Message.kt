@@ -47,11 +47,11 @@ object CursorHidden : Message() {
     override fun toString() = toStringWithClassName()
 }
 
-private fun Message.toStringWithClassName(appended: String? = null) = buildString {
+private fun Message.toStringWithClassName(toAppend: String? = null) = buildString {
     append(this@toStringWithClassName::class.simpleName)
 
-    if (appended != null) {
+    if (toAppend != null) {
         append(' ')
-        append(appended)
+        append(toAppend)
     }
 }
