@@ -9,10 +9,14 @@ import org.jetbrains.compose.web.attributes.disabled
 fun MaterialButton(
     text: String,
     enabled: Boolean = true,
+    id: String? = null,
     onclick: () -> Unit
 ) = MDCButton(text = text, opts = { type = Type.Outlined }) {
     onClick { onclick() }
 
     if (!enabled)
         disabled()
+
+    if (id != null)
+        id(id)
 }
