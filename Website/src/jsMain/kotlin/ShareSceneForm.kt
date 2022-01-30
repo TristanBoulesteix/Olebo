@@ -82,7 +82,7 @@ fun ShareSceneForm(
             }
 
         LaunchedEffect(Unit) {
-            if(sessionCode.isNotBlank()) {
+            if (sessionCode.isNotBlank()) {
                 val nameTextField = document.getElementById(PLAYER_NAME_FIELD_ID) as? HTMLInputElement
                 nameTextField?.focus()
             }
