@@ -70,7 +70,7 @@ private fun Form(getConnectionState: () -> ConnectionState, setConnectionState: 
                     if (getConnectionState() !is Disconnected)
                         setConnectionState(Disconnected)
                     manager.close()
-                    window.location.replace("http://localhost:8080/share-scene/") // TODO : Update url
+                    window.location.replace("https://olebo.fr/share-scene/")
                 }
             }
         )
