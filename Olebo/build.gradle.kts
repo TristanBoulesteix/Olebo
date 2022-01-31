@@ -15,6 +15,7 @@ plugins {
 version = "0.1.4"
 
 repositories {
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     maven("https://dl.bintray.com/kotlin/exposed/")
 }
 
