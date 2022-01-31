@@ -10,7 +10,7 @@ import java.util.*
 
 fun main() {
     val prop = Properties().apply {
-        File("/var/opt/olebo/config.properties").inputStream().use(this::load)
+        File("/app/config/config.properties").inputStream().use(this::load)
     }
 
     val pwd: String by prop
