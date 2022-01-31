@@ -6,7 +6,7 @@ import io.ktor.serialization.*
 import io.ktor.websocket.*
 
 fun Application.configureFeatures() {
-    // install(HttpsRedirect)
+    install(HttpsRedirect)
     install(ContentNegotiation) {
         json()
     }
