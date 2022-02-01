@@ -10,7 +10,7 @@ import java.util.*
 
 fun main() {
     val prop = Properties().apply {
-        File("/app/config/config.properties").inputStream().use(this::load)
+        ::main.javaClass.classLoader.getResourceAsStream("config.properties").use(this::load)
     }
 
     val pwd: String by prop
