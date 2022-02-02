@@ -20,9 +20,9 @@ fun Routing.releaseRouting() {
         }
         get("last/download") {
             val os = try {
-                OS.valueOf(call.request.queryParameters["os"].orEmpty())
+                OS.valueOf(call.request.queryParameters["os"].orEmpty().uppercase())
             } catch (e: IllegalArgumentException) {
-                OS.OTHER
+                OS.WINDOWS
             }
 
             val path = releases.lastOrNull()?.paths?.firstOrNull { it.extension in os.executableFileTypes }.orEmpty()
