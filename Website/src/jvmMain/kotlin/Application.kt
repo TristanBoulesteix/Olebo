@@ -10,11 +10,17 @@ import java.util.*
 
 fun main() {
     val prop = Properties().apply {
-        ::main.javaClass.classLoader.getResourceAsStream("config.properties").use(this::load)
+        getStreamResource("config.properties").use(this::load)
     }
 
     val pwd: String by prop
-    val keyStoreFile = File("/etc/letsencrypt/live/olebo.fr-0001/keystore.jks")
+    val keyStoreStream = getStreamResource("keystore.jks")
+    val keyStoreFile = File("tmp_keystore.jks").apply {
+        outputStream().use {
+            keyStoreStream?.copyTo(it)
+        }
+    }
+
     val keyStore: KeyStore = KeyStore.getInstance(keyStoreFile, pwd.toCharArray())
 
     val environment = applicationEngineEnvironment {
@@ -38,3 +44,5 @@ fun main() {
 
     embeddedServer(Netty, environment).start(wait = true)
 }
+
+private fun getStreamResource(name: String) = ::main.javaClass.classLoader.getResourceAsStream(name)
