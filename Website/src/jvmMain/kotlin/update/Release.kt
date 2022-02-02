@@ -3,7 +3,7 @@ package fr.olebo.update
 import jdr.exia.update.Release
 import java.io.File
 
-const val OLEBO_RELEASES_DIRECTORY = "/Olebo_releases"
+const val OLEBO_RELEASES_DIRECTORY = "releases"
 
 // For debug purpose
 //val OLEBO_RELEASES_DIRECTORY = System.getProperty("user.dir") + File.separator + "test"
