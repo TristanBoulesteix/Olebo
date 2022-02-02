@@ -16,7 +16,7 @@ class ShareSceneManager internal constructor(
         private set
 
     val sceneUrl
-        get() = codeSession?.let { "http://localhost:8080/share-scene/$it" }
+        get() = codeSession?.let { "https://olebo.fr/share-scene/$it" }
 
     internal val viewModel = ShareSceneViewModel()
 
@@ -24,7 +24,7 @@ class ShareSceneManager internal constructor(
         val manager = this
 
         try {
-            client.webSocket(host = "localhost", port = 8080, path = path) {
+            client.webSocket(host = "olebo.fr", port = 80, path = path) {
                 socketBlock(manager) { codeSession = it }
             }
         } catch (t: Throwable) {
