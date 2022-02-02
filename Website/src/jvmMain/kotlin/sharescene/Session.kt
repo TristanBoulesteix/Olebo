@@ -1,8 +1,6 @@
 package fr.olebo.sharescene
 
 import fr.olebo.log.log
-import fr.olebo.synchronizedConnectionsSet
-import fr.olebo.synchronizedSet
 import io.ktor.http.cio.websocket.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.sync.Mutex

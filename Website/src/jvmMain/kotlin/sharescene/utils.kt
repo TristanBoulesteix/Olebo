@@ -1,7 +1,5 @@
-package fr.olebo
+package fr.olebo.sharescene
 
-import fr.olebo.sharescene.Connection
-import fr.olebo.sharescene.ShareSceneSession
 import java.util.*
 
 fun synchronizedSessionSet() = synchronizedSet<ShareSceneSession>()

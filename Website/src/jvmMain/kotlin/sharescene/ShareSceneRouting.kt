@@ -2,7 +2,6 @@ package fr.olebo.sharescene
 
 import fr.olebo.log.log
 import fr.olebo.sharescene.html.shareSceneUi
-import fr.olebo.synchronizedSessionSet
 import io.ktor.application.*
 import io.ktor.html.*
 import io.ktor.http.cio.websocket.*
