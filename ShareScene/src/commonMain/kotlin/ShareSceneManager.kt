@@ -24,7 +24,7 @@ class ShareSceneManager internal constructor(
         val manager = this
 
         try {
-            client.webSocket(host = "wss:olebo.fr", port = 80, path = path) {
+            client.wss(host = "olebo.fr", port = 443, path = path) {
                 socketBlock(manager) { codeSession = it }
             }
         } catch (t: Throwable) {
