@@ -9,5 +9,5 @@ const val OLEBO_RELEASES_DIRECTORY = "/Olebo_releases"
 //val OLEBO_RELEASES_DIRECTORY = System.getProperty("user.dir") + File.separator + "test"
 
 val releases
-    get() = ReleaseDirectory.getFromParent(File(OLEBO_RELEASES_DIRECTORY))
+    get() = ReleaseDirectory.getFromParent(File(OLEBO_RELEASES_DIRECTORY).also { println(it.absolutePath) })
         .map { Release(it.versionCode, it.versionName, it.installerPaths) }.sorted()
