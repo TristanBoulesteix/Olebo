@@ -63,7 +63,7 @@ fun Routing.shareSceneRouting() {
         mutexSession.withLock { shareSceneSessions destroy currentSession }
     }
 
-    webSocket("share-scene/{$SESSION_CODE_PARAM}") {
+    webSocket("share-scene/{$SESSION_CODE_PARAM}", protocol = "wss") {
         val currentSession = mutexSession.withLock {
             val sessionCode = call.parameters[SESSION_CODE_PARAM]
 
