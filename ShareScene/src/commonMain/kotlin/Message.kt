@@ -2,7 +2,7 @@ package fr.olebo.sharescene
 
 import kotlinx.serialization.Serializable
 
-private typealias Color = Triple<Int, Int, Int>
+internal typealias Color = Triple<Int, Int, Int>
 
 @Serializable
 sealed class Message

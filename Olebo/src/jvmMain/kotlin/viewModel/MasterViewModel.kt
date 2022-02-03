@@ -16,6 +16,7 @@ import jdr.exia.localization.get
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.command.Command
+import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
@@ -85,9 +86,11 @@ class MasterViewModel(val act: Act) {
         transaction {
             ImageIO.read(inputStreamFromString(currentScene.background)).also { image ->
                 sendMessageToShareScene {
+                    val color =
+                        if (Settings.labelState == SerializableLabelState.FOR_BOTH) Settings.labelColor.contentColor.toTriple() else null
                     NewMap(
                         Base64Image(image, 1600, 900),
-                        elements.filter { it.isVisible }.map { it.toShareSceneToken() })
+                        elements.filter { it.isVisible }.map { it.toShareSceneToken(color) })
                 }
             }
         }
@@ -98,11 +101,6 @@ class MasterViewModel(val act: Act) {
 
     @JvmName("update cursor state")
     fun setCursor(cursor: Offset?) {
-        fun Color.toTriple(): Triple<Int, Int, Int> {
-            val (r, g, b) = this
-            return Triple(r.toInt() * 255, g.toInt() * 255, b.toInt() * 255)
-        }
-
         sendMessageToShareScene {
             if (cursor == null || !Settings.cursorEnabled) CursorHidden else {
                 val (cursorColor, borderCursorColor) = Settings.cursorColor
@@ -345,7 +343,9 @@ class MasterViewModel(val act: Act) {
             if (reloadTokens) elements = newSuspendedTransaction { currentScene.elements }
 
             sendMessageToShareScene {
-                TokenStateChanged(elements.filter { it.isVisible }.map { it.toShareSceneToken() })
+                val color =
+                    if (Settings.labelState == SerializableLabelState.FOR_BOTH) Settings.labelColor.contentColor.toTriple() else null
+                TokenStateChanged(elements.filter { it.isVisible }.map { it.toShareSceneToken(color) })
             }
         }
 
@@ -379,8 +379,11 @@ class MasterViewModel(val act: Act) {
 
                                     setSessionCode(message.code)
 
+                                    val color =
+                                        if (Settings.labelState == SerializableLabelState.FOR_BOTH) Settings.labelColor.contentColor.toTriple() else null
+
                                     send(NewMap(Base64Image(backgroundImage, 1600, 900),
-                                        elements.filter { it.isVisible }.map { it.toShareSceneToken() })
+                                        elements.filter { it.isVisible }.map { it.toShareSceneToken(color) })
                                     )
 
                                     launch {
@@ -420,8 +423,11 @@ class MasterViewModel(val act: Act) {
         (TypeElement.values() + items.keys).associateWith { items[it] ?: emptyList() }
     }
 
-    private fun Element.toShareSceneToken() = Token(
-        Base64Image(sprite, size.value), Position(referenceOffset.x.toInt(), referenceOffset.y.toInt()), size.value
+    private fun Element.toShareSceneToken(rgbTooltip: Triple<Int, Int, Int>?) = Token(
+        image = Base64Image(sprite, size.value),
+        position = Position(referenceOffset.x.toInt(), referenceOffset.y.toInt()),
+        size = size.value,
+        label = rgbTooltip?.let { Label(alias, it) }
     )
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -431,6 +437,11 @@ class MasterViewModel(val act: Act) {
                 connectedState.shareSceneViewModel.messages.takeIf { !it.isClosedForSend }?.send(message())
             }
         }
+
+    private fun Color.toTriple(): Triple<Int, Int, Int> {
+        val (r, g, b) = this
+        return Triple(r.toInt() * 255, g.toInt() * 255, b.toInt() * 255)
+    }
 
     companion object {
         const val ABSOLUTE_WIDTH = 1600f

@@ -10,6 +10,8 @@ import fr.olebo.sharescene.css.classes
 import org.jetbrains.compose.web.ExperimentalComposeWebStyleApi
 import org.jetbrains.compose.web.css.backgroundRepeat
 import org.jetbrains.compose.web.css.backgroundSize
+import org.w3c.dom.CENTER
+import org.w3c.dom.CanvasTextAlign
 import org.w3c.dom.Image
 import kotlin.math.PI
 
@@ -39,6 +41,7 @@ fun ContentCanvas(viewModel: ShareSceneViewModel) {
                 Image().apply {
                     val (tokenX, tokenY) = it.position
 
+                    // Draw image of token
                     onload = { _ ->
                         context.drawImage(
                             this,
@@ -50,6 +53,21 @@ fun ContentCanvas(viewModel: ShareSceneViewModel) {
                     }
 
                     src = it.image.cssBase64ImageCode
+
+                    // Draw label of token
+                    it.label?.let { label ->
+                        val (r, g, b) = label.color
+
+                        context.font = "bold 24px Arial sans-serif"
+                        context.fillStyle = "rgb($r, $g, $b)"
+                        context.textAlign = CanvasTextAlign.CENTER
+
+                        context.fillText(
+                            label.text,
+                            relativeX(tokenX) + relativeX(it.size),
+                            relativeY(tokenY) - 10
+                        )
+                    }
                 }
             }
         }
