@@ -74,7 +74,7 @@ fun main() = application {
             MainUI()
 
             if (changelogs != null && Settings.wasJustUpdated) {
-                ChangelogsDialog(changelogs!!, onClose = { Settings.wasJustUpdated = false })
+                ChangelogsDialog(changelogs!!, onClose = { Settings.setWasJustUpdatedVersion(null) })
             }
         }
     }

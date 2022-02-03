@@ -5,10 +5,14 @@ import jdr.exia.localization.*
 import jdr.exia.model.element.Element
 import jdr.exia.model.tools.DatabaseException
 import jdr.exia.system.OLEBO_DIRECTORY
+import jdr.exia.update.checkForUpdate
 import jdr.exia.update.downloadAndExit
 import jdr.exia.view.tools.showConfirmMessage
 import jdr.exia.view.tools.windowAncestor
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.Table
@@ -50,7 +54,7 @@ object DAO : CoroutineScope by CoroutineScope(Dispatchers.IO) {
 
                 val version = BaseInfo.versionBase
 
-                if (version == null || OLEBO_VERSION_CODE >= version || showUpdateMessageWarn()) {
+                if (version == null || OLEBO_VERSION_CODE >= version || showUpdateMessageWarn(version)) {
                     BaseInfo.initialize()
 
                     val oleboTables = tables
@@ -72,20 +76,32 @@ object DAO : CoroutineScope by CoroutineScope(Dispatchers.IO) {
         throw DatabaseException(e)
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
-    private fun showUpdateMessageWarn(): Boolean {
+    @Suppress("KotlinConstantConditions")
+    private fun showUpdateMessageWarn(versionCode: Int): Boolean {
         var userContinue = false
+
+        val code = runBlocking(Dispatchers.IO) {
+            var release = checkForUpdate(versionCode)
+
+            if (release.isFailure) {
+                release = checkForUpdate()
+            }
+
+            release.getOrNull()?.versionId ?: versionCode
+        }
 
         val update = JButton(StringLocale[STR_UPDATE]).apply {
             this.addActionListener {
                 windowAncestor?.dispose()
-                GlobalScope.launch {
+                runBlocking {
                     downloadAndExit(
                         onExitSuccess = { exitProcess(0) },
-                        onDownloadFailure = { error("Unable to update") }
+                        onDownloadFailure = { error("Unable to update") },
+                        versionCode = code
                     )
                 }
             }
+
         }
 
         val reset = JButton(StringLocale[STR_RESET]).apply {
@@ -123,7 +139,7 @@ object DAO : CoroutineScope by CoroutineScope(Dispatchers.IO) {
             exit
         )
 
-        return if (!userContinue) exitProcess(100) else userContinue
+        return userContinue || exitProcess(100)
     }
 
     @OptIn(ExperimentalStdlibApi::class)
