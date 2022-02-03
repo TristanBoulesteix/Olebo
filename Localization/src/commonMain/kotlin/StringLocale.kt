@@ -9,7 +9,6 @@ expect sealed class StringLocale() {
      * The [invoke] method of the companion object need to be called in order to initialize the right locale to use
      */
     companion object {
-        @PublishedApi
         internal var activeLanguage: Language
 
         internal val langBundle: ResourceBundle
@@ -35,7 +34,7 @@ operator fun StringLocale.Companion.get(key: String, vararg args: Any) =
 /**
  * To set a default locale, this method need to be called by the main module
  */
-inline operator fun StringLocale.Companion.invoke(getLanguage: () -> Language) {
+operator fun StringLocale.Companion.invoke(getLanguage: () -> Language) {
     activeLanguage = getLanguage()
 }
 
