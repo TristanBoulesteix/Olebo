@@ -440,7 +440,7 @@ class MasterViewModel(val act: Act) {
 
     private fun Color.toTriple(): Triple<Int, Int, Int> {
         val (r, g, b) = this
-        return Triple(r.toInt() * 255, g.toInt() * 255, b.toInt() * 255)
+        return Triple((r * 255).toInt(), (g * 255).toInt(), (b * 255).toInt())
     }
 
     companion object {
