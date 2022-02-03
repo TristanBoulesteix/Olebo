@@ -57,7 +57,10 @@ fun Routing.releaseRouting() {
                     )
                     call.respondFile(fileToSend)
                 } else {
-                    call.respond(HttpStatusCode.NotFound, "No file found for requested OS (${os.name})")
+                    call.respond(
+                        HttpStatusCode.NotFound,
+                        "No file found for requested OS (${os.name}) or for requested version (${versionCode.toIntOrNull() ?: "last"})"
+                    )
                 }
             }
         }
