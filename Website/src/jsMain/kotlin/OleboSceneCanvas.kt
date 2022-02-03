@@ -64,7 +64,7 @@ fun ContentCanvas(viewModel: ShareSceneViewModel) {
 
                         context.fillText(
                             label.text,
-                            relativeX(tokenX) + relativeX(it.size),
+                            relativeX(tokenX) + (relativeX(it.size) - context.measureText(label.text).width) / 2,
                             relativeY(tokenY) - 10
                         )
                     }
