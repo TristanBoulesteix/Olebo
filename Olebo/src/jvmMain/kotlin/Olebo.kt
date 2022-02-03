@@ -59,7 +59,7 @@ fun main() = application {
             UpdateUI(release = it, notify = trayState::sendNotification, hideTray = { release = null })
         }
 
-        // Start of the main UI if automatic update are disabled
+        // Start the main UI if automatic updates are disabled
         if (!Settings.autoUpdate || (Settings.autoUpdate && updateChecked && (release == null))) {
             var changelogs: String? by remember { mutableStateOf(null) }
 
