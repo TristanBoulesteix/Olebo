@@ -160,16 +160,15 @@ private fun LookAndFeelSettings(settingsData: SettingsData, updateSettings: (Set
     }
 
 @Stable
-private val selectedContentColor: @Composable RowScope.(SerializableColor) -> Unit
-    get() = {
-        Row(horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(it.toString())
-            if (it is SerializableColor.Custom) {
-                Spacer(Modifier.size(15.dp))
-                Spacer(Modifier.size(15.dp).background(it.color))
-            }
+private val selectedContentColor: @Composable RowScope.(SerializableColor) -> Unit = {
+    Row(horizontalArrangement = Arrangement.SpaceBetween) {
+        Text(it.toString())
+        if (it is SerializableColor.Custom) {
+            Spacer(Modifier.size(15.dp))
+            Spacer(Modifier.size(15.dp).background(it.color))
         }
     }
+}
 
 private fun updateColor(
     newColor: SerializableColor,
