@@ -124,7 +124,7 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
     if (isSettingsDialogVisible) {
         SettingsDialog {
             isSettingsDialogVisible = false
-            WindowStateManager.currentFocusedWindow?.repaint()
+            WindowStateManager.currentFocusedWindowScope?.triggerSettingsChange()
         }
     }
 

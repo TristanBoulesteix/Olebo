@@ -46,6 +46,10 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
     ) {
         LaunchedEffect(Unit) {
             window.extendedState = MAXIMIZED_BOTH
+
+            addSettingsChangedListener {
+                viewModel.repaint(reloadTokens = true)
+            }
         }
 
         var playerFrameVisible by remember { mutableStateOf(Settings.playerFrameOpenedByDefault) }

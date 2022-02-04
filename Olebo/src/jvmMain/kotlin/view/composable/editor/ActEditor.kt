@@ -30,7 +30,10 @@ import jdr.exia.view.WindowStateManager
 import jdr.exia.view.element.*
 import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.element.dialog.MessageDialog
-import jdr.exia.view.tools.*
+import jdr.exia.view.tools.BorderBuilder
+import jdr.exia.view.tools.addRoundedBorder
+import jdr.exia.view.tools.applyIf
+import jdr.exia.view.tools.border
 import jdr.exia.view.ui.blue
 import jdr.exia.view.ui.roundedShape
 import jdr.exia.viewModel.ActEditorViewModel
@@ -305,7 +308,7 @@ private fun ImagePreviewContent(
                     this.isAcceptAllFileFilterUsed = false
                 }
 
-                val result = fileChooser.showSaveDialog(WindowStateManager.currentFocusedWindow)
+                val result = fileChooser.showSaveDialog(WindowStateManager.currentFocusedWindowScope?.window)
 
                 if (result == JFileChooser.APPROVE_OPTION && fileChooser.selectedFile.let { it.exists() && it.isFile }) {
                     onUpdateData(data.copy(img = Img(fileChooser.selectedFile.absolutePath)))
