@@ -1,9 +1,9 @@
 package fr.olebo.plugins
 
-import io.ktor.application.*
-import io.ktor.features.*
-import io.ktor.serialization.*
-import io.ktor.websocket.*
+import io.ktor.serialization.kotlinx.json.*
+import io.ktor.server.application.*
+import io.ktor.server.plugins.*
+import io.ktor.server.websocket.*
 
 fun Application.configureFeatures() {
     install(HttpsRedirect)

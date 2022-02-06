@@ -2,7 +2,7 @@ package fr.olebo.sharescene
 
 import fr.olebo.log.log
 import io.ktor.http.cio.websocket.*
-import io.ktor.websocket.*
+import io.ktor.server.websocket.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.yield
