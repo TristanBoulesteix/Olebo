@@ -3,8 +3,8 @@ package fr.olebo.sharescene
 import fr.olebo.sharescene.connection.ConnectionError
 import io.ktor.client.*
 import io.ktor.client.plugins.websocket.*
-import io.ktor.http.cio.websocket.*
 import io.ktor.utils.io.core.*
+import io.ktor.websocket.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

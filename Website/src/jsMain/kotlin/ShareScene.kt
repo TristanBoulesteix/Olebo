@@ -7,7 +7,7 @@ import fr.olebo.sharescene.connection.Disconnected
 import fr.olebo.sharescene.css.ShareSceneStyleSheet
 import fr.olebo.sharescene.css.classes
 import fr.olebo.sharescene.websocket.client
-import io.ktor.http.cio.websocket.*
+import io.ktor.websocket.*
 import jdr.exia.localization.StringLocale
 import jdr.exia.localization.getBrowserLanguage
 import jdr.exia.localization.invoke

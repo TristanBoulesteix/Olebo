@@ -1,7 +1,7 @@
 package fr.olebo.sharescene.connection
 
-import io.ktor.http.cio.websocket.*
 import io.ktor.utils.io.*
+import io.ktor.websocket.*
 
 internal class ConnectionException(val error: ConnectionError) : Throwable()
 

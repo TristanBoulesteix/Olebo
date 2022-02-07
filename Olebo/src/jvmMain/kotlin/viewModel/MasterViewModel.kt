@@ -8,7 +8,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import fr.olebo.sharescene.*
 import fr.olebo.sharescene.connection.*
-import io.ktor.http.cio.websocket.*
+import io.ktor.websocket.*
 import jdr.exia.OLEBO_VERSION_CODE
 import jdr.exia.localization.STR_DELETE_SELECTED_TOKENS
 import jdr.exia.localization.StringLocale
