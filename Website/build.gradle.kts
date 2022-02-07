@@ -43,11 +43,10 @@ kotlin {
         implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
         implementation("io.ktor:ktor-serialization:$ktorVersion")
         implementation("io.ktor:ktor-server-netty:$ktorVersion")
-        implementation("io.ktor:ktor-websockets:$ktorVersion")
+        implementation("io.ktor:ktor-server-websockets:$ktorVersion")
         implementation("io.ktor:ktor-http-jvm:$ktorVersion")
         implementation("ch.qos.logback:logback-classic:$logbackVersion")
-        implementation("io.ktor:ktor-html-builder:$ktorVersion")
-        implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
+        implementation("io.ktor:ktor-server-html-builder:$ktorVersion")
         implementation(project(":Update"))
         implementation(project(":System"))
     }
