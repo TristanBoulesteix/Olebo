@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -34,7 +35,6 @@ import jdr.exia.view.tools.BorderBuilder
 import jdr.exia.view.tools.addRoundedBorder
 import jdr.exia.view.tools.applyIf
 import jdr.exia.view.tools.border
-import jdr.exia.view.ui.blue
 import jdr.exia.view.ui.roundedShape
 import jdr.exia.viewModel.ActEditorViewModel
 import java.io.File
@@ -50,14 +50,13 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
     Header(viewModel = viewModel, act = act)
 
     // List of all the scenes of the edited act
-    Column(modifier = Modifier.fillMaxSize().background(blue).padding(15.dp)) {
-        val contentModifier = remember {
-            Modifier.padding(bottom = 20.dp, end = 20.dp, start = 20.dp)
-                .background(Color.White)
-                .weight(1f)
-                .fillMaxSize()
-                .border(BorderBuilder.defaultBorder)
-        }
+    Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.secondaryVariant).padding(15.dp)) {
+        val contentModifier = Modifier.padding(bottom = 20.dp, end = 20.dp, start = 20.dp)
+            .background(Color.White)
+            .weight(1f)
+            .fillMaxSize()
+            .border(BorderBuilder.defaultBorder)
+
 
         val (sceneInCreation, setSceneInCreation) = remember { mutableStateOf<SceneData?>(null) withSetter { newValue -> if (newValue != null) viewModel.onEditDone() } }
 

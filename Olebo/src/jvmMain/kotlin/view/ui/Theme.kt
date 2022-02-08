@@ -3,24 +3,42 @@ package jdr.exia.view.ui
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
+import com.jthemedetecor.OsThemeDetector
 
-private val darkColorPalette = darkColors(
-    primary = black,
-    primaryVariant = lightBlue,
-    secondary = lightOrange
-)
+val darkColorPalette
+    get() = darkColors(
+        primary = Color.White,
+        primaryVariant = Color(0, 31, 153),
+        secondaryVariant = Color(0, 31, 153),
+        secondary = Color(176, 88, 0),
+        background = Color.DarkGray
+    )
 
-private val lightColorPalette = lightColors(
-    primary = black,
-    primaryVariant = lightBlue,
-    secondary = lightOrange
-)
+val lightColorPalette
+    get() = lightColors(
+        primary = Color.Black,
+        primaryVariant = Color(225, 250, 249),
+        secondaryVariant = Color(158, 195, 255),
+        secondary = Color(255, 200, 0)
+    )
+
+private val osThemeDetector = OsThemeDetector.getDetector()
 
 @Composable
-fun OleboTheme(darkTheme: Boolean = false, content: @Composable () -> Unit) {
-    val colors = if (darkTheme) {
+fun OleboTheme(content: @Composable () -> Unit) {
+    var isDarkTheme by remember { mutableStateOf(osThemeDetector.isDark) }
+
+    LaunchedEffect(Unit) {
+        osThemeDetector.registerListener {
+            isDarkTheme = it
+        }
+    }
+
+    val colors = if (isDarkTheme) {
         darkColorPalette
+        //lightColorPalette
     } else {
         lightColorPalette
     }

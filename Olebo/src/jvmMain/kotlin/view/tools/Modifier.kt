@@ -2,6 +2,8 @@ package jdr.exia.view.tools
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
@@ -24,9 +26,13 @@ inline fun Modifier.applyIf(condition: Boolean, modifier: Modifier.() -> Modifie
 class BorderBuilder(val strokeWidth: Dp, val color: Color) {
     companion object {
         @Stable
-        val defaultBorder = BorderBuilder(2.dp, Color.Black)
+        val defaultBorder
+            @Composable get() = BorderBuilder(2.dp, if (MaterialTheme.colors.isLight) Color.Black else Color.White)
     }
 }
+
+@Stable
+fun BorderBuilder.toBorderStroke() = BorderStroke(strokeWidth, color)
 
 @Stable
 fun Modifier.border(

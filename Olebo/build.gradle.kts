@@ -33,6 +33,7 @@ kotlin {
         implementation("io.ktor:ktor-client-cio:$ktorVersion")
         implementation("io.ktor:ktor-client-serialization:$ktorVersion")
         implementation("io.ktor:ktor-client-websockets:$ktorVersion")
+        implementation("com.github.Dansoftowner:jSystemThemeDetector:3.6")
         implementation(project(":Localization"))
         implementation(project(":Update"))
         implementation(project(":System"))

@@ -5,10 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,8 +31,6 @@ import jdr.exia.view.element.builder.EmptyContent
 import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.element.form.IntTextField
 import jdr.exia.view.tools.*
-import jdr.exia.view.ui.blue
-import jdr.exia.view.ui.lightOrange
 import jdr.exia.view.ui.roundedShape
 import jdr.exia.viewModel.ElementsEditorViewModel
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -51,10 +46,10 @@ fun ElementsView(onDone: () -> Unit, closeText: String = StringLocale[STR_BACK])
     val contentViewModel = remember { ElementsEditorViewModel(tabs.first()) }
 
     TabPanel(
-        backgroundColor = blue,
+        backgroundColor = MaterialTheme.colors.secondaryVariant,
         tabs = tabs,
         onTabChanged = { contentViewModel.currentType = it },
-        headerTabOption = HeaderTabOptions(backgroundColor = lightOrange),
+        headerTabOption = HeaderTabOptions(backgroundColor = MaterialTheme.colors.secondary),
         content = { currentTab, padding ->
             Content(
                 viewModel = contentViewModel,
@@ -84,7 +79,7 @@ fun ElementsView(onDone: () -> Unit, closeText: String = StringLocale[STR_BACK])
 }
 
 private val ColumnScope.contentModifier
-    get() = Modifier.padding(bottom = 20.dp, end = 20.dp, start = 20.dp)
+    @Composable get() = Modifier.padding(bottom = 20.dp, end = 20.dp, start = 20.dp)
         .background(Color.White)
         .weight(1f)
         .fillMaxSize()
