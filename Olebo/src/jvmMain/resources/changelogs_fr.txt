@@ -1,7 +1,5 @@
-- Amélioration générale des performances
+- Nouvelle fonctionnalité : Avec ShareScene, vous pouvez maintenant partager le contenu de la vue joueur sur internet. Créez simplement une session sur l'onglet ShareScene puis partagez le code fourni à tous les joueurs.
 
-- Correction d'un bug lié à l'import des fichiers
+- Quelques corrections de bugs
 
-- Amélioration de l'interface graphique
-
-- Mise à jour de la bibliothèque graphique (Compose for Desktop) vers la version Beta-5
+- Amélioration des performances

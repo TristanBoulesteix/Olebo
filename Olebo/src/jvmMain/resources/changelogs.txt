@@ -1,7 +1,5 @@
-- Performances improvement
+- New functionality: With ShareScene, you can now share the player view to the internet. Just start a new session from the ShareScene tab then share the code provided to all players.
 
-- Fix a bug with the import file functionality
+- Few bug fixes
 
-- Fix UI bugs
-
-- Upgrade the UI library (Compose for Desktop) to Beta 5 version
+- Performances improvements
