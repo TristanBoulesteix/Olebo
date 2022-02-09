@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import jdr.exia.view.element.dialog.DialogManager
+import jdr.exia.view.ui.isDarkTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -28,7 +29,7 @@ fun BoxWithTooltipIfNotNull(
     tooltip = {
         Surface(
             modifier = Modifier.shadow(4.dp),
-            color = Color(255, 255, 210),
+            color = if (isDarkTheme) Color.Gray else Color(255, 255, 210),
             shape = RoundedCornerShape(4.dp)
         ) {
             Text(
