@@ -200,11 +200,9 @@ private fun ColumnScope.CreateBlueprint(
             content = content
         )
 
-        Surface {
-            RowField {
-                Text(StringLocale[STR_NAME_OF_ELEMENT])
-                CustomTextField(value = blueprint.name, onValueChange = { onUpdate(blueprint.copy(name = it)) })
-            }
+        RowField {
+            Text(StringLocale[STR_NAME_OF_ELEMENT])
+            CustomTextField(value = blueprint.name, onValueChange = { onUpdate(blueprint.copy(name = it)) })
         }
 
         if (blueprint.type != TypeElement.Object) {
