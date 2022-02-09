@@ -7,16 +7,18 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import com.jthemedetecor.OsThemeDetector
 
-val darkColorPalette
+@Stable
+private val darkColorPalette
     get() = darkColors(
         primary = Color.White,
         primaryVariant = Color(0, 31, 153),
-        secondaryVariant = Color(0, 31, 153),
+        secondaryVariant = Color.Black,
         secondary = Color(176, 88, 0),
         background = Color.DarkGray
     )
 
-val lightColorPalette
+@Stable
+private val lightColorPalette
     get() = lightColors(
         primary = Color.Black,
         primaryVariant = Color(225, 250, 249),
@@ -24,6 +26,7 @@ val lightColorPalette
         secondary = Color(255, 200, 0)
     )
 
+@Stable
 private val osThemeDetector = OsThemeDetector.getDetector()
 
 @Composable

@@ -27,7 +27,7 @@ class BorderBuilder(val strokeWidth: Dp, val color: Color) {
     companion object {
         @Stable
         val defaultBorder
-            @Composable get() = BorderBuilder(2.dp, if (MaterialTheme.colors.isLight) Color.Black else Color.White)
+            @Composable get() = BorderBuilder(2.dp, if (MaterialTheme.colors.isLight) Color.Black else Color.Gray)
     }
 }
 
