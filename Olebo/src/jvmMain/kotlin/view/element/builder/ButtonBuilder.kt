@@ -29,6 +29,7 @@ data class ImageButtonBuilder(
     override val content: ImageBitmap,
     override val tooltip: String? = null,
     override val enabled: Boolean = true,
+    val tinted: Boolean = true,
     private val onClick: () -> Unit
 ) : ContentBuilder {
     override val onChange by ::onClick

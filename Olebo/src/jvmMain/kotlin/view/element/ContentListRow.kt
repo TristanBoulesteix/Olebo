@@ -3,12 +3,14 @@ package jdr.exia.view.element
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import jdr.exia.view.element.builder.ComposableContentBuilder
 import jdr.exia.view.element.builder.ContentBuilder
@@ -99,7 +101,8 @@ private fun RowButton(contentBuilder: ContentBuilder, modifier: Modifier) {
                 is ImageButtonBuilder -> Image(
                     bitmap = contentBuilder.content,
                     contentDescription = "button",
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier.align(Alignment.Center),
+                    colorFilter = if (contentBuilder.tinted) ColorFilter.tint(MaterialTheme.colors.primary) else null
                 )
                 is ContentButtonBuilder -> Text(
                     text = contentBuilder.content,
