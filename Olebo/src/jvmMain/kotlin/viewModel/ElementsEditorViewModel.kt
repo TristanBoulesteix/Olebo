@@ -16,7 +16,7 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class ElementsEditorViewModel(InitialType: TypeElement) {
-    private var currentEditPosition by mutableStateOf(-1)
+    private val currentEditPosition = TypeElement.values().map { it to -1 }.toMutableStateMap()
 
     var currentType by mutableStateOf(InitialType)
 
@@ -27,10 +27,10 @@ class ElementsEditorViewModel(InitialType: TypeElement) {
     }
 
     val currentEditBlueprint
-        get() = blueprints.getOrNull(currentEditPosition)
+        get() = blueprints.getOrNull(currentEditPosition.getOrDefault(currentType, -1))
 
-    val blueprintsInCreation =
-        TypeElement.values().map { it to null }.toMutableStateMap<TypeElement, Blueprint.BlueprintData?>()
+    val blueprintsInCreation: MutableMap<TypeElement, Blueprint.BlueprintData?> =
+        TypeElement.values().map { it to null }.toMutableStateMap()
 
     val hasBlueprintInCreationForCurrentType
         get() = blueprintsInCreation[currentType] != null
@@ -40,7 +40,7 @@ class ElementsEditorViewModel(InitialType: TypeElement) {
     }
 
     fun onEditItemSelected(blueprintData: Blueprint) {
-        currentEditPosition = blueprints.indexOf(blueprintData)
+        currentEditPosition[currentType] = blueprints.indexOf(blueprintData)
     }
 
     fun onRemoveBlueprint(blueprint: Blueprint) {
@@ -91,7 +91,7 @@ class ElementsEditorViewModel(InitialType: TypeElement) {
     }
 
     fun onEditDone() {
-        currentEditPosition = -1
+        currentEditPosition[currentType] = -1
     }
 
     fun onSubmitBlueprint(): SimpleResult {
