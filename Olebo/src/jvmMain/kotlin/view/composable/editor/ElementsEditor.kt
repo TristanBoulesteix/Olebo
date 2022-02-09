@@ -66,11 +66,11 @@ fun ElementsView(onDone: () -> Unit, closeText: String = StringLocale[STR_BACK])
                 OutlinedButton(
                     onClick = when {
                         contentViewModel.currentEditBlueprint != null -> contentViewModel::onEditDone
-                        contentViewModel.blueprintInCreation != null -> contentViewModel::cancelBlueprintCreation
+                        contentViewModel.hasBlueprintInCreationForCurrentType -> contentViewModel::cancelBlueprintCreation
                         else -> onDone
                     },
                     content = {
-                        Text(text = if (contentViewModel.currentEditBlueprint == null && contentViewModel.blueprintInCreation == null) closeText else StringLocale[STR_CANCEL])
+                        Text(text = if (contentViewModel.currentEditBlueprint == null && contentViewModel.hasBlueprintInCreationForCurrentType) closeText else StringLocale[STR_CANCEL])
                     }
                 )
             }
@@ -91,7 +91,7 @@ private fun Content(viewModel: ElementsEditorViewModel, innerPadding: PaddingVal
         Column(modifier = Modifier.fillMaxSize().padding(15.dp)) {
             HeaderContent(currentType, viewModel)
 
-            val blueprintInCreation = viewModel.blueprintInCreation
+            val blueprintInCreation = viewModel.blueprintsInCreation[currentType]
 
             when {
                 blueprintInCreation != null -> CreateBlueprint(
@@ -132,7 +132,7 @@ private fun HeaderContent(
         contentText = currentType.localizedName,
         modifier = Modifier.fillMaxWidth(),
         buttonBuilders =
-        if (viewModel.blueprintInCreation == null) {
+        if (!viewModel.hasBlueprintInCreationForCurrentType) {
             if (viewModel.blueprints.isNotEmpty()) {
                 if (currentType != TypeElement.Object) listOf(
                     ContentButtonBuilder(

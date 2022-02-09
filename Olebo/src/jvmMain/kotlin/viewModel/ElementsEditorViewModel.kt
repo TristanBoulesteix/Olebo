@@ -29,11 +29,14 @@ class ElementsEditorViewModel(InitialType: TypeElement) {
     val currentEditBlueprint
         get() = blueprints.getOrNull(currentEditPosition)
 
-    var blueprintInCreation by mutableStateOf(null as Blueprint.BlueprintData?)
-        private set
+    val blueprintsInCreation =
+        TypeElement.values().map { it to null }.toMutableStateMap<TypeElement, Blueprint.BlueprintData?>()
+
+    val hasBlueprintInCreationForCurrentType
+        get() = blueprintsInCreation[currentType] != null
 
     fun onUpdateBlueprintInCreation(data: Blueprint.BlueprintData) {
-        blueprintInCreation = data
+        blueprintsInCreation[data.type] = data
     }
 
     fun onEditItemSelected(blueprintData: Blueprint) {
@@ -75,7 +78,7 @@ class ElementsEditorViewModel(InitialType: TypeElement) {
     }
 
     fun startBlueprintCreation() {
-        blueprintInCreation =
+        blueprintsInCreation[currentType] =
             Blueprint.BlueprintData.let {
                 if (currentType == TypeElement.Object) it.defaultObject() else it.defaultCharacter(
                     currentType
@@ -84,7 +87,7 @@ class ElementsEditorViewModel(InitialType: TypeElement) {
     }
 
     fun cancelBlueprintCreation() {
-        blueprintInCreation = null
+        blueprintsInCreation[currentType] = null
     }
 
     fun onEditDone() {
@@ -92,7 +95,7 @@ class ElementsEditorViewModel(InitialType: TypeElement) {
     }
 
     fun onSubmitBlueprint(): SimpleResult {
-        val blueprint = blueprintInCreation ?: return Result.failure
+        val blueprint = blueprintsInCreation[currentType] ?: return Result.failure
 
         if (!blueprint.isValid())
             return Result.failure
