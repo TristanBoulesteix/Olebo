@@ -34,7 +34,7 @@ data class ImageButtonBuilder(
 ) : ContentBuilder {
     override val onChange by ::onClick
 
-    constructor(content: ImageBitmap) : this(content, enabled = false, onClick = {})
+    constructor(content: ImageBitmap) : this(content, tinted = false, enabled = false, onClick = {})
 }
 
 @Immutable

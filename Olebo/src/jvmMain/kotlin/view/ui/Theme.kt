@@ -14,7 +14,8 @@ private val darkColorPalette
         primaryVariant = Color(0, 31, 153),
         secondaryVariant = Color.Black,
         secondary = Color(176, 88, 0),
-        background = Color.DarkGray
+        background = Color.DarkGray,
+        onSurface = Color.LightGray
     )
 
 @Stable
@@ -23,7 +24,8 @@ private val lightColorPalette
         primary = Color.Black,
         primaryVariant = Color(225, 250, 249),
         secondaryVariant = Color(158, 195, 255),
-        secondary = Color(255, 200, 0)
+        secondary = Color(255, 200, 0),
+        onSurface = Color.White
     )
 
 @Stable

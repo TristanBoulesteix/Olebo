@@ -1,7 +1,6 @@
 package jdr.exia.view.composable.editor
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
@@ -31,7 +30,9 @@ import jdr.exia.view.element.builder.EmptyContent
 import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.element.form.IntTextField
 import jdr.exia.view.tools.*
+import jdr.exia.view.ui.roundedBottomShape
 import jdr.exia.view.ui.roundedShape
+import jdr.exia.view.ui.roundedTopShape
 import jdr.exia.viewModel.ElementsEditorViewModel
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
@@ -78,12 +79,11 @@ fun ElementsView(onDone: () -> Unit, closeText: String = StringLocale[STR_BACK])
     )
 }
 
+@Stable
 private val ColumnScope.contentModifier
-    @Composable get() = Modifier.padding(bottom = 20.dp, end = 20.dp, start = 20.dp)
-        .background(Color.White)
+    get() = Modifier.padding(bottom = 20.dp, end = 20.dp, start = 20.dp)
         .weight(1f)
         .fillMaxSize()
-        .border(BorderBuilder.defaultBorder)
 
 @Composable
 private fun Content(viewModel: ElementsEditorViewModel, innerPadding: PaddingValues, currentType: TypeElement) =
@@ -122,15 +122,15 @@ private fun Content(viewModel: ElementsEditorViewModel, innerPadding: PaddingVal
 private fun HeaderContent(
     currentType: TypeElement,
     viewModel: ElementsEditorViewModel
-) = Box(
+) = Card(
     modifier = Modifier.padding(top = 20.dp, end = 20.dp, start = 20.dp)
-        .background(Color.White)
-        .fillMaxWidth()
-        .border(BorderBuilder.defaultBorder)
+        .fillMaxWidth(),
+    border = BorderBuilder.defaultBorder.toBorderStroke(),
+    shape = roundedTopShape
 ) {
     ContentListRow(
         contentText = currentType.localizedName,
-        modifier = Modifier.fillMaxWidth().background(Color.White).border(BorderBuilder.defaultBorder),
+        modifier = Modifier.fillMaxWidth(),
         buttonBuilders =
         if (viewModel.blueprintInCreation == null) {
             if (viewModel.blueprints.isNotEmpty()) {
@@ -186,73 +186,85 @@ private fun HeaderContent(
 private fun ColumnScope.CreateBlueprint(
     blueprint: Blueprint.BlueprintData,
     onUpdate: (Blueprint.BlueprintData) -> Unit
-) = Column(modifier = contentModifier) {
-    @Composable
-    fun RowField(modifier: Modifier = Modifier, content: @Composable RowScope.() -> Unit) = Row(
-        modifier = modifier.fillMaxWidth().padding(top = 5.dp),
-        horizontalArrangement = Arrangement.SpaceAround,
-        verticalAlignment = Alignment.CenterVertically,
-        content = content
-    )
-
-    RowField {
-        Text(StringLocale[STR_NAME_OF_ELEMENT])
-        CustomTextField(value = blueprint.name, onValueChange = { onUpdate(blueprint.copy(name = it)) })
-    }
-
-    if (blueprint.type != TypeElement.Object) {
-        RowField {
-            Text(StringLocale[STR_MAX_HEALTH])
-            IntTextField(value = blueprint.life ?: 0, onValueChange = { onUpdate(blueprint.copy(life = it)) })
-        }
-
-        RowField {
-            Text(StringLocale[STR_MAX_MANA])
-            IntTextField(value = blueprint.mana ?: 0, onValueChange = { onUpdate(blueprint.copy(mana = it)) })
-        }
-    }
-
-    RowField(modifier = Modifier.height(200.dp).padding(top = 10.dp)) {
-        Button(
-            content = { Text(StringLocale[STR_IMPORT_IMG]) },
-            onClick = {
-                val file = JFileChooser().apply {
-                    this.currentDirectory = File(System.getProperty("user.home"))
-                    this.addChoosableFileFilter(
-                        FileNameExtensionFilter("Images", *ImageIO.getReaderFileSuffixes())
-                    )
-                    this.isAcceptAllFileFilterUsed = false
-                }
-
-                if (file.showSaveDialog(WindowStateManager.currentFocusedWindowScope?.window) == JFileChooser.APPROVE_OPTION) {
-                    onUpdate(blueprint.copy(img = Image(file.selectedFile.absolutePath)))
-                }
-            },
-            modifier = Modifier.fillMaxWidth(0.30f)
+) = Card(
+    modifier = contentModifier,
+    border = BorderBuilder.defaultBorder.toBorderStroke(),
+    shape = roundedBottomShape
+) {
+    Column {
+        @Composable
+        fun RowField(modifier: Modifier = Modifier, content: @Composable RowScope.() -> Unit) = Row(
+            modifier = modifier.fillMaxWidth().padding(top = 5.dp),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically,
+            content = content
         )
 
-        val imgExist = !blueprint.img.isUnspecified() && File(blueprint.img.path).let { it.exists() && it.isFile }
+        Surface {
+            RowField {
+                Text(StringLocale[STR_NAME_OF_ELEMENT])
+                CustomTextField(value = blueprint.name, onValueChange = { onUpdate(blueprint.copy(name = it)) })
+            }
+        }
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(0.70f)
-                .applyIf(condition = !imgExist, modifier = { size(200.dp).clip(roundedShape).addRoundedBorder() })
-        ) {
-            if (imgExist) {
-                Image(
-                    bitmap = blueprint.img.toBitmap(),
-                    contentDescription = null,
-                    modifier = Modifier.sizeIn(maxHeight = 200.dp, maxWidth = 200.dp).clip(roundedShape)
-                        .addRoundedBorder()
-                )
+        if (blueprint.type != TypeElement.Object) {
+            RowField {
+                Text(StringLocale[STR_MAX_HEALTH])
+                IntTextField(value = blueprint.life ?: 0, onValueChange = { onUpdate(blueprint.copy(life = it)) })
+            }
+
+            RowField {
+                Text(StringLocale[STR_MAX_MANA])
+                IntTextField(value = blueprint.mana ?: 0, onValueChange = { onUpdate(blueprint.copy(mana = it)) })
+            }
+        }
+
+        RowField(modifier = Modifier.height(200.dp).padding(top = 10.dp)) {
+            Button(
+                content = { Text(StringLocale[STR_IMPORT_IMG]) },
+                onClick = {
+                    val file = JFileChooser().apply {
+                        this.currentDirectory = File(System.getProperty("user.home"))
+                        this.addChoosableFileFilter(
+                            FileNameExtensionFilter("Images", *ImageIO.getReaderFileSuffixes())
+                        )
+                        this.isAcceptAllFileFilterUsed = false
+                    }
+
+                    if (file.showSaveDialog(WindowStateManager.currentFocusedWindowScope?.window) == JFileChooser.APPROVE_OPTION) {
+                        onUpdate(blueprint.copy(img = Image(file.selectedFile.absolutePath)))
+                    }
+                },
+                modifier = Modifier.fillMaxWidth(0.30f)
+            )
+
+            val imgExist = !blueprint.img.isUnspecified() && File(blueprint.img.path).let { it.exists() && it.isFile }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(0.70f)
+                    .applyIf(condition = !imgExist, modifier = { size(200.dp).clip(roundedShape).addRoundedBorder() })
+            ) {
+                if (imgExist) {
+                    Image(
+                        bitmap = blueprint.img.toBitmap(),
+                        contentDescription = null,
+                        modifier = Modifier.sizeIn(maxHeight = 200.dp, maxWidth = 200.dp).clip(roundedShape)
+                            .addRoundedBorder()
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun ColumnScope.ScrollableContent(viewModel: ElementsEditorViewModel) {
-    LazyScrollableColumn(modifier = contentModifier) {
+private fun ColumnScope.ScrollableContent(viewModel: ElementsEditorViewModel) = Card(
+    modifier = contentModifier,
+    border = BorderBuilder.defaultBorder.toBorderStroke(),
+    shape = roundedBottomShape
+) {
+    LazyScrollableColumn {
         items(viewModel.blueprints, key = { it.id }) { blueprint ->
             var editedData by (viewModel.currentEditBlueprint == blueprint).let { isEditing ->
                 remember(isEditing) { mutableStateOf(blueprint.takeIf { isEditing }?.toBlueprintData()) }
