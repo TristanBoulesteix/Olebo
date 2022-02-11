@@ -1,5 +1,7 @@
 package jdr.exia.view.ui
 
+import androidx.compose.foundation.LocalScrollbarStyle
+import androidx.compose.foundation.defaultScrollbarStyle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
@@ -43,7 +45,7 @@ fun OleboTheme(content: @Composable () -> Unit) {
 
     val colors = if (isDarkTheme) {
         darkColorPalette
-        //lightColorPalette
+        lightColorPalette
     } else {
         lightColorPalette
     }
@@ -51,7 +53,11 @@ fun OleboTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colors = colors,
         typography = typography,
-        content = content
+        content = {
+            CompositionLocalProvider(LocalScrollbarStyle provides defaultScrollbarStyle()) {
+                content()
+            }
+        }
     )
 }
 
