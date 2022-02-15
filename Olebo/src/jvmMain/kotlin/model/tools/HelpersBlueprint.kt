@@ -39,6 +39,10 @@ fun Blueprint?.isCharacter(): Boolean {
     return transaction { blueprint != null && (blueprint.type == TypeElement.PNJ || blueprint.type == TypeElement.PJ) }
 }
 
+fun Blueprint.getLifeOrNull() = if (isCharacter()) HP else null
+
+fun Blueprint.getManaOrNull() = if (isCharacter()) MP else null
+
 inline fun <T> Scene?.callCommandManager(
     elementWithData: Map<Element, T>,
     func: (Map<Element, T>, CommandManager) -> Unit

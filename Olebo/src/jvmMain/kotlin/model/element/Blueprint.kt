@@ -1,23 +1,16 @@
 package jdr.exia.model.element
 
-import androidx.compose.runtime.Immutable
 import jdr.exia.localization.StringLocale
 import jdr.exia.localization.get
 import jdr.exia.model.dao.BlueprintTable
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.tools.CharacterException
-import jdr.exia.model.tools.isCharacter
-import jdr.exia.model.tools.isFileValid
-import jdr.exia.model.type.Image
 import jdr.exia.model.type.checkedImgPath
 import jdr.exia.model.type.toImgPath
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
-import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
-import kotlin.contracts.ExperimentalContracts
-import kotlin.contracts.contract
 import kotlin.io.path.deleteIfExists
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KMutableProperty0
@@ -64,21 +57,6 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
         super.delete()
     }
 
-    private fun getLifeOrNull() = if (isCharacter()) HP else null
-
-    private fun getManaOrNull() = if (isCharacter()) MP else null
-
-    fun toBlueprintData() = transaction {
-        BlueprintData(
-            name,
-            Image(sprite),
-            getLifeOrNull(),
-            getManaOrNull(),
-            type,
-            this@Blueprint.id
-        )
-    }
-
     private fun statsDelegate(stats: KMutableProperty0<Int?>) = object : ReadWriteProperty<Blueprint, Int> {
         override operator fun getValue(thisRef: Blueprint, property: KProperty<*>): Int =
             if (type == TypeElement.PNJ || type == TypeElement.PJ) stats.get()!! else throw Exception("Cet élément n'est pas un personnage !")
@@ -87,34 +65,4 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
             if (type == TypeElement.PNJ || type == TypeElement.PJ) stats.set(value)
             else throw CharacterException(this::class, if (stats == ::maxLife) "HP" else "MP")
     }
-
-    /**
-     * Temporary [Blueprint] for objects
-     */
-    @Immutable
-    data class BlueprintData(
-        val name: String,
-        val img: Image,
-        val life: Int? = null,
-        val mana: Int? = null,
-        val type: TypeElement = TypeElement.Object,
-        val id: EntityID<Int>? = null
-    ) {
-        companion object {
-            fun defaultObject() = BlueprintData("", Image.unspecified)
-
-            fun defaultCharacter(type: TypeElement) = BlueprintData("", Image.unspecified, 0, 0, type)
-        }
-    }
-}
-
-@OptIn(ExperimentalContracts::class)
-fun Blueprint.BlueprintData?.isValid(): Boolean {
-    contract {
-        returns(true) implies (this@isValid != null)
-    }
-
-    return this != null
-            && !this.img.isUnspecified()
-            && this.img.checkedImgPath?.toFile().isFileValid()
 }

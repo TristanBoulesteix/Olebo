@@ -26,8 +26,7 @@ private val lightColorPalette
         primary = Color.Black,
         primaryVariant = Color(225, 250, 249),
         secondaryVariant = Color(158, 195, 255),
-        secondary = Color(255, 200, 0),
-        onSurface = Color.White
+        secondary = Color(255, 200, 0)
     )
 
 @Stable

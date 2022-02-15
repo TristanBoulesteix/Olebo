@@ -21,10 +21,11 @@ value class Image(val path: String) {
         val unspecified = Image("")
     }
 
+    @Stable
     fun isUnspecified() = path.isBlank()
 
     @Stable
-    fun toBitmap() = imageFromPath(path)
+    fun toBitmap() = if (isUnspecified()) imageFromIconRes("not_found", "jpg") else imageFromPath(path)
 
     val checkedImgPath
         get() = path.toImgPath().checkedImgPath()

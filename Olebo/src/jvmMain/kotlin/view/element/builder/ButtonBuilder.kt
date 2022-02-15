@@ -51,10 +51,10 @@ data class ContentButtonBuilder(
 
 @Immutable
 data class ComposableContentBuilder(
-    override val content: @Composable () -> Unit,
-    override val tooltip: String? = null
+    override val tooltip: String? = null,
+    override val content: @Composable () -> Unit
 ) : ContentBuilder {
-    override val enabled = true
+    override val enabled = false
 
     override val onChange = {}
 }

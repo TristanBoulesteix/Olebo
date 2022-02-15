@@ -16,9 +16,11 @@ import jdr.exia.localization.get
 import jdr.exia.model.tools.SimpleResult
 import jdr.exia.view.tools.MessageType
 import jdr.exia.view.tools.showMessage
+import kotlin.experimental.ExperimentalTypeInference
 
 @Composable
-fun FooterRow(
+fun FooterRowWithCancel(
+    modifier: Modifier = Modifier,
     confirmText: String = StringLocale[STR_CONFIRM],
     onConfirm: () -> SimpleResult,
     cancelText: String = StringLocale[STR_CANCEL],
@@ -29,7 +31,7 @@ fun FooterRow(
     }
 ) = Row(
     horizontalArrangement = Arrangement.SpaceAround,
-    modifier = Modifier.fillMaxWidth().padding(15.dp)
+    modifier = Modifier.fillMaxWidth().padding(15.dp) then modifier
 ) {
     OutlinedButton(
         onClick = {

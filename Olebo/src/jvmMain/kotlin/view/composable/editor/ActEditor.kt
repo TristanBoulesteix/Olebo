@@ -329,7 +329,7 @@ private fun Footer(
     onDone: () -> Unit
 ) {
     when {
-        sceneInCreation != null -> FooterRow(
+        sceneInCreation != null -> FooterRowWithCancel(
             confirmText = StringLocale[STR_CONFIRM_CREATE_SCENE],
             onConfirm = { viewModel.onAddScene(sceneInCreation) },
             onDone = { setSceneInCreation(null) },
@@ -337,7 +337,7 @@ private fun Footer(
                 viewModel.errorMessage = StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID]
             }
         )
-        viewModel.currentEditScene != null -> FooterRow(
+        viewModel.currentEditScene != null -> FooterRowWithCancel(
             confirmText = StringLocale[STR_CONFIRM_EDIT_SCENE],
             onConfirm = {
                 getEditedSceneData().let {
@@ -354,7 +354,7 @@ private fun Footer(
                 viewModel.onEditDone()
             }
         )
-        else -> FooterRow(
+        else -> FooterRowWithCancel(
             confirmText = StringLocale[if (act == null) STR_CONFIRM_CREATE_ACT else STR_CONFIRM_EDIT_ACT],
             onConfirm = viewModel::submitAct,
             onDone = onDone

@@ -230,6 +230,10 @@ internal actual class StringLocaleBundle : StringLocale() {
             A server error has occurred. Please, try again later.
             Error: %s
         """.trimIndent(),
+        STR_CANCEL_BLUEPRINT_CHANGES to "cancel changes",
+        STR_SUBMIT_BLUEPRINT_CHANGES to "save changes",
+        ST_NO_SPRITE_FOR_NEW_BLUEPRINT to "You need to add an image to the element.",
+        ST_INVALID_SPRITE_FOR_BLUEPRINT to "The selected image is invalid or does not exists.",
     )
 }
 
@@ -462,5 +466,9 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
             Une erreur de serveur est arrivée. Réessayez plus tard.
             Erreur : %s
         """.trimIndent(),
+        STR_CANCEL_BLUEPRINT_CHANGES to "annuler l'édition",
+        STR_SUBMIT_BLUEPRINT_CHANGES to "sauvegarder les changements",
+        ST_NO_SPRITE_FOR_NEW_BLUEPRINT to "Vous devez ajouter une image au nouvel élément.",
+        ST_INVALID_SPRITE_FOR_BLUEPRINT to "L'image sélectionnée est invalide ou n'existe pas.",
     )
 }
