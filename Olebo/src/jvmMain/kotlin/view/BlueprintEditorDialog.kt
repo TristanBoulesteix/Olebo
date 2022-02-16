@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.rememberDialogState
-import jdr.exia.localization.STR_CLOSE
 import jdr.exia.localization.STR_MANAGE_BLUEPRINTS
 import jdr.exia.localization.StringLocale
 import jdr.exia.localization.get
@@ -23,6 +22,6 @@ fun BlueprintEditorDialog(onCloseRequest: () -> Unit) {
             }
         }
 
-        ElementsView(onDone = onCloseRequest, closeText = StringLocale[STR_CLOSE])
+        ElementsView(onDone = onCloseRequest)
     }
 }

@@ -43,7 +43,7 @@ import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
 @Composable
-fun ElementsView(onDone: () -> Unit, closeText: String = StringLocale[STR_BACK]) {
+fun ElementsView(onDone: () -> Unit) {
     val tabs = remember { listOf(TypeElement.Object, TypeElement.PJ, TypeElement.PNJ) }
 
     val contentViewModel = remember { ElementsEditorViewModel(tabs.first()) }

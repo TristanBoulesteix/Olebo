@@ -1,16 +1,11 @@
 package jdr.exia.view.composable.editor
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,11 +26,10 @@ import jdr.exia.view.WindowStateManager
 import jdr.exia.view.element.*
 import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.element.dialog.MessageDialog
-import jdr.exia.view.tools.BorderBuilder
-import jdr.exia.view.tools.addRoundedBorder
-import jdr.exia.view.tools.applyIf
-import jdr.exia.view.tools.border
+import jdr.exia.view.tools.*
+import jdr.exia.view.ui.roundedBottomShape
 import jdr.exia.view.ui.roundedShape
+import jdr.exia.view.ui.roundedTopShape
 import jdr.exia.viewModel.ActEditorViewModel
 import java.io.File
 import javax.imageio.ImageIO
@@ -51,24 +45,16 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
 
     // List of all the scenes of the edited act
     Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.secondaryVariant).padding(15.dp)) {
-        val contentModifier = Modifier.padding(bottom = 20.dp, end = 20.dp, start = 20.dp)
-            .background(Color.White)
-            .weight(1f)
-            .fillMaxSize()
-            .border(BorderBuilder.defaultBorder)
-
-
         val (sceneInCreation, setSceneInCreation) = remember { mutableStateOf<SceneData?>(null) withSetter { newValue -> if (newValue != null) viewModel.onEditDone() } }
 
-        Box(
-            modifier = Modifier.padding(top = 20.dp, end = 20.dp, start = 20.dp)
-                .background(Color.White)
-                .fillMaxWidth()
-                .border(BorderBuilder.defaultBorder)
+        Card(
+            modifier = Modifier.padding(top = 20.dp, end = 20.dp, start = 20.dp).fillMaxWidth(),
+            border = BorderBuilder.defaultBorder.toBorderStroke(),
+            shape = roundedTopShape
         ) {
             ContentListRow(
                 contentText = StringLocale[STR_SCENES],
-                modifier = Modifier.background(Color.White).border(BorderBuilder.defaultBorder),
+                modifier = Modifier.border(BorderBuilder.defaultBorder),
                 buttonBuilders =
                 if (sceneInCreation == null) {
                     listOf(
@@ -102,20 +88,26 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
 
         var currentEditedScene: SceneData? = null
 
-        if (sceneInCreation != null) {
-            EditSceneRow(
-                data = sceneInCreation,
-                updateData = setSceneInCreation,
-                showButtons = false,
-                modifier = contentModifier
-            )
-        } else {
-            Scenes(
-                contentModifier = contentModifier,
-                viewModel = viewModel,
-                setSceneInCreation = setSceneInCreation,
-                setCurrentEditedScene = { currentEditedScene = it }
-            )
+        Card(
+            modifier = Modifier.padding(bottom = 20.dp, end = 20.dp, start = 20.dp)
+                .weight(1f)
+                .fillMaxSize(),
+            border = BorderBuilder.defaultBorder.toBorderStroke(),
+            shape = roundedBottomShape
+        ) {
+            if (sceneInCreation != null) {
+                EditSceneRow(
+                    data = sceneInCreation,
+                    updateData = setSceneInCreation,
+                    showButtons = false
+                )
+            } else {
+                Scenes(
+                    viewModel = viewModel,
+                    setSceneInCreation = setSceneInCreation,
+                    setCurrentEditedScene = { currentEditedScene = it }
+                )
+            }
         }
 
         Footer(
@@ -146,30 +138,31 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
 @Composable
 private fun Header(viewModel: ActEditorViewModel, act: Act?) {
     HeaderRow {
-        val roundedShape = remember { RoundedCornerShape(25) }
+        val roundedShape = RoundedCornerShape(25)
 
-        BasicTextField(
-            value = viewModel.actName,
-            onValueChange = { viewModel.actName = it },
-            modifier = Modifier.fillMaxWidth().clip(roundedShape).background(Color.White)
-                .border(BorderStroke(2.dp, Color.Black), roundedShape).padding(10.dp),
-            singleLine = true,
-            decorationBox = { composableContent ->
-                if (viewModel.actName.isEmpty()) Text(text = act?.name ?: StringLocale[STR_INSERT_ACT_NAME])
-                composableContent()
-            }
-        )
+        Surface(color = Color.Transparent, contentColor = MaterialTheme.colors.onSurface) {
+            OutlinedTextField(
+                value = viewModel.actName,
+                onValueChange = { viewModel.actName = it },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                shape = roundedShape,
+                colors = TextFieldDefaults.outlinedTextFieldColors(backgroundColor = MaterialTheme.colors.background),
+                placeholder = {
+                    if (viewModel.actName.isEmpty()) Text(text = act?.name ?: StringLocale[STR_INSERT_ACT_NAME])
+                }
+            )
+        }
     }
 }
 
 @Composable
 private fun Scenes(
-    contentModifier: Modifier,
     viewModel: ActEditorViewModel,
     setCurrentEditedScene: (SceneData) -> Unit,
     setSceneInCreation: (SceneData?) -> Unit
 ) = when {
-    viewModel.scenes.isNotEmpty() -> LazyScrollableColumn(modifier = contentModifier) {
+    viewModel.scenes.isNotEmpty() -> LazyScrollableColumn {
         items(items = viewModel.scenes, key = { it }) { scene ->
             if (viewModel.currentEditScene == scene) {
                 val (tempCurrentEditedScene, setTempCurrentEditScene) = remember {
@@ -208,7 +201,7 @@ private fun Scenes(
             }
         }
     }
-    else -> Column(modifier = contentModifier, verticalArrangement = Arrangement.Center) {
+    else -> Column(verticalArrangement = Arrangement.Center) {
         Text(
             text = StringLocale[STR_NO_SCENE],
             modifier = Modifier.align(Alignment.CenterHorizontally),
