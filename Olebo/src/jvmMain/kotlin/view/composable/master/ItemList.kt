@@ -2,11 +2,11 @@ package jdr.exia.view.composable.master
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,6 +25,8 @@ import jdr.exia.model.type.imageFromPath
 import jdr.exia.view.element.ContentListRow
 import jdr.exia.view.element.LazyScrollableColumn
 import jdr.exia.view.element.builder.ImageButtonBuilder
+import jdr.exia.view.tools.defaultBorderColor
+import jdr.exia.view.ui.isDarkTheme
 import org.jetbrains.exposed.sql.transactions.transaction
 
 @Composable
@@ -34,18 +36,21 @@ fun ItemList(
     searchString: String,
     onSearch: (String) -> Unit,
     createElement: (Blueprint) -> Unit
-) = Column(
-    modifier = modifier.widthIn(max = 450.dp).fillMaxHeight().border(BorderStroke(1.dp, Color.Black))
+) = Surface(
+    modifier = modifier.widthIn(max = 450.dp).fillMaxHeight(),
+    border = BorderStroke(1.dp, defaultBorderColor)
 ) {
-    OutlinedTextField(
-        value = searchString,
-        onValueChange = onSearch,
-        modifier = Modifier.padding(10.dp).fillMaxWidth(),
-        placeholder = { Text(text = StringLocale[STR_SEARCH]) },
-        singleLine = true
-    )
+    Column {
+        OutlinedTextField(
+            value = searchString,
+            onValueChange = onSearch,
+            modifier = Modifier.padding(10.dp).fillMaxWidth(),
+            placeholder = { Text(text = StringLocale[STR_SEARCH]) },
+            singleLine = true
+        )
 
-    ItemList(items = items, createElement = createElement)
+        ItemList(items = items, createElement = createElement)
+    }
 }
 
 @Composable
@@ -55,7 +60,10 @@ private fun ItemList(
 ) = LazyScrollableColumn {
     items.forEach { (type, list) ->
         item(type) {
-            ContentListRow(contentText = type.localizedName, modifier = Modifier.background(Color.Cyan))
+            ContentListRow(
+                contentText = type.localizedName,
+                modifier = Modifier.background(if (isDarkTheme) Color(26, 29, 102) else Color.Cyan)
+            )
         }
 
         if (list.isEmpty()) {
