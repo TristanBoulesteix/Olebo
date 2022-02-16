@@ -1,7 +1,7 @@
 package jdr.exia.view.composable.master
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -20,7 +20,7 @@ fun BottomPanel(
     modifier: Modifier,
     selectedEditor: @Composable () -> Unit,
     shareScene: @Composable () -> Unit
-) = Box(modifier) {
+) = Surface(modifier) {
     val tabs = remember { BottomTab.values().toList() }
 
     TabPanel(
@@ -32,7 +32,7 @@ fun BottomPanel(
             tabPosition = HeaderTabPosition.Left
         ),
         content = { currentTab, padding ->
-            Box(modifier = Modifier.padding(padding)) {
+            Surface(modifier = Modifier.padding(padding)) {
                 when (currentTab) {
                     BottomTab.Select -> selectedEditor()
                     BottomTab.Web -> shareScene()
