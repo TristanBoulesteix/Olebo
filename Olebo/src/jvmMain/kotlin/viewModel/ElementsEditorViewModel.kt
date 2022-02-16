@@ -122,7 +122,7 @@ class ElementsEditorViewModel(initialType: TypeElement) {
             transaction {
                 Blueprint.new {
                     type = newData.type
-                    name = newData.name
+                    name = newData.name.trimEnd()
 
                     if (newData.type != TypeElement.Object) {
                         HP = newData.life!!
@@ -141,7 +141,7 @@ class ElementsEditorViewModel(initialType: TypeElement) {
                 transaction {
                     Blueprint[id].apply {
                         type = oldData.type
-                        name = oldData.name
+                        name = oldData.name.trimEnd()
 
                         if (oldData.type != TypeElement.Object) {
                             HP = oldData.life!!
