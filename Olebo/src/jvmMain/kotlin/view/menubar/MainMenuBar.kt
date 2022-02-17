@@ -132,34 +132,7 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
         isSettingsDialogVisible = true
     }
 
-    Item(text = StringLocale[STR_TAKE_SCREENSHOT], enabled = false, shortcut = KeyShortcut(Key.P, ctrl = true)) {
-        /*        val parent = this@FileMenu.windowAncestor
-        JFileChooser().apply {
-            this.dialogTitle = StringLocale[STR_TAKE_SCREENSHOT]
-            this.fileFilter = FileNameExtensionFilter("Image PNG", "png")
-            if (this.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
-                val fileToSave = if (this.selectedFile.extension == "png")
-                    this.selectedFile
-                else
-                    File("${this.selectedFile.parentFile.absolutePath}${File.separator}${this.selectedFile.nameWithoutExtension}.png")
-
-                val saveImg = {
-                    if (parent != null)
-                        ImageIO.write(getScreenShot(parent), "png", fileToSave)
-                }
-
-                if (fileToSave.exists()) {
-                    val result = JOptionPane.showConfirmDialog(
-                        null,
-                        StringLocale[ST_FILE_ALREADY_EXISTS],
-                        StringLocale[STR_SAVE_AS],
-                        JOptionPane.YES_NO_OPTION
-                    )
-                    if (result == JOptionPane.YES_OPTION) saveImg()
-                } else saveImg()
-            }
-        }*/
-    }
+    Separator()
 
     var changelogs by remember { mutableStateOf("") }
 

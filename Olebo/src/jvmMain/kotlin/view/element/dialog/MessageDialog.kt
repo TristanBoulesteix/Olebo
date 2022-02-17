@@ -1,6 +1,7 @@
 package jdr.exia.view.element.dialog
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Card
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -80,27 +81,28 @@ fun MessageDialog(
                 }
             }
 
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Box(modifier = Modifier.weight(1f).padding(10.dp).padding(top = 5.dp)) {
-                    content()
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(10.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly
+            Card(modifier = Modifier.fillMaxSize()) {
+                Column(
+                    verticalArrangement = Arrangement.SpaceBetween,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    buttonBuilders.forEach {
-                        OutlinedButton(
-                            onClick = it.onChange,
-                            enabled = it.enabled
-                        ) {
-                            when (it) {
-                                is ContentButtonBuilder -> Text(text = it.content)
-                                is ComposableContentBuilder -> it.content()
-                                else -> TODO("Button type ${it::class.simpleName} are not implemented.")
+                    Box(modifier = Modifier.weight(1f).padding(10.dp).padding(top = 5.dp)) {
+                        content()
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(10.dp),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        buttonBuilders.forEach {
+                            OutlinedButton(
+                                onClick = it.onChange,
+                                enabled = it.enabled
+                            ) {
+                                when (it) {
+                                    is ContentButtonBuilder -> Text(text = it.content)
+                                    is ComposableContentBuilder -> it.content()
+                                    else -> TODO("Button type ${it::class.simpleName} are not implemented.")
+                                }
                             }
                         }
                     }
