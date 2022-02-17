@@ -1,7 +1,7 @@
 package jdr.exia.update
 
 import io.ktor.client.call.*
-import io.ktor.client.features.*
+import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -19,13 +19,13 @@ import java.io.File
 
 suspend fun checkForUpdate(releaseCode: Int? = null): Result<Release> {
     val response = try {
-        client.use { it.get<HttpResponse>("${SERVER_URL}releases/" + (releaseCode ?: "last")) }
+        client.use { it.get("${SERVER_URL}releases/" + (releaseCode ?: "last")).body<HttpResponse>() }
     } catch (e: Throwable) {
         return Result.failure(e)
     }
 
     if (response.status.isSuccess()) {
-        return response.receive<Release>().takeIf { it.versionId > OLEBO_VERSION_CODE }?.let { Result.success(it) }
+        return response.body<Release>().takeIf { it.versionId > OLEBO_VERSION_CODE }?.let { Result.success(it) }
             ?: Result.failure(Throwable())
     }
 
@@ -39,21 +39,21 @@ suspend fun getInstallerExecutable(versionCode: Int, onUpdateProgress: (Long) ->
 
     val response = try {
         client.use {
-            it.get<HttpResponse>("${SERVER_URL}releases/$versionCode/download") {
+            it.get("${SERVER_URL}releases/$versionCode/download") {
                 parameter("os", os.name)
-
                 onDownload { bytesSentTotal, contentLength ->
                     val percentage = (bytesSentTotal / contentLength) * 100
                     onUpdateProgress(percentage)
                 }
             }
+                .body<HttpResponse>()
         }
     } catch (e: Exception) {
         return Result.failure(e)
     }
 
     if (response.status.isSuccess()) {
-        response.content.copyAndClose(fileToWrite.writeChannel())
+        response.bodyAsChannel().copyAndClose(fileToWrite.writeChannel())
     } else return Result.failure(IllegalStateException("Response status : ${response.status.value}"))
 
     return Result.success(fileToWrite)

@@ -1,9 +1,9 @@
 package fr.olebo.update
 
-import io.ktor.application.*
+import io.ktor.server.application.*
 import io.ktor.http.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import jdr.exia.system.OS
 import jdr.exia.system.extension
 import java.io.File

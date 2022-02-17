@@ -3,7 +3,7 @@ package fr.olebo.sharescene
 import fr.olebo.sharescene.connection.ConnectionError
 import fr.olebo.sharescene.connection.getConnectionError
 import io.ktor.client.*
-import io.ktor.client.features.websocket.*
+import io.ktor.client.plugins.websocket.*
 import io.ktor.utils.io.core.*
 
 class ShareSceneManager internal constructor(

@@ -7,10 +7,11 @@ import fr.olebo.sharescene.connection.Disconnected
 import fr.olebo.sharescene.css.ShareSceneStyleSheet
 import fr.olebo.sharescene.css.classes
 import fr.olebo.sharescene.websocket.client
-import io.ktor.http.cio.websocket.*
+import io.ktor.websocket.*
 import jdr.exia.localization.StringLocale
 import jdr.exia.localization.getBrowserLanguage
 import jdr.exia.localization.invoke
+import kotlinx.browser.document
 import kotlinx.browser.window
 import org.jetbrains.compose.web.css.Style
 import org.jetbrains.compose.web.dom.Div
@@ -26,11 +27,19 @@ private fun main() {
 
         when (val state = connectionState) {
             !is Connected -> Div(attrs = classes(ShareSceneStyleSheet.rootContainer)) {
+                LaunchedEffect(Unit) {
+                    document.title = "ShareScene login"
+                }
                 Form({ connectionState }) {
                     connectionState = it
                 }
             }
-            else -> OleboSceneCanvas(state.shareSceneViewModel)
+            else -> {
+                LaunchedEffect(Unit) {
+                    document.title = "ShareScene"
+                }
+                OleboSceneCanvas(state.shareSceneViewModel)
+            }
         }
     }
 }

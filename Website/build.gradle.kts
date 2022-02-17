@@ -34,16 +34,19 @@ kotlin {
     sourceSets["commonMain"].dependencies {
         implementation(compose.runtime)
         implementation(project(":ShareScene"))
+        implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
     }
     sourceSets["jvmMain"].dependencies {
         implementation("io.ktor:ktor-server-core:$ktorVersion")
+        implementation("io.ktor:ktor-server-http-redirect:$ktorVersion")
+        implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
+        implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
         implementation("io.ktor:ktor-serialization:$ktorVersion")
         implementation("io.ktor:ktor-server-netty:$ktorVersion")
-        implementation("io.ktor:ktor-websockets:$ktorVersion")
+        implementation("io.ktor:ktor-server-websockets:$ktorVersion")
         implementation("io.ktor:ktor-http-jvm:$ktorVersion")
         implementation("ch.qos.logback:logback-classic:$logbackVersion")
-        implementation("io.ktor:ktor-html-builder:$ktorVersion")
-        implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
+        implementation("io.ktor:ktor-server-html-builder:$ktorVersion")
         implementation(project(":Update"))
         implementation(project(":System"))
     }
@@ -53,6 +56,7 @@ kotlin {
         implementation("io.ktor:ktor-client-js:$ktorVersion")
         implementation("io.ktor:ktor-client-serialization:$ktorVersion")
         implementation("io.ktor:ktor-client-websockets:$ktorVersion")
+        implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
         implementation("dev.petuska:kmdc:0.0.1")
         implementation(project(":Localization"))
     }
