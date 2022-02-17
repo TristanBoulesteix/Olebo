@@ -5,7 +5,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -239,7 +242,6 @@ private fun BlueprintData?.getButtons(
                     value = life,
                     onValueChange = { onUpdate(copy(life = it)) },
                     modifier = Modifier.padding(2.dp).padding(start = 1.dp),
-                    colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )
             },
@@ -248,7 +250,6 @@ private fun BlueprintData?.getButtons(
                     value = mana,
                     onValueChange = { onUpdate(copy(mana = it)) },
                     modifier = Modifier.padding(2.dp).padding(start = 1.dp),
-                    colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )
             }

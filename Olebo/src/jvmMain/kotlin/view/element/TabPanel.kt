@@ -46,6 +46,7 @@ fun <T : Any> TabPanel(
                         tabViewModel.tabs.forEach { tab ->
                             Text(
                                 text = tab.tabNameProvider(),
+                                color = MaterialTheme.colors.primary,
                                 fontWeight = FontWeight.Bold.takeIf { tabViewModel.currentTab == tab },
                                 modifier = Modifier.applyIf(
                                     condition = tabViewModel.currentTab == tab,
