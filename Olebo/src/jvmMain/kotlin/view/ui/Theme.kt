@@ -48,7 +48,6 @@ fun OleboTheme(content: @Composable () -> Unit) {
     )
 }
 
-
 val isDarkTheme
     @Composable
     @ReadOnlyComposable

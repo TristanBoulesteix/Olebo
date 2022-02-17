@@ -30,8 +30,8 @@ fun <T : Any> TitledDropdownMenu(
     SwingPanel(
         factory = {
             JComboBox(items).apply {
-                this.addActionListener {
-                    if (this.isFocusOwner)
+                addActionListener {
+                    if (isFocusOwner)
                         onValueChanged(this.selectedItem as T)
                 }
             }

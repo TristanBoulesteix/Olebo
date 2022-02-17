@@ -22,7 +22,7 @@ fun IntTextField(
     maxSize: Int? = null,
     modifier: Modifier = Modifier,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-    colors: TextFieldColors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White)
+    colors: TextFieldColors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent)
 ) {
     var text by remember { mutableStateOf(value.toString().takeNullable(maxSize)) }
 
