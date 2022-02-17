@@ -6,6 +6,10 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import com.jthemedetecor.OsThemeDetector
+import jdr.exia.model.dao.option.ThemeMode
+import jdr.exia.model.tools.Preferences
+import jdr.exia.model.tools.withSetter
+import java.util.function.Consumer
 
 @Stable
 private val darkColorPalette
@@ -26,18 +30,40 @@ private val lightColorPalette
         secondary = Color(255, 200, 0)
     )
 
-@Stable
 private val osThemeDetector = OsThemeDetector.getDetector()
+
+class OleboTheme(themeMode: ThemeMode) {
+    var themeMode by mutableStateOf(themeMode) withSetter {
+        Preferences.themeMode = it
+    }
+}
+
+val LocalTheme = staticCompositionLocalOf { OleboTheme(Preferences.themeMode) }
 
 @Composable
 fun OleboTheme(content: @Composable () -> Unit) {
-    var isDarkTheme by remember { mutableStateOf(osThemeDetector.isDark) }
+    val themeMode = LocalTheme.current.themeMode
 
-    LaunchedEffect(Unit) {
-        osThemeDetector.registerListener {
-            isDarkTheme = it
-        }
+    var isDarkTheme by remember(themeMode) {
+        mutableStateOf(
+            when (themeMode) {
+                ThemeMode.Dark -> true
+                ThemeMode.Light -> false
+                ThemeMode.Auto -> osThemeDetector.isDark
+            }
+        )
     }
+
+    if (themeMode == ThemeMode.Auto)
+        DisposableEffect(Unit) {
+            val listener = Consumer { state: Boolean -> isDarkTheme = state }
+
+            osThemeDetector.registerListener(listener)
+
+            onDispose {
+                osThemeDetector.removeListener(listener)
+            }
+        }
 
     val colors = if (isDarkTheme) darkColorPalette else lightColorPalette
 

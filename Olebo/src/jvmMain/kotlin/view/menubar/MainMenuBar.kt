@@ -15,6 +15,7 @@ import jdr.exia.localization.*
 import jdr.exia.main
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.loadOleboZipData
+import jdr.exia.model.dao.option.ThemeMode
 import jdr.exia.model.dao.zipOleboDirectory
 import jdr.exia.update.ChangelogsDialog
 import jdr.exia.update.getChangelogs
@@ -24,6 +25,7 @@ import jdr.exia.view.element.dialog.ConfirmMessage
 import jdr.exia.view.element.dialog.LoadingDialog
 import jdr.exia.view.element.dialog.MessageDialog
 import jdr.exia.view.tools.windowAncestor
+import jdr.exia.view.ui.LocalTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -130,6 +132,18 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
 
     Item(text = StringLocale[STR_OPTIONS]) {
         isSettingsDialogVisible = true
+    }
+
+    val oleboTheme = LocalTheme.current
+
+    Menu(text = "Thème : ${oleboTheme.themeMode}") {
+        val themeModes = remember { ThemeMode.values().toList() }
+
+        themeModes.forEach {
+            RadioButtonItem("$it", selected = oleboTheme.themeMode == it) {
+                oleboTheme.themeMode = it
+            }
+        }
     }
 
     Separator()
