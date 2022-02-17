@@ -1,6 +1,5 @@
 package jdr.exia.view.composable.master
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
