@@ -1,10 +1,8 @@
 package jdr.exia.view.composable.master
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults.buttonColors
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,14 +26,16 @@ fun ShareScenePanel(
     connect: () -> Unit,
     disconnect: () -> Unit,
     connectionState: ConnectionState
-) = Box(Modifier.padding(5.dp).fillMaxSize(), contentAlignment = Alignment.CenterStart) {
-    when (connectionState) {
-        is Connected -> ShareSceneManagerScreen(
-            manager = connectionState.manager,
-            shareSceneViewModel = connectionState.shareSceneViewModel,
-            disconnect = disconnect
-        )
-        else -> WebConfig(connect, connectionState)
+) = Surface(Modifier.padding(5.dp).fillMaxSize()) {
+    Box(contentAlignment = Alignment.CenterStart) {
+        when (connectionState) {
+            is Connected -> ShareSceneManagerScreen(
+                manager = connectionState.manager,
+                shareSceneViewModel = connectionState.shareSceneViewModel,
+                disconnect = disconnect
+            )
+            else -> WebConfig(connect, connectionState)
+        }
     }
 }
 
@@ -54,7 +54,7 @@ private fun WebConfig(
         }
 
         Box(Modifier.weight(.3f), contentAlignment = Alignment.Center) {
-            Button(
+            OutlinedButton(
                 onClick = connect,
                 modifier = Modifier.padding(horizontal = 8.dp),
                 enabled = connectionState is Disconnected
@@ -109,28 +109,31 @@ private fun ShareSceneManagerScreen(
 
     Column {
         val buttonSizeModifier = remember {
+            // TODO: Find a better way to adapt the size according to text size
             val width = if (Settings.language == Language(Locale.FRENCH)) 380.dp else 300.dp
             Modifier.width(width)
         }
 
         var isSmallScreen by remember { mutableStateOf(false) }
 
-        Button(
+        OutlinedButton(
             onClick = disconnect,
-            colors = buttonColors(backgroundColor = Color.Red, contentColor = Color.White),
+            colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Red, contentColor = Color.White),
             modifier = if (isSmallScreen) buttonSizeModifier else Modifier
         ) {
             Text(StringLocale[STR_LOGOUT])
         }
 
         FlowRow(Modifier.fillMaxWidth(), onRowEvaluated = { isSmallScreen = it > 1 }) {
-            Button(modifier = buttonSizeModifier, onClick = { saveToClipboard(manager.codeSession.orEmpty()) }) {
+            OutlinedButton(
+                modifier = buttonSizeModifier,
+                onClick = { saveToClipboard(manager.codeSession.orEmpty()) }) {
                 Text(StringLocale[STR_COPY_CODE])
             }
 
             Spacer(Modifier.width(25.dp))
 
-            Button(modifier = buttonSizeModifier, onClick = { saveToClipboard(manager.sceneUrl.orEmpty()) }) {
+            OutlinedButton(modifier = buttonSizeModifier, onClick = { saveToClipboard(manager.sceneUrl.orEmpty()) }) {
                 Text(StringLocale[STR_COPY_URL])
             }
         }
