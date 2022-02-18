@@ -136,7 +136,7 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
 
     val oleboTheme = LocalTheme.current
 
-    Menu(text = "Thème : ${oleboTheme.themeMode}") {
+    Menu(text = "${StringLocale[STR_THEME]} ${oleboTheme.themeMode}") {
         val themeModes = remember { ThemeMode.values().toList() }
 
         themeModes.forEach {

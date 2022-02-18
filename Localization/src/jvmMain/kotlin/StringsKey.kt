@@ -157,6 +157,10 @@ const val STR_COPY_URL = "copy_URL"
 const val STR_LOGOUT = "logout"
 const val STR_CANCEL_BLUEPRINT_CHANGES = "cancel_blueprint_changes"
 const val STR_SUBMIT_BLUEPRINT_CHANGES = "submit_blueprint_changes"
+const val STR_LIGHT_THEME = "light_theme"
+const val STR_DARK_THEME = "dark_theme"
+const val STR_AUTO_THEME = "auto_theme"
+const val STR_THEME = "theme"
 
 // -- Sentences
 
