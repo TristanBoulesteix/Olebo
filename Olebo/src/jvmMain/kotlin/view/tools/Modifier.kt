@@ -20,7 +20,7 @@ import jdr.exia.view.ui.roundedShape
  */
 @Stable
 inline fun Modifier.applyIf(condition: Boolean, modifier: Modifier.() -> Modifier) =
-    if (condition) this.modifier() else this
+    if (condition) this then modifier() else this
 
 @Immutable
 class BorderBuilder(val strokeWidth: Dp, val color: Color) {

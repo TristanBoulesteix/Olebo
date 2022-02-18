@@ -85,10 +85,8 @@ private fun ItemList(
                     buttonBuilders =
                     listOf(
                         ImageButtonBuilder(
-                            if (type == TypeElement.Basic)
-                                useResource("sprites/${it.sprite}", ::loadImageBitmap)
-                            else
-                                imageFromPath(it.sprite)
+                            if (type == TypeElement.Basic) useResource("sprites/${it.sprite}", ::loadImageBitmap)
+                            else imageFromPath(it.sprite)
                         )
                     )
                 )

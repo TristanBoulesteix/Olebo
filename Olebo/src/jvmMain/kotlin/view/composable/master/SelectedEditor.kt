@@ -2,6 +2,7 @@ package jdr.exia.view.composable.master
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.OutlinedButton
@@ -21,6 +22,7 @@ import jdr.exia.model.tools.withSetter
 import jdr.exia.view.element.CustomTextField
 import jdr.exia.view.element.form.IntTextField
 import jdr.exia.view.element.form.TitledDropdownMenu
+import jdr.exia.view.tools.applyIf
 import jdr.exia.view.tools.rememberUpdatableState
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -75,11 +77,13 @@ inline fun ColumnEditor(modifier: Modifier = Modifier, content: @Composable Colu
 
 @Composable
 private fun ImagePreview(selectedElements: List<Element>, commandManager: CommandManager) {
-    val borderColor = remember(selectedElements, commandManager.composeKey) {
-        if (selectedElements.all { it.isVisible }) Color.Black else Color.Blue
+    val allElementsAreHidden = remember(selectedElements, commandManager.composeKey) {
+        selectedElements.isNotEmpty() && selectedElements.none { it.isVisible }
     }
 
-    val modifier = Modifier.padding(15.dp).size(150.dp).border(BorderStroke(10.dp, borderColor))
+    val modifier = Modifier.padding(15.dp).size(150.dp).background(Color.LightGray).applyIf(allElementsAreHidden) {
+        Modifier.border(BorderStroke(3.dp, Color.Blue))
+    }
 
     if (selectedElements.size == 1) {
         Image(
