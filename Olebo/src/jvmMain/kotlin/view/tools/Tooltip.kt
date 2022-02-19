@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.TooltipArea
 import androidx.compose.foundation.TooltipPlacement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
@@ -24,7 +25,7 @@ fun BoxWithTooltipIfNotNull(
     tooltip: String? = null,
     modifier: Modifier = Modifier,
     tooltipAlignment: Alignment = Alignment.BottomEnd,
-    content: @Composable () -> Unit
+    content: @Composable BoxScope.() -> Unit
 ) = if (tooltip != null && !DialogManager.areDialogVisible) TooltipArea(
     tooltip = {
         Surface(
@@ -42,9 +43,6 @@ fun BoxWithTooltipIfNotNull(
     tooltipPlacement = TooltipPlacement.CursorPoint(
         offset = DpOffset(0.dp, 16.dp),
         alignment = tooltipAlignment
-    ), content = {
-        Box(modifier = modifier, contentAlignment = Alignment.CenterStart) {
-            content()
-        }
-    }
-) else content()
+    ),
+    content = { Box(modifier = modifier, contentAlignment = Alignment.CenterStart, content = content) }
+) else Box(modifier = modifier, contentAlignment = Alignment.CenterStart, content = content)

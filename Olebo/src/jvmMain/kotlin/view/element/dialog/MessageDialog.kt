@@ -1,6 +1,7 @@
 package jdr.exia.view.element.dialog
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
@@ -10,6 +11,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.unit.Dp
@@ -96,7 +98,8 @@ fun MessageDialog(
                         buttonBuilders.forEach {
                             OutlinedButton(
                                 onClick = it.onChange,
-                                enabled = it.enabled
+                                enabled = it.enabled,
+                                colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Transparent)
                             ) {
                                 when (it) {
                                     is ContentButtonBuilder -> Text(text = it.content)

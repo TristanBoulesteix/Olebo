@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -26,6 +27,7 @@ import jdr.exia.view.element.ContentListRow
 import jdr.exia.view.element.LazyScrollableColumn
 import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.tools.defaultBorderColor
+import jdr.exia.view.ui.backgroundImageColor
 import jdr.exia.view.ui.isDarkTheme
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -86,7 +88,8 @@ private fun ItemList(
                     listOf(
                         ImageButtonBuilder(
                             if (type == TypeElement.Basic) useResource("sprites/${it.sprite}", ::loadImageBitmap)
-                            else imageFromPath(it.sprite)
+                            else imageFromPath(it.sprite),
+                            backgroundColor = MaterialTheme.colors.backgroundImageColor
                         )
                     )
                 )

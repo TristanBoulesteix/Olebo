@@ -32,6 +32,7 @@ import jdr.exia.view.tools.BorderBuilder
 import jdr.exia.view.tools.MessageType
 import jdr.exia.view.tools.showMessage
 import jdr.exia.view.tools.toBorderStroke
+import jdr.exia.view.ui.backgroundImageColor
 import jdr.exia.view.ui.roundedBottomShape
 import jdr.exia.view.ui.roundedTopShape
 import jdr.exia.viewModel.ElementsEditorViewModel
@@ -209,6 +210,7 @@ private fun DataRow(
     )
 }
 
+@Composable
 private fun BlueprintData?.getButtons(
     viewModel: ElementsEditorViewModel,
     blueprint: BlueprintData,
@@ -223,7 +225,8 @@ private fun BlueprintData?.getButtons(
         emptyList()
     } + listOf(
         ImageButtonBuilder(
-            content = blueprint.img.toBitmap()
+            content = blueprint.img.toBitmap(),
+            backgroundColor = MaterialTheme.colors.backgroundImageColor
         ),
         ImageButtonBuilder(
             content = imageFromIconRes("edit_icon"),
