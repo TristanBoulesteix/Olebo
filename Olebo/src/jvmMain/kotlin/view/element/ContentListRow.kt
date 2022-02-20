@@ -90,7 +90,8 @@ fun ContentText(contentText: String, enabled: Boolean = true) =
 private fun RowButton(contentBuilder: ContentBuilder, modifier: Modifier) {
     BoxWithTooltipIfNotNull(
         tooltip = contentBuilder.tooltip,
-        modifier = modifier.size(65.dp).background(contentBuilder.backgroundColor)
+        modifier = modifier.size(65.dp - BorderBuilder.defaultBorder.strokeWidth)
+            .background(contentBuilder.backgroundColor)
             .border(start = BorderBuilder.defaultBorder)
             .applyIf(condition = contentBuilder.enabled) {
                 // We don't use the parameter "enabled" of clickable because it prevents clickable from parent even if disabled
