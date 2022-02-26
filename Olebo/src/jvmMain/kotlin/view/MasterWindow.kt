@@ -1,6 +1,9 @@
 package jdr.exia.view
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeWindow
@@ -113,24 +116,23 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
 
     Column(modifier = Modifier.weight(.80f).fillMaxSize()) {
         //ComposeMapPanel(modifier = Modifier.weight(.85f).fillMaxSize(), viewModel = viewModel)
-        Box(modifier = Modifier.weight(.80f).fillMaxSize()) {
-            val focusManager = LocalFocusManager.current
+        val focusManager = LocalFocusManager.current
 
-            DisposableEffect(focusManager) {
-                val panel = viewModel.panel
-                val event = MousePressedListener {
-                    focusManager.clearFocus()
-                }
-
-                panel.addMousePressedListener(event)
-
-                onDispose {
-                    panel.removeMousePressedListener(event)
-                }
+        DisposableEffect(focusManager) {
+            val panel = viewModel.panel
+            val event = MousePressedListener {
+                focusManager.clearFocus()
             }
 
-            SwingPanel(factory = viewModel::panel)
+            panel.addMousePressedListener(event)
+
+            onDispose {
+                panel.removeMousePressedListener(event)
+            }
         }
+
+        SwingPanel(factory = viewModel::panel, modifier = Modifier.weight(.80f).fillMaxSize())
+
         BottomPanel(
             modifier = Modifier.weight(.20f).fillMaxSize(),
             selectedEditor = {
