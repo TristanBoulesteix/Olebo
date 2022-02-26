@@ -9,7 +9,6 @@ import jdr.exia.view.tools.event.addKeyPressedListener
 import jdr.exia.view.tools.screens
 import jdr.exia.view.ui.MASTER_WINDOW_SIZE
 import kotlinx.coroutines.*
-import kotlinx.coroutines.swing.Swing
 import java.awt.Dimension
 import java.awt.GraphicsDevice
 import java.awt.GraphicsEnvironment
@@ -18,7 +17,6 @@ import java.awt.event.KeyEvent
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import javax.swing.JDialog
-import kotlin.coroutines.CoroutineContext
 
 /**
  * PlayerFrame is the Frame the Players can see, it shares its content with MasterFrame
@@ -83,7 +81,7 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: (
             }
         }
 
-        repaintJob = CoroutineScope(Dispatchers.Swing as CoroutineContext).launch {
+        repaintJob = CoroutineScope(Dispatchers.Main).launch {
             while (isActive) {
                 mapPanel.repaint()
                 // The delay must be greater than or equal to 120.
