@@ -29,7 +29,6 @@ fun ComposeMapPanel(modifier: Modifier, viewModel: MasterViewModel) = Box(modifi
                 srcOffset = IntOffset(relativeX(it.referenceOffset.x.toInt()), relativeY(it.referenceOffset.y.toInt())),
                 srcSize = IntSize(relativeX(it.hitBox.width), relativeY(it.hitBox.height))
             )
-
         }
     }
 }
