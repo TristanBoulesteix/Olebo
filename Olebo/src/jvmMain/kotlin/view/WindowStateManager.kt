@@ -10,10 +10,10 @@ import androidx.compose.ui.window.*
 import java.awt.Dimension
 
 object WindowStateManager {
-    val composeWindows = mutableListOf<OleboWindowScope>()
+    val composeWindowScopes = mutableListOf<OleboWindowScope>()
 
     val currentFocusedWindowScope
-        get() = composeWindows.lastOrNull()
+        get() = composeWindowScopes.lastOrNull()
 }
 
 interface OleboWindowScope : FrameWindowScope {
@@ -59,10 +59,10 @@ fun ApplicationScope.Window(
         val scope = remember { OleboWindowScopeImpl(this) }
 
         DisposableEffect(Unit) {
-            WindowStateManager.composeWindows += scope
+            WindowStateManager.composeWindowScopes += scope
 
             onDispose {
-                WindowStateManager.composeWindows -= scope
+                WindowStateManager.composeWindowScopes -= scope
             }
         }
 
