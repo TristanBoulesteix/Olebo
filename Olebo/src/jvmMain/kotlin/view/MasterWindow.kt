@@ -115,7 +115,6 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
     Items(viewModel)
 
     Column(modifier = Modifier.weight(.80f).fillMaxSize()) {
-        //ComposeMapPanel(modifier = Modifier.weight(.85f).fillMaxSize(), viewModel = viewModel)
         val focusManager = LocalFocusManager.current
 
         DisposableEffect(focusManager) {
@@ -131,6 +130,7 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
             }
         }
 
+        //ComposeMapPanel(modifier = Modifier.weight(.85f).fillMaxSize(), viewModel = viewModel)
         SwingPanel(factory = viewModel::panel, modifier = Modifier.weight(.80f).fillMaxSize())
 
         BottomPanel(
