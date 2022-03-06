@@ -21,7 +21,7 @@ actual sealed class StringLocale : ListResourceBundle() {
         @PublishedApi
         internal actual var activeLanguage = defaultLocale
 
-        internal actual val langBundle
+        internal actual val langBundle: ResourceBundle
             get() = ResourceBundle.getBundle(
                 StringLocaleBundle::class.java.canonicalName,
                 activeLanguage.locale,
