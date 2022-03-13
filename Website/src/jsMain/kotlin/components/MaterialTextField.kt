@@ -17,11 +17,13 @@ fun MaterialTextField(
     onValidation: (SyntheticKeyboardEvent) -> Unit = {},
     onValueChange: (String) -> Unit
 ) = Div(attrs = classes(ShareSceneStyleSheet.materialBottomMargin)) {
-    MDCTextField(opts = {
-        this.label = label
-        this.type = MDCTextFieldCommonOpts.Type.Outlined
-    }) {
-        value(value)
+    MDCTextField(
+        value,
+        opts = {
+            this.label = label
+            this.type = MDCTextFieldCommonOpts.Type.Outlined
+        }
+    ) {
         onInput { onValueChange(it.value) }
 
         if (id != null)

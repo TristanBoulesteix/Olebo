@@ -1,5 +1,6 @@
 val ktorVersion: String by project.parent!!
 val logbackVersion: String by project.parent!!
+val kmdcVersion: String by project.parent!!
 
 plugins {
     application
@@ -57,7 +58,8 @@ kotlin {
         implementation("io.ktor:ktor-client-serialization:$ktorVersion")
         implementation("io.ktor:ktor-client-websockets:$ktorVersion")
         implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-        implementation("dev.petuska:kmdc:0.0.1")
+        implementation("dev.petuska:kmdc-button:$kmdcVersion")
+        implementation("dev.petuska:kmdc-textfield:$kmdcVersion")
         implementation(project(":Localization"))
     }
 }
