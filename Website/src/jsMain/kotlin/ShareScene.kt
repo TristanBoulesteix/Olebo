@@ -12,7 +12,6 @@ import jdr.exia.localization.StringLocale
 import jdr.exia.localization.getBrowserLanguage
 import jdr.exia.localization.invoke
 import kotlinx.browser.document
-import kotlinx.browser.window
 import org.jetbrains.compose.web.css.Style
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.renderComposableInBody
@@ -46,7 +45,9 @@ private fun main() {
 
 @Composable
 private fun Form(getConnectionState: () -> ConnectionState, setConnectionState: (ConnectionState) -> Unit) {
-    ShareSceneForm(getConnectionState(), setConnectionState) { userName, sessionCode ->
+    val connectionStateProvider by rememberUpdatedState(getConnectionState)
+
+    ShareSceneForm(connectionStateProvider(), setConnectionState) { userName, sessionCode ->
         initWebsocket(
             client = client,
             path = "share-scene/$sessionCode?name=$userName",
@@ -76,10 +77,10 @@ private fun Form(getConnectionState: () -> ConnectionState, setConnectionState: 
                         }
                     }
                 } finally {
-                    if (getConnectionState() !is Disconnected)
+                    if (connectionStateProvider() !is Disconnected)
                         setConnectionState(Disconnected)
                     manager.close()
-                    window.location.replace("https://olebo.fr/share-scene/")
+                    //window.location.replace("https://olebo.fr/share-scene/")
                 }
             }
         )
