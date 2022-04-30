@@ -18,7 +18,6 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.view.composable.master.*
 import jdr.exia.view.element.dialog.ConfirmMessage
 import jdr.exia.view.menubar.MasterMenuBar
-import jdr.exia.view.tools.event.MousePressedListener
 import jdr.exia.view.tools.event.addMousePressedListener
 import jdr.exia.view.tools.event.removeMousePressedListener
 import jdr.exia.view.tools.screens
@@ -32,6 +31,7 @@ import java.awt.Frame.MAXIMIZED_BOTH
 import java.awt.GraphicsConfiguration
 import java.awt.GraphicsDevice
 import java.awt.Rectangle
+import kotlin.coroutines.EmptyCoroutineContext
 
 @Composable
 fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
@@ -70,7 +70,7 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
             playerDialogData.togglePlayerWindow(playerFrameVisible)
 
             if (screens.size > 1)
-                launch {
+                launch(context = EmptyCoroutineContext) {
                     delay(150)
                     window.requestFocus()
                 }
@@ -119,11 +119,8 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
 
         DisposableEffect(focusManager) {
             val panel = viewModel.panel
-            val event = MousePressedListener {
-                focusManager.clearFocus()
-            }
 
-            panel.addMousePressedListener(event)
+            val event = panel.addMousePressedListener { focusManager.clearFocus() }
 
             onDispose {
                 panel.removeMousePressedListener(event)

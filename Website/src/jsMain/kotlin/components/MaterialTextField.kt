@@ -22,17 +22,18 @@ fun MaterialTextField(
         opts = {
             this.label = label
             this.type = MDCTextFieldCommonOpts.Type.Outlined
-        }
-    ) {
-        onInput { onValueChange(it.value) }
+        },
+        attrs = {
+            onInput { onValueChange(it.value) }
 
-        if (id != null)
-            id(id)
+            if (id != null)
+                id(id)
 
-        onKeyUp {
-            if (it.nativeEvent.unsafeCast<KeyboardEvent>().keyCode == 13) {
-                onValidation(it)
+            onKeyUp {
+                if (it.nativeEvent.unsafeCast<KeyboardEvent>().keyCode == 13) {
+                    onValidation(it)
+                }
             }
         }
-    }
+    )
 }

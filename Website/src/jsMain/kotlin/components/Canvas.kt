@@ -1,6 +1,7 @@
 package fr.olebo.sharescene.components
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import kotlinx.browser.window
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.ContentBuilder
@@ -24,15 +25,19 @@ fun Canvas(
             if(content != null)
                 content()
 
-            DomSideEffect {
-                it.width = window.innerWidth
-                it.height = window.innerHeight
+            DisposableEffect(Unit) {
+                val element = scopeElement
 
-                val context = it.getContext("2d") as CanvasRenderingContext2D
+                element.width = window.innerWidth
+                element.height = window.innerHeight
 
-                context.clearRect(0.0, 0.0, it.width.toDouble(), it.height.toDouble())
+                val context = element.getContext("2d") as CanvasRenderingContext2D
 
-                it.drawWith(context)
+                context.clearRect(0.0, 0.0, element.width.toDouble(), element.height.toDouble())
+
+                element.drawWith(context)
+
+                onDispose {  }
             }
         }
     )

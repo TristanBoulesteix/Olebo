@@ -267,7 +267,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
     }
 
     /**
-     * Call [JComponent.repaint] only if [repaintLocked] is set to [false].
+     * Call [JComponent.repaint] only if [repaintLocked] is set to false.
      */
     override fun repaint() {
         if (isParentMaster || !repaintLocked)
@@ -276,7 +276,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
 
     private companion object {
         /**
-         * If set to [true], the [MapPanel] of the PlayerDialog will not be repainted.
+         * If set to true, the [MapPanel] of the PlayerDialog will not be repainted.
          */
         var repaintLocked = false
     }

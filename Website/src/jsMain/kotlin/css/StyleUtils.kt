@@ -14,7 +14,7 @@ inline val auto
 inline val zero
     get() = 0.unsafeCast<CSSSizeValue<CSSUnitPercentage>>()
 
-fun StyleBuilder.margin(
+fun StyleScope.margin(
     top: CSSNumeric? = null,
     start: CSSNumeric? = null,
     bottom: CSSNumeric? = null,
@@ -33,7 +33,7 @@ fun StyleBuilder.margin(
         marginLeft(end)
 }
 
-fun StyleBuilder.margin(horizontal: CSSNumeric? = null, vertical: CSSNumeric? = null) {
+fun StyleScope.margin(horizontal: CSSNumeric? = null, vertical: CSSNumeric? = null) {
     margin(top = vertical, start = horizontal, bottom = vertical, end = horizontal)
 }
 
@@ -43,4 +43,4 @@ fun <TValue : StylePropertyValue> materialVariable() = ReadOnlyProperty<Any?, CS
 
 private fun String.toKebabCase() = Regex("(?<=[a-zA-Z])[A-Z]").replace(this) { "-${it.value}" }.lowercase()
 
-fun StyleBuilder.backgroundImage(image: Base64Image) = backgroundImage("url('${image.cssBase64ImageCode}')")
+fun StyleScope.backgroundImage(image: Base64Image) = backgroundImage("url('${image.cssBase64ImageCode}')")

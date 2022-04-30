@@ -7,7 +7,6 @@ import fr.olebo.sharescene.components.relativeY
 import fr.olebo.sharescene.css.ShareSceneStyleSheet
 import fr.olebo.sharescene.css.backgroundImage
 import fr.olebo.sharescene.css.classes
-import org.jetbrains.compose.web.ExperimentalComposeWebStyleApi
 import org.jetbrains.compose.web.css.backgroundRepeat
 import org.jetbrains.compose.web.css.backgroundSize
 import org.w3c.dom.CENTER
@@ -21,21 +20,20 @@ fun OleboSceneCanvas(viewModel: ShareSceneViewModel) {
     CursorCanvas(viewModel)
 }
 
-@OptIn(ExperimentalComposeWebStyleApi::class)
 @Composable
 fun ContentCanvas(viewModel: ShareSceneViewModel) {
     val tokens = viewModel.tokens
     val backgroundImage = viewModel.background
 
     Canvas(
-        attrs = classes(
-            ShareSceneStyleSheet.oleboCanvasContainer,
-            ShareSceneStyleSheet.css {
+        attrs = {
+            classes(ShareSceneStyleSheet.oleboCanvasContainer)
+            style {
                 backgroundImage(backgroundImage)
                 backgroundSize("100% 100%")
                 backgroundRepeat("no-repeat")
             }
-        ),
+        },
         drawWith = { context ->
             tokens.forEach {
                 Image().apply {
