@@ -195,7 +195,7 @@ object BlueprintTable : IntIdTable(), Initializable {
 }
 
 object TypeTable : EnumInitializable<TypeElement>(enumValues()) {
-    override val enumValue = enumerationByName<TypeElement>("type")
+    override val enumValue = enumerationByName<TypeElement>("type", 50)
 }
 
 object LayerTable : EnumInitializable<Layer>(enumValues()) {
@@ -219,10 +219,5 @@ object InstanceTable : IntIdTable() {
 }
 
 object SizeTable : EnumInitializable<SizeElement>(enumValues()) {
-    override val enumValue = enumerationByName<SizeElement>("size")
+    override val enumValue = enumerationByName<SizeElement>("size", 50)
 }
-
-private inline fun <reified T : Enum<T>> Table.enumeration(name: String): Column<T> = enumeration(name, T::class)
-
-private inline fun <reified T : Enum<T>> Table.enumerationByName(name: String, length: Int = 50): Column<T> =
-    enumerationByName(name, length, T::class)

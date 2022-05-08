@@ -42,11 +42,6 @@ subprojects {
             }
         }
         sourceSets {
-            val commonMain by getting {
-                dependencies {
-                    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialisationVersion")
-                }
-            }
             val jvmMain by getting {
                 tasks.withType<KotlinCompile> {
                     kotlinOptions.jvmTarget = "16"
