@@ -1,7 +1,7 @@
 #!/bin/sh
 cd "/home/tristan/Olebo" || exit
 cp /var/opt/olebo/config.properties Website/src/jvmMain/resources/config.properties
-cp /etc/letsencrypt/live/olebo.fr-0001/keystore.jks Website/src/jvmMain/resources/keystore.jks
+cp /etc/letsencrypt/live/olebo.fr/keystore.jks Website/src/jvmMain/resources/keystore.jks
 ./gradlew :Website:installDist
 docker build -t olebo-website .
 docker stop website || true && docker rm website || true
