@@ -142,7 +142,6 @@ object DAO : CoroutineScope by CoroutineScope(Dispatchers.IO) {
         return userContinue || exitProcess(100)
     }
 
-    @OptIn(ExperimentalStdlibApi::class)
     private fun dropLegacyTables() = launch {
         transaction {
             val legacyTables = buildList {

@@ -12,9 +12,9 @@ group = "fr.olebo"
 
 kotlin {
     sourceSets["commonMain"].dependencies {
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialisationVersion")
-        implementation("io.ktor:ktor-client-core:$ktorVersion")
-        implementation("io.ktor:ktor-client-websockets:$ktorVersion")
+        api("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialisationVersion")
+        api("io.ktor:ktor-client-core:$ktorVersion")
+        api("io.ktor:ktor-client-websockets:$ktorVersion")
         compileOnly(compose.runtime)
     }
 }
