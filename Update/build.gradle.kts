@@ -9,8 +9,8 @@ group = "jdr.exia"
 
 kotlin {
     sourceSets["jvmMain"].dependencies {
-        api(project(":System"))
-        api("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialisationVersion")
-        api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
+        implementation(project(":System"))
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialisationVersion")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
     }
 }

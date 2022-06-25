@@ -1,3 +1,5 @@
+@file:Suppress("UNSUPPORTED_FEATURE")
+
 package fr.olebo.sharescene.connection
 
 import io.ktor.utils.io.*
@@ -11,5 +13,5 @@ internal fun Throwable.getConnectionError() = when (this) {
     else -> ConnectionError.ConnectionFailed
 }
 
-@Suppress("unused")
-fun WebSocketSession.triggerError(error: ConnectionError): Nothing = throw ConnectionException(error)
+context(WebSocketSession)
+fun triggerError(error: ConnectionError): Nothing = throw ConnectionException(error)
