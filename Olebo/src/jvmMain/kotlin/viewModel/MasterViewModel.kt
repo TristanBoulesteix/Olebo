@@ -35,7 +35,6 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
 import java.awt.image.BufferedImage
-import java.util.*
 import javax.imageio.ImageIO
 
 class MasterViewModel(val act: Act) {
