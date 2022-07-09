@@ -2,6 +2,7 @@ package fr.olebo.sharescene.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import dev.petuska.kmdc.core.MDCSideEffectNew
 import kotlinx.browser.window
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.ContentBuilder
@@ -17,31 +18,29 @@ fun Canvas(
     attrs: AttrBuilderContext<HTMLCanvasElement>? = null,
     drawWith: HTMLCanvasElement.(CanvasRenderingContext2D) -> Unit,
     content: ContentBuilder<HTMLCanvasElement>? = null
-) {
-    TagElement(
-        elementBuilder = canvas,
-        applyAttrs = attrs,
-        content = {
-            if(content != null)
-                content()
+) = TagElement(
+    elementBuilder = canvas,
+    applyAttrs = attrs,
+    content = {
+        if (content != null)
+            content()
 
-            DisposableEffect(Unit) {
-                val element = scopeElement
+        DisposableEffect(js("{}")) {
+            val element = scopeElement
 
-                element.width = window.innerWidth
-                element.height = window.innerHeight
+            element.width = window.innerWidth
+            element.height = window.innerHeight
 
-                val context = element.getContext("2d") as CanvasRenderingContext2D
+            val context = element.getContext("2d") as CanvasRenderingContext2D
 
-                context.clearRect(0.0, 0.0, element.width.toDouble(), element.height.toDouble())
+            context.clearRect(0.0, 0.0, element.width.toDouble(), element.height.toDouble())
 
-                element.drawWith(context)
+            element.drawWith(context)
 
-                onDispose {  }
-            }
+            onDispose { }
         }
-    )
-}
+    }
+)
 
 fun HTMLCanvasElement.relativeX(absoluteX: Int) = absoluteX * width / 1600.0
 

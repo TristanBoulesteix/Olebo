@@ -2,7 +2,7 @@ package fr.olebo.sharescene.components
 
 import androidx.compose.runtime.Composable
 import dev.petuska.kmdc.textfield.MDCTextField
-import dev.petuska.kmdc.textfield.MDCTextFieldCommonOpts
+import dev.petuska.kmdc.textfield.MDCTextFieldType
 import fr.olebo.sharescene.css.ShareSceneStyleSheet
 import fr.olebo.sharescene.css.classes
 import org.jetbrains.compose.web.dom.Div
@@ -19,10 +19,8 @@ fun MaterialTextField(
 ) = Div(attrs = classes(ShareSceneStyleSheet.materialBottomMargin)) {
     MDCTextField(
         value,
-        opts = {
-            this.label = label
-            this.type = MDCTextFieldCommonOpts.Type.Outlined
-        },
+        type = MDCTextFieldType.Outlined,
+        label = label,
         attrs = {
             onInput { onValueChange(it.value) }
 

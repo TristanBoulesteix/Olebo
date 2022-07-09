@@ -1,6 +1,7 @@
 package fr.olebo.sharescene
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import fr.olebo.sharescene.components.Canvas
 import fr.olebo.sharescene.components.relativeX
 import fr.olebo.sharescene.components.relativeY
@@ -9,6 +10,7 @@ import fr.olebo.sharescene.css.backgroundImage
 import fr.olebo.sharescene.css.classes
 import org.jetbrains.compose.web.css.backgroundRepeat
 import org.jetbrains.compose.web.css.backgroundSize
+import org.jetbrains.compose.web.dom.Text
 import org.w3c.dom.CENTER
 import org.w3c.dom.CanvasTextAlign
 import org.w3c.dom.Image
@@ -25,51 +27,53 @@ fun ContentCanvas(viewModel: ShareSceneViewModel) {
     val tokens = viewModel.tokens
     val backgroundImage = viewModel.background
 
-    Canvas(
-        attrs = {
-            classes(ShareSceneStyleSheet.oleboCanvasContainer)
-            style {
-                backgroundImage(backgroundImage)
-                backgroundSize("100% 100%")
-                backgroundRepeat("no-repeat")
-            }
-        },
-        drawWith = { context ->
-            tokens.forEach {
-                Image().apply {
-                    val (tokenX, tokenY) = it.position
+    key(tokens) {
+        Canvas(
+            attrs = {
+                classes(ShareSceneStyleSheet.oleboCanvasContainer)
+                style {
+                    backgroundImage(backgroundImage)
+                    backgroundSize("100% 100%")
+                    backgroundRepeat("no-repeat")
+                }
+            },
+            drawWith = { context ->
+                tokens.forEach {
+                    Image().apply {
+                        val (tokenX, tokenY) = it.position
 
-                    // Draw image of token
-                    onload = { _ ->
-                        context.drawImage(
-                            this,
-                            relativeX(tokenX),
-                            relativeY(tokenY),
-                            relativeX(it.size),
-                            relativeY(it.size)
-                        )
-                    }
+                        // Draw image of token
+                        onload = { _ ->
+                            context.drawImage(
+                                this,
+                                relativeX(tokenX),
+                                relativeY(tokenY),
+                                relativeX(it.size),
+                                relativeY(it.size)
+                            )
+                        }
 
-                    src = it.image.cssBase64ImageCode
+                        src = it.image.cssBase64ImageCode
 
-                    // Draw label of token
-                    it.label?.let { label ->
-                        val (r, g, b) = label.color
+                        // Draw label of token
+                        it.label?.let { label ->
+                            val (r, g, b) = label.color
 
-                        context.font = "bold 24px Arial sans-serif"
-                        context.fillStyle = "rgb($r, $g, $b)"
-                        context.textAlign = CanvasTextAlign.CENTER
+                            context.font = "bold 24px Arial sans-serif"
+                            context.fillStyle = "rgb($r, $g, $b)"
+                            context.textAlign = CanvasTextAlign.CENTER
 
-                        context.fillText(
-                            label.text,
-                            relativeX(tokenX) + relativeX(it.size) / 2,
-                            relativeY(tokenY) - 10
-                        )
+                            context.fillText(
+                                label.text,
+                                relativeX(tokenX) + relativeX(it.size) / 2,
+                                relativeY(tokenY) - 10
+                            )
+                        }
                     }
                 }
             }
-        }
-    )
+        )
+    }
 }
 
 @Composable

@@ -52,6 +52,11 @@ kotlin {
         implementation(project(":System"))
     }
     sourceSets["jsMain"].dependencies {
+        implementation(devNpm("style-loader", "^3.3.0"))
+        implementation(devNpm("css-loader", "^6.3.0"))
+        implementation(devNpm("sass-loader", "^13.0.0"))
+        implementation(devNpm("sass", "^1.52.1"))
+
         implementation(compose.web.core)
         implementation("io.ktor:ktor-client-core:$ktorVersion")
         implementation("io.ktor:ktor-client-js:$ktorVersion")
