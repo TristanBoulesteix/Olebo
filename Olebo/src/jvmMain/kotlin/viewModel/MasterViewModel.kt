@@ -140,7 +140,7 @@ class MasterViewModel(val act: Act) {
         }
 
         /**
-         * Return a new [Point] inside the borders of the map
+         * Return a new [Offset] inside the borders of the map
          */
         fun Offset.checkBoundOf(element: Element?): Offset {
             var newPosition = this
