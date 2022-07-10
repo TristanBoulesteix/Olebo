@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Olebo [Olebo:runDistributable]" type="GradleRunConfiguration" factoryName="Gradle">
+  <configuration default="false" name="Olebo [Website:run]" type="GradleRunConfiguration" factoryName="Gradle">
     <ExternalSystemSettings>
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -10,7 +10,8 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value="Olebo:runDistributable" />
+          <option value="Website:run" />
+          <option value="--args=&quot;dev&quot;" />
         </list>
       </option>
       <option name="vmOptions" />
