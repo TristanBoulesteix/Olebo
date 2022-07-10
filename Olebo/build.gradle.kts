@@ -1,15 +1,9 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
-val kotlinVersion: String by System.getProperties()
-val coroutineVersion: String by project.parent!!
-val ktorVersion: String by project.parent!!
-val exposedVersion: String by project.parent!!
-
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     kotlin("multiplatform")
-
-    val composeVersion: String by System.getProperties()
-    id("org.jetbrains.compose") version composeVersion
+    id("org.jetbrains.compose") version libs.versions.compose.get()
 }
 
 version = "0.1.4"
@@ -21,21 +15,13 @@ repositories {
 
 kotlin {
     sourceSets["jvmMain"].dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
-        implementation("org.slf4j:slf4j-simple:2.0.0-alpha1")
-        implementation("org.xerial:sqlite-jdbc:3.28.0")
-        implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
-        implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
-        implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutineVersion")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:$coroutineVersion")
-        implementation("io.ktor:ktor-client-core:$ktorVersion")
-        implementation("io.ktor:ktor-client-cio:$ktorVersion")
-        implementation("io.ktor:ktor-client-serialization:$ktorVersion")
-        implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-        implementation("io.ktor:ktor-client-websockets:$ktorVersion")
-        implementation("com.github.Dansoftowner:jSystemThemeDetector:3.6")
-        implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+        implementation(libs.kotlin.reflect)
+        implementation(libs.slf4j)
+        implementation(libs.jdbc.sqlite)
+        implementation(libs.bundles.exposed)
+        implementation(libs.bundles.coroutines.desktop)
+        implementation(libs.bundles.ktor.client.desktop)
+        implementation(libs.systemThemeDetector)
         implementation(project(":Localization"))
         implementation(project(":Update"))
         implementation(project(":System"))

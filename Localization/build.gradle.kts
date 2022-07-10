@@ -1,8 +1,7 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     kotlin("multiplatform")
-
-    val composeVersion: String by System.getProperties()
-    id("org.jetbrains.compose") version composeVersion
+    id("org.jetbrains.compose") version libs.versions.compose.get()
 }
 
 kotlin {

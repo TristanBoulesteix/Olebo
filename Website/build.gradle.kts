@@ -1,14 +1,8 @@
-val ktorVersion: String by project.parent!!
-val logbackVersion: String by project.parent!!
-val kmdcVersion: String by project.parent!!
-
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     application
-    kotlin("multiplatform")
-    id("org.jetbrains.kotlin.plugin.serialization")
-
-    val composeVersion: String by System.getProperties()
-    id("org.jetbrains.compose") version composeVersion
+    alias(libs.plugins.kotlin.multiplatform)
+    id("org.jetbrains.compose") version libs.versions.compose.get()
 }
 
 group = "fr.olebo"
@@ -35,36 +29,23 @@ kotlin {
     sourceSets["commonMain"].dependencies {
         implementation(compose.runtime)
         implementation(project(":ShareScene"))
-        implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+        implementation(libs.serialization)
     }
     sourceSets["jvmMain"].dependencies {
-        implementation("io.ktor:ktor-server-core:$ktorVersion")
-        implementation("io.ktor:ktor-server-http-redirect:$ktorVersion")
-        implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
-        implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
-        implementation("io.ktor:ktor-serialization:$ktorVersion")
-        implementation("io.ktor:ktor-server-netty:$ktorVersion")
-        implementation("io.ktor:ktor-server-websockets:$ktorVersion")
-        implementation("io.ktor:ktor-http-jvm:$ktorVersion")
-        implementation("ch.qos.logback:logback-classic:$logbackVersion")
-        implementation("io.ktor:ktor-server-html-builder:$ktorVersion")
+        implementation(libs.bundles.ktor.server)
+        implementation(libs.logback)
         implementation(project(":Update"))
         implementation(project(":System"))
     }
     sourceSets["jsMain"].dependencies {
-        implementation(devNpm("style-loader", "^3.3.0"))
-        implementation(devNpm("css-loader", "^6.3.0"))
-        implementation(devNpm("sass-loader", "^13.0.0"))
-        implementation(devNpm("sass", "^1.52.1"))
+        implementation(devNpm("style-loader", npm.versions.style.loader.get()))
+        implementation(devNpm("css-loader", npm.versions.css.loader.get()))
+        implementation(devNpm("sass-loader", npm.versions.sass.loader.get()))
+        implementation(devNpm("sass", npm.versions.sass.asProvider().get()))
 
         implementation(compose.web.core)
-        implementation("io.ktor:ktor-client-core:$ktorVersion")
-        implementation("io.ktor:ktor-client-js:$ktorVersion")
-        implementation("io.ktor:ktor-client-serialization:$ktorVersion")
-        implementation("io.ktor:ktor-client-websockets:$ktorVersion")
-        implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-        implementation("dev.petuska:kmdc-button:$kmdcVersion")
-        implementation("dev.petuska:kmdc-textfield:$kmdcVersion")
+        implementation(libs.bundles.ktor.client.js)
+        implementation(libs.bundles.kmdc)
         implementation(project(":Localization"))
     }
 }

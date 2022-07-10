@@ -1,12 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val kotlinVersion: String by System.getProperties()
-val serialisationVersion: String by project
-
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    val kotlinVersion: String by System.getProperties()
-    kotlin("multiplatform") version kotlinVersion
-    kotlin("plugin.serialization") version kotlinVersion apply false
+    alias(libs.plugins.kotlin.multiplatform)
+    kotlin("plugin.serialization") version libs.versions.kotlin.get() apply false
 }
 
 allprojects {
