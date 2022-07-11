@@ -53,6 +53,9 @@ fun ApplicationScope.Window(
             minimumSize?.let {
                 window.minimumSize = it.toDimension()
             }
+        }
+
+        LaunchedEffect(size) {
             window.preferredSize = size.toDimension()
         }
 
