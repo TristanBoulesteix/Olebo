@@ -204,10 +204,7 @@ internal actual class StringLocaleBundle : StringLocale() {
         STR_NO_ACT to "no scenario",
         STR_NO_SCENE to "no scene",
         ST_DEVELOPED_BY to "Developed by BOULESTEIX Tristan and ONFRAY Vincent.",
-        ST_SHOULD_OPEN_PLAYER_FRAME_FULL_SCREEN to """
-            Open the player window if there is a second screen
-            (This feature may be disable for screens with different ratios / resolution)
-        """.trimIndent(),
+        ST_SHOULD_OPEN_PLAYER_FRAME_FULL_SCREEN to "Open the player window if there is a second screen",
         ST_OLEBO_WEB_EXPLANATION to """
             ShareScene allows you to share the player view on the internet in real time.
             Only a web browser and an internet connection is required for the players.
@@ -237,7 +234,9 @@ internal actual class StringLocaleBundle : StringLocale() {
         STR_LIGHT_THEME to "light",
         STR_DARK_THEME to "dark",
         STR_AUTO_THEME to "use system settings",
-        STR_THEME to "theme:"
+        STR_THEME to "theme:",
+        STR_RELEASE_NOTES to "release notes",
+        STR_CONTACT_DEVELOPERS to "contact developers",
     )
 }
 
@@ -444,10 +443,7 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
         STR_NO_ACT to "aucun scénario",
         STR_NO_SCENE to "aucune scène",
         ST_DEVELOPED_BY to "Développé par Tristan BOULESTEIX et Vincent ONFRAY.",
-        ST_SHOULD_OPEN_PLAYER_FRAME_FULL_SCREEN to """
-            Ouvrir la fenêtre joueur en plein écran s'il y a un deuxième écran.
-            (Cette fonctionnalité peut-être désactivée pour les écrans avec différentes résolutions / ratios)
-        """.trimIndent(),
+        ST_SHOULD_OPEN_PLAYER_FRAME_FULL_SCREEN to "Ouvrir la fenêtre joueur en plein écran s'il y a un deuxième écran",
         ST_OLEBO_WEB_EXPLANATION to """
             ShareScene vous permet de partager la vue joueur directement sur internet en temps réel.
             Les joueurs doivent simplement posséder un navigateur web et une connection internet.
@@ -477,6 +473,8 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
         STR_LIGHT_THEME to "clair",
         STR_DARK_THEME to "sombre",
         STR_AUTO_THEME to "utiliser les paramètres systèmes",
-        STR_THEME to "thème :"
+        STR_THEME to "thème :",
+        STR_RELEASE_NOTES to "notes de mises à jour",
+        STR_CONTACT_DEVELOPERS to "contacter les développeurs",
     )
 }

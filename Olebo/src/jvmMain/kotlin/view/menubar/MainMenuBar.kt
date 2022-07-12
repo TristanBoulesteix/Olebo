@@ -30,7 +30,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.awt.Desktop
 import java.io.File
+import java.io.InputStreamReader
+import java.net.URI
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import javax.swing.JFileChooser
 import javax.swing.JOptionPane
 import javax.swing.filechooser.FileNameExtensionFilter
@@ -150,7 +155,7 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
 
     var changelogs by remember { mutableStateOf("") }
 
-    Item(text = "Changelogs") {
+    Item(text = StringLocale[STR_RELEASE_NOTES]) {
         changelogs = getChangelogs() ?: ""
     }
 
@@ -158,6 +163,20 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
         ChangelogsDialog(changelogs) {
             changelogs = ""
         }
+    }
+
+    lateinit var desktop: Desktop
+
+    Item(
+        text = StringLocale[STR_CONTACT_DEVELOPERS],
+        enabled = Desktop.isDesktopSupported() && Desktop.getDesktop().also { desktop = it }
+            .isSupported(Desktop.Action.MAIL)
+    ) {
+        val body = StringLocale.getLocalizedResource("contact/body", "txt", ::main.javaClass.classLoader)?.reader()
+            ?.use(InputStreamReader::readText)?.let { URLEncoder.encode(it, StandardCharsets.UTF_8).replace("+", "%20") } ?: ""
+
+        val mailto = URI("mailto:contact.olebo@tb-lab.fr?subject=Bug%20report%20%2F%20feature%20request&body=$body")
+        desktop.mail(mailto)
     }
 
     var aboutDialogVisible by remember { mutableStateOf(false) }

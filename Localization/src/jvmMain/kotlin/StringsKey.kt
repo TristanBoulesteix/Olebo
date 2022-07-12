@@ -161,6 +161,8 @@ const val STR_LIGHT_THEME = "light_theme"
 const val STR_DARK_THEME = "dark_theme"
 const val STR_AUTO_THEME = "auto_theme"
 const val STR_THEME = "theme"
+const val STR_RELEASE_NOTES = "release_notes"
+const val STR_CONTACT_DEVELOPERS = "contact_devs"
 
 // -- Sentences
 

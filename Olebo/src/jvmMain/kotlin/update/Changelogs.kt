@@ -16,7 +16,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import jdr.exia.OLEBO_VERSION_CODE
 import jdr.exia.OLEBO_VERSION_NAME
+import jdr.exia.localization.STR_RELEASE_NOTES
 import jdr.exia.localization.StringLocale
+import jdr.exia.localization.get
 import jdr.exia.main
 import jdr.exia.view.element.builder.ContentButtonBuilder
 import jdr.exia.view.element.dialog.MessageDialog
@@ -37,7 +39,7 @@ fun ChangelogsDialog(changelogs: String, onClose: () -> Unit = {}) {
 
     MessageDialog(
         visible = changelogsVisible,
-        title = "Changelogs",
+        title = StringLocale[STR_RELEASE_NOTES],
         buttonBuilders = listOf(ContentButtonBuilder(content = "Ok", onClick = { changelogsVisible = false })),
         onCloseRequest = { changelogsVisible = false },
         height = 400.dp,
@@ -45,7 +47,7 @@ fun ChangelogsDialog(changelogs: String, onClose: () -> Unit = {}) {
     ) {
         Column {
             Text(
-                "Changelogs :",
+                StringLocale[STR_RELEASE_NOTES],
                 fontWeight = FontWeight.Bold,
                 textDecoration = TextDecoration.Underline,
                 fontSize = 30.sp
