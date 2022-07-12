@@ -1,5 +1,27 @@
-- Nouvelle fonctionnalité : Avec ShareScene, vous pouvez maintenant partager le contenu de la vue joueur sur internet. Créez simplement une session sur l'onglet ShareScene puis partagez le code fourni à tous les joueurs.
+[Nouveautés]
 
-- Quelques corrections de bugs
+- [ShareScene] Avec ShareScene, plus besoin d'un logiciel tier pour partager la vue joueur. Les joueurs peuvent y accéder directement depuis un navigateur web !
 
-- Amélioration des performances
+- [ShareScene] Possibilité de partager la vue joueur avec ShareScene et la fenêtre joueur en même temps (ancienne méthode) sans perte de performance.
+
+- [Theme] Nouveau thème sombre ajouté
+
+- [Theme] Theme système : Possibilité pour Olebo de suivre le thème du système d'exploitation (Thème clair ou sombre) (valeur par défaut)
+
+- [Contact] Ajout d'un lien pour contacter les développeurs
+
+[Correction]
+
+- Fixed a bug that caused the application to crash for some screen configurations
+
+- Fixed a bug that ignored the SSL Let's encrypt certificate of olebo.fr
+
+- Correction of spelling mistakes on the French version of the application
+
+- Fixed a bug that sometimes prevented the display of release notes
+
+- Graphical improvement
+
+- Performance improvement
+
+- Fixed minor bugs
