@@ -21,6 +21,7 @@ kotlin {
         implementation(libs.bundles.exposed)
         implementation(libs.bundles.coroutines.desktop)
         implementation(libs.bundles.ktor.client.desktop)
+        implementation(libs.serialization)
         implementation(libs.systemThemeDetector)
         implementation(project(":Localization"))
         implementation(project(":Update"))
