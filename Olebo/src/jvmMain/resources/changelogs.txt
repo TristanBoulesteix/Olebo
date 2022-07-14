@@ -13,7 +13,7 @@
 
 [Modifications]
 
-- [Création d'éléments] Different saving behavior for the creation or modification of a token
+- [Tokens creation] Different saving behavior for the creation or modification of a token
 
 
 [Fixes]
