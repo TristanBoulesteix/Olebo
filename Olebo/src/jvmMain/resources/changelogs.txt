@@ -11,18 +11,23 @@
 - [Contact] Added link to contact developers
 
 
+[Modifications]
+
+- [Création d'éléments] Different saving behavior for the creation or modification of a token
+
+
 [Fixes]
 
-- Removed a bug that made Olebo crashe when
+- Fixed a bug that caused the application to crash for some screen configurations
 
-- Correction d'un bug ignorant le certificat SSL Let's encrypt de olebo.fr
+- Fixed a bug that ignored the SSL Let's encrypt certificate of olebo.fr
 
-- Correction de fautes d'orthographes sur la version française de l'application
+- Correction of spelling mistakes on the French version of the application
 
-- Correction d'un bug empêchant parfois l'affichage des notes de mises à jour
+- Fixed a bug that sometimes prevented the display of release notes
 
-- Améliorations graphiques
+- Graphical improvement
 
-- Amélioration des performances
+- Performance improvement
 
-- Correction de bugs mineurs
+- Fixed minor bugs
