@@ -2,13 +2,13 @@ package jdr.exia.view
 
 import jdr.exia.localization.STR_PLAYER_TITLE_FRAME
 import jdr.exia.localization.StringLocale
+import jdr.exia.localization.get
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.tools.event.addKeyPressedListener
 import jdr.exia.view.tools.screens
 import jdr.exia.view.ui.MASTER_WINDOW_SIZE
 import kotlinx.coroutines.*
-import kotlinx.coroutines.swing.Swing
 import java.awt.Dimension
 import java.awt.GraphicsDevice
 import java.awt.GraphicsEnvironment
@@ -61,7 +61,6 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: (
                 playerDialog = null
             }
         }
-
     }
 
     private val repaintJob: Job
@@ -82,7 +81,7 @@ class PlayerDialog private constructor(mapPanel: MapPanel, private val onHide: (
             }
         }
 
-        repaintJob = CoroutineScope(Dispatchers.Swing).launch {
+        repaintJob = CoroutineScope(Dispatchers.Main).launch {
             while (isActive) {
                 mapPanel.repaint()
                 // The delay must be greater than or equal to 120.

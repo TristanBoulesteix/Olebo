@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import jdr.exia.localization.STR_LOADING
 import jdr.exia.localization.StringLocale
+import jdr.exia.localization.get
 
 @Composable
 fun LoadingDialog(reasonMessage: String = StringLocale[STR_LOADING]) =

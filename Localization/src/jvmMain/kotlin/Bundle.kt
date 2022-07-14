@@ -5,8 +5,8 @@ package jdr.exia.localization
 /**
  * Default strings (English strings)
  */
-internal class StringLocaleBundle : StringLocale() {
-    override val contents = mapOf(
+internal actual class StringLocaleBundle : StringLocale() {
+    actual override val contents = mapOf(
         STR_VERSION to "version",
         STR_FILES to "files",
         STR_TAKE_SCREENSHOT to "take a screenshot",
@@ -204,17 +204,39 @@ internal class StringLocaleBundle : StringLocale() {
         STR_NO_ACT to "no scenario",
         STR_NO_SCENE to "no scene",
         ST_DEVELOPED_BY to "Developed by BOULESTEIX Tristan and ONFRAY Vincent.",
-        ST_SHOULD_OPEN_PLAYER_FRAME_FULL_SCREEN to """
-            Open the player window if there is a second screen
-            (This feature may be disable for screens with different ratios / resolution)
-        """.trimIndent(),
+        ST_SHOULD_OPEN_PLAYER_FRAME_FULL_SCREEN to "Open the player window if there is a second screen",
         ST_OLEBO_WEB_EXPLANATION to """
-            Olebo web is an experimental service that allows you to share in real time your scenes and scenarios with your player directly in their web browser.
-            This feature is currently in alpha and its behavior is not guaranteed.
-            This feature does not require the players to install a software.
+            ShareScene allows you to share the player view on the internet in real time.
+            Only a web browser and an internet connection is required for the players.
+            Please note that the token images will be compressed and may lose some quality.
+            
+            To start, press the button on the right and then share tot he players the URL provided.
         """.trimIndent(),
         STR_START_OLEBO_WEB to "start and connect",
         STR_LOGIN_OLEBO_WEB to "login...",
+        STR_ERROR_LOGIN_TO_OLEBO_WEB to "connection failed - please check your internet connection",
+        STR_EDIT_TAB to "edition",
+        STR_OLEBO_WEB_TAB to "ShareScene (Olebo Web)",
+        ST_INT1_NUMBER_OF_CONNECTED_PLAYERS to "Number of connected player(s): %d",
+        STR_COPY_CODE to "copy the code to the clipboard",
+        STR_COPY_URL to "copy url to the clipboard",
+        ST_INT1_NAME_OF_CONNECTED_PLAYERS to "Connected players (%d):",
+        STR_LOGOUT to "logout",
+        ST_ERROR_OLEBO_WEB_VERSION_REQUIREMENT to "This version of Olebo is incompatible with ShareScene. Please update the application.",
+        ST_STR1_OLEBO_WEB_SERVER_ERROR to """
+            A server error has occurred. Please, try again later.
+            Error: %s
+        """.trimIndent(),
+        STR_CANCEL_BLUEPRINT_CHANGES to "cancel changes",
+        STR_SUBMIT_BLUEPRINT_CHANGES to "save changes",
+        ST_NO_SPRITE_FOR_NEW_BLUEPRINT to "You need to add an image to the element.",
+        ST_INVALID_SPRITE_FOR_BLUEPRINT to "The selected image is invalid or does not exists.",
+        STR_LIGHT_THEME to "light",
+        STR_DARK_THEME to "dark",
+        STR_AUTO_THEME to "use system settings",
+        STR_THEME to "theme:",
+        STR_RELEASE_NOTES to "release notes",
+        STR_CONTACT_DEVELOPERS to "contact developers",
     )
 }
 
@@ -222,8 +244,8 @@ internal class StringLocaleBundle : StringLocale() {
  * French strings
  */
 @Suppress("unused")
-internal class StringLocaleBundle_fr : StringLocale() {
-    override val contents = mapOf(
+internal actual class StringLocaleBundle_fr : StringLocale() {
+    actual override val contents = mapOf(
         STR_VERSION to "version",
         STR_FILES to "fichiers",
         STR_TAKE_SCREENSHOT to "prendre une capture d'écran",
@@ -277,14 +299,14 @@ internal class StringLocaleBundle_fr : StringLocale() {
         STR_RESTORE to "restaurer",
         STR_WINDOW to "fenêtre",
         STR_CLOSE_ACT to "fermer scenario",
-        STR_TOGGLE_PLAYER_FRAME to "fenetre joueurs ON/OFF",
+        STR_TOGGLE_PLAYER_FRAME to "fenêtre joueurs ON/OFF",
         STR_CHOOSE_SCENE to "choisir une scène",
         STR_IS_CURRENT_SCENE to "actuelle",
         STR_TOKENS to "pions",
-        STR_MANAGE_BLUEPRINTS to "gèrer les modèles d'éléments",
+        STR_MANAGE_BLUEPRINTS to "gérer les modèles d'éléments",
         STR_IMPORT_FROM_SCENE to "importer depuis une autre scène",
         STR_IMPORT_ALL_ELEMENTS to "tout importer",
-        STR_DELETE_SELECTED_TOKENS to "supprimer pion(s) selectionné(s)",
+        STR_DELETE_SELECTED_TOKENS to "supprimer pion(s) sélectionné(s)",
         STR_CLEAR_BOARD to "vider le plateau",
         STR_DELETION to "suppression",
         ST_CONFIRM_CLEAR_BOARD to "Voulez-vous vraiment supprimer tous les éléments du plateau ? Cette action est irréversible.",
@@ -326,8 +348,8 @@ internal class StringLocaleBundle_fr : StringLocale() {
         STR_WHITE_POINTER to "pointeur blanc",
         STR_BLUE_POINTER to "pointeur bleu",
         STR_GREEN_POINTER to "pointeur vert",
-        ST_CHANGE_VISIBILITY to "Modifier la visiblité de l'élément",
-        ST_CHANGE_VISIBILITY_PLR to "Modifier la visiblité des éléments",
+        ST_CHANGE_VISIBILITY to "Modifier la visibilité de l'élément",
+        ST_CHANGE_VISIBILITY_PLR to "Modifier la visibilité des éléments",
         STR_RESIZE_ELEMENT to "redimensionner un élément",
         STR_RESIZE_ELEMENT_PLR to "redimensionner des éléments",
         STR_MOVE_ELEMENT to "déplacer un élément",
@@ -347,7 +369,7 @@ internal class StringLocaleBundle_fr : StringLocale() {
         STR_BLACK_WITH_WHITE_BORDER to "noir avec une bordure blanche",
         STR_SELECT_COLOR to "choisissez une couleur",
         STR_PLAYER_FRAME_OPENED to "ouvrir automatiquement la fenêtre joueurs",
-        STR_DOUBLE_CLICK_OPEN_ACT to "double cliquez pour ouvir le scénario",
+        STR_DOUBLE_CLICK_OPEN_ACT to "double cliquez pour ouvrir le scénario",
         STR_DEFAULT_ELEMENT_VISIBILITY to "éléments visibles pour les joueurs par défaut",
         STR_YELLOW to "jaune",
         STR_RED to "rouge",
@@ -360,12 +382,12 @@ internal class StringLocaleBundle_fr : StringLocale() {
         STR_LABEL_STATE to "affichage du label :",
         STR_LABEL to "label",
         STR_SIZE_COMBO_TOOLTIP to "change la taille de l'élément",
-        STR_PRIORITY_COMBO_TOOLTIP to "change le niveau de prorité de l'élément",
-        STR_LABEL_TOOLTIP to "ajoute un label personalisé à l'élément",
+        STR_PRIORITY_COMBO_TOOLTIP to "change le niveau de priorité de l'élément",
+        STR_LABEL_TOOLTIP to "ajoute un label personnalisé à l'élément",
         STR_DB_VERSION_MISMATCH to "erreur d'initialisation de la base de données",
         ST_DB_VERSION_MISMATCH_MESSAGE to """
             La base de données sur cet ordinateur provient d'une version ultérieur de Olebo. Pour pouvoir charger ces données, veuillez mettre à jour l'application ou la réinitialiser.
-            Si vous choississez de continuer sans mettre à jour, certaines données risques d'être perdues et certaines fonctionnalités pourront ne pas fonctionner.
+            Si vous choisissez de continuer sans mettre à jour, certaines données risques d'être perdues et certaines fonctionnalités pourront ne pas fonctionner.
         """.trimIndent(),
         STR_EXIT to "quitter",
         STR_UPDATE to "mettre à jour",
@@ -421,16 +443,38 @@ internal class StringLocaleBundle_fr : StringLocale() {
         STR_NO_ACT to "aucun scénario",
         STR_NO_SCENE to "aucune scène",
         ST_DEVELOPED_BY to "Développé par Tristan BOULESTEIX et Vincent ONFRAY.",
-        ST_SHOULD_OPEN_PLAYER_FRAME_FULL_SCREEN to """
-            Ouvrir la fenêtre joueur en plein écran s'il y a un deuxième écran.
-            (Cette fonctionnalité peut-être désactivée pour les écrans avec différentes résolutions / ratios)
-        """.trimIndent(),
+        ST_SHOULD_OPEN_PLAYER_FRAME_FULL_SCREEN to "Ouvrir la fenêtre joueur en plein écran s'il y a un deuxième écran",
         ST_OLEBO_WEB_EXPLANATION to """
-            Olebo Web est un service expérimental qui permet de partager en temps réel les scènes et les scénarios avec vos joueurs directement sur leur navigateur web.
-            Cette fonctionnalité est actuellement en cours de développement et son fonctionnement peur se révéler instable.
-            Cette fonctionnalité ne nécessite pas l'installation d'un programme pour les joueurs.
+            ShareScene vous permet de partager la vue joueur directement sur internet en temps réel.
+            Les joueurs doivent simplement posséder un navigateur web et une connection internet.
+            Veuillez noter que les images des tokens seront compressées et pourront perdre un peu en qualité.
+            
+            Pour commencer, appuyez sur le bouton à droite puis partagez l'adresse internet fournie aux joueurs.
         """.trimIndent(),
         STR_START_OLEBO_WEB to "commencer et se connecter",
         STR_LOGIN_OLEBO_WEB to "connexion...",
+        STR_ERROR_LOGIN_TO_OLEBO_WEB to "la connexion a échoué - merci de vérifier votre connection internet",
+        STR_EDIT_TAB to "édition",
+        STR_OLEBO_WEB_TAB to "ShareScene (Olebo Web)",
+        ST_INT1_NUMBER_OF_CONNECTED_PLAYERS to "Nombre de joueur connecté(s) : %d",
+        STR_COPY_CODE to "copier le code dans le presse-papier",
+        STR_COPY_URL to "copier l'adresse dans le presse-papier",
+        ST_INT1_NAME_OF_CONNECTED_PLAYERS to "Joueurs connectés (%d) :",
+        STR_LOGOUT to "déconnexion",
+        ST_ERROR_OLEBO_WEB_VERSION_REQUIREMENT to "Cette version de Olebo est incompatible avec ShareScene. Veuillez mettre à jour l'application.",
+        ST_STR1_OLEBO_WEB_SERVER_ERROR to """
+            Une erreur de serveur est arrivée. Réessayez plus tard.
+            Erreur : %s
+        """.trimIndent(),
+        STR_CANCEL_BLUEPRINT_CHANGES to "annuler l'édition",
+        STR_SUBMIT_BLUEPRINT_CHANGES to "sauvegarder les changements",
+        ST_NO_SPRITE_FOR_NEW_BLUEPRINT to "Vous devez ajouter une image au nouvel élément.",
+        ST_INVALID_SPRITE_FOR_BLUEPRINT to "L'image sélectionnée est invalide ou n'existe pas.",
+        STR_LIGHT_THEME to "clair",
+        STR_DARK_THEME to "sombre",
+        STR_AUTO_THEME to "utiliser les paramètres systèmes",
+        STR_THEME to "thème :",
+        STR_RELEASE_NOTES to "notes de mises à jour",
+        STR_CONTACT_DEVELOPERS to "contacter les développeurs",
     )
 }

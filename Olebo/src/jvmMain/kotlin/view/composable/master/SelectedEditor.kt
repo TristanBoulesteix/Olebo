@@ -2,6 +2,7 @@ package jdr.exia.view.composable.master
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.OutlinedButton
@@ -21,6 +22,7 @@ import jdr.exia.model.tools.withSetter
 import jdr.exia.view.element.CustomTextField
 import jdr.exia.view.element.form.IntTextField
 import jdr.exia.view.element.form.TitledDropdownMenu
+import jdr.exia.view.tools.applyIf
 import jdr.exia.view.tools.rememberUpdatableState
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -75,11 +77,13 @@ inline fun ColumnEditor(modifier: Modifier = Modifier, content: @Composable Colu
 
 @Composable
 private fun ImagePreview(selectedElements: List<Element>, commandManager: CommandManager) {
-    val borderColor = remember(selectedElements, commandManager.composeKey) {
-        if (selectedElements.all { it.isVisible }) Color.Black else Color.Blue
+    val allElementsAreHidden = remember(selectedElements, commandManager.composeKey) {
+        selectedElements.isNotEmpty() && selectedElements.none { it.isVisible }
     }
 
-    val modifier = Modifier.padding(15.dp).size(150.dp).border(BorderStroke(10.dp, borderColor))
+    val modifier = Modifier.padding(15.dp).size(150.dp).background(Color.LightGray).applyIf(allElementsAreHidden) {
+        Modifier.border(BorderStroke(3.dp, Color.Blue))
+    }
 
     if (selectedElements.size == 1) {
         Image(
@@ -118,7 +122,7 @@ private fun LabelField(selectedElements: List<Element>, repaint: () -> Unit, mod
 
                 newSuspendedTransaction { element.alias = it }
             },
-            onUpdated = { repaint() }
+            onUpdated = repaint
         )
 
         CustomTextField(
@@ -136,9 +140,9 @@ private fun LabelField(selectedElements: List<Element>, repaint: () -> Unit, mod
 }
 
 private fun <T> List<Element>.getElementProperty(elementPropertyGetter: Element.() -> T, defaultValue: T) = when {
-    this.isEmpty() -> defaultValue
-    this.size == 1 -> this.first().elementPropertyGetter()
-    else -> this.groupingBy(elementPropertyGetter).eachCount().maxByOrNull { it.value }?.key ?: defaultValue
+    isEmpty() -> defaultValue
+    size == 1 -> first().elementPropertyGetter()
+    else -> groupingBy(elementPropertyGetter).eachCount().maxByOrNull { it.value }?.key ?: defaultValue
 }
 
 @Composable
@@ -157,7 +161,7 @@ private fun SizeSelector(selectedElements: List<Element>, repaint: () -> Unit, c
         onChange = {
             Element.cmdDimension(it, commandManager, selectedElements)
         },
-        onUpdated = { repaint() }
+        onUpdated = repaint
     )
 
     val isEnabled = selectedElements.isNotEmpty()
@@ -183,7 +187,7 @@ private fun LayerSelector(selectedElements: List<Element>, setPriority: suspend 
                 )
             )
         },
-        onChange = { setPriority(it) }
+        onChange = setPriority
     )
 
     val isEnabled = selectedElements.isNotEmpty()

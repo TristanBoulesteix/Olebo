@@ -1,3 +1,28 @@
-- Security update: Olebo now accepts the SSL Let's Encrypt certificate for the domain "Olebo.fr".
+[New functionalities]
 
-- Preparation for the functionality "olebo web" (Coming soon).
+- [ShareScene] With ShareScene, you can share the player view directly on a web browser !
+
+- [ShareScene] You can share the player view with ShareScene and the player window (the old way) at the same time without performances losses.
+
+- [Theme] Dark theme added.
+
+- [Theme] System theme : Olebo can use your system settings to choose the theme of your application (by default)
+
+- [Contact] Added link to contact developers
+
+
+[Fixes]
+
+- Removed a bug that made Olebo crashe when
+
+- Correction d'un bug ignorant le certificat SSL Let's encrypt de olebo.fr
+
+- Correction de fautes d'orthographes sur la version française de l'application
+
+- Correction d'un bug empêchant parfois l'affichage des notes de mises à jour
+
+- Améliorations graphiques
+
+- Amélioration des performances
+
+- Correction de bugs mineurs

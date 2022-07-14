@@ -3,17 +3,35 @@ package jdr.exia.view
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.window.*
 import java.awt.Dimension
 
 object WindowStateManager {
-    val composeWindows = mutableListOf<ComposeWindow>()
+    val composeWindowScopes = mutableListOf<OleboWindowScope>()
 
-    val currentFocusedWindow
-        get() = composeWindows.lastOrNull()
+    val currentFocusedWindowScope
+        get() = composeWindowScopes.lastOrNull()
+}
+
+interface OleboWindowScope : FrameWindowScope {
+    fun addSettingsChangedListener(action: () -> Unit)
+
+    fun triggerSettingsChange()
+}
+
+private class OleboWindowScopeImpl(scope: FrameWindowScope) : OleboWindowScope, FrameWindowScope by scope {
+    private val observers = mutableListOf<() -> Unit>()
+
+    override fun addSettingsChangedListener(action: () -> Unit) {
+        observers.add(action)
+    }
+
+    override fun triggerSettingsChange() {
+        observers.forEach { it.invoke() }
+    }
 }
 
 @Composable
@@ -22,7 +40,7 @@ fun ApplicationScope.Window(
     size: DpSize,
     minimumSize: DpSize? = null,
     placement: WindowPlacement = WindowPlacement.Floating,
-    content: @Composable FrameWindowScope.() -> Unit
+    content: @Composable OleboWindowScope.() -> Unit
 ) {
     val windowState = rememberWindowState(
         size = size,
@@ -35,18 +53,23 @@ fun ApplicationScope.Window(
             minimumSize?.let {
                 window.minimumSize = it.toDimension()
             }
+        }
+
+        LaunchedEffect(size) {
             window.preferredSize = size.toDimension()
         }
 
+        val scope = remember { OleboWindowScopeImpl(this) }
+
         DisposableEffect(Unit) {
-            WindowStateManager.composeWindows += window
+            WindowStateManager.composeWindowScopes += scope
 
             onDispose {
-                WindowStateManager.composeWindows -= window
+                WindowStateManager.composeWindowScopes -= scope
             }
         }
 
-        content()
+        content(scope)
     }
 }
 

@@ -1,3 +1,27 @@
-- Mise à jour de sécurité : Olebo accepte dorénavant le certificat SSl de Let's Encrypt pour le domaine "olebo.fr".
+[Nouveautés]
 
-- Préparation de la fonctionnalité "olebo web" (disponible prochainement).
+- [ShareScene] Avec ShareScene, plus besoin d'un logiciel tier pour partager la vue joueur. Les joueurs peuvent y accéder directement depuis un navigateur web !
+
+- [ShareScene] Possibilité de partager la vue joueur avec ShareScene et la fenêtre joueur en même temps (ancienne méthode) sans perte de performance.
+
+- [Theme] Nouveau thème sombre ajouté
+
+- [Theme] Theme système : Possibilité pour Olebo de suivre le thème du système d'exploitation (Thème clair ou sombre) (valeur par défaut)
+
+- [Contact] Ajout d'un lien pour contacter les développeurs
+
+[Correction]
+
+- Fixed a bug that caused the application to crash for some screen configurations
+
+- Fixed a bug that ignored the SSL Let's encrypt certificate of olebo.fr
+
+- Correction of spelling mistakes on the French version of the application
+
+- Fixed a bug that sometimes prevented the display of release notes
+
+- Graphical improvement
+
+- Performance improvement
+
+- Fixed minor bugs

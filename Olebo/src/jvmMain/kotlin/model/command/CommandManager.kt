@@ -7,24 +7,6 @@ import androidx.compose.runtime.setValue
 import org.jetbrains.exposed.dao.id.EntityID
 
 class CommandManager private constructor() : MutableList<Command> by mutableStateListOf() {
-    companion object {
-        private var managerInstance by mutableStateOf<Pair<EntityID<Int>, CommandManager>?>(null)
-
-        operator fun invoke(sceneId: EntityID<Int>): CommandManager {
-            managerInstance?.let { (id, manager) ->
-                if (id == sceneId)
-                    return manager
-            }
-
-            return CommandManager().also { managerInstance = sceneId to it }
-        }
-
-
-        fun clear() {
-            managerInstance = null
-        }
-    }
-
     val undoLabel
         get() = getOrNull(pointer)?.label
 
@@ -59,6 +41,9 @@ class CommandManager private constructor() : MutableList<Command> by mutableStat
     }
 
     fun undo() {
+        if (pointer !in 0 until size)
+            return
+
         this[pointer].cancelExec()
         pointer--
     }
@@ -68,5 +53,22 @@ class CommandManager private constructor() : MutableList<Command> by mutableStat
             return
         pointer++
         this[pointer].exec()
+    }
+
+    companion object {
+        private var managerInstance by mutableStateOf<Pair<EntityID<Int>, CommandManager>?>(null)
+
+        operator fun invoke(sceneId: EntityID<Int>): CommandManager {
+            managerInstance?.let { (id, manager) ->
+                if (id == sceneId)
+                    return manager
+            }
+
+            return CommandManager().also { managerInstance = sceneId to it }
+        }
+
+        fun clear() {
+            managerInstance = null
+        }
     }
 }

@@ -14,7 +14,8 @@ enum class SizeElement(val value: Int) {
     XS(30), S(60), M(120), L(200), XL(300), XXL(400);
 
     companion object {
-        val DEFAULT = S
+        inline val DEFAULT
+            get() = S
     }
 
     /**
@@ -23,6 +24,6 @@ enum class SizeElement(val value: Int) {
     class SizeEntity(id: EntityID<Int>) : Entity<Int>(id) {
         companion object : EnumEntity<SizeEntity, SizeElement>(SizeTable)
 
-         val size by SizeTable.enumValue
+        val size by SizeTable.enumValue
     }
 }

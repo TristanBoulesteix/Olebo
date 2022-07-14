@@ -3,7 +3,3 @@ plugins {
 }
 
 group = "jdr.exia"
-
-repositories {
-    mavenCentral()
-}

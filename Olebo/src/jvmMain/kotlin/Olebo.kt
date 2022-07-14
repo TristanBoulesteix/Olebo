@@ -9,9 +9,7 @@ import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.Tray
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberTrayState
-import jdr.exia.localization.STR_PREPARE_UPDATE
-import jdr.exia.localization.ST_OLEBO_SEARCH_FOR_UPDATE
-import jdr.exia.localization.StringLocale
+import jdr.exia.localization.*
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.update.*
 import jdr.exia.view.HomeWindow
@@ -20,12 +18,12 @@ import jdr.exia.view.ui.OleboTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-const val OLEBO_VERSION_NAME = "0.1.3"
+const val OLEBO_VERSION_NAME = "0.1.4"
 
 /**
  * This code must be unique between releases and must be incremented for each one
  */
-const val OLEBO_VERSION_CODE = 4
+const val OLEBO_VERSION_CODE = 5
 
 fun main() = application {
     // Initialize translations
@@ -61,7 +59,7 @@ fun main() = application {
             UpdateUI(release = it, notify = trayState::sendNotification, hideTray = { release = null })
         }
 
-        // Start of the main UI if automatic update are disabled
+        // Start the main UI if automatic updates are disabled
         if (!Settings.autoUpdate || (Settings.autoUpdate && updateChecked && (release == null))) {
             var changelogs: String? by remember { mutableStateOf(null) }
 
@@ -76,7 +74,7 @@ fun main() = application {
             MainUI()
 
             if (changelogs != null && Settings.wasJustUpdated) {
-                ChangelogsDialog(changelogs!!, onClose = { Settings.wasJustUpdated = false })
+                ChangelogsDialog(changelogs!!, onClose = { Settings.setWasJustUpdatedVersion(null) })
             }
         }
     }

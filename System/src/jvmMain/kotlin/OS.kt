@@ -13,7 +13,7 @@ enum class OS(val appDataDir: String, val executableFileTypes: Set<String> = emp
                     contains("WIN", ignoreCase = true) -> WINDOWS
                     contains("MAC", ignoreCase = true) -> MAC_OS
                     contains("NUX", ignoreCase = true) -> GNU_LINUX
-                    else -> OTHER
+                    else -> WINDOWS
                 }
             }
     }

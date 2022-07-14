@@ -12,9 +12,7 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.tools.CharacterException
 import jdr.exia.model.tools.isCharacter
 import jdr.exia.model.type.Image
-import jdr.exia.model.type.checkedImgPath
-import jdr.exia.model.type.inputStreamOrNotFound
-import jdr.exia.model.type.toImgPath
+import jdr.exia.model.type.inputStreamFromString
 import jdr.exia.view.tools.rotateImage
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
@@ -28,6 +26,170 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 class Element(id: EntityID<Int>) : Entity<Int>(id) {
+    // Value stored into the database
+    private val blueprint by Blueprint referencedOn InstanceTable.idBlueprint
+    var scene by Scene referencedOn InstanceTable.idScene
+
+    // Variables stored into the database
+    private var visibleValue by InstanceTable.visible
+    private var currentHP by InstanceTable.currentHP
+    private var currentMP by InstanceTable.currentMP
+    var orientation by InstanceTable.orientation
+
+    private var x by InstanceTable.x
+    private var y by InstanceTable.y
+    private var sizeEntity by SizeElement.SizeEntity referencedOn InstanceTable.idSize
+    private var layerEntity by Layer.LayerEntity referencedOn InstanceTable.layer
+
+    var alias by InstanceTable.alias
+    var isDeleted by InstanceTable.deleted
+
+    // Value from the Blueprint
+    val sprite by lazyRotatedSprite()
+
+    val spriteBitmap
+        get() = transaction {
+            Image(blueprint.sprite).let {
+                if (blueprint.type == TypeElement.Basic) {
+                    useResource("sprites/${it.path}", ::loadImageBitmap)
+                } else {
+                    it.toBitmap()
+                }
+                // TODO : Add rotation
+            }
+        }
+
+    val name
+        get() = transaction { blueprint.realName }
+
+    val maxHP
+        get() = transaction { blueprint.HP }
+
+    val maxMana
+        get() = transaction { blueprint.MP }
+
+    val type
+        get() = transaction { blueprint.type }
+
+    // Custom getters / setters / variables / values
+    val hitBox
+        get() = transaction {
+            Rectangle(
+                x.toInt(),
+                y.toInt(),
+                size.value,
+                size.value
+            )
+        }
+
+    var isVisible
+        get() = transaction { visibleValue }
+        private set(value) {
+            transaction { visibleValue = value }
+        }
+
+    var size
+        get() = transaction { sizeEntity.size }
+        private set(value) {
+            transaction { sizeEntity = SizeElement.SizeEntity[value] }
+        }
+
+    var priority
+        get() = transaction { layerEntity.layer }
+        set(value) {
+            transaction { layerEntity = Layer.LayerEntity[value] }
+        }
+
+    var referenceOffset
+        get() = Offset(x, y)
+        private set(value) {
+            transaction {
+                x = value.x
+                y = value.y
+            }
+        }
+
+    val centerOffset
+        get() = Offset(this.hitBox.centerX.toFloat(), this.hitBox.centerY.toFloat())
+
+    var currentHealth
+        get() = if (this.isCharacter()) currentHP!! else throw Exception("Cet élément n'est pas un personnage !")
+        set(value) = if (this.isCharacter()) currentHP = value
+        else throw CharacterException(this::class, "currentHealth")
+
+    var currentMana
+        get() = if (this.isCharacter()) currentMP!! else throw Exception("Cet élément n'est pas un personnage !")
+        set(value) = if (this.isCharacter()) currentMP = value
+        else throw CharacterException(this::class, "currentMana")
+
+    // --- General functions ---
+    private fun rotateRight() = transaction {
+        orientation = if (orientation >= 270.0) 0f else orientation + 90f
+    }
+
+    private fun rotateLeft() = transaction {
+        orientation = if (orientation <= 0.0) 270f else orientation - 90f
+    }
+
+    // --- Command functions ---
+
+    fun cmdPosition(point: Offset, manager: CommandManager) {
+        val previousPosition = this.referenceOffset
+
+        manager += object : Command {
+            override val label = StringLocale[STR_MOVE_ELEMENT]
+
+            override fun exec() {
+                this@Element.referenceOffset = point
+            }
+
+            override fun cancelExec() {
+                if (stillExist())
+                    this@Element.referenceOffset = previousPosition
+            }
+        }
+    }
+
+    /**
+     * Check if the element still exists in the database
+     */
+    fun stillExist() = transaction { Element.findById(this@Element.id) != null }
+
+    override fun equals(other: Any?) = other is Element && this.id == other.id
+
+    override fun hashCode() = this.id.value
+
+    private fun lazyRotatedSprite() = object : ReadOnlyProperty<Element, BufferedImage> {
+        private fun getResourceAsStream(name: String) = Element::class.java.classLoader.getResourceAsStream(name)
+
+        val originalImage by lazy {
+            transaction {
+                if (blueprint.type == TypeElement.Basic) {
+                    ImageIO.read(getResourceAsStream("sprites/${blueprint.sprite}"))
+                } else {
+                    ImageIO.read(inputStreamFromString(blueprint.sprite))
+                }
+            }
+        }
+
+        var rotation: Float = 0f
+
+        lateinit var rotatedImage: BufferedImage
+
+        override fun getValue(thisRef: Element, property: KProperty<*>): BufferedImage {
+            if (rotation != orientation || !::rotatedImage.isInitialized) {
+                reloadRotatedImage()
+            }
+
+            return rotatedImage
+        }
+
+        fun reloadRotatedImage() {
+            rotatedImage = originalImage.rotateImage(orientation)
+            rotation = orientation
+        }
+    }
+
     companion object : EntityClass<Int, Element>(InstanceTable) {
         /**
          * Create a new element with a given blueprint
@@ -142,185 +304,19 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         }
 
         fun cmdPosition(elementsToPoint: Map<Element, Offset>, manager: CommandManager) {
-            val previousPoints = elementsToPoint.mapValues { it.key.referencePoint }
+            val previousPoints = elementsToPoint.mapValues { it.key.referenceOffset }
 
             manager += object : Command {
                 override val label = StringLocale[STR_MOVE_ELEMENTS]
 
                 override fun exec() = elementsToPoint.forEach { (element, newPoint) ->
-                    element.referencePoint = newPoint
+                    element.referenceOffset = newPoint
                 }
 
                 override fun cancelExec() = previousPoints.forEach { (element, oldPoint) ->
-                    element.referencePoint = oldPoint
+                    element.referenceOffset = oldPoint
                 }
             }
-        }
-    }
-
-    // Value stored into the database
-    private val blueprint by Blueprint referencedOn InstanceTable.idBlueprint
-    var scene by Scene referencedOn InstanceTable.idScene
-
-    // Variables stored into the database
-    private var visibleValue by InstanceTable.visible
-    private var currentHP by InstanceTable.currentHP
-    private var currentMP by InstanceTable.currentMP
-    var orientation by InstanceTable.orientation
-
-    private var x by InstanceTable.x
-    private var y by InstanceTable.y
-    private var sizeEntity by SizeElement.SizeEntity referencedOn InstanceTable.idSize
-    private var layerEntity by Layer.LayerEntity referencedOn InstanceTable.layer
-
-    var alias by InstanceTable.alias
-    var isDeleted by InstanceTable.deleted
-
-    // Value from the Blueprint
-    val sprite by lazyRotatedSprite()
-
-    val spriteBitmap
-        get() = transaction {
-            Image(blueprint.sprite).let {
-                if (blueprint.type == TypeElement.Basic) {
-                    useResource("sprites/${it.path}", ::loadImageBitmap)
-                } else {
-                    it.toBitmap()
-                }
-                // TODO : Add rotation
-            }
-        }
-
-    val name
-        get() = transaction { blueprint.realName }
-
-    val maxHP
-        get() = transaction { blueprint.HP }
-
-    val maxMana
-        get() = transaction { blueprint.MP }
-
-    val type
-        get() = transaction { blueprint.type }
-
-    // Custom getters / setters / variables / values
-    val hitBox
-        get() = transaction {
-            Rectangle(
-                x.toInt(),
-                y.toInt(),
-                size.value,
-                size.value
-            )
-        }
-
-    var isVisible
-        get() = transaction { visibleValue }
-        private set(value) {
-            transaction { visibleValue = value }
-        }
-
-    var size
-        get() = transaction { sizeEntity.size }
-        private set(value) {
-            transaction { sizeEntity = SizeElement.SizeEntity[value] }
-        }
-
-    var priority
-        get() = transaction { layerEntity.layer }
-        set(value) {
-            transaction { layerEntity = Layer.LayerEntity[value] }
-        }
-
-    var referencePoint
-        get() = Offset(x, y)
-        private set(value) {
-            transaction {
-                x = value.x
-                y = value.y
-            }
-        }
-
-    val centerPoint
-        get() = Offset(this.hitBox.centerX.toFloat(), this.hitBox.centerY.toFloat())
-
-    var currentHealth
-        get() = if (this.isCharacter()) currentHP!! else throw Exception("Cet élément n'est pas un personnage !")
-        set(value) = if (this.isCharacter()) currentHP = value
-        else throw CharacterException(this::class, "currentHealth")
-
-    var currentMana
-        get() = if (this.isCharacter()) currentMP!! else throw Exception("Cet élément n'est pas un personnage !")
-        set(value) = if (this.isCharacter()) currentMP = value
-        else throw CharacterException(this::class, "currentMana")
-
-    // --- General functions ---
-    private fun rotateRight() = transaction {
-        orientation = if (orientation >= 270.0) 0f else orientation + 90f
-    }
-
-    private fun rotateLeft() = transaction {
-        orientation = if (orientation <= 0.0) 270f else orientation - 90f
-    }
-
-    // --- Command functions ---
-
-    fun cmdPosition(point: Offset, manager: CommandManager) {
-        val previousPosition = this.referencePoint
-
-        manager += object : Command {
-            override val label = StringLocale[STR_MOVE_ELEMENT]
-
-            override fun exec() {
-                this@Element.referencePoint = point
-            }
-
-            override fun cancelExec() {
-                if (stillExist())
-                    this@Element.referencePoint = previousPosition
-            }
-        }
-    }
-
-    /**
-     * Check if the element still exists in the database
-     */
-    fun stillExist() = transaction { Element.findById(this@Element.id) != null }
-
-    override fun equals(other: Any?) = other is Element && this.id == other.id
-
-    override fun hashCode() = this.id.value
-
-    private fun lazyRotatedSprite() = object : ReadOnlyProperty<Element, BufferedImage> {
-        private fun getResourceAsStream(name: String) = Element::class.java.classLoader.getResourceAsStream(name)
-
-        val originalImage by lazy {
-            transaction {
-                if (blueprint.type == TypeElement.Basic) {
-                    ImageIO.read(getResourceAsStream("sprites/${blueprint.sprite}"))
-                } else {
-                    ImageIO.read(
-                        blueprint.sprite.toImgPath().checkedImgPath()?.toFile().inputStreamOrNotFound()
-                    )
-                }
-            }
-        }
-
-        var rotation: Float = 0f
-
-        lateinit var rotatedImage: BufferedImage
-
-        override fun getValue(thisRef: Element, property: KProperty<*>): BufferedImage {
-            if (rotation != orientation || !::rotatedImage.isInitialized) {
-                reloadRotatedImage()
-            }
-
-            return rotatedImage
-        }
-
-        fun reloadRotatedImage() {
-            rotatedImage = originalImage.rotateImage(orientation)
-            rotation = orientation
         }
     }
 }

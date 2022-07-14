@@ -1,9 +1,6 @@
 package jdr.exia.model.dao.option
 
-import jdr.exia.localization.STR_LABEL_HIDDEN
-import jdr.exia.localization.STR_LABEL_VISIBLE
-import jdr.exia.localization.STR_LABEL_VISIBLE_FOR_MASTER
-import jdr.exia.localization.StringLocale
+import jdr.exia.localization.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString

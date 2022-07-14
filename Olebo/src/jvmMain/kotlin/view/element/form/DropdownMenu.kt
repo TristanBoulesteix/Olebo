@@ -2,13 +2,11 @@ package jdr.exia.view.element.form
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import jdr.exia.model.type.imageFromIconRes
 
@@ -33,9 +31,10 @@ fun <T : Any> DropdownMenu(
                 selectedContent(selectedItem)
                 Spacer(Modifier.width(10.dp))
                 Image(
-                    imageFromIconRes("arrow_dropdown"),
+                    bitmap = imageFromIconRes("arrow_dropdown"),
                     contentDescription = null,
-                    modifier = Modifier.size(15.dp)
+                    modifier = Modifier.size(15.dp),
+                    colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface)
                 )
             }
         }

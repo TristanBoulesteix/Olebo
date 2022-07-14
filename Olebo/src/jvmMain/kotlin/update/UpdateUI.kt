@@ -21,7 +21,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun ApplicationScope.UpdateUI(release: Release, notify: (Notification) -> Unit, hideTray: () -> Unit) {
-    val id = release.versionId
+    val versionId = release.versionId
 
     if (Settings.autoUpdate) {
         val notification =
@@ -37,15 +37,16 @@ fun ApplicationScope.UpdateUI(release: Release, notify: (Notification) -> Unit, 
                 onDownloadFailure = {
                     failedToUpdate = true
                     notify(Notification(StringLocale[STR_ERROR], StringLocale[ST_UPDATE_FAILED]))
-                }
+                },
+                versionCode = versionId
             )
         }
 
         if (failedToUpdate)
             MainUI()
 
-    } else if (id.toString() != Settings.updateWarn) {
-        PromptUpdate(versionCode = id, onUpdateRefused = hideTray)
+    } else if (versionId.toString() != Settings.updateWarn) {
+        PromptUpdate(versionCode = versionId, onUpdateRefused = hideTray)
     } else {
         SideEffect(hideTray)
     }
@@ -80,13 +81,13 @@ private fun ApplicationScope.PromptUpdate(versionCode: Int, onUpdateRefused: () 
     )
 
     if (updateIsStarted) {
-        InstallerDownloader(exitApplication = ::exitApplication)
+        InstallerDownloader(exitApplication = ::exitApplication, versionCode = versionCode)
     }
 }
 
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
-private fun InstallerDownloader(exitApplication: () -> Unit) {
+private fun InstallerDownloader(versionCode: Int, exitApplication: () -> Unit) {
     var isVisible by remember { mutableStateOf(true) }
 
     if (isVisible) {
@@ -109,9 +110,11 @@ private fun InstallerDownloader(exitApplication: () -> Unit) {
 
         LaunchedEffect(Unit) {
             downloadAndExit(
+                versionCode = versionCode,
                 onExitSuccess = exitApplication,
                 onProgressUpdate = { progress = it.toFloat() },
-                onDownloadSuccess = { isVisible = false })
+                onDownloadSuccess = { isVisible = false }
+            )
         }
     }
 }

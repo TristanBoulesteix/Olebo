@@ -3,10 +3,7 @@ package jdr.exia.viewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import jdr.exia.localization.ST_ACT_ALREADY_EXISTS
-import jdr.exia.localization.ST_ACT_WITHOUT_NAME
-import jdr.exia.localization.ST_ACT_WITHOUT_SCENE
-import jdr.exia.localization.StringLocale
+import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.act.data.SceneData
@@ -45,7 +42,7 @@ class ActEditorViewModel(private val act: Act?) {
 
     fun onAddScene(sceneData: SceneData): SimpleResult =
         if (sceneData.isValid() && !sceneWithNameExist(sceneData.name)) {
-            scenes = scenes + listOf(sceneData)
+            scenes = scenes + listOf(sceneData.copy(name = sceneData.name.trimEnd()))
             Result.success
         } else Result.failure(IllegalArgumentException("Scene data invalid"))
 
@@ -60,7 +57,7 @@ class ActEditorViewModel(private val act: Act?) {
             )
         ) {
             scenes = scenes.toMutableList().also {
-                it[currentEditPosition] = sceneData
+                it[currentEditPosition] = sceneData.copy(name = sceneData.name.trimEnd())
             }
 
             onEditDone()
@@ -97,14 +94,16 @@ class ActEditorViewModel(private val act: Act?) {
 
         val actExists = transaction {
             (act != null && Act.all().filterNot { it.id == act.id }
-                .any { it.name == actName }) || (act == null && Act.all().any { it.name == actName })
+                .any { it.name.trimEnd() == actName.trimEnd() }) || (act == null && Act.all()
+                .any { it.name.trimEnd() == actName.trimEnd() })
         }
 
         if (actExists) {
             return Result.failure(IllegalStateException(StringLocale[ST_ACT_ALREADY_EXISTS]))
         }
 
-        val updatedAct = transaction { act?.also { it.name = actName } ?: Act.new { this.name = actName } }
+        val updatedAct =
+            transaction { act?.also { it.name = actName.trimEnd() } ?: Act.new { this.name = actName.trimEnd() } }
 
         val idList = scenes.mapNotNull { it.id }
 
@@ -136,5 +135,5 @@ class ActEditorViewModel(private val act: Act?) {
     }
 
     private fun sceneWithNameExist(name: String, excludedId: EntityID<Int>? = null) =
-        scenes.filter { excludedId == null || it.id != excludedId }.any { it.name == name }
+        scenes.filter { excludedId == null || it.id != excludedId }.any { it.name.trimEnd() == name.trimEnd() }
 }

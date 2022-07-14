@@ -2,6 +2,7 @@ package jdr.exia.model.act
 
 import jdr.exia.localization.STR_NEW_ELEMENT
 import jdr.exia.localization.StringLocale
+import jdr.exia.localization.get
 import jdr.exia.model.command.Command
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.InstanceTable
@@ -23,22 +24,6 @@ import org.jetbrains.exposed.sql.update
 import kotlin.io.path.deleteIfExists
 
 class Scene(id: EntityID<Int>) : Entity<Int>(id) {
-    companion object : EntityClass<Int, Scene>(SceneTable) {
-        /**
-         * Move an element to a new scene
-         *
-         * @param element The element to move
-         * @param scene The destination scene
-         */
-        fun moveElementToScene(scene: Scene, element: List<Element>) {
-            transaction {
-                element.forEach {
-                    it.scene = scene
-                }
-            }
-        }
-    }
-
     private val elementIterable by Element referrersOn InstanceTable.idScene
 
     val commandManager
@@ -95,5 +80,21 @@ class Scene(id: EntityID<Int>) : Entity<Int>(id) {
         }
 
         super.delete()
+    }
+
+    companion object : EntityClass<Int, Scene>(SceneTable) {
+        /**
+         * Move an element to a new scene
+         *
+         * @param element The element to move
+         * @param scene The destination scene
+         */
+        fun moveElementToScene(scene: Scene, element: List<Element>) {
+            transaction {
+                element.forEach {
+                    it.scene = scene
+                }
+            }
+        }
     }
 }

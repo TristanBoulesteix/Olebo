@@ -101,11 +101,11 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
         }
 
         addMouseMovedListener { me ->
-            viewModel.cursor = if (me.isAltDown) null else Offset(me.point).absolutePosition
+            viewModel.setCursor(if (me.isAltDown) null else Offset(me.point).absolutePosition)
         }
 
         addMouseExitedListener {
-            viewModel.cursor = null
+            viewModel.setCursor(null)
         }
 
         ToolTipManager.sharedInstance().registerComponent(this)
@@ -147,7 +147,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
 
         // Draw background image
         (g as Graphics2D).drawImage(
-            viewModel.backGroundImage,
+            viewModel.backgroundImage,
             0,
             0,
             this.width,
@@ -208,15 +208,15 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
         color = Color.RED
         setPaintMode()
         drawRect( //Draws a 1 pixel thick rectangle
-            (relativeX(token.referencePoint.x) - 4).toInt(),
-            (relativeY(token.referencePoint.y) - 4).toInt(),
+            (relativeX(token.referenceOffset.x) - 4).toInt(),
+            (relativeY(token.referenceOffset.y) - 4).toInt(),
             (relativeX(token.hitBox.width.toFloat()) + 8).toInt(),
             (relativeY(token.hitBox.height.toFloat()) + 8).toInt()
         )
     }
 
     private fun Graphics.drawLabel(token: Element, labelColor: SerializableColor) {
-        val (refX, refY) = token.referencePoint
+        val (refX, refY) = token.referenceOffset
         val alias = token.alias
 
         font = Font("Arial", Font.BOLD, 24)
@@ -234,16 +234,16 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
     private fun Graphics.drawInvisibleMarker(token: Element) {
         color = Color.BLUE
         drawRect( //Draws a 1 pixel thick rectangle
-            (relativeX(token.referencePoint.x) - 3).toInt(),
-            (relativeY(token.referencePoint.y) - 3).toInt(),
+            (relativeX(token.referenceOffset.x) - 3).toInt(),
+            (relativeY(token.referenceOffset.y) - 3).toInt(),
             (relativeX(token.hitBox.width.toFloat()) + 6).toInt(),
             (relativeY(token.hitBox.height.toFloat()) + 6).toInt()
         )
     }
 
     fun getRelativeRectangleOfToken(token: Element) = Rectangle(
-        relativeX(token.referencePoint.x).toInt(),
-        relativeY(token.referencePoint.y).toInt(),
+        relativeX(token.referenceOffset.x).toInt(),
+        relativeY(token.referenceOffset.y).toInt(),
         relativeX(token.hitBox.width.toFloat()).toInt(),
         relativeY(token.hitBox.height.toFloat()).toInt()
     )
@@ -251,8 +251,8 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
     private fun Graphics.drawToken(token: Element) {
         drawImage(
             token.sprite,
-            relativeX(token.referencePoint.x).toInt(),
-            relativeY(token.referencePoint.y).toInt(),
+            relativeX(token.referenceOffset.x).toInt(),
+            relativeY(token.referenceOffset.y).toInt(),
             relativeX(token.hitBox.width.toFloat()).toInt(),
             relativeY(token.hitBox.height.toFloat()).toInt(),
             null
@@ -267,7 +267,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
     }
 
     /**
-     * Call [JComponent.repaint] only if [repaintLocked] is set to [false].
+     * Call [JComponent.repaint] only if [repaintLocked] is set to false.
      */
     override fun repaint() {
         if (isParentMaster || !repaintLocked)
@@ -276,7 +276,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
 
     private companion object {
         /**
-         * If set to [true], the [MapPanel] of the PlayerDialog will not be repainted.
+         * If set to true, the [MapPanel] of the PlayerDialog will not be repainted.
          */
         var repaintLocked = false
     }

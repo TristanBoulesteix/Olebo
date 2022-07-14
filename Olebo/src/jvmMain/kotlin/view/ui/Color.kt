@@ -1,8 +1,9 @@
 package jdr.exia.view.ui
 
+import androidx.compose.material.Colors
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
 
-val black = Color.Black
-val lightOrange = Color(255, 200, 0)
-val blue = Color(158, 195, 255)
-val lightBlue = Color(225, 250, 249)
+@Stable
+val Colors.backgroundImageColor
+    get() = if (!isLight) Color(54, 54, 54) else Color(245, 245, 245)

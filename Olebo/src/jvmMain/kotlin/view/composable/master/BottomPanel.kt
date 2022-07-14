@@ -1,11 +1,15 @@
 package jdr.exia.view.composable.master
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import jdr.exia.localization.STR_EDIT_TAB
+import jdr.exia.localization.STR_OLEBO_WEB_TAB
+import jdr.exia.localization.StringLocale
+import jdr.exia.localization.get
 import jdr.exia.view.element.HeaderTabOptions
 import jdr.exia.view.element.HeaderTabPosition
 import jdr.exia.view.element.HeaderTabSize
@@ -15,8 +19,8 @@ import jdr.exia.view.element.TabPanel
 fun BottomPanel(
     modifier: Modifier,
     selectedEditor: @Composable () -> Unit,
-    webConfig: @Composable () -> Unit
-) = Box(modifier) {
+    shareScene: @Composable () -> Unit
+) = Surface(modifier) {
     val tabs = remember { BottomTab.values().toList() }
 
     TabPanel(
@@ -28,10 +32,10 @@ fun BottomPanel(
             tabPosition = HeaderTabPosition.Left
         ),
         content = { currentTab, padding ->
-            Box(modifier = Modifier.padding(padding)) {
+            Surface(modifier = Modifier.padding(padding)) {
                 when (currentTab) {
                     BottomTab.Select -> selectedEditor()
-                    else -> webConfig()
+                    BottomTab.Web -> shareScene()
                 }
             }
         }
@@ -39,5 +43,5 @@ fun BottomPanel(
 }
 
 private enum class BottomTab(val tabName: String) {
-    Select("Selection"), Web("Web (Coming soon)")
+    Select(StringLocale[STR_EDIT_TAB]), Web(StringLocale[STR_OLEBO_WEB_TAB])
 }

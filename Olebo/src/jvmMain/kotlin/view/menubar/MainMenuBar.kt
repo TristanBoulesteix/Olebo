@@ -15,6 +15,7 @@ import jdr.exia.localization.*
 import jdr.exia.main
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.loadOleboZipData
+import jdr.exia.model.dao.option.ThemeMode
 import jdr.exia.model.dao.zipOleboDirectory
 import jdr.exia.update.ChangelogsDialog
 import jdr.exia.update.getChangelogs
@@ -24,11 +25,17 @@ import jdr.exia.view.element.dialog.ConfirmMessage
 import jdr.exia.view.element.dialog.LoadingDialog
 import jdr.exia.view.element.dialog.MessageDialog
 import jdr.exia.view.tools.windowAncestor
+import jdr.exia.view.ui.LocalTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.awt.Desktop
 import java.io.File
+import java.io.InputStreamReader
+import java.net.URI
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import javax.swing.JFileChooser
 import javax.swing.JOptionPane
 import javax.swing.filechooser.FileNameExtensionFilter
@@ -124,7 +131,7 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
     if (isSettingsDialogVisible) {
         SettingsDialog {
             isSettingsDialogVisible = false
-            WindowStateManager.currentFocusedWindow?.repaint()
+            WindowStateManager.currentFocusedWindowScope?.triggerSettingsChange()
         }
     }
 
@@ -132,38 +139,23 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
         isSettingsDialogVisible = true
     }
 
-    Item(text = StringLocale[STR_TAKE_SCREENSHOT], enabled = false, shortcut = KeyShortcut(Key.P, ctrl = true)) {
-        /*        val parent = this@FileMenu.windowAncestor
-        JFileChooser().apply {
-            this.dialogTitle = StringLocale[STR_TAKE_SCREENSHOT]
-            this.fileFilter = FileNameExtensionFilter("Image PNG", "png")
-            if (this.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
-                val fileToSave = if (this.selectedFile.extension == "png")
-                    this.selectedFile
-                else
-                    File("${this.selectedFile.parentFile.absolutePath}${File.separator}${this.selectedFile.nameWithoutExtension}.png")
+    val oleboTheme = LocalTheme.current
 
-                val saveImg = {
-                    if (parent != null)
-                        ImageIO.write(getScreenShot(parent), "png", fileToSave)
-                }
+    Menu(text = "${StringLocale[STR_THEME]} ${oleboTheme.themeMode}") {
+        val themeModes = remember { ThemeMode.values().toList() }
 
-                if (fileToSave.exists()) {
-                    val result = JOptionPane.showConfirmDialog(
-                        null,
-                        StringLocale[ST_FILE_ALREADY_EXISTS],
-                        StringLocale[STR_SAVE_AS],
-                        JOptionPane.YES_NO_OPTION
-                    )
-                    if (result == JOptionPane.YES_OPTION) saveImg()
-                } else saveImg()
+        themeModes.forEach {
+            RadioButtonItem("$it", selected = oleboTheme.themeMode == it) {
+                oleboTheme.themeMode = it
             }
-        }*/
+        }
     }
+
+    Separator()
 
     var changelogs by remember { mutableStateOf("") }
 
-    Item(text = "Changelogs") {
+    Item(text = StringLocale[STR_RELEASE_NOTES]) {
         changelogs = getChangelogs() ?: ""
     }
 
@@ -171,6 +163,20 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
         ChangelogsDialog(changelogs) {
             changelogs = ""
         }
+    }
+
+    lateinit var desktop: Desktop
+
+    Item(
+        text = StringLocale[STR_CONTACT_DEVELOPERS],
+        enabled = Desktop.isDesktopSupported() && Desktop.getDesktop().also { desktop = it }
+            .isSupported(Desktop.Action.MAIL)
+    ) {
+        val body = StringLocale.getLocalizedResource("contact/body", "txt", ::main.javaClass.classLoader)?.reader()
+            ?.use(InputStreamReader::readText)?.let { URLEncoder.encode(it, StandardCharsets.UTF_8).replace("+", "%20") } ?: ""
+
+        val mailto = URI("mailto:contact.olebo@tb-lab.fr?subject=Bug%20report%20%2F%20feature%20request&body=$body")
+        desktop.mail(mailto)
     }
 
     var aboutDialogVisible by remember { mutableStateOf(false) }

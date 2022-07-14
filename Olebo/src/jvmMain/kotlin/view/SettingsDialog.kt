@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -39,21 +41,28 @@ fun SettingsDialog(onCloseRequest: () -> Unit) {
         mutableStateOf(originalSettings)
     }
 
-    Dialog(onCloseRequest = onCloseRequest, state = state, resizable = false, title = StringLocale[STR_OPTIONS]) {
-        Column {
-            GeneralSettings(settingsData = settings, updateSettings = { settings = it })
-            Spacer(Modifier.height(10.dp))
-            LookAndFeelSettings(settingsData = settings, updateSettings = { settings = it })
-            Spacer(Modifier.height(10.dp))
-            RowButton(
-                close = onCloseRequest,
-                data = settings,
-                refresh = { settings = dataFromSettings },
-                closeAndReset = {
-                    originalSettings.save()
-                    onCloseRequest()
-                }
-            )
+    Dialog(
+        onCloseRequest = onCloseRequest,
+        state = state,
+        resizable = false,
+        title = StringLocale[STR_OPTIONS],
+    ) {
+        Card(modifier = Modifier.fillMaxSize()) {
+            Column {
+                GeneralSettings(settingsData = settings, updateSettings = { settings = it })
+                Spacer(Modifier.height(10.dp))
+                LookAndFeelSettings(settingsData = settings, updateSettings = { settings = it })
+                Spacer(Modifier.height(10.dp))
+                RowButton(
+                    close = onCloseRequest,
+                    data = settings,
+                    refresh = { settings = dataFromSettings },
+                    closeAndReset = {
+                        originalSettings.save()
+                        onCloseRequest()
+                    }
+                )
+            }
         }
     }
 }
@@ -160,16 +169,15 @@ private fun LookAndFeelSettings(settingsData: SettingsData, updateSettings: (Set
     }
 
 @Stable
-private val selectedContentColor: @Composable RowScope.(SerializableColor) -> Unit
-    get() = {
-        Row(horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(it.toString())
-            if (it is SerializableColor.Custom) {
-                Spacer(Modifier.size(15.dp))
-                Spacer(Modifier.size(15.dp).background(it.color))
-            }
+private val selectedContentColor: @Composable RowScope.(SerializableColor) -> Unit = {
+    Row(horizontalArrangement = Arrangement.SpaceBetween) {
+        Text(it.toString())
+        if (it is SerializableColor.Custom) {
+            Spacer(Modifier.size(15.dp))
+            Spacer(Modifier.size(15.dp).background(it.color))
         }
     }
+}
 
 private fun updateColor(
     newColor: SerializableColor,
@@ -190,7 +198,8 @@ private fun updateColor(
 
 @Composable
 private inline fun SettingsSection(sectionTitle: String, content: @Composable ColumnScope.() -> Unit) = Column(
-    modifier = Modifier.fillMaxWidth().padding(5.dp).border(2.dp, Color.Black, RoundedCornerShape(5.dp)).padding(10.dp),
+    modifier = Modifier.fillMaxWidth().padding(5.dp)
+        .border(2.dp, MaterialTheme.colors.primary, RoundedCornerShape(5.dp)).padding(10.dp),
     content = {
         Text(sectionTitle, fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)
         Spacer(Modifier.height(8.dp))

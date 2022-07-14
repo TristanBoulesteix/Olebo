@@ -1,6 +1,9 @@
 package jdr.exia.view
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeWindow
@@ -8,10 +11,7 @@ import androidx.compose.ui.awt.SwingPanel
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.WindowPlacement
-import jdr.exia.localization.STR_DELETION
-import jdr.exia.localization.ST_CONFIRM_CLEAR_BOARD
-import jdr.exia.localization.ST_STR1_DM_WINDOW_NAME
-import jdr.exia.localization.StringLocale
+import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.option.Settings
@@ -19,9 +19,11 @@ import jdr.exia.view.composable.master.*
 import jdr.exia.view.element.dialog.ConfirmMessage
 import jdr.exia.view.menubar.MasterMenuBar
 import jdr.exia.view.tools.event.addMousePressedListener
+import jdr.exia.view.tools.event.removeMousePressedListener
 import jdr.exia.view.tools.screens
 import jdr.exia.view.ui.MASTER_WINDOW_SIZE
 import jdr.exia.viewModel.MasterViewModel
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -29,10 +31,15 @@ import java.awt.Frame.MAXIMIZED_BOTH
 import java.awt.GraphicsConfiguration
 import java.awt.GraphicsDevice
 import java.awt.Rectangle
+import kotlin.coroutines.EmptyCoroutineContext
 
 @Composable
 fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
     val viewModel = remember { MasterViewModel(act) }
+
+    DisposableEffect(Unit) {
+        onDispose(viewModel.scope::cancel)
+    }
 
     Window(
         title = transaction { StringLocale[ST_STR1_DM_WINDOW_NAME, act.name] },
@@ -42,6 +49,10 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
     ) {
         LaunchedEffect(Unit) {
             window.extendedState = MAXIMIZED_BOTH
+
+            addSettingsChangedListener {
+                viewModel.repaint(reloadTokens = true)
+            }
         }
 
         var playerFrameVisible by remember { mutableStateOf(Settings.playerFrameOpenedByDefault) }
@@ -59,7 +70,7 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
             playerDialogData.togglePlayerWindow(playerFrameVisible)
 
             if (screens.size > 1)
-                launch {
+                launch(context = EmptyCoroutineContext) {
                     delay(150)
                     window.requestFocus()
                 }
@@ -104,18 +115,21 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
     Items(viewModel)
 
     Column(modifier = Modifier.weight(.80f).fillMaxSize()) {
-        //ComposeMapPanel(modifier = Modifier.weight(.85f).fillMaxSize(), viewModel = viewModel)
-        Box(modifier = Modifier.weight(.80f).fillMaxSize()) {
-            val focusManager = LocalFocusManager.current
+        val focusManager = LocalFocusManager.current
 
-            LaunchedEffect(focusManager) {
-                viewModel.panel.addMousePressedListener {
-                    focusManager.clearFocus()
-                }
+        DisposableEffect(focusManager) {
+            val panel = viewModel.panel
+
+            val event = panel.addMousePressedListener { focusManager.clearFocus() }
+
+            onDispose {
+                panel.removeMousePressedListener(event)
             }
-
-            SwingPanel(factory = viewModel::panel)
         }
+
+        //ComposeMapPanel(modifier = Modifier.weight(.85f).fillMaxSize(), viewModel = viewModel)
+        SwingPanel(factory = viewModel::panel, modifier = Modifier.weight(.80f).fillMaxSize())
+
         BottomPanel(
             modifier = Modifier.weight(.20f).fillMaxSize(),
             selectedEditor = {
@@ -127,10 +141,11 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
                     setPriority = viewModel::changePriority
                 )
             },
-            webConfig = {
-                WebConfig(
+            shareScene = {
+                ShareScenePanel(
                     connect = viewModel::connectToServer,
-                    connectionState = viewModel.connectionState
+                    connectionState = viewModel.connectionState,
+                    disconnect = viewModel::disconnectFromServer
                 )
             }
         )

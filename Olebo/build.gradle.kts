@@ -1,42 +1,32 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
-val kotlinVersion: String by System.getProperties()
-val coroutineVersion: String by project.parent!!
-val ktorVersion: String by project.parent!!
-val exposedVersion: String by project.parent!!
-
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     kotlin("multiplatform")
-    id("org.jetbrains.compose") version "1.0.0-beta6-dev455"
-    id("org.sonarqube") version "3.3"
+    id("org.jetbrains.compose") version libs.versions.compose.get()
 }
 
-version = "0.1.3"
+version = "0.1.4"
 
 repositories {
-    mavenCentral()
-    maven("https://dl.bintray.com/kotlin/exposed/")
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-    google()
+    maven("https://dl.bintray.com/kotlin/exposed/")
 }
 
 kotlin {
     sourceSets["jvmMain"].dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
-        implementation("org.slf4j:slf4j-simple:2.0.0-alpha1")
-        implementation("org.xerial:sqlite-jdbc:3.28.0")
-        implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
-        implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
-        implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:$coroutineVersion")
-        implementation("io.ktor:ktor-client-core:$ktorVersion")
-        implementation("io.ktor:ktor-client-cio:$ktorVersion")
-        implementation("io.ktor:ktor-client-serialization:$ktorVersion")
-        implementation("io.ktor:ktor-client-apache:$ktorVersion")
+        implementation(libs.kotlin.reflect)
+        implementation(libs.slf4j)
+        implementation(libs.jdbc.sqlite)
+        implementation(libs.bundles.exposed)
+        implementation(libs.bundles.coroutines.desktop)
+        implementation(libs.bundles.ktor.client.desktop)
+        implementation(libs.serialization)
+        implementation(libs.systemThemeDetector)
         implementation(project(":Localization"))
         implementation(project(":Update"))
         implementation(project(":System"))
+        implementation(project(":ShareScene"))
         implementation(compose.desktop.currentOs)
     }
 }

@@ -5,11 +5,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import fr.olebo.sharescene.*
+import fr.olebo.sharescene.connection.*
+import io.ktor.websocket.*
+import jdr.exia.OLEBO_VERSION_CODE
 import jdr.exia.localization.STR_DELETE_SELECTED_TOKENS
 import jdr.exia.localization.StringLocale
+import jdr.exia.localization.get
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.command.Command
+import jdr.exia.model.dao.option.SerializableLabelState
+import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Layer
@@ -17,28 +25,21 @@ import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.callCommandManager
 import jdr.exia.model.tools.doIfContainsSingle
 import jdr.exia.model.tools.withSetter
-import jdr.exia.model.type.checkedImgPath
-import jdr.exia.model.type.contains
-import jdr.exia.model.type.inputStreamOrNotFound
-import jdr.exia.model.type.toImgPath
-import jdr.exia.service.ConnectionState
+import jdr.exia.model.type.*
+import jdr.exia.service.*
 import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.tools.getTokenFromPosition
 import jdr.exia.view.tools.positionOf
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.swing.Swing
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
-import kotlin.coroutines.CoroutineContext
 
-class MasterViewModel(val act: Act) :
-    CoroutineScope by CoroutineScope(Dispatchers.Swing as CoroutineContext /* The cast is required because of a bug with IntelliJ */) {
+class MasterViewModel(val act: Act) {
+    val scope = CoroutineScope(Dispatchers.Main)
+
     var blueprintEditorDialogVisible by mutableStateOf(false)
         private set
 
@@ -67,7 +68,10 @@ class MasterViewModel(val act: Act) :
         }
     }
 
-    var connectionState by mutableStateOf(ConnectionState.Disconnected)
+    var connectionState: ConnectionState by mutableStateOf(Disconnected)
+        private set
+
+    private var shareSceneJob: Job? = null
 
     /**
      * These are all the [Blueprint] placed on  the current map
@@ -77,13 +81,39 @@ class MasterViewModel(val act: Act) :
             field = tokens.sortedBy { it.priority }
         }
 
-    val backGroundImage: BufferedImage by derivedStateOf {
+    val backgroundImage: BufferedImage by derivedStateOf {
         transaction {
-            ImageIO.read(currentScene.background.toImgPath().checkedImgPath()?.toFile().inputStreamOrNotFound())
+            ImageIO.read(inputStreamFromString(currentScene.background)).also { image ->
+                sendMessageToShareScene {
+                    val color =
+                        if (Settings.labelState == SerializableLabelState.FOR_BOTH) Settings.labelColor.contentColor.toTriple() else null
+                    NewMap(
+                        Base64Image(image, 1600, 900),
+                        elements.filter { it.isVisible }.map { it.toShareSceneToken(color) })
+                }
+            }
         }
     }
 
-    var cursor: Offset? by mutableStateOf(null)
+    var cursor by mutableStateOf<Offset?>(null)
+        private set
+
+    @JvmName("update cursor state")
+    fun setCursor(cursor: Offset?) {
+        sendMessageToShareScene {
+            if (cursor == null || !Settings.cursorEnabled) CursorHidden else {
+                val (cursorColor, borderCursorColor) = Settings.cursorColor
+
+                CursorMoved(
+                    Position(cursor.x.toInt(), cursor.y.toInt()),
+                    cursorColor.toTriple(),
+                    borderCursorColor.toTriple()
+                )
+            }
+        }
+
+        this.cursor = cursor
+    }
 
     /**
      * Returns true if there is at least one element at the given position
@@ -104,12 +134,12 @@ class MasterViewModel(val act: Act) :
      */
     fun moveTokensTo(point: Offset, from: Offset? = null) {
         val origin = from?.let { pos ->
-            selectedElements.find { it.hitBox in pos } ?: selectElementsAtPosition(pos)
-                .let { selectedElements.firstOrNull() }
+            selectedElements.find { it.hitBox in pos }
+                ?: selectElementsAtPosition(pos).let { selectedElements.firstOrNull() }
         }
 
         /**
-         * Return a new [Point] inside the borders of the map
+         * Return a new [Offset] inside the borders of the map
          */
         fun Offset.checkBoundOf(element: Element?): Offset {
             var newPosition = this
@@ -146,11 +176,11 @@ class MasterViewModel(val act: Act) :
             } else {
                 val originElement = selectedElements.find { it === origin } ?: selectedElements.first()
 
-                val diffPosition = newPosition - originElement.centerPoint
+                val diffPosition = newPosition - originElement.centerOffset
 
                 val elementToPoint =
                     mapOf(originElement to originElement.positionOf(newPosition)) + selectedElements.filterNot { it === originElement }
-                        .map { it to it.positionOf((it.centerPoint + diffPosition).checkBoundOf(it)) }
+                        .map { it to it.positionOf((it.centerOffset + diffPosition).checkBoundOf(it)) }
 
                 currentScene.callCommandManager(elementToPoint, Element::cmdPosition)
             }
@@ -197,8 +227,7 @@ class MasterViewModel(val act: Act) :
             selectedElements.doIfContainsSingle(emptyList()) { blueprint ->
                 val elements = elements
 
-                if (elements.getOrNull(elements.indexOfFirst { it.id == blueprint.id }
-                        .operation(elements)) != null) {
+                if (elements.getOrNull(elements.indexOfFirst { it.id == blueprint.id }.operation(elements)) != null) {
                     listOf(elements[elements.indexOfFirst { it.id == blueprint.id }.operation(elements)])
                 } else emptyList()
             }
@@ -248,24 +277,20 @@ class MasterViewModel(val act: Act) :
         }
     }
 
-    fun addNewElement(blueprint: Blueprint) = launch {
-        currentScene.addElement(
-            blueprint = blueprint,
-            onAdded = { newElement ->
-                elements = elements.toMutableList().also {
-                    it += newElement
-                }
-
-                selectedElements = listOf(newElement)
-            },
-            onCanceled = { elementToRemove ->
-                this@MasterViewModel.elements = this@MasterViewModel.elements.toMutableList().also {
-                    it -= elementToRemove
-                }
-                unselectElements()
-                repaint()
+    fun addNewElement(blueprint: Blueprint) = scope.launch {
+        currentScene.addElement(blueprint = blueprint, onAdded = { newElement ->
+            elements = elements.toMutableList().also {
+                it += newElement
             }
-        )
+
+            selectedElements = listOf(newElement)
+        }, onCanceled = { elementToRemove ->
+            this@MasterViewModel.elements = this@MasterViewModel.elements.toMutableList().also {
+                it -= elementToRemove
+            }
+            unselectElements()
+            repaint()
+        })
 
         repaint()
     }
@@ -312,23 +337,109 @@ class MasterViewModel(val act: Act) :
         repaint()
     }
 
-    fun repaint(reloadTokens: Boolean = false) = launch {
-        if (reloadTokens)
-            withContext(Dispatchers.IO) {
-                elements = newSuspendedTransaction { currentScene.elements }
+    fun repaint(reloadTokens: Boolean = false) = scope.launch {
+        withContext(Dispatchers.IO) {
+            if (reloadTokens) elements = newSuspendedTransaction { currentScene.elements }
+
+            sendMessageToShareScene {
+                val color =
+                    if (Settings.labelState == SerializableLabelState.FOR_BOTH) Settings.labelColor.contentColor.toTriple() else null
+                TokenStateChanged(elements.filter { it.isVisible }.map { it.toShareSceneToken(color) })
             }
+        }
 
         panel.repaint()
     }
 
     fun connectToServer() {
-        connectionState = ConnectionState.Login
+        connectionState = Login
+
+        shareSceneJob = scope.launch(Dispatchers.IO) {
+            initWebsocket(client = socketClient, path = "share-scene", onFailure = { error ->
+                connectionState = Disconnected.ConnectionFailed(error)
+            }, socketBlock = { manager, setSessionCode ->
+                try {
+                    val connectedState = Connected(manager)
+
+                    for (frame in incoming) {
+                        when (frame) {
+                            is Frame.Close -> {
+                                val closeReason = frame.readReason()
+
+                                if (closeReason?.knownReason == CloseReason.Codes.NORMAL) {
+                                    triggerError(ConnectionError.ServerError(closeReason.message))
+                                }
+                            }
+                            is Frame.Text -> when (val message = frame.getMessageOrNull()) {
+                                is NewSessionCreated -> {
+                                    if (message.minimalOleboVersion > OLEBO_VERSION_CODE) {
+                                        triggerError(ConnectionError.WrongVersion)
+                                    }
+
+                                    setSessionCode(message.code)
+
+                                    val color =
+                                        if (Settings.labelState == SerializableLabelState.FOR_BOTH) Settings.labelColor.contentColor.toTriple() else null
+
+                                    send(NewMap(Base64Image(backgroundImage, 1600, 900),
+                                        elements.filter { it.isVisible }.map { it.toShareSceneToken(color) })
+                                    )
+
+                                    launch {
+                                        for (messageToSend in connectedState.shareSceneViewModel.messages) {
+                                            send(messageToSend)
+                                        }
+                                    }
+
+                                    connectionState = connectedState
+                                }
+                                is PlayerAddedOrRemoved -> {
+                                    connectedState.shareSceneViewModel.connectedPlayers = message.users
+                                }
+                                else -> continue
+                            }
+                            else -> continue
+                        }
+                    }
+                } finally {
+                    withContext(Dispatchers.IO) {
+                        connectionState = Disconnected
+                        manager.close()
+                    }
+                }
+            })
+        }
+    }
+
+    fun disconnectFromServer() {
+        shareSceneJob?.cancel()
+        shareSceneJob = null
     }
 
     private fun loadBlueprints(): Map<TypeElement, List<Blueprint>> = transaction {
         val items = Blueprint.all().groupBy { it.type }
 
         (TypeElement.values() + items.keys).associateWith { items[it] ?: emptyList() }
+    }
+
+    private fun Element.toShareSceneToken(rgbTooltip: Triple<Int, Int, Int>?) = Token(
+        image = Base64Image(sprite, size.value),
+        position = Position(referenceOffset.x.toInt(), referenceOffset.y.toInt()),
+        size = size.value,
+        label = rgbTooltip?.let { Label(alias, it) }
+    )
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private inline fun sendMessageToShareScene(crossinline message: () -> Message) =
+        (connectionState as? Connected)?.let { connectedState ->
+            scope.launch(Dispatchers.IO) {
+                connectedState.shareSceneViewModel.messages.takeIf { !it.isClosedForSend }?.send(message())
+            }
+        }
+
+    private fun Color.toTriple(): Triple<Int, Int, Int> {
+        val (r, g, b) = this
+        return Triple((r * 255).toInt(), (g * 255).toInt(), (b * 255).toInt())
     }
 
     companion object {

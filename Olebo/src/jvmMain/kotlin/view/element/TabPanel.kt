@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -33,28 +34,34 @@ fun <T : Any> TabPanel(
     Scaffold(
         backgroundColor = backgroundColor,
         topBar = {
-            HeaderRow(
-                backgroundColor = headerTabOption.backgroundColor,
-                paddingHeight = headerTabOption.paddingHeight
-            ) {
-                Row(horizontalArrangement = headerTabOption.tabPosition.horizontalArrangement, modifier = Modifier.fillMaxWidth()) {
-                    tabViewModel.tabs.forEach { tab ->
-                        Text(
-                            text = tab.tabNameProvider(),
-                            fontWeight = FontWeight.Bold.takeIf { tabViewModel.currentTab == tab },
-                            modifier = Modifier.applyIf(
-                                condition = tabViewModel.currentTab == tab,
-                                modifier = {
-                                    border(
-                                        bottom = BorderBuilder(
-                                            headerTabOption.tabSize.borderSize,
-                                            Color.Black
+            Surface {
+                HeaderRow(
+                    backgroundColor = headerTabOption.backgroundColor,
+                    paddingHeight = headerTabOption.paddingHeight
+                ) {
+                    Row(
+                        horizontalArrangement = headerTabOption.tabPosition.horizontalArrangement,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        tabViewModel.tabs.forEach { tab ->
+                            Text(
+                                text = tab.tabNameProvider(),
+                                color = MaterialTheme.colors.primary,
+                                fontWeight = FontWeight.Bold.takeIf { tabViewModel.currentTab == tab },
+                                modifier = Modifier.applyIf(
+                                    condition = tabViewModel.currentTab == tab,
+                                    modifier = {
+                                        border(
+                                            bottom = BorderBuilder(
+                                                headerTabOption.tabSize.borderSize,
+                                                MaterialTheme.colors.primary
+                                            )
                                         )
-                                    )
-                                }
-                            ).clickable { tabViewModel.onSelectTab(tab) }
-                                .padding(headerTabOption.tabSize.tabPaddingHeight)
-                        )
+                                    }
+                                ).clickable { tabViewModel.onSelectTab(tab) }
+                                    .padding(headerTabOption.tabSize.tabPaddingHeight)
+                            )
+                        }
                     }
                 }
             }
@@ -66,6 +73,7 @@ fun <T : Any> TabPanel(
     )
 }
 
+@Immutable
 data class HeaderTabOptions(
     val backgroundColor: Color = Color.Unspecified,
     val paddingHeight: Dp = 15.dp,

@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Olebo"
-#define MyAppVersion "0.1.3"
+#define MyAppVersion "0.1.4"
 #define MyAppExeName "Olebo.exe"
 #define MyAppAssocName MyAppName + " File"
 #define MyAppAssocExt ".Olebo"

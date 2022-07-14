@@ -21,10 +21,11 @@ value class Image(val path: String) {
         val unspecified = Image("")
     }
 
+    @Stable
     fun isUnspecified() = path.isBlank()
 
     @Stable
-    fun toBitmap() = imageFromPath(path)
+    fun toBitmap() = if (isUnspecified()) imageFromIconRes("not_found", "jpg") else imageFromPath(path)
 
     val checkedImgPath
         get() = path.toImgPath().checkedImgPath()
@@ -43,7 +44,7 @@ fun Image.saveImgAndGetPath(suffix: String = "background"): String {
 
     val newImgPath = imgPath / "img_${UUID.randomUUID()}_$suffix.png"
 
-    path.toImgPath().checkedImgPath()?.toFile().inputStreamOrNotFound().use { inputStream ->
+    inputStreamFromString(path).use { inputStream ->
         newImgPath.outputStream().use {
             inputStream.copyTo(it)
         }
@@ -72,5 +73,7 @@ fun Path.checkedImgPath(): Path? {
 
 fun String.toImgPath(): Path = Paths.get(this)
 
-fun File?.inputStreamOrNotFound() = this?.inputStream()
+private fun File?.inputStreamOrNotFound() = this?.inputStream()
     ?: ::Image::class.java.classLoader.getResourceAsStream("icons/not_found.jpg")!!
+
+fun inputStreamFromString(path: String) = path.toImgPath().checkedImgPath()?.toFile().inputStreamOrNotFound()
