@@ -125,7 +125,10 @@ dependencyResolutionManagement {
             )
 
             // serialization
-            library("serialization", "org.jetbrains.kotlinx", "kotlinx-serialization-core-jvm").versionRef(
+            library("serialization", "org.jetbrains.kotlinx", "kotlinx-serialization-core").versionRef(
+                serialisationVersion
+            )
+            library("serialization-jvm", "org.jetbrains.kotlinx", "kotlinx-serialization-core-jvm").versionRef(
                 serialisationVersion
             )
             library("serialization-json", "org.jetbrains.kotlinx", "kotlinx-serialization-json").versionRef(

@@ -5,6 +5,7 @@ import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.util.*
 import io.ktor.util.cio.*
 import io.ktor.utils.io.*
 import jdr.exia.OLEBO_VERSION_CODE
@@ -32,6 +33,7 @@ suspend fun checkForUpdate(releaseCode: Int? = null): Result<Release> {
     return Result.failure(Throwable())
 }
 
+@OptIn(InternalAPI::class)
 suspend fun getInstallerExecutable(versionCode: Int, onUpdateProgress: (Long) -> Unit): Result<File> {
     val fileToWrite = File("$OLEBO_DIRECTORY${File.separator}olebo_updater.exe")
 
@@ -53,7 +55,9 @@ suspend fun getInstallerExecutable(versionCode: Int, onUpdateProgress: (Long) ->
     }
 
     if (response.status.isSuccess()) {
-        response.bodyAsChannel().copyAndClose(fileToWrite.writeChannel())
+        // Not working !!!
+        // response.bodyAsChannel().copyAndClose(fileToWrite.writeChannel())
+        response.content.copyAndClose(fileToWrite.writeChannel())
     } else return Result.failure(IllegalStateException("Response status : ${response.status.value}"))
 
     return Result.success(fileToWrite)
