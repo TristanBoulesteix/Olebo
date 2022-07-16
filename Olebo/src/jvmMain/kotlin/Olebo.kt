@@ -18,12 +18,12 @@ import jdr.exia.view.ui.OleboTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-const val OLEBO_VERSION_NAME = "0.1.4"
+const val OLEBO_VERSION_NAME = "0.1.5"
 
 /**
  * This code must be unique between releases and must be incremented for each one
  */
-const val OLEBO_VERSION_CODE = 5
+const val OLEBO_VERSION_CODE = 6
 
 fun main() = application {
     // Initialize translations

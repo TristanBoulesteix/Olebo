@@ -6,7 +6,7 @@ plugins {
     id("org.jetbrains.compose") version libs.versions.compose.get()
 }
 
-version = "0.1.4"
+version = "0.1.5"
 
 repositories {
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
