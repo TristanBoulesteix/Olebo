@@ -163,6 +163,7 @@ const val STR_AUTO_THEME = "auto_theme"
 const val STR_THEME = "theme"
 const val STR_RELEASE_NOTES = "release_notes"
 const val STR_CONTACT_DEVELOPERS = "contact_devs"
+const val STR_NO_UPDATE_AVAILABLE = "no_update_available"
 
 // -- Sentences
 

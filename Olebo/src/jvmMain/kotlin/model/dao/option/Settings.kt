@@ -87,15 +87,6 @@ object Settings {
             this@Settings[LABEL_COLOR] = value.encode()
         }
 
-    val wasJustUpdated
-        get() = transaction(DAO.database) {
-            this@Settings[CHANGELOGS_VERSION] == OLEBO_VERSION_CODE.toString()
-        }
-
-    fun setWasJustUpdatedVersion(numVer: Int?) = transaction(DAO.database) {
-        this@Settings[CHANGELOGS_VERSION] = numVer
-    }
-
     var playerWindowShouldBeFullScreen
         get() = transaction(DAO.database) {
             this@Settings[SHOULD_OPEN_PLAYER_WINDOW_IN_FULL_SCREEN].toBoolean()

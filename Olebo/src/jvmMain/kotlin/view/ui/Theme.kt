@@ -6,8 +6,8 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import com.jthemedetecor.OsThemeDetector
+import jdr.exia.model.dao.Preferences
 import jdr.exia.model.dao.option.ThemeMode
-import jdr.exia.model.tools.Preferences
 import jdr.exia.model.tools.withSetter
 import java.util.function.Consumer
 

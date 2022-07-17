@@ -121,8 +121,13 @@ fun reset() = File(OLEBO_DIRECTORY).let {
 }
 
 fun restart(status: Int = 0): Nothing {
-    Runtime.getRuntime().exec(Path(jarPath).parent.parent / "Olebo.exe")
-    exitProcess(status)
+    try {
+        Runtime.getRuntime().exec(Path(jarPath).parent.parent / "Olebo.exe")
+    } catch (e: Exception) {
+        e.printStackTrace()
+    } finally {
+        exitProcess(status)
+    }
 }
 
 private fun Runtime.exec(path: Path): Process = this.exec(path.toString())

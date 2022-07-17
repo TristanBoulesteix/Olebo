@@ -237,6 +237,7 @@ internal actual class StringLocaleBundle : StringLocale() {
         STR_THEME to "theme:",
         STR_RELEASE_NOTES to "release notes",
         STR_CONTACT_DEVELOPERS to "contact developers",
+        STR_NO_UPDATE_AVAILABLE to "no update available",
     )
 }
 
@@ -476,5 +477,6 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
         STR_THEME to "thème :",
         STR_RELEASE_NOTES to "notes de mises à jour",
         STR_CONTACT_DEVELOPERS to "contacter les développeurs",
+        STR_NO_UPDATE_AVAILABLE to "aucune mise à jour disponible",
     )
 }
