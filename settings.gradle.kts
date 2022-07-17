@@ -39,7 +39,6 @@ dependencyResolutionManagement {
 
             // Plugins
             plugin("kotlin-multiplatform", "org.jetbrains.kotlin.multiplatform").versionRef(kotlinVersion)
-            plugin("kotlin-serialization", "org.jetbrains.kotlin.plugin.serialization").versionRef(kotlinVersion)
 
             // kotlin-reflect
             library("kotlin-reflect", "org.jetbrains.kotlin", "kotlin-reflect").versionRef(kotlinVersion)
