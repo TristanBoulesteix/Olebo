@@ -23,7 +23,6 @@ import jdr.exia.view.tools.event.removeMousePressedListener
 import jdr.exia.view.tools.screens
 import jdr.exia.view.ui.MASTER_WINDOW_SIZE
 import jdr.exia.viewModel.MasterViewModel
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -35,11 +34,9 @@ import kotlin.coroutines.EmptyCoroutineContext
 
 @Composable
 fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
-    val viewModel = remember { MasterViewModel(act) }
+    val scope = rememberCoroutineScope()
 
-    DisposableEffect(Unit) {
-        onDispose(viewModel.scope::cancel)
-    }
+    val viewModel = remember { MasterViewModel(act, scope) }
 
     Window(
         title = transaction { StringLocale[ST_STR1_DM_WINDOW_NAME, act.name] },
