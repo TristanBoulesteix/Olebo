@@ -93,7 +93,7 @@ private fun ActsView(
 
     Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.secondaryVariant).padding(15.dp)) {
         Card(
-            modifier = Modifier.padding(20.dp),
+            modifier = Modifier.padding(20.dp).fillMaxSize(),
             border = BorderBuilder.defaultBorder.toBorderStroke()
         ) {
             when {

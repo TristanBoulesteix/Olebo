@@ -94,18 +94,25 @@ private fun Content(viewModel: ElementsEditorViewModel, innerPadding: PaddingVal
 
             when {
                 viewModel.blueprints.isEmpty() -> {
-                    Column(modifier = contentModifier, verticalArrangement = Arrangement.Center) {
-                        Text(
-                            text = StringLocale[STR_NO_ELEMENT],
-                            modifier = Modifier.align(Alignment.CenterHorizontally),
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 30.sp
-                        )
-                        OutlinedButton(
-                            onClick = viewModel::startBlueprintCreation,
-                            content = { Text(StringLocale[STR_ADD_ELEMENT]) },
-                            modifier = Modifier.align(Alignment.CenterHorizontally)
-                        )
+                    Card(
+                        modifier = Modifier.padding(end = 20.dp, start = 20.dp, bottom = 20.dp)
+                            .fillMaxSize(),
+                        border = BorderBuilder.defaultBorder.toBorderStroke(),
+                        shape = roundedBottomShape
+                    ) {
+                        Column(modifier = contentModifier, verticalArrangement = Arrangement.Center) {
+                            Text(
+                                text = StringLocale[STR_NO_ELEMENT],
+                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 30.sp
+                            )
+                            OutlinedButton(
+                                onClick = viewModel::startBlueprintCreation,
+                                content = { Text(StringLocale[STR_ADD_ELEMENT]) },
+                                modifier = Modifier.align(Alignment.CenterHorizontally)
+                            )
+                        }
                     }
                 }
                 else -> ScrollableContent(viewModel)
