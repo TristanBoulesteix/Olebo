@@ -24,7 +24,7 @@ fun main() {
     // Initialize translations and database
     StringLocale(Settings::activeLanguage)
 
-    application {
+    application(exitProcessOnExit = false) {
         // Initialize themes
         OleboTheme {
             // Manage update
