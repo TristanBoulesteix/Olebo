@@ -12,16 +12,21 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
 import jdr.exia.view.tools.EventHandler
 import jdr.exia.view.tools.onMouseEvent
 import jdr.exia.viewModel.MasterViewModel
+import org.jetbrains.skia.*
 
 @Composable
 fun ComposeMapPanel(modifier: Modifier, viewModel: MasterViewModel) = Box(modifier) {
@@ -37,26 +42,40 @@ fun ComposeMapPanel(modifier: Modifier, viewModel: MasterViewModel) = Box(modifi
             onMouseReleased(viewModel)
         }
     ) {
+        // Draw selected marker
         viewModel.selectedElements.forEach {
-            drawSelectedMarker(it)
+            drawRectangleAroundToken(it, Color.Red, 4)
         }
 
-        viewModel.elements.forEach {
+        val labelColor = Settings.labelColor.contentColor
+        val labelState = Settings.labelState
+
+        viewModel.elements.forEach { element ->
             drawImage(
-                image = it.sprite.toComposeImageBitmap(),
-                dstOffset = IntOffset(relativeX(it.referenceOffset.x).toInt(), relativeY(it.referenceOffset.y).toInt()),
+                image = element.sprite.toComposeImageBitmap(),
+                dstOffset = IntOffset(
+                    relativeX(element.referenceOffset.x).toInt(),
+                    relativeY(element.referenceOffset.y).toInt()
+                ),
                 dstSize = IntSize(
-                    relativeX(it.hitBox.width.toFloat()).toInt(),
-                    relativeY(it.hitBox.height.toFloat()).toInt()
+                    relativeX(element.hitBox.width.toFloat()).toInt(),
+                    relativeY(element.hitBox.height.toFloat()).toInt()
                 )
             )
+
+            if (labelState.isVisible) {
+                drawLabel(element, labelColor)
+            }
+
+            if (!element.isVisible) {
+                drawRectangleAroundToken(element, Color.Blue, 3)
+            }
         }
     }
 }
 
 @Stable
 private fun EventHandler.onMouseReleased(viewModel: MasterViewModel) {
-    // Add receiver instead of a lot of params
     when {
         buttons.isPrimaryPressed -> viewModel.selectElementsAtPosition(
             mouseOffset.absoluteOffset,
@@ -66,11 +85,42 @@ private fun EventHandler.onMouseReleased(viewModel: MasterViewModel) {
     }
 }
 
-private fun DrawScope.drawSelectedMarker(token: Element) {
+private fun DrawScope.drawLabel(token: Element, labelColor: Color) {
+    val (refX, refY) = token.referenceOffset
+
+    val font = Font(Typeface.makeFromName("Arial", FontStyle.BOLD), 20f)
+    val text = token.alias
+
+    drawIntoCanvas {
+        it.nativeCanvas.drawTextLine(
+            TextLine.make(text, font),
+            relativeX(refX) + (relativeX(token.hitBox.width.toFloat()) - font.measureTextWidth(text)) / 2,
+            relativeY(refY) - 10,
+            Paint().apply {
+                color = labelColor.toArgb()
+            }
+        )
+    }
+}
+
+/**
+ * Draw a rectangle around a given token.
+ *
+ * @param token The token to draw around
+ * @param color The color of the rectangle outline
+ * @param referentialSize An integer used as base to know at which distance drawing the rectangle
+ */
+private fun DrawScope.drawRectangleAroundToken(token: Element, color: Color, referentialSize: Int) {
     drawRect(
-        color = Color.Red,
-        topLeft = Offset(relativeX(token.referenceOffset.x) - 4f, relativeY(token.referenceOffset.y) - 4f),
-        size = Size(relativeX(token.hitBox.width.toFloat()) + 8, relativeY(token.hitBox.height.toFloat()) + 8),
+        color = color,
+        topLeft = Offset(
+            relativeX(token.referenceOffset.x) - referentialSize,
+            relativeY(token.referenceOffset.y) - referentialSize
+        ),
+        size = Size(
+            relativeX(token.hitBox.width.toFloat()) + referentialSize * 2,
+            relativeY(token.hitBox.height.toFloat()) + referentialSize * 2
+        ),
         style = Stroke(4.dp.toPx())
     )
 }
