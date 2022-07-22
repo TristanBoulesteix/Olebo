@@ -124,8 +124,8 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
             }
         }
 
-        //ComposeMapPanel(modifier = Modifier.weight(.85f).fillMaxSize(), viewModel = viewModel)
-        SwingPanel(factory = viewModel::panel, modifier = Modifier.weight(.80f).fillMaxSize())
+        ComposeMapPanel(modifier = Modifier.weight(.85f).fillMaxSize(), viewModel = viewModel)
+        //SwingPanel(factory = viewModel::panel, modifier = Modifier.weight(.80f).fillMaxSize())
 
         BottomPanel(
             modifier = Modifier.weight(.20f).fillMaxSize(),

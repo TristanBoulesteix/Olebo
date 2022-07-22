@@ -8,12 +8,19 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.input.pointer.PointerButtons
+import androidx.compose.ui.input.pointer.PointerEvent
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import jdr.exia.view.ui.roundedShape
+import jdr.exia.viewModel.MasterViewModel
+import kotlin.properties.Delegates
 
 /**
  * Apply modification to [Modifier] only if condition is true
@@ -146,3 +153,50 @@ private fun DrawScope.drawEndBorder(
 @Stable
 fun Modifier.addRoundedBorder() =
     this.border(border = BorderStroke(2.dp, Color.Black), shape = roundedShape)
+
+interface EventHandler {
+    val event: PointerEvent
+
+    val mouseOffset: Offset
+        get() = event.changes.first().position
+
+    val buttons: PointerButtons
+
+    val Offset.absoluteOffset: Offset
+}
+
+@Stable
+fun Modifier.onMouseEvent(
+    pointerEventType: PointerEventType,
+    onEvent: EventHandler.() -> Unit
+) = pointerInput(Unit) {
+    var lastPressedButtons: PointerButtons by Delegates.notNull()
+
+    awaitPointerEventScope {
+        while (true) {
+            val event = awaitPointerEvent()
+
+            val eventHandler = object : EventHandler {
+                override val event: PointerEvent
+                    get() = event
+
+                override val buttons: PointerButtons
+                    get() = lastPressedButtons
+
+                override val Offset.absoluteOffset: Offset
+                    get() = Offset(
+                        (x / size.width.toFloat()) * MasterViewModel.ABSOLUTE_WIDTH,
+                        (y / size.height.toFloat()) * MasterViewModel.ABSOLUTE_HEIGHT
+                    )
+            }
+
+            if (event.type == PointerEventType.Press) {
+                lastPressedButtons = event.buttons
+            }
+
+            if (event.type == pointerEventType) {
+                onEvent(eventHandler)
+            }
+        }
+    }
+}
