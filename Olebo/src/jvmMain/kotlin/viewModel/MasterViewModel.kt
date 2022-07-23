@@ -197,15 +197,13 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
     }
 
     fun selectElements(rec: Rect, getRelativeRect: (Element) -> Rect) {
-        val elements = mutableListOf<Element>()
-
-        this.elements.forEach {
-            if (getRelativeRect(it) in rec) {
-                elements += it
+        selectedElements = buildList {
+            elements.forEach {
+                if (getRelativeRect(it) in rec) {
+                    add(it)
+                }
             }
         }
-
-        selectedElements = elements
 
         repaint()
     }
