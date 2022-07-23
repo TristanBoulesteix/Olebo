@@ -39,49 +39,55 @@ fun ComposeMapPanel(modifier: Modifier, viewModel: MasterViewModel) = Box(modifi
 
     var selectedArea: Rect? by remember { mutableStateOf(null) }
 
-    Canvas(
-        modifier = Modifier.fillMaxSize().onMouseEvents { eventType ->
-            if (eventType == PointerEventType.Release) {
-                onMouseReleased(viewModel, selectedArea) { selectedArea = null }
+    key(viewModel.selectedElements, viewModel.elements) {
+        Canvas(
+            modifier = Modifier.fillMaxSize().onMouseEvents { eventType ->
+                if (eventType == PointerEventType.Release) {
+                    onMouseReleased(viewModel, selectedArea) { selectedArea = null }
+                }
+            }.onMouseDrag { start, end ->
+                if (buttons.isPrimaryPressed) {
+                    selectedArea = if (viewModel.hasElementAtPosition(start.absoluteOffset)) null else Rect(
+                        Offset(start.x.coerceAtMost(end.x), start.y.coerceAtMost(end.y)),
+                        Size(abs(start.x - end.x), abs(start.y - end.y))
+                    )
+                }
             }
-        }.onMouseDrag { start, end ->
-            if (buttons.isPrimaryPressed) {
-                selectedArea = if (viewModel.hasElementAtPosition(start.absoluteOffset)) null else Rect(
-                    Offset(start.x.coerceAtMost(end.x), start.y.coerceAtMost(end.y)),
-                    Size(abs(start.x - end.x), abs(start.y - end.y))
+        ) {
+            // Draw selected marker
+            viewModel.selectedElements.forEach {
+                drawRectangleAroundToken(it, Color.Red, 4)
+            }
+
+            val labelColor = Settings.labelColor.contentColor
+            val labelState = Settings.labelState
+
+            viewModel.elements.forEach { element ->
+                drawImage(
+                    image = element.sprite.toComposeImageBitmap(),
+                    dstOffset = IntOffset(
+                        element.referenceOffset.x.relativeX(size).toInt(),
+                        element.referenceOffset.y.relativeY(size).toInt()
+                    ),
+                    dstSize = IntSize(
+                        element.hitBox.width.toFloat().relativeX(size).toInt(),
+                        element.hitBox.height.toFloat().relativeY(size).toInt()
+                    )
                 )
+
+                if (labelState.isVisible) {
+                    drawLabel(element, labelColor)
+                }
+
+                if (!element.isVisible) {
+                    drawRectangleAroundToken(element, Color.Blue, 3)
+                }
             }
         }
-    ) {
-        // Draw selected marker
-        viewModel.selectedElements.forEach {
-            drawRectangleAroundToken(it, Color.Red, 4)
-        }
+    }
 
-        val labelColor = Settings.labelColor.contentColor
-        val labelState = Settings.labelState
-
-        viewModel.elements.forEach { element ->
-            drawImage(
-                image = element.sprite.toComposeImageBitmap(),
-                dstOffset = IntOffset(
-                    element.referenceOffset.x.relativeX(size).toInt(),
-                    element.referenceOffset.y.relativeY(size).toInt()
-                ),
-                dstSize = IntSize(
-                    element.hitBox.width.toFloat().relativeX(size).toInt(),
-                    element.hitBox.height.toFloat().relativeY(size).toInt()
-                )
-            )
-
-            if (labelState.isVisible) {
-                drawLabel(element, labelColor)
-            }
-
-            if (!element.isVisible) {
-                drawRectangleAroundToken(element, Color.Blue, 3)
-            }
-
+    key(selectedArea) {
+        Canvas(Modifier.fillMaxSize()) {
             selectedArea?.let { area ->
                 drawRect(Color.Red, area.topLeft, area.size, style = Stroke(2.dp.toPx()))
                 drawRect(Color.Red, area.topLeft, area.size, alpha = 0.05f)

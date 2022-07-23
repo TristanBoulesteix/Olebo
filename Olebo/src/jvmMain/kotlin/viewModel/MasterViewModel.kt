@@ -74,13 +74,12 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
 
     private var shareSceneJob: Job? = null
 
+    private var unsortedElements by mutableStateOf(transaction { currentScene.elements })
+
     /**
      * These are all the [Blueprint] placed on  the current map
      */
-    var elements = transaction { currentScene.elements.sortedBy { it.priority } }
-        private set(tokens) {
-            field = tokens.sortedBy { it.priority }
-        }
+    val elements by derivedStateOf { unsortedElements.sortedBy { it.priority } }
 
     val backgroundImage: BufferedImage by derivedStateOf {
         transaction {
@@ -255,7 +254,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
                     it.isDeleted = true
                 }
 
-                this@MasterViewModel.elements = this@MasterViewModel.elements.toMutableList().also {
+                this@MasterViewModel.unsortedElements = this@MasterViewModel.elements.toMutableList().also {
                     it -= elements.toSet()
                 }
 
@@ -267,7 +266,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
                     it.isDeleted = false
                 }
 
-                this@MasterViewModel.elements = this@MasterViewModel.elements.toMutableList().also {
+                this@MasterViewModel.unsortedElements = this@MasterViewModel.elements.toMutableList().also {
                     it += elements.toSet()
                 }
 
@@ -278,13 +277,13 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
 
     fun addNewElement(blueprint: Blueprint) = scope.launch {
         currentScene.addElement(blueprint = blueprint, onAdded = { newElement ->
-            elements = elements.toMutableList().also {
+            unsortedElements = elements.toMutableList().also {
                 it += newElement
             }
 
             selectedElements = listOf(newElement)
         }, onCanceled = { elementToRemove ->
-            this@MasterViewModel.elements = this@MasterViewModel.elements.toMutableList().also {
+            this@MasterViewModel.unsortedElements = this@MasterViewModel.elements.toMutableList().also {
                 it -= elementToRemove
             }
             unselectElements()
@@ -317,7 +316,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
     fun moveElementsFromScene(elements: List<Element>) {
         Scene.moveElementToScene(currentScene, elements)
 
-        this.elements = this.elements.toMutableList().also {
+        this.unsortedElements = this.elements.toMutableList().also {
             it += elements
         }
 
@@ -326,7 +325,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
 
     suspend fun changePriority(newLayer: Layer) {
         withContext(Dispatchers.IO) {
-            elements = elements.onEach {
+            unsortedElements = elements.onEach {
                 if (it in selectedElements) {
                     it.priority = newLayer
                 }
@@ -338,7 +337,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
 
     fun repaint(reloadTokens: Boolean = false) = scope.launch {
         withContext(Dispatchers.IO) {
-            if (reloadTokens) elements = newSuspendedTransaction { currentScene.elements }
+            if (reloadTokens) unsortedElements = newSuspendedTransaction { currentScene.elements }
 
             sendMessageToShareScene {
                 val color =
