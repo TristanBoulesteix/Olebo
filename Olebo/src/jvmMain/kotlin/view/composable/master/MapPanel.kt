@@ -88,7 +88,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
 
             selectedArea?.let {
                 if (it.size >= Dimension(SizeElement.XS.value, SizeElement.XS.value))
-                    viewModel.selectElements(it)
+                   //viewModel.selectElements(it)
                 else repaint()
                 selectedArea = null
             }

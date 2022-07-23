@@ -9,6 +9,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -18,6 +19,7 @@ import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toSize
 import jdr.exia.view.ui.roundedShape
 import jdr.exia.viewModel.MasterViewModel
 import kotlin.properties.Delegates
@@ -163,13 +165,12 @@ interface EventHandler {
     val buttons: PointerButtons
 
     val Offset.absoluteOffset: Offset
+
+    val componentAreaSize: Size
 }
 
 @Stable
-fun Modifier.onMouseEvent(
-    pointerEventType: PointerEventType,
-    onEvent: EventHandler.() -> Unit
-) = pointerInput(Unit) {
+fun Modifier.onMouseEvents(onEvent: EventHandler.(eventType: PointerEventType) -> Unit) = pointerInput(Unit) {
     var lastPressedButtons: PointerButtons by Delegates.notNull()
 
     awaitPointerEventScope {
@@ -188,14 +189,33 @@ fun Modifier.onMouseEvent(
                         (x / size.width.toFloat()) * MasterViewModel.ABSOLUTE_WIDTH,
                         (y / size.height.toFloat()) * MasterViewModel.ABSOLUTE_HEIGHT
                     )
+
+                override val componentAreaSize: Size
+                    get() = size.toSize()
             }
 
+            // In case of mouse released event
             if (event.type == PointerEventType.Press) {
                 lastPressedButtons = event.buttons
             }
 
-            if (event.type == pointerEventType) {
-                onEvent(eventHandler)
+            eventHandler.onEvent(event.type)
+        }
+    }
+}
+
+@Stable
+fun Modifier.onMouseDrag(onDrag: EventHandler.(startOffset: Offset, endOffset: Offset) -> Unit): Modifier {
+    var startOffset: Offset? = null
+
+    return onMouseEvents {
+        when (it) {
+            PointerEventType.Press -> startOffset = mouseOffset
+            PointerEventType.Release -> startOffset = null
+            PointerEventType.Move -> {
+                startOffset?.let { start ->
+                    onDrag(start, mouseOffset)
+                }
             }
         }
     }

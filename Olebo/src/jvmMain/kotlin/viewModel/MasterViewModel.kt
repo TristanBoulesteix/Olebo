@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import fr.olebo.sharescene.*
 import fr.olebo.sharescene.connection.*
@@ -30,12 +31,12 @@ import jdr.exia.model.type.contains
 import jdr.exia.model.type.inputStreamFromString
 import jdr.exia.service.socketClient
 import jdr.exia.view.composable.master.MapPanel
+import jdr.exia.view.tools.contains
 import jdr.exia.view.tools.getTokenFromPosition
 import jdr.exia.view.tools.positionOf
 import kotlinx.coroutines.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.awt.Rectangle
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 
@@ -195,11 +196,11 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
         repaint()
     }
 
-    fun selectElements(rec: Rectangle) {
+    fun selectElements(rec: Rect, getRelativeRect: (Element) -> Rect) {
         val elements = mutableListOf<Element>()
 
         this.elements.forEach {
-            if (rec.contains(panel.getRelativeRectangleOfToken(it))) {
+            if (getRelativeRect(it) in rec) {
                 elements += it
             }
         }
