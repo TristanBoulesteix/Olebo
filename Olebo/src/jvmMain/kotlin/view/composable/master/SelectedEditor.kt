@@ -1,10 +1,9 @@
 package jdr.exia.view.composable.master
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -147,7 +146,7 @@ private fun <T> List<Element>.getElementProperty(elementPropertyGetter: Element.
 
 @Composable
 private fun SizeSelector(selectedElements: List<Element>, repaint: () -> Unit, commandManager: CommandManager) {
-    val (selectedSize, setSelectedSize) = rememberUpdatableState(
+    /*val (selectedSize, setSelectedSize) = rememberUpdatableState(
         key1 = selectedElements,
         evaluateInitialValue = {
             selectedElements.getElementProperty(
@@ -169,7 +168,45 @@ private fun SizeSelector(selectedElements: List<Element>, repaint: () -> Unit, c
         onValueChanged = { setSelectedSize(it) },
         selectedItem = selectedSize,
         isEnabled = isEnabled
-    )
+    )*/
+
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.width(180.dp)
+    ) {
+        Text(StringLocale[STR_SIZE])
+
+        val width = 120.dp
+
+        var expanded by remember { mutableStateOf(false) }
+
+        Box(
+            Modifier.size(width = width, height = 30.dp).wrapContentSize(Alignment.CenterStart)
+                .background(Color.DarkGray).clickable(onClick = { expanded = true })
+        ) {
+            Text("test", Modifier.fillMaxWidth())
+
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+                modifier = Modifier.width(width)
+            ) {
+                val sizes = remember { SizeElement.values() }
+
+                sizes.forEach {
+                    DropdownMenuItem(
+                        onClick = {
+                            expanded = false
+                        },
+                        content = {
+                            Text(it.toString())
+                        }
+                    )
+                }
+            }
+        }
+    }
 }
 
 @Composable
