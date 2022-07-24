@@ -112,12 +112,12 @@ private fun LabelField(selectedElements: List<Element>, repaint: () -> Unit, mod
     if (selectedElements.size == 1) {
         var value by rememberUpdatableState(
             key1 = selectedElements.firstOrNull(),
-            calculation = {
+            evaluateInitialValue = {
                 val element = selectedElements.first()
 
-                mutableStateOf(element.alias)
+                element.alias
             },
-            onChange = {
+            onStateChange = {
                 val element = selectedElements.first()
 
                 newSuspendedTransaction { element.alias = it }
@@ -147,18 +147,15 @@ private fun <T> List<Element>.getElementProperty(elementPropertyGetter: Element.
 
 @Composable
 private fun SizeSelector(selectedElements: List<Element>, repaint: () -> Unit, commandManager: CommandManager) {
-    var selectedSize by rememberUpdatableState(
+    val (selectedSize, setSelectedSize) = rememberUpdatableState(
         key1 = selectedElements,
-        key2 = commandManager.composeKey,
-        calculation = {
-            mutableStateOf(
-                selectedElements.getElementProperty(
-                    elementPropertyGetter = Element::size,
-                    defaultValue = SizeElement.DEFAULT
-                )
+        evaluateInitialValue = {
+            selectedElements.getElementProperty(
+                elementPropertyGetter = Element::size,
+                defaultValue = SizeElement.DEFAULT
             )
         },
-        onChange = {
+        onStateChange = {
             Element.cmdDimension(it, commandManager, selectedElements)
         },
         onUpdated = repaint
@@ -169,7 +166,7 @@ private fun SizeSelector(selectedElements: List<Element>, repaint: () -> Unit, c
     TitledDropdownMenu(
         title = StringLocale[STR_SIZE],
         items = SizeElement.values(),
-        onValueChanged = { selectedSize = it },
+        onValueChanged = { setSelectedSize(it) },
         selectedItem = selectedSize,
         isEnabled = isEnabled
     )
@@ -179,15 +176,13 @@ private fun SizeSelector(selectedElements: List<Element>, repaint: () -> Unit, c
 private fun LayerSelector(selectedElements: List<Element>, setPriority: suspend (Layer) -> Unit) {
     var selectedLayer by rememberUpdatableState(
         key1 = selectedElements,
-        calculation = {
-            mutableStateOf(
-                selectedElements.getElementProperty(
-                    elementPropertyGetter = Element::priority,
-                    defaultValue = Layer.REGULAR
-                )
+        evaluateInitialValue = {
+            selectedElements.getElementProperty(
+                elementPropertyGetter = Element::priority,
+                defaultValue = Layer.REGULAR
             )
         },
-        onChange = setPriority
+        onStateChange = setPriority
     )
 
     val isEnabled = selectedElements.isNotEmpty()

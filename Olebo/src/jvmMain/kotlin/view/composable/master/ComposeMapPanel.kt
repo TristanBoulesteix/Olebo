@@ -45,7 +45,14 @@ fun ComposeMapPanel(modifier: Modifier, viewModel: MasterViewModel) = Box(modifi
         Canvas(
             modifier = Modifier.fillMaxSize().onMouseEvents { eventType ->
                 if (eventType == PointerEventType.Release) {
-                    onMouseReleased(viewModel, selectedArea, moveOffset, startMouseOffset) { selectedArea = null }
+                    onMouseReleased(
+                        viewModel = viewModel,
+                        selectedArea = selectedArea,
+                        moveOffset = moveOffset,
+                        resetMoveOffset = { moveOffset = null },
+                        startMouseOffset = startMouseOffset,
+                        resetSelectedArea = { selectedArea = null }
+                    )
                 } else if (eventType == PointerEventType.Move) {
                     viewModel.setCursor(if (event.keyboardModifiers.isAltPressed) null else mouseOffset.absoluteOffset)
                 }
@@ -114,6 +121,7 @@ private fun EventHandler.onMouseReleased(
     viewModel: MasterViewModel,
     selectedArea: Rect?,
     moveOffset: Offset?,
+    resetMoveOffset: () -> Unit,
     startMouseOffset: Offset,
     resetSelectedArea: () -> Unit
 ) {
@@ -148,6 +156,7 @@ private fun EventHandler.onMouseReleased(
 
     moveOffset?.absoluteOffset?.let {
         viewModel.moveTokensTo(it, startMouseOffset.absoluteOffset)
+        resetMoveOffset()
     }
 }
 
