@@ -323,16 +323,16 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
         repaint()
     }
 
-    suspend fun changePriority(newLayer: Layer) {
-        withContext(Dispatchers.IO) {
-            unsortedElements = elements.onEach {
-                if (it in selectedElements) {
-                    it.priority = newLayer
-                }
-            }.sortedBy { it.priority }
-        }
+    fun changePriority(newLayer: Layer) = scope.launch(Dispatchers.IO) {
+        unsortedElements = elements.onEach {
+            if (it in selectedElements) {
+                it.priority = newLayer
+            }
+        }.sortedBy { it.priority }
 
-        repaint()
+        withContext(Dispatchers.Main) {
+            repaint()
+        }
     }
 
     fun repaint(reloadTokens: Boolean = false) = scope.launch {

@@ -20,7 +20,6 @@ import jdr.exia.model.tools.isCharacter
 import jdr.exia.model.tools.withSetter
 import jdr.exia.view.element.CustomTextField
 import jdr.exia.view.element.form.IntTextField
-import jdr.exia.view.element.form.TitledDropdownMenu
 import jdr.exia.view.tools.applyIf
 import jdr.exia.view.tools.rememberUpdatableState
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
@@ -31,7 +30,7 @@ fun SelectedEditor(
     commandManager: CommandManager,
     selectedElements: List<Element>,
     deleteSelectedElement: () -> Unit,
-    setPriority: suspend (Layer) -> Unit,
+    setPriority: (Layer) -> Unit,
     repaint: () -> Unit
 ) = Row(
     modifier = Modifier.fillMaxWidth(),
@@ -145,92 +144,104 @@ private fun <T> List<Element>.getElementProperty(elementPropertyGetter: Element.
 }
 
 @Composable
-private fun SizeSelector(selectedElements: List<Element>, repaint: () -> Unit, commandManager: CommandManager) {
-    /*val (selectedSize, setSelectedSize) = rememberUpdatableState(
-        key1 = selectedElements,
-        evaluateInitialValue = {
+private fun SizeSelector(selectedElements: List<Element>, repaint: () -> Unit, commandManager: CommandManager) = Row(
+    horizontalArrangement = Arrangement.SpaceBetween,
+    verticalAlignment = Alignment.CenterVertically,
+    modifier = Modifier.width(180.dp)
+) {
+    Text(StringLocale[STR_SIZE])
+
+    val width = 120.dp
+
+    var expanded by remember { mutableStateOf(false) }
+
+    var size by remember(selectedElements) {
+        mutableStateOf(
             selectedElements.getElementProperty(
                 elementPropertyGetter = Element::size,
                 defaultValue = SizeElement.DEFAULT
             )
-        },
-        onStateChange = {
-            Element.cmdDimension(it, commandManager, selectedElements)
-        },
-        onUpdated = repaint
-    )
+        )
+    }
 
-    val isEnabled = selectedElements.isNotEmpty()
-
-    TitledDropdownMenu(
-        title = StringLocale[STR_SIZE],
-        items = SizeElement.values(),
-        onValueChanged = { setSelectedSize(it) },
-        selectedItem = selectedSize,
-        isEnabled = isEnabled
-    )*/
-
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.width(180.dp)
+    Box(
+        Modifier.size(width = width, height = 30.dp).wrapContentSize(Alignment.CenterStart)
+            .background(Color.DarkGray).clickable(onClick = { expanded = true })
     ) {
-        Text(StringLocale[STR_SIZE])
+        Text(size.toString(), Modifier.fillMaxWidth().padding(5.dp))
 
-        val width = 120.dp
-
-        var expanded by remember { mutableStateOf(false) }
-
-        Box(
-            Modifier.size(width = width, height = 30.dp).wrapContentSize(Alignment.CenterStart)
-                .background(Color.DarkGray).clickable(onClick = { expanded = true })
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.width(width)
         ) {
-            Text("test", Modifier.fillMaxWidth())
+            val sizes = remember(SizeElement::values)
 
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-                modifier = Modifier.width(width)
-            ) {
-                val sizes = remember { SizeElement.values() }
-
-                sizes.forEach {
-                    DropdownMenuItem(
-                        onClick = {
-                            expanded = false
-                        },
-                        content = {
-                            Text(it.toString())
-                        }
-                    )
-                }
+            sizes.forEach {
+                DropdownMenuItem(
+                    onClick = {
+                        expanded = false
+                        size = it
+                        Element.cmdDimension(it, commandManager, selectedElements)
+                        repaint()
+                    },
+                    content = {
+                        Text(it.toString())
+                    }
+                )
             }
         }
     }
 }
 
 @Composable
-private fun LayerSelector(selectedElements: List<Element>, setPriority: suspend (Layer) -> Unit) {
-    var selectedLayer by rememberUpdatableState(
-        key1 = selectedElements,
-        evaluateInitialValue = {
+private fun LayerSelector(selectedElements: List<Element>, setPriority: (Layer) -> Unit) = Row(
+    horizontalArrangement = Arrangement.SpaceBetween,
+    verticalAlignment = Alignment.CenterVertically,
+    modifier = Modifier.width(180.dp)
+) {
+    Text(StringLocale[STR_PRIORITY])
+
+    val width = 120.dp
+
+    var expanded by remember { mutableStateOf(false) }
+
+    var layer by remember(selectedElements) {
+        mutableStateOf(
             selectedElements.getElementProperty(
                 elementPropertyGetter = Element::priority,
                 defaultValue = Layer.REGULAR
             )
-        },
-        onStateChange = setPriority
-    )
+        )
+    }
 
-    val isEnabled = selectedElements.isNotEmpty()
+    Box(
+        Modifier.size(width = width, height = 30.dp).wrapContentSize(Alignment.CenterStart)
+            .background(Color.DarkGray).clickable(onClick = { expanded = true })
+    ) {
+        Text(layer.toString(), Modifier.fillMaxWidth().padding(5.dp))
 
-    TitledDropdownMenu(
-        title = StringLocale[STR_PRIORITY],
-        items = Layer.values(),
-        onValueChanged = { selectedLayer = it },
-        selectedItem = selectedLayer,
-        isEnabled = isEnabled
-    )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.width(width)
+        ) {
+            val layers = remember(Layer::values)
+
+            layers.forEach {
+                DropdownMenuItem(
+                    onClick = {
+                        expanded = false
+                        layer = it
+                        setPriority(it)
+                    },
+                    content = {
+                        Text(it.toString())
+                    }
+                )
+            }
+        }
+    }
 }
 
 @Composable
