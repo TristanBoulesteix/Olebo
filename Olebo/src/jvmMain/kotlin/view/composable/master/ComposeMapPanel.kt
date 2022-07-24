@@ -9,24 +9,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
 import jdr.exia.view.tools.*
 import jdr.exia.viewModel.MasterViewModel
 import org.jetbrains.skia.*
+import org.jetbrains.skia.Paint
 import kotlin.math.abs
+import org.jetbrains.skia.Rect as SkiaRect
 
 @Composable
 fun ComposeMapPanel(modifier: Modifier, viewModel: MasterViewModel) = Box(modifier) {
@@ -39,18 +37,32 @@ fun ComposeMapPanel(modifier: Modifier, viewModel: MasterViewModel) = Box(modifi
 
     var selectedArea: Rect? by remember { mutableStateOf(null) }
 
-    key(viewModel.selectedElements, viewModel.elements) {
+    var moveOffset: Offset? by remember { mutableStateOf(null) }
+
+    var startMouseOffset by remember { mutableStateOf(Offset.Zero) }
+
+    key(viewModel.commandManager.composeKey) {
         Canvas(
             modifier = Modifier.fillMaxSize().onMouseEvents { eventType ->
                 if (eventType == PointerEventType.Release) {
-                    onMouseReleased(viewModel, selectedArea) { selectedArea = null }
+                    onMouseReleased(viewModel, selectedArea, moveOffset, startMouseOffset) { selectedArea = null }
+                } else if (eventType == PointerEventType.Move) {
+                    viewModel.setCursor(if (event.keyboardModifiers.isAltPressed) null else mouseOffset.absoluteOffset)
                 }
             }.onMouseDrag { start, end ->
-                if (buttons.isPrimaryPressed) {
-                    selectedArea = if (viewModel.hasElementAtPosition(start.absoluteOffset)) null else Rect(
-                        Offset(start.x.coerceAtMost(end.x), start.y.coerceAtMost(end.y)),
-                        Size(abs(start.x - end.x), abs(start.y - end.y))
-                    )
+                if (startPressButtons.isPrimaryPressed) {
+                    if (viewModel.hasElementAtPosition(start.absoluteOffset)) {
+                        moveOffset = end
+                        selectedArea = null
+                    } else {
+                        moveOffset = null
+                        selectedArea = Rect(
+                            Offset(start.x.coerceAtMost(end.x), start.y.coerceAtMost(end.y)),
+                            Size(abs(start.x - end.x), abs(start.y - end.y))
+                        )
+                    }
+
+                    startMouseOffset = start
                 }
             }
         ) {
@@ -63,17 +75,18 @@ fun ComposeMapPanel(modifier: Modifier, viewModel: MasterViewModel) = Box(modifi
             val labelState = Settings.labelState
 
             viewModel.elements.forEach { element ->
-                drawImage(
-                    image = element.sprite.toComposeImageBitmap(),
-                    dstOffset = IntOffset(
-                        element.referenceOffset.x.relativeX(size).toInt(),
-                        element.referenceOffset.y.relativeY(size).toInt()
-                    ),
-                    dstSize = IntSize(
-                        element.hitBox.width.toFloat().relativeX(size).toInt(),
-                        element.hitBox.height.toFloat().relativeY(size).toInt()
+                drawIntoCanvas {
+                    // For better performances, we use native canvas to draw tokens
+                    it.nativeCanvas.drawImageRect(
+                        Image.makeFromBitmap(element.spriteBitmap.asSkiaBitmap()),
+                        SkiaRect.makeXYWH(
+                            element.referenceOffset.x.relativeX(size),
+                            element.referenceOffset.y.relativeY(size),
+                            element.hitBox.width.toFloat().relativeX(size),
+                            element.hitBox.height.toFloat().relativeY(size)
+                        )
                     )
-                )
+                }
 
                 if (labelState.isVisible) {
                     drawLabel(element, labelColor)
@@ -100,14 +113,18 @@ fun ComposeMapPanel(modifier: Modifier, viewModel: MasterViewModel) = Box(modifi
 private fun EventHandler.onMouseReleased(
     viewModel: MasterViewModel,
     selectedArea: Rect?,
+    moveOffset: Offset?,
+    startMouseOffset: Offset,
     resetSelectedArea: () -> Unit
 ) {
     when {
-        buttons.isPrimaryPressed -> if (selectedArea == null) viewModel.selectElementsAtPosition(
+        startPressButtons.isPrimaryPressed -> if (moveOffset == null && selectedArea == null) viewModel.selectElementsAtPosition(
             mouseOffset.absoluteOffset,
             event.keyboardModifiers.isCtrlPressed
         )
-        buttons.isSecondaryPressed || buttons.isTertiaryPressed -> viewModel.moveTokensTo(mouseOffset.absoluteOffset)
+        startPressButtons.isSecondaryPressed || startPressButtons.isTertiaryPressed -> viewModel.moveTokensTo(
+            mouseOffset.absoluteOffset
+        )
     }
 
     selectedArea?.let {
@@ -127,6 +144,10 @@ private fun EventHandler.onMouseReleased(
         }
 
         resetSelectedArea()
+    }
+
+    moveOffset?.absoluteOffset?.let {
+        viewModel.moveTokensTo(it, startMouseOffset.absoluteOffset)
     }
 }
 

@@ -250,7 +250,7 @@ class MapPanel(private val isParentMaster: Boolean, private val viewModel: Maste
 
     private fun Graphics.drawToken(token: Element) {
         drawImage(
-            token.sprite,
+            token.spriteBufferedImage,
             relativeX(token.referenceOffset.x).toInt(),
             relativeY(token.referenceOffset.y).toInt(),
             relativeX(token.hitBox.width.toFloat()).toInt(),

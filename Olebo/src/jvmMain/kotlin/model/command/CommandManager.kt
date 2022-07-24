@@ -1,11 +1,9 @@
 package jdr.exia.model.command
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import org.jetbrains.exposed.dao.id.EntityID
 
+@Stable
 class CommandManager private constructor() : MutableList<Command> by mutableStateListOf() {
     val undoLabel
         get() = getOrNull(pointer)?.label
@@ -24,6 +22,7 @@ class CommandManager private constructor() : MutableList<Command> by mutableStat
     /**
      * Public key to be used as key to recompose Composable that depend on commands
      */
+    @Stable
     val composeKey get() = pointer
 
     operator fun plusAssign(command: Command) {

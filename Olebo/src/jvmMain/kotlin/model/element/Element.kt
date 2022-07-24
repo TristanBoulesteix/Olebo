@@ -1,8 +1,8 @@
 package jdr.exia.model.element
 
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.res.loadImageBitmap
-import androidx.compose.ui.res.useResource
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.toComposeImageBitmap
 import jdr.exia.localization.*
 import jdr.exia.model.act.Scene
 import jdr.exia.model.command.Command
@@ -11,7 +11,6 @@ import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.tools.CharacterException
 import jdr.exia.model.tools.isCharacter
-import jdr.exia.model.type.Image
 import jdr.exia.model.type.inputStreamFromString
 import jdr.exia.view.tools.rotateImage
 import org.jetbrains.exposed.dao.Entity
@@ -45,19 +44,13 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     var isDeleted by InstanceTable.deleted
 
     // Value from the Blueprint
-    val sprite by lazyRotatedSprite()
+    private val sprites by lazyRotatedSprite()
+
+    val spriteBufferedImage
+        get() = sprites.second
 
     val spriteBitmap
-        get() = transaction {
-            Image(blueprint.sprite).let {
-                if (blueprint.type == TypeElement.Basic) {
-                    useResource("sprites/${it.path}", ::loadImageBitmap)
-                } else {
-                    it.toBitmap()
-                }
-                // TODO : Add rotation
-            }
-        }
+        get() = sprites.first
 
     val name
         get() = transaction { blueprint.realName }
@@ -159,7 +152,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
     override fun hashCode() = this.id.value
 
-    private fun lazyRotatedSprite() = object : ReadOnlyProperty<Element, BufferedImage> {
+    private fun lazyRotatedSprite() = object : ReadOnlyProperty<Element, Pair<ImageBitmap,BufferedImage>> {
         private fun getResourceAsStream(name: String) = Element::class.java.classLoader.getResourceAsStream(name)
 
         val originalImage by lazy {
@@ -176,12 +169,12 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
         lateinit var rotatedImage: BufferedImage
 
-        override fun getValue(thisRef: Element, property: KProperty<*>): BufferedImage {
+        override fun getValue(thisRef: Element, property: KProperty<*>): Pair<ImageBitmap,BufferedImage> {
             if (rotation != orientation || !::rotatedImage.isInitialized) {
                 reloadRotatedImage()
             }
 
-            return rotatedImage
+            return rotatedImage.toComposeImageBitmap() to rotatedImage
         }
 
         fun reloadRotatedImage() {

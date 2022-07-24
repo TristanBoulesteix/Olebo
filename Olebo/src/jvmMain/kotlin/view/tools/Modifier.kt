@@ -162,7 +162,7 @@ interface EventHandler {
     val mouseOffset: Offset
         get() = event.changes.first().position
 
-    val buttons: PointerButtons
+    val startPressButtons: PointerButtons
 
     val Offset.absoluteOffset: Offset
 
@@ -181,7 +181,7 @@ fun Modifier.onMouseEvents(onEvent: EventHandler.(eventType: PointerEventType) -
                 override val event: PointerEvent
                     get() = event
 
-                override val buttons: PointerButtons
+                override val startPressButtons: PointerButtons
                     get() = lastPressedButtons
 
                 override val Offset.absoluteOffset: Offset
