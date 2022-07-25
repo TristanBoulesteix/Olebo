@@ -22,7 +22,6 @@ import jdr.exia.model.element.Element
 import jdr.exia.view.tools.*
 import jdr.exia.viewModel.MasterViewModel
 import org.jetbrains.skia.*
-import org.jetbrains.skia.Paint
 import kotlin.math.abs
 import org.jetbrains.skia.Rect as SkiaRect
 
@@ -164,16 +163,17 @@ private fun DrawScope.drawLabel(token: Element, labelColor: Color) {
     val (refX, refY) = token.referenceOffset
 
     val font = Font(Typeface.makeFromName("Arial", FontStyle.BOLD), 20f)
-    val text = token.alias
+    val paint = Paint().apply {
+        color = labelColor
+    }.asFrameworkPaint()
+    val textLine = TextLine.make(token.alias, font)
 
     drawIntoCanvas {
         it.nativeCanvas.drawTextLine(
-            TextLine.make(text, font),
-            refX.relativeX(size) + (token.hitBox.width.toFloat().relativeX(size) - font.measureTextWidth(text)) / 2,
+            textLine,
+            refX.relativeX(size) + (token.hitBox.width.toFloat().relativeX(size) - textLine.width) / 2,
             refY.relativeY(size) - 10,
-            Paint().apply {
-                color = labelColor.toArgb()
-            }
+            paint
         )
     }
 }
