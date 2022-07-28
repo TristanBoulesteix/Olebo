@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
@@ -26,13 +27,15 @@ import kotlin.math.abs
 import org.jetbrains.skia.Rect as SkiaRect
 
 @Composable
-fun ComposeMapPanel(modifier: Modifier, viewModel: MasterViewModel) = Box(modifier) {
+fun ComposeMapPanel(modifier: Modifier, viewModel: MasterViewModel, isMasterWindow: Boolean = true) = Box(modifier) {
     Image(
         bitmap = viewModel.backgroundImage.toComposeImageBitmap(),
         contentDescription = null,
         modifier = Modifier.fillMaxSize(),
         contentScale = ContentScale.FillBounds
     )
+
+    val focusManager = LocalFocusManager.current
 
     var selectedArea: Rect? by remember { mutableStateOf(null) }
 
@@ -42,33 +45,38 @@ fun ComposeMapPanel(modifier: Modifier, viewModel: MasterViewModel) = Box(modifi
 
     key(viewModel.commandManager.composeKey) {
         Canvas(
-            modifier = Modifier.fillMaxSize().onMouseEvents { eventType ->
-                if (eventType == PointerEventType.Release) {
-                    onMouseReleased(
-                        viewModel = viewModel,
-                        selectedArea = selectedArea,
-                        moveOffset = moveOffset,
-                        resetMoveOffset = { moveOffset = null },
-                        startMouseOffset = startMouseOffset,
-                        resetSelectedArea = { selectedArea = null }
-                    )
-                } else if (eventType == PointerEventType.Move) {
-                    viewModel.setCursor(if (event.keyboardModifiers.isAltPressed) null else mouseOffset.absoluteOffset)
-                }
-            }.onMouseDrag { start, end ->
-                if (startPressButtons.isPrimaryPressed) {
-                    if (viewModel.hasElementAtPosition(start.absoluteOffset)) {
-                        moveOffset = end
-                        selectedArea = null
-                    } else {
-                        moveOffset = null
-                        selectedArea = Rect(
-                            Offset(start.x.coerceAtMost(end.x), start.y.coerceAtMost(end.y)),
-                            Size(abs(start.x - end.x), abs(start.y - end.y))
-                        )
+            modifier = Modifier.fillMaxSize().applyIf(isMasterWindow) {
+                Modifier.onMouseEvents { eventType ->
+                    when (eventType) {
+                        PointerEventType.Release -> {
+                            onMouseReleased(
+                                viewModel = viewModel,
+                                selectedArea = selectedArea,
+                                moveOffset = moveOffset,
+                                resetMoveOffset = { moveOffset = null },
+                                startMouseOffset = startMouseOffset,
+                                resetSelectedArea = { selectedArea = null }
+                            )
+                        }
+                        PointerEventType.Press -> if(isMasterWindow) focusManager.clearFocus()
+                        PointerEventType.Move -> viewModel.setCursor(if (event.keyboardModifiers.isAltPressed) null else mouseOffset.absoluteOffset)
+                        PointerEventType.Exit -> viewModel.setCursor(null)
                     }
+                }.onMouseDrag { start, end ->
+                    if (startPressButtons.isPrimaryPressed) {
+                        if (viewModel.hasElementAtPosition(start.absoluteOffset)) {
+                            moveOffset = end
+                            selectedArea = null
+                        } else {
+                            moveOffset = null
+                            selectedArea = Rect(
+                                Offset(start.x.coerceAtMost(end.x), start.y.coerceAtMost(end.y)),
+                                Size(abs(start.x - end.x), abs(start.y - end.y))
+                            )
+                        }
 
-                    startMouseOffset = start
+                        startMouseOffset = start
+                    }
                 }
             }
         ) {
@@ -102,6 +110,9 @@ fun ComposeMapPanel(modifier: Modifier, viewModel: MasterViewModel) = Box(modifi
                     drawRectangleAroundToken(element, Color.Blue, 3)
                 }
             }
+            if (!isMasterWindow && Settings.cursorEnabled) {
+                drawCursor(viewModel.cursor)
+            }
         }
     }
 
@@ -129,6 +140,7 @@ private fun EventHandler.onMouseReleased(
             mouseOffset.absoluteOffset,
             event.keyboardModifiers.isCtrlPressed
         )
+
         startPressButtons.isSecondaryPressed || startPressButtons.isTertiaryPressed -> viewModel.moveTokensTo(
             mouseOffset.absoluteOffset
         )
@@ -156,6 +168,25 @@ private fun EventHandler.onMouseReleased(
     moveOffset?.absoluteOffset?.let {
         viewModel.moveTokensTo(it, startMouseOffset.absoluteOffset)
         resetMoveOffset()
+    }
+}
+
+private fun DrawScope.drawCursor(cursor: Offset?) {
+    if (cursor != null) {
+        val (cursorColor, borderCursorColor) = Settings.cursorColor
+
+        drawCircle(
+            color = cursorColor,
+            center = Offset(cursor.x.relativeX(size), cursor.y.relativeY(size)),
+            radius = 15f
+        )
+
+        drawCircle(
+            color = borderCursorColor,
+            center = Offset(cursor.x.relativeX(size), cursor.y.relativeY(size)),
+            radius = 15f,
+            style = Stroke(3f)
+        )
     }
 }
 

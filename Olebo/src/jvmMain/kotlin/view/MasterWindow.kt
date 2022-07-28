@@ -47,7 +47,7 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
             window.extendedState = MAXIMIZED_BOTH
 
             addSettingsChangedListener {
-                viewModel.repaint(reloadTokens = true)
+                viewModel.refreshView(reloadTokens = true)
             }
         }
 
@@ -106,20 +106,7 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
     Items(viewModel)
 
     Column(modifier = Modifier.weight(.80f).fillMaxSize()) {
-        val focusManager = LocalFocusManager.current
-
-        DisposableEffect(focusManager) {
-            val panel = viewModel.panel
-
-            val event = panel.addMousePressedListener { focusManager.clearFocus() }
-
-            onDispose {
-                panel.removeMousePressedListener(event)
-            }
-        }
-
         ComposeMapPanel(modifier = Modifier.weight(.85f).fillMaxSize(), viewModel = viewModel)
-        //SwingPanel(factory = viewModel::panel, modifier = Modifier.weight(.80f).fillMaxSize())
 
         BottomPanel(
             modifier = Modifier.weight(.20f).fillMaxSize(),
@@ -127,7 +114,7 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
                 SelectedEditor(
                     commandManager = viewModel.commandManager,
                     selectedElements = viewModel.selectedElements,
-                    repaint = viewModel::repaint,
+                    repaint = viewModel::refreshView,
                     deleteSelectedElement = viewModel::removeElements,
                     setPriority = viewModel::changePriority
                 )

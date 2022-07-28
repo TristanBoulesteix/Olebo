@@ -30,7 +30,6 @@ import jdr.exia.model.type.Offset
 import jdr.exia.model.type.contains
 import jdr.exia.model.type.inputStreamFromString
 import jdr.exia.service.socketClient
-import jdr.exia.view.composable.master.MapPanel
 import jdr.exia.view.tools.contains
 import jdr.exia.view.tools.getTokenFromPosition
 import jdr.exia.view.tools.positionOf
@@ -51,8 +50,6 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
     }
 
     val commandManager by derivedStateOf { currentScene.commandManager }
-
-    val panel = MapPanel(isParentMaster = true, viewModel = this)
 
     var selectedElements: List<Element> by mutableStateOf(emptyList())
         private set
@@ -126,7 +123,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
         } else {
             elements.getTokenFromPosition(position)?.let { selectedElements = selectedElements + it }
         }
-        repaint()
+        refreshView()
     }
 
     /**
@@ -186,13 +183,13 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
             }
         }
 
-        repaint()
+        refreshView()
     }
 
     fun selectAllElements() {
         selectedElements = elements
 
-        repaint()
+        refreshView()
     }
 
     fun selectElements(rec: Rect, getRelativeRect: (Element) -> Rect) {
@@ -204,12 +201,12 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
             }
         }
 
-        repaint()
+        refreshView()
     }
 
     private fun unselectElements() {
         selectedElements = emptyList()
-        repaint()
+        refreshView()
     }
 
     fun select(up: Boolean = true) = transaction {
@@ -234,12 +231,12 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
 
     fun rotateRight() {
         Element.cmdOrientationToRight(commandManager, selectedElements)
-        repaint()
+        refreshView()
     }
 
     fun rotateLeft() {
         Element.cmdOrientationToLeft(commandManager, selectedElements)
-        repaint()
+        refreshView()
     }
 
     /**
@@ -258,7 +255,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
                     it -= elements.toSet()
                 }
 
-                repaint()
+                refreshView()
             }
 
             override fun cancelExec() = transaction {
@@ -287,16 +284,16 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
                 it -= elementToRemove
             }
             unselectElements()
-            repaint()
+            refreshView()
         })
 
-        repaint()
+        refreshView()
     }
 
     fun switchScene(scene: Scene) {
         this.currentScene = scene
         selectedElements = emptyList()
-        repaint(reloadTokens = true)
+        refreshView(reloadTokens = true)
     }
 
     fun showBlueprintEditor() {
@@ -310,7 +307,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
 
         blueprintsGrouped = loadBlueprints()
 
-        repaint(reloadTokens = true)
+        refreshView(reloadTokens = true)
     }
 
     fun moveElementsFromScene(elements: List<Element>) {
@@ -320,7 +317,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
             it += elements
         }
 
-        repaint()
+        refreshView()
     }
 
     fun changePriority(newLayer: Layer) = scope.launch(Dispatchers.IO) {
@@ -331,11 +328,11 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
         }.sortedBy { it.priority }
 
         withContext(Dispatchers.Main) {
-            repaint()
+            refreshView()
         }
     }
 
-    fun repaint(reloadTokens: Boolean = false) = scope.launch {
+    fun refreshView(reloadTokens: Boolean = false) = scope.launch {
         withContext(Dispatchers.IO) {
             if (reloadTokens) unsortedElements = newSuspendedTransaction { currentScene.elements }
 
@@ -345,8 +342,6 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
                 TokenStateChanged(elements.filter { it.isVisible }.map { it.toShareSceneToken(color) })
             }
         }
-
-        panel.repaint()
     }
 
     fun connectToServer() {

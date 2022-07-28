@@ -71,7 +71,7 @@ private fun MenuBarScope.ToolsMenu(viewModel: MasterViewModel) = Menu(text = Str
         enabled = viewModel.commandManager.hasUndoAction
     ) {
         viewModel.commandManager.undo()
-        viewModel.repaint()
+        viewModel.refreshView()
     }
 
     Item(
@@ -80,7 +80,7 @@ private fun MenuBarScope.ToolsMenu(viewModel: MasterViewModel) = Menu(text = Str
         enabled = viewModel.commandManager.hasRedoAction
     ) {
         viewModel.commandManager.redo()
-        viewModel.repaint()
+        viewModel.refreshView()
     }
 }
 
