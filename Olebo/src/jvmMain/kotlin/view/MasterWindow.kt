@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeWindow
-import androidx.compose.ui.awt.SwingPanel
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.WindowPlacement
@@ -23,14 +22,12 @@ import jdr.exia.view.tools.event.removeMousePressedListener
 import jdr.exia.view.tools.screens
 import jdr.exia.view.ui.MASTER_WINDOW_SIZE
 import jdr.exia.viewModel.MasterViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Frame.MAXIMIZED_BOTH
 import java.awt.GraphicsConfiguration
 import java.awt.GraphicsDevice
 import java.awt.Rectangle
-import kotlin.coroutines.EmptyCoroutineContext
+import java.awt.Window
 
 @Composable
 fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
@@ -54,23 +51,13 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
 
         var playerFrameVisible by remember { mutableStateOf(Settings.playerFrameOpenedByDefault) }
 
-        val playerDialogData = remember {
-            PlayerDialog.PlayerDialogData(
-                title = transaction { act.name },
-                mapPanel = MapPanel(isParentMaster = false, viewModel = viewModel),
-                onHide = { playerFrameVisible = false },
+        if (playerFrameVisible) {
+            PlayerDialog(
+                viewModel,
+                actName = transaction { act.name },
+                onDispose = { playerFrameVisible = false },
                 getMasterWindowScreen = window::getCurrentScreen
             )
-        }
-
-        LaunchedEffect(playerFrameVisible) {
-            playerDialogData.togglePlayerWindow(playerFrameVisible)
-
-            if (screens.size > 1)
-                launch(context = EmptyCoroutineContext) {
-                    delay(150)
-                    window.requestFocus()
-                }
         }
 
         MasterMenuBar(
@@ -83,7 +70,6 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
 
         DisposableEffect(Unit) {
             onDispose {
-                playerDialogData.togglePlayerWindow(false)
                 CommandManager.clear()
             }
         }
@@ -104,8 +90,6 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
         }
     }
 }
-
-private fun PlayerDialog.PlayerDialogData.togglePlayerWindow(isVisible: Boolean) = PlayerDialog.toggle(this, isVisible)
 
 @Composable
 private fun MainContent(viewModel: MasterViewModel) = Row {
