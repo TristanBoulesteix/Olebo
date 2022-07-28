@@ -22,6 +22,8 @@ import jdr.exia.view.tools.event.removeMousePressedListener
 import jdr.exia.view.tools.screens
 import jdr.exia.view.ui.MASTER_WINDOW_SIZE
 import jdr.exia.viewModel.MasterViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Frame.MAXIMIZED_BOTH
 import java.awt.GraphicsConfiguration
@@ -58,6 +60,14 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
                 onDispose = { playerFrameVisible = false },
                 getMasterWindowScreen = window::getCurrentScreen
             )
+
+            LaunchedEffect(playerFrameVisible) {
+                if (screens.size > 1)
+                    launch {
+                        delay(150)
+                        window.requestFocus()
+                    }
+            }
         }
 
         MasterMenuBar(
