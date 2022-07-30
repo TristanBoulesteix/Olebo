@@ -173,26 +173,27 @@ interface EventHandler {
 fun Modifier.onMouseEvents(onEvent: EventHandler.(eventType: PointerEventType) -> Unit) = pointerInput(Unit) {
     var lastPressedButtons: PointerButtons by Delegates.notNull()
 
+    val eventHandler = object : EventHandler {
+        override lateinit var event: PointerEvent
+
+        override val startPressButtons: PointerButtons
+            get() = lastPressedButtons
+
+        override val Offset.absoluteOffset: Offset
+            get() = Offset(
+                (x / size.width.toFloat()) * MasterViewModel.ABSOLUTE_WIDTH,
+                (y / size.height.toFloat()) * MasterViewModel.ABSOLUTE_HEIGHT
+            )
+
+        override val componentAreaSize: Size
+            get() = size.toSize()
+    }
+
     awaitPointerEventScope {
         while (true) {
             val event = awaitPointerEvent()
 
-            val eventHandler = object : EventHandler {
-                override val event: PointerEvent
-                    get() = event
-
-                override val startPressButtons: PointerButtons
-                    get() = lastPressedButtons
-
-                override val Offset.absoluteOffset: Offset
-                    get() = Offset(
-                        (x / size.width.toFloat()) * MasterViewModel.ABSOLUTE_WIDTH,
-                        (y / size.height.toFloat()) * MasterViewModel.ABSOLUTE_HEIGHT
-                    )
-
-                override val componentAreaSize: Size
-                    get() = size.toSize()
-            }
+            eventHandler.event = event
 
             // In case of mouse released event
             if (event.type == PointerEventType.Press) {
