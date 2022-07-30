@@ -171,13 +171,10 @@ interface EventHandler {
 
 @Stable
 fun Modifier.onMouseEvents(onEvent: EventHandler.(eventType: PointerEventType) -> Unit) = pointerInput(Unit) {
-    var lastPressedButtons: PointerButtons by Delegates.notNull()
-
     val eventHandler = object : EventHandler {
         override lateinit var event: PointerEvent
 
-        override val startPressButtons: PointerButtons
-            get() = lastPressedButtons
+        override var startPressButtons by Delegates.notNull<PointerButtons>()
 
         override val Offset.absoluteOffset: Offset
             get() = Offset(
@@ -197,7 +194,7 @@ fun Modifier.onMouseEvents(onEvent: EventHandler.(eventType: PointerEventType) -
 
             // In case of mouse released event
             if (event.type == PointerEventType.Press) {
-                lastPressedButtons = event.buttons
+                eventHandler.startPressButtons = event.buttons
             }
 
             eventHandler.onEvent(event.type)
