@@ -18,6 +18,7 @@ import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
+import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
 import jdr.exia.view.tools.*
@@ -45,71 +46,81 @@ fun ComposeMapPanel(modifier: Modifier, viewModel: MasterViewModel, isMasterWind
 
     key(viewModel.commandManager.composeKey) {
         Canvas(
-            modifier = Modifier.fillMaxSize().applyIf(isMasterWindow) {
-                Modifier.onMouseEvents { eventType ->
-                    when (eventType) {
-                        PointerEventType.Release -> {
-                            onMouseReleased(
-                                viewModel = viewModel,
-                                selectedArea = selectedArea,
-                                moveOffset = moveOffset,
-                                resetMoveOffset = { moveOffset = null },
-                                startMouseOffset = startMouseOffset,
-                                resetSelectedArea = { selectedArea = null }
-                            )
-                        }
-                        PointerEventType.Press -> if(isMasterWindow) focusManager.clearFocus()
-                        PointerEventType.Move -> viewModel.setCursor(if (event.keyboardModifiers.isAltPressed) null else mouseOffset.absoluteOffset)
-                        PointerEventType.Exit -> viewModel.setCursor(null)
-                    }
-                }.onMouseDrag { start, end ->
-                    if (startPressButtons.isPrimaryPressed) {
-                        if (viewModel.hasElementAtPosition(start.absoluteOffset)) {
-                            moveOffset = end
-                            selectedArea = null
-                        } else {
-                            moveOffset = null
-                            selectedArea = Rect(
-                                Offset(start.x.coerceAtMost(end.x), start.y.coerceAtMost(end.y)),
-                                Size(abs(start.x - end.x), abs(start.y - end.y))
-                            )
-                        }
+            modifier = Modifier
+                .fillMaxSize()
+                .applyIf(isMasterWindow) {
+                    Modifier
+                        .onMouseEvents { eventType ->
+                            when (eventType) {
+                                PointerEventType.Release -> {
+                                    onMouseReleased(
+                                        viewModel = viewModel,
+                                        selectedArea = selectedArea,
+                                        moveOffset = moveOffset,
+                                        resetMoveOffset = { moveOffset = null },
+                                        startMouseOffset = startMouseOffset,
+                                        resetSelectedArea = { selectedArea = null }
+                                    )
+                                }
 
-                        startMouseOffset = start
-                    }
+                                PointerEventType.Press -> if (isMasterWindow) focusManager.clearFocus()
+                                PointerEventType.Move -> viewModel.setCursor(if (event.keyboardModifiers.isAltPressed) null else mouseOffset.absoluteOffset)
+                                PointerEventType.Exit -> viewModel.setCursor(null)
+                            }
+                        }
+                        .onMouseDrag { start, end ->
+                            if (startPressButtons.isPrimaryPressed) {
+                                if (viewModel.hasElementAtPosition(start.absoluteOffset)) {
+                                    moveOffset = end
+                                    selectedArea = null
+                                } else {
+                                    moveOffset = null
+                                    selectedArea = Rect(
+                                        Offset(start.x.coerceAtMost(end.x), start.y.coerceAtMost(end.y)),
+                                        Size(abs(start.x - end.x), abs(start.y - end.y))
+                                    )
+                                }
+
+                                startMouseOffset = start
+                            }
+                        }
                 }
-            }
         ) {
-            // Draw selected marker
-            viewModel.selectedElements.forEach {
-                drawRectangleAroundToken(it, Color.Red, 4)
-            }
-
             val labelColor = Settings.labelColor.contentColor
             val labelState = Settings.labelState
 
             viewModel.elements.forEach { element ->
-                drawIntoCanvas {
-                    // For better performances, we use native canvas to draw tokens
-                    it.nativeCanvas.drawImageRect(
-                        Image.makeFromBitmap(element.spriteBitmap.asSkiaBitmap()),
-                        SkiaRect.makeXYWH(
-                            element.referenceOffset.x.relativeX(size),
-                            element.referenceOffset.y.relativeY(size),
-                            element.hitBox.width.toFloat().relativeX(size),
-                            element.hitBox.height.toFloat().relativeY(size)
+                if (isMasterWindow || element.isVisible) {
+                    drawIntoCanvas {
+                        // For better performances, we use native canvas to draw tokens
+                        it.nativeCanvas.drawImageRect(
+                            Image.makeFromBitmap(element.spriteBitmap.asSkiaBitmap()),
+                            SkiaRect.makeXYWH(
+                                element.referenceOffset.x.relativeX(size),
+                                element.referenceOffset.y.relativeY(size),
+                                element.hitBox.width.toFloat().relativeX(size),
+                                element.hitBox.height.toFloat().relativeY(size)
+                            )
                         )
-                    )
+                    }
                 }
 
-                if (labelState.isVisible) {
+                if ((isMasterWindow && labelState.isVisible) || labelState == SerializableLabelState.FOR_BOTH) {
                     drawLabel(element, labelColor)
                 }
 
-                if (!element.isVisible) {
+                if (isMasterWindow && !element.isVisible) {
                     drawRectangleAroundToken(element, Color.Blue, 3)
                 }
             }
+
+            if (isMasterWindow) {
+                // Draw selected marker
+                viewModel.selectedElements.forEach {
+                    drawRectangleAroundToken(it, Color.Red, 4)
+                }
+            }
+
             if (!isMasterWindow && Settings.cursorEnabled) {
                 drawCursor(viewModel.cursor)
             }

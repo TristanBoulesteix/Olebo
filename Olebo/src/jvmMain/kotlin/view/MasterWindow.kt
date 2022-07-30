@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeWindow
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.WindowPlacement
 import jdr.exia.localization.*
@@ -17,8 +16,6 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.view.composable.master.*
 import jdr.exia.view.element.dialog.ConfirmMessage
 import jdr.exia.view.menubar.MasterMenuBar
-import jdr.exia.view.tools.event.addMousePressedListener
-import jdr.exia.view.tools.event.removeMousePressedListener
 import jdr.exia.view.tools.screens
 import jdr.exia.view.ui.MASTER_WINDOW_SIZE
 import jdr.exia.viewModel.MasterViewModel
