@@ -40,7 +40,7 @@ fun ChangelogsDialog(changelogs: String, onClose: () -> Unit = {}) {
     MessageDialog(
         visible = changelogsVisible,
         title = StringLocale[STR_RELEASE_NOTES],
-        buttonBuilders = listOf(ContentButtonBuilder(content = "Ok", onClick = { changelogsVisible = false })),
+        buttonsBuilder = listOf(ContentButtonBuilder(content = "Ok", onClick = { changelogsVisible = false })),
         onCloseRequest = { changelogsVisible = false },
         height = 550.dp,
         width = 600.dp

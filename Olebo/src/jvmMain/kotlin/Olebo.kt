@@ -4,7 +4,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.application
 import jdr.exia.localization.*
-import jdr.exia.model.dao.Preferences
+import jdr.exia.model.dao.option.Preferences
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.update.*
 import jdr.exia.view.HomeWindow

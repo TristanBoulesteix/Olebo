@@ -41,7 +41,7 @@ fun MessageDialog(
     visible = visible,
     title = title,
     onCloseRequest = onCloseRequest,
-    buttonBuilders = buttonBuilders,
+    buttonsBuilder = buttonBuilders,
     width = width,
     height = height,
     content = {
@@ -54,11 +54,11 @@ fun MessageDialog(
 fun MessageDialog(
     title: String,
     onCloseRequest: () -> Unit,
-    buttonBuilders: List<ContentBuilder> = emptyList(),
+    buttonsBuilder: List<ContentBuilder> = emptyList(),
     width: Dp = 400.dp,
     height: Dp = 200.dp,
     visible: Boolean = true,
-    content: @Composable () -> Unit
+    content: @Composable BoxScope.() -> Unit
 ) {
     if (visible) {
         val state = rememberDialogState(size = DpSize(width, height))
@@ -73,9 +73,8 @@ fun MessageDialog(
                     onCloseRequest()
                 false
             }) {
-            this.window.isModal = true
-
             DisposableEffect(Unit) {
+                window.isModal = true
                 DialogManager.dialogVisibleNum += 1
 
                 onDispose {
@@ -95,7 +94,7 @@ fun MessageDialog(
                         modifier = Modifier.fillMaxWidth().padding(10.dp),
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        buttonBuilders.forEach {
+                        buttonsBuilder.forEach {
                             OutlinedButton(
                                 onClick = it.onChange,
                                 enabled = it.enabled,

@@ -17,16 +17,6 @@ operator fun Dimension.compareTo(dimension: Dimension) = this.area.compareTo(dim
 val Component.windowAncestor: Window?
     inline get() = SwingUtilities.getWindowAncestor(this)
 
-fun Graphics.fillCircleWithCenterCoordinates(x: Float, y: Float, radius: Int) =
-    fillOval((x - radius).toInt(), (y - radius).toInt(), radius * 2, radius * 2)
-
-fun Graphics2D.drawCircleWithCenterCoordinates(x: Float, y: Float, radius: Int) {
-    val previousStroke = this.stroke
-    this.stroke = BasicStroke(3F)
-    this.drawOval((x - radius).toInt(), (y - radius).toInt(), radius * 2, radius * 2)
-    this.stroke = previousStroke
-}
-
 /**
  * Return the first element to correspond to the given position or null
  */

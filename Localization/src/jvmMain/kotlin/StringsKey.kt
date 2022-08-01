@@ -164,6 +164,10 @@ const val STR_THEME = "theme"
 const val STR_RELEASE_NOTES = "release_notes"
 const val STR_CONTACT_DEVELOPERS = "contact_devs"
 const val STR_NO_UPDATE_AVAILABLE = "no_update_available"
+const val STR_TRY_IF_PROBLEM_PERSISTS = "if_problem_persists"
+const val STR_CHECK_INTERNET_FIREWALL = "check_internet_firewall"
+const val STR_CREATE_ISSUE_FOR_UPDATE = "create_issue_for_update"
+const val STR_CONTACT_DEVELOPERS_FOR_UPDATE_FAILURE = "contact_devs_update"
 
 // -- Sentences
 
@@ -219,3 +223,4 @@ const val ST_STR1_DM_WINDOW_NAME = "1_dm_window_name"
 const val ST_INT1_NUMBER_OF_CONNECTED_PLAYERS = "1_number_of_connected_players"
 const val ST_INT1_NAME_OF_CONNECTED_PLAYERS = "1_name_of_connected_players"
 const val ST_STR1_OLEBO_WEB_SERVER_ERROR = "1_olebo_web_server_error"
+const val ST_INT1_INT2_UPDATE_FAILED_FOR_X_ATTEMPT = "2_update_failed"

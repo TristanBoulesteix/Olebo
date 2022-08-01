@@ -1,7 +1,7 @@
-package jdr.exia.model.dao
+package jdr.exia.model.dao.option
 
 import jdr.exia.OLEBO_VERSION_CODE
-import jdr.exia.model.dao.option.ThemeMode
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -17,8 +17,36 @@ object Preferences {
 
     var versionUpdatedTo by preference("last-update", -1)
 
+    private var updateAttempts by preference("update-attempts", UpdateAttempt.none())
+
     val wasJustUpdated
         get() = versionUpdatedTo == OLEBO_VERSION_CODE
+
+    init {
+        if (updateAttempts.versionCode <= OLEBO_VERSION_CODE) {
+            updateAttempts = UpdateAttempt.none()
+        }
+    }
+
+    fun getNumberOfUpdateAttemptForVersion(version: Int) =
+        updateAttempts.takeIf { it.versionCode == version }?.attemptNumber ?: 0
+
+    fun incrementAttemptForVersion(version: Int) {
+        val previousAttempt = updateAttempts
+
+        updateAttempts = if (previousAttempt.versionCode == version) {
+            previousAttempt.copy(attemptNumber = updateAttempts.attemptNumber + 1)
+        } else {
+            UpdateAttempt(version)
+        }
+    }
+
+    @Serializable
+    private data class UpdateAttempt(val versionCode: Int, val attemptNumber: Int = 0) {
+        companion object {
+            fun none() = UpdateAttempt(-1)
+        }
+    }
 
     private inline fun <reified T> preference(key: String, defaultValue: T) =
         object : ReadWriteProperty<Preferences, T> {
@@ -31,6 +59,7 @@ object Preferences {
                 }
             }
 
-            override fun setValue(thisRef: Preferences, property: KProperty<*>, value: T) = prefs.put(key, Json.encodeToString(value))
+            override fun setValue(thisRef: Preferences, property: KProperty<*>, value: T) =
+                prefs.put(key, Json.encodeToString(value))
         }
 }

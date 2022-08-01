@@ -238,6 +238,14 @@ internal actual class StringLocaleBundle : StringLocale() {
         STR_RELEASE_NOTES to "release notes",
         STR_CONTACT_DEVELOPERS to "contact developers",
         STR_NO_UPDATE_AVAILABLE to "no update available",
+        ST_INT1_INT2_UPDATE_FAILED_FOR_X_ATTEMPT to """
+            The update for version %s failed after %s attempts.
+            Auto update for this version is skipped.
+        """.trimIndent(),
+        STR_TRY_IF_PROBLEM_PERSISTS to "if the problem persists, try the following actions:",
+        STR_CHECK_INTERNET_FIREWALL to "check your internet connection, your antivirus or your firewall configuration",
+        STR_CREATE_ISSUE_FOR_UPDATE to "report this issue on GitHub",
+        STR_CONTACT_DEVELOPERS_FOR_UPDATE_FAILURE to "ask for support to the developers",
     )
 }
 
@@ -478,5 +486,13 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
         STR_RELEASE_NOTES to "notes de mises à jour",
         STR_CONTACT_DEVELOPERS to "contacter les développeurs",
         STR_NO_UPDATE_AVAILABLE to "aucune mise à jour disponible",
+        ST_INT1_INT2_UPDATE_FAILED_FOR_X_ATTEMPT to """
+            La mise à jour de la version %s a échoué %s fois.
+            La mise à jour automatique pour cette version a été ignorée.
+        """.trimIndent(),
+        STR_TRY_IF_PROBLEM_PERSISTS to "si le problème persiste, essayez les actions suivantes :",
+        STR_CHECK_INTERNET_FIREWALL to "vérifiez votre connection internet, les règles de votre antivirus ou de votre firewall",
+        STR_CREATE_ISSUE_FOR_UPDATE to "signalez ce problème sur GitHub",
+        STR_CONTACT_DEVELOPERS_FOR_UPDATE_FAILURE to "contacter les développeurs pour obtenir de l'aide",
     )
 }

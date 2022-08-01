@@ -4,6 +4,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.FrameWindowScope
@@ -17,6 +18,7 @@ import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.loadOleboZipData
 import jdr.exia.model.dao.option.ThemeMode
 import jdr.exia.model.dao.zipOleboDirectory
+import jdr.exia.service.sendMailToDevelopers
 import jdr.exia.update.ChangelogsDialog
 import jdr.exia.update.getChangelogs
 import jdr.exia.view.SettingsDialog
@@ -30,12 +32,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.awt.Desktop
 import java.io.File
 import java.io.InputStreamReader
-import java.net.URI
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 import javax.swing.JFileChooser
 import javax.swing.JOptionPane
 import javax.swing.filechooser.FileNameExtensionFilter
@@ -165,18 +163,13 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
         }
     }
 
-    lateinit var desktop: Desktop
+    val uriHandler = LocalUriHandler.current
 
-    Item(
-        text = StringLocale[STR_CONTACT_DEVELOPERS],
-        enabled = Desktop.isDesktopSupported() && Desktop.getDesktop().also { desktop = it }
-            .isSupported(Desktop.Action.MAIL)
-    ) {
+    Item(text = StringLocale[STR_CONTACT_DEVELOPERS]) {
         val body = StringLocale.getLocalizedResource("contact/body", "txt", ::main.javaClass.classLoader)?.reader()
-            ?.use(InputStreamReader::readText)?.let { URLEncoder.encode(it, StandardCharsets.UTF_8).replace("+", "%20") } ?: ""
+            ?.use(InputStreamReader::readText) ?: ""
 
-        val mailto = URI("mailto:contact.olebo@tb-lab.fr?subject=Bug%20report%20%2F%20feature%20request&body=$body")
-        desktop.mail(mailto)
+        uriHandler.sendMailToDevelopers("Bug report / Feature request", body)
     }
 
     var aboutDialogVisible by remember { mutableStateOf(false) }

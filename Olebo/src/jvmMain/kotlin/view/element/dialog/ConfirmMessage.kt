@@ -15,7 +15,7 @@ fun ConfirmMessage(message: String, title: String, onCloseRequest: () -> Unit, o
 
     MessageDialog(
         title = title,
-        buttonBuilders = listOf(
+        buttonsBuilder = listOf(
             ContentButtonBuilder(
                 content = StringLocale[STR_CONFIRM],
                 onClick = {

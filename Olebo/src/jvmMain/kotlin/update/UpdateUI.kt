@@ -4,51 +4,138 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.material.LocalContentColor
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.*
+import androidx.compose.ui.window.ApplicationScope
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.Notification
+import androidx.compose.ui.window.rememberDialogState
 import jdr.exia.MainUI
 import jdr.exia.localization.*
+import jdr.exia.model.dao.option.Preferences
 import jdr.exia.model.dao.option.Settings
+import jdr.exia.service.sendMailToDevelopers
 import jdr.exia.view.element.builder.ContentButtonBuilder
 import jdr.exia.view.element.dialog.MessageDialog
+import jdr.exia.view.tools.annotatedHyperlink
+import jdr.exia.view.tools.appendBulletList
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.delay
+
+private const val MAX_UPDATE_ATTEMPT = 1
 
 @Composable
 fun ApplicationScope.UpdateUI(release: Release, notify: (Notification) -> Unit, hideTray: () -> Unit) {
     val versionId = release.versionId
 
-    if (Settings.autoUpdate) {
-        val notification =
-            rememberNotification(StringLocale[STR_UPDATE_AVAILABLE], StringLocale[ST_UPDATE_OLEBO_RESTART])
+    when {
+        Settings.autoUpdate -> {
+            var failedToUpdate by remember { mutableStateOf(false) }
+            var failedAttemptForAutoUpdate by remember { mutableStateOf(0) }
 
-        var failedToUpdate by remember { mutableStateOf(false) }
+            LaunchedEffect(Unit) {
+                val attemptNumber = Preferences.getNumberOfUpdateAttemptForVersion(versionId)
 
-        LaunchedEffect(Unit) {
-            notify(notification)
-            delay(2_000)
-            downloadAndExit(
-                onExitSuccess = ::exitApplication,
-                onDownloadFailure = {
+                if (attemptNumber > MAX_UPDATE_ATTEMPT) {
                     failedToUpdate = true
-                    notify(Notification(StringLocale[STR_ERROR], StringLocale[ST_UPDATE_FAILED]))
-                },
-                versionCode = versionId
+                    trayHint = StringLocale[ST_UPDATE_FAILED]
+                    notify(
+                        Notification(
+                            StringLocale[STR_ERROR],
+                            StringLocale[ST_INT1_INT2_UPDATE_FAILED_FOR_X_ATTEMPT, versionId, attemptNumber]
+                        )
+                    )
+                    failedAttemptForAutoUpdate = attemptNumber
+                } else {
+                    notify(Notification(StringLocale[STR_UPDATE_AVAILABLE], StringLocale[ST_UPDATE_OLEBO_RESTART]))
+                    delay(2_000)
+                    downloadUpdateAndExit(
+                        onExitSuccess = ::exitApplication,
+                        onDownloadFailure = {
+                            failedToUpdate = true
+                            notify(Notification(StringLocale[STR_ERROR], StringLocale[ST_UPDATE_FAILED]))
+                        },
+                        versionCode = versionId
+                    )
+                }
+            }
+
+            if (failedToUpdate) {
+                MainUI()
+            }
+
+            if (failedAttemptForAutoUpdate > MAX_UPDATE_ATTEMPT) {
+                FailedAutoUpdateDialog(versionId, failedAttemptForAutoUpdate)
+            }
+        }
+
+        versionId.toString() != Settings.updateWarn -> PromptUpdate(versionCode = versionId, onUpdateRefused = hideTray)
+        else -> SideEffect(hideTray)
+    }
+}
+
+private const val REPORT_ISSUE_TAG = "report"
+
+private const val CONTACT_DEVS_TAG = "contact"
+
+@Composable
+private fun FailedAutoUpdateDialog(versionCode: Int, attemptNumber: Int) {
+    var isVisible by remember { mutableStateOf(true) }
+
+    MessageDialog(
+        title = StringLocale[STR_ERROR],
+        width = 800.dp,
+        height = 500.dp,
+        onCloseRequest = { isVisible = false },
+        visible = isVisible,
+        buttonsBuilder = listOf(ContentButtonBuilder("OK", onClick = { isVisible = false }))
+    ) {
+        val uriHandler = LocalUriHandler.current
+
+        val message = buildAnnotatedString {
+            append(StringLocale[ST_INT1_INT2_UPDATE_FAILED_FOR_X_ATTEMPT, versionCode, attemptNumber])
+            append("\n\n")
+            append(StringLocale[STR_TRY_IF_PROBLEM_PERSISTS])
+            append('\n')
+
+            appendBulletList(
+                AnnotatedString(StringLocale[STR_CHECK_INTERNET_FIREWALL]),
+                annotatedHyperlink(
+                    text = StringLocale[STR_CREATE_ISSUE_FOR_UPDATE],
+                    message = "https://github.com/TristanBoulesteix/Olebo/issues/new",
+                    tag = REPORT_ISSUE_TAG
+                ),
+                annotatedHyperlink(
+                    text = StringLocale[STR_CONTACT_DEVELOPERS_FOR_UPDATE_FAILURE],
+                    message = "Bug report",
+                    tag = CONTACT_DEVS_TAG
+                )
             )
         }
 
-        if (failedToUpdate)
-            MainUI()
-
-    } else if (versionId.toString() != Settings.updateWarn) {
-        PromptUpdate(versionCode = versionId, onUpdateRefused = hideTray)
-    } else {
-        SideEffect(hideTray)
+        ClickableText(
+            text = message,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 5.dp),
+            style = LocalTextStyle.current.copy(color = LocalContentColor.current),
+            onClick = { position ->
+                message.getStringAnnotations(position, position).firstOrNull()?.let {
+                    if(it.tag == REPORT_ISSUE_TAG) {
+                        uriHandler.openUri(it.item)
+                    } else if(it.tag == CONTACT_DEVS_TAG) {
+                        uriHandler.sendMailToDevelopers(it.item)
+                    }
+                }
+            })
     }
 }
 
@@ -109,7 +196,7 @@ private fun InstallerDownloader(versionCode: Int, exitApplication: () -> Unit) {
         }
 
         LaunchedEffect(Unit) {
-            downloadAndExit(
+            downloadUpdateAndExit(
                 versionCode = versionCode,
                 onExitSuccess = exitApplication,
                 onProgressUpdate = { progress = it.toFloat() },
