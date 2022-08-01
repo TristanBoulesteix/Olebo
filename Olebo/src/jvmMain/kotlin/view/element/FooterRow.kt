@@ -16,7 +16,6 @@ import jdr.exia.localization.get
 import jdr.exia.model.tools.SimpleResult
 import jdr.exia.view.tools.MessageType
 import jdr.exia.view.tools.showMessage
-import kotlin.experimental.ExperimentalTypeInference
 
 @Composable
 fun FooterRowWithCancel(

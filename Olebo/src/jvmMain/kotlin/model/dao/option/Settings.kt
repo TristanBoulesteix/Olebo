@@ -1,12 +1,10 @@
 package jdr.exia.model.dao.option
 
-import jdr.exia.OLEBO_VERSION_CODE
 import jdr.exia.localization.Language
 import jdr.exia.localization.languageCode
 import jdr.exia.model.dao.DAO
 import jdr.exia.model.dao.SettingsTable
 import jdr.exia.model.dao.SettingsTable.AUTO_UPDATE
-import jdr.exia.model.dao.SettingsTable.CHANGELOGS_VERSION
 import jdr.exia.model.dao.SettingsTable.CURRENT_LANGUAGE
 import jdr.exia.model.dao.SettingsTable.CURSOR_COLOR
 import jdr.exia.model.dao.SettingsTable.CURSOR_ENABLED
