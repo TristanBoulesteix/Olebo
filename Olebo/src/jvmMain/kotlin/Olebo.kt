@@ -1,7 +1,6 @@
 package jdr.exia
 
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.application
 import jdr.exia.localization.*
