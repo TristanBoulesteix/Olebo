@@ -1,6 +1,7 @@
 package jdr.exia
 
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.application
 import jdr.exia.localization.*
@@ -54,7 +55,7 @@ fun main() {
             }
 
             // Start the main UI if automatic updates are disabled
-            if (!Settings.autoUpdate || (Settings.autoUpdate && updateChecked && (release == null))) {
+            if (!Settings.autoUpdate || (Settings.autoUpdate && updateChecked && release == null)) {
                 var changelogs: String? by remember { mutableStateOf(null) }
 
                 LaunchedEffect(Unit) {
