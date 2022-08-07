@@ -29,10 +29,10 @@ fun main() {
         var release by remember { mutableStateOf<Release?>(null) }
         var updateChecked by remember { mutableStateOf(false) }
 
-        val currentTrayManager = LocalTrayManager.current
+        val trayManager = LocalTrayManager.current
 
         LaunchedEffect(release, updateChecked) {
-            currentTrayManager.trayHint = when {
+            trayManager.trayHint = when {
                 updateChecked -> StringLocale[STR_OLEBO_IS_RUNNING]
                 release == null -> StringLocale[ST_OLEBO_SEARCH_FOR_UPDATE]
                 else -> StringLocale[STR_PREPARE_UPDATE]
@@ -47,7 +47,7 @@ fun main() {
         }
 
         release?.let {
-            UpdateUI(release = it, notify = currentTrayManager::sendNotification, hideTray = { release = null })
+            UpdateUI(release = it, notify = trayManager::sendNotification, hideTray = { release = null })
         }
 
         // Start the main UI if automatic updates are disabled
