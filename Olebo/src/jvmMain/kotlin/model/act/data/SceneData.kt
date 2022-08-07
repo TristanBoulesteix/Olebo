@@ -18,20 +18,6 @@ data class SceneData(val name: String, @Stable val img: Image, @Stable val id: E
     }
 }
 
-/**
- * Check if the receiver [SceneData] has the same id as the parameter of the method.
- * This function can be infix if the smartcast isn't required.
- */
-@OptIn(ExperimentalContracts::class)
-@Stable
-infix fun SceneData?.isValidAndEqualTo(sceneData: SceneData?): Boolean {
-    contract {
-        returns(true) implies (sceneData != null && this@isValidAndEqualTo != null)
-    }
-
-    return this.isValid() && (this == sceneData || (sceneData.isValid() && sceneData.id == this.id))
-}
-
 @OptIn(ExperimentalContracts::class)
 fun SceneData?.isValid(): Boolean {
     contract {
