@@ -7,6 +7,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.toAwtImage
+import androidx.compose.ui.graphics.toComposeImageBitmap
 import fr.olebo.sharescene.*
 import fr.olebo.sharescene.connection.*
 import io.ktor.websocket.*
@@ -35,7 +38,6 @@ import jdr.exia.view.tools.positionOf
 import kotlinx.coroutines.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 
 class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
@@ -77,7 +79,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
      */
     val elements by derivedStateOf { unsortedElements.sortedBy { it.priority } }
 
-    val backgroundImage: BufferedImage by derivedStateOf {
+    val backgroundImage: ImageBitmap by derivedStateOf {
         transaction {
             ImageIO.read(inputStreamFromString(currentScene.background)).also { image ->
                 sendMessageToShareScene {
@@ -87,7 +89,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
                         Base64Image(image, 1600, 900),
                         elements.filter { it.isVisible }.map { it.toShareSceneToken(color) })
                 }
-            }
+            }.toComposeImageBitmap()
         }
     }
 
@@ -373,7 +375,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
                                     val color =
                                         if (Settings.labelState == SerializableLabelState.FOR_BOTH) Settings.labelColor.contentColor.toTriple() else null
 
-                                    send(NewMap(Base64Image(backgroundImage, 1600, 900),
+                                    send(NewMap(Base64Image(backgroundImage.toAwtImage(), 1600, 900),
                                         elements.filter { it.isVisible }.map { it.toShareSceneToken(color) })
                                     )
 

@@ -30,7 +30,7 @@ import org.jetbrains.skia.Rect as SkiaRect
 @Composable
 fun ComposeMapPanel(modifier: Modifier, viewModel: MasterViewModel, isMasterWindow: Boolean = true) = Box(modifier) {
     Image(
-        bitmap = viewModel.backgroundImage.toComposeImageBitmap(),
+        bitmap = viewModel.backgroundImage,
         contentDescription = null,
         modifier = Modifier.fillMaxSize(),
         contentScale = ContentScale.FillBounds
