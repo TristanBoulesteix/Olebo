@@ -24,13 +24,18 @@ import jdr.exia.MainUI
 import jdr.exia.localization.*
 import jdr.exia.model.dao.option.Preferences
 import jdr.exia.model.dao.option.Settings
+import jdr.exia.model.dao.restart
 import jdr.exia.service.sendMailToDevelopers
 import jdr.exia.view.element.builder.ContentButtonBuilder
 import jdr.exia.view.element.dialog.MessageDialog
 import jdr.exia.view.tools.annotatedHyperlink
 import jdr.exia.view.tools.appendBulletList
+import jdr.exia.view.ui.LocalTrayManager
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.system.exitProcess
 
 private const val MAX_UPDATE_ATTEMPT = 1
 
@@ -40,6 +45,8 @@ fun ApplicationScope.UpdateUI(release: Release, notify: (Notification) -> Unit, 
 
     when {
         Settings.autoUpdate -> {
+            val trayManager = LocalTrayManager.current
+
             var failedToUpdate by remember { mutableStateOf(false) }
             var failedAttemptForAutoUpdate by remember { mutableStateOf(0) }
 
@@ -48,7 +55,7 @@ fun ApplicationScope.UpdateUI(release: Release, notify: (Notification) -> Unit, 
 
                 if (attemptNumber > MAX_UPDATE_ATTEMPT) {
                     failedToUpdate = true
-                    trayHint = StringLocale[ST_UPDATE_FAILED]
+                    trayManager.trayHint = StringLocale[ST_UPDATE_FAILED]
                     notify(
                         Notification(
                             StringLocale[STR_ERROR],
@@ -88,17 +95,57 @@ private const val REPORT_ISSUE_TAG = "report"
 
 private const val CONTACT_DEVS_TAG = "contact"
 
+@OptIn(DelicateCoroutinesApi::class)
 @Composable
 private fun FailedAutoUpdateDialog(versionCode: Int, attemptNumber: Int) {
+    val trayManager = LocalTrayManager.current
+
     var isVisible by remember { mutableStateOf(true) }
 
     MessageDialog(
-        title = StringLocale[STR_ERROR],
+        title = StringLocale[STR_UPDATE_INSTALL_ERROR],
         width = 800.dp,
         height = 500.dp,
         onCloseRequest = { isVisible = false },
         visible = isVisible,
-        buttonsBuilder = listOf(ContentButtonBuilder("OK", onClick = { isVisible = false }))
+        buttonsBuilder = listOf(
+            ContentButtonBuilder(StringLocale[STR_OK]) {
+                isVisible = false
+            },
+            ContentButtonBuilder(StringLocale[STR_RETRY_UPDATE]) {
+                isVisible = false
+
+                GlobalScope.launch {
+                    trayManager.trayHint = StringLocale[STR_PREPARE_UPDATE]
+
+                    trayManager.sendNotification(
+                        Notification(
+                            StringLocale[STR_PREPARE_UPDATE],
+                            StringLocale[ST_UPDATE_OLEBO_RESTART]
+                        )
+                    )
+
+                    downloadUpdateAndExit(
+                        onExitSuccess = { exitProcess(0) },
+                        onDownloadFailure = {
+                            GlobalScope.launch {
+                                trayManager.sendNotification(
+                                    Notification(
+                                        StringLocale[STR_ERROR],
+                                        StringLocale[ST_UPDATE_FAILED]
+                                    )
+                                )
+
+                                delay(2_000)
+
+                                restart(-1)
+                            }
+                        },
+                        versionCode = versionCode
+                    )
+                }
+            }
+        )
     ) {
         val uriHandler = LocalUriHandler.current
 
@@ -129,9 +176,9 @@ private fun FailedAutoUpdateDialog(versionCode: Int, attemptNumber: Int) {
             style = LocalTextStyle.current.copy(color = LocalContentColor.current),
             onClick = { position ->
                 message.getStringAnnotations(position, position).firstOrNull()?.let {
-                    if(it.tag == REPORT_ISSUE_TAG) {
+                    if (it.tag == REPORT_ISSUE_TAG) {
                         uriHandler.openUri(it.item)
-                    } else if(it.tag == CONTACT_DEVS_TAG) {
+                    } else if (it.tag == CONTACT_DEVS_TAG) {
                         uriHandler.sendMailToDevelopers(it.item)
                     }
                 }
@@ -172,7 +219,6 @@ private fun ApplicationScope.PromptUpdate(versionCode: Int, onUpdateRefused: () 
     }
 }
 
-@OptIn(DelicateCoroutinesApi::class)
 @Composable
 private fun InstallerDownloader(versionCode: Int, exitApplication: () -> Unit) {
     var isVisible by remember { mutableStateOf(true) }

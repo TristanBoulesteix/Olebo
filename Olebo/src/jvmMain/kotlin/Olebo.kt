@@ -2,14 +2,14 @@ package jdr.exia
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.window.ApplicationScope
-import androidx.compose.ui.window.application
 import jdr.exia.localization.*
 import jdr.exia.model.dao.option.Preferences
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.update.*
 import jdr.exia.view.HomeWindow
 import jdr.exia.view.MasterWindow
-import jdr.exia.view.ui.OleboTheme
+import jdr.exia.view.ui.LocalTrayManager
+import jdr.exia.view.ui.oleboApplication
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -24,52 +24,48 @@ fun main() {
     // Initialize translations and database
     StringLocale(Settings::activeLanguage)
 
-    application(exitProcessOnExit = false) {
-        // Initialize themes
-        OleboTheme {
-            // Manage update
-            var release by remember { mutableStateOf<Release?>(null) }
-            var updateChecked by remember { mutableStateOf(false) }
+    oleboApplication {
+        // Manage update
+        var release by remember { mutableStateOf<Release?>(null) }
+        var updateChecked by remember { mutableStateOf(false) }
 
-            LaunchedEffect(release) {
-                trayHint = when (release) {
-                    null -> StringLocale[ST_OLEBO_SEARCH_FOR_UPDATE]
-                    else -> StringLocale[STR_PREPARE_UPDATE]
-                }
-            }
+        val currentTrayManager = LocalTrayManager.current
 
-            if (!updateChecked || release != null) {
-                Tray()
+        LaunchedEffect(release, updateChecked) {
+            currentTrayManager.trayHint = when {
+                updateChecked -> StringLocale[STR_OLEBO_IS_RUNNING]
+                release == null -> StringLocale[ST_OLEBO_SEARCH_FOR_UPDATE]
+                else -> StringLocale[STR_PREPARE_UPDATE]
             }
+        }
+
+        LaunchedEffect(Unit) {
+            checkForUpdate().onSuccess { release = it }.onFailure {
+                if (it is Exception) it.printStackTrace()
+            }
+            updateChecked = true
+        }
+
+        release?.let {
+            UpdateUI(release = it, notify = currentTrayManager::sendNotification, hideTray = { release = null })
+        }
+
+        // Start the main UI if automatic updates are disabled
+        if (!Settings.autoUpdate || (Settings.autoUpdate && updateChecked && release == null)) {
+            var changelogs: String? by remember { mutableStateOf(null) }
 
             LaunchedEffect(Unit) {
-                checkForUpdate().onSuccess { release = it }.onFailure {
-                    if (it is Exception) it.printStackTrace()
-                }
-                updateChecked = true
-            }
-
-            release?.let {
-                UpdateUI(release = it, notify = trayState::sendNotification, hideTray = { release = null })
-            }
-
-            // Start the main UI if automatic updates are disabled
-            if (!Settings.autoUpdate || (Settings.autoUpdate && updateChecked && release == null)) {
-                var changelogs: String? by remember { mutableStateOf(null) }
-
-                LaunchedEffect(Unit) {
-                    launch(Dispatchers.IO) {
-                        if (Preferences.wasJustUpdated) {
-                            changelogs = getChangelogs()
-                        }
+                launch(Dispatchers.IO) {
+                    if (Preferences.wasJustUpdated) {
+                        changelogs = getChangelogs()
                     }
                 }
+            }
 
-                MainUI()
+            MainUI()
 
-                if (changelogs != null && Preferences.wasJustUpdated) {
-                    ChangelogsDialog(changelogs!!, onClose = { Preferences.versionUpdatedTo = -1 })
-                }
+            if (changelogs != null && Preferences.wasJustUpdated) {
+                ChangelogsDialog(changelogs!!, onClose = { Preferences.versionUpdatedTo = -1 })
             }
         }
     }

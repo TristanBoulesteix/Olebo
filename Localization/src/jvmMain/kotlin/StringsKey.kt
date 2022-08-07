@@ -168,6 +168,10 @@ const val STR_TRY_IF_PROBLEM_PERSISTS = "if_problem_persists"
 const val STR_CHECK_INTERNET_FIREWALL = "check_internet_firewall"
 const val STR_CREATE_ISSUE_FOR_UPDATE = "create_issue_for_update"
 const val STR_CONTACT_DEVELOPERS_FOR_UPDATE_FAILURE = "contact_devs_update"
+const val STR_UPDATE_INSTALL_ERROR = "update_install_error"
+const val STR_RETRY_UPDATE = "retry_update"
+const val STR_OK = "ok"
+const val STR_OLEBO_IS_RUNNING = "olebo_is_running"
 
 // -- Sentences
 

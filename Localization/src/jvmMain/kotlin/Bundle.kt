@@ -246,6 +246,10 @@ internal actual class StringLocaleBundle : StringLocale() {
         STR_CHECK_INTERNET_FIREWALL to "check your internet connection, your antivirus or your firewall configuration",
         STR_CREATE_ISSUE_FOR_UPDATE to "report this issue on GitHub",
         STR_CONTACT_DEVELOPERS_FOR_UPDATE_FAILURE to "ask for support to the developers",
+        STR_UPDATE_INSTALL_ERROR to "error during the update process",
+        STR_RETRY_UPDATE to "retry the update",
+        STR_OK to "OK",
+        STR_OLEBO_IS_RUNNING to "Olebo is running",
     )
 }
 
@@ -494,5 +498,9 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
         STR_CHECK_INTERNET_FIREWALL to "vérifiez votre connection internet, les règles de votre antivirus ou de votre firewall",
         STR_CREATE_ISSUE_FOR_UPDATE to "signalez ce problème sur GitHub",
         STR_CONTACT_DEVELOPERS_FOR_UPDATE_FAILURE to "contacter les développeurs pour obtenir de l'aide",
+        STR_UPDATE_INSTALL_ERROR to "erreur du processus de mise à jour",
+        STR_RETRY_UPDATE to "retenter la mise à jour",
+        STR_OK to "OK",
+        STR_OLEBO_IS_RUNNING to "Olebo est en cours d'exécution",
     )
 }

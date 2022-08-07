@@ -3,13 +3,14 @@ package jdr.exia.update
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Notification
-import androidx.compose.ui.window.application
 import jdr.exia.localization.*
 import jdr.exia.model.dao.reset
 import jdr.exia.model.dao.restart
 import jdr.exia.view.element.builder.ContentButtonBuilder
 import jdr.exia.view.element.dialog.ConfirmMessage
 import jdr.exia.view.element.dialog.MessageDialog
+import jdr.exia.view.ui.LocalTrayManager
+import jdr.exia.view.ui.oleboApplication
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
@@ -17,10 +18,10 @@ import kotlin.system.exitProcess
 fun showErrorDatabaseUI(versionCode: Int): Boolean {
     var shouldContinue = false
 
-    application(exitProcessOnExit = false) {
+    oleboApplication {
         val scope = rememberCoroutineScope()
 
-        Tray()
+        val trayManager = LocalTrayManager.current
 
         var updateVersionCode by remember { mutableStateOf<Int?>(null) }
 
@@ -28,7 +29,7 @@ fun showErrorDatabaseUI(versionCode: Int): Boolean {
 
         LaunchedEffect(Unit) {
             launch(Dispatchers.IO) {
-                trayHint = StringLocale[ST_OLEBO_SEARCH_FOR_UPDATE]
+                trayManager.trayHint = StringLocale[ST_OLEBO_SEARCH_FOR_UPDATE]
 
                 var release = checkForUpdate(versionCode)
 
@@ -41,7 +42,7 @@ fun showErrorDatabaseUI(versionCode: Int): Boolean {
                 searchForUpdateDone = true
 
                 if (updateVersionCode != null) {
-                    trayHint = StringLocale[STR_UPDATE_AVAILABLE]
+                    trayManager.trayHint = StringLocale[STR_UPDATE_AVAILABLE]
                 }
             }
         }
@@ -66,11 +67,11 @@ fun showErrorDatabaseUI(versionCode: Int): Boolean {
             buttonBuilders = listOf(
                 ContentButtonBuilder(updateText, enabled = updateVersionCode != null) {
                     scope.launch {
-                        trayHint = StringLocale[STR_PREPARE_UPDATE]
+                        trayManager.trayHint = StringLocale[STR_PREPARE_UPDATE]
 
                         errorDialogIsVisible = false
 
-                        trayState.sendNotification(
+                        trayManager.sendNotification(
                             Notification(
                                 StringLocale[STR_UPDATE_AVAILABLE],
                                 StringLocale[ST_UPDATE_OLEBO_RESTART]

@@ -5,6 +5,7 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.window.ApplicationScope
 import com.jthemedetecor.OsThemeDetector
 import jdr.exia.model.dao.option.Preferences
 import jdr.exia.model.dao.option.ThemeMode
@@ -41,7 +42,7 @@ class OleboTheme(themeMode: ThemeMode) {
 val LocalTheme = staticCompositionLocalOf { OleboTheme(Preferences.themeMode) }
 
 @Composable
-fun OleboTheme(content: @Composable () -> Unit) {
+fun ApplicationScope.OleboTheme(content: ApplicationContent) {
     val themeMode = LocalTheme.current.themeMode
 
     var isDarkTheme by remember(themeMode) {
@@ -70,7 +71,7 @@ fun OleboTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colors = colors,
         typography = typography,
-        content = content
+        content = { content(this) }
     )
 }
 
