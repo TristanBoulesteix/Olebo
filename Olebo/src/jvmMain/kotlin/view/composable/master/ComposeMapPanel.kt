@@ -9,11 +9,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.asSkiaBitmap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
@@ -91,17 +94,21 @@ fun ComposeMapPanel(modifier: Modifier, viewModel: MasterViewModel, isMasterWind
 
             viewModel.elements.forEach { element ->
                 if (isMasterWindow || element.isVisible) {
-                    drawIntoCanvas {
-                        // For better performances, we use native canvas to draw tokens
-                        it.nativeCanvas.drawImageRect(
-                            Image.makeFromBitmap(element.spriteBitmap.asSkiaBitmap()),
-                            SkiaRect.makeXYWH(
-                                element.referenceOffset.x.relativeX(size),
-                                element.referenceOffset.y.relativeY(size),
-                                element.hitBox.width.toFloat().relativeX(size),
-                                element.hitBox.height.toFloat().relativeY(size)
+                    val (x, y) = element.centerOffset
+
+                    rotate(degrees = element.orientation, pivot = Offset(x.relativeX(size), y.relativeY(size))) {
+                        drawIntoCanvas {
+                            // For better performances, we use native canvas to draw tokens
+                            it.nativeCanvas.drawImageRect(
+                                Image.makeFromBitmap(element.sprite.asSkiaBitmap()),
+                                SkiaRect.makeXYWH(
+                                    element.referenceOffset.x.relativeX(size),
+                                    element.referenceOffset.y.relativeY(size),
+                                    element.hitBox.width.toFloat().relativeX(size),
+                                    element.hitBox.height.toFloat().relativeY(size)
+                                )
                             )
-                        )
+                        }
                     }
                 }
 

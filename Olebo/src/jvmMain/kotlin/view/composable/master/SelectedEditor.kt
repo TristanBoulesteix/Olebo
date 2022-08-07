@@ -83,7 +83,7 @@ private fun ImagePreview(selectedElements: List<Element>, commandManager: Comman
 
     if (selectedElements.size == 1) {
         Image(
-            bitmap = selectedElements.first().spriteBitmap,
+            bitmap = selectedElements.first().sprite,
             contentDescription = null,
             modifier = modifier
         )

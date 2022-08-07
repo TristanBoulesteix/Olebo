@@ -9,4 +9,4 @@ data class Position(val x: Int, val y: Int)
 data class Label(val text: String, val color: Color)
 
 @Serializable
-data class Token(val image: Base64Image, val position: Position, val size: Int, val label: Label? = null)
+data class Token(val image: Base64Image, val position: Position, val size: Int, val rotation: Float, val label: Label? = null)

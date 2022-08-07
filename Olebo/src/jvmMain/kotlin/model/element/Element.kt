@@ -12,14 +12,12 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.tools.CharacterException
 import jdr.exia.model.tools.isCharacter
 import jdr.exia.model.type.inputStreamFromString
-import jdr.exia.view.tools.rotateImage
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
-import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
@@ -44,13 +42,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     var isDeleted by InstanceTable.deleted
 
     // Value from the Blueprint
-    private val sprites by lazyRotatedSprite()
-
-    val spriteBufferedImage
-        get() = sprites.second
-
-    val spriteBitmap
-        get() = sprites.first
+    val sprite by lazyRotatedSprite()
 
     val name
         get() = transaction { blueprint.realName }
@@ -152,35 +144,20 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
 
     override fun hashCode() = this.id.value
 
-    private fun lazyRotatedSprite() = object : ReadOnlyProperty<Element, Pair<ImageBitmap,BufferedImage>> {
+    private fun lazyRotatedSprite() = object : ReadOnlyProperty<Element, ImageBitmap> {
         private fun getResourceAsStream(name: String) = Element::class.java.classLoader.getResourceAsStream(name)
 
-        val originalImage by lazy {
+        val image by lazy {
             transaction {
                 if (blueprint.type == TypeElement.Basic) {
                     ImageIO.read(getResourceAsStream("sprites/${blueprint.sprite}"))
                 } else {
                     ImageIO.read(inputStreamFromString(blueprint.sprite))
                 }
-            }
+            }.toComposeImageBitmap()
         }
 
-        var rotation: Float = 0f
-
-        lateinit var rotatedImage: BufferedImage
-
-        override fun getValue(thisRef: Element, property: KProperty<*>): Pair<ImageBitmap,BufferedImage> {
-            if (rotation != orientation || !::rotatedImage.isInitialized) {
-                reloadRotatedImage()
-            }
-
-            return rotatedImage.toComposeImageBitmap() to rotatedImage
-        }
-
-        fun reloadRotatedImage() {
-            rotatedImage = originalImage.rotateImage(orientation)
-            rotation = orientation
-        }
+        override fun getValue(thisRef: Element, property: KProperty<*>) = image
     }
 
     companion object : EntityClass<Int, Element>(InstanceTable) {
