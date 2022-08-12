@@ -418,7 +418,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
 
     private fun Element.toShareSceneToken(rgbTooltip: Triple<Int, Int, Int>?) = Token(
         image = Base64Image(sprite.toAwtImage(), size.value),
-        rotation = orientation,
+        rotation = Angle(orientation),
         position = Position(referenceOffset.x.toInt(), referenceOffset.y.toInt()),
         size = size.value,
         label = rgbTooltip?.let { Label(alias, it) }

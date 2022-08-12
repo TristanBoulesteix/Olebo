@@ -10,7 +10,6 @@ import fr.olebo.sharescene.css.backgroundImage
 import fr.olebo.sharescene.css.classes
 import org.jetbrains.compose.web.css.backgroundRepeat
 import org.jetbrains.compose.web.css.backgroundSize
-import org.jetbrains.compose.web.dom.Text
 import org.w3c.dom.CENTER
 import org.w3c.dom.CanvasTextAlign
 import org.w3c.dom.Image
@@ -38,12 +37,21 @@ fun ContentCanvas(viewModel: ShareSceneViewModel) {
                 }
             },
             drawWith = { context ->
+                val canvasX = width / 2
+                val canvasY = height / 2
+
                 tokens.forEach {
                     Image().apply {
                         val (tokenX, tokenY) = it.position
 
                         // Draw image of token
                         onload = { _ ->
+                            // From https://stackoverflow.com/questions/3793397/html5-canvas-drawimage-with-at-an-angle
+
+                            val angleInRadians = it.rotation.radians
+
+                            context.translate(canvasX.toDouble(), canvasY.toDouble())
+                            context.rotate(angleInRadians)
                             context.drawImage(
                                 this,
                                 relativeX(tokenX),
@@ -51,6 +59,9 @@ fun ContentCanvas(viewModel: ShareSceneViewModel) {
                                 relativeX(it.size),
                                 relativeY(it.size)
                             )
+
+                            context.rotate(-angleInRadians)
+                            context.translate(-canvasX.toDouble(), -canvasY.toDouble())
                         }
 
                         src = it.image.cssBase64ImageCode

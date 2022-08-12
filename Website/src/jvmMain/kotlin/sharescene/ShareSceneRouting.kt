@@ -13,7 +13,7 @@ import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.html.HTML
 
 private const val SESSION_CODE_PARAM = "sessionCode"
-private const val MINIMAL_OLEBO_VERSION_COMPAT = 5
+private const val MINIMAL_OLEBO_VERSION_COMPAT = 6
 
 fun Routing.shareSceneRouting() {
     val shareSceneSessions = synchronizedSessionSet()
