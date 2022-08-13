@@ -133,7 +133,7 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
 @Composable
 private fun RowScope.Items(viewModel: MasterViewModel) {
     ItemList(
-        modifier = Modifier.Companion.weight(.20f),
+        modifier = Modifier.weight(.20f),
         createElement = viewModel::addNewElement,
         items = viewModel.itemsFiltered,
         searchString = viewModel.searchString,
