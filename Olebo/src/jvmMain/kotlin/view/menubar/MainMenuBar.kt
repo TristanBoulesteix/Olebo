@@ -23,13 +23,14 @@ import jdr.exia.model.dao.zipOleboDirectory
 import jdr.exia.service.sendMailToDevelopers
 import jdr.exia.update.ChangelogsDialog
 import jdr.exia.update.getChangelogs
-import jdr.exia.view.SettingsDialog
-import jdr.exia.view.WindowStateManager
 import jdr.exia.view.element.dialog.ConfirmMessage
 import jdr.exia.view.element.dialog.LoadingDialog
 import jdr.exia.view.element.dialog.MessageDialog
 import jdr.exia.view.tools.windowAncestor
 import jdr.exia.view.ui.LocalTheme
+import jdr.exia.view.windows.WindowStateManager
+import jdr.exia.view.windows.options.DeveloperSettingsDialog
+import jdr.exia.view.windows.options.SettingsDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -210,8 +211,16 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
 }
 
 @Composable
-private fun MenuScope.DeveloperModeSettingsMenuItem() = Item("Options mode développeur") {
+private fun MenuScope.DeveloperModeSettingsMenuItem() {
+    var isOptionDialogVisible by remember { mutableStateOf(false) }
 
+    Item("Options mode développeur") {
+        isOptionDialogVisible = true
+    }
+
+    if(isOptionDialogVisible) {
+        DeveloperSettingsDialog { isOptionDialogVisible = true }
+    }
 }
 
 @OptIn(DelicateCoroutinesApi::class)

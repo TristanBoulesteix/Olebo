@@ -22,7 +22,6 @@ import jdr.exia.model.act.data.SceneData
 import jdr.exia.model.tools.*
 import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.model.type.imageFromPath
-import jdr.exia.view.WindowStateManager
 import jdr.exia.view.element.*
 import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.element.dialog.MessageDialog
@@ -30,6 +29,7 @@ import jdr.exia.view.tools.*
 import jdr.exia.view.ui.roundedBottomShape
 import jdr.exia.view.ui.roundedShape
 import jdr.exia.view.ui.roundedTopShape
+import jdr.exia.view.windows.WindowStateManager
 import jdr.exia.viewModel.ActEditorViewModel
 import java.io.File
 import javax.imageio.ImageIO

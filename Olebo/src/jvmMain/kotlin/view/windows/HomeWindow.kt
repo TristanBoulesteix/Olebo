@@ -1,4 +1,4 @@
-package jdr.exia.view
+package jdr.exia.view.windows
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -67,6 +67,7 @@ private fun MainContent(
             viewElements = { switchContent(ElementsView) },
             startActCreation = { switchContent(ActCreator) }
         )
+
         is ElementsView -> ElementsView(onDone = { switchContent(ActsView) })
         is ActEditor -> ActEditorView(act = content.act, onDone = { switchContent(ActsView) })
         is ActCreator -> ActEditorView(onDone = { switchContent(ActsView) })
@@ -120,6 +121,7 @@ private fun ActsView(
                         }
                     }
                 }
+
                 else -> Column(verticalArrangement = Arrangement.Center) {
                     Text(
                         text = StringLocale[STR_NO_ACT],

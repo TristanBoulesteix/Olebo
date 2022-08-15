@@ -1,4 +1,4 @@
-package jdr.exia.view
+package jdr.exia.view.windows
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,7 +26,6 @@ import java.awt.Frame.MAXIMIZED_BOTH
 import java.awt.GraphicsConfiguration
 import java.awt.GraphicsDevice
 import java.awt.Rectangle
-import java.awt.Window
 
 @Composable
 fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {

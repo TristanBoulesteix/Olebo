@@ -1,4 +1,4 @@
-package jdr.exia.view
+package jdr.exia.view.windows
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable

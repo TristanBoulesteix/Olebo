@@ -1,4 +1,4 @@
-package jdr.exia.view
+package jdr.exia.view.windows
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

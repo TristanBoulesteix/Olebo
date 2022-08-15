@@ -6,10 +6,10 @@ import jdr.exia.localization.*
 import jdr.exia.model.dao.option.Preferences
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.update.*
-import jdr.exia.view.HomeWindow
-import jdr.exia.view.MasterWindow
 import jdr.exia.view.ui.LocalTrayManager
 import jdr.exia.view.ui.oleboApplication
+import jdr.exia.view.windows.HomeWindow
+import jdr.exia.view.windows.MasterWindow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

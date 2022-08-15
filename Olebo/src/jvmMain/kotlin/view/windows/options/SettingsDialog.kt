@@ -1,10 +1,9 @@
-package jdr.exia.view
+package jdr.exia.view.windows.options
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
@@ -16,7 +15,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.rememberDialogState
 import jdr.exia.localization.*
 import jdr.exia.model.dao.SettingsTable
@@ -41,28 +39,21 @@ fun SettingsDialog(onCloseRequest: () -> Unit) {
         mutableStateOf(originalSettings)
     }
 
-    Dialog(
-        onCloseRequest = onCloseRequest,
-        state = state,
-        resizable = false,
-        title = StringLocale[STR_OPTIONS],
-    ) {
-        Card(modifier = Modifier.fillMaxSize()) {
-            Column {
-                GeneralSettings(settingsData = settings, updateSettings = { settings = it })
-                Spacer(Modifier.height(10.dp))
-                LookAndFeelSettings(settingsData = settings, updateSettings = { settings = it })
-                Spacer(Modifier.height(10.dp))
-                RowButton(
-                    close = onCloseRequest,
-                    data = settings,
-                    refresh = { settings = dataFromSettings },
-                    closeAndReset = {
-                        originalSettings.save()
-                        onCloseRequest()
-                    }
-                )
-            }
+    GenericOptionDialog(onCloseRequest = onCloseRequest, state = state) {
+        Column {
+            GeneralSettings(settingsData = settings, updateSettings = { settings = it })
+            Spacer(Modifier.height(10.dp))
+            LookAndFeelSettings(settingsData = settings, updateSettings = { settings = it })
+            Spacer(Modifier.height(10.dp))
+            RowButton(
+                close = onCloseRequest,
+                data = settings,
+                refresh = { settings = dataFromSettings },
+                closeAndReset = {
+                    originalSettings.save()
+                    onCloseRequest()
+                }
+            )
         }
     }
 }
