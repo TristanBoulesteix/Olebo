@@ -10,6 +10,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.FrameWindowScope
 import androidx.compose.ui.window.MenuBar
 import androidx.compose.ui.window.MenuBarScope
+import androidx.compose.ui.window.MenuScope
+import jdr.exia.DeveloperModeManager
 import jdr.exia.OLEBO_VERSION_CODE
 import jdr.exia.OLEBO_VERSION_NAME
 import jdr.exia.localization.*
@@ -142,6 +144,11 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
         isSettingsDialogVisible = true
     }
 
+    // Developer mode settings
+    if(DeveloperModeManager.enabledState.value) {
+        DeveloperModeSettingsMenuItem()
+    }
+
     // Dark / Light theme manager
     val oleboTheme = LocalTheme.current
 
@@ -200,6 +207,11 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
             messageLineHeight = 45.sp
         )
     }
+}
+
+@Composable
+private fun MenuScope.DeveloperModeSettingsMenuItem() = Item("Options mode développeur") {
+
 }
 
 @OptIn(DelicateCoroutinesApi::class)
