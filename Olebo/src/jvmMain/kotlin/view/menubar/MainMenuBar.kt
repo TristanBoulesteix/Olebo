@@ -46,11 +46,14 @@ fun FrameWindowScope.MainMenuBar(exitApplication: () -> Unit) = MenuBar {
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLocale[STR_FILES], mnemonic = 'f') {
+    // Long process running message
+    // Show a loading dialog when the message is not empty
     val longProcessRunningMessage = remember { mutableStateOf("") }
 
     if (longProcessRunningMessage.value.isNotBlank())
         LoadingDialog(reasonMessage = longProcessRunningMessage.value)
 
+    // Export Olebo data to a file
     Item(text = StringLocale[STR_EXPORT_DATA]) {
         val extension = "olebo"
         JFileChooser().apply {
@@ -118,12 +121,14 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
         MessageDialog("Info", message = it, onCloseRequest = { infoMessage = null })
     }
 
+    // Import data from file
     Item(text = StringLocale[STR_IMPORT_DATA]) {
         confirmedImport = true
     }
 
     Separator()
 
+    // Open settings
     var isSettingsDialogVisible by remember { mutableStateOf(false) }
 
     if (isSettingsDialogVisible) {
@@ -137,6 +142,7 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
         isSettingsDialogVisible = true
     }
 
+    // Dark / Light theme manager
     val oleboTheme = LocalTheme.current
 
     Menu(text = "${StringLocale[STR_THEME]} ${oleboTheme.themeMode}") {
@@ -151,6 +157,7 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
 
     Separator()
 
+    // Change logs handler
     var changelogs by remember { mutableStateOf("") }
 
     Item(text = StringLocale[STR_RELEASE_NOTES]) {
@@ -163,6 +170,7 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
         }
     }
 
+    // Contact developers menu
     val uriHandler = LocalUriHandler.current
 
     Item(text = StringLocale[STR_CONTACT_DEVELOPERS]) {
@@ -172,6 +180,7 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
         uriHandler.sendMailToDevelopers("Bug report / Feature request", body)
     }
 
+    // About dialog
     var aboutDialogVisible by remember { mutableStateOf(false) }
 
     Item(text = StringLocale[STR_ABOUT], shortcut = KeyShortcut(Key.F1)) {
