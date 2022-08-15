@@ -1,12 +1,16 @@
 package jdr.exia.view
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.isCtrlPressed
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.window.*
+import jdr.exia.DeveloperModeManager
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.awt.Dimension
 
 object WindowStateManager {
@@ -48,7 +52,43 @@ fun ApplicationScope.Window(
         placement = placement
     )
 
-    Window(onCloseRequest = ::exitApplication, state = windowState, title = title, focusable = true) {
+    var counterCtrl by remember { mutableStateOf(0) }
+
+    if (counterCtrl > 4) {
+        LaunchedEffect(Unit) {
+            DeveloperModeManager.toggle()
+            counterCtrl = 0
+        }
+    }
+
+    val coroutineScope = rememberCoroutineScope()
+
+    val jobHolder = remember { JobHolder() }
+
+    Window(
+        onCloseRequest = ::exitApplication,
+        state = windowState,
+        title = title,
+        focusable = true,
+        onPreviewKeyEvent = {
+            if (it.type == KeyEventType.KeyDown) {
+                if (it.isCtrlPressed) {
+                    counterCtrl++
+
+                    jobHolder.value?.cancel()
+
+                    jobHolder.value = coroutineScope.launch {
+                        delay(5_000)
+                        counterCtrl = 0
+                    }
+                } else {
+                    counterCtrl = 0
+                }
+            }
+
+            false
+        }
+    ) {
         LaunchedEffect(minimumSize) {
             minimumSize?.let {
                 window.minimumSize = it.toDimension()
@@ -74,3 +114,5 @@ fun ApplicationScope.Window(
 }
 
 private fun DpSize.toDimension() = Dimension(width.value.toInt(), height.value.toInt())
+
+private class JobHolder(var value: Job? = null)

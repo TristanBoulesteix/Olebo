@@ -2,6 +2,7 @@ package jdr.exia.view.ui
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.window.*
+import jdr.exia.DeveloperModeManager
 import jdr.exia.update.UpdateTrayIcon
 
 typealias ApplicationContent = @Composable ApplicationScope.() -> Unit
@@ -38,5 +39,18 @@ fun oleboApplication(content: ApplicationContent) = application(exitProcessOnExi
 }
 
 @Composable
-private fun ApplicationScope.Tray(trayState: TrayState, text: String) =
+private fun ApplicationScope.Tray(trayState: TrayState, text: String) {
     Tray(icon = UpdateTrayIcon, state = trayState, tooltip = text)
+
+    LaunchedEffect(Unit) {
+        DeveloperModeManager.enabledFlow.collect { isEnabled ->
+            trayState.sendNotification(
+                Notification(
+                    if (isEnabled) "Mode développeur activé !" else "Mode développeur désactivé",
+                    "",
+                    Notification.Type.Info
+                )
+            )
+        }
+    }
+}
