@@ -20,8 +20,14 @@ allprojects {
     kotlin {
         jvm {
             jvmToolchain {
-                (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(16))
+                this.languageVersion.set(JavaLanguageVersion.of(16))
             }
+        }
+    }
+
+    tasks.withType<KotlinCompile>().configureEach {
+        kotlinOptions {
+            freeCompilerArgs = freeCompilerArgs + "-Xcontext-receivers"
         }
     }
 }

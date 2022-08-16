@@ -1,17 +1,11 @@
 package jdr.exia.view.windows.options
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,27 +33,30 @@ fun SettingsDialog(onCloseRequest: () -> Unit) {
         mutableStateOf(originalSettings)
     }
 
-    GenericOptionDialog(onCloseRequest = onCloseRequest, state = state) {
-        Column {
-            GeneralSettings(settingsData = settings, updateSettings = { settings = it })
-            Spacer(Modifier.height(10.dp))
-            LookAndFeelSettings(settingsData = settings, updateSettings = { settings = it })
-            Spacer(Modifier.height(10.dp))
-            RowButton(
-                close = onCloseRequest,
-                data = settings,
-                refresh = { settings = dataFromSettings },
-                closeAndReset = {
-                    originalSettings.save()
-                    onCloseRequest()
-                }
-            )
+    GenericOptionDialog(
+        onCloseRequest = onCloseRequest,
+        state = state,
+        onResetDefault = {
+            transaction { SettingsTable.initializeDefault() }
+            settings = dataFromSettings
+        },
+        saveSettings = {
+            settings.save()
+            onCloseRequest()
+        },
+        onCancel = {
+            originalSettings.save()
+            onCloseRequest()
         }
+    ) {
+        GeneralSettings(settingsData = settings, updateSettings = { settings = it })
+        Spacer(Modifier.height(10.dp))
+        LookAndFeelSettings(settingsData = settings, updateSettings = { settings = it })
     }
 }
 
 @Composable
-private fun GeneralSettings(settingsData: SettingsData, updateSettings: (SettingsData) -> Unit) =
+private fun DialogSettingsScope.GeneralSettings(settingsData: SettingsData, updateSettings: (SettingsData) -> Unit) =
     SettingsSection(StringLocale[STR_GENERAL]) {
         val locales = remember { availableLocales }
 
@@ -82,7 +79,10 @@ private fun GeneralSettings(settingsData: SettingsData, updateSettings: (Setting
     }
 
 @Composable
-private fun LookAndFeelSettings(settingsData: SettingsData, updateSettings: (SettingsData) -> Unit) =
+private fun DialogSettingsScope.LookAndFeelSettings(
+    settingsData: SettingsData,
+    updateSettings: (SettingsData) -> Unit
+) =
     SettingsSection(sectionTitle = StringLocale[STR_LOOK_AND_FEEL]) {
         LabeledCheckbox(
             checked = settingsData.autoOpenPlayerDialog,
@@ -186,41 +186,6 @@ private fun updateColor(
 
     updateSettings(selectedColor)
 }
-
-@Composable
-private inline fun SettingsSection(sectionTitle: String, content: @Composable ColumnScope.() -> Unit) = Column(
-    modifier = Modifier.fillMaxWidth().padding(5.dp)
-        .border(2.dp, MaterialTheme.colors.primary, RoundedCornerShape(5.dp)).padding(10.dp),
-    content = {
-        Text(sectionTitle, fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)
-        Spacer(Modifier.height(8.dp))
-        content()
-    }
-)
-
-@Composable
-private fun RowButton(data: SettingsData, refresh: () -> Unit, close: () -> Unit, closeAndReset: () -> Unit) =
-    Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth().padding(5.dp)) {
-        val buttonModifier = Modifier.padding(4.dp)
-
-        OutlinedButton(
-            onClick = {
-                data.save()
-                close()
-            },
-            modifier = buttonModifier,
-            content = { Text(StringLocale[STR_SAVE]) }
-        )
-        OutlinedButton(onClick = closeAndReset, modifier = buttonModifier) { Text(StringLocale[STR_CANCEL]) }
-        OutlinedButton(
-            onClick = {
-                transaction { SettingsTable.initializeDefault() }
-                refresh()
-            },
-            modifier = buttonModifier,
-            content = { Text(StringLocale[STR_RESTORE_DEFAULTS_OPTIONS]) }
-        )
-    }
 
 @Immutable
 private data class SettingsData(
