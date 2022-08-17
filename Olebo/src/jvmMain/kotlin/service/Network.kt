@@ -5,8 +5,6 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.serialization.kotlinx.json.*
 
-const val SERVER_URL = "https://olebo.fr/"
-
 val client
     get() = HttpClient {
         install(ContentNegotiation) {

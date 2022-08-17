@@ -1,5 +1,7 @@
 package jdr.exia.model.dao.option
 
+import fr.olebo.sharescene.URL
+import jdr.exia.DeveloperModeManager
 import jdr.exia.OLEBO_VERSION_CODE
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
@@ -48,9 +50,15 @@ object Preferences {
         }
     }
 
-    private inline fun <reified T> preference(key: String, defaultValue: T) =
+    var oleboUrl by preference("url", URL("https://olebo.fr"), isDeveloperSetting = true)
+
+    private inline fun <reified T> preference(key: String, defaultValue: T, isDeveloperSetting: Boolean = false) =
         object : ReadWriteProperty<Preferences, T> {
             override fun getValue(thisRef: Preferences, property: KProperty<*>): T {
+                if(isDeveloperSetting && !DeveloperModeManager.isCurrentlyEnabled) {
+                    return defaultValue
+                }
+
                 val prefValue = prefs[key, null] ?: return defaultValue
                 return try {
                     Json.decodeFromString(prefValue)

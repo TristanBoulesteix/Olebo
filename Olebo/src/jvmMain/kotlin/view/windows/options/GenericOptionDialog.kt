@@ -18,13 +18,14 @@ import androidx.compose.ui.window.DialogState
 import androidx.compose.ui.window.DialogWindowScope
 import jdr.exia.localization.*
 
-sealed interface DialogSettingsScope : DialogWindowScope {
+sealed interface DialogSettingsScope : DialogWindowScope, ColumnScope {
     @Composable
     fun SettingsSection(sectionTitle: String, content: @Composable ColumnScope.() -> Unit)
 }
 
 @Immutable
-private class ScopeImpl(val windowScope: DialogWindowScope) : DialogSettingsScope, DialogWindowScope by windowScope {
+private class ScopeImpl(windowScope: DialogWindowScope, columnScope: ColumnScope) : DialogSettingsScope,
+    DialogWindowScope by windowScope, ColumnScope by columnScope {
     @Composable
     override fun SettingsSection(
         sectionTitle: String,
@@ -47,7 +48,7 @@ fun GenericOptionDialog(
     saveSettings: () -> Unit,
     onResetDefault: () -> Unit,
     onCancel: () -> Unit,
-    content: @Composable context(DialogSettingsScope, ColumnScope) () -> Unit
+    content: @Composable DialogSettingsScope.() -> Unit
 ) = Dialog(
     onCloseRequest = onCloseRequest,
     state = state,
@@ -58,7 +59,7 @@ fun GenericOptionDialog(
 
     Card(modifier = Modifier.fillMaxSize()) {
         Column {
-            content(ScopeImpl(dialogScope), this)
+            content(ScopeImpl(dialogScope, this))
             Spacer(Modifier.height(10.dp))
             RowButton(
                 onSave = saveSettings,

@@ -50,6 +50,7 @@ private fun Form(getConnectionState: () -> ConnectionState, setConnectionState: 
     ShareSceneForm(connectionStateProvider(), setConnectionState) { userName, sessionCode ->
         initWebsocket(
             client = client,
+            serverAddress = URL("https://olebo.fr"),
             path = "share-scene/$sessionCode?name=$userName",
             onFailure = { connectionError ->
                 setConnectionState(Disconnected.ConnectionFailed(connectionError))

@@ -24,12 +24,6 @@ allprojects {
             }
         }
     }
-
-    tasks.withType<KotlinCompile>().configureEach {
-        kotlinOptions {
-            freeCompilerArgs = freeCompilerArgs + "-Xcontext-receivers"
-        }
-    }
 }
 
 subprojects {

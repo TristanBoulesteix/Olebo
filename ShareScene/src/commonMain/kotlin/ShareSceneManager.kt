@@ -8,6 +8,7 @@ import io.ktor.utils.io.core.*
 
 class ShareSceneManager internal constructor(
     private val client: HttpClient,
+    private val serverURL: URL,
     private val path: String,
     private val socketBlock: suspend DefaultClientWebSocketSession.(manager: ShareSceneManager, setSessionCode: (String) -> Unit) -> Unit,
     private val onFailure: (cause: ConnectionError) -> Unit
@@ -16,7 +17,7 @@ class ShareSceneManager internal constructor(
         private set
 
     val sceneUrl
-        get() = codeSession?.let { "https://olebo.fr/share-scene/$it" }
+        get() = codeSession?.let { "${serverURL.security.value}://${serverURL.domain}/$path/$it" }
 
     internal val viewModel = ShareSceneViewModel()
 

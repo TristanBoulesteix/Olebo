@@ -20,11 +20,12 @@ fun Frame.Text.getMessageOrNull() = try {
 
 suspend fun initWebsocket(
     client: HttpClient,
+    serverAddress: URL,
     path: String,
     socketBlock: suspend DefaultClientWebSocketSession.(manager: ShareSceneManager, setSessionCode: (String) -> Unit) -> Unit,
     onFailure: (cause: ConnectionError) -> Unit
 ) {
-    ShareSceneManager(client, path, socketBlock, onFailure).use {
+    ShareSceneManager(client, serverAddress, path, socketBlock, onFailure).use {
         it.initWebsocket()
     }
 }

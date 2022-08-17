@@ -6,16 +6,19 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.drop
 
 object DeveloperModeManager {
-    private val isEnabled = MutableStateFlow(false)
+    private val isEnabledFlow = MutableStateFlow(false)
 
     val enabledState
         @Composable
-        get() = isEnabled.collectAsState()
+        get() = isEnabledFlow.collectAsState()
 
     val enabledFlow
-        get() = isEnabled.drop(1)
+        get() = isEnabledFlow.drop(1)
+
+    val isCurrentlyEnabled
+        get() = isEnabledFlow.value
 
     suspend fun toggle() {
-        isEnabled.emit(!isEnabled.value)
+        isEnabledFlow.emit(!isEnabledFlow.value)
     }
 }

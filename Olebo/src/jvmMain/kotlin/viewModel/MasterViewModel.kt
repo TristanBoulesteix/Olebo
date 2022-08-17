@@ -20,6 +20,7 @@ import jdr.exia.localization.get
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
 import jdr.exia.model.command.Command
+import jdr.exia.model.dao.option.Preferences
 import jdr.exia.model.dao.option.SerializableLabelState
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Blueprint
@@ -349,59 +350,68 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
         connectionState = Login
 
         shareSceneJob = scope.launch(Dispatchers.IO) {
-            initWebsocket(client = socketClient, path = "share-scene", onFailure = { error ->
-                connectionState = Disconnected.ConnectionFailed(error)
-            }, socketBlock = { manager, setSessionCode ->
-                try {
-                    val connectedState = Connected(manager)
+            initWebsocket(
+                client = socketClient,
+                serverAddress = Preferences.oleboUrl,
+                path = "share-scene",
+                onFailure = { error ->
+                    connectionState = Disconnected.ConnectionFailed(error)
+                },
+                socketBlock = { manager, setSessionCode ->
+                    try {
+                        val connectedState = Connected(manager)
 
-                    for (frame in incoming) {
-                        when (frame) {
-                            is Frame.Close -> {
-                                val closeReason = frame.readReason()
+                        for (frame in incoming) {
+                            when (frame) {
+                                is Frame.Close -> {
+                                    val closeReason = frame.readReason()
 
-                                if (closeReason?.knownReason == CloseReason.Codes.NORMAL) {
-                                    triggerError(ConnectionError.ServerError(closeReason.message))
-                                }
-                            }
-                            is Frame.Text -> when (val message = frame.getMessageOrNull()) {
-                                is NewSessionCreated -> {
-                                    if (message.minimalOleboVersion > OLEBO_VERSION_CODE) {
-                                        triggerError(ConnectionError.WrongVersion)
+                                    if (closeReason?.knownReason == CloseReason.Codes.NORMAL) {
+                                        triggerError(ConnectionError.ServerError(closeReason.message))
                                     }
+                                }
 
-                                    setSessionCode(message.code)
-
-                                    val color =
-                                        if (Settings.labelState == SerializableLabelState.FOR_BOTH) Settings.labelColor.contentColor.toTriple() else null
-
-                                    send(NewMap(Base64Image(backgroundImage.toAwtImage(), 1600, 900),
-                                        elements.filter { it.isVisible }.map { it.toShareSceneToken(color) })
-                                    )
-
-                                    launch {
-                                        for (messageToSend in connectedState.shareSceneViewModel.messages) {
-                                            send(messageToSend)
+                                is Frame.Text -> when (val message = frame.getMessageOrNull()) {
+                                    is NewSessionCreated -> {
+                                        if (message.minimalOleboVersion > OLEBO_VERSION_CODE) {
+                                            triggerError(ConnectionError.WrongVersion)
                                         }
+
+                                        setSessionCode(message.code)
+
+                                        val color =
+                                            if (Settings.labelState == SerializableLabelState.FOR_BOTH) Settings.labelColor.contentColor.toTriple() else null
+
+                                        send(NewMap(Base64Image(backgroundImage.toAwtImage(), 1600, 900),
+                                            elements.filter { it.isVisible }.map { it.toShareSceneToken(color) })
+                                        )
+
+                                        launch {
+                                            for (messageToSend in connectedState.shareSceneViewModel.messages) {
+                                                send(messageToSend)
+                                            }
+                                        }
+
+                                        connectionState = connectedState
                                     }
 
-                                    connectionState = connectedState
+                                    is PlayerAddedOrRemoved -> {
+                                        connectedState.shareSceneViewModel.connectedPlayers = message.users
+                                    }
+
+                                    else -> continue
                                 }
-                                is PlayerAddedOrRemoved -> {
-                                    connectedState.shareSceneViewModel.connectedPlayers = message.users
-                                }
+
                                 else -> continue
                             }
-                            else -> continue
+                        }
+                    } finally {
+                        withContext(Dispatchers.IO) {
+                            connectionState = Disconnected
+                            manager.close()
                         }
                     }
-                } finally {
-                    withContext(Dispatchers.IO) {
-                        connectionState = Disconnected
-                        manager.close()
-                    }
-                }
-            })
+                })
         }
     }
 

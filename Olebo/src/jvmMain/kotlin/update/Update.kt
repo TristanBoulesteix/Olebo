@@ -1,5 +1,6 @@
 package jdr.exia.update
 
+import fr.olebo.sharescene.domain
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
@@ -10,7 +11,6 @@ import io.ktor.util.cio.*
 import io.ktor.utils.io.*
 import jdr.exia.OLEBO_VERSION_CODE
 import jdr.exia.model.dao.option.Preferences
-import jdr.exia.service.SERVER_URL
 import jdr.exia.service.client
 import jdr.exia.system.OLEBO_DIRECTORY
 import jdr.exia.system.OS
@@ -20,7 +20,7 @@ import java.io.File
 
 suspend fun checkForUpdate(releaseCode: Int? = null): Result<Release> {
     val response = try {
-        client.use { it.get("${SERVER_URL}releases/" + (releaseCode ?: "last")).body<HttpResponse>() }
+        client.use { it.get("${Preferences.oleboUrl.domain}releases/" + (releaseCode ?: "last")).body<HttpResponse>() }
     } catch (e: Throwable) {
         return Result.failure(e)
     }
@@ -41,7 +41,7 @@ suspend fun getInstallerExecutable(versionCode: Int, onUpdateProgress: (Long) ->
 
     val response = try {
         client.use {
-            it.get("${SERVER_URL}releases/$versionCode/download") {
+            it.get("${Preferences.oleboUrl.domain}releases/$versionCode/download") {
                 parameter("os", os.name)
                 onDownload { bytesSentTotal, contentLength ->
                     val percentage = (bytesSentTotal / contentLength) * 100

@@ -219,7 +219,7 @@ private fun MenuScope.DeveloperModeSettingsMenuItem() {
     }
 
     if(isOptionDialogVisible) {
-        DeveloperSettingsDialog { isOptionDialogVisible = true }
+        DeveloperSettingsDialog { isOptionDialogVisible = false }
     }
 }
 
