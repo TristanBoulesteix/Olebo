@@ -17,7 +17,11 @@ class ShareSceneManager internal constructor(
         private set
 
     val sceneUrl
-        get() = codeSession?.let { "${serverURL.security.value}://${serverURL.domain}/$path/$it" }
+        get() = codeSession?.let {
+            val port = serverURL.security.port
+            val portUrl = if(port != 443) ":$port" else ""
+            "${serverURL.security.value}://${serverURL.domain}$portUrl/$path/$it"
+        }
 
     internal val viewModel = ShareSceneViewModel()
 
@@ -25,10 +29,25 @@ class ShareSceneManager internal constructor(
         val manager = this
 
         try {
-            client.wss(host = "olebo.fr", port = 443, path = path) {
-                socketBlock(manager) { codeSession = it }
+            if(serverURL.security == UrlProtocol.HTTPS) {
+                client.wss(
+                    host = serverURL.domain,
+                    port = serverURL.security.port,
+                    path = path
+                ) {
+                    socketBlock(manager) { codeSession = it }
+                }
+            } else {
+                client.webSocket(
+                    host = serverURL.domain,
+                    port = serverURL.security.port,
+                    path = path
+                ) {
+                    socketBlock(manager) { codeSession = it }
+                }
             }
         } catch (t: Throwable) {
+            t.printStackTrace()
             onFailure(t.getConnectionError())
         }
     }

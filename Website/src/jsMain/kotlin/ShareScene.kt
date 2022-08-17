@@ -12,6 +12,7 @@ import jdr.exia.localization.StringLocale
 import jdr.exia.localization.getBrowserLanguage
 import jdr.exia.localization.invoke
 import kotlinx.browser.document
+import kotlinx.browser.window
 import org.jetbrains.compose.web.css.Style
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.renderComposableInBody
@@ -48,9 +49,11 @@ private fun Form(getConnectionState: () -> ConnectionState, setConnectionState: 
     val connectionStateProvider by rememberUpdatedState(getConnectionState)
 
     ShareSceneForm(connectionStateProvider(), setConnectionState) { userName, sessionCode ->
+        val location = window.location
+
         initWebsocket(
             client = client,
-            serverAddress = URL("https://olebo.fr"),
+            serverAddress = URL("${location.protocol}//${location.hostname}"),
             path = "share-scene/$sessionCode?name=$userName",
             onFailure = { connectionError ->
                 setConnectionState(Disconnected.ConnectionFailed(connectionError))

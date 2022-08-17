@@ -11,5 +11,5 @@ internal fun Throwable.getConnectionError() = when (this) {
     else -> ConnectionError.ConnectionFailed
 }
 
-@Suppress("unused")
+@Suppress("UnusedReceiverParameter")
 fun WebSocketSession.triggerError(error: ConnectionError): Nothing = throw ConnectionException(error)

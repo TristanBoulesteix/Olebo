@@ -5,8 +5,8 @@ package fr.olebo.sharescene
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 
-enum class UrlProtocol(val value: String) {
-    HTTP("http"), HTTPS("https")
+enum class UrlProtocol(val value: String, val port: Int) {
+    HTTP("http", 8080), HTTPS("https", 443)
 }
 
 @JvmInline
