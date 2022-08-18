@@ -94,14 +94,7 @@ fun Routing.shareSceneRouting() {
         currentSession.cursor?.let { currentSession.sendToPlayers(CursorMoved(it)) }
 
         for (frame in incoming) {
-            when (frame) {
-                is Frame.Text -> {
-                    when (frame.getMessageOrNull()) {
-                        else -> continue
-                    }
-                }
-                else -> continue
-            }
+            continue
         }
 
         // Handle session close
