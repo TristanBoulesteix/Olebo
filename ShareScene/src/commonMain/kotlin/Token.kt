@@ -15,6 +15,9 @@ data class Label(val text: String, val color: Color)
 value class Angle(private val degrees: Float) {
     val radians
         get() = degrees * (PI / 180)
+
+    val isOnSide
+        get() = degrees in listOf(90f, 270f)
 }
 
 @Serializable

@@ -2,7 +2,7 @@ package fr.olebo.sharescene.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import dev.petuska.kmdc.core.MDCSideEffectNew
+import fr.olebo.sharescene.Position
 import kotlinx.browser.window
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.ContentBuilder
@@ -16,7 +16,7 @@ private val canvas = ElementBuilder.createBuilder<HTMLCanvasElement>("canvas")
 @Composable
 fun Canvas(
     attrs: AttrBuilderContext<HTMLCanvasElement>? = null,
-    drawWith: HTMLCanvasElement.(CanvasRenderingContext2D) -> Unit,
+    draw: CanvasRenderingContext2D.() -> Unit,
     content: ContentBuilder<HTMLCanvasElement>? = null
 ) = TagElement(
     elementBuilder = canvas,
@@ -35,13 +35,15 @@ fun Canvas(
 
             context.clearRect(0.0, 0.0, element.width.toDouble(), element.height.toDouble())
 
-            element.drawWith(context)
+            context.draw()
 
             onDispose { }
         }
     }
 )
 
-fun HTMLCanvasElement.relativeX(absoluteX: Int) = absoluteX * width / 1600.0
+fun CanvasRenderingContext2D.relativeX(absoluteX: Int) = absoluteX * canvas.width / 1600.0
 
-fun HTMLCanvasElement.relativeY(absoluteY: Int) = absoluteY * height / 900.0
+fun CanvasRenderingContext2D.relativeY(absoluteY: Int) = absoluteY * canvas.height / 900.0
+
+fun CanvasRenderingContext2D.relativePosition(position: Position) = Position(relativeX(position.x).toInt(), relativeY(position.y).toInt())

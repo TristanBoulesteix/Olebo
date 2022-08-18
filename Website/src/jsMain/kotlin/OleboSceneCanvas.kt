@@ -3,6 +3,7 @@ package fr.olebo.sharescene
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import fr.olebo.sharescene.components.Canvas
+import fr.olebo.sharescene.components.relativePosition
 import fr.olebo.sharescene.components.relativeX
 import fr.olebo.sharescene.components.relativeY
 import fr.olebo.sharescene.css.ShareSceneStyleSheet
@@ -36,32 +37,28 @@ fun ContentCanvas(viewModel: ShareSceneViewModel) {
                     backgroundRepeat("no-repeat")
                 }
             },
-            drawWith = { context ->
-                val canvasX = width / 2
-                val canvasY = height / 2
-
+            draw = {
                 tokens.forEach {
                     Image().apply {
-                        val (tokenX, tokenY) = it.position
+                        val (tokenX, tokenY) = relativePosition(it.position)
+                        val tokenWidth = relativeX(it.size)
+                        val tokenHeight = relativeY(it.size)
 
                         // Draw image of token
                         onload = { _ ->
-                            // From https://stackoverflow.com/questions/3793397/html5-canvas-drawimage-with-at-an-angle
+                            translate(tokenX + width / 2.0, tokenY + height / 2.0)
+                            rotate(it.rotation.radians)
+                            translate(-width / 2.0, -height / 2.0)
 
-                            val angleInRadians = it.rotation.radians
-
-                            context.translate(canvasX.toDouble(), canvasY.toDouble())
-                            context.rotate(angleInRadians)
-                            context.drawImage(
+                            drawImage(
                                 this,
-                                relativeX(tokenX),
-                                relativeY(tokenY),
-                                relativeX(it.size),
-                                relativeY(it.size)
+                                0.0,
+                                0.0,
+                                if (it.rotation.isOnSide) tokenWidth else tokenHeight,
+                                if (it.rotation.isOnSide) tokenHeight else tokenWidth
                             )
 
-                            context.rotate(-angleInRadians)
-                            context.translate(-canvasX.toDouble(), -canvasY.toDouble())
+                            setTransform(1.0, 0.0, 0.0, 1.0, 0.0, 0.0)
                         }
 
                         src = it.image.cssBase64ImageCode
@@ -70,11 +67,11 @@ fun ContentCanvas(viewModel: ShareSceneViewModel) {
                         it.label?.let { label ->
                             val (r, g, b) = label.color
 
-                            context.font = "bold 24px Arial sans-serif"
-                            context.fillStyle = "rgb($r, $g, $b)"
-                            context.textAlign = CanvasTextAlign.CENTER
+                            font = "bold 24px Arial sans-serif"
+                            fillStyle = "rgb($r, $g, $b)"
+                            textAlign = CanvasTextAlign.CENTER
 
-                            context.fillText(
+                            fillText(
                                 label.text,
                                 relativeX(tokenX) + relativeX(it.size) / 2,
                                 relativeY(tokenY) - 10
@@ -93,20 +90,20 @@ private fun CursorCanvas(viewModel: ShareSceneViewModel) {
 
     Canvas(
         attrs = classes(ShareSceneStyleSheet.oleboCanvasContainer),
-        drawWith = { context ->
+        draw = {
             if (cursor != null) {
                 val (centerX, centerY) = cursor.position
 
                 val (r, g, b) = cursor.color
                 val (rBorder, gBorder, bBorder) = cursor.borderColor
 
-                context.beginPath()
-                context.arc(relativeX(centerX), relativeY(centerY), 15.0, 0.0, 2 * PI, false)
-                context.fillStyle = "rgb($r, $g, $b)"
-                context.fill()
-                context.lineWidth = 2.0
-                context.strokeStyle = "rgb($rBorder, $gBorder, $bBorder)"
-                context.stroke()
+                beginPath()
+                arc(relativeX(centerX), relativeY(centerY), 15.0, 0.0, 2 * PI, false)
+                fillStyle = "rgb($r, $g, $b)"
+                fill()
+                lineWidth = 2.0
+                strokeStyle = "rgb($rBorder, $gBorder, $bBorder)"
+                stroke()
             }
         }
     )
