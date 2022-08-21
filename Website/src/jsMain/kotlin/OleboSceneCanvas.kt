@@ -9,6 +9,7 @@ import fr.olebo.sharescene.components.relativeY
 import fr.olebo.sharescene.css.ShareSceneStyleSheet
 import fr.olebo.sharescene.css.backgroundImage
 import fr.olebo.sharescene.css.classes
+import fr.olebo.sharescene.utils.isPortrait
 import org.jetbrains.compose.web.css.backgroundRepeat
 import org.jetbrains.compose.web.css.backgroundSize
 import org.w3c.dom.CENTER
@@ -50,12 +51,15 @@ fun ContentCanvas(viewModel: ShareSceneViewModel) {
                             rotate(it.rotation.radians)
                             translate(-width / 2.0, -height / 2.0)
 
+                            val actualTokenWidth = if (it.rotation.isOnSide) tokenWidth else tokenHeight
+                            val actualTokenHeight = if (it.rotation.isOnSide) tokenHeight else tokenWidth
+
                             drawImage(
                                 this,
                                 0.0,
                                 0.0,
-                                if (it.rotation.isOnSide) tokenWidth else tokenHeight,
-                                if (it.rotation.isOnSide) tokenHeight else tokenWidth
+                                if (!isPortrait) actualTokenWidth else actualTokenHeight,
+                                if (!isPortrait) actualTokenHeight else actualTokenWidth
                             )
 
                             setTransform(1.0, 0.0, 0.0, 1.0, 0.0, 0.0)
