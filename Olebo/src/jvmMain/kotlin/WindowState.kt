@@ -4,8 +4,8 @@ import androidx.compose.runtime.Immutable
 import jdr.exia.model.act.Act
 
 @Immutable
-sealed class WindowState {
-    object HomeWindow : WindowState()
+sealed class WindowState
 
-    class MasterWindow(val act: Act) : WindowState()
-}
+object HomeWindow : WindowState()
+
+class MasterWindow(val act: Act) : WindowState()

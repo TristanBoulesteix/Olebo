@@ -73,11 +73,11 @@ fun main() {
 
 @Composable
 fun ApplicationScope.MainUI() {
-    var windowState by remember { mutableStateOf<WindowState>(WindowState.HomeWindow) }
+    var windowState by remember { mutableStateOf<WindowState>(HomeWindow) }
 
     when (val currentWindow = windowState) {
-        is WindowState.HomeWindow -> HomeWindow(startAct = { windowState = WindowState.MasterWindow(it) })
-        is WindowState.MasterWindow -> MasterWindow(act = currentWindow.act,
-            onExit = { windowState = WindowState.HomeWindow })
+        is HomeWindow -> HomeWindow(startAct = { windowState = MasterWindow(it) })
+        is MasterWindow -> MasterWindow(act = currentWindow.act,
+            onExit = { windowState = HomeWindow })
     }
 }
