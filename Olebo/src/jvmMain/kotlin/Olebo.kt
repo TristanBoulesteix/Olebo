@@ -24,8 +24,6 @@ suspend fun main(vararg args: String) {
     // Initialize translations and database
     StringLocale(Settings::activeLanguage)
 
-    println(args.size)
-
     if("-dev" in args) {
         DeveloperModeManager.toggle()
     }
