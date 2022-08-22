@@ -20,9 +20,15 @@ const val OLEBO_VERSION_NAME = "0.1.5"
  */
 const val OLEBO_VERSION_CODE = 6
 
-fun main() {
+suspend fun main(vararg args: String) {
     // Initialize translations and database
     StringLocale(Settings::activeLanguage)
+
+    println(args.size)
+
+    if("-dev" in args) {
+        DeveloperModeManager.toggle()
+    }
 
     oleboApplication {
         // Manage update

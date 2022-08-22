@@ -39,6 +39,10 @@ compose.desktop {
 
         mainClass = main
 
+        if(System.getProperty("devMode").toBoolean()) {
+            args += listOf("-dev")
+        }
+
         nativeDistributions {
             packageName = "Olebo"
             packageVersion = version.toString()
