@@ -31,7 +31,8 @@ private val lightColorPalette
         secondary = Color(255, 200, 0)
     )
 
-private val osThemeDetector = OsThemeDetector.getDetector()
+private val osThemeDetector
+    get() = OsThemeDetector.getDetector()
 
 class OleboTheme(themeMode: ThemeMode) {
     var themeMode by mutableStateOf(themeMode) withSetter {
