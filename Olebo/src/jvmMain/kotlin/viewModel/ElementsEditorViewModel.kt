@@ -1,7 +1,9 @@
 package jdr.exia.viewModel
 
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import jdr.exia.localization.*
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.element.Blueprint
@@ -15,14 +17,12 @@ import jdr.exia.model.type.saveImgAndGetPath
 import jdr.exia.model.type.toImgPath
 import jdr.exia.view.tools.showConfirmMessage
 import jdr.exia.viewModel.data.BlueprintData
-import jdr.exia.viewModel.data.isDefault
 import jdr.exia.viewModel.data.isValid
-import jdr.exia.viewModel.data.toBlueprintData
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class ElementsEditorViewModel(initialType: TypeElement) {
-    private val typeViewModel = TypeElement.values().associateWith { ElementViewModel(it) }
+    private val typeViewModel = TypeElement.values().associateWith(::ElementViewModel)
 
     val itemListScrollState
         get() = currentTypeViewModel.currentScrollState
@@ -158,44 +158,6 @@ class ElementsEditorViewModel(initialType: TypeElement) {
             } else {
                 transaction { Blueprint[id].delete() }
             }
-        }
-    }
-
-    private class ElementViewModel(type: TypeElement) {
-        val currentScrollState = LazyListState()
-
-        var currentEditPosition by mutableStateOf(-1)
-
-        val data by lazy {
-            transaction {
-                Blueprint.all().filter { it.type == type }.map { it.toBlueprintData() }
-            }.toMutableStateList()
-        }
-
-        val createdData: MutableList<BlueprintData> = mutableStateListOf()
-
-        val modifiedData = mutableMapOf<EntityID<Int>, Boolean>()
-
-        fun clearDefaultNew() = createdData.removeAll(BlueprintData::isDefault)
-
-        fun deleteExistingData(idOfEntityToDelete: EntityID<Int>) {
-            modifiedData[idOfEntityToDelete] = false
-            data.removeIf { it.id == idOfEntityToDelete }
-        }
-
-        fun deleteCreatedData(dataToDelete: BlueprintData) {
-            if (dataToDelete.isDefault()) {
-                clearDefaultNew()
-            } else {
-                createdData.remove(dataToDelete)
-            }
-        }
-
-        fun updateExistingData(dataToUpdate: BlueprintData) {
-            require(dataToUpdate.id != null)
-
-            data[data.indexOfFirst { it.id == dataToUpdate.id }] = dataToUpdate
-            modifiedData[dataToUpdate.id] = true
         }
     }
 }
