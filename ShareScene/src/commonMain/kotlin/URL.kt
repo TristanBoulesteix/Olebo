@@ -11,9 +11,9 @@ enum class UrlProtocol(val value: String, val port: Int) {
 
 @JvmInline
 @Serializable
-value class URL(private val url: String) {
+value class URL(val value: String) {
     internal val urlParts
-        get() = url.split("://")
+        get() = value.split("://")
 }
 
 val URL.security
