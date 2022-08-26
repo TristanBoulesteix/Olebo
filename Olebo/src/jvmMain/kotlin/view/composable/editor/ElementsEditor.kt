@@ -115,7 +115,7 @@ private fun Content(viewModel: ElementsEditorViewModel, innerPadding: PaddingVal
                         }
                     }
                 }
-                else -> ScrollableContent(viewModel)
+                else -> ItemList(viewModel)
             }
         }
     }
@@ -172,7 +172,7 @@ private fun HeaderContent(
 }
 
 @Composable
-private fun ColumnScope.ScrollableContent(viewModel: ElementsEditorViewModel) = Card(
+private fun ColumnScope.ItemList(viewModel: ElementsEditorViewModel) = Card(
     modifier = contentModifier,
     border = BorderBuilder.defaultBorder.toBorderStroke(),
     shape = roundedBottomShape
