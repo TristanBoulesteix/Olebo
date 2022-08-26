@@ -179,13 +179,13 @@ private fun ColumnScope.ScrollableContent(viewModel: ElementsEditorViewModel) = 
 ) {
     LazyScrollableColumn(scrollState = viewModel.itemListScrollState) {
         items(viewModel.blueprints, key = { it }) { blueprint ->
-            DataRow(viewModel, blueprint)
+            ItemDescription(viewModel, blueprint)
         }
     }
 }
 
 @Composable
-private fun DataRow(
+private fun ItemDescription(
     viewModel: ElementsEditorViewModel,
     blueprint: BlueprintData
 ) {
@@ -290,7 +290,7 @@ private fun BlueprintData?.getButtons(
     )
 }
 
-private fun (BlueprintData).updateImage(onUpdate: (BlueprintData) -> Unit) {
+private fun BlueprintData.updateImage(onUpdate: (BlueprintData) -> Unit) {
     transaction {
         val file = JFileChooser().apply {
             this.currentDirectory = File(System.getProperty("user.home"))

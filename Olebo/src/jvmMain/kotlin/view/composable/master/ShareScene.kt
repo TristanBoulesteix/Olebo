@@ -101,7 +101,7 @@ private fun ShareSceneManagerScreen(
 
         Spacer(Modifier.height(13.dp))
 
-        OutlinedTextField(value = manager.sceneUrl.orEmpty(), onValueChange = {})
+        OutlinedTextField(value = manager.sceneUrl.orEmpty(), onValueChange = {}, readOnly = true)
     }
 
     Spacer(Modifier.width(25.dp))
