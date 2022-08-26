@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import jdr.exia.view.ui.roundedShape
 import jdr.exia.viewModel.MasterViewModel
-import kotlin.properties.Delegates
 
 /**
  * Apply modification to [Modifier] only if condition is true
@@ -174,7 +173,7 @@ fun Modifier.onMouseEvents(onEvent: EventHandler.(eventType: PointerEventType) -
     val eventHandler = object : EventHandler {
         override lateinit var event: PointerEvent
 
-        override var startPressButtons by Delegates.notNull<PointerButtons>()
+        override var startPressButtons = PointerButtons()
 
         override val Offset.absoluteOffset: Offset
             get() = Offset(
