@@ -27,7 +27,9 @@ import jdr.exia.view.element.builder.ComposableContentBuilder
 import jdr.exia.view.element.builder.ContentButtonBuilder
 import jdr.exia.view.element.builder.EmptyContent
 import jdr.exia.view.element.builder.ImageButtonBuilder
+import jdr.exia.view.element.form.AutocompleteTextField
 import jdr.exia.view.element.form.IntTextField
+import jdr.exia.view.element.form.SelectableItem
 import jdr.exia.view.tools.BorderBuilder
 import jdr.exia.view.tools.MessageType
 import jdr.exia.view.tools.showMessage
@@ -115,6 +117,7 @@ private fun Content(viewModel: ElementsEditorViewModel, innerPadding: PaddingVal
                         }
                     }
                 }
+
                 else -> ItemList(viewModel)
             }
         }
@@ -188,7 +191,7 @@ private fun ColumnScope.ItemList(viewModel: ElementsEditorViewModel) = Card(
 private fun ItemDescription(
     viewModel: ElementsEditorViewModel,
     blueprint: BlueprintData
-) {
+) = Column {
     var editedData by (viewModel.currentEditBlueprint == blueprint).let { isEditing ->
         remember(isEditing) { mutableStateOf(blueprint.takeIf { isEditing }) }
     }
@@ -214,6 +217,22 @@ private fun ItemDescription(
             blueprint = blueprint,
             onUpdate = { editedData = it }
         )
+    )
+
+    if (editedData != null) {
+        TagEditionZone(editedData!!)
+    }
+}
+
+@Composable
+private fun TagEditionZone(data: BlueprintData) = Box(Modifier.fillMaxWidth().height(200.dp)) {
+    var tagText by remember { mutableStateOf(data.name) }
+
+    AutocompleteTextField(
+        textValue = tagText,
+        onTextValueChange = { tagText = it },
+        modifier = Modifier.padding(10.dp).padding(end = 5.dp).fillMaxWidth(),
+        suggestionsList = listOf(SelectableItem("test1"), SelectableItem("test2"))
     )
 }
 
