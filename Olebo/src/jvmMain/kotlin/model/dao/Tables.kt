@@ -7,6 +7,7 @@ import jdr.exia.model.element.Layer
 import jdr.exia.model.element.SizeElement
 import jdr.exia.model.element.TypeElement
 import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.dao.id.IdTable
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -27,6 +28,8 @@ val tables
         LayerTable,
         SizeTable,
         InstanceTable,
+        TagTable,
+        BlueprintTagTable
     )
 
 
@@ -91,7 +94,7 @@ object SettingsTable : IntIdTable(), Initializable {
     const val DEFAULT_ELEMENT_VISIBILITY = "default_element_visibility"
     const val LABEL_STATE = "label_enabled"
     const val LABEL_COLOR = "label_color"
-    const val CHANGELOGS_VERSION = "changelogs_version"
+    private const val CHANGELOGS_VERSION = "changelogs_version"
     const val SHOULD_OPEN_PLAYER_WINDOW_IN_FULL_SCREEN = "player_window_in_full_screen"
 
     val name = varchar("name", 255)
@@ -220,4 +223,17 @@ object InstanceTable : IntIdTable() {
 
 object SizeTable : EnumInitializable<SizeElement>(enumValues()) {
     override val enumValue = enumerationByName<SizeElement>("size", 50)
+}
+
+object TagTable : IdTable<String>() {
+    override val id =  varchar("tagValue", 40).entityId()
+
+    override val primaryKey = PrimaryKey(id)
+}
+
+object BlueprintTagTable : Table() {
+    val blueprint = reference("blueprint", BlueprintTable)
+    val tag = reference("tag", TagTable)
+
+    override val primaryKey = PrimaryKey(blueprint, tag)
 }

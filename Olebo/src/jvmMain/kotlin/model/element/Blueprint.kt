@@ -3,6 +3,7 @@ package jdr.exia.model.element
 import jdr.exia.localization.StringLocale
 import jdr.exia.localization.get
 import jdr.exia.model.dao.BlueprintTable
+import jdr.exia.model.dao.BlueprintTagTable
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.tools.CharacterException
 import jdr.exia.model.type.checkedImgPath
@@ -25,6 +26,8 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
     private var maxLife by BlueprintTable.HP
     private var maxMana by BlueprintTable.MP
     private var typeEntity by TypeElement.TypeEntity referencedOn BlueprintTable.idType
+
+    var tags by Tag via BlueprintTagTable
 
     var HP by statsDelegate(::maxLife)
     var MP by statsDelegate(::maxMana)

@@ -18,6 +18,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import jdr.exia.localization.*
+import jdr.exia.model.element.Tag
 import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.success
 import jdr.exia.model.type.Image
@@ -29,11 +30,7 @@ import jdr.exia.view.element.builder.EmptyContent
 import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.element.form.AutocompleteTextField
 import jdr.exia.view.element.form.IntTextField
-import jdr.exia.view.element.form.SelectableItem
-import jdr.exia.view.tools.BorderBuilder
-import jdr.exia.view.tools.MessageType
-import jdr.exia.view.tools.showMessage
-import jdr.exia.view.tools.toBorderStroke
+import jdr.exia.view.tools.*
 import jdr.exia.view.ui.backgroundImageColor
 import jdr.exia.view.ui.roundedBottomShape
 import jdr.exia.view.ui.roundedTopShape
@@ -226,13 +223,34 @@ private fun ItemDescription(
 
 @Composable
 private fun TagEditionZone(data: BlueprintData) = Box(Modifier.fillMaxWidth().height(200.dp)) {
-    var tagText by remember { mutableStateOf(data.name) }
+    val suggestions =
+        rememberTransaction { /*Tag.all().map(Tag::value)*/
+            buildList {
+                repeat(10) {
+                    add("Test$it")
+                }
+            }.asReversed().toMutableStateList()
+        }
+
+    val selections = rememberTransaction { data.tags.map(Tag::value).toMutableStateList() }
 
     AutocompleteTextField(
-        textValue = tagText,
-        onTextValueChange = { tagText = it },
         modifier = Modifier.padding(10.dp).padding(end = 5.dp).fillMaxWidth(),
-        suggestionsList = listOf(SelectableItem("test1"), SelectableItem("test2"))
+        suggestionsList = suggestions,
+        selectedItems = selections,
+        onItemChecked = { value, isChecked ->
+            val index = suggestions.indexOf(value).takeIf { it >= 0 } ?: return@AutocompleteTextField
+
+            if (isChecked) {
+                selections.add(suggestions[index])
+            } else {
+                selections.remove(value)
+            }
+        },
+        onItemCreated = {
+            suggestions.add(0, it)
+            selections.add(it)
+        }
     )
 }
 

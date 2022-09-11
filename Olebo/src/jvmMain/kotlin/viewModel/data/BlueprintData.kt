@@ -3,6 +3,7 @@ package jdr.exia.viewModel.data
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import jdr.exia.model.element.Blueprint
+import jdr.exia.model.element.Tag
 import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.getLifeOrNull
 import jdr.exia.model.tools.getManaOrNull
@@ -23,6 +24,7 @@ data class BlueprintData(
     val life: Int? = null,
     val mana: Int? = null,
     val type: TypeElement = TypeElement.Object,
+    val tags: List<Tag> = emptyList(),
     val id: EntityID<Int>? = null
 ) {
     companion object {
@@ -50,6 +52,7 @@ fun Blueprint.toBlueprintData() = transaction {
         getLifeOrNull(),
         getManaOrNull(),
         type,
+        tags.toList(),
         this@toBlueprintData.id
     )
 }
