@@ -222,15 +222,22 @@ private fun ItemDescription(
 }
 
 @Composable
-private fun TagEditionZone(data: BlueprintData) = Box(Modifier.fillMaxWidth().height(200.dp)) {
-    val suggestions =
-        rememberTransaction { /*Tag.all().map(Tag::value)*/
-            buildList {
-                repeat(10) {
-                    add("Test$it")
-                }
-            }.asReversed().toMutableStateList()
+private fun TagEditionZone(data: BlueprintData) = Box(Modifier.fillMaxWidth().height(400.dp)) {
+    val newSuggestions: MutableList<String> = remember(::mutableStateListOf)
+
+    val existingSuggestions = rememberTransaction { /*Tag.all().map(Tag::value)*/
+        buildList {
+            repeat(100) {
+                add("Test$it")
+            }
+        }.sorted()
+    }
+
+    val suggestions by remember {
+        derivedStateOf {
+            newSuggestions + existingSuggestions
         }
+    }
 
     val selections = rememberTransaction { data.tags.map(Tag::value).toMutableStateList() }
 
@@ -248,8 +255,8 @@ private fun TagEditionZone(data: BlueprintData) = Box(Modifier.fillMaxWidth().he
             }
         },
         onItemCreated = {
-            suggestions.add(0, it)
-            selections.add(it)
+            selections += it
+            newSuggestions.add(0, it)
         }
     )
 }
