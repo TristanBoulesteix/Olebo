@@ -239,7 +239,7 @@ private fun TagEditionZone(data: BlueprintData) = Box(Modifier.fillMaxWidth().he
         }
     }
 
-    val selections = rememberTransaction { data.tags.map(Tag::value).toMutableStateList() }
+    val selections = rememberTransaction { data.tags.map(Tag::value).toMutableStateList().also { it.addAll(listOf("Test2", "Test4")) } }
 
     AutocompleteTextField(
         modifier = Modifier.padding(10.dp).padding(end = 5.dp).fillMaxWidth(),

@@ -37,12 +37,24 @@ fun AutocompleteTextField(
     val selectedItemsState by rememberUpdatedState(selectedItems)
 
     val newItem by remember {
-        derivedStateOf { if (textValue.isNotBlank()) SelectableItem(textValue, isNew = true) else null }
+        derivedStateOf {
+            val shouldCreateANewItem = textValue.isNotBlank() && suggestionsListState.none {
+                it.equals(
+                    textValue,
+                    ignoreCase = true
+                )
+            }
+
+            if (shouldCreateANewItem) SelectableItem(textValue, isNew = true) else null
+        }
     }
 
     val items by remember {
         derivedStateOf {
-            suggestionsListState.map { SelectableItem(it, it in selectedItemsState) }
+            suggestionsListState
+                .filter { it.contains(textValue, ignoreCase = true) }
+                .map { SelectableItem(it, it in selectedItemsState) }
+                .sortedByDescending(SelectableItem::isSelected)
         }
     }
 
