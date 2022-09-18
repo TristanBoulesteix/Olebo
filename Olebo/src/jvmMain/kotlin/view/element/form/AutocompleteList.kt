@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun AutocompleteTextField(
+fun AutocompleteList(
     selectedItems: List<String>,
     suggestionsList: List<String>,
     onItemChecked: (valueChecked: String, isChecked: Boolean) -> Unit,

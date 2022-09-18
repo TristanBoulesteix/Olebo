@@ -28,7 +28,7 @@ import jdr.exia.view.element.builder.ComposableContentBuilder
 import jdr.exia.view.element.builder.ContentButtonBuilder
 import jdr.exia.view.element.builder.EmptyContent
 import jdr.exia.view.element.builder.ImageButtonBuilder
-import jdr.exia.view.element.form.AutocompleteTextField
+import jdr.exia.view.element.form.AutocompleteList
 import jdr.exia.view.element.form.IntTextField
 import jdr.exia.view.tools.*
 import jdr.exia.view.ui.backgroundImageColor
@@ -241,12 +241,12 @@ private fun TagEditionZone(data: BlueprintData) = Box(Modifier.fillMaxWidth().he
 
     val selections = rememberTransaction { data.tags.map(Tag::value).toMutableStateList().also { it.addAll(listOf("Test2", "Test4")) } }
 
-    AutocompleteTextField(
+    AutocompleteList(
         modifier = Modifier.padding(10.dp).padding(end = 5.dp).fillMaxWidth(),
         suggestionsList = suggestions,
         selectedItems = selections,
         onItemChecked = { value, isChecked ->
-            val index = suggestions.indexOf(value).takeIf { it >= 0 } ?: return@AutocompleteTextField
+            val index = suggestions.indexOf(value).takeIf { it >= 0 } ?: return@AutocompleteList
 
             if (isChecked) {
                 selections.add(suggestions[index])
