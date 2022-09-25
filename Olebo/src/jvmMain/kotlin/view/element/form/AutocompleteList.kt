@@ -1,14 +1,12 @@
 package jdr.exia.view.element.form
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Checkbox
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -16,11 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.pointer.PointerIconDefaults
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import jdr.exia.view.element.LazyScrollableColumn
+import jdr.exia.view.tools.BoxWithTooltipIfNotNull
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AutocompleteList(
     selectedItems: List<String>,
@@ -60,40 +61,15 @@ fun AutocompleteList(
 
     val scrollState = rememberLazyListState()
 
-    LazyScrollableColumn(Modifier.fillMaxWidth(), scrollState) {
-        stickyHeader {
-            Surface {
-                Column {
-                    TextField(
-                        modifier = Modifier.fillMaxWidth().onKeyEvent {
-                            if (items.isNotEmpty() && it.key == Key.Enter && textValue.isNotBlank()) {
-                                val item = newItem ?: items.firstOrNull() ?: return@onKeyEvent false
+    Surface {
+        Column {
+            TextField(
+                modifier = Modifier.fillMaxWidth().onKeyEvent {
+                    if (items.isNotEmpty() && it.key == Key.Enter && textValue.isNotBlank()) {
+                        val item = newItem ?: items.firstOrNull() ?: return@onKeyEvent false
 
-                                item.select(
-                                    isChecked = !item.isSelected,
-                                    onItemCreated = { itemValue ->
-                                        coroutineScope.launch {
-                                            scrollState.scrollToItem(0)
-                                            onItemCreated(itemValue)
-                                        }
-                                    },
-                                    resetTextValue = { textValue = "" },
-                                    onItemChecked = onItemChecked
-                                )
-
-                                true
-                            } else {
-                                false
-                            }
-                        },
-                        value = textValue,
-                        onValueChange = { textValue = it },
-                        singleLine = true
-                    )
-
-                    newItem?.let {
-                        SelectableRow(
-                            item = it,
+                        item.select(
+                            isChecked = !item.isSelected,
                             onItemCreated = { itemValue ->
                                 coroutineScope.launch {
                                     scrollState.scrollToItem(0)
@@ -103,11 +79,36 @@ fun AutocompleteList(
                             resetTextValue = { textValue = "" },
                             onItemChecked = onItemChecked
                         )
+
+                        true
+                    } else {
+                        false
                     }
-                }
+                },
+                value = textValue,
+                onValueChange = { textValue = it },
+                singleLine = true,
+                placeholder = { Text("Rechercher ou créer un tag") },
+                trailingIcon = { TagTooltip() }
+            )
+
+            newItem?.let {
+                SelectableRow(
+                    item = it,
+                    onItemCreated = { itemValue ->
+                        coroutineScope.launch {
+                            scrollState.scrollToItem(0)
+                            onItemCreated(itemValue)
+                        }
+                    },
+                    resetTextValue = { textValue = "" },
+                    onItemChecked = onItemChecked
+                )
             }
         }
+    }
 
+    LazyScrollableColumn(Modifier.fillMaxWidth(), scrollState) {
         items(items, key = SelectableItem::value) { item ->
             SelectableRow(
                 item = item,
@@ -122,6 +123,27 @@ fun AutocompleteList(
             )
         }
     }
+}
+
+private val tooltipMessage
+    @Stable get() = """
+        Vous pouvez associer un élément à un ou plusieurs tags.
+        Si un élément et un scénario ou un tag en commun, il est plus facile de les retrouver.
+        
+        Pour créer un tag, écrivez dans le champ de texte puis appuyez sur la touche "entrer". 
+        Pour ajouter associer un tag déjà existant, cocher simplement la case associée.
+    """.trimIndent()
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun TagTooltip() = BoxWithTooltipIfNotNull(
+    tooltip = tooltipMessage
+) {
+    Icon(
+        imageVector = Icons.Filled.Info,
+        modifier = Modifier.pointerHoverIcon(PointerIconDefaults.Hand),
+        contentDescription = null
+    )
 }
 
 @Composable
