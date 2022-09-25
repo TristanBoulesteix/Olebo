@@ -34,7 +34,7 @@ dependencyResolutionManagement {
             val coroutinesVersion = version("coroutines", "1.6.4")
             val ktorVersion = version("ktor", "2.1.0")
             val serialisationVersion = version("serialisation", "1.4.0")
-            version("compose", "1.2.0-alpha01-dev770")
+            version("compose", "1.2.0-beta01")
             val kmdcVersion = version("kmdc", "0.0.5")
 
             // Plugins
