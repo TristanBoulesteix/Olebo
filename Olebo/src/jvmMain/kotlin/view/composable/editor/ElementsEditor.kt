@@ -257,9 +257,20 @@ private fun TagEditionZone(data: BlueprintData) = Box(Modifier.fillMaxWidth().he
         onItemCreated = {
             selections += it
             newSuggestions.add(0, it)
-        }
+        },
+        placeholder = "Rechercher ou créer un tag",
+        tooltipMessage = tooltipMessage
     )
 }
+
+private val tooltipMessage
+    @Stable get() = """
+        Vous pouvez associer un élément à un ou plusieurs tags.
+        Si un élément et un scénario ou un tag en commun, il est plus facile de les retrouver.
+        
+        Pour créer un tag, écrivez dans le champ de texte puis appuyez sur la touche "entrer". 
+        Pour ajouter associer un tag déjà existant, cocher simplement la case associée.
+    """.trimIndent()
 
 @Composable
 private fun BlueprintData?.getButtons(

@@ -26,6 +26,8 @@ import kotlinx.coroutines.launch
 fun AutocompleteList(
     selectedItems: List<String>,
     suggestionsList: List<String>,
+    placeholder: String,
+    tooltipMessage: String,
     onItemChecked: (valueChecked: String, isChecked: Boolean) -> Unit,
     onItemCreated: (value: String) -> Unit,
     modifier: Modifier
@@ -88,8 +90,8 @@ fun AutocompleteList(
                 value = textValue,
                 onValueChange = { textValue = it },
                 singleLine = true,
-                placeholder = { Text("Rechercher ou créer un tag") },
-                trailingIcon = { TagTooltip() }
+                placeholder = { Text(placeholder) },
+                trailingIcon = { TagTooltip(tooltipMessage) }
             )
 
             newItem?.let {
@@ -125,18 +127,9 @@ fun AutocompleteList(
     }
 }
 
-private val tooltipMessage
-    @Stable get() = """
-        Vous pouvez associer un élément à un ou plusieurs tags.
-        Si un élément et un scénario ou un tag en commun, il est plus facile de les retrouver.
-        
-        Pour créer un tag, écrivez dans le champ de texte puis appuyez sur la touche "entrer". 
-        Pour ajouter associer un tag déjà existant, cocher simplement la case associée.
-    """.trimIndent()
-
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun TagTooltip() = BoxWithTooltipIfNotNull(
+private fun TagTooltip(tooltipMessage: String) = BoxWithTooltipIfNotNull(
     tooltip = tooltipMessage
 ) {
     Icon(
