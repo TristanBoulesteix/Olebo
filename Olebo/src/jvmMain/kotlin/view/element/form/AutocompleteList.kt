@@ -6,11 +6,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
@@ -67,8 +69,8 @@ fun AutocompleteList(
         Column {
             TextField(
                 modifier = Modifier.fillMaxWidth().onKeyEvent {
-                    if (items.isNotEmpty() && it.key == Key.Enter && textValue.isNotBlank()) {
-                        val item = newItem ?: items.firstOrNull() ?: return@onKeyEvent false
+                    if (it.key == Key.Enter && newItem != null) {
+                        val item = newItem!!
 
                         item.select(
                             isChecked = !item.isSelected,
@@ -91,7 +93,19 @@ fun AutocompleteList(
                 onValueChange = { textValue = it },
                 singleLine = true,
                 placeholder = { Text(placeholder) },
-                trailingIcon = { TagTooltip(tooltipMessage) }
+                trailingIcon = {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(5.dp, Alignment.End),
+                        modifier = Modifier.width(70.dp).padding(end = 5.dp)
+                    ) {
+                        if (newItem != null) {
+                            TextTrailingIcon(Icons.Outlined.Add) {
+
+                            }
+                        }
+                        TextTrailingIcon(Icons.Outlined.Info, tooltipMessage)
+                    }
+                }
             )
 
             newItem?.let {
@@ -129,15 +143,17 @@ fun AutocompleteList(
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun TagTooltip(tooltipMessage: String) = BoxWithTooltipIfNotNull(
-    tooltip = tooltipMessage
-) {
-    Icon(
-        imageVector = Icons.Filled.Info,
-        modifier = Modifier.pointerHoverIcon(PointerIconDefaults.Hand),
-        contentDescription = null
-    )
-}
+private fun TextTrailingIcon(icon: ImageVector, tooltipMessage: String? = null, onClick: (() -> Unit)? = null) =
+    BoxWithTooltipIfNotNull(
+        tooltip = tooltipMessage,
+        modifier = Modifier.clickable { onClick?.invoke() }
+    ) {
+        Icon(
+            imageVector = icon,
+            modifier = Modifier.pointerHoverIcon(PointerIconDefaults.Hand),
+            contentDescription = null
+        )
+    }
 
 @Composable
 private fun SelectableRow(

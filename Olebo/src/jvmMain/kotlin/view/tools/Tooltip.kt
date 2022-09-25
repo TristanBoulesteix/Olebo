@@ -21,11 +21,11 @@ import jdr.exia.view.ui.isDarkTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun BoxWithTooltipIfNotNull(
+inline fun BoxWithTooltipIfNotNull(
     tooltip: String? = null,
     modifier: Modifier = Modifier,
     tooltipAlignment: Alignment = Alignment.BottomEnd,
-    content: @Composable BoxScope.() -> Unit
+    crossinline content: @Composable BoxScope.() -> Unit
 ) = if (tooltip != null && !DialogManager.areDialogVisible) TooltipArea(
     tooltip = {
         Surface(
