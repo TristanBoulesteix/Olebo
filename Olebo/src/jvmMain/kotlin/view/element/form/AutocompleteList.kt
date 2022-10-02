@@ -2,6 +2,7 @@ package jdr.exia.view.element.form
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
@@ -21,6 +22,7 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import jdr.exia.view.element.LazyScrollableColumn
 import jdr.exia.view.tools.BoxWithTooltipIfNotNull
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -59,7 +61,6 @@ fun AutocompleteList(
             suggestionsListState
                 .filter { it.contains(textValue, ignoreCase = true) }
                 .map { SelectableItem(it, it in selectedItemsState) }
-                .sortedByDescending(SelectableItem::isSelected)
         }
     }
 
@@ -76,8 +77,8 @@ fun AutocompleteList(
                             isChecked = !item.isSelected,
                             onItemCreated = { itemValue ->
                                 coroutineScope.launch {
-                                    scrollState.scrollToItem(0)
                                     onItemCreated(itemValue)
+                                    scrollState.scrollToTop()
                                 }
                             },
                             resetTextValue = { textValue = "" },
@@ -100,7 +101,17 @@ fun AutocompleteList(
                     ) {
                         if (newItem != null) {
                             TextTrailingIcon(Icons.Outlined.Add) {
-
+                                newItem!!.select(
+                                    isChecked = !newItem!!.isSelected,
+                                    onItemCreated = { itemValue ->
+                                        coroutineScope.launch {
+                                            onItemCreated(itemValue)
+                                            scrollState.scrollToTop()
+                                        }
+                                    },
+                                    resetTextValue = { textValue = "" },
+                                    onItemChecked = onItemChecked
+                                )
                             }
                         }
                         TextTrailingIcon(Icons.Outlined.Info, tooltipMessage)
@@ -113,8 +124,8 @@ fun AutocompleteList(
                     item = it,
                     onItemCreated = { itemValue ->
                         coroutineScope.launch {
-                            scrollState.scrollToItem(0)
                             onItemCreated(itemValue)
+                            scrollState.scrollToTop()
                         }
                     },
                     resetTextValue = { textValue = "" },
@@ -130,8 +141,8 @@ fun AutocompleteList(
                 item = item,
                 onItemCreated = { itemValue ->
                     coroutineScope.launch {
-                        scrollState.scrollToItem(0)
                         onItemCreated(itemValue)
+                        scrollState.scrollToTop()
                     }
                 },
                 resetTextValue = { textValue = "" },
@@ -177,6 +188,11 @@ private fun SelectableRow(
         Spacer(Modifier.padding(5.dp))
         Text(item.value)
     }
+}
+
+private suspend fun LazyListState.scrollToTop() {
+    delay(100)
+    scrollToItem(0)
 }
 
 private fun SelectableItem.select(
