@@ -22,7 +22,6 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import jdr.exia.view.element.LazyScrollableColumn
 import jdr.exia.view.tools.BoxWithTooltipIfNotNull
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -69,7 +68,6 @@ fun AutocompleteList(
 
     HeaderSearch(
         newItem = newItem,
-        coroutineScope = coroutineScope,
         onItemCreated = onItemCreated,
         scrollState = scrollState,
         textValue = textValue,
@@ -100,7 +98,6 @@ fun AutocompleteList(
 @Composable
 private fun HeaderSearch(
     newItem: SelectableItem?,
-    coroutineScope: CoroutineScope,
     onItemCreated: (value: String) -> Unit,
     scrollState: LazyListState,
     textValue: String,
@@ -108,69 +105,73 @@ private fun HeaderSearch(
     onItemChecked: (valueChecked: String, isChecked: Boolean) -> Unit,
     placeholder: String,
     tooltipMessage: String
-) = Surface {
-    Column {
-        TextField(
-            modifier = Modifier.fillMaxWidth().onKeyEvent {
-                if (it.key == Key.Enter && newItem != null) {
-                    newItem.select(
-                        isChecked = !newItem.isSelected,
-                        onItemCreated = { itemValue ->
-                            coroutineScope.launch {
-                                onItemCreated(itemValue)
-                                scrollState.scrollToTop()
-                            }
-                        },
-                        resetTextValue = { onTextValueUpdate("") },
-                        onItemChecked = onItemChecked
-                    )
+) {
+    val coroutineScope = rememberCoroutineScope()
 
-                    true
-                } else {
-                    false
-                }
-            },
-            value = textValue,
-            onValueChange = onTextValueUpdate,
-            singleLine = true,
-            placeholder = { Text(placeholder) },
-            trailingIcon = {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(5.dp, Alignment.End),
-                    modifier = Modifier.width(70.dp).padding(end = 5.dp)
-                ) {
-                    if (newItem != null) {
-                        TextTrailingIcon(Icons.Outlined.Add) {
-                            newItem.select(
-                                isChecked = !newItem.isSelected,
-                                onItemCreated = { itemValue ->
-                                    coroutineScope.launch {
-                                        onItemCreated(itemValue)
-                                        scrollState.scrollToTop()
-                                    }
-                                },
-                                resetTextValue = { onTextValueUpdate("") },
-                                onItemChecked = onItemChecked
-                            )
-                        }
-                    }
-                    TextTrailingIcon(Icons.Outlined.Info, tooltipMessage)
-                }
-            }
-        )
+    Surface {
+        Column {
+            TextField(
+                modifier = Modifier.fillMaxWidth().onKeyEvent {
+                    if (it.key == Key.Enter && newItem != null) {
+                        newItem.select(
+                            isChecked = !newItem.isSelected,
+                            onItemCreated = { itemValue ->
+                                coroutineScope.launch {
+                                    onItemCreated(itemValue)
+                                    scrollState.scrollToTop()
+                                }
+                            },
+                            resetTextValue = { onTextValueUpdate("") },
+                            onItemChecked = onItemChecked
+                        )
 
-        newItem?.let {
-            SelectableRow(
-                item = it,
-                onItemCreated = { itemValue ->
-                    coroutineScope.launch {
-                        onItemCreated(itemValue)
-                        scrollState.scrollToTop()
+                        true
+                    } else {
+                        false
                     }
                 },
-                resetTextValue = { onTextValueUpdate("") },
-                onItemChecked = onItemChecked
+                value = textValue,
+                onValueChange = onTextValueUpdate,
+                singleLine = true,
+                placeholder = { Text(placeholder) },
+                trailingIcon = {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(5.dp, Alignment.End),
+                        modifier = Modifier.width(70.dp).padding(end = 5.dp)
+                    ) {
+                        if (newItem != null) {
+                            TextTrailingIcon(Icons.Outlined.Add) {
+                                newItem.select(
+                                    isChecked = !newItem.isSelected,
+                                    onItemCreated = { itemValue ->
+                                        coroutineScope.launch {
+                                            onItemCreated(itemValue)
+                                            scrollState.scrollToTop()
+                                        }
+                                    },
+                                    resetTextValue = { onTextValueUpdate("") },
+                                    onItemChecked = onItemChecked
+                                )
+                            }
+                        }
+                        TextTrailingIcon(Icons.Outlined.Info, tooltipMessage)
+                    }
+                }
             )
+
+            newItem?.let {
+                SelectableRow(
+                    item = it,
+                    onItemCreated = { itemValue ->
+                        coroutineScope.launch {
+                            onItemCreated(itemValue)
+                            scrollState.scrollToTop()
+                        }
+                    },
+                    resetTextValue = { onTextValueUpdate("") },
+                    onItemChecked = onItemChecked
+                )
+            }
         }
     }
 }
