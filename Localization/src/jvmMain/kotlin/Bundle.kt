@@ -250,6 +250,9 @@ internal actual class StringLocaleBundle : StringLocale() {
         STR_RETRY_UPDATE to "retry the update",
         STR_OK to "OK",
         STR_OLEBO_IS_RUNNING to "Olebo is running",
+        STR_SORT_BY to "sort by:",
+        STR_SORT_CHECKED_FIRST to "checked first",
+        STR_SORT_ALPHABETICALLY to "alphabetically",
     )
 }
 
@@ -502,5 +505,8 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
         STR_RETRY_UPDATE to "retenter la mise à jour",
         STR_OK to "OK",
         STR_OLEBO_IS_RUNNING to "Olebo est en cours d'exécution",
+        STR_SORT_BY to "trier par :",
+        STR_SORT_CHECKED_FIRST to "sélectionné(s)",
+        STR_SORT_ALPHABETICALLY to "ordre alphabétique",
     )
 }

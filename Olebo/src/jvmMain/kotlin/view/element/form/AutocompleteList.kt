@@ -20,6 +20,7 @@ import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.pointer.PointerIconDefaults
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
+import jdr.exia.localization.*
 import jdr.exia.view.element.LazyScrollableColumn
 import jdr.exia.view.tools.BoxWithTooltipIfNotNull
 import kotlinx.coroutines.delay
@@ -38,6 +39,8 @@ fun AutocompleteList(
     val coroutineScope = rememberCoroutineScope()
 
     var textValue by remember { mutableStateOf("") }
+
+    var filterType by remember { mutableStateOf(FilterType.Default) }
 
     val suggestionsListState by rememberUpdatedState(suggestionsList)
     val selectedItemsState by rememberUpdatedState(selectedItems)
@@ -61,12 +64,25 @@ fun AutocompleteList(
                 .filter { it.contains(textValue, ignoreCase = true) }
                 .sortedByDescending { it == textValue }
                 .map { SelectableItem(it, it in selectedItemsState) }
+                .let {
+                    when (filterType) {
+                        FilterType.CheckedFirst -> it.sortedByDescending(SelectableItem::isSelected)
+                        FilterType.Alphabetically -> it.sortedBy(SelectableItem::value)
+                        else -> it
+                    }
+                }
         }
     }
 
     val scrollState = rememberLazyListState()
 
+    LaunchedEffect(filterType, textValue) {
+        scrollState.scrollToTop()
+    }
+
     HeaderSearch(
+        filterType = filterType,
+        onFilterChanged = { filterType = it },
         newItem = newItem,
         onItemCreated = onItemCreated,
         scrollState = scrollState,
@@ -104,7 +120,9 @@ private fun HeaderSearch(
     onTextValueUpdate: (String) -> Unit,
     onItemChecked: (valueChecked: String, isChecked: Boolean) -> Unit,
     placeholder: String,
-    tooltipMessage: String
+    tooltipMessage: String,
+    filterType: FilterType,
+    onFilterChanged: (FilterType) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -157,6 +175,13 @@ private fun HeaderSearch(
                         TextTrailingIcon(Icons.Outlined.Info, tooltipMessage)
                     }
                 }
+            )
+
+            DropdownMenu(
+                label = StringLocale[STR_SORT_BY],
+                items = remember { FilterType.values().toList() },
+                selectedItem = filterType,
+                onItemSelected = onFilterChanged
             )
 
             newItem?.let {
@@ -235,3 +260,11 @@ private fun SelectableItem.select(
 
 @Immutable
 private data class SelectableItem(val value: String, val isSelected: Boolean = false, val isNew: Boolean = false)
+
+@Immutable
+private enum class FilterType(private val localeKey: String) {
+    Default(STR_DEFAULT), CheckedFirst(STR_SORT_CHECKED_FIRST), Alphabetically(STR_SORT_ALPHABETICALLY);
+
+    @Stable
+    override fun toString() = StringLocale[localeKey]
+}

@@ -172,6 +172,9 @@ const val STR_UPDATE_INSTALL_ERROR = "update_install_error"
 const val STR_RETRY_UPDATE = "retry_update"
 const val STR_OK = "ok"
 const val STR_OLEBO_IS_RUNNING = "olebo_is_running"
+const val STR_SORT_BY = "sort_by"
+const val STR_SORT_CHECKED_FIRST = "sort_checked_first"
+const val STR_SORT_ALPHABETICALLY = "sort_alphabetically"
 
 // -- Sentences
 
