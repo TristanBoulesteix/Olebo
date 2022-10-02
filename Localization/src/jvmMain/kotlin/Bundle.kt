@@ -253,6 +253,13 @@ internal actual class StringLocaleBundle : StringLocale() {
         STR_SORT_BY to "sort by:",
         STR_SORT_CHECKED_FIRST to "checked first",
         STR_SORT_ALPHABETICALLY to "alphabetically",
+        ST_TOOLTIP_TAGS to """
+            You can link an item with one or more tag.
+            You can easily search for a token that has an identical tag as a scenario.
+            
+            To create a tag, write in the text field then press the "enter" key.
+            For an existing tag, use the checkbox next to the tag name.
+        """.trimIndent(),
     )
 }
 
@@ -508,5 +515,12 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
         STR_SORT_BY to "trier par :",
         STR_SORT_CHECKED_FIRST to "sélectionné(s)",
         STR_SORT_ALPHABETICALLY to "ordre alphabétique",
+        ST_TOOLTIP_TAGS to """
+            Vous pouvez associer un élément à un ou plusieurs tags.
+            Si un élément et un scénario ou un tag en commun, il est plus facile de les retrouver.
+            
+            Pour créer un tag, écrivez dans le champ de texte puis appuyez sur la touche "entrer". 
+            Pour ajouter associer un tag déjà existant, cocher simplement la case associée.
+        """.trimIndent(),
     )
 }

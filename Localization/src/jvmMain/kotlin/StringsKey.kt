@@ -223,6 +223,7 @@ const val ST_OLEBO_WEB_EXPLANATION = "web_explain"
 const val ST_ERROR_OLEBO_WEB_VERSION_REQUIREMENT = "error_web_requirement"
 const val ST_NO_SPRITE_FOR_NEW_BLUEPRINT = "no_sprite_new_blueprint"
 const val ST_INVALID_SPRITE_FOR_BLUEPRINT = "invalid_sprite_blueprint"
+const val ST_TOOLTIP_TAGS = "tooltip_tags"
 
 // -- Interpolatable StringLocale
 const val ST_INT1_OCCURRENCE_BLUEPRINT_TO_DELETE = "1_num_blueprint_to_delete"
