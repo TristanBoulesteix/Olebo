@@ -230,7 +230,7 @@ private fun TagEditionZone(data: BlueprintData) = Box(Modifier.fillMaxWidth().he
             repeat(100) {
                 add("Test$it")
             }
-        }.sorted()
+        }
     }
 
     val suggestions by remember {

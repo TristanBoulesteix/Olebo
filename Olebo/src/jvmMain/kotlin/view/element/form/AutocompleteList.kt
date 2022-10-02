@@ -22,10 +22,10 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import jdr.exia.view.element.LazyScrollableColumn
 import jdr.exia.view.tools.BoxWithTooltipIfNotNull
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AutocompleteList(
     selectedItems: List<String>,
@@ -60,80 +60,24 @@ fun AutocompleteList(
         derivedStateOf {
             suggestionsListState
                 .filter { it.contains(textValue, ignoreCase = true) }
+                .sortedByDescending { it == textValue }
                 .map { SelectableItem(it, it in selectedItemsState) }
         }
     }
 
     val scrollState = rememberLazyListState()
 
-    Surface {
-        Column {
-            TextField(
-                modifier = Modifier.fillMaxWidth().onKeyEvent {
-                    if (it.key == Key.Enter && newItem != null) {
-                        val item = newItem!!
-
-                        item.select(
-                            isChecked = !item.isSelected,
-                            onItemCreated = { itemValue ->
-                                coroutineScope.launch {
-                                    onItemCreated(itemValue)
-                                    scrollState.scrollToTop()
-                                }
-                            },
-                            resetTextValue = { textValue = "" },
-                            onItemChecked = onItemChecked
-                        )
-
-                        true
-                    } else {
-                        false
-                    }
-                },
-                value = textValue,
-                onValueChange = { textValue = it },
-                singleLine = true,
-                placeholder = { Text(placeholder) },
-                trailingIcon = {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(5.dp, Alignment.End),
-                        modifier = Modifier.width(70.dp).padding(end = 5.dp)
-                    ) {
-                        if (newItem != null) {
-                            TextTrailingIcon(Icons.Outlined.Add) {
-                                newItem!!.select(
-                                    isChecked = !newItem!!.isSelected,
-                                    onItemCreated = { itemValue ->
-                                        coroutineScope.launch {
-                                            onItemCreated(itemValue)
-                                            scrollState.scrollToTop()
-                                        }
-                                    },
-                                    resetTextValue = { textValue = "" },
-                                    onItemChecked = onItemChecked
-                                )
-                            }
-                        }
-                        TextTrailingIcon(Icons.Outlined.Info, tooltipMessage)
-                    }
-                }
-            )
-
-            newItem?.let {
-                SelectableRow(
-                    item = it,
-                    onItemCreated = { itemValue ->
-                        coroutineScope.launch {
-                            onItemCreated(itemValue)
-                            scrollState.scrollToTop()
-                        }
-                    },
-                    resetTextValue = { textValue = "" },
-                    onItemChecked = onItemChecked
-                )
-            }
-        }
-    }
+    HeaderSearch(
+        newItem = newItem,
+        coroutineScope = coroutineScope,
+        onItemCreated = onItemCreated,
+        scrollState = scrollState,
+        textValue = textValue,
+        onTextValueUpdate = { textValue = it },
+        onItemChecked = onItemChecked,
+        placeholder = placeholder,
+        tooltipMessage = tooltipMessage
+    )
 
     LazyScrollableColumn(Modifier.fillMaxWidth(), scrollState) {
         items(items, key = SelectableItem::value) { item ->
@@ -146,6 +90,85 @@ fun AutocompleteList(
                     }
                 },
                 resetTextValue = { textValue = "" },
+                onItemChecked = onItemChecked
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun HeaderSearch(
+    newItem: SelectableItem?,
+    coroutineScope: CoroutineScope,
+    onItemCreated: (value: String) -> Unit,
+    scrollState: LazyListState,
+    textValue: String,
+    onTextValueUpdate: (String) -> Unit,
+    onItemChecked: (valueChecked: String, isChecked: Boolean) -> Unit,
+    placeholder: String,
+    tooltipMessage: String
+) = Surface {
+    Column {
+        TextField(
+            modifier = Modifier.fillMaxWidth().onKeyEvent {
+                if (it.key == Key.Enter && newItem != null) {
+                    newItem.select(
+                        isChecked = !newItem.isSelected,
+                        onItemCreated = { itemValue ->
+                            coroutineScope.launch {
+                                onItemCreated(itemValue)
+                                scrollState.scrollToTop()
+                            }
+                        },
+                        resetTextValue = { onTextValueUpdate("") },
+                        onItemChecked = onItemChecked
+                    )
+
+                    true
+                } else {
+                    false
+                }
+            },
+            value = textValue,
+            onValueChange = onTextValueUpdate,
+            singleLine = true,
+            placeholder = { Text(placeholder) },
+            trailingIcon = {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(5.dp, Alignment.End),
+                    modifier = Modifier.width(70.dp).padding(end = 5.dp)
+                ) {
+                    if (newItem != null) {
+                        TextTrailingIcon(Icons.Outlined.Add) {
+                            newItem.select(
+                                isChecked = !newItem.isSelected,
+                                onItemCreated = { itemValue ->
+                                    coroutineScope.launch {
+                                        onItemCreated(itemValue)
+                                        scrollState.scrollToTop()
+                                    }
+                                },
+                                resetTextValue = { onTextValueUpdate("") },
+                                onItemChecked = onItemChecked
+                            )
+                        }
+                    }
+                    TextTrailingIcon(Icons.Outlined.Info, tooltipMessage)
+                }
+            }
+        )
+
+        newItem?.let {
+            SelectableRow(
+                item = it,
+                onItemCreated = { itemValue ->
+                    coroutineScope.launch {
+                        onItemCreated(itemValue)
+                        scrollState.scrollToTop()
+                    }
+                },
+                resetTextValue = { onTextValueUpdate("") },
                 onItemChecked = onItemChecked
             )
         }
