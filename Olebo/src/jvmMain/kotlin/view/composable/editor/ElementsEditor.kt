@@ -225,13 +225,7 @@ private fun ItemDescription(
 private fun TagEditionZone(data: BlueprintData) = Box(Modifier.fillMaxWidth().height(400.dp)) {
     val newSuggestions: MutableList<String> = remember(::mutableStateListOf)
 
-    val existingSuggestions = rememberTransaction { /*Tag.all().map(Tag::value)*/
-        buildList {
-            repeat(100) {
-                add("Test$it")
-            }
-        }
-    }
+    val existingSuggestions = rememberTransaction { Tag.all().map(Tag::value) }
 
     val suggestions by remember {
         derivedStateOf {
@@ -239,7 +233,7 @@ private fun TagEditionZone(data: BlueprintData) = Box(Modifier.fillMaxWidth().he
         }
     }
 
-    val selections = rememberTransaction { data.tags.map(Tag::value).toMutableStateList().also { it.addAll(listOf("Test2", "Test4")) } }
+    val selections = rememberTransaction { data.tags.map(Tag::value).toMutableStateList() }
 
     AutocompleteList(
         modifier = Modifier.padding(10.dp).padding(end = 5.dp).fillMaxWidth(),
