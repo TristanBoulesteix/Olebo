@@ -217,12 +217,16 @@ private fun ItemDescription(
     )
 
     if (editedData != null) {
-        TagEditionZone(editedData!!)
+        TagEditionZone(data = editedData!!, onDataUpdate = { editedData = it }, createNewTags = viewModel::createTags)
     }
 }
 
 @Composable
-private fun TagEditionZone(data: BlueprintData) = Box(Modifier.fillMaxWidth().height(400.dp)) {
+private fun TagEditionZone(
+    data: BlueprintData,
+    onDataUpdate: (BlueprintData) -> Unit,
+    createNewTags: (List<String>) -> Unit
+) = Box(Modifier.fillMaxWidth().height(400.dp)) {
     val newSuggestions: MutableList<String> = remember(::mutableStateListOf)
 
     val existingSuggestions = rememberTransaction { Tag.all().map(Tag::value) }
@@ -233,7 +237,14 @@ private fun TagEditionZone(data: BlueprintData) = Box(Modifier.fillMaxWidth().he
         }
     }
 
-    val selections = rememberTransaction { data.tags.map(Tag::value).toMutableStateList() }
+    val selections = data.tags
+
+    DisposableEffect(Unit) {
+        onDispose {
+            createNewTags(newSuggestions)
+            println("disposed")
+        }
+    }
 
     AutocompleteList(
         modifier = Modifier.padding(10.dp).padding(end = 5.dp).fillMaxWidth(),
@@ -243,19 +254,23 @@ private fun TagEditionZone(data: BlueprintData) = Box(Modifier.fillMaxWidth().he
             val index = suggestions.indexOf(value).takeIf { it >= 0 } ?: return@AutocompleteList
 
             if (isChecked) {
-                selections.add(suggestions[index])
+                onDataUpdate(data.addTag(suggestions[index]))
             } else {
-                selections.remove(value)
+                onDataUpdate(data.removeTag(value))
             }
         },
         onItemCreated = {
-            selections += it
+            onDataUpdate(data.addTag(it))
             newSuggestions.add(0, it)
         },
         placeholder = "Rechercher ou créer un tag",
         tooltipMessage = StringLocale[ST_TOOLTIP_TAGS]
     )
 }
+
+private fun BlueprintData.addTag(tag: String) = copy(tags = tags.toMutableList().also { it.add(tag) })
+
+private fun BlueprintData.removeTag(tag: String) = copy(tags = tags.toMutableList().also { it.remove(tag) })
 
 @Composable
 private fun BlueprintData?.getButtons(

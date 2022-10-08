@@ -8,6 +8,7 @@ import jdr.exia.localization.*
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
+import jdr.exia.model.element.Tag
 import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.SimpleResult
 import jdr.exia.model.tools.failure
@@ -19,6 +20,7 @@ import jdr.exia.view.tools.showConfirmMessage
 import jdr.exia.viewModel.data.BlueprintData
 import jdr.exia.viewModel.data.isValid
 import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.sql.SizedCollection
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class ElementsEditorViewModel(initialType: TypeElement) {
@@ -117,36 +119,30 @@ class ElementsEditorViewModel(initialType: TypeElement) {
         } else deleteData()
     }
 
+    /**
+     * Save changes made by user on blueprints.
+     * This method is invoked when the user click on the submit button on the blueprint edition screen.
+     */
     fun saveChanges() = typeViewModel.forEach { (_, viewModel) ->
+        // Save newly created data
         viewModel.createdData.forEach { newData ->
             transaction {
                 Blueprint.new {
-                    type = newData.type
-                    name = newData.name.trimEnd()
+                    setData(newData)
 
-                    if (newData.type != TypeElement.Object) {
-                        HP = newData.life!!
-                        MP = newData.mana!!
-                    }
-
-                    sprite = newData.img.saveImgAndGetPath()
+                    sprite = newData.img.saveImgAndGetPath(suffix = "blueprint")
                 }
             }
         }
 
+        // Update modified data
         viewModel.modifiedData.forEach modified@{ (id, isNotDeleted) ->
             if (isNotDeleted) {
                 val oldData = viewModel.data.find { it.id == id } ?: return@modified
 
                 transaction {
                     Blueprint[id].apply {
-                        type = oldData.type
-                        name = oldData.name.trimEnd()
-
-                        if (oldData.type != TypeElement.Object) {
-                            HP = oldData.life!!
-                            MP = oldData.mana!!
-                        }
+                        setData(oldData)
 
                         if (oldData.img.path != sprite) {
                             val oldImg = sprite.toImgPath().checkedImgPath()?.toFile()
@@ -159,5 +155,21 @@ class ElementsEditorViewModel(initialType: TypeElement) {
                 transaction { Blueprint[id].delete() }
             }
         }
+    }
+
+    fun createTags(tags: List<String>) = tags.forEach {
+        transaction { Tag.newFrom(it) }
+    }
+
+    private fun Blueprint.setData(data: BlueprintData) {
+        type = data.type
+        name = data.name.trimEnd()
+
+        if (data.type != TypeElement.Object) {
+            HP = data.life!!
+            MP = data.mana!!
+        }
+
+        tags = SizedCollection(data.tags.map { Tag[it] })
     }
 }
