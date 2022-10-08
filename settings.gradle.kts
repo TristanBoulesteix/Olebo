@@ -32,9 +32,9 @@ dependencyResolutionManagement {
             val kotlinVersion = version("kotlin", "1.7.10")
             val exposedVersion = version("exposed", "0.39.2")
             val coroutinesVersion = version("coroutines", "1.6.4")
-            val ktorVersion = version("ktor", "2.1.0")
-            val serialisationVersion = version("serialisation", "1.4.0")
-            version("compose", "1.2.0-beta01")
+            val ktorVersion = version("ktor", "2.1.2")
+            val serialisationVersion = version("serialisation", "1.3.3")
+            version("compose", "1.2.0-beta02")
             val kmdcVersion = version("kmdc", "0.0.5")
 
             // Plugins
