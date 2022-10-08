@@ -6,7 +6,7 @@ package jdr.exia.localization
  * Default strings (English strings)
  */
 internal expect class StringLocaleBundle {
-    internal val contents: Map<String, String>
+    internal val contentBuilder: Map<String, String>
 }
 
 /**
@@ -14,5 +14,5 @@ internal expect class StringLocaleBundle {
  */
 @Suppress("unused")
 internal expect class StringLocaleBundle_fr {
-    internal val contents: Map<String, String>
+    internal val contentBuilder: Map<String, String>
 }

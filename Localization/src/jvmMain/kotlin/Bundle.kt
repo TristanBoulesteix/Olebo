@@ -6,7 +6,7 @@ package jdr.exia.localization
  * Default strings (English strings)
  */
 internal actual class StringLocaleBundle : StringLocale() {
-    actual override val contents = mapOf(
+    actual override val contentBuilder = mapOf(
         STR_VERSION to "version",
         STR_FILES to "files",
         STR_TAKE_SCREENSHOT to "take a screenshot",
@@ -268,7 +268,7 @@ internal actual class StringLocaleBundle : StringLocale() {
  */
 @Suppress("unused")
 internal actual class StringLocaleBundle_fr : StringLocale() {
-    actual override val contents = mapOf(
+    actual override val contentBuilder = mapOf(
         STR_VERSION to "version",
         STR_FILES to "fichiers",
         STR_TAKE_SCREENSHOT to "prendre une capture d'écran",

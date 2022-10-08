@@ -10,9 +10,14 @@ import kotlin.text.format as jvmFormatString
  * Parent class of Bundles which contains translations of all the StringLocale of Olebo. They are retrieved with the get operator.
  */
 actual sealed class StringLocale : ListResourceBundle() {
-    internal actual abstract val contents: Map<String, String>
+    internal actual abstract val contentBuilder: Map<String, String>
 
-    override fun getContents() = contents.map { it.toPair().toList().toTypedArray() }.toTypedArray()
+    @get:JvmName("lazy content")
+    private val contents: Array<Array<String>> by lazy {
+        contentBuilder.map { it.toPair().toList().toTypedArray() }.toTypedArray()
+    }
+
+    override fun getContents(): Array<Array<String>> = contents
 
     /**
      * The [invoke] method of the companion object need to be called in order to initialize the right locale to use

@@ -3,7 +3,7 @@ package jdr.exia.localization
 import androidx.compose.runtime.Stable
 
 expect sealed class StringLocale() {
-    internal abstract val contents: Map<String, String>
+    internal abstract val contentBuilder: Map<String, String>
 
     /**
      * The [invoke] method of the companion object need to be called in order to initialize the right locale to use

@@ -6,7 +6,7 @@ package jdr.exia.localization
  * Default strings (English strings)
  */
 internal actual class StringLocaleBundle : StringLocale() {
-    actual override val contents = mapOf(
+    actual override val contentBuilder = mapOf(
         STR_SESSION_CODE to "session code:",
         STR_PLAYER_NAME to "player name:",
         STR_LOGIN to "login",
@@ -20,7 +20,7 @@ internal actual class StringLocaleBundle : StringLocale() {
  */
 @JsName("StringLocaleBundleFr")
 internal actual class StringLocaleBundle_fr : StringLocale() {
-    actual override val contents = mapOf(
+    actual override val contentBuilder = mapOf(
         STR_SESSION_CODE to "code de session :",
         STR_PLAYER_NAME to "nom du joueur :",
         STR_LOGIN to "connection",

@@ -12,7 +12,7 @@ actual sealed class StringLocale {
             get() = ResourceBundle(activeLanguage)
     }
 
-    internal actual abstract val contents: Map<String, String>
+    internal actual abstract val contentBuilder: Map<String, String>
 }
 
 actual fun Char.titleCase(language: Language) = titlecase()
