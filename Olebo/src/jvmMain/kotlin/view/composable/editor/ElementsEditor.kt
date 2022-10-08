@@ -242,7 +242,6 @@ private fun TagEditionZone(
     DisposableEffect(Unit) {
         onDispose {
             createNewTags(newSuggestions)
-            println("disposed")
         }
     }
 
