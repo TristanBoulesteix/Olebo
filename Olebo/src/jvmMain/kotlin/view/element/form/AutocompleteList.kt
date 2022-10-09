@@ -1,8 +1,5 @@
 package jdr.exia.view.element.form
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.expandVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListState
@@ -40,83 +37,78 @@ fun AutocompleteList(
     onItemChecked: (valueChecked: String, isChecked: Boolean) -> Unit,
     onItemCreated: (value: String) -> Unit,
     onItemDeleted: (value: String) -> Unit
-) = AnimatedVisibility(
-    visibleState = remember { MutableTransitionState(false).also { it.targetState = true } },
-    enter = expandVertically()
-) {
-    Column(modifier) {
-        val coroutineScope = rememberCoroutineScope()
+) = Column(modifier) {
+    val coroutineScope = rememberCoroutineScope()
 
-        var textValue by remember { mutableStateOf("") }
+    var textValue by remember { mutableStateOf("") }
 
-        var filterType by remember { mutableStateOf(FilterType.Default) }
+    var filterType by remember { mutableStateOf(FilterType.Default) }
 
-        val suggestionsListState by rememberUpdatedState(suggestionsList)
-        val selectedItemsState by rememberUpdatedState(selectedItems)
+    val suggestionsListState by rememberUpdatedState(suggestionsList)
+    val selectedItemsState by rememberUpdatedState(selectedItems)
 
-        val newItem by remember {
-            derivedStateOf {
-                val shouldCreateANewItem = textValue.isNotBlank() && suggestionsListState.none {
-                    it.equals(
-                        textValue,
-                        ignoreCase = true
-                    )
-                }
-
-                if (shouldCreateANewItem) SelectableItem(textValue, isNew = true) else null
-            }
-        }
-
-        val items by remember {
-            derivedStateOf {
-                suggestionsListState
-                    .filter { it.contains(textValue, ignoreCase = true) }
-                    .sortedByDescending { it == textValue }
-                    .map { SelectableItem(it, it in selectedItemsState) }
-                    .let {
-                        when (filterType) {
-                            FilterType.CheckedFirst -> it.sortedByDescending(SelectableItem::isSelected)
-                            FilterType.Alphabetically -> it.sortedBy(SelectableItem::value)
-                            else -> it
-                        }
-                    }
-            }
-        }
-
-        val scrollState = rememberLazyListState()
-
-        LaunchedEffect(filterType, textValue) {
-            scrollState.scrollToTop()
-        }
-
-        HeaderSearch(
-            filterType = filterType,
-            onFilterChanged = { filterType = it },
-            newItem = newItem,
-            onItemCreated = onItemCreated,
-            scrollState = scrollState,
-            textValue = textValue,
-            onTextValueUpdate = { textValue = it },
-            onItemChecked = onItemChecked,
-            placeholder = placeholder,
-            tooltipMessage = tooltipMessage
-        )
-
-        LazyScrollableColumn(Modifier.fillMaxWidth(), scrollState) {
-            items(items, key = SelectableItem::value) { item ->
-                SelectableRow(
-                    item = item,
-                    onItemCreated = { itemValue ->
-                        coroutineScope.launch {
-                            onItemCreated(itemValue)
-                            scrollState.scrollToTop()
-                        }
-                    },
-                    resetTextValue = { textValue = "" },
-                    onItemChecked = onItemChecked,
-                    onItemDelete = { onItemDeleted(item.value) }
+    val newItem by remember {
+        derivedStateOf {
+            val shouldCreateANewItem = textValue.isNotBlank() && suggestionsListState.none {
+                it.equals(
+                    textValue,
+                    ignoreCase = true
                 )
             }
+
+            if (shouldCreateANewItem) SelectableItem(textValue, isNew = true) else null
+        }
+    }
+
+    val items by remember {
+        derivedStateOf {
+            suggestionsListState
+                .filter { it.contains(textValue, ignoreCase = true) }
+                .sortedByDescending { it == textValue }
+                .map { SelectableItem(it, it in selectedItemsState) }
+                .let {
+                    when (filterType) {
+                        FilterType.CheckedFirst -> it.sortedByDescending(SelectableItem::isSelected)
+                        FilterType.Alphabetically -> it.sortedBy(SelectableItem::value)
+                        else -> it
+                    }
+                }
+        }
+    }
+
+    val scrollState = rememberLazyListState()
+
+    LaunchedEffect(filterType, textValue) {
+        scrollState.scrollToTop()
+    }
+
+    HeaderSearch(
+        filterType = filterType,
+        onFilterChanged = { filterType = it },
+        newItem = newItem,
+        onItemCreated = onItemCreated,
+        scrollState = scrollState,
+        textValue = textValue,
+        onTextValueUpdate = { textValue = it },
+        onItemChecked = onItemChecked,
+        placeholder = placeholder,
+        tooltipMessage = tooltipMessage
+    )
+
+    LazyScrollableColumn(Modifier.fillMaxWidth(), scrollState) {
+        items(items, key = SelectableItem::value) { item ->
+            SelectableRow(
+                item = item,
+                onItemCreated = { itemValue ->
+                    coroutineScope.launch {
+                        onItemCreated(itemValue)
+                        scrollState.scrollToTop()
+                    }
+                },
+                resetTextValue = { textValue = "" },
+                onItemChecked = onItemChecked,
+                onItemDelete = { onItemDeleted(item.value) }
+            )
         }
     }
 }

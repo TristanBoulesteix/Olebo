@@ -1,5 +1,8 @@
 package jdr.exia.view.composable.editor
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.expandVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -256,29 +259,34 @@ private fun TagEditionZone(
         }
     }
 
-    AutocompleteList(
-        modifier = Modifier.padding(10.dp).padding(end = 5.dp).fillMaxWidth(),
-        suggestionsList = suggestions,
-        selectedItems = selections,
-        onItemChecked = { value, isChecked ->
-            val index = suggestions.indexOf(value).takeIf { it >= 0 } ?: return@AutocompleteList
+    AnimatedVisibility(
+        visibleState = remember { MutableTransitionState(false).also { it.targetState = true } },
+        enter = expandVertically()
+    ) {
+        AutocompleteList(
+            modifier = Modifier.padding(10.dp).padding(end = 5.dp).fillMaxWidth(),
+            suggestionsList = suggestions,
+            selectedItems = selections,
+            onItemChecked = { value, isChecked ->
+                val index = suggestions.indexOf(value).takeIf { it >= 0 } ?: return@AutocompleteList
 
-            if (isChecked) {
-                onDataUpdate(data.addTag(suggestions[index]))
-            } else {
-                onDataUpdate(data.removeTag(value))
+                if (isChecked) {
+                    onDataUpdate(data.addTag(suggestions[index]))
+                } else {
+                    onDataUpdate(data.removeTag(value))
+                }
+            },
+            onItemCreated = {
+                onDataUpdate(data.addTag(it))
+                newSuggestions.add(0, it)
+            },
+            placeholder = "Rechercher ou créer un tag",
+            tooltipMessage = StringLocale[ST_TOOLTIP_TAGS],
+            onItemDeleted = {
+                tagsToDelete += it
             }
-        },
-        onItemCreated = {
-            onDataUpdate(data.addTag(it))
-            newSuggestions.add(0, it)
-        },
-        placeholder = "Rechercher ou créer un tag",
-        tooltipMessage = StringLocale[ST_TOOLTIP_TAGS],
-        onItemDeleted = {
-            tagsToDelete += it
-        }
-    )
+        )
+    }
 }
 
 private fun BlueprintData.addTag(tag: String) = copy(tags = tags.toMutableList().also { it.add(tag) })
