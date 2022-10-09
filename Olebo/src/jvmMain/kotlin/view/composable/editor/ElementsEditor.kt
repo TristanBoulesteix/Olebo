@@ -18,7 +18,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import jdr.exia.localization.*
-import jdr.exia.model.element.Tag
 import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.success
 import jdr.exia.model.type.Image
@@ -30,13 +29,16 @@ import jdr.exia.view.element.builder.EmptyContent
 import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.element.form.AutocompleteList
 import jdr.exia.view.element.form.IntTextField
-import jdr.exia.view.tools.*
+import jdr.exia.view.tools.BorderBuilder
+import jdr.exia.view.tools.MessageType
+import jdr.exia.view.tools.showMessage
+import jdr.exia.view.tools.toBorderStroke
 import jdr.exia.view.ui.backgroundImageColor
 import jdr.exia.view.ui.roundedBottomShape
 import jdr.exia.view.ui.roundedTopShape
-import jdr.exia.viewModel.ElementsEditorViewModel
 import jdr.exia.viewModel.data.BlueprintData
 import jdr.exia.viewModel.data.isCharacter
+import jdr.exia.viewModel.elements.ElementsEditorViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -217,23 +219,31 @@ private fun ItemDescription(
     )
 
     if (editedData != null) {
-        TagEditionZone(data = editedData!!, onDataUpdate = { editedData = it }, createNewTags = viewModel::createTags)
+        TagEditionZone(
+            data = editedData!!,
+            tags = viewModel.tagsAsString,
+            onDataUpdate = { editedData = it },
+            createNewTags = viewModel::createTags,
+            deleteTags = viewModel::deleteTags
+        )
     }
 }
 
 @Composable
 private fun TagEditionZone(
     data: BlueprintData,
+    tags: Iterable<String>,
     onDataUpdate: (BlueprintData) -> Unit,
-    createNewTags: (List<String>) -> Unit
+    createNewTags: (List<String>) -> Unit,
+    deleteTags: (List<String>) -> Unit
 ) = Box(Modifier.fillMaxWidth().height(400.dp)) {
     val newSuggestions: MutableList<String> = remember(::mutableStateListOf)
 
-    val existingSuggestions = rememberTransaction { Tag.all().map(Tag::value) }
+    val tagsToDelete: MutableList<String> = remember(::mutableStateListOf)
 
     val suggestions by remember {
         derivedStateOf {
-            newSuggestions + existingSuggestions
+            (newSuggestions + tags) - tagsToDelete.toSet()
         }
     }
 
@@ -241,6 +251,7 @@ private fun TagEditionZone(
 
     DisposableEffect(Unit) {
         onDispose {
+            deleteTags(tagsToDelete)
             createNewTags(newSuggestions)
         }
     }
@@ -263,7 +274,10 @@ private fun TagEditionZone(
             newSuggestions.add(0, it)
         },
         placeholder = "Rechercher ou créer un tag",
-        tooltipMessage = StringLocale[ST_TOOLTIP_TAGS]
+        tooltipMessage = StringLocale[ST_TOOLTIP_TAGS],
+        onItemDeleted = {
+            tagsToDelete += it
+        }
     )
 }
 

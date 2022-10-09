@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -28,13 +29,14 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun AutocompleteList(
+    modifier: Modifier,
     selectedItems: List<String>,
     suggestionsList: List<String>,
     placeholder: String,
     tooltipMessage: String,
     onItemChecked: (valueChecked: String, isChecked: Boolean) -> Unit,
     onItemCreated: (value: String) -> Unit,
-    modifier: Modifier
+    onItemDeleted: (value: String) -> Unit
 ) = Column(modifier) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -104,7 +106,8 @@ fun AutocompleteList(
                     }
                 },
                 resetTextValue = { textValue = "" },
-                onItemChecked = onItemChecked
+                onItemChecked = onItemChecked,
+                onItemDelete = { onItemDeleted(item.value) }
             )
         }
     }
@@ -194,7 +197,8 @@ private fun HeaderSearch(
                         }
                     },
                     resetTextValue = { onTextValueUpdate("") },
-                    onItemChecked = onItemChecked
+                    onItemChecked = onItemChecked,
+                    onItemDelete = {}
                 )
             }
         }
@@ -215,12 +219,14 @@ private fun TextTrailingIcon(icon: ImageVector, tooltipMessage: String? = null, 
         )
     }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun SelectableRow(
     item: SelectableItem,
     onItemCreated: (value: String) -> Unit,
     resetTextValue: () -> Unit,
-    onItemChecked: (valueChecked: String, isChecked: Boolean) -> Unit
+    onItemChecked: (valueChecked: String, isChecked: Boolean) -> Unit,
+    onItemDelete: () -> Unit
 ) {
     Row(
         Modifier.fillMaxWidth().clickable {
@@ -236,6 +242,13 @@ private fun SelectableRow(
         )
         Spacer(Modifier.padding(5.dp))
         Text(item.value)
+        Spacer(Modifier.weight(1f))
+        Icon(
+            imageVector = Icons.Outlined.Delete,
+            modifier = Modifier.pointerHoverIcon(PointerIconDefaults.Hand).padding(end = 10.dp)
+                .clickable(onClick = onItemDelete),
+            contentDescription = null
+        )
     }
 }
 

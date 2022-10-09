@@ -1,4 +1,4 @@
-package jdr.exia.viewModel
+package jdr.exia.viewModel.elements
 
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.*

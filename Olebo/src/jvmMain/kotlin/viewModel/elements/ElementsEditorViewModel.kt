@@ -1,4 +1,4 @@
-package jdr.exia.viewModel
+package jdr.exia.viewModel.elements
 
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -36,10 +36,14 @@ class ElementsEditorViewModel(initialType: TypeElement) {
 
     private val currentEditPosition by derivedStateOf { currentTypeViewModel.currentEditPosition }
 
+    private val elementTagHolder = ElementTagHolder()
+
     val blueprints: List<BlueprintData> by derivedStateOf { currentTypeViewModel.createdData + currentTypeViewModel.data }
 
     val currentEditBlueprint
         get() = blueprints.getOrNull(currentEditPosition)
+
+    val tagsAsString: Iterable<String> by elementTagHolder::tags
 
     fun onEditItemSelected(blueprint: BlueprintData) {
         currentTypeViewModel.clearDefaultNew()
@@ -123,45 +127,51 @@ class ElementsEditorViewModel(initialType: TypeElement) {
      * Save changes made by user on blueprints.
      * This method is invoked when the user click on the submit button on the blueprint edition screen.
      */
-    fun saveChanges() = typeViewModel.forEach { (_, viewModel) ->
-        // Save newly created data
-        viewModel.createdData.forEach { newData ->
-            transaction {
-                Blueprint.new {
-                    setData(newData)
+    fun saveChanges() {
+        // Save tags changes
+        val deletedTags = elementTagHolder.pushToDatabase()
 
-                    sprite = newData.img.saveImgAndGetPath(suffix = "blueprint")
-                }
-            }
-        }
-
-        // Update modified data
-        viewModel.modifiedData.forEach modified@{ (id, isNotDeleted) ->
-            if (isNotDeleted) {
-                val oldData = viewModel.data.find { it.id == id } ?: return@modified
-
+        // Save blueprints
+        typeViewModel.forEach { (_, viewModel) ->
+            // Save newly created data
+            viewModel.createdData.forEach { newData ->
                 transaction {
-                    Blueprint[id].apply {
-                        setData(oldData)
+                    Blueprint.new {
+                        setData(newData, deletedTags)
 
-                        if (oldData.img.path != sprite) {
-                            val oldImg = sprite.toImgPath().checkedImgPath()?.toFile()
-                            sprite = oldData.img.saveImgAndGetPath(suffix = "blueprint")
-                            oldImg?.delete()
-                        }
+                        sprite = newData.img.saveImgAndGetPath(suffix = "blueprint")
                     }
                 }
-            } else {
-                transaction { Blueprint[id].delete() }
+            }
+
+            // Update modified data
+            viewModel.modifiedData.forEach modified@{ (id, isNotDeleted) ->
+                if (isNotDeleted) {
+                    val oldData = viewModel.data.find { it.id == id } ?: return@modified
+
+                    transaction {
+                        Blueprint[id].apply {
+                            setData(oldData, deletedTags)
+
+                            if (oldData.img.path != sprite) {
+                                val oldImg = sprite.toImgPath().checkedImgPath()?.toFile()
+                                sprite = oldData.img.saveImgAndGetPath(suffix = "blueprint")
+                                oldImg?.delete()
+                            }
+                        }
+                    }
+                } else {
+                    transaction { Blueprint[id].delete() }
+                }
             }
         }
     }
 
-    fun createTags(tags: List<String>) = tags.forEach {
-        transaction { Tag.newFrom(it) }
-    }
+    fun createTags(tags: List<String>) = elementTagHolder.createTags(tags)
 
-    private fun Blueprint.setData(data: BlueprintData) {
+    fun deleteTags(tags: List<String>) = elementTagHolder.deleteTags(tags)
+
+    private fun Blueprint.setData(data: BlueprintData, deletedTags: Set<String>) {
         type = data.type
         name = data.name.trimEnd()
 
@@ -170,6 +180,6 @@ class ElementsEditorViewModel(initialType: TypeElement) {
             MP = data.mana!!
         }
 
-        tags = SizedCollection(data.tags.map { Tag[it] })
+        tags = SizedCollection((data.tags - deletedTags).map { Tag[it] })
     }
 }
