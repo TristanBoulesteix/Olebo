@@ -61,9 +61,7 @@ private val Path.relativePath: String
  */
 fun Path.checkedImgPath(): Path? {
     val verifiedPath = if (isAbsolute) {
-        if (exists()) this else {
-            imgPath / fileName
-        }
+        if (exists()) this else imgPath / fileName
     } else {
         imgPath / this
     }
