@@ -290,7 +290,7 @@ private fun TagEditionZone(
             onItemDeleted = {
                 transaction {
                     confirmDelete =
-                        TagToDeleteInfo(it, BlueprintTagTable.select { BlueprintTagTable.tag eq it }.also { it.forEach { println(it) } }.count())
+                        TagToDeleteInfo(it, BlueprintTagTable.select { BlueprintTagTable.tag eq it }.count())
                 }
             }
         )
