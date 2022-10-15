@@ -260,6 +260,11 @@ internal actual class StringLocaleBundle : StringLocale() {
             To create a tag, write in the text field then press the "enter" key.
             For an existing tag, use the checkbox next to the tag name.
         """.trimIndent(),
+        STR_CONFIRM_DELETE_TAG_TITLE to "delete tag",
+        ST_STR1_INT2_CONFIRM_DELETE_TAG to """
+            Are you sure to delete tag "%s"? There are %s item(s) that currently use this tag.
+            The tag will be permanently deleted.
+        """.trimIndent(),
     )
 }
 
@@ -521,6 +526,11 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
             
             Pour créer un tag, écrivez dans le champ de texte puis appuyez sur la touche "entrer". 
             Pour ajouter associer un tag déjà existant, cocher simplement la case associée.
+        """.trimIndent(),
+        STR_CONFIRM_DELETE_TAG_TITLE to "supprimer tag",
+        ST_STR1_INT2_CONFIRM_DELETE_TAG to """
+            Êtes-vous sûr de supprimer le tag "%s" ? Il y a %s élément(s) qui utilisent actuellement ce tag.
+            Ce tag sera définitivement supprimé.
         """.trimIndent(),
     )
 }

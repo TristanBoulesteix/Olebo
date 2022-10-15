@@ -175,6 +175,7 @@ const val STR_OLEBO_IS_RUNNING = "olebo_is_running"
 const val STR_SORT_BY = "sort_by"
 const val STR_SORT_CHECKED_FIRST = "sort_checked_first"
 const val STR_SORT_ALPHABETICALLY = "sort_alphabetically"
+const val STR_CONFIRM_DELETE_TAG_TITLE = "confirm_del_tag_ttl"
 
 // -- Sentences
 
@@ -232,3 +233,4 @@ const val ST_INT1_NUMBER_OF_CONNECTED_PLAYERS = "1_number_of_connected_players"
 const val ST_INT1_NAME_OF_CONNECTED_PLAYERS = "1_name_of_connected_players"
 const val ST_STR1_OLEBO_WEB_SERVER_ERROR = "1_olebo_web_server_error"
 const val ST_INT1_INT2_UPDATE_FAILED_FOR_X_ATTEMPT = "2_update_failed"
+const val ST_STR1_INT2_CONFIRM_DELETE_TAG = "confirm_delete_tag_msg"

@@ -21,6 +21,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import jdr.exia.localization.*
+import jdr.exia.model.dao.BlueprintTagTable
 import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.success
 import jdr.exia.model.type.Image
@@ -30,6 +31,7 @@ import jdr.exia.view.element.builder.ComposableContentBuilder
 import jdr.exia.view.element.builder.ContentButtonBuilder
 import jdr.exia.view.element.builder.EmptyContent
 import jdr.exia.view.element.builder.ImageButtonBuilder
+import jdr.exia.view.element.dialog.ConfirmMessage
 import jdr.exia.view.element.form.AutocompleteList
 import jdr.exia.view.element.form.IntTextField
 import jdr.exia.view.tools.BorderBuilder
@@ -44,6 +46,7 @@ import jdr.exia.viewModel.data.isCharacter
 import jdr.exia.viewModel.elements.ElementsEditorViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
 import javax.imageio.ImageIO
@@ -259,6 +262,8 @@ private fun TagEditionZone(
         }
     }
 
+    var confirmDelete by remember { mutableStateOf<TagToDeleteInfo?>(null) }
+
     AnimatedVisibility(
         visibleState = remember { MutableTransitionState(false).also { it.targetState = true } },
         enter = expandVertically()
@@ -283,11 +288,31 @@ private fun TagEditionZone(
             placeholder = "Rechercher ou créer un tag",
             tooltipMessage = StringLocale[ST_TOOLTIP_TAGS],
             onItemDeleted = {
-                tagsToDelete += it
+                transaction {
+                    confirmDelete =
+                        TagToDeleteInfo(it, BlueprintTagTable.select { BlueprintTagTable.tag eq it }.also { it.forEach { println(it) } }.count())
+                }
             }
         )
     }
+
+    if (confirmDelete != null) {
+        val (tagToDelete, numberOfOccurrences) = confirmDelete!!
+
+        val delete = { tagsToDelete += tagToDelete }
+
+        if (numberOfOccurrences != 0L) ConfirmMessage(
+            message = StringLocale[ST_STR1_INT2_CONFIRM_DELETE_TAG, tagToDelete, numberOfOccurrences],
+            title = StringLocale[STR_CONFIRM_DELETE_TAG_TITLE],
+            onCloseRequest = { confirmDelete = null },
+            onConfirm = delete,
+            doubleCheck = false
+        ) else SideEffect(delete)
+    }
 }
+
+@Immutable
+private data class TagToDeleteInfo(val name: String, val occurrences: Long)
 
 private fun BlueprintData.addTag(tag: String) = copy(tags = tags.toMutableList().also { it.add(tag) })
 
