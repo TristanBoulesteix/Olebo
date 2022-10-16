@@ -28,6 +28,7 @@ kotlin {
         implementation(project(":System"))
         implementation(project(":ShareScene"))
         implementation(compose.desktop.currentOs)
+        implementation(compose.materialIconsExtended)
     }
 }
 

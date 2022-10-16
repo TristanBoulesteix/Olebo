@@ -5,13 +5,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.PointerIconDefaults
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.res.useResource
@@ -31,6 +33,7 @@ import jdr.exia.view.ui.backgroundImageColor
 import jdr.exia.view.ui.isDarkTheme
 import org.jetbrains.exposed.sql.transactions.transaction
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ItemList(
     modifier: Modifier,
@@ -48,7 +51,16 @@ fun ItemList(
             onValueChange = onSearch,
             modifier = Modifier.padding(10.dp).fillMaxWidth(),
             placeholder = { Text(text = StringLocale[STR_SEARCH]) },
-            singleLine = true
+            singleLine = true,
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Outlined.FilterAlt,
+                    contentDescription = "search",
+                    modifier = Modifier.clickable {
+                        println("clicked")
+                    }.pointerHoverIcon(PointerIconDefaults.Default)
+                )
+            }
         )
 
         ItemList(items = items, createElement = createElement)
