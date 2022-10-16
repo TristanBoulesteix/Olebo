@@ -15,7 +15,7 @@ fun <T : Any> DropdownMenu(
     items: List<T>,
     selectedItem: T,
     onItemSelected: (T) -> Unit,
-    selectedContent: @Composable RowScope. (T) -> Unit = { Text(it.toString()) },
+    selectedContent: @Composable RowScope.(T) -> Unit = { Text(it.toString()) },
     label: String? = null
 ) = Row(verticalAlignment = Alignment.CenterVertically) {
     if (label != null) {
