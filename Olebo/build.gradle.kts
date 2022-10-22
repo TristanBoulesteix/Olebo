@@ -28,7 +28,9 @@ kotlin {
         implementation(project(":System"))
         implementation(project(":ShareScene"))
         implementation(compose.desktop.currentOs)
-        implementation(compose.materialIconsExtended)
+        // Need to add this dependency manually because IntelliJ bugs without it
+        implementation("org.jetbrains.compose.material:material-icons-extended-desktop:${libs.versions.compose.get()}")
+        //implementation(compose.materialIconsExtended)
     }
 }
 
