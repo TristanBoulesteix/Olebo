@@ -20,7 +20,7 @@ allprojects {
     kotlin {
         jvm {
             jvmToolchain {
-                this.languageVersion.set(JavaLanguageVersion.of(16))
+                this.languageVersion.set(JavaLanguageVersion.of(17))
             }
         }
     }
@@ -41,7 +41,7 @@ subprojects {
         sourceSets {
             val jvmMain by getting {
                 tasks.withType<KotlinCompile> {
-                    kotlinOptions.jvmTarget = "16"
+                    kotlinOptions.jvmTarget = "17"
                 }
             }
             val jsMain by getting

@@ -38,7 +38,7 @@ val main = "jdr.exia.OleboKt"
 
 compose.desktop {
     application {
-        javaHome = System.getenv("JDK_16")
+        javaHome = System.getenv("JDK_17")
 
         mainClass = main
 
