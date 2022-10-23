@@ -139,7 +139,7 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
 
         SettingsDialog {
             isSettingsDialogVisible = false
-            currentWindow?.triggerSettingsChange()
+            currentWindow?.triggerSettingsChanged()
         }
     }
 

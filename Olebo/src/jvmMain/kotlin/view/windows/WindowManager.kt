@@ -21,7 +21,7 @@ interface OleboWindowStatus {
 
     fun addSettingsChangedListener(action: SimpleFunction)
 
-    fun triggerSettingsChange()
+    fun triggerSettingsChanged()
 }
 
 private class OleboWindowStatusImpl(override val parentWindow: OleboWindowStatus?) : OleboWindowStatus {
@@ -31,7 +31,7 @@ private class OleboWindowStatusImpl(override val parentWindow: OleboWindowStatus
         observers.add(action)
     }
 
-    override fun triggerSettingsChange() {
+    override fun triggerSettingsChanged() {
         observers.forEach { it.invoke() }
     }
 }
