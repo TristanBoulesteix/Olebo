@@ -8,28 +8,26 @@ import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.window.*
 import jdr.exia.DeveloperModeManager
+import jdr.exia.SimpleFunction
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.awt.Dimension
 
-object WindowStateManager {
-    val composeWindowScopes = mutableListOf<OleboWindowScope>()
+val LocalWindow = staticCompositionLocalOf<OleboWindowStatus?> { null }
 
-    val currentFocusedWindowScope
-        get() = composeWindowScopes.lastOrNull()
-}
+interface OleboWindowStatus {
+    val parentWindow: OleboWindowStatus?
 
-interface OleboWindowScope : FrameWindowScope {
-    fun addSettingsChangedListener(action: () -> Unit)
+    fun addSettingsChangedListener(action: SimpleFunction)
 
     fun triggerSettingsChange()
 }
 
-private class OleboWindowScopeImpl(scope: FrameWindowScope) : OleboWindowScope, FrameWindowScope by scope {
+private class OleboWindowStatusImpl(override val parentWindow: OleboWindowStatus?) : OleboWindowStatus {
     private val observers = mutableListOf<() -> Unit>()
 
-    override fun addSettingsChangedListener(action: () -> Unit) {
+    override fun addSettingsChangedListener(action: SimpleFunction) {
         observers.add(action)
     }
 
@@ -44,7 +42,7 @@ fun ApplicationScope.Window(
     size: DpSize,
     minimumSize: DpSize? = null,
     placement: WindowPlacement = WindowPlacement.Floating,
-    content: @Composable OleboWindowScope.() -> Unit
+    content: @Composable FrameWindowScope.() -> Unit
 ) {
     val windowState = rememberWindowState(
         size = size,
@@ -99,17 +97,11 @@ fun ApplicationScope.Window(
             window.preferredSize = size.toDimension()
         }
 
-        val scope = remember { OleboWindowScopeImpl(this) }
+        val parentWindow = LocalWindow.current
 
-        DisposableEffect(Unit) {
-            WindowStateManager.composeWindowScopes += scope
-
-            onDispose {
-                WindowStateManager.composeWindowScopes -= scope
-            }
+        CompositionLocalProvider(LocalWindow provides remember { OleboWindowStatusImpl(parentWindow) }) {
+            content(this)
         }
-
-        content(scope)
     }
 }
 

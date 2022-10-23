@@ -39,12 +39,16 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
         minimumSize = MASTER_WINDOW_SIZE,
         placement = WindowPlacement.Maximized
     ) {
-        LaunchedEffect(Unit) {
+        val currentWindow = LocalWindow.current!!
+
+        DisposableEffect(currentWindow) {
             window.extendedState = MAXIMIZED_BOTH
 
-            addSettingsChangedListener {
+            currentWindow. addSettingsChangedListener {
                 viewModel.refreshView(reloadTokens = true)
             }
+
+            onDispose {  }
         }
 
         var playerFrameVisible by remember { mutableStateOf(Settings.playerFrameOpenedByDefault) }

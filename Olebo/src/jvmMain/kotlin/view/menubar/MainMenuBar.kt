@@ -28,7 +28,7 @@ import jdr.exia.view.element.dialog.LoadingDialog
 import jdr.exia.view.element.dialog.MessageDialog
 import jdr.exia.view.tools.windowAncestor
 import jdr.exia.view.ui.LocalTheme
-import jdr.exia.view.windows.WindowStateManager
+import jdr.exia.view.windows.LocalWindow
 import jdr.exia.view.windows.options.DeveloperSettingsDialog
 import jdr.exia.view.windows.options.SettingsDialog
 import kotlinx.coroutines.CoroutineScope
@@ -135,9 +135,11 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
     var isSettingsDialogVisible by remember { mutableStateOf(false) }
 
     if (isSettingsDialogVisible) {
+        val currentWindow = LocalWindow.current
+
         SettingsDialog {
             isSettingsDialogVisible = false
-            WindowStateManager.currentFocusedWindowScope?.triggerSettingsChange()
+            currentWindow?.triggerSettingsChange()
         }
     }
 
