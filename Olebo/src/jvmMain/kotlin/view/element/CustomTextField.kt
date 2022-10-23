@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import jdr.exia.SimpleComposable
 import jdr.exia.view.ui.isDarkTheme
 
 @Composable
@@ -19,7 +20,8 @@ fun CustomTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String? = null,
-    focused: Boolean = false
+    focused: Boolean = false,
+    trailingIcon: SimpleComposable? = null
 ) {
     val focusRequester = remember { FocusRequester() }
 
@@ -36,7 +38,8 @@ fun CustomTextField(
             if (placeholder != null) {
                 Text(placeholder)
             }
-        }
+        },
+        trailingIcon = trailingIcon
     )
 
     LaunchedEffect(focused) {

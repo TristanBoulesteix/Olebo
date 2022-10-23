@@ -14,7 +14,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
@@ -23,7 +22,6 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import jdr.exia.localization.*
 import jdr.exia.view.element.LazyScrollableColumn
-import jdr.exia.view.tools.BoxWithTooltipIfNotNull
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -204,20 +202,6 @@ private fun HeaderSearch(
         }
     }
 }
-
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
-private fun TextTrailingIcon(icon: ImageVector, tooltipMessage: String? = null, onClick: (() -> Unit)? = null) =
-    BoxWithTooltipIfNotNull(
-        tooltip = tooltipMessage,
-        modifier = Modifier.clickable { onClick?.invoke() }
-    ) {
-        Icon(
-            imageVector = icon,
-            modifier = Modifier.pointerHoverIcon(PointerIconDefaults.Hand),
-            contentDescription = null
-        )
-    }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable

@@ -12,6 +12,8 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.LibraryAdd
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Popup
 import jdr.exia.localization.*
 import jdr.exia.model.dao.BlueprintTagTable
 import jdr.exia.model.element.TypeElement
@@ -34,6 +37,7 @@ import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.element.dialog.ConfirmMessage
 import jdr.exia.view.element.form.AutocompleteList
 import jdr.exia.view.element.form.IntTextField
+import jdr.exia.view.element.form.TextTrailingIcon
 import jdr.exia.view.tools.BorderBuilder
 import jdr.exia.view.tools.MessageType
 import jdr.exia.view.tools.showMessage
@@ -201,6 +205,8 @@ private fun ItemDescription(
         remember(isEditing) { mutableStateOf(blueprint.takeIf { isEditing }) }
     }
 
+    var tagAssociationDialogVisible by remember { mutableStateOf(false) }
+
     ContentListRow(
         content = {
             editedData.let { data ->
@@ -212,7 +218,14 @@ private fun ItemDescription(
                         onValueChange = { editedData = data.copy(name = it) },
                         placeholder = blueprint.name,
                         modifier = Modifier.padding(horizontal = 4.dp).fillMaxWidth(),
-                        focused = data.id == null
+                        focused = data.id == null,
+                        trailingIcon = {
+                            TextTrailingIcon(
+                                icon = Icons.Outlined.LibraryAdd,
+                                tooltipMessage = "Associate tags",
+                                onClick = { tagAssociationDialogVisible = true }
+                            )
+                        }
                     )
                 }
             }
@@ -224,14 +237,18 @@ private fun ItemDescription(
         )
     )
 
-    if (editedData != null) {
-        TagEditionZone(
-            data = editedData!!,
-            tags = viewModel.tagsAsString,
-            onDataUpdate = { editedData = it },
-            createNewTags = viewModel::createTags,
-            deleteTags = viewModel::deleteTags
-        )
+    if (editedData != null && tagAssociationDialogVisible) {
+        Popup(alignment = Alignment.Center, onDismissRequest = { tagAssociationDialogVisible = false }, focusable = true) {
+            Card(Modifier.fillMaxSize()) {
+                TagEditionZone(
+                    data = editedData!!,
+                    tags = viewModel.tagsAsString,
+                    onDataUpdate = { editedData = it },
+                    createNewTags = viewModel::createTags,
+                    deleteTags = viewModel::deleteTags
+                )
+            }
+        }
     }
 }
 
