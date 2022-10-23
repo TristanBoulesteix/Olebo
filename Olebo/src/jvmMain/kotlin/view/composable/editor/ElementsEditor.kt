@@ -1,8 +1,5 @@
 package jdr.exia.view.composable.editor
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.expandVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -225,15 +222,13 @@ private fun ItemDescription(
                                 tooltipMessage = "Associate tags",
                                 onClick = {
                                     popup.content = {
-                                        Box(Modifier.fillMaxWidth(.8f)){
-                                            TagEditionZone(
-                                                data = editedData!!,
-                                                tags = viewModel.tagsAsString,
-                                                onDataUpdate = { editedData = it },
-                                                createNewTags = viewModel::createTags,
-                                                deleteTags = viewModel::deleteTags
-                                            )
-                                        }
+                                        TagEditionZone(
+                                            data = editedData!!,
+                                            tags = viewModel.tagsAsString,
+                                            onDataUpdate = { editedData = it },
+                                            createNewTags = viewModel::createTags,
+                                            deleteTags = viewModel::deleteTags
+                                        )
                                     }
                                 }
                             )
@@ -257,7 +252,7 @@ private fun TagEditionZone(
     onDataUpdate: (BlueprintData) -> Unit,
     createNewTags: (List<String>) -> Unit,
     deleteTags: (List<String>) -> Unit
-) = Box(Modifier.fillMaxWidth().height(400.dp)) {
+) = Box(Modifier.fillMaxWidth(.8f).height(400.dp)) {
     val newSuggestions: MutableList<String> = remember(::mutableStateListOf)
 
     val tagsToDelete: MutableList<String> = remember(::mutableStateListOf)
@@ -278,38 +273,33 @@ private fun TagEditionZone(
     }
 
     var confirmDelete by remember { mutableStateOf<TagToDeleteInfo?>(null) }
+    
+    AutocompleteList(
+        modifier = Modifier.padding(10.dp).padding(end = 5.dp).fillMaxWidth(),
+        suggestionsList = suggestions,
+        selectedItems = selections,
+        onItemChecked = { value, isChecked ->
+            val index = suggestions.indexOf(value).takeIf { it >= 0 } ?: return@AutocompleteList
 
-    AnimatedVisibility(
-        visibleState = remember { MutableTransitionState(false).also { it.targetState = true } },
-        enter = expandVertically()
-    ) {
-        AutocompleteList(
-            modifier = Modifier.padding(10.dp).padding(end = 5.dp).fillMaxWidth(),
-            suggestionsList = suggestions,
-            selectedItems = selections,
-            onItemChecked = { value, isChecked ->
-                val index = suggestions.indexOf(value).takeIf { it >= 0 } ?: return@AutocompleteList
-
-                if (isChecked) {
-                    onDataUpdate(data.addTag(suggestions[index]))
-                } else {
-                    onDataUpdate(data.removeTag(value))
-                }
-            },
-            onItemCreated = {
-                onDataUpdate(data.addTag(it))
-                newSuggestions.add(0, it)
-            },
-            placeholder = "Rechercher ou créer un tag",
-            tooltipMessage = StringLocale[ST_TOOLTIP_TAGS],
-            onItemDeleted = {
-                transaction {
-                    confirmDelete =
-                        TagToDeleteInfo(it, BlueprintTagTable.select { BlueprintTagTable.tag eq it }.count())
-                }
+            if (isChecked) {
+                onDataUpdate(data.addTag(suggestions[index]))
+            } else {
+                onDataUpdate(data.removeTag(value))
             }
-        )
-    }
+        },
+        onItemCreated = {
+            onDataUpdate(data.addTag(it))
+            newSuggestions.add(0, it)
+        },
+        placeholder = "Rechercher ou créer un tag",
+        tooltipMessage = StringLocale[ST_TOOLTIP_TAGS],
+        onItemDeleted = {
+            transaction {
+                confirmDelete =
+                    TagToDeleteInfo(it, BlueprintTagTable.select { BlueprintTagTable.tag eq it }.count())
+            }
+        }
+    )
 
     if (confirmDelete != null) {
         val (tagToDelete, numberOfOccurrences) = confirmDelete!!
