@@ -22,7 +22,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Popup
 import jdr.exia.localization.*
 import jdr.exia.model.dao.BlueprintTagTable
 import jdr.exia.model.element.TypeElement
@@ -45,6 +44,7 @@ import jdr.exia.view.tools.toBorderStroke
 import jdr.exia.view.ui.backgroundImageColor
 import jdr.exia.view.ui.roundedBottomShape
 import jdr.exia.view.ui.roundedTopShape
+import jdr.exia.view.windows.LocalPopup
 import jdr.exia.viewModel.data.BlueprintData
 import jdr.exia.viewModel.data.isCharacter
 import jdr.exia.viewModel.elements.ElementsEditorViewModel
@@ -213,6 +213,8 @@ private fun ItemDescription(
                 if (data == null) {
                     ContentText(blueprint.name)
                 } else {
+                    val popup = LocalPopup.current!!
+
                     CustomTextField(
                         value = data.name,
                         onValueChange = { editedData = data.copy(name = it) },
@@ -223,7 +225,17 @@ private fun ItemDescription(
                             TextTrailingIcon(
                                 icon = Icons.Outlined.LibraryAdd,
                                 tooltipMessage = "Associate tags",
-                                onClick = { tagAssociationDialogVisible = true }
+                                onClick = {
+                                    popup.content = {
+                                        TagEditionZone(
+                                            data = editedData!!,
+                                            tags = viewModel.tagsAsString,
+                                            onDataUpdate = { editedData = it },
+                                            createNewTags = viewModel::createTags,
+                                            deleteTags = viewModel::deleteTags
+                                        )
+                                    }
+                                }
                             )
                         }
                     )
@@ -236,20 +248,6 @@ private fun ItemDescription(
             onUpdate = { editedData = it }
         )
     )
-
-    if (editedData != null && tagAssociationDialogVisible) {
-        Popup(alignment = Alignment.Center, onDismissRequest = { tagAssociationDialogVisible = false }, focusable = true) {
-            Card(Modifier.fillMaxSize()) {
-                TagEditionZone(
-                    data = editedData!!,
-                    tags = viewModel.tagsAsString,
-                    onDataUpdate = { editedData = it },
-                    createNewTags = viewModel::createTags,
-                    deleteTags = viewModel::deleteTags
-                )
-            }
-        }
-    }
 }
 
 @Composable

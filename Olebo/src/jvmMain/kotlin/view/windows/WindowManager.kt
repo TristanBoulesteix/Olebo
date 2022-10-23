@@ -1,13 +1,16 @@
 package jdr.exia.view.windows
 
+import androidx.compose.material.Card
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.isCtrlPressed
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import jdr.exia.DeveloperModeManager
+import jdr.exia.SimpleComposable
 import jdr.exia.SimpleFunction
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -16,7 +19,10 @@ import java.awt.Dimension
 
 val LocalWindow = staticCompositionLocalOf<OleboWindowStatus?> { null }
 
-interface OleboWindowStatus {
+val LocalPopup = staticCompositionLocalOf<PopupManager?> { null }
+
+@Immutable
+sealed interface OleboWindowStatus {
     val parentWindow: OleboWindowStatus?
 
     fun addSettingsChangedListener(action: SimpleFunction)
@@ -24,6 +30,12 @@ interface OleboWindowStatus {
     fun triggerSettingsChanged()
 }
 
+@Stable
+sealed interface PopupManager {
+    var content: SimpleComposable?
+}
+
+@Immutable
 private class OleboWindowStatusImpl(override val parentWindow: OleboWindowStatus?) : OleboWindowStatus {
     private val observers = mutableListOf<SimpleFunction>()
 
@@ -34,6 +46,15 @@ private class OleboWindowStatusImpl(override val parentWindow: OleboWindowStatus
     override fun triggerSettingsChanged() {
         observers.forEach { it.invoke() }
     }
+}
+
+@Stable
+private class PopupManagerImpl : PopupManager {
+    override var content by mutableStateOf<SimpleComposable?>(null)
+
+    override fun equals(other: Any?): Boolean = this === other
+
+    override fun hashCode(): Int = System.identityHashCode(this)
 }
 
 @Composable
@@ -99,8 +120,28 @@ fun ApplicationScope.Window(
 
         val parentWindow = LocalWindow.current
 
-        CompositionLocalProvider(LocalWindow provides remember { OleboWindowStatusImpl(parentWindow) }) {
+        val localPopup = remember { PopupManagerImpl() }
+
+        CompositionLocalProvider(
+            LocalWindow provides remember { OleboWindowStatusImpl(parentWindow) },
+            LocalPopup provides localPopup
+        ) {
+            Popup()
             content(this)
+        }
+    }
+}
+
+@Composable
+private fun Popup() {
+    LocalPopup.current!!.content?.let { popupContent ->
+        Popup(
+            alignment = Alignment.Center,
+            focusable = true,
+        ) {
+            Card(elevation = 20.dp) {
+                popupContent()
+            }
         }
     }
 }
