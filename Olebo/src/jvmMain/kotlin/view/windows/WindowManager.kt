@@ -1,14 +1,20 @@
 package jdr.exia.view.windows
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Card
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.isCtrlPressed
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
+import androidx.compose.ui.zIndex
 import jdr.exia.DeveloperModeManager
 import jdr.exia.SimpleComposable
 import jdr.exia.SimpleFunction
@@ -134,13 +140,21 @@ fun ApplicationScope.Window(
 
 @Composable
 private fun Popup() {
-    LocalPopup.current!!.content?.let { popupContent ->
-        Popup(
-            alignment = Alignment.Center,
-            focusable = true,
+    val currentPopup = LocalPopup.current!!
+
+    currentPopup.content?.let { popupContent ->
+        Box(
+            modifier = Modifier.fillMaxSize().zIndex(1000f).background(Color.Black.copy(alpha = .8f)),
+            contentAlignment = Alignment.Center
         ) {
-            Card(elevation = 20.dp) {
-                popupContent()
+            Popup(
+                alignment = Alignment.Center,
+                focusable = true,
+                onDismissRequest = { currentPopup.content = null }
+            ) {
+                Card(elevation = 15.dp) {
+                    popupContent()
+                }
             }
         }
     }

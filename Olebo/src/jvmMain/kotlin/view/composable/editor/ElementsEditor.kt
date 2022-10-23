@@ -205,8 +205,6 @@ private fun ItemDescription(
         remember(isEditing) { mutableStateOf(blueprint.takeIf { isEditing }) }
     }
 
-    var tagAssociationDialogVisible by remember { mutableStateOf(false) }
-
     ContentListRow(
         content = {
             editedData.let { data ->
@@ -227,13 +225,15 @@ private fun ItemDescription(
                                 tooltipMessage = "Associate tags",
                                 onClick = {
                                     popup.content = {
-                                        TagEditionZone(
-                                            data = editedData!!,
-                                            tags = viewModel.tagsAsString,
-                                            onDataUpdate = { editedData = it },
-                                            createNewTags = viewModel::createTags,
-                                            deleteTags = viewModel::deleteTags
-                                        )
+                                        Box(Modifier.fillMaxWidth(.8f)){
+                                            TagEditionZone(
+                                                data = editedData!!,
+                                                tags = viewModel.tagsAsString,
+                                                onDataUpdate = { editedData = it },
+                                                createNewTags = viewModel::createTags,
+                                                deleteTags = viewModel::deleteTags
+                                            )
+                                        }
                                     }
                                 }
                             )
