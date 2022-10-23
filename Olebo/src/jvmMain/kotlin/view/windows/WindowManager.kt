@@ -25,7 +25,7 @@ interface OleboWindowStatus {
 }
 
 private class OleboWindowStatusImpl(override val parentWindow: OleboWindowStatus?) : OleboWindowStatus {
-    private val observers = mutableListOf<() -> Unit>()
+    private val observers = mutableListOf<SimpleFunction>()
 
     override fun addSettingsChangedListener(action: SimpleFunction) {
         observers.add(action)
