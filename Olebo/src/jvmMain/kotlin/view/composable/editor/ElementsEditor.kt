@@ -5,10 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.LibraryAdd
 import androidx.compose.runtime.*
@@ -78,7 +75,7 @@ fun ElementsView(onDone: () -> Unit) {
         },
         footer = {
             FooterRowWithCancel(
-                confirmText = StringLocale[STR_SUBMIT_BLUEPRINT_CHANGES],
+                confirmText = StringLocale[STR_SUBMIT],
                 onConfirm = {
                     contentViewModel.saveChanges()
                     Result.success
@@ -229,9 +226,13 @@ private fun ItemDescription(
                                         TagEditionZone(
                                             data = editedData!!,
                                             tags = viewModel.tagsAsString,
-                                            onDataUpdate = { editedData = it },
-                                            createNewTags = viewModel::createTags,
-                                            deleteTags = viewModel::deleteTags
+                                            onConfirm = { newTags, tagsToDelete, selectedTags ->
+                                                viewModel.createTags(newTags)
+                                                viewModel.deleteTags(tagsToDelete)
+                                                editedData = editedData?.copy(tags = selectedTags)
+                                                popup.close()
+                                            },
+                                            onClose = popup::close
                                         )
                                     }
                                 }
@@ -253,10 +254,9 @@ private fun ItemDescription(
 private fun TagEditionZone(
     data: BlueprintData,
     tags: Iterable<String>,
-    onDataUpdate: (BlueprintData) -> Unit,
-    createNewTags: (List<String>) -> Unit,
-    deleteTags: (List<String>) -> Unit
-) = Column(Modifier.fillMaxWidth(.8f).height(400.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+    onConfirm: (newTags: List<String>, tagsToDelete: List<String>, selectedTags: List<String>) -> Unit,
+    onClose: () -> Unit
+) = Column(Modifier.fillMaxSize(.8f), horizontalAlignment = Alignment.CenterHorizontally) {
     Text(
         text = buildAnnotatedString {
             append(StringLocale[STR_MANAGE_TAGS])
@@ -266,7 +266,7 @@ private fun TagEditionZone(
             }
         },
         fontWeight = FontWeight.Bold,
-        modifier = Modifier.padding(10.dp)
+        modifier = Modifier.padding(10.dp).padding(top = 5.dp)
     )
 
     val newSuggestions: MutableList<String> = remember(::mutableStateListOf)
@@ -279,32 +279,25 @@ private fun TagEditionZone(
         }
     }
 
-    val selections = data.tags
-
-    DisposableEffect(Unit) {
-        onDispose {
-            deleteTags(tagsToDelete)
-            createNewTags(newSuggestions)
-        }
-    }
+    val selections = remember { data.tags.toMutableStateList() }
 
     var confirmDelete by remember { mutableStateOf<TagToDeleteInfo?>(null) }
 
     AutocompleteList(
-        modifier = Modifier.padding(10.dp).padding(end = 5.dp).fillMaxWidth(),
+        modifier = Modifier.padding(10.dp).padding(end = 5.dp).fillMaxWidth().weight(.9f),
         suggestionsList = suggestions,
         selectedItems = selections,
         onItemChecked = { value, isChecked ->
             val index = suggestions.indexOf(value).takeIf { it >= 0 } ?: return@AutocompleteList
 
             if (isChecked) {
-                onDataUpdate(data.addTag(suggestions[index]))
+                selections += suggestions[index]
             } else {
-                onDataUpdate(data.removeTag(value))
+                selections -= value
             }
         },
         onItemCreated = {
-            onDataUpdate(data.addTag(it))
+            selections += it
             newSuggestions.add(0, it)
         },
         placeholder = "Rechercher ou créer un tag",
@@ -330,14 +323,22 @@ private fun TagEditionZone(
             doubleCheck = false
         ) else SideEffect(delete)
     }
+
+    Row(Modifier.fillMaxWidth().weight(.1f), horizontalArrangement = Arrangement.SpaceEvenly) {
+        Button(
+            onClick = { onConfirm(newSuggestions, tagsToDelete, selections) },
+            content = { Text(StringLocale[STR_SUBMIT]) }
+        )
+
+        Button(
+            onClick = onClose,
+            content = { Text(StringLocale[STR_CLOSE]) }
+        )
+    }
 }
 
 @Immutable
 private data class TagToDeleteInfo(val name: String, val occurrences: Long)
-
-private fun BlueprintData.addTag(tag: String) = copy(tags = tags.toMutableList().also { it.add(tag) })
-
-private fun BlueprintData.removeTag(tag: String) = copy(tags = tags.toMutableList().also { it.remove(tag) })
 
 @Composable
 private fun BlueprintData?.getButtons(

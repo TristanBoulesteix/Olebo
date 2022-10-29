@@ -39,6 +39,10 @@ sealed interface OleboWindowStatus {
 @Stable
 sealed interface PopupManager {
     var content: SimpleComposable?
+
+    fun close() {
+        content = null
+    }
 }
 
 @Immutable
