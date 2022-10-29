@@ -15,8 +15,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import jdr.exia.localization.*
@@ -252,7 +256,19 @@ private fun TagEditionZone(
     onDataUpdate: (BlueprintData) -> Unit,
     createNewTags: (List<String>) -> Unit,
     deleteTags: (List<String>) -> Unit
-) = Box(Modifier.fillMaxWidth(.8f).height(400.dp)) {
+) = Column(Modifier.fillMaxWidth(.8f).height(400.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+    Text(
+        text = buildAnnotatedString {
+            append(StringLocale[STR_MANAGE_TAGS])
+
+            withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
+                append(data.name)
+            }
+        },
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier.padding(10.dp)
+    )
+
     val newSuggestions: MutableList<String> = remember(::mutableStateListOf)
 
     val tagsToDelete: MutableList<String> = remember(::mutableStateListOf)
@@ -273,7 +289,7 @@ private fun TagEditionZone(
     }
 
     var confirmDelete by remember { mutableStateOf<TagToDeleteInfo?>(null) }
-    
+
     AutocompleteList(
         modifier = Modifier.padding(10.dp).padding(end = 5.dp).fillMaxWidth(),
         suggestionsList = suggestions,

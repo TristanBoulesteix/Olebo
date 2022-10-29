@@ -176,6 +176,7 @@ const val STR_SORT_BY = "sort_by"
 const val STR_SORT_CHECKED_FIRST = "sort_checked_first"
 const val STR_SORT_ALPHABETICALLY = "sort_alphabetically"
 const val STR_CONFIRM_DELETE_TAG_TITLE = "confirm_del_tag_ttl"
+const val STR_MANAGE_TAGS = "manage_tags_of"
 
 // -- Sentences
 
