@@ -220,7 +220,7 @@ private fun ItemDescription(
                         trailingIcon = {
                             TextTrailingIcon(
                                 icon = Icons.Outlined.LibraryAdd,
-                                tooltipMessage = "Associate tags",
+                                tooltipMessage = StringLocale[STR_ASSOCIATE_TAGS],
                                 onClick = {
                                     popup.content = {
                                         TagEditionZone(

@@ -268,6 +268,7 @@ internal actual class StringLocaleBundle : StringLocale() {
         """.trimIndent(),
             STR_MANAGE_TAGS to "manage tags of ",
             STR_SEARCH_CREATE_TAG to "rechercher ou créer un tag",
+            STR_ASSOCIATE_TAGS to "associate tags",
         )
 }
 
@@ -538,5 +539,6 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
         """.trimIndent(),
             STR_MANAGE_TAGS to "gérer les tags de ",
             STR_SEARCH_CREATE_TAG to "rechercher ou créer un tag",
+            STR_ASSOCIATE_TAGS to "associer des tags",
         )
 }
