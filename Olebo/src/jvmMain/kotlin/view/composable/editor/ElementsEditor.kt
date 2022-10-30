@@ -5,23 +5,21 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.LibraryAdd
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import jdr.exia.localization.*
-import jdr.exia.model.dao.BlueprintTagTable
 import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.success
 import jdr.exia.model.type.Image
@@ -31,8 +29,6 @@ import jdr.exia.view.element.builder.ComposableContentBuilder
 import jdr.exia.view.element.builder.ContentButtonBuilder
 import jdr.exia.view.element.builder.EmptyContent
 import jdr.exia.view.element.builder.ImageButtonBuilder
-import jdr.exia.view.element.dialog.ConfirmMessage
-import jdr.exia.view.element.form.AutocompleteList
 import jdr.exia.view.element.form.IntTextField
 import jdr.exia.view.element.form.TextTrailingIcon
 import jdr.exia.view.tools.BorderBuilder
@@ -48,7 +44,6 @@ import jdr.exia.viewModel.data.isCharacter
 import jdr.exia.viewModel.elements.ElementsEditorViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
 import javax.imageio.ImageIO
@@ -223,8 +218,9 @@ private fun ItemDescription(
                                 tooltipMessage = StringLocale[STR_ASSOCIATE_TAGS],
                                 onClick = {
                                     popup.content = {
-                                        TagEditionZone(
-                                            data = editedData!!,
+                                        TagsAssociation(
+                                            nameOfAssociated = data.name,
+                                            selection = data.tags,
                                             tags = viewModel.tagsAsString,
                                             onConfirm = { newTags, tagsToDelete, selectedTags ->
                                                 viewModel.createTags(newTags)
@@ -248,90 +244,6 @@ private fun ItemDescription(
         )
     )
 }
-
-@Composable
-private fun TagEditionZone(
-    data: BlueprintData,
-    tags: Iterable<String>,
-    onConfirm: (newTags: List<String>, tagsToDelete: List<String>, selectedTags: List<String>) -> Unit
-) = Column(Modifier.fillMaxSize(.8f), horizontalAlignment = Alignment.CenterHorizontally) {
-    Text(
-        text = buildAnnotatedString {
-            append(StringLocale[STR_MANAGE_TAGS])
-
-            withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
-                append(data.name)
-            }
-        },
-        fontWeight = FontWeight.Bold,
-        modifier = Modifier.padding(10.dp).padding(top = 5.dp)
-    )
-
-    val newSuggestions: MutableList<String> = remember(::mutableStateListOf)
-
-    val tagsToDelete: MutableList<String> = remember(::mutableStateListOf)
-
-    val suggestions by remember {
-        derivedStateOf {
-            (newSuggestions + tags) - tagsToDelete.toSet()
-        }
-    }
-
-    val selections = remember { data.tags.toMutableStateList() }
-
-    var confirmDelete by remember { mutableStateOf<TagToDeleteInfo?>(null) }
-
-    AutocompleteList(
-        modifier = Modifier.padding(10.dp).padding(end = 5.dp).fillMaxWidth().weight(.9f),
-        suggestionsList = suggestions,
-        selectedItems = selections,
-        onItemChecked = { value, isChecked ->
-            val index = suggestions.indexOf(value).takeIf { it >= 0 } ?: return@AutocompleteList
-
-            if (isChecked) {
-                selections += suggestions[index]
-            } else {
-                selections -= value
-            }
-        },
-        onItemCreated = {
-            selections += it
-            newSuggestions.add(0, it)
-        },
-        placeholder = StringLocale[STR_SEARCH_CREATE_TAG],
-        tooltipMessage = StringLocale[ST_TOOLTIP_TAGS],
-        onItemDeleted = {
-            transaction {
-                confirmDelete =
-                    TagToDeleteInfo(it, BlueprintTagTable.select { BlueprintTagTable.tag eq it }.count())
-            }
-        }
-    )
-
-    if (confirmDelete != null) {
-        val (tagToDelete, numberOfOccurrences) = confirmDelete!!
-
-        val delete = { tagsToDelete += tagToDelete }
-
-        if (numberOfOccurrences != 0L) ConfirmMessage(
-            message = StringLocale[ST_STR1_INT2_CONFIRM_DELETE_TAG, tagToDelete, numberOfOccurrences],
-            title = StringLocale[STR_CONFIRM_DELETE_TAG_TITLE],
-            onCloseRequest = { confirmDelete = null },
-            onConfirm = delete,
-            doubleCheck = false
-        ) else SideEffect(delete)
-    }
-
-    Box(Modifier.fillMaxWidth().weight(.1f), contentAlignment = Alignment.Center) {
-        Button(
-            onClick = { onConfirm(newSuggestions, tagsToDelete, selections) },
-            content = { Text(StringLocale[STR_CLOSE_VALIDATE]) }
-        )
-    }
-}
-
-@Immutable
-private data class TagToDeleteInfo(val name: String, val occurrences: Long)
 
 @Composable
 private fun BlueprintData?.getButtons(
