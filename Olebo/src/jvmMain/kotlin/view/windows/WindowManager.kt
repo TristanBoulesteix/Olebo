@@ -22,6 +22,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.awt.Dimension
+import java.awt.Window
 
 val LocalWindow = staticCompositionLocalOf<OleboWindowStatus?> { null }
 
@@ -30,6 +31,8 @@ val LocalPopup = staticCompositionLocalOf<PopupManager?> { null }
 @Immutable
 sealed interface OleboWindowStatus {
     val parentWindow: OleboWindowStatus?
+
+    val awtWindow: Window
 
     fun addSettingsChangedListener(action: SimpleFunction)
 
@@ -46,7 +49,7 @@ sealed interface PopupManager {
 }
 
 @Immutable
-private class OleboWindowStatusImpl(override val parentWindow: OleboWindowStatus?) : OleboWindowStatus {
+private class OleboWindowStatusImpl(override val parentWindow: OleboWindowStatus?, override val awtWindow: Window) : OleboWindowStatus {
     private val observers = mutableListOf<SimpleFunction>()
 
     override fun addSettingsChangedListener(action: SimpleFunction) {
@@ -133,7 +136,7 @@ fun ApplicationScope.Window(
         val localPopup = remember { PopupManagerImpl() }
 
         CompositionLocalProvider(
-            LocalWindow provides remember { OleboWindowStatusImpl(parentWindow) },
+            LocalWindow provides remember { OleboWindowStatusImpl(parentWindow, window) },
             LocalPopup provides localPopup
         ) {
             Popup()

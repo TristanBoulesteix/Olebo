@@ -29,7 +29,7 @@ import jdr.exia.view.tools.*
 import jdr.exia.view.ui.roundedBottomShape
 import jdr.exia.view.ui.roundedShape
 import jdr.exia.view.ui.roundedTopShape
-import jdr.exia.view.windows.WindowStateManager
+import jdr.exia.view.windows.LocalWindow
 import jdr.exia.viewModel.ActEditorViewModel
 import java.io.File
 import javax.imageio.ImageIO
@@ -290,6 +290,8 @@ private fun ImagePreviewContent(
             )
         }
 
+        val currentWindow = LocalWindow.current
+
         OutlinedButton(
             onClick = {
                 val fileChooser = JFileChooser().apply {
@@ -300,7 +302,7 @@ private fun ImagePreviewContent(
                     this.isAcceptAllFileFilterUsed = false
                 }
 
-                val result = fileChooser.showSaveDialog(WindowStateManager.currentFocusedWindowScope?.window)
+                val result = fileChooser.showSaveDialog(currentWindow?.awtWindow)
 
                 if (result == JFileChooser.APPROVE_OPTION && fileChooser.selectedFile.let { it.exists() && it.isFile }) {
                     onUpdateData(data.copy(img = Img(fileChooser.selectedFile.absolutePath)))
