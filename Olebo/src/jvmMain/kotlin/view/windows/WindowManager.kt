@@ -49,7 +49,10 @@ sealed interface PopupManager {
 }
 
 @Immutable
-private class OleboWindowStatusImpl(override val parentWindow: OleboWindowStatus?, override val awtWindow: Window) : OleboWindowStatus {
+private class OleboWindowStatusImpl(
+    override val parentWindow: OleboWindowStatus?,
+    override val awtWindow: Window
+) : OleboWindowStatus {
     private val observers = mutableListOf<SimpleFunction>()
 
     override fun addSettingsChangedListener(action: SimpleFunction) {
