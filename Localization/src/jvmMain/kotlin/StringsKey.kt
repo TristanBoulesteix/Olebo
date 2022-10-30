@@ -179,6 +179,7 @@ const val STR_CONFIRM_DELETE_TAG_TITLE = "confirm_del_tag_ttl"
 const val STR_MANAGE_TAGS = "manage_tags_of"
 const val STR_SEARCH_CREATE_TAG = "search_create_tag"
 const val STR_ASSOCIATE_TAGS = "associate_tags"
+const val STR_CLOSE_VALIDATE = "close_validate"
 
 // -- Sentences
 

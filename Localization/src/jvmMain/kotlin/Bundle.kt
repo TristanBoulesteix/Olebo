@@ -92,10 +92,10 @@ internal actual class StringLocaleBundle : StringLocale() {
             ST_ELEMENT_ALREADY_EXISTS to "An element with this name already exists.",
             STR_CRITICAL_ERROR to "critical error",
             ST_ERROR_LOADING_DATABASE to """
-            A critical error has occurred. Unable to launch Olebo.
-            If the error persists, you can try resetting the database.
-            Warning : This action will erase permanently all your data.
-        """.trimIndent(),
+                A critical error has occurred. Unable to launch Olebo.
+                If the error persists, you can try resetting the database.
+                Warning : This action will erase permanently all your data.
+            """.trimIndent(),
             STR_ERROR to "error",
             ST_NEW_VERSION_AVAILABLE to "A new version of the Olebo software is available. Do you want to install it?",
             STR_UPDATE_AVAILABLE to "update available",
@@ -148,9 +148,9 @@ internal actual class StringLocaleBundle : StringLocale() {
             STR_LABEL_TOOLTIP to "add a custom label to the element",
             STR_DB_VERSION_MISMATCH to "error during database initialization",
             ST_DB_VERSION_MISMATCH_MESSAGE to """
-            The database on this computer come is from a later version of Olebo. To lose the data, please update the application or reset it.
-            If you choose to continue without update the software, some data could be lost and some features may be missing.
-        """.trimIndent(),
+                The database on this computer come is from a later version of Olebo. To lose the data, please update the application or reset it.
+                If you choose to continue without update the software, some data could be lost and some features may be missing.
+            """.trimIndent(),
             STR_EXIT to "exit",
             STR_UPDATE to "update",
             STR_RESET to "reset",
@@ -161,13 +161,13 @@ internal actual class StringLocaleBundle : StringLocale() {
             ST_IMG_BLUEPRINT_REQUIRED to "An image is required for an element.",
             ST_IMG_BLUEPRINT_NOT_EXIST_OR_INVALID to "The selected image doesn't exist or is invalid.",
             ST_INT1_OCCURRENCE_BLUEPRINT_TO_DELETE to """
-            This element is used in %s scene(s).
-            Are you sure you want to delete it? This action cannot be cancelled.
-        """.trimIndent(),
+                This element is used in %s scene(s).
+                Are you sure you want to delete it? This action cannot be cancelled.
+            """.trimIndent(),
             ST_OCCURRENCE_BLUEPRINT_TO_DELETE to """
-            This element is used in 1 scene.
-            Are you sure you want to delete it? This action cannot be cancelled.
-        """.trimIndent(),
+                This element is used in 1 scene.
+                Are you sure you want to delete it? This action cannot be cancelled.
+            """.trimIndent(),
             ST_DEFAULT_SETTINGS_RESTORED to "The default settings have been successfully restored.",
             STR_INFO to "information",
             STR_BLACK to "black",
@@ -207,12 +207,12 @@ internal actual class StringLocaleBundle : StringLocale() {
             ST_DEVELOPED_BY to "Developed by BOULESTEIX Tristan and ONFRAY Vincent.",
             ST_SHOULD_OPEN_PLAYER_FRAME_FULL_SCREEN to "Open the player window if there is a second screen",
             ST_OLEBO_WEB_EXPLANATION to """
-            ShareScene allows you to share the player view on the internet in real time.
-            Only a web browser and an internet connection is required for the players.
-            Please note that the token images will be compressed and may lose some quality.
-            
-            To start, press the button on the right and then share tot he players the URL provided.
-        """.trimIndent(),
+                ShareScene allows you to share the player view on the internet in real time.
+                Only a web browser and an internet connection is required for the players.
+                Please note that the token images will be compressed and may lose some quality.
+                
+                To start, press the button on the right and then share tot he players the URL provided.
+            """.trimIndent(),
             STR_START_OLEBO_WEB to "start and connect",
             STR_LOGIN_OLEBO_WEB to "login...",
             STR_ERROR_LOGIN_TO_OLEBO_WEB to "connection failed - please check your internet connection",
@@ -225,9 +225,9 @@ internal actual class StringLocaleBundle : StringLocale() {
             STR_LOGOUT to "logout",
             ST_ERROR_OLEBO_WEB_VERSION_REQUIREMENT to "This version of Olebo is incompatible with ShareScene. Please update the application.",
             ST_STR1_OLEBO_WEB_SERVER_ERROR to """
-            A server error has occurred. Please, try again later.
-            Error: %s
-        """.trimIndent(),
+                A server error has occurred. Please, try again later.
+                Error: %s
+            """.trimIndent(),
             STR_CANCEL_BLUEPRINT_CHANGES to "cancel changes",
             STR_SUBMIT to "save changes",
             ST_NO_SPRITE_FOR_NEW_BLUEPRINT to "You need to add an image to the element.",
@@ -240,9 +240,9 @@ internal actual class StringLocaleBundle : StringLocale() {
             STR_CONTACT_DEVELOPERS to "contact developers",
             STR_NO_UPDATE_AVAILABLE to "no update available",
             ST_INT1_INT2_UPDATE_FAILED_FOR_X_ATTEMPT to """
-            The update for version %s failed after %s attempts.
-            Auto update for this version is skipped.
-        """.trimIndent(),
+                The update for version %s failed after %s attempts.
+                Auto update for this version is skipped.
+            """.trimIndent(),
             STR_TRY_IF_PROBLEM_PERSISTS to "if the problem persists, try the following actions:",
             STR_CHECK_INTERNET_FIREWALL to "check your internet connection, your antivirus or your firewall configuration",
             STR_CREATE_ISSUE_FOR_UPDATE to "report this issue on GitHub",
@@ -255,20 +255,21 @@ internal actual class StringLocaleBundle : StringLocale() {
             STR_SORT_CHECKED_FIRST to "checked first",
             STR_SORT_ALPHABETICALLY to "alphabetically",
             ST_TOOLTIP_TAGS to """
-            You can link an item with one or more tag.
-            You can easily search for a token that has an identical tag as a scenario.
-            
-            To create a tag, write in the text field then press the "enter" key.
-            For an existing tag, use the checkbox next to the tag name.
-        """.trimIndent(),
+                You can link an item with one or more tag.
+                You can easily search for a token that has an identical tag as a scenario.
+                
+                To create a tag, write in the text field then press the "enter" key.
+                For an existing tag, use the checkbox next to the tag name.
+            """.trimIndent(),
             STR_CONFIRM_DELETE_TAG_TITLE to "delete tag",
             ST_STR1_INT2_CONFIRM_DELETE_TAG to """
-            Are you sure to delete tag "%s"? There are %s item(s) that currently use this tag.
-            The tag will be permanently deleted.
-        """.trimIndent(),
+                Are you sure to delete tag "%s"? There are %s item(s) that currently use this tag.
+                The tag will be permanently deleted.
+            """.trimIndent(),
             STR_MANAGE_TAGS to "manage tags of ",
             STR_SEARCH_CREATE_TAG to "rechercher ou créer un tag",
             STR_ASSOCIATE_TAGS to "associate tags",
+            STR_CLOSE_VALIDATE to "confirm & close",
         )
 }
 
@@ -363,10 +364,10 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
             ST_ELEMENT_ALREADY_EXISTS to "Un élément avec ce nom existe déjà.",
             STR_CRITICAL_ERROR to "erreur critique",
             ST_ERROR_LOADING_DATABASE to """
-            Une erreur s'est produite lors du chargement de la base de données. Impossible de lancer Olebo.
-            Si l'erreur persiste, vous pouvez essayer de réinitialiser la base de données.
-            Attention : Cette opération effacera toute vos données définitivement.
-        """.trimIndent(),
+                Une erreur s'est produite lors du chargement de la base de données. Impossible de lancer Olebo.
+                Si l'erreur persiste, vous pouvez essayer de réinitialiser la base de données.
+                Attention : Cette opération effacera toute vos données définitivement.
+            """.trimIndent(),
             STR_ERROR to "erreur",
             ST_NEW_VERSION_AVAILABLE to "Une mise à jour de Olebo est disponible. Voulez-vous l'installer ?",
             STR_UPDATE_AVAILABLE to "mise à jour disponible",
@@ -419,9 +420,9 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
             STR_LABEL_TOOLTIP to "ajoute un label personnalisé à l'élément",
             STR_DB_VERSION_MISMATCH to "erreur d'initialisation de la base de données",
             ST_DB_VERSION_MISMATCH_MESSAGE to """
-            La base de données sur cet ordinateur provient d'une version ultérieur de Olebo. Pour pouvoir charger ces données, veuillez mettre à jour l'application ou la réinitialiser.
-            Si vous choisissez de continuer sans mettre à jour, certaines données risques d'être perdues et certaines fonctionnalités pourront ne pas fonctionner.
-        """.trimIndent(),
+                La base de données sur cet ordinateur provient d'une version ultérieur de Olebo. Pour pouvoir charger ces données, veuillez mettre à jour l'application ou la réinitialiser.
+                Si vous choisissez de continuer sans mettre à jour, certaines données risques d'être perdues et certaines fonctionnalités pourront ne pas fonctionner.
+            """.trimIndent(),
             STR_EXIT to "quitter",
             STR_UPDATE to "mettre à jour",
             STR_RESET to "réinitialiser",
@@ -432,13 +433,13 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
             ST_IMG_BLUEPRINT_REQUIRED to "Un élément doit posséder une image.",
             ST_IMG_BLUEPRINT_NOT_EXIST_OR_INVALID to "L'image sélectionnée n'existe pas ou est invalide.",
             ST_INT1_OCCURRENCE_BLUEPRINT_TO_DELETE to """
-            Cet élément est utilisé dans %s scènes.
-            Êtes-vous sûr de le supprimer? Cette action est irréversible.
-        """.trimIndent(),
+                Cet élément est utilisé dans %s scènes.
+                Êtes-vous sûr de le supprimer? Cette action est irréversible.
+            """.trimIndent(),
             ST_OCCURRENCE_BLUEPRINT_TO_DELETE to """
-            Cet élément est utilisé dans 1 scène.
-            Êtes-vous sûr de le supprimer? Cette action est irréversible.
-        """.trimIndent(),
+                Cet élément est utilisé dans 1 scène.
+                Êtes-vous sûr de le supprimer? Cette action est irréversible.
+            """.trimIndent(),
             ST_DEFAULT_SETTINGS_RESTORED to "Les paramètres par défaut ont été restaurés avec succès.",
             STR_INFO to "information",
             STR_BLACK to "noir",
@@ -478,12 +479,12 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
             ST_DEVELOPED_BY to "Développé par Tristan BOULESTEIX et Vincent ONFRAY.",
             ST_SHOULD_OPEN_PLAYER_FRAME_FULL_SCREEN to "Ouvrir la fenêtre joueur en plein écran s'il y a un deuxième écran",
             ST_OLEBO_WEB_EXPLANATION to """
-            ShareScene vous permet de partager la vue joueur directement sur internet en temps réel.
-            Les joueurs doivent simplement posséder un navigateur web et une connection internet.
-            Veuillez noter que les images des tokens seront compressées et pourront perdre un peu en qualité.
-            
-            Pour commencer, appuyez sur le bouton à droite puis partagez l'adresse internet fournie aux joueurs.
-        """.trimIndent(),
+                ShareScene vous permet de partager la vue joueur directement sur internet en temps réel.
+                Les joueurs doivent simplement posséder un navigateur web et une connection internet.
+                Veuillez noter que les images des tokens seront compressées et pourront perdre un peu en qualité.
+                
+                Pour commencer, appuyez sur le bouton à droite puis partagez l'adresse internet fournie aux joueurs.
+            """.trimIndent(),
             STR_START_OLEBO_WEB to "commencer et se connecter",
             STR_LOGIN_OLEBO_WEB to "connexion...",
             STR_ERROR_LOGIN_TO_OLEBO_WEB to "la connexion a échoué - merci de vérifier votre connection internet",
@@ -496,9 +497,9 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
             STR_LOGOUT to "déconnexion",
             ST_ERROR_OLEBO_WEB_VERSION_REQUIREMENT to "Cette version de Olebo est incompatible avec ShareScene. Veuillez mettre à jour l'application.",
             ST_STR1_OLEBO_WEB_SERVER_ERROR to """
-            Une erreur de serveur est arrivée. Réessayez plus tard.
-            Erreur : %s
-        """.trimIndent(),
+                Une erreur de serveur est arrivée. Réessayez plus tard.
+                Erreur : %s
+            """.trimIndent(),
             STR_CANCEL_BLUEPRINT_CHANGES to "annuler l'édition",
             STR_SUBMIT to "sauvegarder les changements",
             ST_NO_SPRITE_FOR_NEW_BLUEPRINT to "Vous devez ajouter une image au nouvel élément.",
@@ -511,9 +512,9 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
             STR_CONTACT_DEVELOPERS to "contacter les développeurs",
             STR_NO_UPDATE_AVAILABLE to "aucune mise à jour disponible",
             ST_INT1_INT2_UPDATE_FAILED_FOR_X_ATTEMPT to """
-            La mise à jour de la version %s a échoué %s fois.
-            La mise à jour automatique pour cette version a été ignorée.
-        """.trimIndent(),
+                La mise à jour de la version %s a échoué %s fois.
+                La mise à jour automatique pour cette version a été ignorée.
+            """.trimIndent(),
             STR_TRY_IF_PROBLEM_PERSISTS to "si le problème persiste, essayez les actions suivantes :",
             STR_CHECK_INTERNET_FIREWALL to "vérifiez votre connection internet, les règles de votre antivirus ou de votre firewall",
             STR_CREATE_ISSUE_FOR_UPDATE to "signalez ce problème sur GitHub",
@@ -526,19 +527,20 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
             STR_SORT_CHECKED_FIRST to "sélectionné(s)",
             STR_SORT_ALPHABETICALLY to "ordre alphabétique",
             ST_TOOLTIP_TAGS to """
-            Vous pouvez associer un élément à un ou plusieurs tags.
-            Si un élément et un scénario ou un tag en commun, il est plus facile de les retrouver.
-            
-            Pour créer un tag, écrivez dans le champ de texte puis appuyez sur la touche "entrer". 
-            Pour ajouter associer un tag déjà existant, cocher simplement la case associée.
-        """.trimIndent(),
+                Vous pouvez associer un élément à un ou plusieurs tags.
+                Si un élément et un scénario ou un tag en commun, il est plus facile de les retrouver.
+                
+                Pour créer un tag, écrivez dans le champ de texte puis appuyez sur la touche "entrer". 
+                Pour ajouter associer un tag déjà existant, cocher simplement la case associée.
+            """.trimIndent(),
             STR_CONFIRM_DELETE_TAG_TITLE to "supprimer tag",
             ST_STR1_INT2_CONFIRM_DELETE_TAG to """
-            Êtes-vous sûr de supprimer le tag "%s" ? Il y a %s élément(s) qui utilisent actuellement ce tag.
-            Ce tag sera définitivement supprimé.
-        """.trimIndent(),
+                Êtes-vous sûr de supprimer le tag "%s" ? Il y a %s élément(s) qui utilisent actuellement ce tag.
+                Ce tag sera définitivement supprimé.
+            """.trimIndent(),
             STR_MANAGE_TAGS to "gérer les tags de ",
             STR_SEARCH_CREATE_TAG to "rechercher ou créer un tag",
             STR_ASSOCIATE_TAGS to "associer des tags",
+            STR_CLOSE_VALIDATE to "valider & fermer",
         )
 }

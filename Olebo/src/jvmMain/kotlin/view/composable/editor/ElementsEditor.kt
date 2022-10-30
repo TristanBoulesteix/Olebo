@@ -231,8 +231,7 @@ private fun ItemDescription(
                                                 viewModel.deleteTags(tagsToDelete)
                                                 editedData = editedData?.copy(tags = selectedTags)
                                                 popup.close()
-                                            },
-                                            onClose = popup::close
+                                            }
                                         )
                                     }
                                 }
@@ -254,8 +253,7 @@ private fun ItemDescription(
 private fun TagEditionZone(
     data: BlueprintData,
     tags: Iterable<String>,
-    onConfirm: (newTags: List<String>, tagsToDelete: List<String>, selectedTags: List<String>) -> Unit,
-    onClose: () -> Unit
+    onConfirm: (newTags: List<String>, tagsToDelete: List<String>, selectedTags: List<String>) -> Unit
 ) = Column(Modifier.fillMaxSize(.8f), horizontalAlignment = Alignment.CenterHorizontally) {
     Text(
         text = buildAnnotatedString {
@@ -324,15 +322,10 @@ private fun TagEditionZone(
         ) else SideEffect(delete)
     }
 
-    Row(Modifier.fillMaxWidth().weight(.1f), horizontalArrangement = Arrangement.SpaceEvenly) {
+    Box(Modifier.fillMaxWidth().weight(.1f), contentAlignment = Alignment.Center) {
         Button(
             onClick = { onConfirm(newSuggestions, tagsToDelete, selections) },
-            content = { Text(StringLocale[STR_SUBMIT]) }
-        )
-
-        Button(
-            onClick = onClose,
-            content = { Text(StringLocale[STR_CLOSE]) }
+            content = { Text(StringLocale[STR_CLOSE_VALIDATE]) }
         )
     }
 }
