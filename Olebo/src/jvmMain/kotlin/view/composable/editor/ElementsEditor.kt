@@ -300,7 +300,7 @@ private fun TagEditionZone(
             selections += it
             newSuggestions.add(0, it)
         },
-        placeholder = "Rechercher ou créer un tag",
+        placeholder = StringLocale[STR_SEARCH_CREATE_TAG],
         tooltipMessage = StringLocale[ST_TOOLTIP_TAGS],
         onItemDeleted = {
             transaction {

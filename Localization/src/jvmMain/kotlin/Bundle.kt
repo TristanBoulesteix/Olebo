@@ -267,6 +267,7 @@ internal actual class StringLocaleBundle : StringLocale() {
             The tag will be permanently deleted.
         """.trimIndent(),
             STR_MANAGE_TAGS to "manage tags of ",
+            STR_SEARCH_CREATE_TAG to "rechercher ou créer un tag",
         )
 }
 
@@ -536,5 +537,6 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
             Ce tag sera définitivement supprimé.
         """.trimIndent(),
             STR_MANAGE_TAGS to "gérer les tags de ",
+            STR_SEARCH_CREATE_TAG to "rechercher ou créer un tag",
         )
 }
