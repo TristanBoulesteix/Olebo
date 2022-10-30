@@ -19,6 +19,7 @@ import jdr.exia.model.type.toImgPath
 import jdr.exia.view.tools.showConfirmMessage
 import jdr.exia.viewModel.data.BlueprintData
 import jdr.exia.viewModel.data.isValid
+import jdr.exia.viewModel.tags.ElementTagHolder
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.SizedCollection
 import org.jetbrains.exposed.sql.transactions.transaction

@@ -29,7 +29,8 @@ val tables
         SizeTable,
         InstanceTable,
         TagTable,
-        BlueprintTagTable
+        BlueprintTagTable,
+        ActTagTable
     )
 
 
@@ -236,4 +237,11 @@ object BlueprintTagTable : Table() {
     val tag = reference("tag", TagTable)
 
     override val primaryKey = PrimaryKey(blueprint, tag)
+}
+
+object ActTagTable : Table() {
+    val act = reference("act", ActTable)
+    val tag = reference("tag", TagTable)
+
+    override val primaryKey = PrimaryKey(act, tag)
 }

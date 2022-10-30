@@ -9,13 +9,16 @@ import jdr.exia.model.act.Scene
 import jdr.exia.model.act.data.SceneData
 import jdr.exia.model.act.data.isValid
 import jdr.exia.model.dao.SceneTable
+import jdr.exia.model.element.Tag
 import jdr.exia.model.tools.SimpleResult
 import jdr.exia.model.tools.success
 import jdr.exia.model.type.Image
 import jdr.exia.model.type.checkedImgPath
 import jdr.exia.model.type.saveImgAndGetPath
 import jdr.exia.model.type.toImgPath
+import jdr.exia.viewModel.tags.ElementTagHolder
 import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.sql.SizedCollection
 import org.jetbrains.exposed.sql.emptySized
 import org.jetbrains.exposed.sql.mapLazy
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -39,6 +42,16 @@ class ActEditorViewModel(private val act: Act?) {
 
     val currentEditScene
         get() = scenes.getOrNull(currentEditPosition)
+
+    private val elementTagHolder = ElementTagHolder()
+
+    val tagsAsString: Iterable<String> by elementTagHolder::tags
+
+    var tags by mutableStateOf(transaction { act?.tags?.mapLazy { it.value }?.toList() ?: emptyList() })
+
+    fun createTags(tags: List<String>) = elementTagHolder.createTags(tags)
+
+    fun deleteTags(tags: List<String>) = elementTagHolder.deleteTags(tags)
 
     fun onAddScene(sceneData: SceneData): SimpleResult =
         if (sceneData.isValid() && !sceneWithNameExist(sceneData.name)) {
@@ -125,6 +138,10 @@ class ActEditorViewModel(private val act: Act?) {
                     this.idAct = updatedAct.id.value
                 }
             }
+
+            val tagsToDelete = elementTagHolder.pushToDatabase()
+
+            updatedAct.tags = SizedCollection((tags - tagsToDelete).map { Tag[it] })
 
             if (act == null) {
                 updatedAct.currentScene = Scene.find { SceneTable.idAct eq updatedAct.id.value }.first()

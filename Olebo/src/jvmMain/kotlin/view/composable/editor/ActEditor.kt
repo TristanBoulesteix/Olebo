@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.LibraryAdd
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,10 +27,12 @@ import jdr.exia.model.type.imageFromPath
 import jdr.exia.view.element.*
 import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.element.dialog.MessageDialog
+import jdr.exia.view.element.form.TextTrailingIcon
 import jdr.exia.view.tools.*
 import jdr.exia.view.ui.roundedBottomShape
 import jdr.exia.view.ui.roundedShape
 import jdr.exia.view.ui.roundedTopShape
+import jdr.exia.view.windows.LocalPopup
 import jdr.exia.view.windows.LocalWindow
 import jdr.exia.viewModel.ActEditorViewModel
 import java.io.File
@@ -141,6 +145,8 @@ private fun Header(viewModel: ActEditorViewModel, act: Act?) {
         val roundedShape = RoundedCornerShape(25)
 
         Surface(color = Color.Transparent, contentColor = MaterialTheme.colors.onSurface) {
+            val popup = LocalPopup.current!!
+
             OutlinedTextField(
                 value = viewModel.actName,
                 onValueChange = { viewModel.actName = it },
@@ -150,6 +156,27 @@ private fun Header(viewModel: ActEditorViewModel, act: Act?) {
                 colors = TextFieldDefaults.outlinedTextFieldColors(backgroundColor = MaterialTheme.colors.background),
                 placeholder = {
                     if (viewModel.actName.isEmpty()) Text(text = act?.name ?: StringLocale[STR_INSERT_ACT_NAME])
+                },
+                trailingIcon = {
+                    TextTrailingIcon(
+                        icon = Icons.Outlined.LibraryAdd,
+                        tooltipMessage = StringLocale[STR_ASSOCIATE_TAGS],
+                        onClick = {
+                            popup.content = {
+                                TagsAssociation(
+                                    nameOfAssociated = viewModel.actName,
+                                    selection = viewModel.tags,
+                                    tags = viewModel.tagsAsString,
+                                    onConfirm = { newTags, tagsToDelete, selectedTags ->
+                                        viewModel.createTags(newTags)
+                                        viewModel.deleteTags(tagsToDelete)
+                                        viewModel.tags = selectedTags
+                                        popup.close()
+                                    }
+                                )
+                            }
+                        }
+                    )
                 }
             )
         }
@@ -201,6 +228,7 @@ private fun Scenes(
             }
         }
     }
+
     else -> Column(verticalArrangement = Arrangement.Center) {
         Text(
             text = StringLocale[STR_NO_SCENE],
@@ -332,6 +360,7 @@ private fun Footer(
                 viewModel.errorMessage = StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID]
             }
         )
+
         viewModel.currentEditScene != null -> FooterRowWithCancel(
             confirmText = StringLocale[STR_CONFIRM_EDIT_SCENE],
             onConfirm = {
@@ -349,6 +378,7 @@ private fun Footer(
                 viewModel.onEditDone()
             }
         )
+
         else -> FooterRowWithCancel(
             confirmText = StringLocale[if (act == null) STR_CONFIRM_CREATE_ACT else STR_CONFIRM_EDIT_ACT],
             onConfirm = viewModel::submitAct,

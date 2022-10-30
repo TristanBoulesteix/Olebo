@@ -1,4 +1,4 @@
-package jdr.exia.viewModel.elements
+package jdr.exia.viewModel.tags
 
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -36,16 +36,18 @@ class ElementTagHolder {
      * @return A set containing all deleted tags
      */
     fun pushToDatabase(): Set<String> {
-        tagsToCreate.toSet().forEach {
+        val setToDelete = tagsToCreate.toSet()
+
+        setToDelete.forEach {
             if (it !in tagsInDatabase)
                 transaction { Tag.newFrom(it) }
         }
 
-        tagsToDelete.toSet().forEach {
-            if(it !in tagsToCreate)
+        setToDelete.forEach {
+            if (it !in tagsToCreate)
                 transaction { TagTable.deleteWhere { TagTable.id eq it } }
         }
 
-        return tagsToDelete.toSet()
+        return setToDelete
     }
 }
