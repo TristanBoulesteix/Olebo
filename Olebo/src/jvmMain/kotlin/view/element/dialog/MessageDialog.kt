@@ -96,7 +96,7 @@ fun MessageDialog(
                     ) {
                         buttonsBuilder.forEach {
                             OutlinedButton(
-                                onClick = it.onChange,
+                                onClick = it.onClick,
                                 enabled = it.enabled,
                                 colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Transparent)
                             ) {

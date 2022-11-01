@@ -89,7 +89,7 @@ private fun RowButton(contentBuilder: ContentBuilder, modifier: Modifier) {
             .border(start = BorderBuilder.defaultBorder)
             .applyIf(condition = contentBuilder.enabled) {
                 // We don't use the parameter "enabled" of clickable because it prevents clickable from parent even if disabled
-                clickable(onClick = contentBuilder.onChange)
+                clickable(onClick = contentBuilder.onClick)
             }
     ) {
         when (contentBuilder) {

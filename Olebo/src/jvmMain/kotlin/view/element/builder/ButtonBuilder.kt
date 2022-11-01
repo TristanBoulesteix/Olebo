@@ -15,7 +15,7 @@ sealed interface ContentBuilder {
 
     val backgroundColor: Color
 
-    val onChange: () -> Unit
+    val onClick: () -> Unit
 }
 
 object EmptyContent : ContentBuilder {
@@ -27,7 +27,7 @@ object EmptyContent : ContentBuilder {
 
     override val backgroundColor = Color.Transparent
 
-    override val onChange = {}
+    override val onClick = {}
 }
 
 @Immutable
@@ -37,10 +37,8 @@ data class ImageButtonBuilder(
     override val enabled: Boolean = true,
     val tinted: Boolean = true,
     override val backgroundColor: Color = Color.Transparent,
-    private val onClick: () -> Unit
+    override val onClick: () -> Unit
 ) : ContentBuilder {
-    override val onChange by ::onClick
-
     constructor(content: ImageBitmap, backgroundColor: Color = Color.Transparent) : this(
         content,
         tinted = false,
@@ -57,10 +55,8 @@ data class IconButtonBuilder(
     override val enabled: Boolean = true,
     val tinted: Boolean = true,
     override val backgroundColor: Color = Color.Transparent,
-    private val onClick: () -> Unit
-) : ContentBuilder {
-    override val onChange by ::onClick
-}
+    override val onClick: () -> Unit
+) : ContentBuilder
 
 @Immutable
 data class ContentButtonBuilder(
@@ -68,10 +64,8 @@ data class ContentButtonBuilder(
     override val tooltip: String? = null,
     override val enabled: Boolean = true,
     override val backgroundColor: Color = Color.Transparent,
-    private val onClick: () -> Unit = {}
+    override val onClick: () -> Unit = {}
 ) : ContentBuilder {
-    override val onChange by ::onClick
-
     constructor(content: Any, enabled: Boolean = false) : this(content = content.toString(), enabled = enabled)
 }
 
@@ -83,5 +77,5 @@ data class ComposableContentBuilder(
 ) : ContentBuilder {
     override val enabled = false
 
-    override val onChange = {}
+    override val onClick = {}
 }
