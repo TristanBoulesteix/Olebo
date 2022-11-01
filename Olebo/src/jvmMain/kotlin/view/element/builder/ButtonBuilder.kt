@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed interface ContentBuilder {
     val content: Any?
@@ -45,7 +46,20 @@ data class ImageButtonBuilder(
         tinted = false,
         enabled = false,
         backgroundColor = backgroundColor,
-        onClick = {})
+        onClick = {}
+    )
+}
+
+@Immutable
+data class IconButtonBuilder(
+    override val content: ImageVector,
+    override val tooltip: String? = null,
+    override val enabled: Boolean = true,
+    val tinted: Boolean = true,
+    override val backgroundColor: Color = Color.Transparent,
+    private val onClick: () -> Unit
+) : ContentBuilder {
+    override val onChange by ::onClick
 }
 
 @Immutable

@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.LibraryAdd
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,6 +25,7 @@ import jdr.exia.model.tools.*
 import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.model.type.imageFromPath
 import jdr.exia.view.element.*
+import jdr.exia.view.element.builder.IconButtonBuilder
 import jdr.exia.view.element.builder.ImageButtonBuilder
 import jdr.exia.view.element.dialog.MessageDialog
 import jdr.exia.view.element.form.TextTrailingIcon
@@ -62,15 +63,15 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
                 buttonBuilders =
                 if (sceneInCreation == null) {
                     listOf(
-                        ImageButtonBuilder(
-                            content = imageFromIconRes("create_icon"),
+                        IconButtonBuilder(
+                            content = Icons.Outlined.Add,
                             tooltip = StringLocale[STR_NEW_SCENE],
                             onClick = { setSceneInCreation(SceneData.default()) })
                     )
                 } else {
                     listOf(
-                        ImageButtonBuilder(
-                            content = imageFromIconRes("confirm_icon"),
+                       IconButtonBuilder(
+                            content = Icons.Outlined.Done,
                             tooltip = StringLocale[STR_CONFIRM_CREATE_SCENE],
                             onClick = {
                                 viewModel.onAddScene(sceneInCreation).onSuccess {
@@ -80,8 +81,8 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
                                 }
                             }
                         ),
-                        ImageButtonBuilder(
-                            content = imageFromIconRes("exit_icon"),
+                        IconButtonBuilder(
+                            content = Icons.Outlined.Close,
                             tooltip = StringLocale[STR_CANCEL],
                             onClick = { setSceneInCreation(null) }
                         )
@@ -210,16 +211,16 @@ private fun Scenes(
                 ContentListRow(
                     contentText = scene.name,
                     buttonBuilders = listOf(
-                        ImageButtonBuilder(
-                            content = imageFromIconRes("edit_icon"),
+                        IconButtonBuilder(
+                            content = Icons.Outlined.Edit,
                             tooltip = StringLocale[STR_EDIT_SCENE_TOOLTIP],
                             onClick = {
                                 viewModel.onEditItemSelected(scene)
                                 setSceneInCreation(null)
                             }
                         ),
-                        ImageButtonBuilder(
-                            content = imageFromIconRes("delete_icon"),
+                        IconButtonBuilder(
+                            content = Icons.Outlined.Delete,
                             tooltip = StringLocale[STR_DELETE_SCENE_TOOLTIP],
                             onClick = { viewModel.onRemoveScene(scene) }
                         )
@@ -281,13 +282,13 @@ private fun EditSceneRow(
         removeBottomBorder = false,
         buttonBuilders = if (showButtons && onConfirmed != null && onCanceled != null)
             listOf(
-                ImageButtonBuilder(
-                    content = imageFromIconRes("confirm_icon"),
+                IconButtonBuilder(
+                    content = Icons.Outlined.Done,
                     tooltip = StringLocale[STR_CONFIRM_EDIT_SCENE],
                     onClick = onConfirmed
                 ),
-                ImageButtonBuilder(
-                    content = imageFromIconRes("exit_icon"),
+                IconButtonBuilder(
+                    content = Icons.Outlined.Close,
                     tooltip = StringLocale[STR_CANCEL],
                     onClick = onCanceled
                 )

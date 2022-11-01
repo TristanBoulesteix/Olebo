@@ -1,14 +1,13 @@
 package jdr.exia.view.element.form
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
-import jdr.exia.model.type.imageFromIconRes
 
 @Composable
 fun <T : Any> DropdownMenu(
@@ -30,11 +29,11 @@ fun <T : Any> DropdownMenu(
             Row(modifier = Modifier, horizontalArrangement = Arrangement.SpaceAround) {
                 selectedContent(selectedItem)
                 Spacer(Modifier.width(10.dp))
-                Image(
-                    bitmap = imageFromIconRes("arrow_dropdown"),
+                Icon(
+                    imageVector = Icons.Outlined.ArrowDropDown,
                     contentDescription = null,
                     modifier = Modifier.size(15.dp),
-                    colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface)
+                    tint = MaterialTheme.colors.onSurface
                 )
             }
         }

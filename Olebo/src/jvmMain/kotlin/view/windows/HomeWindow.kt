@@ -7,6 +7,9 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -18,13 +21,12 @@ import androidx.compose.ui.window.ApplicationScope
 import jdr.exia.OLEBO_VERSION_NAME
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
-import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.view.composable.editor.ActEditorView
 import jdr.exia.view.composable.editor.ElementsView
 import jdr.exia.view.element.ContentListRow
 import jdr.exia.view.element.HeaderRow
 import jdr.exia.view.element.LazyScrollableColumn
-import jdr.exia.view.element.builder.ImageButtonBuilder
+import jdr.exia.view.element.builder.IconButtonBuilder
 import jdr.exia.view.menubar.MainMenuBar
 import jdr.exia.view.tools.BorderBuilder
 import jdr.exia.view.tools.toBorderStroke
@@ -106,13 +108,13 @@ private fun ActsView(
                                 contentTooltip = StringLocale[STR_OPEN_ACT_TOOLTIP],
                                 onClick = { onRowClick(act) },
                                 buttonBuilders = listOf(
-                                    ImageButtonBuilder(
-                                        content = imageFromIconRes("edit_icon"),
+                                    IconButtonBuilder(
+                                        content = Icons.Outlined.Edit,
                                         tooltip = StringLocale[STR_EDIT_ACT_TOOLTIP],
                                         onClick = { onEdit(act) }
                                     ),
-                                    ImageButtonBuilder(
-                                        content = imageFromIconRes("delete_icon"),
+                                    IconButtonBuilder(
+                                        content = Icons.Outlined.Delete,
                                         tooltip = StringLocale[STR_DELETE_ACT],
                                         onClick = { onDelete(act) }
                                     )

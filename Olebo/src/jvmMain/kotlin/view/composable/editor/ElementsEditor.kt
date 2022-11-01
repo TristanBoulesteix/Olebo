@@ -10,7 +10,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.LibraryAdd
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,12 +23,8 @@ import jdr.exia.localization.*
 import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.success
 import jdr.exia.model.type.Image
-import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.view.element.*
-import jdr.exia.view.element.builder.ComposableContentBuilder
-import jdr.exia.view.element.builder.ContentButtonBuilder
-import jdr.exia.view.element.builder.EmptyContent
-import jdr.exia.view.element.builder.ImageButtonBuilder
+import jdr.exia.view.element.builder.*
 import jdr.exia.view.element.form.IntTextField
 import jdr.exia.view.element.form.TextTrailingIcon
 import jdr.exia.view.tools.BorderBuilder
@@ -162,8 +158,8 @@ private fun HeaderContent(
         } else {
             emptyList()
         } + listOf(
-            ImageButtonBuilder(
-                content = imageFromIconRes("create_icon"),
+            IconButtonBuilder(
+                content = Icons.Outlined.Add,
                 onClick = {
                     viewModel.startBlueprintCreation()
                     scope.launch {
@@ -263,12 +259,12 @@ private fun BlueprintData?.getButtons(
             content = blueprint.img.toBitmap(),
             backgroundColor = MaterialTheme.colors.backgroundImageColor
         ),
-        ImageButtonBuilder(
-            content = imageFromIconRes("edit_icon"),
+        IconButtonBuilder(
+            content = Icons.Outlined.Edit,
             onClick = { viewModel.onEditItemSelected(blueprint) }
         ),
-        ImageButtonBuilder(
-            content = imageFromIconRes("delete_icon"),
+        IconButtonBuilder(
+            content = Icons.Outlined.Delete,
             onClick = { viewModel.onRemoveBlueprint(blueprint) }
         )
     )
@@ -302,8 +298,8 @@ private fun BlueprintData?.getButtons(
             onClick = { updateImage(onUpdate) },
             tinted = false
         ),
-        ImageButtonBuilder(
-            content = imageFromIconRes("confirm_icon"),
+        IconButtonBuilder(
+            content = Icons.Outlined.Done,
             onClick = {
                 viewModel.onEditConfirmed(this).onSuccess { viewModel.onEditDone() }.onFailure {
                     if (it.message != null)
@@ -311,8 +307,8 @@ private fun BlueprintData?.getButtons(
                 }
             }
         ),
-        ImageButtonBuilder(
-            content = imageFromIconRes("exit_icon"),
+        IconButtonBuilder(
+            content = Icons.Outlined.Close,
             onClick = { viewModel.onEditDone() }
         )
     )

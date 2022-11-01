@@ -4,18 +4,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
-import jdr.exia.view.element.builder.ComposableContentBuilder
-import jdr.exia.view.element.builder.ContentBuilder
-import jdr.exia.view.element.builder.ContentButtonBuilder
-import jdr.exia.view.element.builder.ImageButtonBuilder
+import jdr.exia.view.element.builder.*
 import jdr.exia.view.tools.BorderBuilder
 import jdr.exia.view.tools.BoxWithTooltipIfNotNull
 import jdr.exia.view.tools.applyIf
@@ -102,6 +98,12 @@ private fun RowButton(contentBuilder: ContentBuilder, modifier: Modifier) {
                 contentDescription = "button",
                 modifier = Modifier.align(Alignment.Center),
                 colorFilter = if (contentBuilder.tinted) ColorFilter.tint(MaterialTheme.colors.primary) else null
+            )
+            is IconButtonBuilder -> Icon(
+                imageVector = contentBuilder.content,
+                contentDescription = "button",
+                modifier = Modifier.align(Alignment.Center),
+                tint = if (contentBuilder.tinted) MaterialTheme.colors.primary else LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
             )
             is ContentButtonBuilder -> Text(
                 text = contentBuilder.content,
