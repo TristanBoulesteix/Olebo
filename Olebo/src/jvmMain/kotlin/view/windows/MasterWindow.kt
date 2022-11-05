@@ -44,11 +44,11 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
         DisposableEffect(currentWindow) {
             window.extendedState = MAXIMIZED_BOTH
 
-            currentWindow. addSettingsChangedListener {
+            currentWindow.addSettingsChangedListener {
                 viewModel.refreshView(reloadTokens = true)
             }
 
-            onDispose {  }
+            onDispose { }
         }
 
         var playerFrameVisible by remember { mutableStateOf(Settings.playerFrameOpenedByDefault) }
@@ -134,15 +134,13 @@ private fun MainContent(viewModel: MasterViewModel) = Row {
  * The lateral list of items. It is on a separated function to prevent blink with Swing ComboBox on recomposition
  */
 @Composable
-private fun RowScope.Items(viewModel: MasterViewModel) {
-    ItemList(
-        modifier = Modifier.weight(.20f),
-        createElement = viewModel::addNewElement,
-        items = viewModel.itemsFiltered,
-        searchString = viewModel.searchString,
-        onSearch = { viewModel.searchString = it }
-    )
-}
+private fun RowScope.Items(viewModel: MasterViewModel) = ItemList(
+    modifier = Modifier.weight(.20f),
+    createElement = viewModel::addNewElement,
+    items = viewModel.itemsFiltered,
+    searchString = viewModel.searchString,
+    onSearch = { viewModel.searchString = it }
+)
 
 /**
  * Function to find current screen of the window.
