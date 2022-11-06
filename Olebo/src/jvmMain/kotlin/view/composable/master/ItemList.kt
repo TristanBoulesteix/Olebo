@@ -28,6 +28,7 @@ import jdr.exia.model.type.imageFromPath
 import jdr.exia.view.component.ContentListRow
 import jdr.exia.view.component.LazyScrollableColumn
 import jdr.exia.view.component.builder.ImageButtonBuilder
+import jdr.exia.view.component.form.LabeledRadioMenuItem
 import jdr.exia.view.tools.defaultBorderColor
 import jdr.exia.view.ui.backgroundImageColor
 import jdr.exia.view.ui.isDarkTheme
@@ -73,13 +74,7 @@ private fun FilterOptions() {
         expanded = showFilterOptions,
         onDismissRequest = { showFilterOptions = false }
     ) {
-        DropdownMenuItem(onClick = { println("menu 1") }) {
-            Text("Menu 1")
-        }
-
-        DropdownMenuItem(onClick = { println("menu 2") }) {
-            Text("Menu 2")
-        }
+        LabeledRadioMenuItem(onClick = { println("menu 0") }, text = "Menu 0", selected = false)
     }
 }
 
