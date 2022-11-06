@@ -8,7 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FilterAlt
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,7 +33,6 @@ import jdr.exia.view.ui.backgroundImageColor
 import jdr.exia.view.ui.isDarkTheme
 import org.jetbrains.exposed.sql.transactions.transaction
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ItemList(
     modifier: Modifier,
@@ -52,18 +51,35 @@ fun ItemList(
             modifier = Modifier.padding(10.dp).fillMaxWidth(),
             placeholder = { Text(text = StringLocale[STR_SEARCH]) },
             singleLine = true,
-            trailingIcon = {
-                Icon(
-                    imageVector = Icons.Outlined.FilterAlt,
-                    contentDescription = "search",
-                    modifier = Modifier.clickable {
-                        println("clicked")
-                    }.pointerHoverIcon(PointerIconDefaults.Default)
-                )
-            }
+            trailingIcon = { FilterOptions() }
         )
 
         ItemList(items = items, createElement = createElement)
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun FilterOptions() {
+    var showFilterOptions by remember { mutableStateOf(false) }
+
+    Icon(
+        imageVector = Icons.Outlined.FilterAlt,
+        contentDescription = "filter",
+        modifier = Modifier.clickable { showFilterOptions = true }.pointerHoverIcon(PointerIconDefaults.Default)
+    )
+
+    DropdownMenu(
+        expanded = showFilterOptions,
+        onDismissRequest = { showFilterOptions = false }
+    ) {
+        DropdownMenuItem(onClick = { println("menu 1") }) {
+            Text("Menu 1")
+        }
+
+        DropdownMenuItem(onClick = { println("menu 2") }) {
+            Text("Menu 2")
+        }
     }
 }
 
