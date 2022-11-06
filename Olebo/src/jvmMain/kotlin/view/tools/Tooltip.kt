@@ -16,7 +16,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import jdr.exia.view.element.dialog.DialogManager
+import jdr.exia.view.component.dialog.DialogManager
 import jdr.exia.view.ui.isDarkTheme
 
 @OptIn(ExperimentalFoundationApi::class)

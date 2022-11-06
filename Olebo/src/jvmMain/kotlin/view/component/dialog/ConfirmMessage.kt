@@ -1,4 +1,4 @@
-package jdr.exia.view.element.dialog
+package jdr.exia.view.component.dialog
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -7,8 +7,8 @@ import jdr.exia.localization.STR_CANCEL
 import jdr.exia.localization.STR_CONFIRM
 import jdr.exia.localization.StringLocale
 import jdr.exia.localization.get
-import jdr.exia.view.element.builder.ContentButtonBuilder
-import jdr.exia.view.element.form.LabeledCheckbox
+import jdr.exia.view.component.builder.ContentButtonBuilder
+import jdr.exia.view.component.form.LabeledCheckbox
 
 @Composable
 fun ConfirmMessage(

@@ -10,10 +10,10 @@ import jdr.exia.localization.STR_EDIT_TAB
 import jdr.exia.localization.STR_OLEBO_WEB_TAB
 import jdr.exia.localization.StringLocale
 import jdr.exia.localization.get
-import jdr.exia.view.element.HeaderTabOptions
-import jdr.exia.view.element.HeaderTabPosition
-import jdr.exia.view.element.HeaderTabSize
-import jdr.exia.view.element.TabPanel
+import jdr.exia.view.component.HeaderTabOptions
+import jdr.exia.view.component.HeaderTabPosition
+import jdr.exia.view.component.HeaderTabSize
+import jdr.exia.view.component.TabPanel
 
 @Composable
 fun BottomPanel(

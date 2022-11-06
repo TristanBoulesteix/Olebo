@@ -1,4 +1,4 @@
-package jdr.exia.view.element.dialog
+package jdr.exia.view.component.dialog
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ButtonDefaults
@@ -20,9 +20,9 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.rememberDialogState
-import jdr.exia.view.element.builder.ComposableContentBuilder
-import jdr.exia.view.element.builder.ContentBuilder
-import jdr.exia.view.element.builder.ContentButtonBuilder
+import jdr.exia.view.component.builder.ComposableContentBuilder
+import jdr.exia.view.component.builder.ContentBuilder
+import jdr.exia.view.component.builder.ContentButtonBuilder
 
 @Stable
 private fun defaultButton(action: () -> Unit) = listOf(ContentButtonBuilder("OK", onClick = action))

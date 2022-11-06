@@ -1,4 +1,4 @@
-package jdr.exia.view.element.form
+package jdr.exia.view.component.form
 
 import androidx.compose.foundation.clickable
 import androidx.compose.material.Icon

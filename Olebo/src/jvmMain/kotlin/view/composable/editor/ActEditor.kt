@@ -24,11 +24,11 @@ import jdr.exia.model.act.data.SceneData
 import jdr.exia.model.tools.*
 import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.model.type.imageFromPath
-import jdr.exia.view.element.*
-import jdr.exia.view.element.builder.IconButtonBuilder
-import jdr.exia.view.element.builder.ImageButtonBuilder
-import jdr.exia.view.element.dialog.MessageDialog
-import jdr.exia.view.element.form.TextTrailingIcon
+import jdr.exia.view.component.*
+import jdr.exia.view.component.builder.IconButtonBuilder
+import jdr.exia.view.component.builder.ImageButtonBuilder
+import jdr.exia.view.component.dialog.MessageDialog
+import jdr.exia.view.component.form.TextTrailingIcon
 import jdr.exia.view.tools.*
 import jdr.exia.view.ui.roundedBottomShape
 import jdr.exia.view.ui.roundedShape

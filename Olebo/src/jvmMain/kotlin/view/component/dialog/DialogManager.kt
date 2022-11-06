@@ -1,4 +1,4 @@
-package jdr.exia.view.element.dialog
+package jdr.exia.view.component.dialog
 
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue

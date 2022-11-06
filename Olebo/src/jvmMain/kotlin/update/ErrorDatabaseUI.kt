@@ -6,9 +6,9 @@ import androidx.compose.ui.window.Notification
 import jdr.exia.localization.*
 import jdr.exia.model.dao.reset
 import jdr.exia.model.dao.restart
-import jdr.exia.view.element.builder.ContentButtonBuilder
-import jdr.exia.view.element.dialog.ConfirmMessage
-import jdr.exia.view.element.dialog.MessageDialog
+import jdr.exia.view.component.builder.ContentButtonBuilder
+import jdr.exia.view.component.dialog.ConfirmMessage
+import jdr.exia.view.component.dialog.MessageDialog
 import jdr.exia.view.ui.LocalTrayManager
 import jdr.exia.view.ui.oleboApplication
 import kotlinx.coroutines.Dispatchers

@@ -26,8 +26,8 @@ import jdr.exia.model.dao.option.Preferences
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.dao.restart
 import jdr.exia.service.sendMailToDevelopers
-import jdr.exia.view.element.builder.ContentButtonBuilder
-import jdr.exia.view.element.dialog.MessageDialog
+import jdr.exia.view.component.builder.ContentButtonBuilder
+import jdr.exia.view.component.dialog.MessageDialog
 import jdr.exia.view.tools.annotatedHyperlink
 import jdr.exia.view.tools.appendBulletList
 import jdr.exia.view.ui.LocalTrayManager

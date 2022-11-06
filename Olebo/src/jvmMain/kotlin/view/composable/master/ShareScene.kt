@@ -16,7 +16,7 @@ import fr.olebo.sharescene.connection.Disconnected
 import jdr.exia.localization.*
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.tools.saveToClipboard
-import jdr.exia.view.element.FlowRow
+import jdr.exia.view.component.FlowRow
 import jdr.exia.view.tools.BoxWithTooltipIfNotNull
 import java.util.Locale
 

@@ -23,9 +23,9 @@ import jdr.exia.model.dao.zipOleboDirectory
 import jdr.exia.service.sendMailToDevelopers
 import jdr.exia.update.ChangelogsDialog
 import jdr.exia.update.getChangelogs
-import jdr.exia.view.element.dialog.ConfirmMessage
-import jdr.exia.view.element.dialog.LoadingDialog
-import jdr.exia.view.element.dialog.MessageDialog
+import jdr.exia.view.component.dialog.ConfirmMessage
+import jdr.exia.view.component.dialog.LoadingDialog
+import jdr.exia.view.component.dialog.MessageDialog
 import jdr.exia.view.tools.windowAncestor
 import jdr.exia.view.ui.LocalTheme
 import jdr.exia.view.windows.LocalWindow

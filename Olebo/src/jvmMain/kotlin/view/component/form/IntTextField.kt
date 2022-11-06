@@ -1,4 +1,4 @@
-package jdr.exia.view.element.form
+package jdr.exia.view.component.form
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.TextField

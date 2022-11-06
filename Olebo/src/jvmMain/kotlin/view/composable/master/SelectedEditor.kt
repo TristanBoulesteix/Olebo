@@ -18,8 +18,8 @@ import jdr.exia.model.element.Layer
 import jdr.exia.model.element.SizeElement
 import jdr.exia.model.tools.isCharacter
 import jdr.exia.model.tools.withSetter
-import jdr.exia.view.element.CustomTextField
-import jdr.exia.view.element.form.IntTextField
+import jdr.exia.view.component.CustomTextField
+import jdr.exia.view.component.form.IntTextField
 import jdr.exia.view.tools.applyIf
 import org.jetbrains.exposed.sql.transactions.transaction
 

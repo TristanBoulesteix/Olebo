@@ -1,4 +1,4 @@
-package jdr.exia.view.element
+package jdr.exia.view.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

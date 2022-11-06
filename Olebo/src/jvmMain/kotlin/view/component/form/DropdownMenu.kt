@@ -1,4 +1,4 @@
-package jdr.exia.view.element.form
+package jdr.exia.view.component.form
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*

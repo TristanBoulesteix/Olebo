@@ -23,10 +23,10 @@ import jdr.exia.localization.*
 import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.success
 import jdr.exia.model.type.Image
-import jdr.exia.view.element.*
-import jdr.exia.view.element.builder.*
-import jdr.exia.view.element.form.IntTextField
-import jdr.exia.view.element.form.TextTrailingIcon
+import jdr.exia.view.component.*
+import jdr.exia.view.component.builder.*
+import jdr.exia.view.component.form.IntTextField
+import jdr.exia.view.component.form.TextTrailingIcon
 import jdr.exia.view.tools.BorderBuilder
 import jdr.exia.view.tools.MessageType
 import jdr.exia.view.tools.showMessage

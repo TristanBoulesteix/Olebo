@@ -1,4 +1,4 @@
-package jdr.exia.view.element
+package jdr.exia.view.component
 
 import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.layout.Box

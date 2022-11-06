@@ -1,4 +1,4 @@
-package jdr.exia.view.element.builder
+package jdr.exia.view.component.builder
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable

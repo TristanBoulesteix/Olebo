@@ -25,9 +25,9 @@ import jdr.exia.localization.get
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.TypeElement
 import jdr.exia.model.type.imageFromPath
-import jdr.exia.view.element.ContentListRow
-import jdr.exia.view.element.LazyScrollableColumn
-import jdr.exia.view.element.builder.ImageButtonBuilder
+import jdr.exia.view.component.ContentListRow
+import jdr.exia.view.component.LazyScrollableColumn
+import jdr.exia.view.component.builder.ImageButtonBuilder
 import jdr.exia.view.tools.defaultBorderColor
 import jdr.exia.view.ui.backgroundImageColor
 import jdr.exia.view.ui.isDarkTheme

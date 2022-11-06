@@ -18,8 +18,8 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.type.JColor
 import jdr.exia.model.type.toColor
 import jdr.exia.model.type.toJColor
-import jdr.exia.view.element.form.DropdownMenu
-import jdr.exia.view.element.form.LabeledCheckbox
+import jdr.exia.view.component.form.DropdownMenu
+import jdr.exia.view.component.form.LabeledCheckbox
 import org.jetbrains.exposed.sql.transactions.transaction
 import javax.swing.JColorChooser
 

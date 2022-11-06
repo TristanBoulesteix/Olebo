@@ -20,8 +20,8 @@ import jdr.exia.localization.STR_RELEASE_NOTES
 import jdr.exia.localization.StringLocale
 import jdr.exia.localization.get
 import jdr.exia.main
-import jdr.exia.view.element.builder.ContentButtonBuilder
-import jdr.exia.view.element.dialog.MessageDialog
+import jdr.exia.view.component.builder.ContentButtonBuilder
+import jdr.exia.view.component.dialog.MessageDialog
 import java.io.InputStreamReader
 
 fun getChangelogs(): String? =

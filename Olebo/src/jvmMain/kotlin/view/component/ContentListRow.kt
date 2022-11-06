@@ -1,4 +1,4 @@
-package jdr.exia.view.element
+package jdr.exia.view.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
-import jdr.exia.view.element.builder.*
+import jdr.exia.view.component.builder.*
 import jdr.exia.view.tools.BorderBuilder
 import jdr.exia.view.tools.BoxWithTooltipIfNotNull
 import jdr.exia.view.tools.applyIf

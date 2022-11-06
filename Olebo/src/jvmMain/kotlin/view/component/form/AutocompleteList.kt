@@ -1,4 +1,4 @@
-package jdr.exia.view.element.form
+package jdr.exia.view.component.form
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -21,7 +21,7 @@ import androidx.compose.ui.input.pointer.PointerIconDefaults
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import jdr.exia.localization.*
-import jdr.exia.view.element.LazyScrollableColumn
+import jdr.exia.view.component.LazyScrollableColumn
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

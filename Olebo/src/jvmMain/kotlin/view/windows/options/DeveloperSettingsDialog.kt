@@ -9,8 +9,8 @@ import fr.olebo.sharescene.UrlProtocol
 import fr.olebo.sharescene.domain
 import fr.olebo.sharescene.security
 import jdr.exia.model.dao.option.Preferences
-import jdr.exia.view.element.form.DropdownMenu
-import jdr.exia.view.element.form.LabeledTextField
+import jdr.exia.view.component.form.DropdownMenu
+import jdr.exia.view.component.form.LabeledTextField
 
 @Composable
 fun DeveloperSettingsDialog(onCloseRequest: () -> Unit) {

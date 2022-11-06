@@ -14,8 +14,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import jdr.exia.localization.*
 import jdr.exia.model.dao.BlueprintTagTable
-import jdr.exia.view.element.dialog.ConfirmMessage
-import jdr.exia.view.element.form.AutocompleteList
+import jdr.exia.view.component.dialog.ConfirmMessage
+import jdr.exia.view.component.form.AutocompleteList
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 
