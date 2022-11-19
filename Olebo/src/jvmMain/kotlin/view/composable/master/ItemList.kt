@@ -32,6 +32,7 @@ import jdr.exia.view.component.form.LabeledRadioMenuItem
 import jdr.exia.view.tools.defaultBorderColor
 import jdr.exia.view.ui.backgroundImageColor
 import jdr.exia.view.ui.isDarkTheme
+import jdr.exia.viewModel.tags.BlueprintFilter
 import org.jetbrains.exposed.sql.transactions.transaction
 
 @Composable
@@ -40,6 +41,8 @@ fun ItemList(
     items: Map<TypeElement, List<Blueprint>>,
     searchString: String,
     onSearch: (String) -> Unit,
+    currentFilter: BlueprintFilter,
+    setCurrentFilter: (BlueprintFilter) -> Unit,
     createElement: (Blueprint) -> Unit
 ) = Surface(
     modifier = modifier.widthIn(max = 450.dp).fillMaxHeight(),
@@ -52,7 +55,7 @@ fun ItemList(
             modifier = Modifier.padding(10.dp).fillMaxWidth(),
             placeholder = { Text(text = StringLocale[STR_SEARCH]) },
             singleLine = true,
-            trailingIcon = { FilterOptions() }
+            trailingIcon = { FilterOptions(currentFilter, setCurrentFilter) }
         )
 
         ItemList(items = items, createElement = createElement)
@@ -61,7 +64,7 @@ fun ItemList(
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun FilterOptions() {
+private fun FilterOptions(currentFilter: BlueprintFilter, setCurrentFilter: (BlueprintFilter) -> Unit) {
     var showFilterOptions by remember { mutableStateOf(false) }
 
     Icon(
@@ -74,7 +77,15 @@ private fun FilterOptions() {
         expanded = showFilterOptions,
         onDismissRequest = { showFilterOptions = false }
     ) {
-        LabeledRadioMenuItem(onClick = { println("menu 0") }, text = "Menu 0", selected = false)
+        val availableFilters = remember { BlueprintFilter.values().toList() }
+
+        availableFilters.forEach {
+            LabeledRadioMenuItem(
+                onClick = { setCurrentFilter(it) },
+                text = it.name,
+                selected = currentFilter == it
+            )
+        }
     }
 }
 

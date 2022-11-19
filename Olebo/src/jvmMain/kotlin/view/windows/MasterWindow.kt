@@ -13,8 +13,8 @@ import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.model.command.CommandManager
 import jdr.exia.model.dao.option.Settings
-import jdr.exia.view.composable.master.*
 import jdr.exia.view.component.dialog.ConfirmMessage
+import jdr.exia.view.composable.master.*
 import jdr.exia.view.menubar.MasterMenuBar
 import jdr.exia.view.tools.screens
 import jdr.exia.view.ui.MASTER_WINDOW_SIZE
@@ -139,7 +139,9 @@ private fun RowScope.Items(viewModel: MasterViewModel) = ItemList(
     createElement = viewModel::addNewElement,
     items = viewModel.itemsFiltered,
     searchString = viewModel.searchString,
-    onSearch = { viewModel.searchString = it }
+    onSearch = { viewModel.searchString = it },
+    currentFilter = viewModel.blueprintFilter,
+    setCurrentFilter = { viewModel.blueprintFilter = it }
 )
 
 /**

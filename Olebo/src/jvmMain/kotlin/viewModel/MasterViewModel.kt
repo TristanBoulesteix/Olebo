@@ -36,6 +36,7 @@ import jdr.exia.service.socketClient
 import jdr.exia.view.tools.contains
 import jdr.exia.view.tools.getTokenFromPosition
 import jdr.exia.view.tools.positionOf
+import jdr.exia.viewModel.tags.BlueprintFilter
 import kotlinx.coroutines.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -62,9 +63,26 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
 
     var searchString by mutableStateOf("")
 
+    var blueprintFilter by mutableStateOf(BlueprintFilter.ALL)
+
     val itemsFiltered by derivedStateOf {
-        blueprintsGrouped.mapValues { (_, list) ->
-            transaction { list.filter { it.realName.contains(searchString, ignoreCase = true) } }
+        blueprintsGrouped.mapValues { (type, list) ->
+            transaction {
+                val listToSearch = when (blueprintFilter) {
+                    BlueprintFilter.ALL -> list
+                    BlueprintFilter.ACT -> list // TODO
+                    BlueprintFilter.TAG -> {
+                        if (type == TypeElement.Basic) list
+                        else transaction {
+                            val actTags = act.tags.toSet()
+
+                            list.filter { blueprint -> blueprint.tags.any { it in actTags } }
+                        }
+                    }
+                }
+
+                listToSearch.filter { it.realName.contains(searchString, ignoreCase = true) }
+            }
         }
     }
 
@@ -253,7 +271,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
                     it.isDeleted = true
                 }
 
-                this@MasterViewModel.unsortedElements = this@MasterViewModel.elements.toMutableList().also {
+                unsortedElements = this@MasterViewModel.elements.toMutableList().also {
                     it -= elements.toSet()
                 }
 
@@ -265,7 +283,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
                     it.isDeleted = false
                 }
 
-                this@MasterViewModel.unsortedElements = this@MasterViewModel.elements.toMutableList().also {
+                unsortedElements = this@MasterViewModel.elements.toMutableList().also {
                     it += elements.toSet()
                 }
 
