@@ -153,6 +153,7 @@ object BlueprintTable : IntIdTable(), Initializable {
     val HP = integer("HP").nullable()
     val MP = integer("MP").nullable()
     val idType = reference("id_type", TypeTable)
+    val associatedAct = reference("associated_act", ActTable).nullable()
 
     override fun initialize() {
         // Pointers
@@ -227,7 +228,7 @@ object SizeTable : EnumInitializable<SizeElement>(enumValues()) {
 }
 
 object TagTable : IdTable<String>() {
-    override val id =  varchar("tagValue", 40).entityId()
+    override val id = varchar("tagValue", 40).entityId()
 
     override val primaryKey = PrimaryKey(id)
 }
