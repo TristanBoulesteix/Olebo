@@ -72,7 +72,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
                     BlueprintFilter.ALL -> list
                     BlueprintFilter.ACT -> list // TODO
                     BlueprintFilter.TAG -> {
-                        if (type == TypeElement.Basic) list
+                        if (type.isCustom) list
                         else transaction {
                             val actTags = act.tags.toSet()
 

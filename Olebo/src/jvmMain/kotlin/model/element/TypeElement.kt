@@ -20,6 +20,9 @@ enum class TypeElement(private val typeNameKey: String) {
     val localizedName
         get() = StringLocale[typeNameKey]
 
+    val isCustom
+        get() = this != Basic
+
     /**
      * This class is the link between the enum and the database
      */
