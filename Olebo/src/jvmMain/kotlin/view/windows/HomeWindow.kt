@@ -21,12 +21,12 @@ import androidx.compose.ui.window.ApplicationScope
 import jdr.exia.OLEBO_VERSION_NAME
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
-import jdr.exia.view.composable.editor.ActEditorView
-import jdr.exia.view.composable.editor.ElementsView
 import jdr.exia.view.component.ContentListRow
 import jdr.exia.view.component.HeaderRow
 import jdr.exia.view.component.LazyScrollableColumn
 import jdr.exia.view.component.builder.IconButtonBuilder
+import jdr.exia.view.composable.editor.ElementsView
+import jdr.exia.view.composable.editor.act.ActEditorView
 import jdr.exia.view.menubar.MainMenuBar
 import jdr.exia.view.tools.BorderBuilder
 import jdr.exia.view.tools.toBorderStroke

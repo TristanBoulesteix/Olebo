@@ -270,6 +270,7 @@ internal actual class StringLocaleBundle : StringLocale() {
             STR_SEARCH_CREATE_TAG to "rechercher ou créer un tag",
             STR_ASSOCIATE_TAGS to "associate tags",
             STR_CLOSE_VALIDATE to "confirm & close",
+            STR_ASSOCIATE_BLUEPRINT_AND_SCENARIO to "associate blueprints with scenario",
         )
 }
 
@@ -542,5 +543,6 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
             STR_SEARCH_CREATE_TAG to "rechercher ou créer un tag",
             STR_ASSOCIATE_TAGS to "associer des tags",
             STR_CLOSE_VALIDATE to "valider & fermer",
+            STR_ASSOCIATE_BLUEPRINT_AND_SCENARIO to "associer des éléments avec un scénario",
         )
 }

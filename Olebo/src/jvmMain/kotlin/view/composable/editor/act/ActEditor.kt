@@ -1,4 +1,4 @@
-package jdr.exia.view.composable.editor
+package jdr.exia.view.composable.editor.act
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,14 +26,11 @@ import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.model.type.imageFromPath
 import jdr.exia.view.component.*
 import jdr.exia.view.component.builder.IconButtonBuilder
-import jdr.exia.view.component.builder.ImageButtonBuilder
 import jdr.exia.view.component.dialog.MessageDialog
-import jdr.exia.view.component.form.TextTrailingIcon
 import jdr.exia.view.tools.*
 import jdr.exia.view.ui.roundedBottomShape
 import jdr.exia.view.ui.roundedShape
 import jdr.exia.view.ui.roundedTopShape
-import jdr.exia.view.windows.LocalPopup
 import jdr.exia.view.windows.LocalWindow
 import jdr.exia.viewModel.ActEditorViewModel
 import java.io.File
@@ -70,7 +67,7 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
                     )
                 } else {
                     listOf(
-                       IconButtonBuilder(
+                        IconButtonBuilder(
                             content = Icons.Outlined.Done,
                             tooltip = StringLocale[STR_CONFIRM_CREATE_SCENE],
                             onClick = {
@@ -146,8 +143,6 @@ private fun Header(viewModel: ActEditorViewModel, act: Act?) {
         val roundedShape = RoundedCornerShape(25)
 
         Surface(color = Color.Transparent, contentColor = MaterialTheme.colors.onSurface) {
-            val popup = LocalPopup.current!!
-
             OutlinedTextField(
                 value = viewModel.actName,
                 onValueChange = { viewModel.actName = it },
@@ -159,25 +154,11 @@ private fun Header(viewModel: ActEditorViewModel, act: Act?) {
                     if (viewModel.actName.isEmpty()) Text(text = act?.name ?: StringLocale[STR_INSERT_ACT_NAME])
                 },
                 trailingIcon = {
-                    TextTrailingIcon(
-                        icon = Icons.Outlined.LibraryAdd,
-                        tooltipMessage = StringLocale[STR_ASSOCIATE_TAGS],
-                        onClick = {
-                            popup.content = {
-                                TagsAssociation(
-                                    nameOfAssociated = viewModel.actName,
-                                    selection = viewModel.tags,
-                                    tags = viewModel.tagsAsString,
-                                    onConfirm = { newTags, tagsToDelete, selectedTags ->
-                                        viewModel.createTags(newTags)
-                                        viewModel.deleteTags(tagsToDelete)
-                                        viewModel.tags = selectedTags
-                                        popup.close()
-                                    }
-                                )
-                            }
-                        }
-                    )
+                    Row(horizontalArrangement = Arrangement.spacedBy(15.dp)) {
+                        IconEditAssociatedBlueprints(viewModel)
+                        IconEditTags(viewModel)
+                        Spacer(Modifier.padding(end = 2.dp))
+                    }
                 }
             )
         }
