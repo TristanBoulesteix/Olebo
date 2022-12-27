@@ -11,6 +11,9 @@ import jdr.exia.view.composable.editor.ElementsView
 import jdr.exia.view.ui.HOME_WINDOWS_SIZE
 import java.awt.Dimension
 
+/**
+ * Dialog to edit an element. Used to edit blueprints on the master window.
+ */
 @Composable
 fun BlueprintEditorDialog(onCloseRequest: () -> Unit) {
     val state = rememberDialogState(size = HOME_WINDOWS_SIZE)

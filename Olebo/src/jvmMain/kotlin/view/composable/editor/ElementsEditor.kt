@@ -46,6 +46,9 @@ import javax.imageio.ImageIO
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
+/**
+ * Panel to view, create and edit elements
+ */
 @Composable
 fun ElementsView(onDone: () -> Unit) {
     val tabs = remember { listOf(TypeElement.Object, TypeElement.PJ, TypeElement.PNJ) }
