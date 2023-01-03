@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import jdr.exia.localization.*
+import jdr.exia.model.act.Act
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
@@ -24,13 +25,15 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.SizedCollection
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class ElementsEditorViewModel(initialType: TypeElement) {
+class ElementsEditorViewModel(initialAct: Act?, initialType: TypeElement) {
     private val typeViewModel = TypeElement.values().associateWith(::ElementViewModel)
 
     val itemListScrollState
         get() = currentTypeViewModel.currentScrollState
 
     var currentType by mutableStateOf(initialType)
+
+    var selectedAct by mutableStateOf(initialAct)
 
     private val currentTypeViewModel
         get() = typeViewModel.getOrElse(currentType) { ElementViewModel(currentType) }
@@ -39,7 +42,11 @@ class ElementsEditorViewModel(initialType: TypeElement) {
 
     private val elementTagHolder = ElementTagHolder()
 
-    val blueprints: List<BlueprintData> by derivedStateOf { currentTypeViewModel.createdData + currentTypeViewModel.data }
+    val blueprints: List<BlueprintData> by derivedStateOf {
+        val data = (currentTypeViewModel.createdData + currentTypeViewModel.data)
+
+        data.takeIf { selectedAct == null } ?: data.filter { it.actId == selectedAct?.id }
+    }
 
     val currentEditBlueprint
         get() = blueprints.getOrNull(currentEditPosition)

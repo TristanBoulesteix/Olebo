@@ -24,7 +24,8 @@ data class BlueprintData(
     val mana: Int? = null,
     val type: TypeElement = TypeElement.Object,
     val tags: List<String> = emptyList(),
-    val id: EntityID<Int>? = null
+    val id: EntityID<Int>? = null,
+    val actId: EntityID<Int>? = null
 ) {
     companion object {
         fun defaultObject() = BlueprintData("", Image.unspecified)

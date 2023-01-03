@@ -58,11 +58,9 @@ fun ElementsView(initialAct: Act? = null, onDone: () -> Unit) = Column(
 ) {
     val tabs = remember { listOf(TypeElement.Object, TypeElement.PJ, TypeElement.PNJ) }
 
-    val contentViewModel = remember { ElementsEditorViewModel(tabs.first()) }
+    val contentViewModel = remember(initialAct) { ElementsEditorViewModel(initialAct, tabs.first()) }
 
-    var selectedAct by remember(initialAct) { mutableStateOf(initialAct) }
-
-    ActDropDown(selectedAct) { selectedAct = it }
+    ActDropDown(contentViewModel.selectedAct, contentViewModel::selectedAct::set)
 
     TabPanel(
         backgroundColor = MaterialTheme.colors.secondaryVariant,
