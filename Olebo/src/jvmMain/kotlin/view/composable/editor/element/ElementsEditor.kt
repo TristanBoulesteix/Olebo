@@ -20,6 +20,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import jdr.exia.localization.*
+import jdr.exia.model.act.Act
 import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.success
 import jdr.exia.model.type.Image
@@ -51,7 +52,7 @@ import javax.swing.filechooser.FileNameExtensionFilter
  * Panel to view, create and edit elements
  */
 @Composable
-fun ElementsView(onDone: () -> Unit) = Column(
+fun ElementsView(initialAct: Act? = null, onDone: () -> Unit) = Column(
     horizontalAlignment = Alignment.CenterHorizontally,
     modifier = Modifier.background(MaterialTheme.colors.secondary)
 ) {
@@ -59,7 +60,9 @@ fun ElementsView(onDone: () -> Unit) = Column(
 
     val contentViewModel = remember { ElementsEditorViewModel(tabs.first()) }
 
-    ActDropDown(null, {})
+    var selectedAct by remember(initialAct) { mutableStateOf(initialAct) }
+
+    ActDropDown(selectedAct) { selectedAct = it }
 
     TabPanel(
         backgroundColor = MaterialTheme.colors.secondaryVariant,
