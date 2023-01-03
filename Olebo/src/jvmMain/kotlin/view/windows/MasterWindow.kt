@@ -87,7 +87,7 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
         MainContent(viewModel = viewModel)
 
         if (viewModel.blueprintEditorDialogVisible) {
-            BlueprintEditorDialog(onCloseRequest = viewModel::hideBlueprintEditor)
+            BlueprintEditorDialog(onCloseRequest = viewModel::hideBlueprintEditor, currentAct = viewModel.act)
         }
 
         if (viewModel.confirmClearElement) {

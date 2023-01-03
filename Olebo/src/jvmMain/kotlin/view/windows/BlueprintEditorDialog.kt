@@ -7,6 +7,7 @@ import androidx.compose.ui.window.rememberDialogState
 import jdr.exia.localization.STR_MANAGE_BLUEPRINTS
 import jdr.exia.localization.StringLocale
 import jdr.exia.localization.get
+import jdr.exia.model.act.Act
 import jdr.exia.view.composable.editor.element.ElementsView
 import jdr.exia.view.ui.HOME_WINDOWS_SIZE
 import java.awt.Dimension
@@ -15,7 +16,7 @@ import java.awt.Dimension
  * Dialog to edit an element. Used to edit blueprints on the master window.
  */
 @Composable
-fun BlueprintEditorDialog(onCloseRequest: () -> Unit) {
+fun BlueprintEditorDialog(currentAct: Act, onCloseRequest: () -> Unit) {
     val state = rememberDialogState(size = HOME_WINDOWS_SIZE)
 
     Dialog(onCloseRequest = onCloseRequest, title = StringLocale[STR_MANAGE_BLUEPRINTS], state = state) {
@@ -25,6 +26,6 @@ fun BlueprintEditorDialog(onCloseRequest: () -> Unit) {
             }
         }
 
-        ElementsView(onDone = onCloseRequest)
+        ElementsView(onDone = onCloseRequest, initialAct = currentAct)
     }
 }
