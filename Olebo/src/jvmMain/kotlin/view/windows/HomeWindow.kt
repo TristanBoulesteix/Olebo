@@ -25,7 +25,7 @@ import jdr.exia.view.component.ContentListRow
 import jdr.exia.view.component.HeaderRow
 import jdr.exia.view.component.LazyScrollableColumn
 import jdr.exia.view.component.builder.IconButtonBuilder
-import jdr.exia.view.composable.editor.ElementsView
+import jdr.exia.view.composable.editor.element.ElementsView
 import jdr.exia.view.composable.editor.act.ActEditorView
 import jdr.exia.view.menubar.MainMenuBar
 import jdr.exia.view.tools.BorderBuilder

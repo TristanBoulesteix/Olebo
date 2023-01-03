@@ -7,7 +7,7 @@ import androidx.compose.ui.window.rememberDialogState
 import jdr.exia.localization.STR_MANAGE_BLUEPRINTS
 import jdr.exia.localization.StringLocale
 import jdr.exia.localization.get
-import jdr.exia.view.composable.editor.ElementsView
+import jdr.exia.view.composable.editor.element.ElementsView
 import jdr.exia.view.ui.HOME_WINDOWS_SIZE
 import java.awt.Dimension
 

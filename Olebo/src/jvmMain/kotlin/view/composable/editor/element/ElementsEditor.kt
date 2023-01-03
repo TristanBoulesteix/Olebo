@@ -1,4 +1,4 @@
-package jdr.exia.view.composable.editor
+package jdr.exia.view.composable.editor.element
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,6 +27,7 @@ import jdr.exia.view.component.*
 import jdr.exia.view.component.builder.*
 import jdr.exia.view.component.form.IntTextField
 import jdr.exia.view.component.form.TextTrailingIcon
+import jdr.exia.view.composable.editor.TagsAssociation
 import jdr.exia.view.tools.BorderBuilder
 import jdr.exia.view.tools.MessageType
 import jdr.exia.view.tools.showMessage
@@ -58,11 +59,13 @@ fun ElementsView(onDone: () -> Unit) = Column(
 
     val contentViewModel = remember { ElementsEditorViewModel(tabs.first()) }
 
+    ActDropDown(null, {})
+
     TabPanel(
         backgroundColor = MaterialTheme.colors.secondaryVariant,
         tabs = tabs,
         onTabChanged = { contentViewModel.currentType = it },
-        headerTabOption = HeaderTabOptions(backgroundColor = MaterialTheme.colors.secondary),
+        headerTabOption = HeaderTabOptions(backgroundColor = MaterialTheme.colors.secondary, paddingHeight = 8.dp),
         content = { currentTab, padding ->
             Content(
                 viewModel = contentViewModel,
