@@ -50,17 +50,13 @@ import javax.swing.filechooser.FileNameExtensionFilter
  * Panel to view, create and edit elements
  */
 @Composable
-fun ElementsView(title: String? = null, onDone: () -> Unit) = Column(
+fun ElementsView(onDone: () -> Unit) = Column(
     horizontalAlignment = Alignment.CenterHorizontally,
     modifier = Modifier.background(MaterialTheme.colors.secondary)
 ) {
     val tabs = remember { listOf(TypeElement.Object, TypeElement.PJ, TypeElement.PNJ) }
 
     val contentViewModel = remember { ElementsEditorViewModel(tabs.first()) }
-
-    if (!title.isNullOrBlank()) {
-        Text(title, fontSize = 25.sp, modifier = Modifier.padding(top = 8.dp))
-    }
 
     TabPanel(
         backgroundColor = MaterialTheme.colors.secondaryVariant,

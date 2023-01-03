@@ -9,7 +9,6 @@ import jdr.exia.localization.STR_ASSOCIATE_TAGS
 import jdr.exia.localization.StringLocale
 import jdr.exia.localization.get
 import jdr.exia.view.component.form.TextTrailingIcon
-import jdr.exia.view.composable.editor.ElementsView
 import jdr.exia.view.composable.editor.TagsAssociation
 import jdr.exia.view.windows.LocalPopup
 import jdr.exia.viewModel.ActEditorViewModel
@@ -48,9 +47,9 @@ fun IconEditAssociatedBlueprints(viewModel: ActEditorViewModel) {
         tooltipMessage = StringLocale[STR_ASSOCIATE_BLUEPRINT_AND_SCENARIO],
         onClick = {
             popup.content = {
-                ElementsView(title = StringLocale[STR_ASSOCIATE_BLUEPRINT_AND_SCENARIO]) {
+/*                ElementsView(title = StringLocale[STR_ASSOCIATE_BLUEPRINT_AND_SCENARIO]) {
                     popup.close()
-                }
+                }*/
             }
         }
     )
