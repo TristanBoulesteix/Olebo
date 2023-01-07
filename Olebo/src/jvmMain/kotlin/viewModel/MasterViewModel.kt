@@ -29,7 +29,7 @@ import jdr.exia.model.element.Layer
 import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.callCommandManager
 import jdr.exia.model.tools.doIfContainsSingle
-import jdr.exia.model.tools.withSetter
+import jdr.exia.model.tools.settableMutableState
 import jdr.exia.model.type.contains
 import jdr.exia.model.type.inputStreamFromString
 import jdr.exia.service.socketClient
@@ -48,7 +48,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
 
     var confirmClearElement by mutableStateOf(false)
 
-    var currentScene by mutableStateOf(transaction { act.currentScene }) withSetter {
+    var currentScene by settableMutableState(transaction { act.currentScene }) {
         transaction { act.currentScene = it }
     }
 

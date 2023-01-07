@@ -17,7 +17,7 @@ import jdr.exia.model.element.Element
 import jdr.exia.model.element.Layer
 import jdr.exia.model.element.SizeElement
 import jdr.exia.model.tools.isCharacter
-import jdr.exia.model.tools.withSetter
+import jdr.exia.model.tools.settableMutableState
 import jdr.exia.view.component.CustomTextField
 import jdr.exia.view.component.form.IntTextField
 import jdr.exia.view.tools.applyIf
@@ -243,12 +243,12 @@ private fun VisibilityButtons(
     commandManager: CommandManager
 ) = ColumnEditor {
     var isVisible by remember(selectedElements, commandManager.composeKey) {
-        mutableStateOf(
+        settableMutableState(
             selectedElements.getElementProperty(
                 elementPropertyGetter = Element::isVisible,
                 defaultValue = true
             )
-        ) withSetter { newVisibility ->
+        ) { newVisibility ->
             Element.cmdVisibility(newVisibility, commandManager, selectedElements)
             repaint()
         }

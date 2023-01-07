@@ -9,7 +9,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,7 +46,7 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
 
     // List of all the scenes of the edited act
     Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.secondaryVariant).padding(15.dp)) {
-        val (sceneInCreation, setSceneInCreation) = remember { mutableStateOf<SceneData?>(null) withSetter { newValue -> if (newValue != null) viewModel.onEditDone() } }
+        val (sceneInCreation, setSceneInCreation) = remember { settableMutableState<SceneData?>(null) { newValue -> if (newValue != null) viewModel.onEditDone() } }
 
         Card(
             modifier = Modifier.padding(top = 20.dp, end = 20.dp, start = 20.dp).fillMaxWidth(),
@@ -175,9 +174,7 @@ private fun Scenes(
         items(items = viewModel.scenes, key = { it }) { scene ->
             if (viewModel.currentEditScene == scene) {
                 val (tempCurrentEditedScene, setTempCurrentEditScene) = remember {
-                    mutableStateOf(scene) withSetter {
-                        setCurrentEditedScene(it)
-                    }
+                    settableMutableState(scene) { setCurrentEditedScene(it) }
                 }
 
                 EditSceneRow(
