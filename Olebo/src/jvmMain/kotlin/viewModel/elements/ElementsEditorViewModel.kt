@@ -2,7 +2,6 @@ package jdr.exia.viewModel.elements
 
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
@@ -32,11 +31,9 @@ class ElementsEditorViewModel(initialAct: Act?, initialType: TypeElement) {
     val itemListScrollState
         get() = currentTypeViewModel.currentScrollState
 
-    var currentType by settableMutableStateOf(initialType) {
+    var currentType by settableMutableStateOf(initialType) { onEditDone() }
 
-    }
-
-    var selectedAct by mutableStateOf(initialAct)
+    var selectedAct by settableMutableStateOf(initialAct) { onEditDone() }
 
     private val currentTypeViewModel
         get() = typeViewModel.getOrElse(currentType) { ElementViewModel(currentType) }

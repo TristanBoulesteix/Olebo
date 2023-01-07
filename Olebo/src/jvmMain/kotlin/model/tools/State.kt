@@ -1,12 +1,9 @@
 package jdr.exia.model.tools
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.SnapshotMutationPolicy
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.structuralEqualityPolicy
+import androidx.compose.runtime.*
 import kotlin.experimental.ExperimentalTypeInference
 
-@JvmName("settableMutableStateWithSetter")
+@JvmName("settable state")
 fun <T> settableMutableStateOf(
     value: T,
     policy: SnapshotMutationPolicy<T> = structuralEqualityPolicy(),
