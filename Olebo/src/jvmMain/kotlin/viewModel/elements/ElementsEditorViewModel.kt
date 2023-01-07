@@ -13,6 +13,7 @@ import jdr.exia.model.element.Tag
 import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.SimpleResult
 import jdr.exia.model.tools.failure
+import jdr.exia.model.tools.settableMutableStateOf
 import jdr.exia.model.tools.success
 import jdr.exia.model.type.checkedImgPath
 import jdr.exia.model.type.saveImgAndGetPath
@@ -31,7 +32,9 @@ class ElementsEditorViewModel(initialAct: Act?, initialType: TypeElement) {
     val itemListScrollState
         get() = currentTypeViewModel.currentScrollState
 
-    var currentType by mutableStateOf(initialType)
+    var currentType by settableMutableStateOf(initialType) {
+
+    }
 
     var selectedAct by mutableStateOf(initialAct)
 

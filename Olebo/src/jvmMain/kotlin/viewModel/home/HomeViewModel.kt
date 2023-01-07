@@ -8,7 +8,7 @@ import jdr.exia.localization.ST_CONFIRM_DELETE_ACT
 import jdr.exia.localization.StringLocale
 import jdr.exia.localization.get
 import jdr.exia.model.act.Act
-import jdr.exia.model.tools.settableMutableState
+import jdr.exia.model.tools.settableMutableStateOf
 import jdr.exia.view.tools.showConfirmMessage
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -19,7 +19,7 @@ class HomeViewModel {
     var acts by mutableStateOf(actsAsList)
         private set
 
-    var content by settableMutableState(ActsView as HomeContent) { if (it is ActsView) refreshActs() }
+    var content by settableMutableStateOf(ActsView as HomeContent) { if (it is ActsView) refreshActs() }
 
     fun deleteAct(act: Act) = transaction {
         showConfirmMessage(message = StringLocale[ST_CONFIRM_DELETE_ACT], title = StringLocale[STR_DELETE_ACT]) {

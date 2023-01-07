@@ -7,7 +7,7 @@ import androidx.compose.runtime.structuralEqualityPolicy
 import kotlin.experimental.ExperimentalTypeInference
 
 @JvmName("settableMutableStateWithSetter")
-fun <T> settableMutableState(
+fun <T> settableMutableStateOf(
     value: T,
     policy: SnapshotMutationPolicy<T> = structuralEqualityPolicy(),
     setter: (newValue: T) -> T
@@ -15,11 +15,11 @@ fun <T> settableMutableState(
 
 @OptIn(ExperimentalTypeInference::class)
 @OverloadResolutionByLambdaReturnType
-fun <T> settableMutableState(
+fun <T> settableMutableStateOf(
     value: T,
     policy: SnapshotMutationPolicy<T> = structuralEqualityPolicy(),
     setter: (newValue: T) -> Unit
-): MutableState<T> = settableMutableState(value, policy) {
+): MutableState<T> = settableMutableStateOf(value, policy) {
     setter(it)
     it
 }
