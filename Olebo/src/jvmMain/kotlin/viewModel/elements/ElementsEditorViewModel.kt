@@ -87,7 +87,7 @@ class ElementsEditorViewModel(initialAct: Act?, initialType: TypeElement) {
 
     fun startBlueprintCreation() {
         val createdBlueprint = BlueprintData.let {
-            if (currentType == TypeElement.Object) it.defaultObject() else it.defaultCharacter(currentType)
+            if (currentType == TypeElement.Object) it.defaultObject(selectedAct?.id) else it.defaultCharacter(currentType, selectedAct?.id)
         }
 
         currentTypeViewModel.createdData.add(0, createdBlueprint)

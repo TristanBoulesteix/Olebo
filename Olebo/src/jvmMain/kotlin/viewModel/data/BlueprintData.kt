@@ -28,9 +28,9 @@ data class BlueprintData(
     val actId: EntityID<Int>? = null
 ) {
     companion object {
-        fun defaultObject() = BlueprintData("", Image.unspecified)
+        fun defaultObject(actId: EntityID<Int>? = null) = BlueprintData("", Image.unspecified, actId = actId)
 
-        fun defaultCharacter(type: TypeElement) = BlueprintData("", Image.unspecified, 0, 0, type)
+        fun defaultCharacter(type: TypeElement, actId: EntityID<Int>? = null) = BlueprintData("", Image.unspecified, 0, 0, type, actId = actId)
     }
 }
 
