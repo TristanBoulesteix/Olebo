@@ -178,7 +178,7 @@ class ElementsEditorViewModel(initialAct: Act?, initialType: TypeElement) {
 
     private fun Blueprint.setData(data: BlueprintData, deletedTags: Set<String>) {
         type = data.type
-        name = data.name.trimEnd()
+        name = data.name.trim()
 
         if (data.type != TypeElement.Object) {
             healthPoints = data.life!!
