@@ -41,7 +41,7 @@ class ElementsEditorViewModel(initialAct: Act?, initialType: TypeElement) {
     val blueprints: List<BlueprintData> by derivedStateOf {
         val data = (currentTypeViewModel.createdData + currentTypeViewModel.data)
 
-        data.takeIf { selectedAct == null } ?: data.filter { selectedAct?.id in it.actIds }
+        data.takeIf { selectedAct == null } ?: data.filter { selectedAct in it.associatedActs }
     }
 
     val currentEditBlueprint
@@ -83,8 +83,8 @@ class ElementsEditorViewModel(initialAct: Act?, initialType: TypeElement) {
 
     fun startBlueprintCreation() {
         val createdBlueprint = BlueprintData.let {
-            if (currentType == TypeElement.Object) it.defaultObject(selectedAct?.id.toSingletonList())
-            else it.defaultCharacter(currentType, selectedAct?.id.toSingletonList())
+            if (currentType == TypeElement.Object) it.defaultObject(selectedAct.toSingletonList())
+            else it.defaultCharacter(currentType, selectedAct.toSingletonList())
         }
 
         currentTypeViewModel.createdData.add(0, createdBlueprint)
@@ -186,6 +186,6 @@ class ElementsEditorViewModel(initialAct: Act?, initialType: TypeElement) {
         }
 
         tags = (data.tags - deletedTags).map { Tag[it] }.toSizedCollection()
-        associatedAct = (associatedAct + data.actIds.map { Act[it] }).toSet().toSizedCollection()
+        associatedAct = (associatedAct + data.associatedActs.toSet()).toSizedCollection()
     }
 }

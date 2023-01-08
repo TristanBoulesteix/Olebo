@@ -2,6 +2,7 @@ package jdr.exia.viewModel.data
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
+import jdr.exia.model.act.Act
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.getLifeOrNull
@@ -24,13 +25,13 @@ data class BlueprintData(
     val mana: Int? = null,
     val type: TypeElement = TypeElement.Object,
     val tags: List<String> = emptyList(),
-    val actIds: List<EntityID<Int>> = emptyList(),
+    val associatedActs: List<Act> = emptyList(),
     val id: EntityID<Int>? = null
 ) {
     companion object {
-        fun defaultObject(actId: List<EntityID<Int>> = emptyList()) = BlueprintData("", Image.unspecified, actIds = actId)
+        fun defaultObject(associatedActs: List<Act> = emptyList()) = BlueprintData("", Image.unspecified, associatedActs = associatedActs)
 
-        fun defaultCharacter(type: TypeElement, actId: List<EntityID<Int>> = emptyList()) = BlueprintData("", Image.unspecified, 0, 0, type, actIds = actId)
+        fun defaultCharacter(type: TypeElement, associatedActs: List<Act> = emptyList()) = BlueprintData("", Image.unspecified, 0, 0, type, associatedActs = associatedActs)
     }
 }
 
@@ -53,7 +54,7 @@ fun Blueprint.toBlueprintData() = transaction {
         getManaOrNull(),
         type,
         tags.map { it.value },
-        associatedAct.map { it.id },
+        associatedAct.toList(),
         this@toBlueprintData.id
     )
 }
@@ -62,7 +63,7 @@ fun Blueprint.toBlueprintData() = transaction {
 fun BlueprintData.isCharacter() = type in setOf(TypeElement.PJ, TypeElement.PNJ)
 
 fun BlueprintData.isDefault() =
-    id == null && (this == if (type == TypeElement.Object)
+    id == null && (this.copy(associatedActs = emptyList()) == if (type == TypeElement.Object)
         BlueprintData.defaultObject()
     else
         BlueprintData.defaultCharacter(type))
