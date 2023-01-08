@@ -24,13 +24,13 @@ data class BlueprintData(
     val mana: Int? = null,
     val type: TypeElement = TypeElement.Object,
     val tags: List<String> = emptyList(),
-    val id: EntityID<Int>? = null,
-    val actId: EntityID<Int>? = null
+    val actIds: List<EntityID<Int>> = emptyList(),
+    val id: EntityID<Int>? = null
 ) {
     companion object {
-        fun defaultObject(actId: EntityID<Int>? = null) = BlueprintData("", Image.unspecified, actId = actId)
+        fun defaultObject(actId: List<EntityID<Int>> = emptyList()) = BlueprintData("", Image.unspecified, actIds = actId)
 
-        fun defaultCharacter(type: TypeElement, actId: EntityID<Int>? = null) = BlueprintData("", Image.unspecified, 0, 0, type, actId = actId)
+        fun defaultCharacter(type: TypeElement, actId: List<EntityID<Int>> = emptyList()) = BlueprintData("", Image.unspecified, 0, 0, type, actIds = actId)
     }
 }
 
@@ -53,6 +53,7 @@ fun Blueprint.toBlueprintData() = transaction {
         getManaOrNull(),
         type,
         tags.map { it.value },
+        associatedAct.map { it.id },
         this@toBlueprintData.id
     )
 }

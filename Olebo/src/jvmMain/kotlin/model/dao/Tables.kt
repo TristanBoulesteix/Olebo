@@ -30,7 +30,8 @@ val tables
         InstanceTable,
         TagTable,
         BlueprintTagTable,
-        ActTagTable
+        ActTagTable,
+        BlueprintActTable
     )
 
 
@@ -153,7 +154,6 @@ object BlueprintTable : IntIdTable(), Initializable {
     val HP = integer("HP").nullable()
     val MP = integer("MP").nullable()
     val idType = reference("id_type", TypeTable)
-    val associatedAct = reference("associated_act", ActTable).nullable()
 
     override fun initialize() {
         // Pointers
@@ -245,4 +245,11 @@ object ActTagTable : Table() {
     val tag = reference("tag", TagTable)
 
     override val primaryKey = PrimaryKey(act, tag)
+}
+
+object BlueprintActTable : Table() {
+    val blueprint = reference("blueprint", BlueprintTable)
+    val act = reference("act", ActTable)
+
+    override val primaryKey = PrimaryKey(blueprint, act)
 }

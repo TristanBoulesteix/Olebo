@@ -10,10 +10,7 @@ import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Tag
 import jdr.exia.model.element.TypeElement
-import jdr.exia.model.tools.SimpleResult
-import jdr.exia.model.tools.failure
-import jdr.exia.model.tools.settableMutableStateOf
-import jdr.exia.model.tools.success
+import jdr.exia.model.tools.*
 import jdr.exia.model.type.checkedImgPath
 import jdr.exia.model.type.saveImgAndGetPath
 import jdr.exia.model.type.toImgPath
@@ -22,7 +19,6 @@ import jdr.exia.viewModel.data.BlueprintData
 import jdr.exia.viewModel.data.isValid
 import jdr.exia.viewModel.tags.ElementTagHolder
 import org.jetbrains.exposed.dao.id.EntityID
-import org.jetbrains.exposed.sql.SizedCollection
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class ElementsEditorViewModel(initialAct: Act?, initialType: TypeElement) {
@@ -45,7 +41,7 @@ class ElementsEditorViewModel(initialAct: Act?, initialType: TypeElement) {
     val blueprints: List<BlueprintData> by derivedStateOf {
         val data = (currentTypeViewModel.createdData + currentTypeViewModel.data)
 
-        data.takeIf { selectedAct == null } ?: data.filter { it.actId == selectedAct?.id }
+        data.takeIf { selectedAct == null } ?: data.filter { selectedAct?.id in it.actIds }
     }
 
     val currentEditBlueprint
@@ -87,7 +83,8 @@ class ElementsEditorViewModel(initialAct: Act?, initialType: TypeElement) {
 
     fun startBlueprintCreation() {
         val createdBlueprint = BlueprintData.let {
-            if (currentType == TypeElement.Object) it.defaultObject(selectedAct?.id) else it.defaultCharacter(currentType, selectedAct?.id)
+            if (currentType == TypeElement.Object) it.defaultObject(selectedAct?.id.toSingletonList())
+            else it.defaultCharacter(currentType, selectedAct?.id.toSingletonList())
         }
 
         currentTypeViewModel.createdData.add(0, createdBlueprint)
@@ -184,10 +181,11 @@ class ElementsEditorViewModel(initialAct: Act?, initialType: TypeElement) {
         name = data.name.trimEnd()
 
         if (data.type != TypeElement.Object) {
-            HP = data.life!!
-            MP = data.mana!!
+            healthPoints = data.life!!
+            manaPoint = data.mana!!
         }
 
-        tags = SizedCollection((data.tags - deletedTags).map { Tag[it] })
+        tags = (data.tags - deletedTags).map { Tag[it] }.toSizedCollection()
+        associatedAct = (associatedAct + data.actIds.map { Act[it] }).toSet().toSizedCollection()
     }
 }
