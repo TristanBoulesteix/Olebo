@@ -18,9 +18,11 @@ import androidx.compose.ui.zIndex
 import jdr.exia.DeveloperModeManager
 import jdr.exia.SimpleComposable
 import jdr.exia.SimpleFunction
+import jdr.exia.view.tools.preventClickThrough
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.awt.Dimension
 import java.awt.Window
 
@@ -154,13 +156,20 @@ private fun Popup() {
 
     currentPopup.content?.let { popupContent ->
         Box(
-            modifier = Modifier.fillMaxSize().zIndex(1000f).background(Color.Black.copy(alpha = .8f)),
+            modifier = Modifier.fillMaxSize().zIndex(1000f).background(Color.Black.copy(alpha = .8f))
+                .preventClickThrough(),
             contentAlignment = Alignment.Center
         ) {
             Popup(
                 alignment = Alignment.Center,
                 focusable = true,
-                onDismissRequest = { currentPopup.content = null }
+                onDismissRequest = {
+                    runBlocking {
+                        currentPopup.content = null
+                        // Delay is required to prevent incidental clicks
+                        delay(100)
+                    }
+                }
             ) {
                 Card(elevation = 15.dp) {
                     popupContent()
