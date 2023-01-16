@@ -56,7 +56,7 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
         if (playerFrameVisible) {
             PlayerDialog(
                 viewModel,
-                actName = transaction { act.name },
+                actName = act.name,
                 onDispose = { playerFrameVisible = false },
                 getMasterWindowScreen = window::getCurrentScreen
             )
