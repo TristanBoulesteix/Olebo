@@ -21,7 +21,6 @@ import jdr.exia.view.ui.MASTER_WINDOW_SIZE
 import jdr.exia.viewModel.MasterViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Frame.MAXIMIZED_BOTH
 import java.awt.GraphicsConfiguration
 import java.awt.GraphicsDevice
@@ -34,7 +33,7 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
     val viewModel = remember { MasterViewModel(act, scope) }
 
     Window(
-        title = transaction { StringLocale[ST_STR1_DM_WINDOW_NAME, act.name] },
+        title = StringLocale[ST_STR1_DM_WINDOW_NAME, act.name],
         size = MASTER_WINDOW_SIZE,
         minimumSize = MASTER_WINDOW_SIZE,
         placement = WindowPlacement.Maximized
