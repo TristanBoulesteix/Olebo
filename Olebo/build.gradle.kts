@@ -46,6 +46,10 @@ compose.desktop {
             args += listOf("-dev")
         }
 
+        buildTypes.release.proguard {
+            configurationFiles.from(project.file("proguard.pro"))
+        }
+
         nativeDistributions {
             packageName = "Olebo"
             packageVersion = version.toString()

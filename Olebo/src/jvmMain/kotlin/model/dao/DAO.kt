@@ -75,6 +75,7 @@ object DAO : CoroutineScope by CoroutineScope(Dispatchers.IO) {
             }
         }
     } catch (e: Exception) {
+        e.printStackTrace()
         throw DatabaseException(e)
     }
 

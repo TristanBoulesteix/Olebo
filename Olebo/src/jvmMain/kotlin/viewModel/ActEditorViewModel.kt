@@ -1,5 +1,6 @@
 package jdr.exia.viewModel
 
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -24,6 +25,7 @@ import org.jetbrains.exposed.sql.mapLazy
 import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.io.path.deleteIfExists
 
+@Stable
 class ActEditorViewModel(private val act: Act?) {
     private var currentEditPosition by mutableStateOf(-1)
 
