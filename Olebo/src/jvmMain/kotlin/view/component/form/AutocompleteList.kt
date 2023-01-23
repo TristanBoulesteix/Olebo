@@ -40,6 +40,8 @@ fun AutocompleteList(
 
     var textValue by remember { mutableStateOf("") }
 
+    val textValueTrimmed by derivedStateOf { textValue.trim() }
+
     var filterType by remember { mutableStateOf(FilterType.Default) }
 
     val suggestionsListState by rememberUpdatedState(suggestionsList)
@@ -47,22 +49,22 @@ fun AutocompleteList(
 
     val newItem by remember {
         derivedStateOf {
-            val shouldCreateANewItem = textValue.isNotBlank() && suggestionsListState.none {
+            val shouldCreateANewItem = textValueTrimmed.isNotBlank() && suggestionsListState.none {
                 it.equals(
-                    textValue,
+                    textValueTrimmed,
                     ignoreCase = true
                 )
             }
 
-            if (shouldCreateANewItem) SelectableItem(textValue, isNew = true) else null
+            if (shouldCreateANewItem) SelectableItem(textValueTrimmed, isNew = true) else null
         }
     }
 
     val items by remember {
         derivedStateOf {
             suggestionsListState
-                .filter { it.contains(textValue, ignoreCase = true) }
-                .sortedByDescending { it == textValue }
+                .filter { it.contains(textValueTrimmed, ignoreCase = true) }
+                .sortedByDescending { it == textValueTrimmed }
                 .map { SelectableItem(it, it in selectedItemsState) }
                 .let {
                     when (filterType) {
@@ -76,7 +78,7 @@ fun AutocompleteList(
 
     val scrollState = rememberLazyListState()
 
-    LaunchedEffect(filterType, textValue) {
+    LaunchedEffect(filterType, textValueTrimmed) {
         scrollState.scrollToTop()
     }
 

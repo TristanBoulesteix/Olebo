@@ -29,6 +29,7 @@ class ElementTagHolder {
 
     fun deleteTags(tags: List<String>) {
         tagsToDelete += tags
+        tagsToCreate -= tags.toSet()
     }
 
     /**
@@ -37,12 +38,12 @@ class ElementTagHolder {
      * @return A set containing all deleted tags
      */
     fun pushToDatabase(): Set<String> {
-        val setToDelete = tagsToCreate.toSet()
-
-        setToDelete.forEach {
+        tagsToCreate.toSet().forEach {
             if (it !in tagsInDatabase)
                 transaction { Tag.newFrom(it) }
         }
+
+        val setToDelete = tagsToDelete.toSet()
 
         setToDelete.forEach { tag ->
             if (tag !in tagsToCreate)
