@@ -68,7 +68,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
             transaction {
                 val listToSearch = when (blueprintFilter) {
                     BlueprintFilter.ALL -> list
-                    BlueprintFilter.ACT -> list // TODO
+                    BlueprintFilter.ACT -> list.filter { blueprint -> act in blueprint.associatedAct }
                     BlueprintFilter.TAG -> {
                         if (type.isCustom) list
                         else transaction {

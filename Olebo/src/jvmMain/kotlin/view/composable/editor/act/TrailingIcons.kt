@@ -12,6 +12,7 @@ import jdr.exia.localization.STR_ASSOCIATE_BLUEPRINT_AND_SCENARIO
 import jdr.exia.localization.STR_ASSOCIATE_TAGS
 import jdr.exia.localization.StringLocale
 import jdr.exia.localization.get
+import jdr.exia.model.act.Act
 import jdr.exia.view.component.form.TextTrailingIcon
 import jdr.exia.view.composable.editor.TagsAssociation
 import jdr.exia.view.composable.editor.element.ElementsView
@@ -46,7 +47,7 @@ fun IconEditTags(viewModel: ActEditorViewModel) {
 }
 
 @Composable
-fun IconEditAssociatedBlueprints(viewModel: ActEditorViewModel) {
+fun IconEditAssociatedBlueprints(act: Act?) {
     val popup = LocalPopup.current ?: return
 
     TextTrailingIcon(
@@ -60,7 +61,7 @@ fun IconEditAssociatedBlueprints(viewModel: ActEditorViewModel) {
                 ) {
                     ElementsView(
                         title = StringLocale[STR_ASSOCIATE_BLUEPRINT_AND_SCENARIO],
-                        initialAct = viewModel.act
+                        initialAct = act
                     ) {
                         popup.close()
                     }

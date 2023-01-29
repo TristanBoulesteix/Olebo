@@ -154,7 +154,7 @@ private fun Header(viewModel: ActEditorViewModel, act: Act?) {
                 },
                 trailingIcon = {
                     Row(horizontalArrangement = Arrangement.spacedBy(15.dp)) {
-                        IconEditAssociatedBlueprints(viewModel)
+                        IconEditAssociatedBlueprints(act)
                         IconEditTags(viewModel)
                         Spacer(Modifier.padding(end = 2.dp))
                     }
