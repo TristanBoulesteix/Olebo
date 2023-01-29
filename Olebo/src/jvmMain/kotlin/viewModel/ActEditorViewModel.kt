@@ -26,7 +26,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.io.path.deleteIfExists
 
 @Stable
-class ActEditorViewModel(private val act: Act?) {
+class ActEditorViewModel(val act: Act?) {
     private var currentEditPosition by mutableStateOf(-1)
 
     var actName by mutableStateOf(act?.name ?: "")

@@ -54,8 +54,14 @@ fun IconEditAssociatedBlueprints(viewModel: ActEditorViewModel) {
         tooltipMessage = StringLocale[STR_ASSOCIATE_BLUEPRINT_AND_SCENARIO],
         onClick = {
             popup.content = {
-                Surface(Modifier.fillMaxSize(.9f).addRoundedBorder(MaterialTheme.colors.primary), shape = roundedShape) {
-                    ElementsView(title = StringLocale[STR_ASSOCIATE_BLUEPRINT_AND_SCENARIO]) {
+                Surface(
+                    Modifier.fillMaxSize(.9f).addRoundedBorder(MaterialTheme.colors.primary),
+                    shape = roundedShape
+                ) {
+                    ElementsView(
+                        title = StringLocale[STR_ASSOCIATE_BLUEPRINT_AND_SCENARIO],
+                        initialAct = viewModel.act
+                    ) {
                         popup.close()
                     }
                 }
