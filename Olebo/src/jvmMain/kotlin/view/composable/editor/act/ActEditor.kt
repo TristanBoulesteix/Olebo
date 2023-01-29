@@ -30,7 +30,7 @@ import jdr.exia.view.tools.*
 import jdr.exia.view.ui.roundedBottomShape
 import jdr.exia.view.ui.roundedShape
 import jdr.exia.view.ui.roundedTopShape
-import jdr.exia.view.windows.LocalWindow
+import jdr.exia.view.window.LocalWindow
 import jdr.exia.viewModel.ActEditorViewModel
 import java.io.File
 import javax.imageio.ImageIO

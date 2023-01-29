@@ -1,4 +1,4 @@
-package jdr.exia.view.windows.options
+package jdr.exia.view.window.options
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.DpSize

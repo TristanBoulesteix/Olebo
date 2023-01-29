@@ -1,4 +1,4 @@
-package jdr.exia.view.windows
+package jdr.exia.view.window.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +18,8 @@ import jdr.exia.view.composable.master.*
 import jdr.exia.view.menubar.MasterMenuBar
 import jdr.exia.view.tools.screens
 import jdr.exia.view.ui.MASTER_WINDOW_SIZE
+import jdr.exia.view.window.LocalWindow
+import jdr.exia.view.window.Window
 import jdr.exia.viewModel.MasterViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

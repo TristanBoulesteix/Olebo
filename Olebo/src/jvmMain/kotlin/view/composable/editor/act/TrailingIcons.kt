@@ -18,7 +18,7 @@ import jdr.exia.view.composable.editor.TagsAssociation
 import jdr.exia.view.composable.editor.element.ElementsView
 import jdr.exia.view.tools.addRoundedBorder
 import jdr.exia.view.ui.roundedShape
-import jdr.exia.view.windows.LocalPopup
+import jdr.exia.view.window.LocalPopup
 import jdr.exia.viewModel.ActEditorViewModel
 
 @Composable

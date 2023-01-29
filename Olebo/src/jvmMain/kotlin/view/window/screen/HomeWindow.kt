@@ -1,4 +1,4 @@
-package jdr.exia.view.windows
+package jdr.exia.view.window.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -25,12 +25,13 @@ import jdr.exia.view.component.ContentListRow
 import jdr.exia.view.component.HeaderRow
 import jdr.exia.view.component.LazyScrollableColumn
 import jdr.exia.view.component.builder.IconButtonBuilder
-import jdr.exia.view.composable.editor.element.ElementsView
 import jdr.exia.view.composable.editor.act.ActEditorView
+import jdr.exia.view.composable.editor.element.ElementsView
 import jdr.exia.view.menubar.MainMenuBar
 import jdr.exia.view.tools.BorderBuilder
 import jdr.exia.view.tools.toBorderStroke
 import jdr.exia.view.ui.HOME_WINDOWS_SIZE
+import jdr.exia.view.window.Window
 import jdr.exia.viewModel.home.*
 
 @Composable

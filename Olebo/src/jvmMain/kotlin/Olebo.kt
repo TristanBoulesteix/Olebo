@@ -8,8 +8,8 @@ import jdr.exia.model.dao.option.Settings
 import jdr.exia.update.*
 import jdr.exia.view.ui.LocalTrayManager
 import jdr.exia.view.ui.oleboApplication
-import jdr.exia.view.windows.HomeWindow
-import jdr.exia.view.windows.MasterWindow
+import jdr.exia.view.window.screen.HomeWindow
+import jdr.exia.view.window.screen.MasterWindow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

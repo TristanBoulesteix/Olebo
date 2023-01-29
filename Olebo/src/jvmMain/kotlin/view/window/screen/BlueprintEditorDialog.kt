@@ -1,4 +1,4 @@
-package jdr.exia.view.windows
+package jdr.exia.view.window.screen
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

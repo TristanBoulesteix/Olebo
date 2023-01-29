@@ -36,7 +36,7 @@ import jdr.exia.view.tools.toBorderStroke
 import jdr.exia.view.ui.backgroundImageColor
 import jdr.exia.view.ui.roundedBottomShape
 import jdr.exia.view.ui.roundedTopShape
-import jdr.exia.view.windows.LocalPopup
+import jdr.exia.view.window.LocalPopup
 import jdr.exia.viewModel.data.BlueprintData
 import jdr.exia.viewModel.data.isCharacter
 import jdr.exia.viewModel.elements.ElementsEditorViewModel

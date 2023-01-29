@@ -1,4 +1,4 @@
-package jdr.exia.view.windows
+package jdr.exia.view.window
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
