@@ -156,8 +156,8 @@ private fun DrawScope.drawEndBorder(
 }
 
 @Stable
-fun Modifier.addRoundedBorder() =
-    this.border(border = BorderStroke(2.dp, Color.Black), shape = roundedShape)
+fun Modifier.addRoundedBorder(color: Color = Color.Black) =
+    this.border(border = BorderStroke(2.dp, color), shape = roundedShape)
 
 interface EventHandler {
     val event: PointerEvent

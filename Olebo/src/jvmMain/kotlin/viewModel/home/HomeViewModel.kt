@@ -1,5 +1,6 @@
 package jdr.exia.viewModel.home
 
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -12,6 +13,7 @@ import jdr.exia.model.tools.settableMutableStateOf
 import jdr.exia.view.tools.showConfirmMessage
 import org.jetbrains.exposed.sql.transactions.transaction
 
+@Stable
 class HomeViewModel {
     private val actsAsList
         get() = transaction { Act.all().toList() }

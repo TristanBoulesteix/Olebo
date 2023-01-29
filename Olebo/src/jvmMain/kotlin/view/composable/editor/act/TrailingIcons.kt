@@ -1,15 +1,22 @@
 package jdr.exia.view.composable.editor.act
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AddLink
 import androidx.compose.material.icons.outlined.LibraryAdd
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import jdr.exia.localization.STR_ASSOCIATE_BLUEPRINT_AND_SCENARIO
 import jdr.exia.localization.STR_ASSOCIATE_TAGS
 import jdr.exia.localization.StringLocale
 import jdr.exia.localization.get
 import jdr.exia.view.component.form.TextTrailingIcon
 import jdr.exia.view.composable.editor.TagsAssociation
+import jdr.exia.view.composable.editor.element.ElementsView
+import jdr.exia.view.tools.addRoundedBorder
+import jdr.exia.view.ui.roundedShape
 import jdr.exia.view.windows.LocalPopup
 import jdr.exia.viewModel.ActEditorViewModel
 
@@ -47,9 +54,11 @@ fun IconEditAssociatedBlueprints(viewModel: ActEditorViewModel) {
         tooltipMessage = StringLocale[STR_ASSOCIATE_BLUEPRINT_AND_SCENARIO],
         onClick = {
             popup.content = {
-/*                ElementsView(title = StringLocale[STR_ASSOCIATE_BLUEPRINT_AND_SCENARIO]) {
-                    popup.close()
-                }*/
+                Surface(Modifier.fillMaxSize(.9f).addRoundedBorder(MaterialTheme.colors.primary), shape = roundedShape) {
+                    ElementsView(title = StringLocale[STR_ASSOCIATE_BLUEPRINT_AND_SCENARIO]) {
+                        popup.close()
+                    }
+                }
             }
         }
     )

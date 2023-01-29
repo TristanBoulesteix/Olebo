@@ -1,9 +1,6 @@
 package jdr.exia.viewModel
 
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
@@ -42,6 +39,7 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.jetbrains.exposed.sql.transactions.transaction
 import javax.imageio.ImageIO
 
+@Stable
 class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
     var blueprintEditorDialogVisible by mutableStateOf(false)
         private set

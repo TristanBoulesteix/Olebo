@@ -1,5 +1,6 @@
 package jdr.exia.viewModel.elements
 
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -21,6 +22,7 @@ import jdr.exia.viewModel.tags.ElementTagHolder
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.transaction
 
+@Stable
 class ElementsEditorViewModel(initialAct: Act?, initialType: TypeElement) {
     private val typeViewModel = TypeElement.values().associateWith(::ElementViewModel)
 

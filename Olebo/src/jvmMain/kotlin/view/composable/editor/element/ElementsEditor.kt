@@ -52,13 +52,17 @@ import javax.swing.filechooser.FileNameExtensionFilter
  * Panel to view, create and edit elements
  */
 @Composable
-fun ElementsView(initialAct: Act? = null, onDone: () -> Unit) = Column(
+fun ElementsView(initialAct: Act? = null, title: String? = null, onDone: () -> Unit) = Column(
     horizontalAlignment = Alignment.CenterHorizontally,
     modifier = Modifier.background(MaterialTheme.colors.secondary)
 ) {
     val tabs = remember { listOf(TypeElement.Object, TypeElement.PJ, TypeElement.PNJ) }
 
     val contentViewModel = remember(initialAct) { ElementsEditorViewModel(initialAct, tabs.first()) }
+
+    if (title != null) {
+        Title(title)
+    }
 
     ActDropDown(contentViewModel.selectedAct, contentViewModel::selectedAct::set)
 
@@ -130,6 +134,14 @@ private fun Content(viewModel: ElementsEditorViewModel, innerPadding: PaddingVal
             }
         }
     }
+
+@Composable
+private fun Title(title: String) = Box(
+    Modifier.fillMaxWidth().padding(vertical = 10.dp),
+    contentAlignment = Alignment.Center
+) {
+    Text(title, fontWeight = FontWeight.Bold)
+}
 
 @Composable
 private fun HeaderContent(

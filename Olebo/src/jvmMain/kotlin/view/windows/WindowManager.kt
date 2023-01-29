@@ -171,7 +171,7 @@ private fun Popup() {
                     }
                 }
             ) {
-                Card(elevation = 15.dp) {
+                Card(elevation = 15.dp, backgroundColor = Color.Transparent) {
                     popupContent()
                 }
             }
