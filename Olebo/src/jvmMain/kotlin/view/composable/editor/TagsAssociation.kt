@@ -1,6 +1,9 @@
 package jdr.exia.view.composable.editor
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -25,7 +28,7 @@ fun TagsAssociation(
     selection: List<String>,
     tags: Iterable<String>,
     onConfirm: (newTags: List<String>, tagsToDelete: List<String>, selectedTags: List<String>) -> Unit
-) = Column(Modifier.fillMaxSize(.8f), horizontalAlignment = Alignment.CenterHorizontally) {
+) = Column(horizontalAlignment = Alignment.CenterHorizontally) {
     Text(
         text = buildAnnotatedString {
             append(StringLocale[STR_MANAGE_TAGS])

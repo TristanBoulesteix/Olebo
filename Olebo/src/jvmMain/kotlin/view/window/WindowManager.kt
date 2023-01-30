@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.isCtrlPressed
 import androidx.compose.ui.input.key.type
@@ -16,9 +17,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import androidx.compose.ui.zIndex
 import jdr.exia.DeveloperModeManager
-import jdr.exia.SimpleComposable
 import jdr.exia.SimpleFunction
 import jdr.exia.view.tools.preventClickThrough
+import jdr.exia.view.ui.roundedShape
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -27,8 +28,6 @@ import java.awt.Dimension
 import java.awt.Window
 
 val LocalWindow = staticCompositionLocalOf<OleboWindowStatus?> { null }
-
-val LocalPopup = staticCompositionLocalOf<PopupManager?> { null }
 
 @Immutable
 sealed interface OleboWindowStatus {
@@ -39,15 +38,6 @@ sealed interface OleboWindowStatus {
     fun addSettingsChangedListener(action: SimpleFunction)
 
     fun triggerSettingsChanged()
-}
-
-@Stable
-sealed interface PopupManager {
-    var content: SimpleComposable?
-
-    fun close() {
-        content = null
-    }
 }
 
 @Immutable
@@ -68,7 +58,7 @@ private class OleboWindowStatusImpl(
 
 @Stable
 private class PopupManagerImpl : PopupManager {
-    override var content by mutableStateOf<SimpleComposable?>(null)
+    override var content by mutableStateOf<PopupContent?>(null)
 
     override fun equals(other: Any?): Boolean = this === other
 
@@ -154,6 +144,16 @@ fun ApplicationScope.Window(
 private fun Popup() {
     val currentPopup = LocalPopup.current!!
 
+    val currentPopupContext: PopupContext = remember {
+        object : PopupContext {
+            override var backgroundColor by mutableStateOf(Color.Transparent)
+
+            override var shape: Shape by mutableStateOf(roundedShape)
+
+            override var fractionContent by mutableStateOf(.9f)
+        }
+    }
+
     currentPopup.content?.let { popupContent ->
         Box(
             modifier = Modifier.fillMaxSize().zIndex(1000f).background(Color.Black.copy(alpha = .8f))
@@ -171,8 +171,13 @@ private fun Popup() {
                     }
                 }
             ) {
-                Card(elevation = 15.dp, backgroundColor = Color.Transparent) {
-                    popupContent()
+                Card(
+                    elevation = 15.dp,
+                    backgroundColor = currentPopupContext.backgroundColor,
+                    shape = currentPopupContext.shape,
+                    modifier = Modifier.fillMaxSize(currentPopupContext.fractionContent)
+                ) {
+                    popupContent(currentPopupContext)
                 }
             }
         }
