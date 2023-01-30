@@ -85,7 +85,7 @@ private fun FilterOptions(currentFilter: BlueprintFilter, setCurrentFilter: (Blu
                     showFilterOptions = false
                     setCurrentFilter(it)
                 },
-                text = it.name,
+                text = it.value,
                 selected = currentFilter == it
             )
         }
