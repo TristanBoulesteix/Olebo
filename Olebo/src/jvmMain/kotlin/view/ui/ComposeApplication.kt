@@ -33,9 +33,9 @@ fun oleboApplication(content: ApplicationContent) = application(exitProcessOnExi
         CompositionLocalProvider(LocalTrayManager provides trayManager) {
             content()
         }
-    }
 
-    Tray(trayManager.trayState, trayManager.trayHint)
+        Tray(trayManager.trayState, trayManager.trayHint)
+    }
 }
 
 @Composable
