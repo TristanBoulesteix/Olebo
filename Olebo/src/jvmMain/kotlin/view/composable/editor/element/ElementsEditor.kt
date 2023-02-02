@@ -5,10 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
@@ -136,11 +133,13 @@ private fun Content(viewModel: ElementsEditorViewModel, innerPadding: PaddingVal
     }
 
 @Composable
-private fun Title(title: String) = Box(
+private fun Title(title: String) = Surface(
     Modifier.fillMaxWidth().padding(vertical = 10.dp),
-    contentAlignment = Alignment.Center
+    color = MaterialTheme.colors.secondary
 ) {
-    Text(title, fontWeight = FontWeight.Bold)
+    Box(contentAlignment = Alignment.Center) {
+        Text(title, fontWeight = FontWeight.Bold)
+    }
 }
 
 @Composable

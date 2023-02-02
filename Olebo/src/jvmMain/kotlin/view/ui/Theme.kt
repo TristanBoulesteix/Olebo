@@ -19,6 +19,7 @@ private val darkColorPalette
         primaryVariant = Color(0, 31, 153),
         secondaryVariant = Color.Black,
         secondary = Color(0, 48, 125),
+        onSecondary = Color.White,
         background = Color.DarkGray
     )
 
