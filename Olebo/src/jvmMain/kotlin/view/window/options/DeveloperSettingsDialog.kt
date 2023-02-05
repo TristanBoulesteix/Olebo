@@ -1,6 +1,12 @@
 package jdr.exia.view.window.options
 
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.material.Button
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -10,6 +16,8 @@ import fr.olebo.sharescene.UrlProtocol
 import fr.olebo.sharescene.domain
 import fr.olebo.sharescene.security
 import jdr.exia.model.dao.option.Preferences
+import jdr.exia.model.dao.reset
+import jdr.exia.model.dao.restart
 import jdr.exia.view.component.form.DropdownMenu
 import jdr.exia.view.component.form.LabeledTextField
 
@@ -32,6 +40,16 @@ fun DeveloperSettingsDialog(onCloseRequest: () -> Unit) {
         }
     ) {
         ShareSceneSection(data = settings, updateData = { settings = it })
+        Spacer(Modifier.height(10.dp))
+        SettingsSection("Reset") {
+            Button(
+                onClick = {
+                    reset()
+                    restart()
+                },
+                content = { Text("Reset & restart", color = Color.Red) }
+            )
+        }
     }
 }
 
