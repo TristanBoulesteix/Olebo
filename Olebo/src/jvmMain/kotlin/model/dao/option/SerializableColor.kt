@@ -20,7 +20,6 @@ sealed class SerializableColor(
     @Serializable(with = ColorAsStringSerializer::class) val borderColor: Color
 ) {
     companion object {
-        @OptIn(ExperimentalSerializationApi::class)
         operator fun get(key: String) = try {
             Json.decodeFromString<SerializableColor>(key)
         } catch (e: Exception) {
@@ -73,7 +72,6 @@ sealed class SerializableColor(
     /**
      * Encode a [SerializableColor] to json [String] to be uploaded to the database
      */
-    @OptIn(ExperimentalSerializationApi::class)
     fun encode() = Json.encodeToString(this)
 
     override fun toString() = name
