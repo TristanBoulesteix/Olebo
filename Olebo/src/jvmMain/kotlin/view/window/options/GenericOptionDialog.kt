@@ -57,7 +57,7 @@ fun GenericOptionDialog(
 ) {
     val dialogScope = this
 
-    Card(modifier = Modifier.fillMaxSize()) {
+    Card {
         Column {
             content(ScopeImpl(dialogScope, this))
             Spacer(Modifier.height(10.dp))

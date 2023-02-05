@@ -6,6 +6,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,7 +26,7 @@ import javax.swing.JColorChooser
 
 @Composable
 fun SettingsDialog(onCloseRequest: () -> Unit) {
-    val state = rememberDialogState(size = DpSize(580.dp, 635.dp))
+    val state = rememberDialogState(size = DpSize(580.dp, Dp.Unspecified))
 
     val originalSettings = remember { dataFromSettings }
 

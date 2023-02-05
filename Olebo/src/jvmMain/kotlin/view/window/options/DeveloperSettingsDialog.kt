@@ -1,6 +1,7 @@
 package jdr.exia.view.window.options
 
 import androidx.compose.runtime.*
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.rememberDialogState
@@ -14,7 +15,7 @@ import jdr.exia.view.component.form.LabeledTextField
 
 @Composable
 fun DeveloperSettingsDialog(onCloseRequest: () -> Unit) {
-    val state = rememberDialogState(size = DpSize(580.dp, 635.dp))
+    val state = rememberDialogState(size = DpSize(580.dp, Dp.Unspecified))
 
     var settings by remember { mutableStateOf(DeveloperSettingsData()) }
 
