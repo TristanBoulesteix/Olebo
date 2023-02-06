@@ -26,4 +26,8 @@ class Act(id: EntityID<Int>) : Entity<Int>(id) {
 
         super.delete()
     }
+
+    override fun equals(other: Any?): Boolean = other is Act && id == other.id
+
+    override fun hashCode(): Int = id.hashCode()
 }

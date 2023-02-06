@@ -81,8 +81,11 @@ private fun FilterOptions(currentFilter: BlueprintFilter, setCurrentFilter: (Blu
 
         availableFilters.forEach {
             LabeledRadioMenuItem(
-                onClick = { setCurrentFilter(it) },
-                text = it.name,
+                onClick = {
+                    showFilterOptions = false
+                    setCurrentFilter(it)
+                },
+                text = it.value,
                 selected = currentFilter == it
             )
         }

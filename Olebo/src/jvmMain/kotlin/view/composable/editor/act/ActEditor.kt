@@ -1,4 +1,4 @@
-package jdr.exia.view.composable.editor
+package jdr.exia.view.composable.editor.act
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -9,7 +9,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,15 +25,12 @@ import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.model.type.imageFromPath
 import jdr.exia.view.component.*
 import jdr.exia.view.component.builder.IconButtonBuilder
-import jdr.exia.view.component.builder.ImageButtonBuilder
 import jdr.exia.view.component.dialog.MessageDialog
-import jdr.exia.view.component.form.TextTrailingIcon
 import jdr.exia.view.tools.*
 import jdr.exia.view.ui.roundedBottomShape
 import jdr.exia.view.ui.roundedShape
 import jdr.exia.view.ui.roundedTopShape
-import jdr.exia.view.windows.LocalPopup
-import jdr.exia.view.windows.LocalWindow
+import jdr.exia.view.window.LocalWindow
 import jdr.exia.viewModel.ActEditorViewModel
 import java.io.File
 import javax.imageio.ImageIO
@@ -50,7 +46,7 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
 
     // List of all the scenes of the edited act
     Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.secondaryVariant).padding(15.dp)) {
-        val (sceneInCreation, setSceneInCreation) = remember { mutableStateOf<SceneData?>(null) withSetter { newValue -> if (newValue != null) viewModel.onEditDone() } }
+        val (sceneInCreation, setSceneInCreation) = remember { settableMutableStateOf<SceneData?>(null) { newValue -> if (newValue != null) viewModel.onEditDone() } }
 
         Card(
             modifier = Modifier.padding(top = 20.dp, end = 20.dp, start = 20.dp).fillMaxWidth(),
@@ -70,7 +66,7 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
                     )
                 } else {
                     listOf(
-                       IconButtonBuilder(
+                        IconButtonBuilder(
                             content = Icons.Outlined.Done,
                             tooltip = StringLocale[STR_CONFIRM_CREATE_SCENE],
                             onClick = {
@@ -146,8 +142,6 @@ private fun Header(viewModel: ActEditorViewModel, act: Act?) {
         val roundedShape = RoundedCornerShape(25)
 
         Surface(color = Color.Transparent, contentColor = MaterialTheme.colors.onSurface) {
-            val popup = LocalPopup.current!!
-
             OutlinedTextField(
                 value = viewModel.actName,
                 onValueChange = { viewModel.actName = it },
@@ -159,25 +153,11 @@ private fun Header(viewModel: ActEditorViewModel, act: Act?) {
                     if (viewModel.actName.isEmpty()) Text(text = act?.name ?: StringLocale[STR_INSERT_ACT_NAME])
                 },
                 trailingIcon = {
-                    TextTrailingIcon(
-                        icon = Icons.Outlined.LibraryAdd,
-                        tooltipMessage = StringLocale[STR_ASSOCIATE_TAGS],
-                        onClick = {
-                            popup.content = {
-                                TagsAssociation(
-                                    nameOfAssociated = viewModel.actName,
-                                    selection = viewModel.tags,
-                                    tags = viewModel.tagsAsString,
-                                    onConfirm = { newTags, tagsToDelete, selectedTags ->
-                                        viewModel.createTags(newTags)
-                                        viewModel.deleteTags(tagsToDelete)
-                                        viewModel.tags = selectedTags
-                                        popup.close()
-                                    }
-                                )
-                            }
-                        }
-                    )
+                    Row(horizontalArrangement = Arrangement.spacedBy(15.dp)) {
+                        IconEditAssociatedBlueprints(act)
+                        IconEditTags(viewModel)
+                        Spacer(Modifier.padding(end = 2.dp))
+                    }
                 }
             )
         }
@@ -194,9 +174,7 @@ private fun Scenes(
         items(items = viewModel.scenes, key = { it }) { scene ->
             if (viewModel.currentEditScene == scene) {
                 val (tempCurrentEditedScene, setTempCurrentEditScene) = remember {
-                    mutableStateOf(scene) withSetter {
-                        setCurrentEditedScene(it)
-                    }
+                    settableMutableStateOf(scene) { setCurrentEditedScene(it) }
                 }
 
                 EditSceneRow(

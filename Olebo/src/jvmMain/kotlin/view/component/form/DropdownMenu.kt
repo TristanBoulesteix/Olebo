@@ -11,12 +11,13 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun <T : Any> DropdownMenu(
+    modifier: Modifier = Modifier,
     items: List<T>,
     selectedItem: T,
     onItemSelected: (T) -> Unit,
     selectedContent: @Composable RowScope.(T) -> Unit = { Text(it.toString()) },
     label: String? = null
-) = Row(verticalAlignment = Alignment.CenterVertically) {
+) = Row(verticalAlignment = Alignment.CenterVertically, modifier = modifier) {
     if (label != null) {
         Text(label)
         Spacer(Modifier.width(10.dp))

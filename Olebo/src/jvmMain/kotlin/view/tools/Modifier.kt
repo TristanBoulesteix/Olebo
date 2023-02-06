@@ -2,11 +2,15 @@ package jdr.exia.view.tools
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -152,8 +156,8 @@ private fun DrawScope.drawEndBorder(
 }
 
 @Stable
-fun Modifier.addRoundedBorder() =
-    this.border(border = BorderStroke(2.dp, Color.Black), shape = roundedShape)
+fun Modifier.addRoundedBorder(color: Color = Color.Black) =
+    this.border(border = BorderStroke(2.dp, color), shape = roundedShape)
 
 interface EventHandler {
     val event: PointerEvent
@@ -217,3 +221,7 @@ fun Modifier.onMouseDrag(onDrag: EventHandler.(startOffset: Offset, endOffset: O
         }
     }
 }
+
+@Stable
+fun Modifier.preventClickThrough() =
+    composed { clickable(indication = null, interactionSource = remember { MutableInteractionSource() }) {} }

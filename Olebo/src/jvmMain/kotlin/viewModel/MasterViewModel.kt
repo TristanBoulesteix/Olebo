@@ -1,9 +1,6 @@
 package jdr.exia.viewModel
 
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
@@ -29,7 +26,7 @@ import jdr.exia.model.element.Layer
 import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.callCommandManager
 import jdr.exia.model.tools.doIfContainsSingle
-import jdr.exia.model.tools.withSetter
+import jdr.exia.model.tools.settableMutableStateOf
 import jdr.exia.model.type.contains
 import jdr.exia.model.type.inputStreamFromString
 import jdr.exia.service.socketClient
@@ -42,13 +39,14 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.jetbrains.exposed.sql.transactions.transaction
 import javax.imageio.ImageIO
 
+@Stable
 class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
     var blueprintEditorDialogVisible by mutableStateOf(false)
         private set
 
     var confirmClearElement by mutableStateOf(false)
 
-    var currentScene by mutableStateOf(transaction { act.currentScene }) withSetter {
+    var currentScene by settableMutableStateOf(transaction { act.currentScene }) {
         transaction { act.currentScene = it }
     }
 
@@ -70,9 +68,12 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
             transaction {
                 val listToSearch = when (blueprintFilter) {
                     BlueprintFilter.ALL -> list
-                    BlueprintFilter.ACT -> list // TODO
+                    BlueprintFilter.ACT -> {
+                        if (!type.isCustom) list
+                        else list.filter { blueprint -> act in blueprint.associatedAct }
+                    }
                     BlueprintFilter.TAG -> {
-                        if (type.isCustom) list
+                        if (!type.isCustom) list
                         else transaction {
                             val actTags = act.tags.toSet()
 

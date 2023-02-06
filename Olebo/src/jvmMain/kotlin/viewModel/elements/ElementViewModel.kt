@@ -10,6 +10,7 @@ import jdr.exia.viewModel.data.toBlueprintData
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.transaction
 
+@Stable
 class ElementViewModel(type: TypeElement) {
     val currentScrollState = LazyListState()
 

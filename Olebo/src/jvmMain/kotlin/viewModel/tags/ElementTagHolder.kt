@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import jdr.exia.model.dao.TagTable
 import jdr.exia.model.element.Tag
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -28,6 +29,7 @@ class ElementTagHolder {
 
     fun deleteTags(tags: List<String>) {
         tagsToDelete += tags
+        tagsToCreate -= tags.toSet()
     }
 
     /**
@@ -36,16 +38,16 @@ class ElementTagHolder {
      * @return A set containing all deleted tags
      */
     fun pushToDatabase(): Set<String> {
-        val setToDelete = tagsToCreate.toSet()
-
-        setToDelete.forEach {
+        tagsToCreate.toSet().forEach {
             if (it !in tagsInDatabase)
                 transaction { Tag.newFrom(it) }
         }
 
-        setToDelete.forEach {
-            if (it !in tagsToCreate)
-                transaction { TagTable.deleteWhere { TagTable.id eq it } }
+        val setToDelete = tagsToDelete.toSet()
+
+        setToDelete.forEach { tag ->
+            if (tag !in tagsToCreate)
+                transaction { TagTable.deleteWhere { TagTable.id eq tag } }
         }
 
         return setToDelete

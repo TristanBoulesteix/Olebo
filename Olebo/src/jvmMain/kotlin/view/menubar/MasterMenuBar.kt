@@ -13,7 +13,7 @@ import jdr.exia.localization.*
 import jdr.exia.model.act.Scene
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.element.Element
-import jdr.exia.model.tools.withSetter
+import jdr.exia.model.tools.settableMutableStateOf
 import jdr.exia.viewModel.MasterViewModel
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -54,7 +54,7 @@ fun FrameWindowScope.MasterMenuBar(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun MenuBarScope.ToolsMenu(viewModel: MasterViewModel) = Menu(text = StringLocale[STR_TOOLS], mnemonic = 't') {
-    var cursorEnabled by remember { mutableStateOf(Settings.cursorEnabled) withSetter { Settings.cursorEnabled = it } }
+    var cursorEnabled by remember { settableMutableStateOf(Settings.cursorEnabled) { Settings.cursorEnabled = it } }
 
     CheckboxItem(
         text = StringLocale[STR_ENABLE_CURSOR],

@@ -1,4 +1,4 @@
-package jdr.exia.view.windows
+package jdr.exia.view.window.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,10 +18,11 @@ import jdr.exia.view.composable.master.*
 import jdr.exia.view.menubar.MasterMenuBar
 import jdr.exia.view.tools.screens
 import jdr.exia.view.ui.MASTER_WINDOW_SIZE
+import jdr.exia.view.window.LocalWindow
+import jdr.exia.view.window.Window
 import jdr.exia.viewModel.MasterViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Frame.MAXIMIZED_BOTH
 import java.awt.GraphicsConfiguration
 import java.awt.GraphicsDevice
@@ -34,7 +35,7 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
     val viewModel = remember { MasterViewModel(act, scope) }
 
     Window(
-        title = transaction { StringLocale[ST_STR1_DM_WINDOW_NAME, act.name] },
+        title = StringLocale[ST_STR1_DM_WINDOW_NAME, act.name],
         size = MASTER_WINDOW_SIZE,
         minimumSize = MASTER_WINDOW_SIZE,
         placement = WindowPlacement.Maximized
@@ -56,7 +57,7 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
         if (playerFrameVisible) {
             PlayerDialog(
                 viewModel,
-                actName = transaction { act.name },
+                actName = act.name,
                 onDispose = { playerFrameVisible = false },
                 getMasterWindowScreen = window::getCurrentScreen
             )
@@ -87,7 +88,7 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
         MainContent(viewModel = viewModel)
 
         if (viewModel.blueprintEditorDialogVisible) {
-            BlueprintEditorDialog(onCloseRequest = viewModel::hideBlueprintEditor)
+            BlueprintEditorDialog(onCloseRequest = viewModel::hideBlueprintEditor, currentAct = viewModel.act)
         }
 
         if (viewModel.confirmClearElement) {

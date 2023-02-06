@@ -1,14 +1,11 @@
-package jdr.exia.view.composable.editor
+package jdr.exia.view.composable.editor.element
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
@@ -20,6 +17,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import jdr.exia.localization.*
+import jdr.exia.model.act.Act
 import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.success
 import jdr.exia.model.type.Image
@@ -27,6 +25,7 @@ import jdr.exia.view.component.*
 import jdr.exia.view.component.builder.*
 import jdr.exia.view.component.form.IntTextField
 import jdr.exia.view.component.form.TextTrailingIcon
+import jdr.exia.view.composable.editor.TagsAssociation
 import jdr.exia.view.tools.BorderBuilder
 import jdr.exia.view.tools.MessageType
 import jdr.exia.view.tools.showMessage
@@ -34,7 +33,7 @@ import jdr.exia.view.tools.toBorderStroke
 import jdr.exia.view.ui.backgroundImageColor
 import jdr.exia.view.ui.roundedBottomShape
 import jdr.exia.view.ui.roundedTopShape
-import jdr.exia.view.windows.LocalPopup
+import jdr.exia.view.window.LocalPopup
 import jdr.exia.viewModel.data.BlueprintData
 import jdr.exia.viewModel.data.isCharacter
 import jdr.exia.viewModel.elements.ElementsEditorViewModel
@@ -46,17 +45,29 @@ import javax.imageio.ImageIO
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
+/**
+ * Panel to view, create and edit elements
+ */
 @Composable
-fun ElementsView(onDone: () -> Unit) {
+fun ElementsView(initialAct: Act? = null, title: String? = null, onDone: () -> Unit) = Column(
+    horizontalAlignment = Alignment.CenterHorizontally,
+    modifier = Modifier.background(MaterialTheme.colors.secondary)
+) {
     val tabs = remember { listOf(TypeElement.Object, TypeElement.PJ, TypeElement.PNJ) }
 
-    val contentViewModel = remember { ElementsEditorViewModel(tabs.first()) }
+    val contentViewModel = remember(initialAct) { ElementsEditorViewModel(initialAct, tabs.first()) }
+
+    if (title != null) {
+        Title(title)
+    }
+
+    ActDropDown(contentViewModel.selectedAct, contentViewModel::selectedAct::set)
 
     TabPanel(
         backgroundColor = MaterialTheme.colors.secondaryVariant,
         tabs = tabs,
         onTabChanged = { contentViewModel.currentType = it },
-        headerTabOption = HeaderTabOptions(backgroundColor = MaterialTheme.colors.secondary),
+        headerTabOption = HeaderTabOptions(backgroundColor = MaterialTheme.colors.secondary, paddingHeight = 8.dp),
         content = { currentTab, padding ->
             Content(
                 viewModel = contentViewModel,
@@ -120,6 +131,16 @@ private fun Content(viewModel: ElementsEditorViewModel, innerPadding: PaddingVal
             }
         }
     }
+
+@Composable
+private fun Title(title: String) = Surface(
+    Modifier.fillMaxWidth().padding(vertical = 10.dp),
+    color = MaterialTheme.colors.secondary
+) {
+    Box(contentAlignment = Alignment.Center) {
+        Text(title, fontWeight = FontWeight.Bold)
+    }
+}
 
 @Composable
 private fun HeaderContent(

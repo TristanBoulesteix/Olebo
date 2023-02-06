@@ -30,7 +30,8 @@ val tables
         InstanceTable,
         TagTable,
         BlueprintTagTable,
-        ActTagTable
+        ActTagTable,
+        BlueprintActTable
     )
 
 
@@ -227,7 +228,7 @@ object SizeTable : EnumInitializable<SizeElement>(enumValues()) {
 }
 
 object TagTable : IdTable<String>() {
-    override val id =  varchar("tagValue", 40).entityId()
+    override val id = varchar("tagValue", 40).entityId()
 
     override val primaryKey = PrimaryKey(id)
 }
@@ -244,4 +245,11 @@ object ActTagTable : Table() {
     val tag = reference("tag", TagTable)
 
     override val primaryKey = PrimaryKey(act, tag)
+}
+
+object BlueprintActTable : Table() {
+    val blueprint = reference("blueprint", BlueprintTable)
+    val act = reference("act", ActTable)
+
+    override val primaryKey = PrimaryKey(blueprint, act)
 }

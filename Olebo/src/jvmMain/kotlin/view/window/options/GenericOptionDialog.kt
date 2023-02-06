@@ -1,4 +1,4 @@
-package jdr.exia.view.windows.options
+package jdr.exia.view.window.options
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -57,7 +57,7 @@ fun GenericOptionDialog(
 ) {
     val dialogScope = this
 
-    Card(modifier = Modifier.fillMaxSize()) {
+    Card {
         Column {
             content(ScopeImpl(dialogScope, this))
             Spacer(Modifier.height(10.dp))

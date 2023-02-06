@@ -28,9 +28,9 @@ import jdr.exia.view.component.dialog.LoadingDialog
 import jdr.exia.view.component.dialog.MessageDialog
 import jdr.exia.view.tools.windowAncestor
 import jdr.exia.view.ui.LocalTheme
-import jdr.exia.view.windows.LocalWindow
-import jdr.exia.view.windows.options.DeveloperSettingsDialog
-import jdr.exia.view.windows.options.SettingsDialog
+import jdr.exia.view.window.LocalWindow
+import jdr.exia.view.window.options.DeveloperSettingsDialog
+import jdr.exia.view.window.options.SettingsDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope

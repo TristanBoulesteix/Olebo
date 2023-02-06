@@ -2,6 +2,8 @@ package jdr.exia.model.element
 
 import jdr.exia.localization.StringLocale
 import jdr.exia.localization.get
+import jdr.exia.model.act.Act
+import jdr.exia.model.dao.BlueprintActTable
 import jdr.exia.model.dao.BlueprintTable
 import jdr.exia.model.dao.BlueprintTagTable
 import jdr.exia.model.dao.InstanceTable
@@ -17,7 +19,6 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
 
-@Suppress("PropertyName")
 class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
     companion object : EntityClass<Int, Blueprint>(BlueprintTable)
 
@@ -29,8 +30,10 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
 
     var tags by Tag via BlueprintTagTable
 
-    var HP by statsDelegate(::maxLife)
-    var MP by statsDelegate(::maxMana)
+    var associatedAct by Act via BlueprintActTable
+
+    var healthPoints by statsDelegate(::maxLife)
+    var manaPoint by statsDelegate(::maxMana)
 
     var type
         get() = typeEntity.type

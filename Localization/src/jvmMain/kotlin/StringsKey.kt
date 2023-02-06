@@ -180,6 +180,10 @@ const val STR_MANAGE_TAGS = "manage_tags_of"
 const val STR_SEARCH_CREATE_TAG = "search_create_tag"
 const val STR_ASSOCIATE_TAGS = "associate_tags"
 const val STR_CLOSE_VALIDATE = "close_validate"
+const val STR_ASSOCIATE_BLUEPRINT_AND_SCENARIO = "associate_blueprint_scenario"
+const val STR_FILTER_BLUEPRINT_ALL = "filter_blueprint_all"
+const val STR_FILTER_BLUEPRINT_WITH_ACT = "filter_blueprint_act"
+const val STR_FILTER_BLUEPRINT_WITH_TAG = "filter_blueprint_tag"
 
 // -- Sentences
 

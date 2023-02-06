@@ -9,7 +9,7 @@ import androidx.compose.ui.window.ApplicationScope
 import com.jthemedetecor.OsThemeDetector
 import jdr.exia.model.dao.option.Preferences
 import jdr.exia.model.dao.option.ThemeMode
-import jdr.exia.model.tools.withSetter
+import jdr.exia.model.tools.settableMutableStateOf
 import java.util.function.Consumer
 
 @Stable
@@ -19,6 +19,7 @@ private val darkColorPalette
         primaryVariant = Color(0, 31, 153),
         secondaryVariant = Color.Black,
         secondary = Color(0, 48, 125),
+        onSecondary = Color.White,
         background = Color.DarkGray
     )
 
@@ -35,9 +36,7 @@ private val osThemeDetector
     get() = OsThemeDetector.getDetector()
 
 class OleboTheme(themeMode: ThemeMode) {
-    var themeMode by mutableStateOf(themeMode) withSetter {
-        Preferences.themeMode = it
-    }
+    var themeMode by settableMutableStateOf(themeMode) { Preferences.themeMode = it }
 }
 
 val LocalTheme = staticCompositionLocalOf { OleboTheme(Preferences.themeMode) }

@@ -1,18 +1,17 @@
 package jdr.exia.viewModel.elements
 
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import jdr.exia.localization.*
+import jdr.exia.model.act.Act
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.Element
 import jdr.exia.model.element.Tag
 import jdr.exia.model.element.TypeElement
-import jdr.exia.model.tools.SimpleResult
-import jdr.exia.model.tools.failure
-import jdr.exia.model.tools.success
+import jdr.exia.model.tools.*
 import jdr.exia.model.type.checkedImgPath
 import jdr.exia.model.type.saveImgAndGetPath
 import jdr.exia.model.type.toImgPath
@@ -21,16 +20,18 @@ import jdr.exia.viewModel.data.BlueprintData
 import jdr.exia.viewModel.data.isValid
 import jdr.exia.viewModel.tags.ElementTagHolder
 import org.jetbrains.exposed.dao.id.EntityID
-import org.jetbrains.exposed.sql.SizedCollection
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class ElementsEditorViewModel(initialType: TypeElement) {
+@Stable
+class ElementsEditorViewModel(initialAct: Act?, initialType: TypeElement) {
     private val typeViewModel = TypeElement.values().associateWith(::ElementViewModel)
 
     val itemListScrollState
         get() = currentTypeViewModel.currentScrollState
 
-    var currentType by mutableStateOf(initialType)
+    var currentType by settableMutableStateOf(initialType) { onEditDone() }
+
+    var selectedAct by settableMutableStateOf(initialAct) { onEditDone() }
 
     private val currentTypeViewModel
         get() = typeViewModel.getOrElse(currentType) { ElementViewModel(currentType) }
@@ -39,7 +40,11 @@ class ElementsEditorViewModel(initialType: TypeElement) {
 
     private val elementTagHolder = ElementTagHolder()
 
-    val blueprints: List<BlueprintData> by derivedStateOf { currentTypeViewModel.createdData + currentTypeViewModel.data }
+    val blueprints: List<BlueprintData> by derivedStateOf {
+        val data = (currentTypeViewModel.createdData + currentTypeViewModel.data)
+
+        data.takeIf { selectedAct == null } ?: data.filter { selectedAct in it.associatedActs }
+    }
 
     val currentEditBlueprint
         get() = blueprints.getOrNull(currentEditPosition)
@@ -80,7 +85,8 @@ class ElementsEditorViewModel(initialType: TypeElement) {
 
     fun startBlueprintCreation() {
         val createdBlueprint = BlueprintData.let {
-            if (currentType == TypeElement.Object) it.defaultObject() else it.defaultCharacter(currentType)
+            if (currentType == TypeElement.Object) it.defaultObject(selectedAct.toSingletonList())
+            else it.defaultCharacter(currentType, selectedAct.toSingletonList())
         }
 
         currentTypeViewModel.createdData.add(0, createdBlueprint)
@@ -174,13 +180,14 @@ class ElementsEditorViewModel(initialType: TypeElement) {
 
     private fun Blueprint.setData(data: BlueprintData, deletedTags: Set<String>) {
         type = data.type
-        name = data.name.trimEnd()
+        name = data.name.trim()
 
         if (data.type != TypeElement.Object) {
-            HP = data.life!!
-            MP = data.mana!!
+            healthPoints = data.life!!
+            manaPoint = data.mana!!
         }
 
-        tags = SizedCollection((data.tags - deletedTags).map { Tag[it] })
+        tags = (data.tags - deletedTags).map { Tag[it] }.toSizedCollection()
+        associatedAct = (associatedAct + data.associatedActs.toSet()).toSizedCollection()
     }
 }

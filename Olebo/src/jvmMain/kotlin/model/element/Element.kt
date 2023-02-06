@@ -48,10 +48,10 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
         get() = transaction { blueprint.realName }
 
     val maxHP
-        get() = transaction { blueprint.HP }
+        get() = transaction { blueprint.healthPoints }
 
     val maxMana
-        get() = transaction { blueprint.MP }
+        get() = transaction { blueprint.manaPoint }
 
     val type
         get() = transaction { blueprint.type }
@@ -172,8 +172,8 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
             return transaction {
                 val id = InstanceTable.insertAndGetId {
                     if (b.isCharacter()) {
-                        it[currentHP] = b.HP
-                        it[currentMP] = b.MP
+                        it[currentHP] = b.healthPoints
+                        it[currentMP] = b.manaPoint
                     }
                     it[idBlueprint] = b.id.value
                     it[visible] = Settings.defaultElementVisibility
