@@ -2,6 +2,7 @@
 
 package jdr.exia.localization
 
+import androidx.compose.runtime.Immutable
 import java.io.InputStream
 import java.util.*
 import kotlin.text.format as jvmFormatString
@@ -22,6 +23,7 @@ actual sealed class StringLocale : ListResourceBundle() {
     /**
      * The [invoke] method of the companion object need to be called in order to initialize the right locale to use
      */
+    @Immutable
     actual companion object {
         @PublishedApi
         internal actual var activeLanguage = defaultLocale
