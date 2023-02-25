@@ -1,5 +1,7 @@
 package jdr.exia.view.window.screen
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
@@ -10,10 +12,7 @@ import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material.ripple.RippleAlpha
 import androidx.compose.material.ripple.RippleTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -57,6 +56,7 @@ fun ApplicationScope.HomeWindow(startAct: (Act) -> Unit) = Window(
     )
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun MainContent(
     acts: List<Act>,
@@ -65,19 +65,34 @@ private fun MainContent(
     onRowClick: (Act) -> Unit,
     onDeleteAct: (Act) -> Unit
 ) = Box(modifier = Modifier.fillMaxSize()) {
-    when (content) {
-        is ActsView -> ActsView(
-            acts = acts,
-            onRowClick = onRowClick,
-            onEdit = { switchContent(ActEditor(it)) },
-            onDelete = onDeleteAct,
-            viewElements = { switchContent(ElementsView) },
-            startActCreation = { switchContent(ActCreator) }
-        )
+    AnimatedContent(
+        targetState = content,
+        transitionSpec = {
+            val animationDuration = 220
+            val directionModifier = if (targetState !is ActsView) 1 else -1
 
-        is ElementsView -> ElementsView(onDone = { switchContent(ActsView) })
-        is ActEditor -> ActEditorView(act = content.act, onDone = { switchContent(ActsView) })
-        is ActCreator -> ActEditorView(onDone = { switchContent(ActsView) })
+            slideInHorizontally(
+                animationSpec = tween(animationDuration),
+                initialOffsetX = { it * directionModifier }
+            ) with slideOutHorizontally(
+                animationSpec = tween(animationDuration),
+                targetOffsetX = { it * -directionModifier }
+            )
+        }
+    ) { animatedContent ->
+        when (animatedContent) {
+            is ActsView -> ActsView(
+                acts = acts,
+                onRowClick = onRowClick,
+                onEdit = { switchContent(ActEditor(it)) },
+                onDelete = onDeleteAct,
+                viewElements = { switchContent(ElementsView) },
+                startActCreation = { switchContent(ActCreator) }
+            )
+            is ElementsView -> ElementsView(onDone = { switchContent(ActsView) })
+            is ActEditor -> ActEditorView(act = animatedContent.act, onDone = { switchContent(ActsView) })
+            is ActCreator -> ActEditorView(onDone = { switchContent(ActsView) })
+        }
     }
 }
 
