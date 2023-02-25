@@ -202,7 +202,10 @@ internal actual class StringLocaleBundle : StringLocale() {
             STR_DELETE_SCENE_TOOLTIP to "delete scene",
             STR_CONTINUE to "continue",
             STR_VERSION_CODE to "version code:",
-            STR_NO_ACT to "no scenario",
+            STR_NO_ACT to """
+                You have no current scenario.
+                Let's start by creating one!
+            """.trimIndent(),
             STR_NO_SCENE to "no scene",
             ST_DEVELOPED_BY to "Developed by BOULESTEIX Tristan and ONFRAY Vincent.",
             ST_SHOULD_OPEN_PLAYER_FRAME_FULL_SCREEN to "Open the player window if there is a second screen",
@@ -274,6 +277,7 @@ internal actual class StringLocaleBundle : StringLocale() {
             STR_FILTER_BLUEPRINT_ALL to "all elements",
             STR_FILTER_BLUEPRINT_WITH_ACT to "element from this scenario",
             STR_FILTER_BLUEPRINT_WITH_TAG to "elements that share tag(s) with scenario",
+            STR_GET_STARTED to "get started"
         )
 }
 
@@ -478,7 +482,10 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
             STR_DELETE_SCENE_TOOLTIP to "supprimer la scène",
             STR_CONTINUE to "continuer",
             STR_VERSION_CODE to "code de version :",
-            STR_NO_ACT to "aucun scénario",
+            STR_NO_ACT to """
+                Vous n'avez aucun scénario en cours.
+                Pour commencer, créons-en un !
+            """.trimIndent(),
             STR_NO_SCENE to "aucune scène",
             ST_DEVELOPED_BY to "Développé par Tristan BOULESTEIX et Vincent ONFRAY.",
             ST_SHOULD_OPEN_PLAYER_FRAME_FULL_SCREEN to "Ouvrir la fenêtre joueur en plein écran s'il y a un deuxième écran",
@@ -550,5 +557,6 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
             STR_FILTER_BLUEPRINT_ALL to "tous les éléments",
             STR_FILTER_BLUEPRINT_WITH_ACT to "éléments de ce scénario",
             STR_FILTER_BLUEPRINT_WITH_TAG to "éléments qui partagent un tag avec ce scénario",
+            STR_GET_STARTED to "commencer",
         )
 }

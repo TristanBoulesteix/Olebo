@@ -184,6 +184,7 @@ const val STR_ASSOCIATE_BLUEPRINT_AND_SCENARIO = "associate_blueprint_scenario"
 const val STR_FILTER_BLUEPRINT_ALL = "filter_blueprint_all"
 const val STR_FILTER_BLUEPRINT_WITH_ACT = "filter_blueprint_act"
 const val STR_FILTER_BLUEPRINT_WITH_TAG = "filter_blueprint_tag"
+const val STR_GET_STARTED = "get_started"
 
 // -- Sentences
 
