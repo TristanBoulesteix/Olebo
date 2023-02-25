@@ -1,7 +1,6 @@
 package jdr.exia.view.window.screen
 
-import androidx.compose.animation.*
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
@@ -24,6 +23,7 @@ import androidx.compose.ui.window.ApplicationScope
 import jdr.exia.OLEBO_VERSION_NAME
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
+import jdr.exia.view.animation.SliderContent
 import jdr.exia.view.component.ContentListRow
 import jdr.exia.view.component.HeaderRow
 import jdr.exia.view.component.LazyScrollableColumn
@@ -64,35 +64,23 @@ private fun MainContent(
     switchContent: (HomeContent) -> Unit,
     onRowClick: (Act) -> Unit,
     onDeleteAct: (Act) -> Unit
-) = Box(modifier = Modifier.fillMaxSize()) {
-    AnimatedContent(
-        targetState = content,
-        transitionSpec = {
-            val animationDuration = 220
-            val directionModifier = if (targetState !is ActsView) 1 else -1
-
-            slideInHorizontally(
-                animationSpec = tween(animationDuration),
-                initialOffsetX = { it * directionModifier }
-            ) with slideOutHorizontally(
-                animationSpec = tween(animationDuration),
-                targetOffsetX = { it * -directionModifier }
-            )
-        }
-    ) { animatedContent ->
-        when (animatedContent) {
-            is ActsView -> ActsView(
-                acts = acts,
-                onRowClick = onRowClick,
-                onEdit = { switchContent(ActEditor(it)) },
-                onDelete = onDeleteAct,
-                viewElements = { switchContent(ElementsView) },
-                startActCreation = { switchContent(ActCreator) }
-            )
-            is ElementsView -> ElementsView(onDone = { switchContent(ActsView) })
-            is ActEditor -> ActEditorView(act = animatedContent.act, onDone = { switchContent(ActsView) })
-            is ActCreator -> ActEditorView(onDone = { switchContent(ActsView) })
-        }
+) = SliderContent(
+    targetState = content,
+    modifier = Modifier.fillMaxSize(),
+    isBackAction = { targetState is ActsView }
+) { animatedContent ->
+    when (animatedContent) {
+        is ActsView -> ActsView(
+            acts = acts,
+            onRowClick = onRowClick,
+            onEdit = { switchContent(ActEditor(it)) },
+            onDelete = onDeleteAct,
+            viewElements = { switchContent(ElementsView) },
+            startActCreation = { switchContent(ActCreator) }
+        )
+        is ElementsView -> ElementsView(onDone = { switchContent(ActsView) })
+        is ActEditor -> ActEditorView(act = animatedContent.act, onDone = { switchContent(ActsView) })
+        is ActCreator -> ActEditorView(onDone = { switchContent(ActsView) })
     }
 }
 
