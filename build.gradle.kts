@@ -31,10 +31,12 @@ subprojects {
 
     kotlin {
         js(IR) {
-            binaries.executable()
             browser {
+                binaries.executable()
                 commonWebpackConfig {
-                    cssSupport.enabled = true
+                    cssSupport {
+                        enabled.set(true)
+                    }
                 }
             }
         }
