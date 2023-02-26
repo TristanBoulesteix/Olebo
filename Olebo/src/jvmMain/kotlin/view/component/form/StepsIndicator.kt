@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun StepsIndicator(numberOfSteps: Int, currentStep: Int, modifier: Modifier = Modifier) = Row(
     horizontalArrangement = Arrangement.Center,
-    modifier = Modifier.fillMaxWidth() then modifier
+    modifier = modifier then Modifier.fillMaxWidth()
 ) {
     for (i in 1..numberOfSteps) {
         Step(i, i == currentStep)
