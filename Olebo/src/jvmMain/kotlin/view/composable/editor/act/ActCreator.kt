@@ -45,14 +45,12 @@ fun ActCreator(onDone: () -> Unit) = Column {
 
 @Suppress("SameParameterValue")
 @Composable
-private fun Header(steps: Int, currentStep: Int, titleHeader: String) {
-    HeaderRow {
-        Surface(color = Color.Transparent, contentColor = MaterialTheme.colors.onSurface) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                StepsIndicator(steps, currentStep)
-                Spacer(Modifier.height(12.dp))
-                Text(titleHeader)
-            }
+private fun Header(steps: Int, currentStep: Int, titleHeader: String) = HeaderRow {
+    Surface(color = Color.Transparent, contentColor = MaterialTheme.colors.onSurface) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            StepsIndicator(steps, currentStep)
+            Spacer(Modifier.height(12.dp))
+            Text(titleHeader)
         }
     }
 }
