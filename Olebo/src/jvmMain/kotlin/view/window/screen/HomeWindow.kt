@@ -28,7 +28,6 @@ import jdr.exia.view.component.ContentListRow
 import jdr.exia.view.component.HeaderRow
 import jdr.exia.view.component.LazyScrollableColumn
 import jdr.exia.view.component.builder.IconButtonBuilder
-import jdr.exia.view.composable.editor.act.ActCreator
 import jdr.exia.view.composable.editor.act.ActEditorView
 import jdr.exia.view.composable.editor.element.ElementsView
 import jdr.exia.view.menubar.MainMenuBar
@@ -79,9 +78,10 @@ private fun MainContent(
             viewElements = { switchContent(ElementsView) },
             startActCreation = { switchContent(ActCreator) }
         )
+
         is ElementsView -> ElementsView(onDone = { switchContent(ActsView) })
         is ActEditor -> ActEditorView(act = animatedContent.act, onDone = { switchContent(ActsView) })
-        is ActCreator -> ActCreator(onDone = { switchContent(ActsView) })
+        is ActCreator -> ActEditorView(onDone = { switchContent(ActsView) })
     }
 }
 
