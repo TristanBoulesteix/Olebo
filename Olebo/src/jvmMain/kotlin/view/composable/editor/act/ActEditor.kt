@@ -42,7 +42,7 @@ import jdr.exia.model.type.Image as Img
 fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
     val viewModel = remember { ActEditorViewModel(act) }
 
-    Header(viewModel = viewModel, act = act)
+    Header(viewModel = viewModel)
 
     // List of all the scenes of the edited act
     Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.secondaryVariant).padding(15.dp)) {
@@ -116,7 +116,6 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
             viewModel = viewModel,
             setSceneInCreation = setSceneInCreation,
             getEditedSceneData = { currentEditedScene },
-            act = act,
             onDone = onDone
         )
     }
@@ -137,11 +136,12 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
  * It contains a text field to write the name of the act.
  */
 @Composable
-private fun Header(viewModel: ActEditorViewModel, act: Act?) {
+private fun Header(viewModel: ActEditorViewModel) {
     HeaderRow {
         val roundedShape = RoundedCornerShape(25)
 
         Surface(color = Color.Transparent, contentColor = MaterialTheme.colors.onSurface) {
+            // Text field containing the name of the new / currently edited act
             OutlinedTextField(
                 value = viewModel.actName,
                 onValueChange = { viewModel.actName = it },
@@ -149,12 +149,27 @@ private fun Header(viewModel: ActEditorViewModel, act: Act?) {
                 singleLine = true,
                 shape = roundedShape,
                 colors = TextFieldDefaults.outlinedTextFieldColors(backgroundColor = MaterialTheme.colors.background),
-                placeholder = {
-                    if (viewModel.actName.isEmpty()) Text(text = act?.name ?: StringLocale[STR_INSERT_ACT_NAME])
+                label = {
+                    val labelText = buildString {
+                        // Real act name
+                        val name = viewModel.act?.name
+
+                        // Act name label
+                        append(StringLocale[STR_ACT_NAME])
+
+                        val exemplesName = remember { listOf(ST_EXAMPLE_1_RPG_NAME, ST_EXAMPLE_2_RPG_NAME) }
+
+                        // Example
+                        append(" (")
+                        append(if (name.isNullOrBlank()) StringLocale[ST_STR1_EXAMPLE_ABBREVIATED, StringStates.NORMAL, StringLocale[exemplesName.random()]] else name)
+                        append(')')
+                    }
+
+                    Text(text = labelText)
                 },
                 trailingIcon = {
                     Row(horizontalArrangement = Arrangement.spacedBy(15.dp)) {
-                        IconEditAssociatedBlueprints(act)
+                        IconEditAssociatedBlueprints(viewModel.act)
                         IconEditTags(viewModel)
                         Spacer(Modifier.padding(end = 2.dp))
                     }
@@ -327,7 +342,6 @@ private fun Footer(
     viewModel: ActEditorViewModel,
     setSceneInCreation: (SceneData?) -> Unit,
     getEditedSceneData: () -> SceneData?,
-    act: Act?,
     onDone: () -> Unit
 ) {
     when {
@@ -359,7 +373,7 @@ private fun Footer(
         )
 
         else -> FooterRowWithCancel(
-            confirmText = StringLocale[if (act == null) STR_CONFIRM_CREATE_ACT else STR_CONFIRM_EDIT_ACT],
+            confirmText = StringLocale[if (viewModel.act == null) STR_CONFIRM_CREATE_ACT else STR_CONFIRM_EDIT_ACT],
             onConfirm = viewModel::submitAct,
             onDone = onDone
         )

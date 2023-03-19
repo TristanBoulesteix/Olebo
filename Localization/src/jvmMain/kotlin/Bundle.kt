@@ -26,16 +26,16 @@ internal actual class StringLocaleBundle : StringLocale() {
             STR_ABOUT to "about",
             STR_APP_VERSION to "app version:",
             STR_ELEMENTS to "elements",
-            STR_ADD_ACT to "create a new scenario",
+            STR_ADD_ACT to "create a new campaign",
             STR_OBJECT_LIST to "Objects list",
             STR_OBJECTS to "Objects",
             STR_PC to "PC",
             STR_NPC to "NPC",
-            STR_NEW_ACT to "new scenario",
+            STR_NEW_ACT to "new campaign",
             STR_NAME to "nom",
             STR_CONFIRM to "confirm",
-            ST_ACT_ALREADY_EXISTS to "Sorry, a scenario with this name already exists or the data entered are invalid.",
-            ST_ACT_WITHOUT_SCENE to "A scenario need to contains at least one scene.",
+            ST_ACT_ALREADY_EXISTS to "Sorry, a campaign with this name already exists or the data entered are invalid.",
+            ST_ACT_WITHOUT_SCENE to "A campaign need to contains at least one scene.",
             STR_NEW_SCENE to "new scene",
             STR_CHANGE_SCENE to "modify scene",
             STR_NAME_OF_SCENE to "name of the scene:",
@@ -104,7 +104,7 @@ internal actual class StringLocaleBundle : StringLocale() {
             STR_PREPARE_UPDATE to "preparation of the update",
             ST_UPDATE_OLEBO_RESTART to "Olebo will restart once the update is completed.",
             ST_NEVER_ASK_UPDATE to "No, never ask again for this version",
-            ST_ERROR_ACT_NOT_EXISTS to "Error. This scenario doesn't seem to exist.",
+            ST_ERROR_ACT_NOT_EXISTS to "Error. This campaign doesn't seem to exist.",
             ST_UNKNOWN_DATABASE_VERSION to "Database error ! Unknown database version.",
             STR_TRANSPARENT_POINTER to "transparent pointer",
             STR_WHITE_POINTER to "white pointer",
@@ -131,7 +131,7 @@ internal actual class StringLocaleBundle : StringLocale() {
             STR_BLACK_WITH_WHITE_BORDER to "black with white border",
             STR_SELECT_COLOR to "pick a color",
             STR_PLAYER_FRAME_OPENED to "automatically open the players window",
-            STR_DOUBLE_CLICK_OPEN_ACT to "double click to open the scenario",
+            STR_DOUBLE_CLICK_OPEN_ACT to "double click to open the campaign",
             STR_DEFAULT_ELEMENT_VISIBILITY to "tokens visible for players by default",
             STR_YELLOW to "yellow",
             STR_RED to "red",
@@ -177,10 +177,10 @@ internal actual class StringLocaleBundle : StringLocale() {
             STR_LABEL_VISIBLE_FOR_MASTER to "label only visible for the DM",
             STR_LABEL_HIDDEN to "label hidden",
             ST_ENTER_SCENE_NAME to "Enter a scene name",
-            ST_CONFIRM_DELETE_ACT to "Are you sure to delete this scenario? This action cannot be canceled.",
-            STR_DELETE_ACT to "delete scenario",
-            STR_INSERT_ACT_NAME to "insert a scenario name",
-            ST_ACT_WITHOUT_NAME to "A scenario must have a name.",
+            ST_CONFIRM_DELETE_ACT to "Are you sure to delete this campaign? This action cannot be canceled.",
+            STR_DELETE_ACT to "delete campaign",
+            STR_ACT_NAME to "campaign name",
+            ST_ACT_WITHOUT_NAME to "A campaign must have a name.",
             STR_ADD_ELEMENT to "add an element",
             ST_STR1_DM_WINDOW_NAME to "Olebo - DM window - %s",
             STR_SIZE to "size:",
@@ -194,16 +194,16 @@ internal actual class StringLocaleBundle : StringLocale() {
             STR_SELECT_ALL to "select all tokens",
             STR_CONFIRM_CREATE_SCENE to "save scene",
             STR_CONFIRM_EDIT_SCENE to "save scene",
-            STR_CONFIRM_CREATE_ACT to "save scenario",
-            STR_CONFIRM_EDIT_ACT to "save scenario",
-            STR_OPEN_ACT_TOOLTIP to "open the scenario",
-            STR_EDIT_ACT_TOOLTIP to "edit scenario",
+            STR_CONFIRM_CREATE_ACT to "save campaign",
+            STR_CONFIRM_EDIT_ACT to "save campaign",
+            STR_OPEN_ACT_TOOLTIP to "open the campaign",
+            STR_EDIT_ACT_TOOLTIP to "edit campaign",
             STR_EDIT_SCENE_TOOLTIP to "edit scene",
             STR_DELETE_SCENE_TOOLTIP to "delete scene",
             STR_CONTINUE to "continue",
             STR_VERSION_CODE to "version code:",
             STR_NO_ACT to """
-                You have no current scenario.
+                You have no current campaign.
                 Let's start by creating one!
             """.trimIndent(),
             STR_NO_SCENE to "no scene",
@@ -259,7 +259,7 @@ internal actual class StringLocaleBundle : StringLocale() {
             STR_SORT_ALPHABETICALLY to "alphabetically",
             ST_TOOLTIP_TAGS to """
                 You can link an item with one or more tag.
-                You can easily search for a token that has an identical tag as a scenario.
+                You can easily search for a token that has an identical tag as a campaign.
                 
                 To create a tag, write in the text field then press the "enter" key.
                 For an existing tag, use the checkbox next to the tag name.
@@ -273,11 +273,14 @@ internal actual class StringLocaleBundle : StringLocale() {
             STR_SEARCH_CREATE_TAG to "rechercher ou créer un tag",
             STR_ASSOCIATE_TAGS to "associate tags",
             STR_CLOSE_VALIDATE to "confirm & close",
-            STR_ASSOCIATE_BLUEPRINT_AND_SCENARIO to "associate elements with scenario",
+            STR_ASSOCIATE_BLUEPRINT_AND_SCENARIO to "associate elements with this campaign",
             STR_FILTER_BLUEPRINT_ALL to "all elements",
-            STR_FILTER_BLUEPRINT_WITH_ACT to "element from this scenario",
-            STR_FILTER_BLUEPRINT_WITH_TAG to "elements that share tag(s) with scenario",
-            STR_GET_STARTED to "get started"
+            STR_FILTER_BLUEPRINT_WITH_ACT to "element from this campaign",
+            STR_FILTER_BLUEPRINT_WITH_TAG to "elements that share tag(s) with the campaign",
+            STR_GET_STARTED to "get started",
+            ST_STR1_EXAMPLE_ABBREVIATED to "e.g.; %s",
+            ST_EXAMPLE_1_RPG_NAME to "Campaign n°12",
+            ST_EXAMPLE_2_RPG_NAME to "The caves of the Beyond",
         )
 }
 
@@ -340,7 +343,7 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
             STR_ENABLE_CURSOR to "activer le curseur joueurs",
             STR_RESTORE to "restaurer",
             STR_WINDOW to "fenêtre",
-            STR_CLOSE_ACT to "fermer scenario",
+            STR_CLOSE_ACT to "fermer scénario",
             STR_TOGGLE_PLAYER_FRAME to "fenêtre joueurs ON/OFF",
             STR_CHOOSE_SCENE to "choisir une scène",
             STR_IS_CURRENT_SCENE to "actuelle",
@@ -459,7 +462,7 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
             ST_ENTER_SCENE_NAME to "Entrez un nom de scène",
             ST_CONFIRM_DELETE_ACT to "Êtes-vous sûr de vouloir supprimer ce scénario ? Cette action est irréversible.",
             STR_DELETE_ACT to "supprimer scénario",
-            STR_INSERT_ACT_NAME to "insérez un nom de scénario",
+            STR_ACT_NAME to "nom de scénario",
             ST_ACT_WITHOUT_NAME to "Un scénario doit avoir un nom.",
             STR_ADD_ELEMENT to "ajouter un élément",
             ST_STR1_DM_WINDOW_NAME to "Olebo - Fenêtre MJ - %s",
@@ -477,7 +480,7 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
             STR_CONFIRM_CREATE_ACT to "sauvegarder le scénario",
             STR_CONFIRM_EDIT_ACT to "sauvegarder le scénario",
             STR_OPEN_ACT_TOOLTIP to "ouvrir le scénario",
-            STR_EDIT_ACT_TOOLTIP to "éditer le scenario",
+            STR_EDIT_ACT_TOOLTIP to "éditer le scénario",
             STR_EDIT_SCENE_TOOLTIP to "éditer la scène",
             STR_DELETE_SCENE_TOOLTIP to "supprimer la scène",
             STR_CONTINUE to "continuer",
@@ -558,5 +561,8 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
             STR_FILTER_BLUEPRINT_WITH_ACT to "éléments de ce scénario",
             STR_FILTER_BLUEPRINT_WITH_TAG to "éléments qui partagent un tag avec ce scénario",
             STR_GET_STARTED to "commencer",
+            ST_STR1_EXAMPLE_ABBREVIATED to "ex. %s",
+            ST_EXAMPLE_1_RPG_NAME to "Aventure n°12",
+            ST_EXAMPLE_2_RPG_NAME to "Les cavernes de l'Au-Delà",
         )
 }
