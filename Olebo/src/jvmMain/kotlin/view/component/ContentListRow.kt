@@ -18,7 +18,6 @@ import jdr.exia.view.tools.applyIf
 import jdr.exia.view.tools.border
 import jdr.exia.view.ui.typography
 
-
 @Composable
 fun ContentListRow(
     content: @Composable BoxScope.() -> Unit,

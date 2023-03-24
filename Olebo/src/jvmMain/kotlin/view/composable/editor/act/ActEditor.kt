@@ -7,7 +7,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Done
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -24,6 +27,7 @@ import jdr.exia.model.tools.*
 import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.model.type.imageFromPath
 import jdr.exia.view.component.*
+import jdr.exia.view.component.builder.ContentButtonBuilder
 import jdr.exia.view.component.builder.IconButtonBuilder
 import jdr.exia.view.component.dialog.MessageDialog
 import jdr.exia.view.tools.*
@@ -59,9 +63,8 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
                 buttonBuilders =
                 if (sceneInCreation == null) {
                     listOf(
-                        IconButtonBuilder(
-                            content = Icons.Outlined.Add,
-                            tooltip = StringLocale[STR_NEW_SCENE],
+                        ContentButtonBuilder(
+                            content = StringLocale[STR_NEW_SCENE],
                             onClick = { setSceneInCreation(SceneData.default()) })
                     )
                 } else {
