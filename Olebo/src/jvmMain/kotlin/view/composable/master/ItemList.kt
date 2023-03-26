@@ -27,7 +27,7 @@ import jdr.exia.model.element.TypeElement
 import jdr.exia.model.type.imageFromPath
 import jdr.exia.view.component.ContentListRow
 import jdr.exia.view.component.LazyScrollableColumn
-import jdr.exia.view.component.builder.ImageButtonBuilder
+import jdr.exia.view.component.contentListRow.ImageButtonBuilder
 import jdr.exia.view.component.form.LabeledRadioMenuItem
 import jdr.exia.view.tools.defaultBorderColor
 import jdr.exia.view.ui.backgroundImageColor
@@ -121,14 +121,13 @@ private fun ItemList(
                         focusManager.clearFocus()
                     },
                     contentText = name,
-                    buttonBuilders =
-                    listOf(
+                    buttonBuilders = {
                         ImageButtonBuilder(
                             if (type == TypeElement.Basic) useResource("sprites/${it.sprite}", ::loadImageBitmap)
                             else imageFromPath(it.sprite),
                             backgroundColor = MaterialTheme.colors.backgroundImageColor
                         )
-                    )
+                    }
                 )
             }
         }

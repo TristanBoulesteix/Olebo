@@ -27,7 +27,7 @@ import jdr.exia.view.animation.SliderContent
 import jdr.exia.view.component.ContentListRow
 import jdr.exia.view.component.HeaderRow
 import jdr.exia.view.component.LazyScrollableColumn
-import jdr.exia.view.component.builder.IconButtonBuilder
+import jdr.exia.view.component.contentListRow.IconButtonBuilder
 import jdr.exia.view.composable.editor.act.ActEditorView
 import jdr.exia.view.composable.editor.element.ElementsView
 import jdr.exia.view.menubar.MainMenuBar
@@ -116,18 +116,19 @@ private fun ActsView(
                                 contentText = act.name,
                                 contentTooltip = StringLocale[STR_OPEN_ACT_TOOLTIP],
                                 onClick = { onRowClick(act) },
-                                buttonBuilders = listOf(
+                                buttonBuilders = {
                                     IconButtonBuilder(
                                         content = Icons.Outlined.Edit,
                                         tooltip = StringLocale[STR_EDIT_ACT_TOOLTIP],
                                         onClick = { onEdit(act) }
-                                    ),
+                                    )
+
                                     IconButtonBuilder(
                                         content = Icons.Outlined.Delete,
                                         tooltip = StringLocale[STR_DELETE_ACT],
                                         onClick = { onDelete(act) }
                                     )
-                                )
+                                }
                             )
                         }
                     }

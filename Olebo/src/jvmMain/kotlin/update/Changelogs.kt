@@ -20,7 +20,7 @@ import jdr.exia.localization.STR_RELEASE_NOTES
 import jdr.exia.localization.StringLocale
 import jdr.exia.localization.get
 import jdr.exia.main
-import jdr.exia.view.component.builder.ContentButtonBuilder
+import jdr.exia.view.component.contentListRow.ContentButtonBuilder
 import jdr.exia.view.component.dialog.MessageDialog
 import java.io.InputStreamReader
 
@@ -40,7 +40,7 @@ fun ChangelogsDialog(changelogs: String, onClose: () -> Unit = {}) {
     MessageDialog(
         visible = changelogsVisible,
         title = StringLocale[STR_RELEASE_NOTES],
-        buttonsBuilder = listOf(ContentButtonBuilder(content = "Ok", onClick = { changelogsVisible = false })),
+        buttonsBuilder = { ContentButtonBuilder(content = "Ok", onClick = { changelogsVisible = false }) },
         onCloseRequest = { changelogsVisible = false },
         height = 550.dp,
         width = 600.dp

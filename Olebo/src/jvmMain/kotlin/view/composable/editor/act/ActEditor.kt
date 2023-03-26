@@ -27,8 +27,8 @@ import jdr.exia.model.tools.*
 import jdr.exia.model.type.imageFromIconRes
 import jdr.exia.model.type.imageFromPath
 import jdr.exia.view.component.*
-import jdr.exia.view.component.builder.ContentButtonBuilder
-import jdr.exia.view.component.builder.IconButtonBuilder
+import jdr.exia.view.component.contentListRow.ContentButtonBuilder
+import jdr.exia.view.component.contentListRow.IconButtonBuilder
 import jdr.exia.view.component.dialog.MessageDialog
 import jdr.exia.view.tools.*
 import jdr.exia.view.ui.roundedBottomShape
@@ -60,15 +60,13 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
             ContentListRow(
                 contentText = StringLocale[STR_SCENES],
                 modifier = Modifier.border(BorderBuilder.defaultBorder),
-                buttonBuilders =
-                if (sceneInCreation == null) {
-                    listOf(
+                buttonBuilders = {
+                    if (sceneInCreation == null) {
                         ContentButtonBuilder(
                             content = StringLocale[STR_NEW_SCENE],
-                            onClick = { setSceneInCreation(SceneData.default()) })
-                    )
-                } else {
-                    listOf(
+                            onClick = { setSceneInCreation(SceneData.default()) }
+                        )
+                    } else {
                         IconButtonBuilder(
                             content = Icons.Outlined.Done,
                             tooltip = StringLocale[STR_CONFIRM_CREATE_SCENE],
@@ -79,13 +77,15 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
                                     viewModel.errorMessage = StringLocale[ST_SCENE_ALREADY_EXISTS_OR_INVALID]
                                 }
                             }
-                        ),
+                        )
+
                         IconButtonBuilder(
                             content = Icons.Outlined.Close,
                             tooltip = StringLocale[STR_CANCEL],
                             onClick = { setSceneInCreation(null) }
                         )
-                    )
+
+                    }
                 }
             )
         }
@@ -206,7 +206,7 @@ private fun Scenes(
             } else {
                 ContentListRow(
                     contentText = scene.name,
-                    buttonBuilders = listOf(
+                    buttonBuilders = {
                         IconButtonBuilder(
                             content = Icons.Outlined.Edit,
                             tooltip = StringLocale[STR_EDIT_SCENE_TOOLTIP],
@@ -214,13 +214,14 @@ private fun Scenes(
                                 viewModel.onEditItemSelected(scene)
                                 setSceneInCreation(null)
                             }
-                        ),
+                        )
+
                         IconButtonBuilder(
                             content = Icons.Outlined.Delete,
                             tooltip = StringLocale[STR_DELETE_SCENE_TOOLTIP],
                             onClick = { viewModel.onRemoveScene(scene) }
                         )
-                    )
+                    }
                 )
             }
         }
@@ -276,19 +277,21 @@ private fun EditSceneRow(
             )
         },
         removeBottomBorder = false,
-        buttonBuilders = if (showButtons && onConfirmed != null && onCanceled != null)
-            listOf(
+        buttonBuilders = {
+            if (showButtons && onConfirmed != null && onCanceled != null) {
                 IconButtonBuilder(
                     content = Icons.Outlined.Done,
                     tooltip = StringLocale[STR_CONFIRM_EDIT_SCENE],
                     onClick = onConfirmed
-                ),
+                )
+
                 IconButtonBuilder(
                     content = Icons.Outlined.Close,
                     tooltip = StringLocale[STR_CANCEL],
                     onClick = onCanceled
                 )
-            ) else emptyList()
+            }
+        }
     )
 
     ImagePreviewContent(data = data, onUpdateData = updateData)

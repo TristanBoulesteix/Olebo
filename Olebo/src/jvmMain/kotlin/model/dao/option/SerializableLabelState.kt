@@ -1,7 +1,6 @@
 package jdr.exia.model.dao.option
 
 import jdr.exia.localization.*
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -14,7 +13,6 @@ enum class SerializableLabelState(private val stringKey: String) {
     HIDDEN(STR_LABEL_HIDDEN);
 
     companion object {
-        @OptIn(ExperimentalSerializationApi::class)
         operator fun get(json: String) = try {
             Json.decodeFromString(json)
         } catch (e: Exception) {
@@ -28,7 +26,6 @@ enum class SerializableLabelState(private val stringKey: String) {
     /**
      * Encode a [SerializableLabelState] to json [String] to be uploaded to the database
      */
-    @OptIn(ExperimentalSerializationApi::class)
     fun encode() = Json.encodeToString(this)
 
     override fun toString() = StringLocale[stringKey]

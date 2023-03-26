@@ -7,7 +7,7 @@ import jdr.exia.localization.STR_CANCEL
 import jdr.exia.localization.STR_CONFIRM
 import jdr.exia.localization.StringLocale
 import jdr.exia.localization.get
-import jdr.exia.view.component.builder.ContentButtonBuilder
+import jdr.exia.view.component.contentListRow.ContentButtonBuilder
 import jdr.exia.view.component.form.LabeledCheckbox
 
 @Composable
@@ -22,7 +22,7 @@ fun ConfirmMessage(
 
     MessageDialog(
         title = title,
-        buttonsBuilder = listOf(
+        buttonsBuilder = {
             ContentButtonBuilder(
                 content = StringLocale[STR_CONFIRM],
                 onClick = {
@@ -30,9 +30,10 @@ fun ConfirmMessage(
                     onConfirm()
                 },
                 enabled = checked
-            ),
+            )
+
             ContentButtonBuilder(content = StringLocale[STR_CANCEL], onClick = onCloseRequest)
-        ),
+        },
         onCloseRequest = onCloseRequest,
         width = 500.dp,
         height = 190.dp

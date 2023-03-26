@@ -5,10 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawBehind
@@ -39,12 +36,16 @@ class BorderBuilder(val strokeWidth: Dp, val color: Color) {
     companion object {
         @Stable
         val defaultBorder
-            @Composable get() = BorderBuilder(2.dp, defaultBorderColor)
+            @ReadOnlyComposable
+            @Composable
+            get() = BorderBuilder(2.dp, defaultBorderColor)
     }
 }
 
 val defaultBorderColor
-    @Composable get() = if (MaterialTheme.colors.isLight) Color.Black else Color.Gray
+    @ReadOnlyComposable
+    @Composable
+    get() = if (MaterialTheme.colors.isLight) Color.Black else Color.Gray
 
 @Stable
 fun BorderBuilder.toBorderStroke() = BorderStroke(strokeWidth, color)

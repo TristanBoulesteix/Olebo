@@ -240,5 +240,5 @@ private fun SnapshotStateList<Element>.moveElementToSceneAndUpdateState(
     moveElements: (List<Element>) -> Unit
 ) {
     moveElements(elements)
-    this.removeAll(elements)
+    this.removeAll(elements.toSet())
 }

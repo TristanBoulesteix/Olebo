@@ -5,9 +5,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.Stable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -20,12 +18,13 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.rememberDialogState
-import jdr.exia.view.component.builder.ComposableContentBuilder
-import jdr.exia.view.component.builder.ContentBuilder
-import jdr.exia.view.component.builder.ContentButtonBuilder
+import jdr.exia.view.component.contentListRow.ButtonBuilder
+import jdr.exia.view.component.contentListRow.ContentButtonBuilder
+import jdr.exia.view.component.contentListRow.RowButtonScope
+import jdr.exia.view.tools.*
 
-@Stable
-private fun defaultButton(action: () -> Unit) = listOf(ContentButtonBuilder("OK", onClick = action))
+@Composable
+private fun RowButtonScope.DefaultButton(action: () -> Unit) = ContentButtonBuilder("OK", onClick = action)
 
 @Composable
 fun MessageDialog(
@@ -33,7 +32,7 @@ fun MessageDialog(
     message: String,
     messageLineHeight: TextUnit = TextUnit.Unspecified,
     onCloseRequest: () -> Unit,
-    buttonBuilders: List<ContentBuilder> = defaultButton(onCloseRequest),
+    buttonBuilders: ButtonBuilder = { DefaultButton(onCloseRequest) },
     width: Dp = 400.dp,
     height: Dp = 200.dp,
     visible: Boolean = true,
@@ -54,7 +53,7 @@ fun MessageDialog(
 fun MessageDialog(
     title: String,
     onCloseRequest: () -> Unit,
-    buttonsBuilder: List<ContentBuilder> = emptyList(),
+    buttonsBuilder: ButtonBuilder = {},
     width: Dp = 400.dp,
     height: Dp = 200.dp,
     visible: Boolean = true,
@@ -94,22 +93,30 @@ fun MessageDialog(
                         modifier = Modifier.fillMaxWidth().padding(10.dp),
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        buttonsBuilder.forEach {
-                            OutlinedButton(
-                                onClick = it.onClick,
-                                enabled = it.enabled,
-                                colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Transparent)
-                            ) {
-                                when (it) {
-                                    is ContentButtonBuilder -> Text(text = it.content)
-                                    is ComposableContentBuilder -> it.content()
-                                    else -> TODO("Button type ${it::class.simpleName} are not implemented.")
-                                }
-                            }
-                        }
+                        val scope = remember { DialogRowScope(this) }
+
+                        scope.buttonsBuilder()
                     }
                 }
             }
         }
+    }
+}
+
+@Immutable
+private class DialogRowScope(scope: RowScope) : RowButtonScope, RowScope by scope {
+    @Composable
+    override fun RowButton(
+        tooltip: String?,
+        enabled: Boolean,
+        backgroundColor: Color,
+        onClick: () -> Unit,
+        content: BoxedComposable,
+    ) = OutlinedButton(
+        onClick = onClick,
+        enabled = enabled,
+        colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Transparent)
+    ) {
+        Box(content = content)
     }
 }

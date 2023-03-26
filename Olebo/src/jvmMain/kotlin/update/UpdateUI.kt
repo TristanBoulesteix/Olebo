@@ -26,7 +26,7 @@ import jdr.exia.model.dao.option.Preferences
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.dao.restart
 import jdr.exia.service.sendMailToDevelopers
-import jdr.exia.view.component.builder.ContentButtonBuilder
+import jdr.exia.view.component.contentListRow.ContentButtonBuilder
 import jdr.exia.view.component.dialog.MessageDialog
 import jdr.exia.view.tools.annotatedHyperlink
 import jdr.exia.view.tools.appendBulletList
@@ -108,10 +108,11 @@ private fun FailedAutoUpdateDialog(versionCode: Int, attemptNumber: Int) {
         height = 500.dp,
         onCloseRequest = { isVisible = false },
         visible = isVisible,
-        buttonsBuilder = listOf(
+        buttonsBuilder = {
             ContentButtonBuilder(StringLocale[STR_OK]) {
                 isVisible = false
-            },
+            }
+
             ContentButtonBuilder(StringLocale[STR_RETRY_UPDATE]) {
                 isVisible = false
 
@@ -145,7 +146,7 @@ private fun FailedAutoUpdateDialog(versionCode: Int, attemptNumber: Int) {
                     )
                 }
             }
-        )
+        }
     ) {
         val uriHandler = LocalUriHandler.current
 
@@ -197,21 +198,23 @@ private fun ApplicationScope.PromptUpdate(versionCode: Int, onUpdateRefused: () 
         title = StringLocale[STR_UPDATE_AVAILABLE],
         message = StringLocale[ST_NEW_VERSION_AVAILABLE],
         width = 600.dp,
-        buttonBuilders = listOf(
+        buttonBuilders = {
             ContentButtonBuilder(content = StringLocale[STR_YES], onClick = {
                 askForUpdateDialogIsVisible = false
                 updateIsStarted = true
-            }),
+            })
+
             ContentButtonBuilder(content = StringLocale[STR_NO], onClick = {
                 askForUpdateDialogIsVisible = false
                 onUpdateRefused()
-            }),
+            })
+
             ContentButtonBuilder(content = StringLocale[ST_NEVER_ASK_UPDATE], onClick = {
                 Settings.updateWarn = versionCode.toString()
                 askForUpdateDialogIsVisible = false
                 onUpdateRefused()
             })
-        )
+        }
     )
 
     if (updateIsStarted) {
