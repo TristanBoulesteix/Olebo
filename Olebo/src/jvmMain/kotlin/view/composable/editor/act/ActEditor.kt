@@ -12,12 +12,14 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import jdr.exia.localization.*
@@ -62,10 +64,17 @@ fun ActEditorView(act: Act? = null, onDone: () -> Unit) = Column {
                 modifier = Modifier.border(BorderBuilder.defaultBorder),
                 buttonBuilders = {
                     if (sceneInCreation == null) {
-                        ContentButtonBuilder(
-                            content = StringLocale[STR_NEW_SCENE],
-                            onClick = { setSceneInCreation(SceneData.default()) }
-                        )
+                        CompositionLocalProvider(
+                            LocalContentListRowStyle provides ContentListRowStyle(
+                                width = Dp.Unspecified,
+                                horizontalPadding = 15.dp
+                            )
+                        ) {
+                            ContentButtonBuilder(
+                                content = StringLocale[STR_NEW_SCENE],
+                                onClick = { setSceneInCreation(SceneData.default()) }
+                            )
+                        }
                     } else {
                         IconButtonBuilder(
                             content = Icons.Outlined.Done,
