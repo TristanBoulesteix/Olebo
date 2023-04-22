@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.pointer.PointerIconDefaults
+import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import jdr.exia.SimpleFunction
 import jdr.exia.view.tools.BoxWithTooltipIfNotNull
@@ -20,7 +20,7 @@ fun TextTrailingIcon(icon: ImageVector, tooltipMessage: String? = null, onClick:
     ) {
         Icon(
             imageVector = icon,
-            modifier = Modifier.pointerHoverIcon(PointerIconDefaults.Hand),
+            modifier = Modifier.pointerHoverIcon(PointerIcon.Hand),
             contentDescription = null
         )
     }

@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
-import androidx.compose.ui.input.pointer.PointerIconDefaults
+import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import jdr.exia.localization.*
@@ -231,7 +231,7 @@ private fun SelectableRow(
         Spacer(Modifier.weight(1f))
         Icon(
             imageVector = Icons.Outlined.Delete,
-            modifier = Modifier.pointerHoverIcon(PointerIconDefaults.Hand).padding(end = 10.dp)
+            modifier = Modifier.pointerHoverIcon(PointerIcon.Hand).padding(end = 10.dp)
                 .clickable(onClick = onItemDelete),
             contentDescription = null
         )
