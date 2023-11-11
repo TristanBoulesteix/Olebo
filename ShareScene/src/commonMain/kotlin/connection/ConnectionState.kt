@@ -10,7 +10,7 @@ sealed interface Disconnected : ConnectionState {
     class ConnectionFailed(val error: ConnectionError = ConnectionError.Canceled) : Disconnected
 }
 
-object Login : ConnectionState
+data object Login : ConnectionState
 
 class Connected(val manager: ShareSceneManager) : ConnectionState {
     val shareSceneViewModel by manager::viewModel

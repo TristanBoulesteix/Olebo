@@ -2,7 +2,6 @@ package jdr.exia.model.dao.option
 
 import jdr.exia.localization.*
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 

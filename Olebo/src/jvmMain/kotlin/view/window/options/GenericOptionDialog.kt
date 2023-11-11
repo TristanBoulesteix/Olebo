@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogState
+import androidx.compose.ui.window.DialogWindow
 import androidx.compose.ui.window.DialogWindowScope
 import jdr.exia.localization.*
 
@@ -49,26 +49,25 @@ fun GenericOptionDialog(
     onResetDefault: () -> Unit,
     onCancel: () -> Unit,
     content: @Composable DialogSettingsScope.() -> Unit
-) = Dialog(
-    onCloseRequest = onCloseRequest,
+) = DialogWindow(onCloseRequest = onCloseRequest,
     state = state,
+    title = StringLocale[STR_OPTIONS],
     resizable = false,
-    title = StringLocale[STR_OPTIONS]
-) {
-    val dialogScope = this
+    content = {
+        val dialogScope = this
 
-    Card {
-        Column {
-            content(ScopeImpl(dialogScope, this))
-            Spacer(Modifier.height(10.dp))
-            RowButton(
-                onSave = saveSettings,
-                onRestoreDefault = onResetDefault,
-                onReset = onCancel
-            )
+        Card {
+            Column {
+                content(ScopeImpl(dialogScope, this))
+                Spacer(Modifier.height(10.dp))
+                RowButton(
+                    onSave = saveSettings,
+                    onRestoreDefault = onResetDefault,
+                    onReset = onCancel
+                )
+            }
         }
-    }
-}
+    })
 
 @Composable
 private fun RowButton(onSave: () -> Unit, onReset: () -> Unit, onRestoreDefault: () -> Unit) =

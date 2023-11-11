@@ -1,8 +1,8 @@
 package fr.olebo.sharescene.connection
 
 sealed interface ConnectionError {
-    object Canceled : ConnectionError
-    object WrongVersion : ConnectionError
-    object ConnectionFailed : ConnectionError
+    data object Canceled : ConnectionError
+    data object WrongVersion : ConnectionError
+    data object ConnectionFailed : ConnectionError
     class ServerError(val message: String?) : ConnectionError
 }

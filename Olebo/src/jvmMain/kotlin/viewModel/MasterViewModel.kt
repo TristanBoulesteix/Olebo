@@ -442,7 +442,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
     private fun loadBlueprints(): Map<TypeElement, List<Blueprint>> = transaction {
         val items = Blueprint.all().groupBy { it.type }
 
-        (TypeElement.values() + items.keys).associateWith { items[it] ?: emptyList() }
+        (TypeElement.entries + items.keys).associateWith { items[it] ?: emptyList() }
     }
 
     private fun Element.toShareSceneToken(rgbTooltip: Triple<Int, Int, Int>?) = Token(
@@ -453,7 +453,6 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
         label = rgbTooltip?.let { Label(alias, it) }
     )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     private inline fun sendMessageToShareScene(crossinline message: () -> Message) =
         (connectionState as? Connected)?.let { connectedState ->
             scope.launch(Dispatchers.IO) {

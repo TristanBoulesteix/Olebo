@@ -46,7 +46,6 @@ fun FrameWindowScope.MainMenuBar(exitApplication: () -> Unit) = MenuBar {
     MainMenus(exitApplication)
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLocale[STR_FILES], mnemonic = 'f') {
     // Long process running message
@@ -156,7 +155,7 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
     val oleboTheme = LocalTheme.current
 
     Menu(text = "${StringLocale[STR_THEME]} ${oleboTheme.themeMode}") {
-        val themeModes = remember { ThemeMode.values().toList() }
+        val themeModes = remember { ThemeMode.entries }
 
         themeModes.forEach {
             RadioButtonItem("$it", selected = oleboTheme.themeMode == it) {

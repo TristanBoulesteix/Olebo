@@ -17,7 +17,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.ApplicationScope
-import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogWindow
 import androidx.compose.ui.window.Notification
 import androidx.compose.ui.window.rememberDialogState
 import jdr.exia.MainUI
@@ -230,19 +230,24 @@ private fun InstallerDownloader(versionCode: Int, exitApplication: () -> Unit) {
         val dialogState = rememberDialogState(height = 150.dp)
         var progress by remember { mutableStateOf(0f) }
 
-        Dialog(title = StringLocale[STR_DOWNLOAD_UPDATE], onCloseRequest = {}, resizable = false, state = dialogState) {
-            this.window.isModal = true
+        DialogWindow(
+            onCloseRequest = {},
+            state = dialogState,
+            title = StringLocale[STR_DOWNLOAD_UPDATE],
+            resizable = false,
+            content = {
+                window.isModal = true
 
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxSize().padding(end = 10.dp)
-            ) {
-                val padding = Modifier.padding(horizontal = 10.dp)
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxSize().padding(end = 10.dp)
+                ) {
+                    val padding = Modifier.padding(horizontal = 10.dp)
 
-                LinearProgressIndicator(modifier = Modifier.fillMaxWidth().then(padding), progress = progress)
-                Text(StringLocale[STR_DOWNLOAD] + " $progress %", modifier = padding)
-            }
-        }
+                    LinearProgressIndicator(modifier = Modifier.fillMaxWidth().then(padding), progress = progress)
+                    Text(StringLocale[STR_DOWNLOAD] + " $progress %", modifier = padding)
+                }
+            })
 
         LaunchedEffect(Unit) {
             downloadUpdateAndExit(

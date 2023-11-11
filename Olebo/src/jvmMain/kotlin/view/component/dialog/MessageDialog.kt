@@ -5,9 +5,11 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
@@ -16,12 +18,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogWindow
 import androidx.compose.ui.window.rememberDialogState
 import jdr.exia.view.component.contentListRow.ButtonBuilder
 import jdr.exia.view.component.contentListRow.ContentButtonBuilder
 import jdr.exia.view.component.contentListRow.RowButtonScope
-import jdr.exia.view.tools.*
+import jdr.exia.view.tools.BoxedComposable
 
 @Composable
 private fun RowButtonScope.DefaultButton(action: () -> Unit) = ContentButtonBuilder("OK", onClick = action)
@@ -48,7 +50,6 @@ fun MessageDialog(
     },
 )
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MessageDialog(
     title: String,
@@ -62,44 +63,43 @@ fun MessageDialog(
     if (visible) {
         val state = rememberDialogState(size = DpSize(width, height))
 
-        Dialog(
-            onCloseRequest = onCloseRequest,
+        DialogWindow(onCloseRequest = onCloseRequest,
+            state = state,
             title = title,
             resizable = false,
-            state = state,
             onPreviewKeyEvent = {
                 if (it.key == Key.Escape || it.key == Key.Enter)
                     onCloseRequest()
                 false
-            }) {
-            DisposableEffect(Unit) {
-                window.isModal = true
-                DialogManager.dialogVisibleNum += 1
+            }, content = {
+                DisposableEffect(Unit) {
+                    window.isModal = true
+                    DialogManager.dialogVisibleNum += 1
 
-                onDispose {
-                    DialogManager.dialogVisibleNum -= 1
-                }
-            }
-
-            Card(modifier = Modifier.fillMaxSize()) {
-                Column(
-                    verticalArrangement = Arrangement.SpaceBetween,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Box(modifier = Modifier.weight(1f).padding(10.dp).padding(top = 5.dp)) {
-                        content()
+                    onDispose {
+                        DialogManager.dialogVisibleNum -= 1
                     }
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(10.dp),
-                        horizontalArrangement = Arrangement.SpaceEvenly
+                }
+
+                Card(modifier = Modifier.fillMaxSize()) {
+                    Column(
+                        verticalArrangement = Arrangement.SpaceBetween,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        val scope = remember { DialogRowScope(this) }
+                        Box(modifier = Modifier.weight(1f).padding(10.dp).padding(top = 5.dp)) {
+                            content()
+                        }
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(10.dp),
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            val scope = remember { DialogRowScope(this) }
 
-                        scope.buttonsBuilder()
+                            scope.buttonsBuilder()
+                        }
                     }
                 }
-            }
-        }
+            })
     }
 }
 

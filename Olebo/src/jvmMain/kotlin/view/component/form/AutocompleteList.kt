@@ -113,7 +113,6 @@ fun AutocompleteList(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun HeaderSearch(
     newItem: SelectableItem?,
@@ -182,7 +181,7 @@ private fun HeaderSearch(
 
             DropdownMenu(
                 label = StringLocale[STR_SORT_BY],
-                items = remember { FilterType.values().toList() },
+                items = remember { FilterType.entries },
                 selectedItem = filterType,
                 onItemSelected = onFilterChanged
             )
@@ -205,7 +204,6 @@ private fun HeaderSearch(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun SelectableRow(
     item: SelectableItem,

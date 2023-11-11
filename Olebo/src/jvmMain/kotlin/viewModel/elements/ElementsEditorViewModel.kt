@@ -24,7 +24,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 @Stable
 class ElementsEditorViewModel(initialAct: Act?, initialType: TypeElement) {
-    private val typeViewModel = TypeElement.values().associateWith(::ElementViewModel)
+    private val typeViewModel = TypeElement.entries.associateWith(::ElementViewModel)
 
     val itemListScrollState
         get() = currentTypeViewModel.currentScrollState

@@ -56,7 +56,6 @@ fun ApplicationScope.HomeWindow(startAct: (Act) -> Unit) = Window(
     )
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun MainContent(
     acts: List<Act>,

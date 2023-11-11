@@ -51,7 +51,6 @@ fun FrameWindowScope.MasterMenuBar(
     )
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun MenuBarScope.ToolsMenu(viewModel: MasterViewModel) = Menu(text = StringLocale[STR_TOOLS], mnemonic = 't') {
     var cursorEnabled by remember { settableMutableStateOf(Settings.cursorEnabled) { Settings.cursorEnabled = it } }
@@ -84,7 +83,6 @@ private fun MenuBarScope.ToolsMenu(viewModel: MasterViewModel) = Menu(text = Str
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun MenuBarScope.WindowMenu(
     closeAct: () -> Unit,
@@ -121,7 +119,6 @@ private fun MenuBarScope.WindowMenu(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun MenuBarScope.TokenMenu(
     showBlueprintEditorDialog: () -> Unit,

@@ -11,7 +11,6 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import jdr.exia.SimpleFunction
 import jdr.exia.view.tools.BoxWithTooltipIfNotNull
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TextTrailingIcon(icon: ImageVector, tooltipMessage: String? = null, onClick: SimpleFunction? = null) =
     BoxWithTooltipIfNotNull(

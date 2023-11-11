@@ -62,7 +62,6 @@ fun ItemList(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun FilterOptions(currentFilter: BlueprintFilter, setCurrentFilter: (BlueprintFilter) -> Unit) {
     var showFilterOptions by remember { mutableStateOf(false) }
@@ -77,7 +76,7 @@ private fun FilterOptions(currentFilter: BlueprintFilter, setCurrentFilter: (Blu
         expanded = showFilterOptions,
         onDismissRequest = { showFilterOptions = false }
     ) {
-        val availableFilters = remember { BlueprintFilter.values().toList() }
+        val availableFilters = remember { BlueprintFilter.entries }
 
         availableFilters.forEach {
             LabeledRadioMenuItem(

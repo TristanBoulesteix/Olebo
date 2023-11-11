@@ -131,7 +131,7 @@ private fun DialogSettingsScope.LookAndFeelSettings(
             label = StringLocale[STR_DEFAULT_ELEMENT_VISIBILITY]
         )
 
-        val labelStates = remember { SerializableLabelState.values().toList() }
+        val labelStates = remember { SerializableLabelState.entries }
 
         DropdownMenu(
             items = labelStates,

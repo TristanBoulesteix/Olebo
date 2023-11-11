@@ -21,7 +21,7 @@ fun BottomPanel(
     selectedEditor: @Composable () -> Unit,
     shareScene: @Composable () -> Unit
 ) = Surface(modifier) {
-    val tabs = remember { BottomTab.values().toList() }
+    val tabs = remember { BottomTab.entries }
 
     TabPanel(
         tabs = tabs,
