@@ -7,11 +7,10 @@ import androidx.compose.ui.Modifier
 
 private const val ANIMATION_DURATION_MILLIS = 220
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun <S> SliderContent(
     targetState: S,
-    isBackAction: AnimatedContentScope<S>.() -> Boolean = { false },
+    isBackAction: AnimatedContentTransitionScope<S>.() -> Boolean = { false },
     modifier: Modifier = Modifier,
     content: @Composable AnimatedVisibilityScope.(targetState: S) -> Unit
 ) = AnimatedContent(
@@ -22,7 +21,7 @@ fun <S> SliderContent(
         slideInHorizontally(
             animationSpec = tween(ANIMATION_DURATION_MILLIS),
             initialOffsetX = { it * directionModifier }
-        ) with slideOutHorizontally(
+        ) togetherWith slideOutHorizontally(
             animationSpec = tween(ANIMATION_DURATION_MILLIS),
             targetOffsetX = { it * -directionModifier }
         )

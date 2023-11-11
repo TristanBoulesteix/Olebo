@@ -52,6 +52,13 @@ subprojects {
                 languageSettings.optIn("kotlin.RequiresOptIn")
             }
         }
+        targets.all {
+            compilations.all {
+                compilerOptions.configure {
+                    freeCompilerArgs.add("-Xexpect-actual-classes")
+                }
+            }
+        }
     }
 }
 

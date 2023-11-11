@@ -15,7 +15,7 @@ application {
 distributions {
     main {
         contents {
-            from("$buildDir/libs") {
+            from("${layout.buildDirectory}/libs") {
                 exclude(project.name)
                 rename("${project.name}-jvm", project.name)
                 into("lib")
