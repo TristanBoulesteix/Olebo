@@ -17,9 +17,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 
+/**
+ * Checks for updates based on the provided release code.
+ *
+ * @param releaseCode The release code to check for updates. If null, the method will check for the latest release.
+ * @return A Result object representing the result of the update check. If an update is available, the Result will
+ * contain the Release object representing the update. If there was an error during the update check, the Result will
+ * contain the Throwable object representing the error.
+ */
 suspend fun checkForUpdate(releaseCode: Int? = null): Result<Release> {
     val response = try {
         client.use { it.get("${Preferences.oleboUrl.value}/releases/" + (releaseCode ?: "last")).body<HttpResponse>() }
+    } catch (e: CancellationException) {
+        throw e
     } catch (e: Throwable) {
         return Result.failure(e)
     }
@@ -32,6 +42,17 @@ suspend fun checkForUpdate(releaseCode: Int? = null): Result<Release> {
     return Result.failure(Throwable())
 }
 
+/**
+ * Retrieves the installer executable file for a given version code.
+ *
+ * @param versionCode The version code of the installer to retrieve.
+ * @param onUpdateProgress A callback function to report the progress of the download.
+ *                         It receives a Long value representing the current progress in percentage.
+ *
+ * @return A Result object indicating the success or failure of the operation.
+ *         On success, the Result object contains the File representing the installer executable.
+ *         On failure, the Result object contains an Exception indicating the cause of the failure.
+ */
 @OptIn(InternalAPI::class)
 suspend fun getInstallerExecutable(versionCode: Int, onUpdateProgress: (Long) -> Unit): Result<File> {
     val fileToWrite = File("$OLEBO_DIRECTORY${File.separator}olebo_updater.exe")
@@ -49,6 +70,8 @@ suspend fun getInstallerExecutable(versionCode: Int, onUpdateProgress: (Long) ->
             }
                 .body<HttpResponse>()
         }
+    } catch (e: CancellationException) {
+        throw e
     } catch (e: Exception) {
         return Result.failure(e)
     }
@@ -56,16 +79,27 @@ suspend fun getInstallerExecutable(versionCode: Int, onUpdateProgress: (Long) ->
     if (response.status.isSuccess()) {
         // Not working !!!
         // response.bodyAsChannel().copyAndClose(fileToWrite.writeChannel())
-        response.content.copyAndClose(fileToWrite.writeChannel())
+        response.content.copyAndClose(fileToWrite.writeChannel(Dispatchers.IO))
     } else return Result.failure(IllegalStateException("Response status : ${response.status.value}"))
 
     return Result.success(fileToWrite)
 }
 
+/**
+ * Downloads update installer and exits the application.
+ *
+ * @param versionCode The code of the update version.
+ * @param onFinishDownload The callback function to be invoked when the download is completed.
+ * @param onProgressUpdate Callback function to be invoked when the progress of the download is updated.
+ * @param onDownloadSuccess Callback function to be invoked when the download is successful.
+ * @param onDownloadFailure Callback function to be invoked when the download fails.
+ *
+ * @return There is no specific return value.
+ */
 @Suppress("BlockingMethodInNonBlockingContext")
 suspend fun downloadUpdateAndExit(
     versionCode: Int,
-    onExitSuccess: () -> Unit,
+    onFinishDownload: () -> Unit,
     onProgressUpdate: (Long) -> Unit = {},
     onDownloadSuccess: () -> Unit = {},
     onDownloadFailure: (Throwable) -> Unit = {}
@@ -82,6 +116,6 @@ suspend fun downloadUpdateAndExit(
             ProcessBuilder(it.absolutePath, "/SP-", "/silent", "/noicons").start()
         })
 
-        onExitSuccess()
+        onFinishDownload()
     }.onFailure(onDownloadFailure)
 }

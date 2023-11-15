@@ -20,11 +20,61 @@ const val OLEBO_VERSION_NAME = "0.1.5"
  */
 const val OLEBO_VERSION_CODE = 6
 
-suspend fun main(vararg args: String) {
+fun main(vararg args: String) = oleboApplication {
+    var splashScreenVisible by remember { mutableStateOf(true) }
+
+    val trayManager = LocalTrayManager.current
+
+    LaunchedEffect(Unit) {
+        trayManager.trayHint = "Olebo is running"
+    }
+
+    if (splashScreenVisible) {
+        SplashScreen(onDone = { splashScreenVisible = false }) {
+            // Initialize database and localization
+            setStatus(10f, "Initialization database and localization")
+            StringLocale(Settings::activeLanguage)
+
+            // Check dev mode
+            setStatus(20f, "Checking developer mode")
+            if ("-dev" in args) {
+                DeveloperModeManager.toggle()
+            }
+
+            // Check for update
+            if (Settings.autoUpdate) {
+                setStatus(50f, "Checking for updates")
+                checkForUpdate().onSuccess {
+                    setStatus(60f, "Updating to ${it.versionName}")
+                    autoUpdate(it)
+                }.onFailure {
+                    setStatus(100f, "Failed to check for updates...", isError = true)
+                    if (it is Exception) it.printStackTrace()
+                }
+            } else {
+
+            }
+        }
+    } else {
+        // Main content
+        exitApplication()
+    }
+}
+
+/**
+ * Automatically updates the software with the given release.
+ *
+ * @param release The release object containing the details of the software update.
+ */
+private suspend fun autoUpdate(release: Release) {
+
+}
+
+suspend fun temp(args: String) {
     // Initialize translations and database
     StringLocale(Settings::activeLanguage)
 
-    if("-dev" in args) {
+    if ("-dev" in args) {
         DeveloperModeManager.toggle()
     }
 
@@ -74,6 +124,7 @@ suspend fun main(vararg args: String) {
         }
     }
 }
+
 
 @Composable
 fun ApplicationScope.MainUI() {

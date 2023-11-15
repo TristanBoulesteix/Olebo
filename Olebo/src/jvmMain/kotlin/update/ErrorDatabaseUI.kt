@@ -79,7 +79,7 @@ fun showErrorDatabaseUI(versionCode: Int): Boolean {
                         )
 
                         downloadUpdateAndExit(
-                            onExitSuccess = { exitProcess(0) },
+                            onFinishDownload = { exitProcess(0) },
                             onDownloadFailure = { error("Unable to update") },
                             versionCode = updateVersionCode!!
                         )

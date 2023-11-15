@@ -22,18 +22,22 @@ import jdr.exia.localization.get
 import jdr.exia.main
 import jdr.exia.view.component.contentListRow.ContentButtonBuilder
 import jdr.exia.view.component.dialog.MessageDialog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.InputStreamReader
 
-fun getChangelogs(): String? =
+suspend fun getChangelogs(): String? = withContext(Dispatchers.IO) {
     StringLocale.getLocalizedResource("changelogs", "txt", ::main.javaClass.classLoader)?.reader()
         ?.use(InputStreamReader::readText)
+}
+
 
 @Composable
 fun ChangelogsDialog(changelogs: String, onClose: () -> Unit = {}) {
     var changelogsVisible by remember { mutableStateOf(true) }
 
     LaunchedEffect(changelogsVisible) {
-        if(!changelogsVisible)
+        if (!changelogsVisible)
             onClose()
     }
 

@@ -67,7 +67,7 @@ fun ApplicationScope.UpdateUI(release: Release, notify: (Notification) -> Unit, 
                     notify(Notification(StringLocale[STR_UPDATE_AVAILABLE], StringLocale[ST_UPDATE_OLEBO_RESTART]))
                     delay(2_000)
                     downloadUpdateAndExit(
-                        onExitSuccess = ::exitApplication,
+                        onFinishDownload = ::exitApplication,
                         onDownloadFailure = {
                             failedToUpdate = true
                             notify(Notification(StringLocale[STR_ERROR], StringLocale[ST_UPDATE_FAILED]))
@@ -127,7 +127,7 @@ private fun FailedAutoUpdateDialog(versionCode: Int, attemptNumber: Int) {
                     )
 
                     downloadUpdateAndExit(
-                        onExitSuccess = { exitProcess(0) },
+                        onFinishDownload = { exitProcess(0) },
                         onDownloadFailure = {
                             GlobalScope.launch {
                                 trayManager.sendNotification(
@@ -252,7 +252,7 @@ private fun InstallerDownloader(versionCode: Int, exitApplication: () -> Unit) {
         LaunchedEffect(Unit) {
             downloadUpdateAndExit(
                 versionCode = versionCode,
-                onExitSuccess = exitApplication,
+                onFinishDownload = exitApplication,
                 onProgressUpdate = { progress = it.toFloat() },
                 onDownloadSuccess = { isVisible = false }
             )

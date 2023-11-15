@@ -78,7 +78,6 @@ object DAO : CoroutineScope by CoroutineScope(Dispatchers.IO) {
         throw DatabaseException(e)
     }
 
-    @Suppress("KotlinConstantConditions")
     private fun showUpdateMessageWarn(versionCode: Int) = showErrorDatabaseUI(versionCode) || exitProcess(100)
 
     private fun dropLegacyTables() = launch {
