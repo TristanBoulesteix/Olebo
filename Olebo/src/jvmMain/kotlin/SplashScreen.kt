@@ -15,24 +15,24 @@ import androidx.compose.ui.res.useResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogWindow
 import androidx.compose.ui.window.rememberDialogState
-import kotlinx.coroutines.delay
-import kotlin.system.exitProcess
+import jdr.exia.view.ui.LocalLogger
 
 @Composable
 fun SplashScreen(onDone: () -> Unit, loadingAction: suspend SplashScreenActionScope.() -> Unit) {
-    var state by remember { mutableStateOf(SplashScreenState(80f, "", isError = false)) }
+    var state by remember { mutableStateOf(SplashScreenState(0f, "", isError = false)) }
+
+    val logger = LocalLogger.current
 
     LaunchedEffect(Unit) {
         val actionScope = object : SplashScreenActionScope {
             override fun setStatus(percentage: Float, description: String, isError: Boolean) {
-                state = SplashScreenState(percentage, description, isError)
+                state = SplashScreenState(if (percentage < 0) state.percentage else percentage, description, isError)
+                logger.info(description)
             }
         }
 
         actionScope.loadingAction()
 
-        delay(10000)
-        exitProcess(0)
         onDone()
     }
 
@@ -41,6 +41,8 @@ fun SplashScreen(onDone: () -> Unit, loadingAction: suspend SplashScreenActionSc
 
 @Immutable
 interface SplashScreenActionScope {
+    fun setStatus(description: String, isError: Boolean = false) = setStatus(-1f, description, isError)
+
     fun setStatus(percentage: Float, description: String, isError: Boolean = false)
 }
 
@@ -52,7 +54,7 @@ private fun SplashScreenUI(state: SplashScreenState) = DialogWindow(
     onCloseRequest = {},
     undecorated = true,
     resizable = false,
-    focusable = false,
+    focusable = true,
     state = rememberDialogState(height = 200.dp)
 ) {
     Box {
@@ -62,7 +64,11 @@ private fun SplashScreenUI(state: SplashScreenState) = DialogWindow(
         )
         Column(Modifier.align(Alignment.BottomStart)) {
             Text(state.description)
-            LinearProgressIndicator(state.percentage, modifier = Modifier.height(10.dp), color = if(state.isError) Color.Red else Color(0xFFddaf61))
+            LinearProgressIndicator(
+                state.percentage,
+                modifier = Modifier.height(10.dp),
+                color = if (state.isError) Color.Red else Color(0xFFddaf61)
+            )
         }
     }
 }

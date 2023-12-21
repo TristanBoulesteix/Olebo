@@ -3,6 +3,8 @@ package jdr.exia.update
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Notification
+import fr.olebo.utils.getOrNull
+import fr.olebo.utils.isFailure
 import jdr.exia.localization.*
 import jdr.exia.model.dao.reset
 import jdr.exia.model.dao.restart

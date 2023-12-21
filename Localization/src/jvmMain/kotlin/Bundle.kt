@@ -281,6 +281,7 @@ internal actual class StringLocaleBundle : StringLocale() {
             ST_STR1_EXAMPLE_ABBREVIATED to "e.g.; %s",
             ST_EXAMPLE_1_RPG_NAME to "Campaign n°12",
             ST_EXAMPLE_2_RPG_NAME to "The caves of the Beyond",
+            STR_QUIT_OLEBO to "fermer Olebo",
         )
 }
 
@@ -564,5 +565,6 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
             ST_STR1_EXAMPLE_ABBREVIATED to "ex. %s",
             ST_EXAMPLE_1_RPG_NAME to "Aventure n°12",
             ST_EXAMPLE_2_RPG_NAME to "Les cavernes de l'Au-Delà",
+            STR_QUIT_OLEBO to "fermer Olebo",
         )
 }

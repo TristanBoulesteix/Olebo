@@ -25,6 +25,7 @@ include("Localization", "Update")
 include("System")
 include("Website")
 include("ShareScene")
+include("Utils")
 
 dependencyResolutionManagement {
     versionCatalogs {
@@ -140,7 +141,7 @@ dependencyResolutionManagement {
             bundle("kmdc", listOf("kmdc-button", "kmdc-textfield"))
 
             // Other
-            library("slf4j", "org.slf4j", "slf4j-simple").version("2.0.0-alpha7")
+            library("slf4j", "org.slf4j", "slf4j-simple").version("2.0.9")
             library("jdbc-sqlite", "org.xerial", "sqlite-jdbc").version("3.36.0.3")
             library("systemThemeDetector", "com.github.Dansoftowner", "jSystemThemeDetector").version("3.8")
             library("logback", "ch.qos.logback", "logback-classic").version("1.2.3")

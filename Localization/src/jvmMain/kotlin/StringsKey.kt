@@ -185,6 +185,7 @@ const val STR_FILTER_BLUEPRINT_ALL = "filter_blueprint_all"
 const val STR_FILTER_BLUEPRINT_WITH_ACT = "filter_blueprint_act"
 const val STR_FILTER_BLUEPRINT_WITH_TAG = "filter_blueprint_tag"
 const val STR_GET_STARTED = "get_started"
+const val STR_QUIT_OLEBO = "close_olebo"
 
 // -- Sentences
 

@@ -1,7 +1,6 @@
 package jdr.exia.view.menubar
 
 import androidx.compose.runtime.*
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.platform.LocalUriHandler
@@ -169,8 +168,12 @@ fun MenuBarScope.MainMenus(exitApplication: () -> Unit) = Menu(text = StringLoca
     // Change logs handler
     var changelogs by remember { mutableStateOf("") }
 
+    val scope = rememberCoroutineScope()
+
     Item(text = StringLocale[STR_RELEASE_NOTES]) {
-        changelogs = getChangelogs() ?: ""
+        scope.launch {
+            changelogs = getChangelogs() ?: ""
+        }
     }
 
     if (changelogs.isNotBlank()) {

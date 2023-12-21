@@ -37,7 +37,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
-private const val MAX_UPDATE_ATTEMPT = 1
+private const val MAX_UPDATE_ATTEMPT = 1u
 
 @Composable
 fun ApplicationScope.UpdateUI(release: Release, notify: (Notification) -> Unit, hideTray: () -> Unit) {
@@ -48,7 +48,7 @@ fun ApplicationScope.UpdateUI(release: Release, notify: (Notification) -> Unit, 
             val trayManager = LocalTrayManager.current
 
             var failedToUpdate by remember { mutableStateOf(false) }
-            var failedAttemptForAutoUpdate by remember { mutableStateOf(0) }
+            var failedAttemptForAutoUpdate by remember { mutableStateOf(0u) }
 
             LaunchedEffect(Unit) {
                 val attemptNumber = Preferences.getNumberOfUpdateAttemptForVersion(versionId)
@@ -97,7 +97,7 @@ private const val CONTACT_DEVS_TAG = "contact"
 
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
-private fun FailedAutoUpdateDialog(versionCode: Int, attemptNumber: Int) {
+fun FailedAutoUpdateDialog(versionCode: Int, attemptNumber: UInt) {
     val trayManager = LocalTrayManager.current
 
     var isVisible by remember { mutableStateOf(true) }
