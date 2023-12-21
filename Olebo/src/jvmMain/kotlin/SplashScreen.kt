@@ -3,6 +3,7 @@ package jdr.exia
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
@@ -65,8 +66,8 @@ private fun SplashScreenUI(state: SplashScreenState) = DialogWindow(
         Column(Modifier.align(Alignment.BottomStart)) {
             Text(state.description)
             LinearProgressIndicator(
-                state.percentage,
-                modifier = Modifier.height(10.dp),
+                state.percentage / 100,
+                modifier = Modifier.height(10.dp).fillMaxWidth(),
                 color = if (state.isError) Color.Red else Color(0xFFddaf61)
             )
         }
