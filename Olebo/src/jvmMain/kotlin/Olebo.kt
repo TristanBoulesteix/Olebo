@@ -2,16 +2,12 @@ package jdr.exia
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.window.ApplicationScope
-import androidx.compose.ui.window.Notification
 import fr.olebo.utils.onNotSuccess
 import fr.olebo.utils.onSuccess
-import fr.olebo.utils.onThrow
 import jdr.exia.localization.*
-import jdr.exia.model.dao.option.Preferences
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.update.*
 import jdr.exia.view.ui.LocalTrayManager
-import jdr.exia.view.ui.TrayManager
 import jdr.exia.view.ui.oleboApplication
 import jdr.exia.view.window.screen.HomeWindow
 import jdr.exia.view.window.screen.MasterWindow
@@ -27,12 +23,12 @@ const val OLEBO_VERSION_NAME = "0.1.5"
  */
 const val OLEBO_VERSION_CODE = 6
 
-private const val MAX_UPDATE_ATTEMPT = 1u
-
 fun main(vararg args: String) = oleboApplication {
     val applicationCoroutineScope = rememberCoroutineScope()
 
     var splashScreenVisible by remember { mutableStateOf(true) }
+
+    var manualUpdate by remember { mutableStateOf<Release?>(null) }
 
     val trayManager = LocalTrayManager.current
 
@@ -80,8 +76,7 @@ fun main(vararg args: String) = oleboApplication {
             } else {
                 // Manual update
                 applicationCoroutineScope.launch {
-                    checkForUpdate()
-                    TODO()
+                    checkForUpdate().onSuccess { manualUpdate = it }
                 }
             }
 
@@ -94,54 +89,17 @@ fun main(vararg args: String) = oleboApplication {
         }
     } else {
         MainUI()
+
+        manualUpdate?.let {
+            PromptUpdate(release = it, onUpdateRefused = { manualUpdate = null })
+        }
     }
 }
 
 @Immutable
 private data class FailedUpdateData(val versionCode: Int, val attempts: UInt)
 
-suspend fun SplashScreenActionScope.autoUpdate(
-    release: Release,
-    trayManager: TrayManager,
-    onDone: () -> Unit,
-    showUpdateDialog: (UInt) -> Unit
-) {
-    val attemptNumber = Preferences.getNumberOfUpdateAttemptForVersion(release.versionId)
-
-    val strUpdateFailed = StringLocale[ST_UPDATE_FAILED]
-
-    if (attemptNumber > MAX_UPDATE_ATTEMPT) {
-        setStatus(strUpdateFailed, isError = true)
-        trayManager.trayHint = strUpdateFailed
-
-        trayManager.sendNotification(
-            Notification(
-                StringLocale[STR_ERROR],
-                StringLocale[ST_INT1_INT2_UPDATE_FAILED_FOR_X_ATTEMPT, release.versionId, attemptNumber]
-            )
-        )
-
-        showUpdateDialog(attemptNumber)
-    } else {
-        trayManager.sendNotification(
-            Notification(
-                StringLocale[STR_UPDATE_AVAILABLE],
-                StringLocale[ST_UPDATE_OLEBO_RESTART]
-            )
-        )
-        downloadUpdateAndExit(
-            onFinishDownload = onDone,
-            onDownloadFailure = {
-                setStatus(strUpdateFailed, isError = true)
-                trayManager.sendNotification(Notification(StringLocale[STR_ERROR], strUpdateFailed))
-                it.printStackTrace()
-            },
-            versionCode = release.versionId
-        )
-    }
-}
-
-suspend fun temp(args: String) {
+/*suspend fun temp(args: String) {
     // Initialize translations and database
     StringLocale(Settings::activeLanguage)
 
@@ -194,7 +152,7 @@ suspend fun temp(args: String) {
             }
         }
     }
-}
+}*/
 
 
 @Composable

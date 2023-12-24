@@ -97,7 +97,7 @@ internal actual class StringLocaleBundle : StringLocale() {
                 Warning : This action will erase permanently all your data.
             """.trimIndent(),
             STR_ERROR to "error",
-            ST_NEW_VERSION_AVAILABLE to "A new version of the Olebo software is available. Do you want to install it?",
+            ST_STR1_NEW_VERSION_AVAILABLE to "A new version of the Olebo software (%s) is available. Do you want to install it?",
             STR_UPDATE_AVAILABLE to "update available",
             STR_YES to "yes",
             STR_NO to "no",
@@ -381,7 +381,7 @@ internal actual class StringLocaleBundle_fr : StringLocale() {
                 Attention : Cette opération effacera toute vos données définitivement.
             """.trimIndent(),
             STR_ERROR to "erreur",
-            ST_NEW_VERSION_AVAILABLE to "Une mise à jour de Olebo est disponible. Voulez-vous l'installer ?",
+            ST_STR1_NEW_VERSION_AVAILABLE to "Une mise à jour de Olebo est disponible (%s). Voulez-vous l'installer ?",
             STR_UPDATE_AVAILABLE to "mise à jour disponible",
             STR_YES to "oui",
             STR_NO to "non",
