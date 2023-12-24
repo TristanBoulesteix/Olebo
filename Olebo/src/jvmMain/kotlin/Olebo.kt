@@ -5,6 +5,7 @@ import androidx.compose.ui.window.ApplicationScope
 import fr.olebo.utils.onNotSuccess
 import fr.olebo.utils.onSuccess
 import jdr.exia.localization.*
+import jdr.exia.model.dao.option.Preferences
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.update.*
 import jdr.exia.view.ui.LocalTrayManager
@@ -90,6 +91,8 @@ fun main(vararg args: String) = oleboApplication {
     } else {
         MainUI()
 
+        Changelog()
+
         manualUpdate?.let {
             PromptUpdate(release = it, onUpdateRefused = { manualUpdate = null })
         }
@@ -99,61 +102,22 @@ fun main(vararg args: String) = oleboApplication {
 @Immutable
 private data class FailedUpdateData(val versionCode: Int, val attempts: UInt)
 
-/*suspend fun temp(args: String) {
-    // Initialize translations and database
-    StringLocale(Settings::activeLanguage)
+@Composable
+private fun Changelog() {
+    var changelogs: String? by remember { mutableStateOf(null) }
 
-    if ("-dev" in args) {
-        DeveloperModeManager.toggle()
-    }
-
-    oleboApplication {
-        // Manage update
-        var release by remember { mutableStateOf<Release?>(null) }
-        var updateChecked by remember { mutableStateOf(false) }
-
-        val trayManager = LocalTrayManager.current
-
-        LaunchedEffect(release, updateChecked) {
-            trayManager.trayHint = when {
-                updateChecked -> StringLocale[STR_OLEBO_IS_RUNNING]
-                release == null -> StringLocale[ST_OLEBO_SEARCH_FOR_UPDATE]
-                else -> StringLocale[STR_PREPARE_UPDATE]
-            }
-        }
-
-        LaunchedEffect(Unit) {
-            checkForUpdate().onSuccess { release = it }.onThrow {
-                if (it is Exception) it.printStackTrace()
-            }
-            updateChecked = true
-        }
-
-        release?.let {
-            UpdateUI(release = it, notify = trayManager::sendNotification, hideTray = { release = null })
-        }
-
-        // Start the main UI if automatic updates are disabled
-        if (!Settings.autoUpdate || (Settings.autoUpdate && updateChecked && release == null)) {
-            var changelogs: String? by remember { mutableStateOf(null) }
-
-            LaunchedEffect(Unit) {
-                launch(Dispatchers.IO) {
-                    if (Preferences.wasJustUpdated) {
-                        changelogs = getChangelogs()
-                    }
-                }
-            }
-
-            MainUI()
-
-            if (changelogs != null && Preferences.wasJustUpdated) {
-                ChangelogsDialog(changelogs!!, onClose = { Preferences.versionUpdatedTo = -1 })
+    LaunchedEffect(Unit) {
+        launch(Dispatchers.IO) {
+            if (Preferences.wasJustUpdated) {
+                changelogs = getChangelogs()
             }
         }
     }
-}*/
 
+    if (changelogs != null && Preferences.wasJustUpdated) {
+        ChangelogsDialog(changelogs!!, onClose = { Preferences.versionUpdatedTo = -1 })
+    }
+}
 
 @Composable
 fun ApplicationScope.MainUI() {
