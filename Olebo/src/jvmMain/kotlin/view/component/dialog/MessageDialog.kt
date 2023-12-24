@@ -24,6 +24,7 @@ import jdr.exia.view.component.contentListRow.ButtonBuilder
 import jdr.exia.view.component.contentListRow.ContentButtonBuilder
 import jdr.exia.view.component.contentListRow.RowButtonScope
 import jdr.exia.view.tools.BoxedComposable
+import java.awt.Dialog
 
 @Composable
 private fun RowButtonScope.DefaultButton(action: () -> Unit) = ContentButtonBuilder("OK", onClick = action)
@@ -73,7 +74,7 @@ fun MessageDialog(
                 false
             }, content = {
                 DisposableEffect(Unit) {
-                    window.isModal = true
+                    window.modalityType = Dialog.ModalityType.APPLICATION_MODAL
                     DialogManager.dialogVisibleNum += 1
 
                     onDispose {

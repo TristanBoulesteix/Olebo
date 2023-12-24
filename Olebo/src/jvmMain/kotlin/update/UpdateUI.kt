@@ -36,6 +36,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.awt.Dialog
 import kotlin.system.exitProcess
 
 private const val REPORT_ISSUE_TAG = "report"
@@ -226,7 +227,7 @@ private fun InstallerDownloader(versionCode: Int, exitApplication: () -> Unit) {
             title = StringLocale[STR_DOWNLOAD_UPDATE],
             resizable = false,
             content = {
-                LaunchedEffect(Unit) { window.isModal = true }
+                LaunchedEffect(Unit) { window.modalityType = Dialog.ModalityType.APPLICATION_MODAL }
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,

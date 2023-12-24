@@ -125,7 +125,8 @@ fun ApplicationScope.MainUI() {
 
     when (val currentWindow = windowState) {
         is HomeWindow -> HomeWindow(startAct = { windowState = MasterWindow(it) })
-        is MasterWindow -> MasterWindow(act = currentWindow.act,
-            onExit = { windowState = HomeWindow })
+        is MasterWindow -> {
+            MasterWindow(act = currentWindow.act, onExit = { windowState = HomeWindow })
+        }
     }
 }
