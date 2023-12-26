@@ -452,10 +452,10 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
         size = size.value,
         label = rgbTooltip?.let { Label(alias, it) }
     )
-    
+
     private inline fun sendMessageToShareScene(crossinline message: () -> Message) =
         (connectionState as? Connected)?.let { connectedState ->
-            scope.launch(Dispatchers.IO) {
+            scope.launch(Dispatchers.Default) {
                 connectedState.shareSceneViewModel.messages.trySend(message())
             }
         }
