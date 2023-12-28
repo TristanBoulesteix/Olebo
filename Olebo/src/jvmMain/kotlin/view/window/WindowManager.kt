@@ -105,7 +105,7 @@ fun ApplicationScope.Window(
                     jobHolder.value?.cancel()
 
                     jobHolder.value = coroutineScope.launch {
-                        delay(5_000)
+                        delay(2_000)
                         counterCtrl = 0
                     }
                 } else {
@@ -116,14 +116,15 @@ fun ApplicationScope.Window(
             false
         }
     ) {
-        LaunchedEffect(minimumSize) {
-            minimumSize?.let {
-                window.minimumSize = it.toDimension()
+        LaunchedEffect(minimumSize, windowState.placement) {
+            if (windowState.placement != WindowPlacement.Maximized && minimumSize != null) {
+                window.minimumSize = minimumSize.toDimension()
             }
         }
 
-        LaunchedEffect(size) {
-            window.preferredSize = size.toDimension()
+        LaunchedEffect(size, windowState.placement) {
+            if (windowState.placement != WindowPlacement.Maximized)
+                window.preferredSize = size.toDimension()
         }
 
         val parentWindow = LocalWindow.current
