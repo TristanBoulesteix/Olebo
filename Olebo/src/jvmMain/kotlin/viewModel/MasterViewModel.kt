@@ -59,10 +59,13 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
 
     private var blueprintsGrouped by mutableStateOf(loadBlueprints())
 
+    @Stable
     var searchString by mutableStateOf("")
 
+    @Stable
     var blueprintFilter by mutableStateOf(BlueprintFilter.ALL)
 
+    @Stable
     val itemsFiltered by derivedStateOf {
         blueprintsGrouped.mapValues { (type, list) ->
             transaction {
@@ -99,6 +102,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
      */
     val elements by derivedStateOf { unsortedElements.sortedBy { it.priority } }
 
+    @Stable
     val backgroundImage: ImageBitmap by derivedStateOf {
         transaction {
             ImageIO.read(inputStreamFromString(currentScene.background)).also { image ->

@@ -1,9 +1,6 @@
 package jdr.exia.view.window.screen
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeWindow
@@ -23,7 +20,6 @@ import jdr.exia.view.window.Window
 import jdr.exia.viewModel.MasterViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.awt.Frame.MAXIMIZED_BOTH
 import java.awt.GraphicsConfiguration
 import java.awt.GraphicsDevice
 import java.awt.Rectangle
@@ -43,8 +39,6 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
         val currentWindow = LocalWindow.current!!
 
         DisposableEffect(currentWindow) {
-            window.extendedState = MAXIMIZED_BOTH
-
             currentWindow.addSettingsChangedListener {
                 viewModel.refreshView(reloadTokens = true)
             }
