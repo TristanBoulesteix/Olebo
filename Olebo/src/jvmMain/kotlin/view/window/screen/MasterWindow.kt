@@ -1,6 +1,9 @@
 package jdr.exia.view.window.screen
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeWindow
@@ -18,6 +21,7 @@ import jdr.exia.view.ui.MASTER_WINDOW_SIZE
 import jdr.exia.view.window.LocalWindow
 import jdr.exia.view.window.Window
 import jdr.exia.viewModel.MasterViewModel
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.awt.GraphicsConfiguration
@@ -29,6 +33,8 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
     val scope = rememberCoroutineScope()
 
     val viewModel = remember { MasterViewModel(act, scope) }
+
+    DisposableEffect(viewModel) { onDispose(viewModel::cancel) }
 
     Window(
         title = StringLocale[ST_STR1_DM_WINDOW_NAME, act.name],
