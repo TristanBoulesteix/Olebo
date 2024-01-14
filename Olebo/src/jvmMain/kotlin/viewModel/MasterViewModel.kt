@@ -6,7 +6,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toAwtImage
-import androidx.compose.ui.graphics.toComposeImageBitmap
+import androidx.compose.ui.res.loadImageBitmap
 import fr.olebo.sharescene.*
 import fr.olebo.sharescene.connection.*
 import io.ktor.websocket.*
@@ -40,7 +40,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
-import javax.imageio.ImageIO
 
 @Stable
 class MasterViewModel(val act: Act, scope: CoroutineScope) : CoroutineScope by scope {
@@ -115,15 +114,15 @@ class MasterViewModel(val act: Act, scope: CoroutineScope) : CoroutineScope by s
     @Stable
     val backgroundImage: ImageBitmap by derivedStateOf {
         transaction {
-            ImageIO.read(inputStreamFromString(currentScene.background)).also { image ->
+            loadImageBitmap(inputStreamFromString(currentScene.background)).also { image ->
                 sendMessageToShareScene {
                     val color =
                         if (Settings.labelState == SerializableLabelState.FOR_BOTH) Settings.labelColor.contentColor.toTriple() else null
                     NewMap(
-                        Base64Image(image, 1600, 900),
+                        Base64Image(image.toAwtImage(), 1600, 900),
                         elements.filter { it.isVisible }.map { it.toShareSceneToken(color) })
                 }
-            }.toComposeImageBitmap()
+            }
         }
     }
 
@@ -465,7 +464,6 @@ class MasterViewModel(val act: Act, scope: CoroutineScope) : CoroutineScope by s
         }
     }
 
-
     private fun Element.toShareSceneToken(rgbTooltip: Triple<Int, Int, Int>?) = Token(
         image = Base64Image(sprite.toAwtImage(), size.value),
         rotation = Angle(orientation),
@@ -477,7 +475,7 @@ class MasterViewModel(val act: Act, scope: CoroutineScope) : CoroutineScope by s
     private inline fun sendMessageToShareScene(crossinline message: () -> Message) =
         (connectionState as? Connected)?.let { connectedState ->
             launch(Dispatchers.Default) {
-                connectedState.shareSceneViewModel.messages.trySend(message())
+                connectedState.shareSceneViewModel.messages.send(message())
             }
         }
 
