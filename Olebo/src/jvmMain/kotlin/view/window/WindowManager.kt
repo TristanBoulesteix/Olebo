@@ -79,7 +79,7 @@ fun ApplicationScope.Window(
         placement = placement
     )
 
-    var counterCtrl by remember { mutableStateOf(0) }
+    var counterCtrl by remember { mutableIntStateOf(0) }
 
     if (counterCtrl > 4) {
         LaunchedEffect(Unit) {

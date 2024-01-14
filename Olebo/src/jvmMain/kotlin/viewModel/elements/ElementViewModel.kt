@@ -14,7 +14,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 class ElementViewModel(type: TypeElement) {
     val currentScrollState = LazyListState()
 
-    var currentEditPosition by mutableStateOf(-1)
+    var currentEditPosition by mutableIntStateOf(-1)
 
     val data by lazy {
         transaction {

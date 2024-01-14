@@ -219,7 +219,7 @@ private fun InstallerDownloader(versionCode: Int, exitApplication: () -> Unit) {
 
     if (isVisible) {
         val dialogState = rememberDialogState(height = 150.dp)
-        var progress by remember { mutableStateOf(0f) }
+        var progress by remember { mutableFloatStateOf(0f) }
 
         DialogWindow(
             onCloseRequest = {},

@@ -1,9 +1,6 @@
 package jdr.exia.viewModel
 
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
@@ -27,7 +24,7 @@ import kotlin.io.path.deleteIfExists
 
 @Stable
 class ActEditorViewModel(val act: Act?) {
-    private var currentEditPosition by mutableStateOf(-1)
+    private var currentEditPosition by mutableIntStateOf(-1)
 
     var actName by mutableStateOf(act?.name ?: "")
 
