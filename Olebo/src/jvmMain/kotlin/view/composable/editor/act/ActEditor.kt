@@ -26,8 +26,6 @@ import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.data.SceneData
 import jdr.exia.model.tools.*
-import jdr.exia.model.type.imageFromIconRes
-import jdr.exia.model.type.imageFromPath
 import jdr.exia.view.component.*
 import jdr.exia.view.component.contentListRow.ContentButtonBuilder
 import jdr.exia.view.component.contentListRow.IconButtonBuilder
@@ -320,8 +318,7 @@ private fun ImagePreviewContent(
     ) {
         if (imgExist) {
             Image(
-                bitmap = data.img.checkedImgPath?.toAbsolutePath()?.toString()?.let { imageFromPath(it) }
-                    ?: imageFromIconRes("not_found", "jpg"),
+                bitmap = data.img.toBitmap(),
                 contentDescription = null,
                 Modifier.clip(roundedShape).addRoundedBorder().align(Alignment.Center)
             )

@@ -10,10 +10,10 @@ import jdr.exia.model.dao.SceneTable
 import jdr.exia.model.element.Tag
 import jdr.exia.model.tools.SimpleResult
 import jdr.exia.model.tools.success
+import jdr.exia.model.tools.toPath
 import jdr.exia.model.type.Image
-import jdr.exia.model.type.checkedImgPath
+import jdr.exia.model.type.toCheckedImgPath
 import jdr.exia.model.type.saveImgAndGetPath
-import jdr.exia.model.type.toImgPath
 import jdr.exia.viewModel.tags.ElementTagHolder
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.SizedCollection
@@ -125,8 +125,8 @@ class ActEditorViewModel(val act: Act?) {
             scenes.forEach {
                 if (it.id != null) with(Scene[it.id]) {
                     this.name = it.name
-                    val oldImg = this.background.toImgPath().checkedImgPath()
-                    if (it.img.path != background) {
+                    val oldImg = this.background.toPath().toCheckedImgPath()
+                    if (it.img.stringPath != background) {
                         this.background = it.img.saveImgAndGetPath()
                         oldImg?.deleteIfExists()
                     }

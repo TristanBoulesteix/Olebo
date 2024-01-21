@@ -11,7 +11,8 @@ import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.tools.CharacterException
 import jdr.exia.model.tools.isCharacter
-import jdr.exia.model.type.inputStreamFromString
+import jdr.exia.model.tools.toPath
+import jdr.exia.model.type.imageStreamOf
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -153,7 +154,7 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
                     val inputStream = getResourceAsStream("sprites/${blueprint.sprite}") ?: getResourceAsStream("icons/not_found.jpg")!!
                     loadImageBitmap(inputStream)
                 } else {
-                    loadImageBitmap(inputStreamFromString(blueprint.sprite))
+                    loadImageBitmap(imageStreamOf(blueprint.sprite.toPath()))
                 }
             }
         }

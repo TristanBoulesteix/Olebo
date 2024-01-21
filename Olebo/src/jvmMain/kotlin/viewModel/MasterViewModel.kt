@@ -27,8 +27,9 @@ import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.callCommandManager
 import jdr.exia.model.tools.doIfContainsSingle
 import jdr.exia.model.tools.settableMutableStateOf
+import jdr.exia.model.tools.toPath
 import jdr.exia.model.type.contains
-import jdr.exia.model.type.inputStreamFromString
+import jdr.exia.model.type.imageStreamOf
 import jdr.exia.service.socketClient
 import jdr.exia.view.tools.contains
 import jdr.exia.view.tools.getTokenFromPosition
@@ -114,7 +115,7 @@ class MasterViewModel(val act: Act, scope: CoroutineScope) : CoroutineScope by s
     @Stable
     val backgroundImage: ImageBitmap by derivedStateOf {
         transaction {
-            loadImageBitmap(inputStreamFromString(currentScene.background)).also { image ->
+            loadImageBitmap(imageStreamOf(currentScene.background.toPath())).also { image ->
                 sendMessageToShareScene {
                     val color =
                         if (Settings.labelState == SerializableLabelState.FOR_BOTH) Settings.labelColor.contentColor.toTriple() else null

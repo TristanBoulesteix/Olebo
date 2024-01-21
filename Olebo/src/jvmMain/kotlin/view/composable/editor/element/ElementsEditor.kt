@@ -34,9 +34,9 @@ import jdr.exia.view.ui.backgroundImageColor
 import jdr.exia.view.ui.roundedBottomShape
 import jdr.exia.view.ui.roundedTopShape
 import jdr.exia.view.window.LocalPopup
+import jdr.exia.viewModel.elements.ElementsEditorViewModel
 import jdr.exia.viewModel.holder.BlueprintData
 import jdr.exia.viewModel.holder.isCharacter
-import jdr.exia.viewModel.elements.ElementsEditorViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.exposed.sql.transactions.transaction
