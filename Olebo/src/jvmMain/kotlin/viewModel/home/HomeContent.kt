@@ -4,10 +4,10 @@ import jdr.exia.model.act.Act
 
 sealed class HomeContent
 
-object ActsView : HomeContent()
+data object ActsView : HomeContent()
 
-object ElementsView : HomeContent()
+data object ElementsView : HomeContent()
 
 class ActEditor(val act: Act) : HomeContent()
 
-object ActCreator : HomeContent()
+data object ActCreator : HomeContent()

@@ -9,38 +9,38 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.runtime.*
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.PointerIconDefaults
+import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.res.useResource
 import androidx.compose.ui.unit.dp
-import jdr.exia.localization.STR_NO_ELEMENT
-import jdr.exia.localization.STR_SEARCH
-import jdr.exia.localization.StringLocale
-import jdr.exia.localization.get
+import jdr.exia.localization.*
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.TypeElement
 import jdr.exia.model.type.imageFromPath
 import jdr.exia.view.component.ContentListRow
 import jdr.exia.view.component.LazyScrollableColumn
-import jdr.exia.view.component.builder.ImageButtonBuilder
+import jdr.exia.view.component.contentListRow.ImageButtonBuilder
 import jdr.exia.view.component.form.LabeledRadioMenuItem
 import jdr.exia.view.tools.defaultBorderColor
 import jdr.exia.view.ui.backgroundImageColor
 import jdr.exia.view.ui.isDarkTheme
+import jdr.exia.viewModel.holder.TypedBlueprints
+import jdr.exia.viewModel.holder.orEmptyValues
 import jdr.exia.viewModel.tags.BlueprintFilter
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import org.jetbrains.exposed.sql.transactions.transaction
 
 @Composable
 fun ItemList(
     modifier: Modifier,
-    items: Map<TypeElement, List<Blueprint>>,
+    items: Flow<TypedBlueprints?>,
     searchString: String,
-    onSearch: (String) -> Unit,
+    onSearch: suspend (String) -> Unit,
     currentFilter: BlueprintFilter,
     setCurrentFilter: (BlueprintFilter) -> Unit,
     createElement: (Blueprint) -> Unit
@@ -48,21 +48,24 @@ fun ItemList(
     modifier = modifier.widthIn(max = 450.dp).fillMaxHeight(),
     border = BorderStroke(1.dp, defaultBorderColor)
 ) {
+    val scope = rememberCoroutineScope()
+
     Column {
         OutlinedTextField(
             value = searchString,
-            onValueChange = onSearch,
+            onValueChange = { scope.launch { onSearch(it) } },
             modifier = Modifier.padding(10.dp).fillMaxWidth(),
             placeholder = { Text(text = StringLocale[STR_SEARCH]) },
             singleLine = true,
             trailingIcon = { FilterOptions(currentFilter, setCurrentFilter) }
         )
 
-        ItemList(items = items, createElement = createElement)
+        val itemsAsState by items.collectAsState(null)
+
+        ItemList(items = itemsAsState, createElement = createElement)
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun FilterOptions(currentFilter: BlueprintFilter, setCurrentFilter: (BlueprintFilter) -> Unit) {
     var showFilterOptions by remember { mutableStateOf(false) }
@@ -70,14 +73,14 @@ private fun FilterOptions(currentFilter: BlueprintFilter, setCurrentFilter: (Blu
     Icon(
         imageVector = Icons.Outlined.FilterAlt,
         contentDescription = "filter",
-        modifier = Modifier.clickable { showFilterOptions = true }.pointerHoverIcon(PointerIconDefaults.Default)
+        modifier = Modifier.clickable { showFilterOptions = true }.pointerHoverIcon(PointerIcon.Default)
     )
 
     DropdownMenu(
         expanded = showFilterOptions,
         onDismissRequest = { showFilterOptions = false }
     ) {
-        val availableFilters = remember { BlueprintFilter.values().toList() }
+        val availableFilters = remember { BlueprintFilter.entries }
 
         availableFilters.forEach {
             LabeledRadioMenuItem(
@@ -94,10 +97,12 @@ private fun FilterOptions(currentFilter: BlueprintFilter, setCurrentFilter: (Blu
 
 @Composable
 private fun ItemList(
-    items: Map<TypeElement, List<Blueprint>>,
+    items: TypedBlueprints?,
     createElement: (Blueprint) -> Unit
 ) = LazyScrollableColumn {
-    items.forEach { (type, list) ->
+    val isInitialized = items != null
+
+    items.orEmptyValues().forEach { (type, list) ->
         item(type) {
             ContentListRow(
                 contentText = type.localizedName,
@@ -107,7 +112,10 @@ private fun ItemList(
 
         if (list.isEmpty()) {
             item(type to list) {
-                ContentListRow(contentText = StringLocale[STR_NO_ELEMENT], enabled = false)
+                ContentListRow(
+                    contentText = if (isInitialized) StringLocale[STR_NO_ELEMENT] else "${StringLocale[STR_LOADING]}...",
+                    enabled = false
+                )
             }
         } else {
             items(items = list, key = { it.id }) {
@@ -121,14 +129,13 @@ private fun ItemList(
                         focusManager.clearFocus()
                     },
                     contentText = name,
-                    buttonBuilders =
-                    listOf(
+                    buttonBuilders = {
                         ImageButtonBuilder(
                             if (type == TypeElement.Basic) useResource("sprites/${it.sprite}", ::loadImageBitmap)
                             else imageFromPath(it.sprite),
                             backgroundColor = MaterialTheme.colors.backgroundImageColor
                         )
-                    )
+                    }
                 )
             }
         }

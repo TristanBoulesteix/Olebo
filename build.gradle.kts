@@ -31,10 +31,12 @@ subprojects {
 
     kotlin {
         js(IR) {
-            binaries.executable()
             browser {
+                binaries.executable()
                 commonWebpackConfig {
-                    cssSupport.enabled = true
+                    cssSupport {
+                        enabled.set(true)
+                    }
                 }
             }
         }
@@ -48,6 +50,13 @@ subprojects {
 
             all {
                 languageSettings.optIn("kotlin.RequiresOptIn")
+            }
+        }
+        targets.all {
+            compilations.all {
+                compilerOptions.configure {
+                    freeCompilerArgs.add("-Xexpect-actual-classes")
+                }
             }
         }
     }

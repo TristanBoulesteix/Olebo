@@ -1,4 +1,4 @@
-package jdr.exia.viewModel.data
+package jdr.exia.viewModel.holder
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable

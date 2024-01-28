@@ -15,7 +15,7 @@ application {
 distributions {
     main {
         contents {
-            from("$buildDir/libs") {
+            from("${layout.buildDirectory}/libs") {
                 exclude(project.name)
                 rename("${project.name}-jvm", project.name)
                 into("lib")
@@ -43,7 +43,7 @@ kotlin {
         implementation(devNpm("sass-loader", npm.versions.sass.loader.get()))
         implementation(devNpm("sass", npm.versions.sass.asProvider().get()))
 
-        implementation(compose.web.core)
+        implementation(compose.html.core)
         implementation(libs.bundles.ktor.client.js)
         implementation(libs.bundles.kmdc)
         implementation(project(":Localization"))

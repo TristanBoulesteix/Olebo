@@ -9,6 +9,7 @@ group = "fr.olebo"
 kotlin {
     sourceSets["commonMain"].dependencies {
         implementation(libs.bundles.ktor.client.lib)
+        implementation(project(":Utils"))
         compileOnly(compose.runtime)
     }
 }

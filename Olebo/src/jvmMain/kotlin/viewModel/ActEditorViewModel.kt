@@ -1,9 +1,6 @@
 package jdr.exia.viewModel
 
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
 import jdr.exia.model.act.Scene
@@ -13,10 +10,10 @@ import jdr.exia.model.dao.SceneTable
 import jdr.exia.model.element.Tag
 import jdr.exia.model.tools.SimpleResult
 import jdr.exia.model.tools.success
+import jdr.exia.model.tools.toPath
 import jdr.exia.model.type.Image
-import jdr.exia.model.type.checkedImgPath
+import jdr.exia.model.type.toCheckedImgPath
 import jdr.exia.model.type.saveImgAndGetPath
-import jdr.exia.model.type.toImgPath
 import jdr.exia.viewModel.tags.ElementTagHolder
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.SizedCollection
@@ -26,8 +23,8 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.io.path.deleteIfExists
 
 @Stable
-class ActEditorViewModel(private val act: Act?) {
-    private var currentEditPosition by mutableStateOf(-1)
+class ActEditorViewModel(val act: Act?) {
+    private var currentEditPosition by mutableIntStateOf(-1)
 
     var actName by mutableStateOf(act?.name ?: "")
 
@@ -128,8 +125,8 @@ class ActEditorViewModel(private val act: Act?) {
             scenes.forEach {
                 if (it.id != null) with(Scene[it.id]) {
                     this.name = it.name
-                    val oldImg = this.background.toImgPath().checkedImgPath()
-                    if (it.img.path != background) {
+                    val oldImg = this.background.toPath().toCheckedImgPath()
+                    if (it.img.stringPath != background) {
                         this.background = it.img.saveImgAndGetPath()
                         oldImg?.deleteIfExists()
                     }

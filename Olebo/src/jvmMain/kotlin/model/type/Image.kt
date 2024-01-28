@@ -4,31 +4,32 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.res.useResource
+import jdr.exia.model.tools.toPath
 import jdr.exia.system.OLEBO_DIRECTORY
 import java.io.File
 import java.nio.file.Path
-import java.nio.file.Paths
 import java.util.*
+import javax.imageio.ImageIO
 import kotlin.io.path.*
 
 private val imgPath = Path(OLEBO_DIRECTORY) / "img"
 
 @Immutable
 @JvmInline
-value class Image(val path: String) {
+value class Image(val stringPath: String) {
     companion object {
         @Stable
         val unspecified = Image("")
     }
 
     @Stable
-    fun isUnspecified() = path.isBlank()
+    fun isUnspecified() = stringPath.isBlank()
 
     @Stable
-    fun toBitmap() = if (isUnspecified()) imageFromIconRes("not_found", "jpg") else imageFromPath(path)
+    fun toBitmap() = if (isUnspecified()) imageFromIconRes("not_found", "jpg") else imageFromPath(stringPath)
 
     val checkedImgPath
-        get() = path.toImgPath().checkedImgPath()
+        get() = stringPath.toPath().toCheckedImgPath()
 }
 
 @Stable
@@ -36,7 +37,7 @@ fun imageFromIconRes(name: String, format: String = "png") = useResource("icons/
 
 @Stable
 fun imageFromPath(path: String) =
-    path.toImgPath().checkedImgPath()?.inputStream()?.buffered()?.use(::loadImageBitmap)
+    path.toPath().toCheckedImgPath()?.inputStream()?.buffered()?.use(::loadImageBitmap)
         ?: imageFromIconRes("not_found", "jpg")
 
 fun Image.saveImgAndGetPath(suffix: String = "background"): String {
@@ -44,8 +45,12 @@ fun Image.saveImgAndGetPath(suffix: String = "background"): String {
 
     val newImgPath = imgPath / "img_${UUID.randomUUID()}_$suffix.png"
 
-    inputStreamFromString(path).use { inputStream ->
+    imageStreamOf(stringPath.toPath()).use { inputStream ->
         newImgPath.outputStream().use {
+            val bufferedImage = ImageIO.read(inputStream)
+
+            //bufferedImage.resize()
+
             inputStream.copyTo(it)
         }
     }
@@ -59,7 +64,7 @@ private val Path.relativePath: String
 /**
  * @return The relative [Path] of the image or null if it not exists
  */
-fun Path.checkedImgPath(): Path? {
+fun Path.toCheckedImgPath(): Path? {
     val verifiedPath = if (isAbsolute) {
         if (exists()) this else imgPath / fileName
     } else {
@@ -69,9 +74,12 @@ fun Path.checkedImgPath(): Path? {
     return if (verifiedPath.exists()) verifiedPath else null
 }
 
-fun String.toImgPath(): Path = Paths.get(this)
-
 private fun File?.inputStreamOrNotFound() = this?.inputStream()
     ?: ::Image::class.java.classLoader.getResourceAsStream("icons/not_found.jpg")!!
 
-fun inputStreamFromString(path: String) = path.toImgPath().checkedImgPath()?.toFile().inputStreamOrNotFound()
+fun imageStreamOf(path: Path) = path.toCheckedImgPath()?.toFile().inputStreamOrNotFound()
+
+/*
+enum class ReducedImageSize(val width: Int, val height: Int) {
+    Small(), Big()
+}*/

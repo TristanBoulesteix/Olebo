@@ -21,9 +21,9 @@ import jdr.exia.view.ui.MASTER_WINDOW_SIZE
 import jdr.exia.view.window.LocalWindow
 import jdr.exia.view.window.Window
 import jdr.exia.viewModel.MasterViewModel
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.awt.Frame.MAXIMIZED_BOTH
 import java.awt.GraphicsConfiguration
 import java.awt.GraphicsDevice
 import java.awt.Rectangle
@@ -34,6 +34,8 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
 
     val viewModel = remember { MasterViewModel(act, scope) }
 
+    DisposableEffect(viewModel) { onDispose(viewModel::cancel) }
+
     Window(
         title = StringLocale[ST_STR1_DM_WINDOW_NAME, act.name],
         size = MASTER_WINDOW_SIZE,
@@ -43,8 +45,6 @@ fun ApplicationScope.MasterWindow(act: Act, onExit: () -> Unit) {
         val currentWindow = LocalWindow.current!!
 
         DisposableEffect(currentWindow) {
-            window.extendedState = MAXIMIZED_BOTH
-
             currentWindow.addSettingsChangedListener {
                 viewModel.refreshView(reloadTokens = true)
             }

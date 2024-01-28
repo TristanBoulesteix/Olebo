@@ -4,6 +4,7 @@ import fr.olebo.plugins.configureFeatures
 import fr.olebo.plugins.configureRouting
 import io.ktor.server.engine.*
 import java.io.File
+import java.io.InputStream
 import java.security.KeyStore
 import java.util.*
 
@@ -52,4 +53,4 @@ private fun ApplicationEngineEnvironmentBuilder.commonEnvironment(productionMode
     }
 }
 
-private fun getStreamResource(name: String) = ::main.javaClass.classLoader.getResourceAsStream(name)
+private fun getStreamResource(name: String): InputStream? = ::main.javaClass.classLoader.getResourceAsStream(name)

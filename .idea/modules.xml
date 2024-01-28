@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Olebo.iml" filepath="$PROJECT_DIR$/.idea/modules/Olebo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Olebo.iml" filepath="$PROJECT_DIR$/.idea/Olebo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Utils/Olebo.Utils.jvmMain.iml" filepath="$PROJECT_DIR$/.idea/modules/Utils/Olebo.Utils.jvmMain.iml" />
     </modules>
   </component>
 </project>

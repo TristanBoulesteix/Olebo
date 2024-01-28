@@ -79,7 +79,7 @@ fun ApplicationScope.Window(
         placement = placement
     )
 
-    var counterCtrl by remember { mutableStateOf(0) }
+    var counterCtrl by remember { mutableIntStateOf(0) }
 
     if (counterCtrl > 4) {
         LaunchedEffect(Unit) {
@@ -105,7 +105,7 @@ fun ApplicationScope.Window(
                     jobHolder.value?.cancel()
 
                     jobHolder.value = coroutineScope.launch {
-                        delay(5_000)
+                        delay(2_000)
                         counterCtrl = 0
                     }
                 } else {
@@ -116,14 +116,15 @@ fun ApplicationScope.Window(
             false
         }
     ) {
-        LaunchedEffect(minimumSize) {
-            minimumSize?.let {
-                window.minimumSize = it.toDimension()
+        LaunchedEffect(minimumSize, windowState.placement) {
+            if (windowState.placement != WindowPlacement.Maximized && minimumSize != null) {
+                window.minimumSize = minimumSize.toDimension()
             }
         }
 
-        LaunchedEffect(size) {
-            window.preferredSize = size.toDimension()
+        LaunchedEffect(size, windowState.placement) {
+            if (windowState.placement != WindowPlacement.Maximized)
+                window.preferredSize = size.toDimension()
         }
 
         val parentWindow = LocalWindow.current
@@ -162,15 +163,16 @@ private fun Popup() {
         ) {
             Popup(
                 alignment = Alignment.Center,
-                focusable = true,
                 onDismissRequest = {
                     runBlocking {
                         currentPopup.content = null
                         // Delay is required to prevent incidental clicks
                         delay(100)
                     }
-                }
-            ) {
+                },
+                properties = PopupProperties(focusable = true),
+                onPreviewKeyEvent = { false },
+                onKeyEvent = { false }) {
                 Card(
                     elevation = 15.dp,
                     backgroundColor = currentPopupContext.backgroundColor,

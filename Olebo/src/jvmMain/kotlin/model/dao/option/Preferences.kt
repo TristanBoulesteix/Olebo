@@ -5,7 +5,6 @@ import jdr.exia.DeveloperModeManager
 import jdr.exia.OLEBO_VERSION_CODE
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlin.properties.ReadWriteProperty
@@ -31,20 +30,20 @@ object Preferences {
     }
 
     fun getNumberOfUpdateAttemptForVersion(version: Int) =
-        updateAttempts.takeIf { it.versionCode == version }?.attemptNumber ?: 0
+        updateAttempts.takeIf { it.versionCode == version }?.attemptNumber ?: 0u
 
     fun incrementAttemptForVersion(version: Int) {
         val previousAttempt = updateAttempts
 
         updateAttempts = if (previousAttempt.versionCode == version) {
-            previousAttempt.copy(attemptNumber = updateAttempts.attemptNumber + 1)
+            previousAttempt.copy(attemptNumber = updateAttempts.attemptNumber + 1u)
         } else {
             UpdateAttempt(version)
         }
     }
 
     @Serializable
-    private data class UpdateAttempt(val versionCode: Int, val attemptNumber: Int = 0) {
+    private data class UpdateAttempt(val versionCode: Int, val attemptNumber: UInt = 0u) {
         companion object {
             fun none() = UpdateAttempt(-1)
         }

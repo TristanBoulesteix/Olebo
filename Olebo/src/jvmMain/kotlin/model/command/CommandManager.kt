@@ -17,7 +17,7 @@ class CommandManager private constructor() : MutableList<Command> by mutableStat
     val hasRedoAction
         get() = getOrNull(pointer + 1) != null
 
-    private var pointer by mutableStateOf(-1)
+    private var pointer by mutableIntStateOf(-1)
 
     /**
      * Public key to be used as key to recompose Composable that depend on commands

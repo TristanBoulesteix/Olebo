@@ -1,15 +1,12 @@
 package jdr.exia.view.component.dialog
 
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 
 /**
  * TODO: Remove this when crash for tooltips is fixed
  */
 object DialogManager {
-    var dialogVisibleNum by mutableStateOf(0)
+    var dialogVisibleNum by mutableIntStateOf(0)
 
     val areDialogVisible by derivedStateOf { dialogVisibleNum > 0 }
 }

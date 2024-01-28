@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module version="4">
-  <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$/../..">
-      <excludeFolder url="file://$MODULE_DIR$/../../wix311" />
-      <excludeFolder url="file://$MODULE_DIR$/../artifacts" />
-    </content>
+  <component name="SonarLintModuleSettings">
+    <option name="uniqueId" value="e0c224dd-cbbc-45e4-aae0-91701ea7a18a" />
   </component>
 </module>

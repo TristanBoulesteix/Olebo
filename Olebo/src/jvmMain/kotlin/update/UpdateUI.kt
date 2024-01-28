@@ -17,87 +17,78 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.ApplicationScope
-import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogWindow
 import androidx.compose.ui.window.Notification
 import androidx.compose.ui.window.rememberDialogState
-import jdr.exia.MainUI
+import jdr.exia.SplashScreenActionScope
 import jdr.exia.localization.*
 import jdr.exia.model.dao.option.Preferences
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.dao.restart
 import jdr.exia.service.sendMailToDevelopers
-import jdr.exia.view.component.builder.ContentButtonBuilder
+import jdr.exia.view.component.contentListRow.ContentButtonBuilder
 import jdr.exia.view.component.dialog.MessageDialog
 import jdr.exia.view.tools.annotatedHyperlink
 import jdr.exia.view.tools.appendBulletList
 import jdr.exia.view.ui.LocalTrayManager
+import jdr.exia.view.ui.TrayManager
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.awt.Dialog
 import kotlin.system.exitProcess
-
-private const val MAX_UPDATE_ATTEMPT = 1
-
-@Composable
-fun ApplicationScope.UpdateUI(release: Release, notify: (Notification) -> Unit, hideTray: () -> Unit) {
-    val versionId = release.versionId
-
-    when {
-        Settings.autoUpdate -> {
-            val trayManager = LocalTrayManager.current
-
-            var failedToUpdate by remember { mutableStateOf(false) }
-            var failedAttemptForAutoUpdate by remember { mutableStateOf(0) }
-
-            LaunchedEffect(Unit) {
-                val attemptNumber = Preferences.getNumberOfUpdateAttemptForVersion(versionId)
-
-                if (attemptNumber > MAX_UPDATE_ATTEMPT) {
-                    failedToUpdate = true
-                    trayManager.trayHint = StringLocale[ST_UPDATE_FAILED]
-                    notify(
-                        Notification(
-                            StringLocale[STR_ERROR],
-                            StringLocale[ST_INT1_INT2_UPDATE_FAILED_FOR_X_ATTEMPT, versionId, attemptNumber]
-                        )
-                    )
-                    failedAttemptForAutoUpdate = attemptNumber
-                } else {
-                    notify(Notification(StringLocale[STR_UPDATE_AVAILABLE], StringLocale[ST_UPDATE_OLEBO_RESTART]))
-                    delay(2_000)
-                    downloadUpdateAndExit(
-                        onExitSuccess = ::exitApplication,
-                        onDownloadFailure = {
-                            failedToUpdate = true
-                            notify(Notification(StringLocale[STR_ERROR], StringLocale[ST_UPDATE_FAILED]))
-                        },
-                        versionCode = versionId
-                    )
-                }
-            }
-
-            if (failedToUpdate) {
-                MainUI()
-            }
-
-            if (failedAttemptForAutoUpdate > MAX_UPDATE_ATTEMPT) {
-                FailedAutoUpdateDialog(versionId, failedAttemptForAutoUpdate)
-            }
-        }
-
-        versionId.toString() != Settings.updateWarn -> PromptUpdate(versionCode = versionId, onUpdateRefused = hideTray)
-        else -> SideEffect(hideTray)
-    }
-}
 
 private const val REPORT_ISSUE_TAG = "report"
 
 private const val CONTACT_DEVS_TAG = "contact"
 
+private const val MAX_UPDATE_ATTEMPT = 1u
+
+suspend fun SplashScreenActionScope.autoUpdate(
+    release: Release,
+    trayManager: TrayManager,
+    onDone: () -> Unit,
+    showUpdateDialog: (UInt) -> Unit
+) {
+    val attemptNumber = Preferences.getNumberOfUpdateAttemptForVersion(release.versionId)
+
+    val strUpdateFailed = StringLocale[ST_UPDATE_FAILED]
+
+    if (attemptNumber > MAX_UPDATE_ATTEMPT) {
+        setStatus(strUpdateFailed, isError = true)
+        trayManager.trayHint = strUpdateFailed
+
+        trayManager.sendNotification(
+            Notification(
+                StringLocale[STR_ERROR],
+                StringLocale[ST_INT1_INT2_UPDATE_FAILED_FOR_X_ATTEMPT, release.versionId, attemptNumber]
+            )
+        )
+
+        showUpdateDialog(attemptNumber)
+    } else {
+        trayManager.sendNotification(
+            Notification(
+                StringLocale[STR_UPDATE_AVAILABLE],
+                StringLocale[ST_UPDATE_OLEBO_RESTART]
+            )
+        )
+        downloadUpdateAndExit(
+            onFinishDownload = onDone,
+            onDownloadFailure = {
+                setStatus(strUpdateFailed, isError = true)
+                trayManager.sendNotification(Notification(StringLocale[STR_ERROR], strUpdateFailed))
+                it.printStackTrace()
+            },
+            versionCode = release.versionId
+        )
+    }
+}
+
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
-private fun FailedAutoUpdateDialog(versionCode: Int, attemptNumber: Int) {
+fun FailedAutoUpdateDialog(versionCode: Int, attemptNumber: UInt) {
     val trayManager = LocalTrayManager.current
 
     var isVisible by remember { mutableStateOf(true) }
@@ -108,10 +99,11 @@ private fun FailedAutoUpdateDialog(versionCode: Int, attemptNumber: Int) {
         height = 500.dp,
         onCloseRequest = { isVisible = false },
         visible = isVisible,
-        buttonsBuilder = listOf(
+        buttonsBuilder = {
             ContentButtonBuilder(StringLocale[STR_OK]) {
                 isVisible = false
-            },
+            }
+
             ContentButtonBuilder(StringLocale[STR_RETRY_UPDATE]) {
                 isVisible = false
 
@@ -126,7 +118,7 @@ private fun FailedAutoUpdateDialog(versionCode: Int, attemptNumber: Int) {
                     )
 
                     downloadUpdateAndExit(
-                        onExitSuccess = { exitProcess(0) },
+                        onFinishDownload = { exitProcess(0) },
                         onDownloadFailure = {
                             GlobalScope.launch {
                                 trayManager.sendNotification(
@@ -145,7 +137,7 @@ private fun FailedAutoUpdateDialog(versionCode: Int, attemptNumber: Int) {
                     )
                 }
             }
-        )
+        }
     ) {
         val uriHandler = LocalUriHandler.current
 
@@ -187,7 +179,7 @@ private fun FailedAutoUpdateDialog(versionCode: Int, attemptNumber: Int) {
 }
 
 @Composable
-private fun ApplicationScope.PromptUpdate(versionCode: Int, onUpdateRefused: () -> Unit) {
+fun ApplicationScope.PromptUpdate(release: Release, onUpdateRefused: () -> Unit) {
     var askForUpdateDialogIsVisible by remember { mutableStateOf(true) }
     var updateIsStarted by remember { mutableStateOf(false) }
 
@@ -195,27 +187,29 @@ private fun ApplicationScope.PromptUpdate(versionCode: Int, onUpdateRefused: () 
         visible = askForUpdateDialogIsVisible,
         onCloseRequest = { askForUpdateDialogIsVisible = false },
         title = StringLocale[STR_UPDATE_AVAILABLE],
-        message = StringLocale[ST_NEW_VERSION_AVAILABLE],
+        message = StringLocale[ST_STR1_NEW_VERSION_AVAILABLE, release.versionName],
         width = 600.dp,
-        buttonBuilders = listOf(
+        buttonBuilders = {
             ContentButtonBuilder(content = StringLocale[STR_YES], onClick = {
                 askForUpdateDialogIsVisible = false
                 updateIsStarted = true
-            }),
+            })
+
             ContentButtonBuilder(content = StringLocale[STR_NO], onClick = {
                 askForUpdateDialogIsVisible = false
                 onUpdateRefused()
-            }),
+            })
+
             ContentButtonBuilder(content = StringLocale[ST_NEVER_ASK_UPDATE], onClick = {
-                Settings.updateWarn = versionCode.toString()
+                Settings.updateWarn = release.versionId.toString()
                 askForUpdateDialogIsVisible = false
                 onUpdateRefused()
             })
-        )
+        }
     )
 
     if (updateIsStarted) {
-        InstallerDownloader(exitApplication = ::exitApplication, versionCode = versionCode)
+        InstallerDownloader(exitApplication = ::exitApplication, versionCode = release.versionId)
     }
 }
 
@@ -225,26 +219,31 @@ private fun InstallerDownloader(versionCode: Int, exitApplication: () -> Unit) {
 
     if (isVisible) {
         val dialogState = rememberDialogState(height = 150.dp)
-        var progress by remember { mutableStateOf(0f) }
+        var progress by remember { mutableFloatStateOf(0f) }
 
-        Dialog(title = StringLocale[STR_DOWNLOAD_UPDATE], onCloseRequest = {}, resizable = false, state = dialogState) {
-            this.window.isModal = true
+        DialogWindow(
+            onCloseRequest = {},
+            state = dialogState,
+            title = StringLocale[STR_DOWNLOAD_UPDATE],
+            resizable = false,
+            content = {
+                LaunchedEffect(Unit) { window.modalityType = Dialog.ModalityType.APPLICATION_MODAL }
 
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxSize().padding(end = 10.dp)
-            ) {
-                val padding = Modifier.padding(horizontal = 10.dp)
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxSize().padding(end = 10.dp)
+                ) {
+                    val padding = Modifier.padding(horizontal = 10.dp)
 
-                LinearProgressIndicator(modifier = Modifier.fillMaxWidth().then(padding), progress = progress)
-                Text(StringLocale[STR_DOWNLOAD] + " $progress %", modifier = padding)
-            }
-        }
+                    LinearProgressIndicator(modifier = Modifier.fillMaxWidth().then(padding), progress = progress)
+                    Text(StringLocale[STR_DOWNLOAD] + " $progress %", modifier = padding)
+                }
+            })
 
         LaunchedEffect(Unit) {
             downloadUpdateAndExit(
                 versionCode = versionCode,
-                onExitSuccess = exitApplication,
+                onFinishDownload = exitApplication,
                 onProgressUpdate = { progress = it.toFloat() },
                 onDownloadSuccess = { isVisible = false }
             )

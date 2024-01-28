@@ -12,19 +12,18 @@ import jdr.exia.model.element.Element
 import jdr.exia.model.element.Tag
 import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.*
-import jdr.exia.model.type.checkedImgPath
+import jdr.exia.model.type.toCheckedImgPath
 import jdr.exia.model.type.saveImgAndGetPath
-import jdr.exia.model.type.toImgPath
 import jdr.exia.view.tools.showConfirmMessage
-import jdr.exia.viewModel.data.BlueprintData
-import jdr.exia.viewModel.data.isValid
+import jdr.exia.viewModel.holder.BlueprintData
+import jdr.exia.viewModel.holder.isValid
 import jdr.exia.viewModel.tags.ElementTagHolder
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.transaction
 
 @Stable
 class ElementsEditorViewModel(initialAct: Act?, initialType: TypeElement) {
-    private val typeViewModel = TypeElement.values().associateWith(::ElementViewModel)
+    private val typeViewModel = TypeElement.entries.associateWith(::ElementViewModel)
 
     val itemListScrollState
         get() = currentTypeViewModel.currentScrollState
@@ -160,8 +159,8 @@ class ElementsEditorViewModel(initialAct: Act?, initialType: TypeElement) {
                         Blueprint[id].apply {
                             setData(oldData, deletedTags)
 
-                            if (oldData.img.path != sprite) {
-                                val oldImg = sprite.toImgPath().checkedImgPath()?.toFile()
+                            if (oldData.img.stringPath != sprite) {
+                                val oldImg = sprite.toPath().toCheckedImgPath()?.toFile()
                                 sprite = oldData.img.saveImgAndGetPath(suffix = "blueprint")
                                 oldImg?.delete()
                             }

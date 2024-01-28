@@ -3,28 +3,33 @@ package jdr.exia.view.window.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.ripple.LocalRippleTheme
+import androidx.compose.material.ripple.RippleAlpha
+import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.ApplicationScope
 import jdr.exia.OLEBO_VERSION_NAME
 import jdr.exia.localization.*
 import jdr.exia.model.act.Act
+import jdr.exia.view.animation.SliderContent
 import jdr.exia.view.component.ContentListRow
 import jdr.exia.view.component.HeaderRow
 import jdr.exia.view.component.LazyScrollableColumn
-import jdr.exia.view.component.builder.IconButtonBuilder
+import jdr.exia.view.component.contentListRow.IconButtonBuilder
 import jdr.exia.view.composable.editor.act.ActEditorView
 import jdr.exia.view.composable.editor.element.ElementsView
 import jdr.exia.view.menubar.MainMenuBar
@@ -60,8 +65,12 @@ private fun MainContent(
     switchContent: (HomeContent) -> Unit,
     onRowClick: (Act) -> Unit,
     onDeleteAct: (Act) -> Unit
-) = Box(modifier = Modifier.fillMaxSize()) {
-    when (content) {
+) = SliderContent(
+    targetState = content,
+    modifier = Modifier.fillMaxSize(),
+    isBackAction = { targetState is ActsView }
+) { animatedContent ->
+    when (animatedContent) {
         is ActsView -> ActsView(
             acts = acts,
             onRowClick = onRowClick,
@@ -72,7 +81,7 @@ private fun MainContent(
         )
 
         is ElementsView -> ElementsView(onDone = { switchContent(ActsView) })
-        is ActEditor -> ActEditorView(act = content.act, onDone = { switchContent(ActsView) })
+        is ActEditor -> ActEditorView(act = animatedContent.act, onDone = { switchContent(ActsView) })
         is ActCreator -> ActEditorView(onDone = { switchContent(ActsView) })
     }
 }
@@ -108,18 +117,19 @@ private fun ActsView(
                                 contentText = act.name,
                                 contentTooltip = StringLocale[STR_OPEN_ACT_TOOLTIP],
                                 onClick = { onRowClick(act) },
-                                buttonBuilders = listOf(
+                                buttonBuilders = {
                                     IconButtonBuilder(
                                         content = Icons.Outlined.Edit,
                                         tooltip = StringLocale[STR_EDIT_ACT_TOOLTIP],
                                         onClick = { onEdit(act) }
-                                    ),
+                                    )
+
                                     IconButtonBuilder(
                                         content = Icons.Outlined.Delete,
                                         tooltip = StringLocale[STR_DELETE_ACT],
                                         onClick = { onDelete(act) }
                                     )
-                                )
+                                }
                             )
                         }
                     }
@@ -130,15 +140,40 @@ private fun ActsView(
                         text = StringLocale[STR_NO_ACT],
                         modifier = Modifier.align(Alignment.CenterHorizontally),
                         fontWeight = FontWeight.Bold,
-                        fontSize = 30.sp
+                        fontSize = 25.sp,
+                        textAlign = TextAlign.Center
                     )
-                    OutlinedButton(
-                        onClick = startActCreation,
-                        content = { Text(StringLocale[STR_ADD_ACT]) },
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
-                    )
+
+                    val buttonColor = MaterialTheme.colors.primary
+
+                    CompositionLocalProvider(LocalRippleTheme provides MaterialRippleThemeForWhitePrimary) {
+                        OutlinedButton(
+                            onClick = startActCreation,
+                            content = { Text(StringLocale[STR_GET_STARTED]) },
+                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                backgroundColor = buttonColor,
+                                contentColor = contentColorFor(buttonColor)
+                            )
+                        )
+                    }
                 }
             }
         }
     }
+}
+
+@Immutable
+private object MaterialRippleThemeForWhitePrimary : RippleTheme {
+    @Composable
+    override fun defaultColor(): Color = RippleTheme.defaultRippleColor(
+        contentColor = LocalContentColor.current,
+        lightTheme = if (MaterialTheme.colors.primary == Color.White) true else MaterialTheme.colors.isLight
+    )
+
+    @Composable
+    override fun rippleAlpha(): RippleAlpha = RippleTheme.defaultRippleAlpha(
+        contentColor = LocalContentColor.current,
+        lightTheme = if (MaterialTheme.colors.primary == Color.White) true else MaterialTheme.colors.isLight
+    )
 }

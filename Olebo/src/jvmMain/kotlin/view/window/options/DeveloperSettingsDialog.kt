@@ -66,7 +66,7 @@ private fun DialogSettingsScope.ShareSceneSection(
 
     DropdownMenu(
         label = "Protocole",
-        items = remember { UrlProtocol.values().toList() },
+        items = remember { UrlProtocol.entries },
         selectedItem = data.shareSceneProtocol,
         onItemSelected = { updateData(data.copy(shareSceneProtocol = it)) }
     )

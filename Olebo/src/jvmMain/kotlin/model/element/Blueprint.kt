@@ -8,8 +8,8 @@ import jdr.exia.model.dao.BlueprintTable
 import jdr.exia.model.dao.BlueprintTagTable
 import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.tools.CharacterException
-import jdr.exia.model.type.checkedImgPath
-import jdr.exia.model.type.toImgPath
+import jdr.exia.model.tools.toPath
+import jdr.exia.model.type.toCheckedImgPath
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -56,7 +56,7 @@ class Blueprint(id: EntityID<Int>) : Entity<Int>(id) {
         get() = if (type == TypeElement.Basic) StringLocale[name] else name
 
     override fun delete() {
-        sprite.toImgPath().checkedImgPath()?.deleteIfExists()
+        sprite.toPath().toCheckedImgPath()?.deleteIfExists()
         Element.find { InstanceTable.idBlueprint eq id.value }.forEach {
             it.delete()
         }

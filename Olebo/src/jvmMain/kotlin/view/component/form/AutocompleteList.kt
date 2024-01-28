@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
-import androidx.compose.ui.input.pointer.PointerIconDefaults
+import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import jdr.exia.localization.*
@@ -113,7 +113,6 @@ fun AutocompleteList(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun HeaderSearch(
     newItem: SelectableItem?,
@@ -182,7 +181,7 @@ private fun HeaderSearch(
 
             DropdownMenu(
                 label = StringLocale[STR_SORT_BY],
-                items = remember { FilterType.values().toList() },
+                items = remember { FilterType.entries },
                 selectedItem = filterType,
                 onItemSelected = onFilterChanged
             )
@@ -205,7 +204,6 @@ private fun HeaderSearch(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun SelectableRow(
     item: SelectableItem,
@@ -231,7 +229,7 @@ private fun SelectableRow(
         Spacer(Modifier.weight(1f))
         Icon(
             imageVector = Icons.Outlined.Delete,
-            modifier = Modifier.pointerHoverIcon(PointerIconDefaults.Hand).padding(end = 10.dp)
+            modifier = Modifier.pointerHoverIcon(PointerIcon.Hand).padding(end = 10.dp)
                 .clickable(onClick = onItemDelete),
             contentDescription = null
         )

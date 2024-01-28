@@ -25,17 +25,18 @@ include("Localization", "Update")
 include("System")
 include("Website")
 include("ShareScene")
+include("Utils")
 
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
-            val kotlinVersion = version("kotlin", "1.7.20")
-            val exposedVersion = version("exposed", "0.41.1")
-            val coroutinesVersion = version("coroutines", "1.6.4")
-            val ktorVersion = version("ktor", "2.2.2")
-            val serialisationVersion = version("serialisation", "1.3.3")
-            version("compose", "1.3.0-rc05")
-            val kmdcVersion = version("kmdc", "0.0.5")
+            val kotlinVersion = version("kotlin", "1.9.20")
+            val exposedVersion = version("exposed", "0.44.1")
+            val coroutinesVersion = version("coroutines", "1.7.3")
+            val ktorVersion = version("ktor", "2.3.6")
+            val serialisationVersion = version("serialisation", "1.6.0")
+            version("compose", "1.5.10")
+            val kmdcVersion = version("kmdc", "0.1.1")
 
             // Plugins
             plugin("kotlin-multiplatform", "org.jetbrains.kotlin.multiplatform").versionRef(kotlinVersion)
@@ -140,7 +141,7 @@ dependencyResolutionManagement {
             bundle("kmdc", listOf("kmdc-button", "kmdc-textfield"))
 
             // Other
-            library("slf4j", "org.slf4j", "slf4j-simple").version("2.0.0-alpha7")
+            library("slf4j", "org.slf4j", "slf4j-simple").version("2.0.9")
             library("jdbc-sqlite", "org.xerial", "sqlite-jdbc").version("3.36.0.3")
             library("systemThemeDetector", "com.github.Dansoftowner", "jSystemThemeDetector").version("3.8")
             library("logback", "ch.qos.logback", "logback-classic").version("1.2.3")

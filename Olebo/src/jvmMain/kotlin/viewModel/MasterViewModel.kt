@@ -6,7 +6,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toAwtImage
-import androidx.compose.ui.graphics.toComposeImageBitmap
+import androidx.compose.ui.res.loadImageBitmap
 import fr.olebo.sharescene.*
 import fr.olebo.sharescene.connection.*
 import io.ktor.websocket.*
@@ -27,20 +27,23 @@ import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.callCommandManager
 import jdr.exia.model.tools.doIfContainsSingle
 import jdr.exia.model.tools.settableMutableStateOf
+import jdr.exia.model.tools.toPath
 import jdr.exia.model.type.contains
-import jdr.exia.model.type.inputStreamFromString
+import jdr.exia.model.type.imageStreamOf
 import jdr.exia.service.socketClient
 import jdr.exia.view.tools.contains
 import jdr.exia.view.tools.getTokenFromPosition
 import jdr.exia.view.tools.positionOf
+import jdr.exia.viewModel.holder.TypedBlueprints
 import jdr.exia.viewModel.tags.BlueprintFilter
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
-import javax.imageio.ImageIO
 
 @Stable
-class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
+class MasterViewModel(val act: Act, scope: CoroutineScope) : CoroutineScope by scope {
     var blueprintEditorDialogVisible by mutableStateOf(false)
         private set
 
@@ -57,14 +60,23 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
 
     val hasSelectedElement by derivedStateOf { selectedElements.isNotEmpty() }
 
-    private var blueprintsGrouped by mutableStateOf(loadBlueprints())
+    private val blueprintsGrouped = MutableStateFlow<TypedBlueprints?>(null).also { it.refresh() }
 
-    var searchString by mutableStateOf("")
+    @Stable
+    var searchString by settableMutableStateOf("") {
+        blueprintsGrouped.refresh()
+        it
+    }
 
-    var blueprintFilter by mutableStateOf(BlueprintFilter.ALL)
+    @Stable
+    var blueprintFilter by settableMutableStateOf(BlueprintFilter.ALL) {
+        blueprintsGrouped.refresh()
+        it
+    }
 
-    val itemsFiltered by derivedStateOf {
-        blueprintsGrouped.mapValues { (type, list) ->
+    @Stable
+    val itemsFiltered = blueprintsGrouped.map { blueprints ->
+        blueprints?.mapValues { (type, list) ->
             transaction {
                 val listToSearch = when (blueprintFilter) {
                     BlueprintFilter.ALL -> list
@@ -72,6 +84,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
                         if (!type.isCustom) list
                         else list.filter { blueprint -> act in blueprint.associatedAct }
                     }
+
                     BlueprintFilter.TAG -> {
                         if (!type.isCustom) list
                         else transaction {
@@ -99,17 +112,18 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
      */
     val elements by derivedStateOf { unsortedElements.sortedBy { it.priority } }
 
+    @Stable
     val backgroundImage: ImageBitmap by derivedStateOf {
         transaction {
-            ImageIO.read(inputStreamFromString(currentScene.background)).also { image ->
+            loadImageBitmap(imageStreamOf(currentScene.background.toPath())).also { image ->
                 sendMessageToShareScene {
                     val color =
                         if (Settings.labelState == SerializableLabelState.FOR_BOTH) Settings.labelColor.contentColor.toTriple() else null
                     NewMap(
-                        Base64Image(image, 1600, 900),
+                        Base64Image(image.toAwtImage(), 1600, 900),
                         elements.filter { it.isVisible }.map { it.toShareSceneToken(color) })
                 }
-            }.toComposeImageBitmap()
+            }
         }
     }
 
@@ -293,7 +307,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
         }
     }
 
-    fun addNewElement(blueprint: Blueprint) = scope.launch {
+    fun addNewElement(blueprint: Blueprint) = launch {
         currentScene.addElement(blueprint = blueprint, onAdded = { newElement ->
             unsortedElements = elements.toMutableList().also {
                 it += newElement
@@ -326,7 +340,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
     fun hideBlueprintEditor() {
         blueprintEditorDialogVisible = false
 
-        blueprintsGrouped = loadBlueprints()
+        blueprintsGrouped.refresh()
 
         refreshView(reloadTokens = true)
     }
@@ -341,7 +355,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
         refreshView()
     }
 
-    fun changePriority(newLayer: Layer) = scope.launch(Dispatchers.IO) {
+    fun changePriority(newLayer: Layer) = launch(Dispatchers.IO) {
         unsortedElements = elements.onEach {
             if (it in selectedElements) {
                 it.priority = newLayer
@@ -353,7 +367,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
         }
     }
 
-    fun refreshView(reloadTokens: Boolean = false) = scope.launch {
+    fun refreshView(reloadTokens: Boolean = false) = launch {
         withContext(Dispatchers.IO) {
             if (reloadTokens) unsortedElements = newSuspendedTransaction { currentScene.elements }
 
@@ -368,7 +382,7 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
     fun connectToServer() {
         connectionState = Login
 
-        shareSceneJob = scope.launch(Dispatchers.IO) {
+        shareSceneJob = launch(Dispatchers.IO) {
             initWebsocket(
                 client = socketClient,
                 serverAddress = Preferences.oleboUrl,
@@ -439,10 +453,16 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
         shareSceneJob = null
     }
 
-    private fun loadBlueprints(): Map<TypeElement, List<Blueprint>> = transaction {
-        val items = Blueprint.all().groupBy { it.type }
+    private fun MutableStateFlow<TypedBlueprints?>.refresh() = apply {
+        launch(Dispatchers.Default) {
+            val result = newSuspendedTransaction {
+                val items = Blueprint.all().groupBy { it.type }
 
-        (TypeElement.values() + items.keys).associateWith { items[it] ?: emptyList() }
+                (TypeElement.entries + items.keys).associateWith { items[it] ?: emptyList() }
+            }
+
+            emit(result)
+        }
     }
 
     private fun Element.toShareSceneToken(rgbTooltip: Triple<Int, Int, Int>?) = Token(
@@ -453,11 +473,10 @@ class MasterViewModel(val act: Act, private val scope: CoroutineScope) {
         label = rgbTooltip?.let { Label(alias, it) }
     )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     private inline fun sendMessageToShareScene(crossinline message: () -> Message) =
         (connectionState as? Connected)?.let { connectedState ->
-            scope.launch(Dispatchers.IO) {
-                connectedState.shareSceneViewModel.messages.takeIf { !it.isClosedForSend }?.send(message())
+            launch(Dispatchers.Default) {
+                connectedState.shareSceneViewModel.messages.send(message())
             }
         }
 

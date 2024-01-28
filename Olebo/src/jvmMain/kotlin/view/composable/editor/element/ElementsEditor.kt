@@ -22,7 +22,7 @@ import jdr.exia.model.element.TypeElement
 import jdr.exia.model.tools.success
 import jdr.exia.model.type.Image
 import jdr.exia.view.component.*
-import jdr.exia.view.component.builder.*
+import jdr.exia.view.component.contentListRow.*
 import jdr.exia.view.component.form.IntTextField
 import jdr.exia.view.component.form.TextTrailingIcon
 import jdr.exia.view.composable.editor.TagsAssociation
@@ -34,9 +34,9 @@ import jdr.exia.view.ui.backgroundImageColor
 import jdr.exia.view.ui.roundedBottomShape
 import jdr.exia.view.ui.roundedTopShape
 import jdr.exia.view.window.LocalPopup
-import jdr.exia.viewModel.data.BlueprintData
-import jdr.exia.viewModel.data.isCharacter
 import jdr.exia.viewModel.elements.ElementsEditorViewModel
+import jdr.exia.viewModel.holder.BlueprintData
+import jdr.exia.viewModel.holder.isCharacter
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -157,28 +157,27 @@ private fun HeaderContent(
     ContentListRow(
         contentText = currentType.localizedName,
         modifier = Modifier.fillMaxWidth(),
-        buttonBuilders = if (viewModel.blueprints.isNotEmpty()) {
-            if (currentType != TypeElement.Object) listOf(
-                ContentButtonBuilder(
-                    content = StringLocale[STR_HP],
-                    enabled = false
-                ),
-                ContentButtonBuilder(
-                    content = StringLocale[STR_MP],
-                    enabled = false
-                )
-            ) else {
-                emptyList()
-            } + listOf(
+        buttonBuilders = {
+            if (viewModel.blueprints.isNotEmpty()) {
+                if (currentType != TypeElement.Object) {
+                    ContentButtonBuilder(
+                        content = StringLocale[STR_HP],
+                        enabled = false
+                    )
+
+                    ContentButtonBuilder(
+                        content = StringLocale[STR_MP],
+                        enabled = false
+                    )
+                }
                 ContentButtonBuilder(
                     content = StringLocale[STR_IMG],
                     enabled = false
-                ),
-                EmptyContent
-            )
-        } else {
-            emptyList()
-        } + listOf(
+                )
+
+                EmptyContent()
+            }
+
             IconButtonBuilder(
                 content = Icons.Outlined.Add,
                 onClick = {
@@ -189,7 +188,8 @@ private fun HeaderContent(
                     }
                 }
             )
-        )
+
+        }
     )
 }
 
@@ -254,85 +254,95 @@ private fun ItemDescription(
                 }
             }
         },
-        buttonBuilders = editedData.getButtons(
-            viewModel = viewModel,
-            blueprint = blueprint,
-            onUpdate = { editedData = it }
-        )
+        buttonBuilders = {
+            Buttons(
+                from = editedData,
+                viewModel = viewModel,
+                blueprint = blueprint,
+                onUpdate = { editedData = it }
+            )
+        }
     )
 }
 
 @Composable
-private fun BlueprintData?.getButtons(
+private fun RowButtonScope.Buttons(
+    from: BlueprintData?,
     viewModel: ElementsEditorViewModel,
     blueprint: BlueprintData,
     onUpdate: (BlueprintData) -> Unit
-) = if (this == null) {
-    if (blueprint.isCharacter()) transaction {
-        listOf(
-            ContentButtonBuilder(content = blueprint.life ?: 0),
+) {
+    if (from == null) {
+        if (blueprint.isCharacter()) {
+            ContentButtonBuilder(content = blueprint.life ?: 0)
             ContentButtonBuilder(content = blueprint.mana ?: 0)
-        )
-    } else {
-        emptyList()
-    } + listOf(
+        }
+
         ImageButtonBuilder(
             content = blueprint.img.toBitmap(),
             backgroundColor = MaterialTheme.colors.backgroundImageColor
-        ),
+        )
+
         IconButtonBuilder(
             content = Icons.Outlined.Edit,
             onClick = { viewModel.onEditItemSelected(blueprint) }
-        ),
+        )
+
         IconButtonBuilder(
             content = Icons.Outlined.Delete,
             onClick = { viewModel.onRemoveBlueprint(blueprint) }
         )
-    )
-} else {
-    if (blueprint.isCharacter()) transaction {
-        listOf(
-            ComposableContentBuilder {
-                IntTextField(
-                    value = life,
-                    onValueChange = { onUpdate(copy(life = it)) },
-                    modifier = Modifier.padding(2.dp).padding(start = 1.dp),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                )
-            },
-            ComposableContentBuilder {
-                IntTextField(
-                    value = mana,
-                    onValueChange = { onUpdate(copy(mana = it)) },
-                    modifier = Modifier.padding(2.dp).padding(start = 1.dp),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                )
-            }
-        )
+
     } else {
-        emptyList()
-    } + listOf(
-        if (img.isUnspecified()) ComposableContentBuilder {
-            Spacer(Modifier.fillMaxSize().background(Color.Gray).clickable { updateImage(onUpdate) })
-        } else ImageButtonBuilder(
-            content = img.toBitmap(),
-            onClick = { updateImage(onUpdate) },
-            tinted = false
-        ),
-        IconButtonBuilder(
-            content = Icons.Outlined.Done,
-            onClick = {
-                viewModel.onEditConfirmed(this).onSuccess { viewModel.onEditDone() }.onFailure {
-                    if (it.message != null)
-                        showMessage(it.message!!, messageType = MessageType.WARNING)
-                }
+        if (blueprint.isCharacter()) {
+            ComposableContentBuilder {
+                IntTextField(
+                    value = from.life,
+                    onValueChange = { onUpdate(from.copy(life = it)) },
+                    modifier = Modifier.padding(2.dp).padding(start = 1.dp),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                )
             }
-        ),
-        IconButtonBuilder(
-            content = Icons.Outlined.Close,
-            onClick = { viewModel.onEditDone() }
-        )
-    )
+
+            ComposableContentBuilder {
+                IntTextField(
+                    value = from.mana,
+                    onValueChange = { onUpdate(from.copy(mana = it)) },
+                    modifier = Modifier.padding(2.dp).padding(start = 1.dp),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                )
+            }
+
+        }
+
+        if (from.img.isUnspecified()) {
+            ComposableContentBuilder {
+                Spacer(Modifier.fillMaxSize().background(Color.Gray).clickable { from.updateImage(onUpdate) })
+            }
+        } else {
+            ImageButtonBuilder(
+                content = from.img.toBitmap(),
+                onClick = { from.updateImage(onUpdate) },
+                tinted = false
+            )
+
+            IconButtonBuilder(
+                content = Icons.Outlined.Done,
+                onClick = {
+                    viewModel.onEditConfirmed(from).onSuccess { viewModel.onEditDone() }.onFailure {
+                        if (it.message != null)
+                            showMessage(it.message!!, messageType = MessageType.WARNING)
+                    }
+                }
+            )
+
+            IconButtonBuilder(
+                content = Icons.Outlined.Close,
+                onClick = { viewModel.onEditDone() }
+            )
+        }
+
+    }
 }
 
 private fun BlueprintData.updateImage(onUpdate: (BlueprintData) -> Unit) {

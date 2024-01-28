@@ -4,9 +4,9 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.*
 import jdr.exia.model.element.Blueprint
 import jdr.exia.model.element.TypeElement
-import jdr.exia.viewModel.data.BlueprintData
-import jdr.exia.viewModel.data.isDefault
-import jdr.exia.viewModel.data.toBlueprintData
+import jdr.exia.viewModel.holder.BlueprintData
+import jdr.exia.viewModel.holder.isDefault
+import jdr.exia.viewModel.holder.toBlueprintData
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -14,7 +14,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 class ElementViewModel(type: TypeElement) {
     val currentScrollState = LazyListState()
 
-    var currentEditPosition by mutableStateOf(-1)
+    var currentEditPosition by mutableIntStateOf(-1)
 
     val data by lazy {
         transaction {

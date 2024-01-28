@@ -2,7 +2,7 @@ package jdr.exia.model.element
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.toComposeImageBitmap
+import androidx.compose.ui.res.loadImageBitmap
 import jdr.exia.localization.*
 import jdr.exia.model.act.Scene
 import jdr.exia.model.command.Command
@@ -11,14 +11,15 @@ import jdr.exia.model.dao.InstanceTable
 import jdr.exia.model.dao.option.Settings
 import jdr.exia.model.tools.CharacterException
 import jdr.exia.model.tools.isCharacter
-import jdr.exia.model.type.inputStreamFromString
+import jdr.exia.model.tools.toPath
+import jdr.exia.model.type.imageStreamOf
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.Rectangle
-import javax.imageio.ImageIO
+import java.io.InputStream
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -145,16 +146,17 @@ class Element(id: EntityID<Int>) : Entity<Int>(id) {
     override fun hashCode() = this.id.value
 
     private fun lazyRotatedSprite() = object : ReadOnlyProperty<Element, ImageBitmap> {
-        private fun getResourceAsStream(name: String) = Element::class.java.classLoader.getResourceAsStream(name)
+        private fun getResourceAsStream(name: String): InputStream? = Element::class.java.classLoader.getResourceAsStream(name)
 
         val image by lazy {
             transaction {
                 if (blueprint.type == TypeElement.Basic) {
-                    ImageIO.read(getResourceAsStream("sprites/${blueprint.sprite}"))
+                    val inputStream = getResourceAsStream("sprites/${blueprint.sprite}") ?: getResourceAsStream("icons/not_found.jpg")!!
+                    loadImageBitmap(inputStream)
                 } else {
-                    ImageIO.read(inputStreamFromString(blueprint.sprite))
+                    loadImageBitmap(imageStreamOf(blueprint.sprite.toPath()))
                 }
-            }.toComposeImageBitmap()
+            }
         }
 
         override fun getValue(thisRef: Element, property: KProperty<*>) = image

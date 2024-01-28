@@ -3,10 +3,12 @@ package jdr.exia.update
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Notification
+import fr.olebo.utils.getOrNull
+import fr.olebo.utils.isFailure
 import jdr.exia.localization.*
 import jdr.exia.model.dao.reset
 import jdr.exia.model.dao.restart
-import jdr.exia.view.component.builder.ContentButtonBuilder
+import jdr.exia.view.component.contentListRow.ContentButtonBuilder
 import jdr.exia.view.component.dialog.ConfirmMessage
 import jdr.exia.view.component.dialog.MessageDialog
 import jdr.exia.view.ui.LocalTrayManager
@@ -64,7 +66,7 @@ fun showErrorDatabaseUI(versionCode: Int): Boolean {
             height = 400.dp,
             onCloseRequest = {},
             visible = errorDialogIsVisible,
-            buttonBuilders = listOf(
+            buttonBuilders = {
                 ContentButtonBuilder(updateText, enabled = updateVersionCode != null) {
                     scope.launch {
                         trayManager.trayHint = StringLocale[STR_PREPARE_UPDATE]
@@ -79,21 +81,27 @@ fun showErrorDatabaseUI(versionCode: Int): Boolean {
                         )
 
                         downloadUpdateAndExit(
-                            onExitSuccess = { exitProcess(0) },
+                            onFinishDownload = { exitProcess(0) },
                             onDownloadFailure = { error("Unable to update") },
                             versionCode = updateVersionCode!!
                         )
                     }
-                }, ContentButtonBuilder(StringLocale[STR_RESET]) {
+                }
+
+                ContentButtonBuilder(StringLocale[STR_RESET]) {
                     confirmReset = true
                     errorDialogIsVisible = false
-                }, ContentButtonBuilder(StringLocale[STR_CONTINUE]) {
+                }
+
+                ContentButtonBuilder(StringLocale[STR_CONTINUE]) {
                     shouldContinue = true
                     exitApplication()
-                }, ContentButtonBuilder(StringLocale[STR_EXIT]) {
+                }
+
+                ContentButtonBuilder(StringLocale[STR_EXIT]) {
                     exitProcess(0)
                 }
-            )
+            }
         )
 
         if (confirmReset) {
