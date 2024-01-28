@@ -31,10 +31,10 @@ dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
             val kotlinVersion = version("kotlin", "1.9.22")
-            val exposedVersion = version("exposed", "0.44.1")
+            val exposedVersion = version("exposed", "0.46.0")
             val coroutinesVersion = version("coroutines", "1.7.3")
-            val ktorVersion = version("ktor", "2.3.6")
-            val serialisationVersion = version("serialisation", "1.6.0")
+            val ktorVersion = version("ktor", "2.3.7")
+            val serialisationVersion = version("serialisation", "1.6.2")
             version("compose", "1.6.0-beta01")
             val kmdcVersion = version("kmdc", "0.1.1")
 
