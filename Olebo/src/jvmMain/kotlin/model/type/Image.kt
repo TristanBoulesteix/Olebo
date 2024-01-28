@@ -9,7 +9,6 @@ import jdr.exia.system.OLEBO_DIRECTORY
 import java.io.File
 import java.nio.file.Path
 import java.util.*
-import javax.imageio.ImageIO
 import kotlin.io.path.*
 
 private val imgPath = Path(OLEBO_DIRECTORY) / "img"
@@ -47,10 +46,6 @@ fun Image.saveImgAndGetPath(suffix: String = "background"): String {
 
     imageStreamOf(stringPath.toPath()).use { inputStream ->
         newImgPath.outputStream().use {
-            val bufferedImage = ImageIO.read(inputStream)
-
-            //bufferedImage.resize()
-
             inputStream.copyTo(it)
         }
     }
