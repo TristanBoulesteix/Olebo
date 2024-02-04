@@ -1,67 +1,7 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
-    kotlin("plugin.serialization") version libs.versions.kotlin.get() apply false
-}
-
-allprojects {
-    group = "jdr.exia"
-
-    apply(plugin = "org.jetbrains.kotlin.multiplatform")
-
-    repositories {
-        mavenCentral()
-        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-        maven("https://jitpack.io")
-    }
-
-    kotlin {
-        jvm {
-            jvmToolchain {
-                this.languageVersion.set(JavaLanguageVersion.of(17))
-            }
-        }
-    }
-}
-
-subprojects {
-    apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
-
-    kotlin {
-        js(IR) {
-            browser {
-                binaries.executable()
-                commonWebpackConfig {
-                    cssSupport {
-                        enabled.set(true)
-                    }
-                }
-            }
-        }
-        sourceSets {
-            val jvmMain by getting {
-                tasks.withType<KotlinCompile> {
-                    kotlinOptions.jvmTarget = "17"
-                }
-            }
-            val jsMain by getting
-
-            all {
-                languageSettings.optIn("kotlin.RequiresOptIn")
-            }
-        }
-        targets.all {
-            compilations.all {
-                compilerOptions.configure {
-                    freeCompilerArgs.add("-Xexpect-actual-classes")
-                }
-            }
-        }
-    }
-}
-
-tasks.register("buildOlebo") {
-    dependsOn(":Olebo:build")
+    // this is necessary to avoid the plugins to be loaded multiple times
+    // in each subproject's classloader
+    alias(libs.plugins.jetbrainsCompose) apply false
+    alias(libs.plugins.kotlinJvm) apply false
+    alias(libs.plugins.kotlinMultiplatform) apply false
 }

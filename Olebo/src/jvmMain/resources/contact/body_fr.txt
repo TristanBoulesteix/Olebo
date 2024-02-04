@@ -1,4 +1,0 @@
-Chers développeurs,
-
-J'ai trouvé un bug / souhaite proposer une fonctionnalité ...
-
