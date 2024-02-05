@@ -10,4 +10,10 @@ kotlin {
 
 dependencies {
     implementation(projects.domain)
+
+    testImplementation(libs.kotlin.test)
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
