@@ -9,8 +9,16 @@ kotlin {
 }
 
 dependencies {
+    // Internal dependencies
     implementation(projects.domain)
 
+    // External dependencies
+    implementation(libs.exposed.core)
+    implementation(libs.exposed.dao)
+    implementation(libs.exposed.jdbc)
+    implementation(libs.jdbc.sqlite)
+
+    // Test dependencies
     testImplementation(libs.kotlin.test)
 }
 
