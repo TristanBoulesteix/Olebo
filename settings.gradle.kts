@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 rootProject.name = "Olebo"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
@@ -18,6 +20,4 @@ dependencyResolutionManagement {
     }
 }
 
-include(":composeApp")
-include(":server")
-include(":shared")
+include(":ComposeApplication")

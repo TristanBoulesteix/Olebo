@@ -1,8 +1,7 @@
 [versions]
-compose = "1.5.4"
-compose-plugin = "1.6.0-alpha01"
+compose = "1.6.0-dev1405"
 junit = "4.13.2"
-kotlin = "1.9.21"
+kotlin = "1.9.22"
 ktor = "2.3.7"
 logback = "1.4.14"
 
@@ -18,7 +17,7 @@ ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "k
 ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm", version.ref = "ktor" }
 
 [plugins]
-jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
+jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose" }
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
