@@ -5,7 +5,12 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
 dependencies {
+    implementation(projects.domain)
     implementation(compose.runtime)
     implementation(compose.foundation)
     implementation(compose.material)
