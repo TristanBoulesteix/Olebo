@@ -10,13 +10,21 @@ kotlin {
 }
 
 dependencies {
+    // Internal dependencies
     implementation(projects.domain)
+    implementation(projects.persistence)
+
+    // Compose dependencies
     implementation(compose.runtime)
     implementation(compose.foundation)
     implementation(compose.material)
     implementation(compose.ui)
     implementation(compose.components.resources)
     implementation(compose.desktop.currentOs)
+
+    // External dependencies
+    implementation(libs.koin.core)
+    implementation(libs.koin.compose)
 }
 
 compose.desktop {

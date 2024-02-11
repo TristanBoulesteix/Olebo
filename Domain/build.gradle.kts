@@ -7,3 +7,8 @@ group = "fr.olebo.domain"
 kotlin {
     jvmToolchain(17)
 }
+
+dependencies {
+    // External dependencies
+    implementation(libs.koin.core)
+}

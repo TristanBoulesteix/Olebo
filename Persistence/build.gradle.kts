@@ -17,6 +17,7 @@ dependencies {
     implementation(libs.exposed.dao)
     implementation(libs.exposed.jdbc)
     implementation(libs.jdbc.sqlite)
+    implementation(libs.koin.core)
 
     // Test dependencies
     testImplementation(libs.kotlin.test)
