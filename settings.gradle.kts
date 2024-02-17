@@ -26,3 +26,4 @@ dependencyResolutionManagement {
 include(":ComposeApplication")
 include("Persistence")
 include("Domain")
+include("System")

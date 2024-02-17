@@ -13,6 +13,7 @@ dependencies {
     // Internal dependencies
     implementation(projects.domain)
     implementation(projects.persistence)
+    implementation(projects.system)
 
     // Compose dependencies
     implementation(compose.runtime)
