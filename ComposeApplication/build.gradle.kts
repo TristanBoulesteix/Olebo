@@ -25,6 +25,12 @@ dependencies {
     // External dependencies
     implementation(libs.koin.core)
     implementation(libs.koin.compose)
+
+    // Test dependencies
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.koin.test) {
+        exclude("org.jetbrains.kotlin", "kotlin-test-junit")
+    }
 }
 
 compose.desktop {
@@ -37,4 +43,8 @@ compose.desktop {
             packageVersion = "2.0.0"
         }
     }
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
