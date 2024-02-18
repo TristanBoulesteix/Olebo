@@ -13,7 +13,7 @@ dependencies {
     implementation(projects.domain)
 
     // External dependencies
-    implementation(libs.koin.core)
+    implementation(libs.kodein)
 
     // Test dependencies
     testImplementation(libs.kotlin.test)

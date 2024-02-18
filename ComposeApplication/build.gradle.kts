@@ -6,7 +6,7 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 }
 
 dependencies {
@@ -24,14 +24,11 @@ dependencies {
     implementation(compose.desktop.currentOs)
 
     // External dependencies
-    implementation(libs.koin.core)
-    implementation(libs.koin.compose)
+    implementation(libs.kodein)
+    implementation(libs.kodein.compose)
 
     // Test dependencies
     testImplementation(libs.kotlin.test)
-    testImplementation(libs.koin.test) {
-        exclude("org.jetbrains.kotlin", "kotlin-test-junit")
-    }
 }
 
 compose.desktop {

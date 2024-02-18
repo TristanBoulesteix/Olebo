@@ -1,7 +1,7 @@
 package fr.olebo.persistence
 
-import org.koin.dsl.module
+import org.kodein.di.DI
 
-val module = module {
+val persistenceModule by DI.Module {
 
 }

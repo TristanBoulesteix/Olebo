@@ -10,5 +10,5 @@ kotlin {
 
 dependencies {
     // External dependencies
-    implementation(libs.koin.core)
+    implementation(libs.kodein)
 }

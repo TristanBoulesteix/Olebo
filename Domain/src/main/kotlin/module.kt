@@ -1,5 +1,5 @@
 package fr.olebo.domain
 
-import org.koin.dsl.module
+import org.kodein.di.DI
 
-val module = module {}
+val domainModule by DI.Module {}

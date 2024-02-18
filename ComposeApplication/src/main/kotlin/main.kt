@@ -1,5 +1,5 @@
 package fr.olebo
 
 fun main() {
-    getKoinApplication()
+    val a = injector
 }
