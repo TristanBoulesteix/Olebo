@@ -18,6 +18,7 @@ dependencies {
     implementation(libs.exposed.jdbc)
     implementation(libs.jdbc.sqlite)
     implementation(libs.kodein)
+    implementation(libs.slf4j)
 
     // Test dependencies
     testImplementation(libs.kotlin.test)
