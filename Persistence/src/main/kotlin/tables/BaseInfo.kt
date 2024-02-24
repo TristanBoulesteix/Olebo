@@ -8,4 +8,11 @@ internal class BaseInfo : Table() {
     val value = varchar("value", 50)
 
     override val primaryKey = PrimaryKey(keyInfo)
+
+    val versionBase: Int?
+        get() = TODO()
+
+    companion object {
+        const val baseVersion = "base_version"
+    }
 }

@@ -4,7 +4,6 @@ import fr.olebo.persistence.DatabaseConfig
 import fr.olebo.persistence.services.DatabaseService
 import fr.olebo.persistence.tests.jdbcConnection
 import fr.olebo.persistence.tests.testConnectionString
-import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -14,15 +13,12 @@ import java.sql.Connection
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 
-abstract class TableTests(private val buildTable: () -> Table) {
+abstract class TableTests<T: Table>(private val buildTable: () -> T) {
     private lateinit var di: DI
 
     private lateinit var connection: Connection
 
-    protected lateinit var table: Table
-        private set
-
-    protected lateinit var database: Database
+    protected lateinit var table: T
         private set
 
     @BeforeTest
@@ -30,14 +26,14 @@ abstract class TableTests(private val buildTable: () -> Table) {
         connection = jdbcConnection
 
         di = DI {
-            bindSingleton {
+            bindSingleton<DatabaseConfig> {
                 object : DatabaseConfig {
                     override val connectionString = testConnectionString
                 }
             }
         }
 
-        database = DatabaseService(di).database
+        val database = DatabaseService(di).database
 
         table = buildTable()
 
