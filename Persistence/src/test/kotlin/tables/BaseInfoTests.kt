@@ -27,16 +27,22 @@ internal class BaseInfoTests : TableTests<BaseInfo>({ BaseInfo() }) {
 
     @Test
     fun `get database version`() {
+        checkVersionBaseFor(1)
+        checkVersionBaseFor(10)
+        checkVersionBaseFor(428)
+    }
+
+    private fun checkVersionBaseFor(version: Int) {
         jdbcConnection.use {
             val statement = it.prepareStatement("INSERT OR REPLACE INTO BaseInfo(key_info, value) VALUES (?, ?)")
             statement.setString(1, BaseInfo.baseVersion)
-            statement.setString(2, 1.toString())
+            statement.setString(2, version.toString())
             statement.executeUpdate()
         }
 
         val actualValue = table.versionBase
 
         assertNotNull(actualValue)
-        assertEquals(1, actualValue)
+        assertEquals(version, actualValue)
     }
 }
