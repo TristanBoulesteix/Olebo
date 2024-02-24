@@ -16,7 +16,7 @@ internal class BaseInfoTests : TableTests({ BaseInfo() }) {
             assertContains(SchemaUtils.listTables(), table.tableName)
         }
 
-        val columns = database.checkColumnsOf(table.tableName)
+        val columns = checkColumnsOf(table.tableName)
 
         assertContains(columns, ColumnData("key_info", "VARCHAR", isPrimary = true))
         assertContains(columns, ColumnData("value", "VARCHAR"))

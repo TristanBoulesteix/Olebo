@@ -1,6 +1,5 @@
 package fr.olebo.persistence.tests
 
-import org.jetbrains.exposed.sql.Database
 import java.sql.Connection
 import java.sql.DatabaseMetaData
 import java.sql.DriverManager
@@ -10,7 +9,7 @@ internal const val testConnectionString = "jdbc:sqlite:file:test?mode=memory&cac
 internal val jdbcConnection: Connection
     get() = DriverManager.getConnection(testConnectionString)
 
-internal fun Database.checkColumnsOf(tableName: String): Set<ColumnData> = jdbcConnection.use {
+internal fun checkColumnsOf(tableName: String): Set<ColumnData> = jdbcConnection.use {
     val resultSet = it.metaData.getColumns(null, null, tableName, null)
     val primaryKeys = it.metaData.getPrimaryKeys(null, null, tableName)
 
