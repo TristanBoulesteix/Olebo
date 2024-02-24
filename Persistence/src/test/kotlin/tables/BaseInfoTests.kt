@@ -35,9 +35,9 @@ internal class BaseInfoTests : TableTests<BaseInfo>({ BaseInfo() }) {
     private fun checkVersionBaseFor(version: Int) {
         jdbcConnection.use {
             val statement = it.prepareStatement("INSERT OR REPLACE INTO BaseInfo(key_info, value) VALUES (?, ?)")
-            statement.setString(1, BaseInfo.baseVersion)
-            statement.setString(2, version.toString())
-            statement.executeUpdate()
+            statement.setString(1, BaseInfo.BASE_VERSION)
+            statement.setInt(2, version)
+            statement.execute()
         }
 
         val actualValue = table.versionBase
