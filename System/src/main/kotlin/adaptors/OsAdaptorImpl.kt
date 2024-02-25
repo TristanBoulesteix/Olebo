@@ -1,7 +1,7 @@
 package fr.olebo.system.adaptors
 
-import fr.olebo.domain.adaptors.OsAdaptor
-import fr.olebo.domain.model.system.OS
+import adaptors.OsAdaptor
+import models.OS
 
 internal class OsAdaptorImpl : OsAdaptor {
     override val current

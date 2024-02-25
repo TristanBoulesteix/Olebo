@@ -1,8 +1,8 @@
 package fr.olebo
 
-import fr.olebo.domain.adaptors.OsAdaptor
+import adaptors.OsAdaptor
 import fr.olebo.domain.domainModule
-import fr.olebo.domain.model.system.OleboConfiguration
+import fr.olebo.domain.models.OleboConfiguration
 import fr.olebo.persistence.persistenceModule
 import fr.olebo.system.systemModule
 import org.kodein.di.DI

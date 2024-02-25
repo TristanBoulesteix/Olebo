@@ -1,6 +1,6 @@
 package fr.olebo.system
 
-import fr.olebo.domain.adaptors.OsAdaptor
+import adaptors.OsAdaptor
 import fr.olebo.system.adaptors.OsAdaptorImpl
 import org.kodein.di.DI
 import org.kodein.di.bindProviderOf

@@ -1,6 +1,6 @@
 package fr.olebo.persistence.tables
 
-import fr.olebo.domain.model.system.OleboConfiguration
+import fr.olebo.domain.models.OleboConfiguration
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.transactions.transaction

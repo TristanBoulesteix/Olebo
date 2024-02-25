@@ -1,14 +1,26 @@
 plugins {
-    alias(libs.plugins.kotlinJvm)
+    alias(libs.plugins.kotlinMultiplatform)
 }
 
 group = "fr.olebo.domain"
 
 kotlin {
-    jvmToolchain(17)
-}
+    jvm {
+        compilations.all {
+            jvmToolchain(17)
+        }
+    }
 
-dependencies {
-    // External dependencies
-    implementation(libs.kodein)
+    sourceSets {
+        val jvmMain by getting
+
+        val commonMain by getting {
+            dependencies {
+                // External dependencies
+                implementation(libs.kodein)
+                implementation(libs.kotlinx.serialization)
+                implementation(libs.kotlinx.serialization.json)
+            }
+        }
+    }
 }

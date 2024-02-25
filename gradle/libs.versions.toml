@@ -8,6 +8,7 @@ exposed = "0.47.0"
 sqlite = "3.45.1.0"
 kodein = "7.21.2"
 slf4j = "2.0.0-alpha7"
+serialization = "1.3.3"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -26,7 +27,9 @@ jdbc-sqlite = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite" }
 kodein = { module = "org.kodein.di:kodein-di", version.ref = "kodein" }
 kodein-compose = { module = "org.kodein.di:kodein-di-framework-compose", version.ref = "kodein" }
 kodein-ktor = { module = "org.kodein.di:kodein-di-framework-ktor-server", version.ref = "kodein" }
-slf4j= { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+slf4j = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "serialization" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose" }
