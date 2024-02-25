@@ -13,13 +13,15 @@ import java.sql.Connection
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 
-abstract class TableTests<T: Table>(private val buildTable: () -> T) {
+abstract class TableTests<T : Table>(private val buildTable: (DI) -> T) {
     private lateinit var di: DI
 
     private lateinit var connection: Connection
 
     protected lateinit var table: T
         private set
+
+    open fun DI.MainBuilder.initializeDI() = Unit
 
     @BeforeTest
     fun test() {
@@ -31,11 +33,12 @@ abstract class TableTests<T: Table>(private val buildTable: () -> T) {
                     override val connectionString = testConnectionString
                 }
             }
+            initializeDI()
         }
 
         val database = DatabaseService(di).database
 
-        table = buildTable()
+        table = buildTable(di)
 
         transaction(database) {
             SchemaUtils.create(table)

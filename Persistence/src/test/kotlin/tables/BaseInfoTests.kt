@@ -1,17 +1,24 @@
 package fr.olebo.persistence.tests.tables
 
+import fr.olebo.domain.model.system.OleboConfiguration
 import fr.olebo.persistence.tables.BaseInfo
 import fr.olebo.persistence.tests.ColumnData
 import fr.olebo.persistence.tests.checkColumnsOf
 import fr.olebo.persistence.tests.jdbcConnection
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.kodein.di.DI
+import org.kodein.di.bindSingleton
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-internal class BaseInfoTests : TableTests<BaseInfo>({ BaseInfo() }) {
+internal class BaseInfoTests : TableTests<BaseInfo>({ BaseInfo(it) }) {
+    override fun DI.MainBuilder.initializeDI() {
+        bindSingleton { OleboConfiguration("10.0.0", 10) }
+    }
+
     @Test
     fun `check all column and table in database`() {
         // Step 1
@@ -27,7 +34,7 @@ internal class BaseInfoTests : TableTests<BaseInfo>({ BaseInfo() }) {
 
     @Test
     fun `get database version`() {
-        fun checkVersionBaseFor(version: Int) {
+        fun setAndCheckVersionBaseFor(version: Int) {
             jdbcConnection.use {
                 val statement = it.prepareStatement("INSERT OR REPLACE INTO BaseInfo(key_info, value) VALUES (?, ?)")
                 statement.setString(1, BaseInfo.BASE_VERSION)
@@ -35,14 +42,28 @@ internal class BaseInfoTests : TableTests<BaseInfo>({ BaseInfo() }) {
                 statement.execute()
             }
 
-            val actualValue = table.versionBase
-
-            assertNotNull(actualValue)
-            assertEquals(version, actualValue)
+            checkVersionBaseFor(version)
         }
 
-        checkVersionBaseFor(1)
-        checkVersionBaseFor(10)
-        checkVersionBaseFor(428)
+        setAndCheckVersionBaseFor(1)
+        setAndCheckVersionBaseFor(10)
+        setAndCheckVersionBaseFor(428)
+    }
+
+    @Test
+    fun `initialize table`() {
+        // We repeat the test to check for insert and update
+        repeat(2) {
+            table.initialize()
+
+            checkVersionBaseFor(10)
+        }
+    }
+
+    private fun checkVersionBaseFor(version: Int) {
+        val actualValue = table.versionBase
+
+        assertNotNull(actualValue)
+        assertEquals(version, actualValue)
     }
 }

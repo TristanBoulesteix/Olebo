@@ -1,6 +1,6 @@
 package fr.olebo.system.adaptors
 
-import fr.olebo.domain.adaptors.system.OsAdaptor
+import fr.olebo.domain.adaptors.OsAdaptor
 import fr.olebo.domain.model.system.OS
 
 internal class OsAdaptorImpl : OsAdaptor {

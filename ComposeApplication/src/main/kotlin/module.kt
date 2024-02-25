@@ -1,7 +1,8 @@
 package fr.olebo
 
-import fr.olebo.domain.adaptors.system.OsAdaptor
+import fr.olebo.domain.adaptors.OsAdaptor
 import fr.olebo.domain.domainModule
+import fr.olebo.domain.model.system.OleboConfiguration
 import fr.olebo.persistence.persistenceModule
 import fr.olebo.system.systemModule
 import org.kodein.di.DI
@@ -13,6 +14,7 @@ private val module by DI.Module {
     bindSingleton("olebo-directory") {
         "${instance<OsAdaptor>().current.appDataDir}${File.separator}Olebo${File.separator}"
     }
+    bindSingleton { OleboConfiguration(OLEBO_VERSION_NAME, OLEBO_VERSION_CODE) }
 }
 
 val injector = DI {
