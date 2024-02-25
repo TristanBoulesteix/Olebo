@@ -14,7 +14,7 @@ internal fun checkColumnsOf(tableName: String): Set<ColumnData> = jdbcConnection
     val primaryKeys = it.metaData.getPrimaryKeys(null, null, tableName)
 
     val primaryKeysNames = buildSet {
-        while (primaryKeys.next()){
+        while (primaryKeys.next()) {
             add(primaryKeys.getString("COLUMN_NAME"))
         }
     }
@@ -22,13 +22,21 @@ internal fun checkColumnsOf(tableName: String): Set<ColumnData> = jdbcConnection
     buildSet {
         while (resultSet.next()) {
             val name = resultSet.getString("COLUMN_NAME")
+            val type = resultSet.getString("TYPE_NAME")
+            var defaultValue: String? = resultSet.getString("COLUMN_DEF")
+
+            if (type == "VARCHAR") {
+                defaultValue = defaultValue?.trim('\'')
+            }
 
             add(
                 ColumnData(
                     name,
-                    resultSet.getString("TYPE_NAME"),
+                    type,
                     resultSet.getInt("NULLABLE") == DatabaseMetaData.columnNullable,
-                    name in primaryKeysNames
+                    name in primaryKeysNames,
+                    defaultValue,
+                    resultSet.getInt("COLUMN_SIZE")
                 )
             )
         }
@@ -39,5 +47,7 @@ internal data class ColumnData(
     val name: String,
     val type: String,
     val isNullable: Boolean = false,
-    val isPrimary: Boolean = false
+    val isPrimary: Boolean = false,
+    val defaultValue: Any? = null,
+    val length: Int = 0
 )

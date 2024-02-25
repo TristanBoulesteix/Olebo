@@ -1,5 +1,5 @@
 package fr.olebo.persistence.tables
 
-interface Initializable {
+internal interface Initializable {
     fun initialize()
 }

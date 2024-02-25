@@ -28,7 +28,7 @@ internal class BaseInfo(override val di: DI) : Table(), Initializable, DIAware {
         }
     }
 
-    companion object {
+    internal companion object {
         const val BASE_VERSION = "base_version"
     }
 }

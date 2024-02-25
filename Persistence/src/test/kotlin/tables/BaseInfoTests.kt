@@ -8,7 +8,7 @@ import fr.olebo.persistence.tests.jdbcConnection
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.kodein.di.DI
-import org.kodein.di.bindSingleton
+import org.kodein.di.bindProvider
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
@@ -16,7 +16,7 @@ import kotlin.test.assertNotNull
 
 internal class BaseInfoTests : TableTests<BaseInfo>({ BaseInfo(it) }) {
     override fun DI.MainBuilder.initializeDI() {
-        bindSingleton { OleboConfiguration("10.0.0", 10) }
+        bindProvider { OleboConfiguration("10.0.0", 10) }
     }
 
     @Test
@@ -28,8 +28,8 @@ internal class BaseInfoTests : TableTests<BaseInfo>({ BaseInfo(it) }) {
 
         val columns = checkColumnsOf(table.tableName)
 
-        assertContains(columns, ColumnData("key_info", "VARCHAR", isPrimary = true))
-        assertContains(columns, ColumnData("value", "VARCHAR"))
+        assertContains(columns, ColumnData("key_info", "VARCHAR", isPrimary = true, length = 50))
+        assertContains(columns, ColumnData("value", "VARCHAR", length = 50))
     }
 
     @Test
