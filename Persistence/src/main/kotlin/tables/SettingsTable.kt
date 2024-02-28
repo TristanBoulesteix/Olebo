@@ -54,7 +54,7 @@ internal class SettingsTable(override val di: DI) : IntIdTable(), Initializable,
         initialize()
     }
 
-    internal companion object {
+    internal companion object Keys {
         const val AUTO_UPDATE = "autoUpdate"
         const val UPDATE_WARN = "updateWarn"
         const val CURSOR_ENABLED = "cursorEnabled"
