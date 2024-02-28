@@ -1,6 +1,6 @@
 package fr.olebo
 
-import adaptors.OsAdaptor
+import fr.olebo.domain.adaptors.OsAdaptor
 import fr.olebo.domain.domainModule
 import fr.olebo.domain.models.OleboConfiguration
 import fr.olebo.persistence.persistenceModule

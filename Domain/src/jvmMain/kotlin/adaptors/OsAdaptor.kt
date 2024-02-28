@@ -1,6 +1,6 @@
-package adaptors
+package fr.olebo.domain.adaptors
 
-import models.OS
+import fr.olebo.domain.models.OS
 
 interface OsAdaptor {
     val current: OS

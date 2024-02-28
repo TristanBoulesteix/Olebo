@@ -14,7 +14,8 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 
 abstract class TableTests<T : Table>(private val buildTable: (DI) -> T) {
-    private lateinit var di: DI
+    protected lateinit var di: DI
+        private set
 
     private lateinit var connection: Connection
 

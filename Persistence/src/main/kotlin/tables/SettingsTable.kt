@@ -8,9 +8,16 @@ import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.util.Locale
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.constant
+import java.util.*
 
-internal class SettingsTable : IntIdTable(), Initializable {
+internal class SettingsTable(override val di: DI) : IntIdTable(), Initializable, DIAware {
+    private val defaultLabelColor by constant<String>()
+
+    private val defaultLabelVisibility by constant<String>()
+
     val name = varchar("name", 255)
 
     val value = varchar("value", 255).default("")
@@ -24,8 +31,8 @@ internal class SettingsTable : IntIdTable(), Initializable {
             SettingsInitialValue(6, CURSOR_COLOR, ""),
             SettingsInitialValue(7, PLAYER_FRAME_ENABLED, false),
             SettingsInitialValue(8, DEFAULT_ELEMENT_VISIBILITY, false),
-            /*        SettingsInitialValue(9, LABEL_STATE, SerializableLabelState.ONLY_FOR_MASTER.encode()),
-                    SettingsInitialValue(10, LABEL_COLOR, SerializableColor.BLACK.encode(),),*/
+            SettingsInitialValue(9, LABEL_STATE, defaultLabelVisibility),
+            SettingsInitialValue(10, LABEL_COLOR, defaultLabelColor),
             SettingsInitialValue(11, CHANGELOGS_VERSION, ""),
             SettingsInitialValue(12, SHOULD_OPEN_PLAYER_WINDOW_IN_FULL_SCREEN, true),
         )
