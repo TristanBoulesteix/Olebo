@@ -25,7 +25,7 @@ abstract class TableTests<T : Table>(private val buildTable: (DI) -> T) {
     open fun DI.MainBuilder.initializeDI() = Unit
 
     @BeforeTest
-    fun test() {
+    fun tableInitialize() {
         connection = jdbcConnection
 
         di = DI {
@@ -37,11 +37,9 @@ abstract class TableTests<T : Table>(private val buildTable: (DI) -> T) {
             initializeDI()
         }
 
-        val database = DatabaseService(di).database
-
         table = buildTable(di)
 
-        transaction(database) {
+        transaction(DatabaseService(di).database) {
             SchemaUtils.create(table)
         }
     }
