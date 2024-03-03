@@ -1,24 +1,31 @@
 plugins {
-    alias(libs.plugins.kotlinJvm)
+    alias(libs.plugins.kotlinMultiplatform)
 }
 
-group = "fr.olebo.persistence"
+group = "fr.olebo.system"
 
 kotlin {
-    jvmToolchain(17)
-}
+    jvm {
+        compilations.all {
+            jvmToolchain(21)
+        }
+    }
 
-dependencies {
-    // Internal dependencies
-    implementation(projects.domain)
+    sourceSets {
+        jvmMain.dependencies {
+            dependencies {
+                // Internal dependencies
+                implementation(projects.domain)
 
-    // External dependencies
-    implementation(libs.kodein)
+                // External dependencies
+                implementation(libs.kodein)
+            }
+        }
 
-    // Test dependencies
-    testImplementation(libs.kotlin.test)
-}
-
-tasks.test {
-    useJUnitPlatform()
+        jvmTest.dependencies {
+          dependencies {
+              implementation(libs.kotlin.test)
+          }
+        }
+    }
 }

@@ -1,8 +1,14 @@
 package fr.olebo.persistence.tests
 
+import dev.mokkery.answering.returns
+import dev.mokkery.every
+import dev.mokkery.mock
+import fr.olebo.persistence.tests.model.FileSystemProvider
+import java.nio.file.FileSystem
 import java.sql.Connection
 import java.sql.DatabaseMetaData
 import java.sql.DriverManager
+import java.nio.file.Path as JavaPath
 
 internal const val testConnectionString = "jdbc:sqlite:file:test?mode=memory&cache=shared"
 
@@ -43,6 +49,21 @@ internal fun checkColumnsOf(tableName: String): Set<ColumnData> = jdbcConnection
     }
 }
 
+fun buildMockedPath(): JavaPath {
+    val fileSystemImpl = mock<FileSystem> {
+        every { provider() } returns FileSystemProvider()
+    }
+
+    val parentPath = mock<Path> {
+        every { fileSystem } returns fileSystemImpl
+    }
+
+    return mock<Path> {
+        every { fileSystem } returns fileSystemImpl
+        every { parent } returns parentPath
+    }
+}
+
 internal data class ColumnData(
     val name: String,
     val type: String,
@@ -51,3 +72,5 @@ internal data class ColumnData(
     val defaultValue: Any? = null,
     val length: Int = 0
 )
+
+private interface Path : JavaPath

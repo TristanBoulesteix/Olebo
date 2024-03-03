@@ -1,34 +1,44 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
-    alias(libs.plugins.kotlinJvm)
+    alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.jetbrainsCompose)
 }
 
 kotlin {
-    jvmToolchain(21)
-}
+    jvm {
+        compilations.all {
+            jvmToolchain(21)
+        }
+    }
 
-dependencies {
-    // Internal dependencies
-    implementation(projects.domain)
-    implementation(projects.persistence)
-    implementation(projects.system)
+    sourceSets {
+        jvmMain.dependencies {
+            dependencies { // Internal dependencies
+                implementation(projects.domain)
+                implementation(projects.persistence)
+                implementation(projects.system)
 
-    // Compose dependencies
-    implementation(compose.runtime)
-    implementation(compose.foundation)
-    implementation(compose.material)
-    implementation(compose.ui)
-    implementation(compose.components.resources)
-    implementation(compose.desktop.currentOs)
+                // Compose dependencies
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material)
+                implementation(compose.ui)
+                implementation(compose.components.resources)
+                implementation(compose.desktop.currentOs)
 
-    // External dependencies
-    implementation(libs.kodein)
-    implementation(libs.kodein.compose)
+                // External dependencies
+                implementation(libs.kodein)
+                implementation(libs.kodein.compose)
+            }
+        }
 
-    // Test dependencies
-    testImplementation(libs.kotlin.test)
+        jvmTest.dependencies {
+            dependencies { // Test dependencies
+                implementation(libs.kotlin.test)
+            }
+        }
+    }
 }
 
 compose.desktop {
@@ -41,8 +51,4 @@ compose.desktop {
             packageVersion = "2.0.0"
         }
     }
-}
-
-tasks.test {
-    useJUnitPlatform()
 }

@@ -9,7 +9,7 @@ group = "fr.olebo.domain"
 kotlin {
     jvm {
         compilations.all {
-            jvmToolchain(17)
+            jvmToolchain(21)
         }
     }
 

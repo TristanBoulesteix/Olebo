@@ -1,30 +1,38 @@
 plugins {
-    alias(libs.plugins.kotlinJvm)
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.mock)
 }
 
 group = "fr.olebo.persistence"
 
 kotlin {
-    jvmToolchain(17)
-}
+    jvm {
+        compilations.all {
+            jvmToolchain(21)
+        }
+    }
 
-dependencies {
-    // Internal dependencies
-    implementation(projects.domain)
+    sourceSets {
+        jvmMain.dependencies {
+            // Internal dependencies
+            implementation(projects.domain)
+            implementation(projects.domain)
 
-    // External dependencies
-    implementation(libs.exposed.core)
-    implementation(libs.exposed.dao)
-    implementation(libs.exposed.jdbc)
-    implementation(libs.jdbc.sqlite)
-    implementation(libs.kodein)
-    implementation(libs.slf4j)
+            // External dependencies
+            implementation(libs.exposed.core)
+            implementation(libs.exposed.dao)
+            implementation(libs.exposed.jdbc)
+            implementation(libs.jdbc.sqlite)
+            implementation(libs.kodein)
+            implementation(libs.slf4j)
+            implementation(libs.kotlinx.coroutines)
+        }
 
-    // Test dependencies
-    testImplementation(libs.kotlin.test)
-    testImplementation(libs.kotlinx.serialization.json)
-}
-
-tasks.test {
-    useJUnitPlatform()
+        commonTest.dependencies {
+            // Test dependencies
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.coroutines.test)
+        }
+    }
 }

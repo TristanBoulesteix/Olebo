@@ -2,6 +2,7 @@ package fr.olebo.persistence.tests.tables
 
 import fr.olebo.persistence.DatabaseConfig
 import fr.olebo.persistence.services.DatabaseService
+import fr.olebo.persistence.tests.buildMockedPath
 import fr.olebo.persistence.tests.jdbcConnection
 import fr.olebo.persistence.tests.testConnectionString
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -28,10 +29,14 @@ abstract class TableTests<T : Table>(private val buildTable: (DI) -> T) {
     fun tableInitialize() {
         connection = jdbcConnection
 
+        val databasePath = buildMockedPath()
+
         di = DI {
             bindSingleton<DatabaseConfig> {
                 object : DatabaseConfig {
                     override val connectionString = testConnectionString
+
+                    override val databaseFilePath = databasePath
                 }
             }
             initializeDI()
