@@ -6,9 +6,24 @@ plugins {
     alias(libs.plugins.jetbrainsCompose) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.mock) apply false
-    alias(libs.plugins.kover) apply false
+    alias(libs.plugins.kover)
 }
 
 subprojects {
     apply<KoverGradlePlugin>()
+}
+
+dependencies {
+    kover(projects.composeApplication)
+    kover(projects.domain)
+    kover(projects.system)
+    kover(projects.persistence)
+}
+
+koverReport {
+    defaults {
+        xml {
+            setReportFile(project.file(".qodana/code-coverage/coverage"))
+        }
+    }
 }
