@@ -20,7 +20,7 @@ jobs:
       - name: Generate coverage report
         run: ./gradlew koverBinaryReport
       - name: Move and rename coverage report
-        run: cp build/kover/bin-reports/report.bin .qodana/code-coverage/report.ic
+        run: cp build/reports/kover/report.bin .qodana/code-coverage/report.ic
       - name: 'Qodana Scan'
         uses: JetBrains/qodana-action@v2023.3
         env:
