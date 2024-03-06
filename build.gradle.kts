@@ -19,11 +19,3 @@ dependencies {
     kover(projects.system)
     kover(projects.persistence)
 }
-
-koverReport {
-    defaults {
-        xml {
-            setReportFile(project.file(".qodana/code-coverage/coverage"))
-        }
-    }
-}

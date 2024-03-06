@@ -15,8 +15,12 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - name: Create coverage data directory
+        run: mkdir -p .qodana/code-coverage
       - name: Generate coverage report
-        run: ./gradlew koverXmlReport
+        run: ./gradlew koverBinaryReport
+      - name: Move and rename coverage report
+        run: cp build/kover/bin-reports/report.bin .qodana/code-coverage/report.ic
       - name: 'Qodana Scan'
         uses: JetBrains/qodana-action@v2023.3
         env:
