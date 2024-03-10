@@ -26,4 +26,4 @@ jobs:
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
         with:
-          args: -b /qodana.sarif.json
+          args: -b ../qodana.sarif.json
