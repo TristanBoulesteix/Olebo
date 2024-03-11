@@ -1,5 +1,8 @@
 package fr.olebo.persistence
 
+import fr.olebo.persistence.tables.BaseInfo
+import fr.olebo.persistence.tables.SettingsTable
+import org.jetbrains.exposed.sql.Table
 import org.kodein.di.DI
 import org.kodein.di.bindProvider
 import org.kodein.di.bindSingleton
@@ -16,6 +19,7 @@ val persistenceModule by DI.Module {
         }
     }
     bindProvider("legacyTablesName") { listOf("Priority") }
+    bindProvider<List<Table>> { listOf(BaseInfo(di), SettingsTable(di)) }
 }
 
 internal interface DatabaseConfig {

@@ -1,21 +1,24 @@
 package fr.olebo.persistence.tests.services
 
+import fr.olebo.domain.coroutine.ApplicationIoScope
 import fr.olebo.persistence.DatabaseConfig
 import fr.olebo.persistence.services.DatabaseService
 import fr.olebo.persistence.tests.buildMockedPath
 import fr.olebo.persistence.tests.jdbcConnection
+import fr.olebo.persistence.tests.model.InitializableTestTable
+import fr.olebo.persistence.tests.model.TestTable
 import fr.olebo.persistence.tests.testConnectionString
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
-import org.kodein.di.DI
-import org.kodein.di.bindProvider
-import org.kodein.di.bindSingleton
+import org.jetbrains.exposed.sql.transactions.transaction
+import org.kodein.di.*
 import java.sql.Connection
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 internal class DatabaseServiceTests {
     private lateinit var di: DI
@@ -35,6 +38,10 @@ internal class DatabaseServiceTests {
                 }
             }
             bindProvider("legacyTablesName") { listOf("Priority", "Test") }
+            bindProvider<List<Table>> { listOf(TestTable(), InitializableTestTable()) }
+            bindSingleton<ApplicationIoScope> {
+                object : ApplicationIoScope, CoroutineScope by CoroutineScope(StandardTestDispatcher()) {}
+            }
         }
 
         connection = jdbcConnection
@@ -44,7 +51,7 @@ internal class DatabaseServiceTests {
 
     @Test
     fun `get database connection`() {
-        //assertDoesNotThrow { databaseService.database }
+        databaseService.database
     }
 
     @Test
@@ -56,7 +63,23 @@ internal class DatabaseServiceTests {
 
         databaseService.dropLegacyTables()
 
-        newSuspendedTransaction { assertTrue(SchemaUtils.listTables().isEmpty()) }
+        newSuspendedTransaction { assertTrue(SchemaUtils.listTables().size == 2) }
+    }
+
+    @Test
+    fun `initialize tables that implements Initializable interface`() {
+        val table = di.direct.instance<List<Table>>().filterIsInstance<InitializableTestTable>().first()
+
+        transaction {
+            val result = table.selectAll()
+
+            assertEquals(1, result.count())
+
+            val firstResult = result.first()
+
+            assertEquals("test", firstResult[table.field1])
+            assertEquals(2, firstResult[table.id].value)
+        }
     }
 
     @AfterTest

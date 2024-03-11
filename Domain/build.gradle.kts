@@ -33,6 +33,7 @@ kotlin {
                 implementation(libs.kotlinx.serialization.json)
                 implementation(compose.ui)
                 implementation(compose.runtime)
+                implementation(libs.kotlinx.coroutines)
             }
         }
 
