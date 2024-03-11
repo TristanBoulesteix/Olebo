@@ -44,7 +44,10 @@ kotlin {
 compose.desktop {
     application {
         mainClass = "fr.olebo.Olebo"
-        javaHome = System.getenv("JDK_21")
+
+        System.getenv("JDK_21")?.let {
+            javaHome = it
+        }
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg/*, TargetFormat.Msi*/, TargetFormat.Deb)
