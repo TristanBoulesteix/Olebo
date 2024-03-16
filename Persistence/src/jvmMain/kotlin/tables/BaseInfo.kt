@@ -1,15 +1,16 @@
 package fr.olebo.persistence.tables
 
+import fr.olebo.domain.models.Configurations
 import fr.olebo.domain.models.OleboConfiguration
+import fr.olebo.domain.models.get
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.upsert
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.instance
 
-internal class BaseInfo(override val di: DI) : Table(), Initializable, DIAware {
+internal object BaseInfo : Table(), Initializable {
+    internal const val BASE_VERSION = "base_version"
+
     private val keyInfo = varchar("key_info", 50)
 
     private val value = varchar("value", 50)
@@ -19,16 +20,10 @@ internal class BaseInfo(override val di: DI) : Table(), Initializable, DIAware {
     val versionBase
         get() = transaction { select(value).where(keyInfo eq BASE_VERSION).lastOrNull()?.get(value)?.toIntOrNull() }
 
-    override fun initialize(): Unit = transaction {
+    override fun initialize(configurations: Configurations): Unit = transaction {
         upsert {
-            val configuration by instance<OleboConfiguration>()
-
             it[keyInfo] = BASE_VERSION
-            it[value] = configuration.versionCode.toString()
+            it[value] = configurations.get<OleboConfiguration>().versionCode.toString()
         }
-    }
-
-    internal companion object {
-        const val BASE_VERSION = "base_version"
     }
 }

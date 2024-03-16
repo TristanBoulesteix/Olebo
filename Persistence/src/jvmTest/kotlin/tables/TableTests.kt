@@ -1,7 +1,11 @@
 package fr.olebo.persistence.tests.tables
 
+import fr.olebo.domain.Constants
 import fr.olebo.domain.coroutine.ApplicationIoScope
-import fr.olebo.persistence.DatabaseConfig
+import fr.olebo.domain.models.ConfigurationItem
+import fr.olebo.domain.models.appendConfiguration
+import fr.olebo.persistence.DatabaseConfiguration
+import fr.olebo.persistence.LegacyTables
 import fr.olebo.persistence.services.DatabaseService
 import fr.olebo.persistence.tests.buildMockedPath
 import fr.olebo.persistence.tests.jdbcConnection
@@ -11,23 +15,22 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.kodein.di.DI
-import org.kodein.di.bindProviderOf
-import org.kodein.di.bindSingleton
+import org.kodein.di.*
+import java.nio.file.Path
 import java.sql.Connection
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 
-abstract class TableTests<T : Table>(private val buildTable: (DI) -> T) {
+abstract class TableTests<T : Table>(protected val table: T) {
     protected lateinit var di: DI
         private set
 
     private lateinit var connection: Connection
 
-    protected lateinit var table: T
-        private set
-
     open fun DI.MainBuilder.initializeDI() = Unit
+
+    data class ActualDatabaseConfiguration(override val connectionString: String, override val databaseFilePath: Path) :
+        DatabaseConfiguration
 
     @BeforeTest
     fun tableInitialize() {
@@ -36,23 +39,23 @@ abstract class TableTests<T : Table>(private val buildTable: (DI) -> T) {
         val databasePath = buildMockedPath()
 
         di = DI {
-            bindSingleton<DatabaseConfig> {
-                object : DatabaseConfig {
-                    override val connectionString = testConnectionString
-
-                    override val databaseFilePath = databasePath
-                }
+            bindSingletonOf(::DatabaseService)
+            bindSet<ConfigurationItem> {
+                add { provider { Constants("defaultLabelColor", "defaultLabelVisibility") } }
             }
-            bindProviderOf<List<Table>>(::listOf)
             bindSingleton<ApplicationIoScope> {
                 object : ApplicationIoScope, CoroutineScope by CoroutineScope(StandardTestDispatcher()) {}
             }
+            bindProviderOf<List<Table>>(::listOf)
+            bindProvider<LegacyTables> { object : LegacyTables, List<Table> by listOf() {} }
+            appendConfiguration {
+                ActualDatabaseConfiguration(testConnectionString, databasePath)
+            }
+
             initializeDI()
         }
 
-        table = buildTable(di)
-
-        transaction(DatabaseService(di).database) {
+        transaction(di.direct.instance<DatabaseService>().database) {
             SchemaUtils.create(table)
         }
     }

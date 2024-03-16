@@ -1,5 +1,8 @@
 package fr.olebo.persistence.tables
 
+import fr.olebo.domain.Constants
+import fr.olebo.domain.models.Configurations
+import fr.olebo.domain.models.get
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -8,22 +11,29 @@ import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.constant
 import java.util.*
 
-internal class SettingsTable(override val di: DI) : IntIdTable(), Initializable, DIAware {
-    private val defaultLabelColor by constant<String>()
-
-    private val defaultLabelVisibility by constant<String>()
+internal object SettingsTable : IntIdTable(), Initializable {
+    internal const val AUTO_UPDATE = "autoUpdate"
+    internal const val UPDATE_WARN = "updateWarn"
+    internal const val CURSOR_ENABLED = "cursorEnabled"
+    internal const val CURRENT_LANGUAGE = "current_language"
+    internal const val CURSOR_COLOR = "cursor_color"
+    internal const val PLAYER_FRAME_ENABLED = "PlayerFrame_enabled"
+    internal const val DEFAULT_ELEMENT_VISIBILITY = "default_element_visibility"
+    internal const val LABEL_STATE = "label_enabled"
+    internal const val LABEL_COLOR = "label_color"
+    internal const val CHANGELOGS_VERSION = "changelogs_version"
+    internal const val SHOULD_OPEN_PLAYER_WINDOW_IN_FULL_SCREEN = "player_window_in_full_screen"
 
     val name = varchar("name", 255)
 
     val value = varchar("value", 255).default("")
 
-    val initialValues
-        get() = listOf(
+    fun getInitialValues(configurations: Configurations): List<SettingsInitialValue> {
+        val constants = configurations.get<Constants>()
+
+        return listOf(
             SettingsInitialValue(2, AUTO_UPDATE, true),
             SettingsInitialValue(3, UPDATE_WARN, ""),
             SettingsInitialValue(4, CURSOR_ENABLED, true),
@@ -31,14 +41,15 @@ internal class SettingsTable(override val di: DI) : IntIdTable(), Initializable,
             SettingsInitialValue(6, CURSOR_COLOR, ""),
             SettingsInitialValue(7, PLAYER_FRAME_ENABLED, false),
             SettingsInitialValue(8, DEFAULT_ELEMENT_VISIBILITY, false),
-            SettingsInitialValue(9, LABEL_STATE, defaultLabelVisibility),
-            SettingsInitialValue(10, LABEL_COLOR, defaultLabelColor),
+            SettingsInitialValue(9, LABEL_STATE, constants.defaultLabelVisibility),
+            SettingsInitialValue(10, LABEL_COLOR, constants.defaultLabelColor),
             SettingsInitialValue(11, CHANGELOGS_VERSION, ""),
             SettingsInitialValue(12, SHOULD_OPEN_PLAYER_WINDOW_IN_FULL_SCREEN, true),
         )
+    }
 
-    override fun initialize() = transaction {
-        initialValues.forEach { (id, name, value) ->
+    override fun initialize(configurations: Configurations) = transaction {
+        getInitialValues(configurations).forEach { (id, name, value) ->
             if (!selectAll().where((this@SettingsTable.id eq id) and (this@SettingsTable.name eq name)).any()) {
                 insert {
                     it[this.id] = EntityID(id, this)
@@ -49,23 +60,9 @@ internal class SettingsTable(override val di: DI) : IntIdTable(), Initializable,
         }
     }
 
-    fun reset(): Unit = transaction {
+    fun reset(configurations: Configurations): Unit = transaction {
         deleteAll()
-        initialize()
-    }
-
-    internal companion object Keys {
-        const val AUTO_UPDATE = "autoUpdate"
-        const val UPDATE_WARN = "updateWarn"
-        const val CURSOR_ENABLED = "cursorEnabled"
-        const val CURRENT_LANGUAGE = "current_language"
-        const val CURSOR_COLOR = "cursor_color"
-        const val PLAYER_FRAME_ENABLED = "PlayerFrame_enabled"
-        const val DEFAULT_ELEMENT_VISIBILITY = "default_element_visibility"
-        const val LABEL_STATE = "label_enabled"
-        const val LABEL_COLOR = "label_color"
-        const val CHANGELOGS_VERSION = "changelogs_version"
-        const val SHOULD_OPEN_PLAYER_WINDOW_IN_FULL_SCREEN = "player_window_in_full_screen"
+        initialize(configurations)
     }
 }
 

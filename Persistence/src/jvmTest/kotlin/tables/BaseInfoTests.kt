@@ -1,6 +1,7 @@
 package fr.olebo.persistence.tests.tables
 
 import fr.olebo.domain.models.OleboConfiguration
+import fr.olebo.domain.models.appendConfiguration
 import fr.olebo.persistence.tables.BaseInfo
 import fr.olebo.persistence.tests.ColumnData
 import fr.olebo.persistence.tests.checkColumnsOf
@@ -8,15 +9,16 @@ import fr.olebo.persistence.tests.jdbcConnection
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.kodein.di.DI
-import org.kodein.di.bindProvider
+import org.kodein.di.direct
+import org.kodein.di.instance
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-internal class BaseInfoTests : TableTests<BaseInfo>({ BaseInfo(it) }) {
+internal class BaseInfoTests : TableTests<BaseInfo>(BaseInfo) {
     override fun DI.MainBuilder.initializeDI() {
-        bindProvider { OleboConfiguration("10.0.0", 10) }
+        appendConfiguration { OleboConfiguration("10.0.0", 10) }
     }
 
     @Test
@@ -54,7 +56,7 @@ internal class BaseInfoTests : TableTests<BaseInfo>({ BaseInfo(it) }) {
     fun `initialize table`() {
         // We repeat the test to check for insert and update
         repeat(2) {
-            table.initialize()
+            table.initialize(di.direct.instance())
 
             checkVersionBaseFor(10)
         }

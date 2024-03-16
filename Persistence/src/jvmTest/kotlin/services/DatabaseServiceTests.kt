@@ -1,7 +1,9 @@
 package fr.olebo.persistence.tests.services
 
 import fr.olebo.domain.coroutine.ApplicationIoScope
-import fr.olebo.persistence.DatabaseConfig
+import fr.olebo.domain.models.ConfigurationItem
+import fr.olebo.persistence.DatabaseConfiguration
+import fr.olebo.persistence.LegacyTables
 import fr.olebo.persistence.services.DatabaseService
 import fr.olebo.persistence.tests.buildMockedPath
 import fr.olebo.persistence.tests.jdbcConnection
@@ -30,14 +32,23 @@ internal class DatabaseServiceTests {
     @BeforeTest
     fun initialize() {
         di = DI {
-            bindSingleton {
-                object : DatabaseConfig {
-                    override val connectionString = testConnectionString
+            bindProvider { di }
+            bindSingletonOf(::DatabaseService)
+            bindSet<ConfigurationItem> {
+                add {
+                    provider {
+                        object : DatabaseConfiguration {
+                            override val connectionString = testConnectionString
 
-                    override val databaseFilePath = buildMockedPath()
+                            override val databaseFilePath = buildMockedPath()
+                        }
+                    }
                 }
             }
-            bindProvider("legacyTablesName") { listOf("Priority", "Test") }
+            bindProvider<LegacyTables> {
+                object : LegacyTables,
+                    List<Table> by listOf(object : Table("Priority") {}, object : Table("Test") {}) {}
+            }
             bindProvider<List<Table>> { listOf(TestTable(), InitializableTestTable()) }
             bindSingleton<ApplicationIoScope> {
                 object : ApplicationIoScope, CoroutineScope by CoroutineScope(StandardTestDispatcher()) {}
@@ -46,7 +57,7 @@ internal class DatabaseServiceTests {
 
         connection = jdbcConnection
 
-        databaseService = DatabaseService(di)
+        databaseService = di.direct.instance<DatabaseService>()
     }
 
     @Test
@@ -61,7 +72,7 @@ internal class DatabaseServiceTests {
             it.prepareStatement("CREATE TABLE Test(id INT)").execute()
         }
 
-        databaseService.dropLegacyTables()
+        databaseService.dropLegacyTables(di.direct.instance<LegacyTables>())
 
         newSuspendedTransaction { assertTrue(SchemaUtils.listTables().size == 2) }
     }

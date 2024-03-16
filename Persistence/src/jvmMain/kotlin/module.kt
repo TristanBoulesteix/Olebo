@@ -1,29 +1,44 @@
 package fr.olebo.persistence
 
+import fr.olebo.domain.models.ConfigurationItem
+import fr.olebo.domain.models.appendConfiguration
+import fr.olebo.persistence.services.DatabaseService
+import fr.olebo.persistence.tables.ActTable
 import fr.olebo.persistence.tables.BaseInfo
+import fr.olebo.persistence.tables.SceneTable
 import fr.olebo.persistence.tables.SettingsTable
 import org.jetbrains.exposed.sql.Table
-import org.kodein.di.DI
-import org.kodein.di.bindProvider
-import org.kodein.di.bindSingleton
-import org.kodein.di.instance
+import org.kodein.di.*
 import java.nio.file.Path
 import kotlin.io.path.div
 
 val persistenceModule by DI.Module {
-    bindSingleton {
-        object : DatabaseConfig {
+    bind<DI>() with contexted<DatabaseService>().provider { di }
+    bindSingletonOf(::DatabaseService)
+    appendConfiguration {
+        object : DatabaseConfiguration {
             override val databaseFilePath = Path.of(instance<String>("olebo-directory")) / "database.db"
 
             override val connectionString = "jdbc:sqlite:${databaseFilePath.toAbsolutePath()}"
         }
     }
-    bindProvider("legacyTablesName") { listOf("Priority") }
-    bindProvider<List<Table>> { listOf(BaseInfo(di), SettingsTable(di)) }
+    bindProviderOf<LegacyTables>(::LegacyTablesImpl)
+    bindProvider<List<Table>> {
+        listOf(
+            BaseInfo,
+            SettingsTable,
+            ActTable,
+            SceneTable
+        )
+    }
 }
 
-internal interface DatabaseConfig {
+internal interface DatabaseConfiguration : ConfigurationItem {
     val databaseFilePath: Path
 
     val connectionString: String
 }
+
+internal interface LegacyTables : List<Table>
+
+private class LegacyTablesImpl : LegacyTables, List<Table> by listOf(object : Table("Priority") {})
