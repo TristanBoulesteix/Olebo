@@ -85,6 +85,7 @@ internal class SettingsTableTests : TableTests<SettingsTable>(SettingsTable) {
 
         val columns = checkColumnsOf(table.tableName)
 
+        assertContains(columns, ColumnData.intId)
         assertContains(columns, ColumnData("name", "VARCHAR", length = 255))
         assertContains(columns, ColumnData("value", "VARCHAR", length = 255, defaultValue = ""))
     }

@@ -69,8 +69,20 @@ internal data class ColumnData(
     val type: String,
     val isNullable: Boolean = false,
     val isPrimary: Boolean = false,
-    val defaultValue: Any? = null,
+    val defaultValue: String? = null,
     val length: Int = 0
-)
+) {
+    companion object {
+        val intId
+            get() = ColumnData(
+                "id",
+                "INTEGER",
+                isPrimary = true,
+                length = 2000000000,
+                isNullable = true,
+                defaultValue = null
+            )
+    }
+}
 
 private interface Path : JavaPath
