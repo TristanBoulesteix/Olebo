@@ -1,4 +1,4 @@
-package fr.olebo.persistence.tests.model
+package fr.olebo.persistence.tests.models
 
 import dev.mokkery.MockMode
 import dev.mokkery.answering.returns

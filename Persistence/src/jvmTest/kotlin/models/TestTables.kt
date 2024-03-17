@@ -1,4 +1,4 @@
-package fr.olebo.persistence.tests.model
+package fr.olebo.persistence.tests.models
 
 import fr.olebo.domain.models.Configurations
 import fr.olebo.persistence.tables.Initializable

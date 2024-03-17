@@ -7,8 +7,8 @@ import fr.olebo.persistence.LegacyTables
 import fr.olebo.persistence.services.DatabaseService
 import fr.olebo.persistence.tests.buildMockedPath
 import fr.olebo.persistence.tests.jdbcConnection
-import fr.olebo.persistence.tests.model.InitializableTestTable
-import fr.olebo.persistence.tests.model.TestTable
+import fr.olebo.persistence.tests.models.InitializableTestTable
+import fr.olebo.persistence.tests.models.TestTable
 import fr.olebo.persistence.tests.testConnectionString
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.StandardTestDispatcher

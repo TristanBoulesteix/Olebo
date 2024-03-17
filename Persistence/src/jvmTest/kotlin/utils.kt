@@ -3,7 +3,7 @@ package fr.olebo.persistence.tests
 import dev.mokkery.answering.returns
 import dev.mokkery.every
 import dev.mokkery.mock
-import fr.olebo.persistence.tests.model.FileSystemProvider
+import fr.olebo.persistence.tests.models.FileSystemProvider
 import java.nio.file.FileSystem
 import java.sql.Connection
 import java.sql.DatabaseMetaData
