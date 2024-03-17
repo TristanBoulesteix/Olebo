@@ -27,7 +27,13 @@ val persistenceModule by DI.Module {
             ActTable,
             SceneTable,
             TypeTable,
-            BlueprintTable
+            BlueprintTable,
+            LayerTable,
+            SizeTable,
+            InstanceTable,
+            TagTable,
+            BlueprintTagTable,
+            ActTagTable
         )
     }
 }
