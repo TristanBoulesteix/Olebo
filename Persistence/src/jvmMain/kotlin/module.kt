@@ -3,10 +3,7 @@ package fr.olebo.persistence
 import fr.olebo.domain.models.ConfigurationItem
 import fr.olebo.domain.models.appendConfiguration
 import fr.olebo.persistence.services.DatabaseService
-import fr.olebo.persistence.tables.ActTable
-import fr.olebo.persistence.tables.BaseInfo
-import fr.olebo.persistence.tables.SceneTable
-import fr.olebo.persistence.tables.SettingsTable
+import fr.olebo.persistence.tables.*
 import org.jetbrains.exposed.sql.Table
 import org.kodein.di.*
 import java.nio.file.Path
@@ -28,7 +25,9 @@ val persistenceModule by DI.Module {
             BaseInfo,
             SettingsTable,
             ActTable,
-            SceneTable
+            SceneTable,
+            TypeTable,
+            BlueprintTable
         )
     }
 }

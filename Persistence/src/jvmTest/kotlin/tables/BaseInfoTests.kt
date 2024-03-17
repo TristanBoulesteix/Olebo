@@ -29,7 +29,7 @@ internal class BaseInfoTests : TableTests<BaseInfo>(BaseInfo) {
         }
 
         val columns = checkColumnsOf(table.tableName)
-        
+
         assertContains(columns, ColumnData("key_info", "VARCHAR", isPrimary = true, length = 50))
         assertContains(columns, ColumnData("value", "VARCHAR", length = 50))
     }
