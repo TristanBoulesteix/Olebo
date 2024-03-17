@@ -64,6 +64,6 @@ internal object SettingsTable : IntIdTable(), Initializable {
         deleteAll()
         initialize(configurations)
     }
-}
 
-internal data class SettingsInitialValue(val int: Int, val key: String, val value: Any)
+    internal data class SettingsInitialValue(val int: Int, val key: String, val value: Any)
+}

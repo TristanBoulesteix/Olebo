@@ -2,7 +2,6 @@ package fr.olebo.persistence.tests.tables
 
 import fr.olebo.domain.Constants
 import fr.olebo.domain.models.*
-import fr.olebo.persistence.tables.SettingsInitialValue
 import fr.olebo.persistence.tables.SettingsTable
 import fr.olebo.persistence.tables.SettingsTable.AUTO_UPDATE
 import fr.olebo.persistence.tables.SettingsTable.CHANGELOGS_VERSION
@@ -41,30 +40,30 @@ internal class SettingsTableTests : TableTests<SettingsTable>(SettingsTable) {
         }
     }
 
-    private lateinit var initialValues: List<SettingsInitialValue>
+    private lateinit var initialValues: List<SettingsTable.SettingsInitialValue>
 
     @BeforeTest
     fun testInitialize() {
         initialValues = listOf(
-            SettingsInitialValue(2, AUTO_UPDATE, true),
-            SettingsInitialValue(3, UPDATE_WARN, ""),
-            SettingsInitialValue(4, CURSOR_ENABLED, true),
-            SettingsInitialValue(5, CURRENT_LANGUAGE, Locale.getDefault().language),
-            SettingsInitialValue(6, CURSOR_COLOR, ""),
-            SettingsInitialValue(7, PLAYER_FRAME_ENABLED, false),
-            SettingsInitialValue(8, DEFAULT_ELEMENT_VISIBILITY, false),
-            SettingsInitialValue(
+            SettingsTable.SettingsInitialValue(2, AUTO_UPDATE, true),
+            SettingsTable.SettingsInitialValue(3, UPDATE_WARN, ""),
+            SettingsTable.SettingsInitialValue(4, CURSOR_ENABLED, true),
+            SettingsTable.SettingsInitialValue(5, CURRENT_LANGUAGE, Locale.getDefault().language),
+            SettingsTable.SettingsInitialValue(6, CURSOR_COLOR, ""),
+            SettingsTable.SettingsInitialValue(7, PLAYER_FRAME_ENABLED, false),
+            SettingsTable.SettingsInitialValue(8, DEFAULT_ELEMENT_VISIBILITY, false),
+            SettingsTable.SettingsInitialValue(
                 9,
                 LABEL_STATE,
                 di.direct.instance<Configurations>().get<Constants>().defaultLabelVisibility
             ),
-            SettingsInitialValue(
+            SettingsTable.SettingsInitialValue(
                 10,
                 LABEL_COLOR,
                 di.direct.instance<Configurations>().get<Constants>().defaultLabelColor
             ),
-            SettingsInitialValue(11, CHANGELOGS_VERSION, ""),
-            SettingsInitialValue(12, SHOULD_OPEN_PLAYER_WINDOW_IN_FULL_SCREEN, true),
+            SettingsTable.SettingsInitialValue(11, CHANGELOGS_VERSION, ""),
+            SettingsTable.SettingsInitialValue(12, SHOULD_OPEN_PLAYER_WINDOW_IN_FULL_SCREEN, true),
         )
     }
 
