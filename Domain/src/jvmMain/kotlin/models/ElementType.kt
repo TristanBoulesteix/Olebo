@@ -4,7 +4,7 @@ package fr.olebo.domain.models
  * The type of element
  *
  */
-enum class TypeElement {
+enum class ElementType {
     Object, PJ, PNJ, Basic;
 
     val isCustom

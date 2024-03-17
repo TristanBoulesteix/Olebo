@@ -7,6 +7,7 @@ import fr.olebo.domain.models.appendConfiguration
 import fr.olebo.persistence.DatabaseConfiguration
 import fr.olebo.persistence.LegacyTables
 import fr.olebo.persistence.services.DatabaseService
+import fr.olebo.persistence.tables.EnumInitializable
 import fr.olebo.persistence.tests.buildMockedPath
 import fr.olebo.persistence.tests.jdbcConnection
 import fr.olebo.persistence.tests.testConnectionString
@@ -14,14 +15,18 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.StandardTestDispatcher
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.kodein.di.*
 import java.nio.file.Path
 import java.sql.Connection
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
-abstract class TableTests<T : Table>(protected val table: T) {
+internal abstract class TableTests<T : Table>(protected val table: T) {
     protected lateinit var di: DI
         private set
 
@@ -63,5 +68,19 @@ abstract class TableTests<T : Table>(protected val table: T) {
     @AfterTest
     fun clear() {
         connection.close()
+    }
+}
+
+internal abstract class EnumInitializableTests<E : Enum<E>, T : EnumInitializable<E>>(table: T) : TableTests<T>(table) {
+    @Test
+    fun `check initialization`() = transaction {
+        table.initialize(di.direct.instance())
+
+        table.values.forEachIndexed { index, enum ->
+            val idEnum = index + 1
+
+            val query = table.selectAll().where { (table.id eq idEnum) and (table.enumValue eq enum) }
+            assertEquals(1, query.count())
+        }
     }
 }

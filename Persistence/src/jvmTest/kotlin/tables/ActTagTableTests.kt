@@ -8,7 +8,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.test.Test
 import kotlin.test.assertContains
 
-class ActTagTableTests : TableTests<ActTagTable>(ActTagTable) {
+internal class ActTagTableTests : TableTests<ActTagTable>(ActTagTable) {
     @Test
     fun `check all column and table in database`() {
         transaction {
