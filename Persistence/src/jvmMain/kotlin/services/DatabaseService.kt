@@ -22,7 +22,7 @@ import kotlin.io.path.exists
 internal class DatabaseService(
     configuration: Configurations,
     scope: ApplicationIoScope,
-    tables: List<Table>,
+    tables: Array<Table>,
     legacyTables: LegacyTables
 ) {
     internal val database: Database
@@ -46,7 +46,7 @@ internal class DatabaseService(
         }
 
         transaction {
-            SchemaUtils.createMissingTablesAndColumns(*tables.toTypedArray())
+            SchemaUtils.createMissingTablesAndColumns(*tables)
 
             tables.forEach {
                 if (it is Initializable) {

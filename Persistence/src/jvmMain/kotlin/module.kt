@@ -20,8 +20,8 @@ val persistenceModule by DI.Module {
         }
     }
     bindProviderOf<LegacyTables>(::LegacyTablesImpl)
-    bindProvider<List<Table>> {
-        listOf(
+    bindProvider {
+        arrayOf(
             BaseInfo,
             SettingsTable,
             ActTable,

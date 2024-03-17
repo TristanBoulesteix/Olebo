@@ -49,7 +49,7 @@ internal class DatabaseServiceTests {
                 object : LegacyTables,
                     List<Table> by listOf(object : Table("Priority") {}, object : Table("Test") {}) {}
             }
-            bindProvider<List<Table>> { listOf(TestTable(), InitializableTestTable()) }
+            bindProvider<Array<Table>> { arrayOf(TestTable(), InitializableTestTable()) }
             bindSingleton<ApplicationIoScope> {
                 object : ApplicationIoScope, CoroutineScope by CoroutineScope(StandardTestDispatcher()) {}
             }
@@ -79,7 +79,7 @@ internal class DatabaseServiceTests {
 
     @Test
     fun `initialize tables that implements Initializable interface`() {
-        val table = di.direct.instance<List<Table>>().filterIsInstance<InitializableTestTable>().first()
+        val table = di.direct.instance<Array<Table>>().filterIsInstance<InitializableTestTable>().first()
 
         transaction {
             val result = table.selectAll()

@@ -46,7 +46,7 @@ abstract class TableTests<T : Table>(protected val table: T) {
             bindSingleton<ApplicationIoScope> {
                 object : ApplicationIoScope, CoroutineScope by CoroutineScope(StandardTestDispatcher()) {}
             }
-            bindProviderOf<List<Table>>(::listOf)
+            bindProviderOf<Array<Table>>(::arrayOf)
             bindProvider<LegacyTables> { object : LegacyTables, List<Table> by listOf() {} }
             appendConfiguration {
                 ActualDatabaseConfiguration(testConnectionString, databasePath)
