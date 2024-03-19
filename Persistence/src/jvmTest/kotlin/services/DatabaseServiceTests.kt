@@ -5,6 +5,7 @@ import fr.olebo.domain.models.ConfigurationItem
 import fr.olebo.persistence.DatabaseConfiguration
 import fr.olebo.persistence.LegacyTables
 import fr.olebo.persistence.services.DatabaseService
+import fr.olebo.persistence.tables.InstanceTable
 import fr.olebo.persistence.tests.buildMockedPath
 import fr.olebo.persistence.tests.jdbcConnection
 import fr.olebo.persistence.tests.models.InitializableTestTable
@@ -15,6 +16,7 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -90,6 +92,39 @@ internal class DatabaseServiceTests {
 
             assertEquals("test", firstResult[table.field1])
             assertEquals(2, firstResult[table.id].value)
+        }
+    }
+
+    @Test
+    fun `delete instances marked as 'deleted'`() = runTest {
+        transaction {
+            SchemaUtils.createMissingTablesAndColumns(InstanceTable)
+        }
+
+        transaction {
+            InstanceTable.insert {
+                it[currentHP] = 2
+                it[currentMP] = 3
+                it[x] = 50f
+                it[y] = 100f
+                it[idSize] = 2
+                it[visible] = true
+                it[orientation] = 0f
+                it[layer] = 1
+                it[idScene] = 1
+                it[idBlueprint] = 1
+                it[alias] = "Test"
+                it[deleted] = true
+            }
+        }
+
+        transaction {
+            assertEquals(1, InstanceTable.selectAll().count())
+        }
+
+        newSuspendedTransaction {
+            databaseService.deleteOldInstances()
+            assertEquals(0, InstanceTable.selectAll().count())
         }
     }
 

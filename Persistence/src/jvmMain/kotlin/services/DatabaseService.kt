@@ -6,11 +6,14 @@ import fr.olebo.domain.models.get
 import fr.olebo.persistence.DatabaseConfiguration
 import fr.olebo.persistence.LegacyTables
 import fr.olebo.persistence.tables.Initializable
+import fr.olebo.persistence.tables.InstanceTable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -54,9 +57,17 @@ internal class DatabaseService(
                 }
             }
         }
+
+        scope.launch {
+            deleteOldInstances()
+        }
     }
 
     suspend fun dropLegacyTables(legacyTables: List<Table>) = newSuspendedTransaction(Dispatchers.IO) {
         SchemaUtils.drop(*legacyTables.toTypedArray())
+    }
+
+    suspend fun deleteOldInstances() = newSuspendedTransaction(Dispatchers.IO) {
+        InstanceTable.deleteWhere { deleted eq true }
     }
 }
