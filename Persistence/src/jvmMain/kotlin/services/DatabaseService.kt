@@ -49,7 +49,7 @@ internal class DatabaseService(
         }
 
         transaction {
-            SchemaUtils.createMissingTablesAndColumns(*tables)
+            SchemaUtils.createMissingTablesAndColumns(*tables, withLogs = false)
 
             tables.forEach {
                 if (it is Initializable) {
@@ -63,11 +63,11 @@ internal class DatabaseService(
         }
     }
 
-    suspend fun dropLegacyTables(legacyTables: List<Table>) = newSuspendedTransaction(Dispatchers.IO) {
+    internal suspend fun dropLegacyTables(legacyTables: List<Table>) = newSuspendedTransaction(Dispatchers.IO) {
         SchemaUtils.drop(*legacyTables.toTypedArray())
     }
 
-    suspend fun deleteOldInstances() = newSuspendedTransaction(Dispatchers.IO) {
+    internal suspend fun deleteOldInstances() = newSuspendedTransaction(Dispatchers.IO) {
         InstanceTable.deleteWhere { deleted eq true }
     }
 }
