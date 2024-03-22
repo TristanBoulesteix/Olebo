@@ -1,3 +1,4 @@
+import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
@@ -36,6 +37,8 @@ kotlin {
         jvmTest.dependencies {
             dependencies { // Test dependencies
                 implementation(libs.kotlin.test)
+                @OptIn(ExperimentalComposeLibrary::class)
+                implementation(compose.uiTest)
             }
         }
     }
