@@ -1,7 +1,6 @@
 package fr.olebo.tests.application
 
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.runComposeUiTest
 import fr.olebo.application.LocalThemeManager
@@ -35,14 +34,12 @@ class OleboThemeTestsMode {
                 val themeManager = LocalThemeManager.current
                 val colors = MaterialTheme.colors
 
-                LaunchedEffect(Unit) {
-                    assertColorsEquals(
-                        expectedColors = colors,
-                        actualColors = darkColorPalette,
-                        message = { "Check color $it for dark theme" }
-                    )
-                    assertEquals(true, themeManager.isDarkTheme)
-                }
+                assertColorsEquals(
+                    expectedColors = colors,
+                    actualColors = darkColorPalette,
+                    message = { "Check color $it for dark theme" }
+                )
+                assertEquals(true, themeManager.isDarkTheme)
             }
         }
     }
@@ -55,16 +52,14 @@ class OleboThemeTestsMode {
             applicationScope.OleboTheme {
                 val themeManager = LocalThemeManager.current
 
-                LaunchedEffect(Unit) {
-                    themeManager.mode = ThemeMode.Dark
-                    assertTrue(themeManager.isDarkTheme)
+                themeManager.mode = ThemeMode.Dark
+                assertTrue(themeManager.isDarkTheme)
 
-                    themeManager.mode = ThemeMode.Light
-                    assertFalse(themeManager.isDarkTheme)
+                themeManager.mode = ThemeMode.Light
+                assertFalse(themeManager.isDarkTheme)
 
-                    themeManager.mode = ThemeMode.Auto
-                    assertTrue(themeManager.isDarkTheme)
-                }
+                themeManager.mode = ThemeMode.Auto
+                assertTrue(themeManager.isDarkTheme)
             }
         }
 
@@ -73,10 +68,8 @@ class OleboThemeTestsMode {
             applicationScope.OleboTheme {
                 val themeManager = LocalThemeManager.current
 
-                LaunchedEffect(Unit) {
-                    themeManager.mode = ThemeMode.Auto
-                    assertFalse(themeManager.isDarkTheme)
-                }
+                themeManager.mode = ThemeMode.Auto
+                assertFalse(themeManager.isDarkTheme)
             }
         }
     }

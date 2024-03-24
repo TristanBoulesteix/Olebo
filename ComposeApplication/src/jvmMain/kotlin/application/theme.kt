@@ -16,27 +16,29 @@ val LocalThemeManager = staticCompositionLocalOf<ThemeManager> { error("No theme
 interface ThemeManager {
     var mode: ThemeMode
 
+    @get:Composable
+    @get:ReadOnlyComposable
     val isDarkTheme: Boolean
+}
+
+@Stable
+private class ThemeManagerImpl(private val isSystemDarkTheme: SystemDarkThemeProvider) : ThemeManager {
+    override var mode by mutableStateOf(ThemeMode.Auto)
+
+    override val isDarkTheme: Boolean
+        @Composable
+        get() = when (mode) {
+            ThemeMode.Dark -> true
+            ThemeMode.Light -> false
+            ThemeMode.Auto -> isSystemDarkTheme()
+        }
 }
 
 @Composable
 fun ApplicationScope.OleboTheme(content: ApplicationContent) {
-    val checkSystemDarkTheme: SystemDarkThemeProvider by rememberInstance()
+    val isSystemDarkTheme: SystemDarkThemeProvider by rememberInstance()
 
-    val isSystemDarkTheme = checkSystemDarkTheme()
-
-    val themeManager = remember {
-        object : ThemeManager {
-            override var mode by mutableStateOf(ThemeMode.Auto)
-
-            override val isDarkTheme: Boolean
-                get() = when (mode) {
-                    ThemeMode.Dark -> true
-                    ThemeMode.Light -> false
-                    ThemeMode.Auto -> isSystemDarkTheme
-                }
-        }
-    }
+    val themeManager = remember { ThemeManagerImpl(isSystemDarkTheme) }
 
     CompositionLocalProvider(LocalThemeManager provides themeManager) {
         MaterialTheme(
