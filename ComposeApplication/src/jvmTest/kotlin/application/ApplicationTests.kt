@@ -1,11 +1,11 @@
-package fr.olebo.tests
+package fr.olebo.tests.application
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.runComposeUiTest
-import androidx.compose.ui.window.ApplicationScope
 import fr.olebo.MainContent
 import fr.olebo.domain.coroutine.ApplicationIoScope
+import fr.olebo.tests.applicationScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.isActive
@@ -27,10 +27,6 @@ class ApplicationTests {
             }
         }
         assertTrue(di.direct.instance<ApplicationIoScope>().isActive)
-
-        val applicationScope = object : ApplicationScope {
-            override fun exitApplication() = Unit
-        }
 
         setContent {
             var isContentDisplayed by remember { mutableStateOf(true) }

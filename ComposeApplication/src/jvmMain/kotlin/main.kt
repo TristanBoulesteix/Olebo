@@ -2,6 +2,7 @@
 
 package fr.olebo
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.window.ApplicationScope
@@ -23,6 +24,7 @@ internal fun main() = application { MainContent(injector) }
 
 @Composable
 internal fun ApplicationScope.MainContent(di: DI) {
+    isSystemInDarkTheme()
     DisposableEffect(Unit) {
         onDispose {
             di.direct.instance<ApplicationIoScope>().cancel()
