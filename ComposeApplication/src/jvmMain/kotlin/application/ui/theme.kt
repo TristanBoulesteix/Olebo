@@ -1,8 +1,9 @@
-package fr.olebo.application
+package fr.olebo.application.ui
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.window.ApplicationScope
+import fr.olebo.application.ApplicationContent
 import fr.olebo.models.SystemDarkThemeProvider
 import org.kodein.di.compose.rememberInstance
 
@@ -38,7 +39,7 @@ private class ThemeManagerImpl(private val isSystemDarkTheme: SystemDarkThemePro
 fun ApplicationScope.OleboTheme(content: ApplicationContent) {
     val isSystemDarkTheme: SystemDarkThemeProvider by rememberInstance()
 
-    val themeManager = remember { ThemeManagerImpl(isSystemDarkTheme) }
+    val themeManager: ThemeManager = remember { ThemeManagerImpl(isSystemDarkTheme) }
 
     CompositionLocalProvider(LocalThemeManager provides themeManager) {
         MaterialTheme(

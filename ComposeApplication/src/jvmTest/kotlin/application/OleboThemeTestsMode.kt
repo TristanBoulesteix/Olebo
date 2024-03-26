@@ -3,10 +3,10 @@ package fr.olebo.tests.application
 import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.runComposeUiTest
-import fr.olebo.application.LocalThemeManager
-import fr.olebo.application.OleboTheme
-import fr.olebo.application.ThemeMode
-import fr.olebo.application.darkColorPalette
+import fr.olebo.application.ui.LocalThemeManager
+import fr.olebo.application.ui.OleboTheme
+import fr.olebo.application.ui.ThemeMode
+import fr.olebo.application.ui.darkColorPalette
 import fr.olebo.models.SystemDarkThemeProvider
 import fr.olebo.tests.applicationScope
 import fr.olebo.tests.assertColorsEquals

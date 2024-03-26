@@ -1,6 +1,7 @@
 package fr.olebo
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.Stable
 import fr.olebo.domain.adaptors.OsAdaptor
 import fr.olebo.domain.domainModule
 import fr.olebo.domain.models.ConfigurationItem
@@ -21,6 +22,7 @@ private val module by DI.Module {
     bindProvider { SystemDarkThemeProvider { isSystemInDarkTheme() } }
 }
 
+@Stable
 val injector = DI {
     import(module)
     import(domainModule)

@@ -1,4 +1,4 @@
-package fr.olebo.application
+package fr.olebo.application.ui
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
