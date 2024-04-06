@@ -14,6 +14,10 @@ kotlin {
     }
 
     sourceSets {
+        commonMain.dependencies {
+            implementation(compose.components.resources)
+        }
+
         jvmMain.dependencies {
             dependencies { // Internal dependencies
                 implementation(projects.domain)
@@ -25,7 +29,6 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.material)
                 implementation(compose.ui)
-                implementation(compose.components.resources)
                 implementation(compose.desktop.currentOs)
 
                 // External dependencies
