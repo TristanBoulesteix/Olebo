@@ -2,7 +2,7 @@ package fr.olebo.application
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.window.*
-import fr.olebo.application.ui.OleboTheme
+import fr.olebo.application.style.OleboTheme
 import fr.olebo.domain.coroutine.ApplicationIoScope
 import fr.olebo.injector
 import kotlinx.coroutines.cancel

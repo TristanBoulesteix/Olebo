@@ -1,4 +1,4 @@
-package fr.olebo.application.ui
+package fr.olebo.application.style
 
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
