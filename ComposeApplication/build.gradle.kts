@@ -34,6 +34,7 @@ kotlin {
                 // External dependencies
                 implementation(libs.kodein)
                 implementation(libs.kodein.compose)
+                implementation(libs.kotlinx.coroutines.swing)
             }
         }
 
