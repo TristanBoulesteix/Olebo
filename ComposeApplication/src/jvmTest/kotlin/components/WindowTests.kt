@@ -8,10 +8,17 @@ import androidx.compose.ui.window.WindowPlacement
 import fr.olebo.components.Window
 import fr.olebo.tests.applicationScope
 import javax.swing.JFrame
+import kotlin.properties.Delegates
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class WindowTests {
+    @BeforeTest
+    fun initialize() {
+        System.setProperty("java.awt.headless", "true")
+    }
+
     @OptIn(ExperimentalTestApi::class)
     @Test
     fun `create a window and update its dimensions`() = runComposeUiTest {
@@ -20,7 +27,7 @@ internal class WindowTests {
         val minimumSize = DpSize(200.dp, 300.dp)
         val placement = WindowPlacement.Floating
 
-        var awtWindow: JFrame? = null
+        var awtWindow: JFrame by Delegates.notNull()
 
         setContent {
             applicationScope.Window(
@@ -33,6 +40,6 @@ internal class WindowTests {
             }
         }
 
-        assertEquals(awtWindow!!.title, title)
+        assertEquals(awtWindow.title, title)
     }
 }

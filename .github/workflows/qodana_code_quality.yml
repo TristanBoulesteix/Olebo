@@ -17,8 +17,14 @@ jobs:
           fetch-depth: 0
       - name: Create coverage data directory
         run: mkdir -p .qodana/code-coverage
+      - name: Setup xvfb for screen 0
+        run: Xvfb :1 -screen 0 1600x1200x24 &
       - name: Generate coverage report
         run: ./gradlew koverBinaryReport
+        env:
+          DISPLAY: :1
+      - name: Tear down xvfb
+        run: killall Xvfb
       - name: Move and rename coverage report
         run: cp build/reports/kover/report.bin .qodana/code-coverage/report.ic
       - name: 'Qodana Scan'
