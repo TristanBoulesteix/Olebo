@@ -40,7 +40,6 @@ kotlin {
         jvmTest.dependencies {
             // Test dependencies
             implementation(libs.kotlin.test)
-            implementation(projects.testsUtils)
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
         }

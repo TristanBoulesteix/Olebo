@@ -11,4 +11,6 @@ internal const val OLEBO_VERSION_NAME = "0.2.0"
  */
 internal const val OLEBO_VERSION_CODE = 10
 
-internal fun main() = oleboApplication(injector) { }
+internal fun main() = oleboApplication(injector) {
+
+}
