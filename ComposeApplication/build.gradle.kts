@@ -19,31 +19,30 @@ kotlin {
         }
 
         jvmMain.dependencies {
-            dependencies { // Internal dependencies
-                implementation(projects.domain)
-                implementation(projects.persistence)
-                implementation(projects.system)
+            // Internal dependencies
+            implementation(projects.domain)
+            implementation(projects.persistence)
+            implementation(projects.system)
 
-                // Compose dependencies
-                implementation(compose.runtime)
-                implementation(compose.foundation)
-                implementation(compose.material)
-                implementation(compose.ui)
-                implementation(compose.desktop.currentOs)
+            // Compose dependencies
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material)
+            implementation(compose.ui)
+            implementation(compose.desktop.currentOs)
 
-                // External dependencies
-                implementation(libs.kodein)
-                implementation(libs.kodein.compose)
-                implementation(libs.kotlinx.coroutines.swing)
-            }
+            // External dependencies
+            implementation(libs.kodein)
+            implementation(libs.kodein.compose)
+            implementation(libs.kotlinx.coroutines.swing)
         }
 
         jvmTest.dependencies {
-            dependencies { // Test dependencies
-                implementation(libs.kotlin.test)
-                @OptIn(ExperimentalComposeLibrary::class)
-                implementation(compose.uiTest)
-            }
+            // Test dependencies
+            implementation(libs.kotlin.test)
+            implementation(projects.testsUtils)
+            @OptIn(ExperimentalComposeLibrary::class)
+            implementation(compose.uiTest)
         }
     }
 }

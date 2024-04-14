@@ -18,7 +18,7 @@ typealias ApplicationContent = @Composable ApplicationScope.() -> Unit
 
 @OptIn(ExperimentalResourceApi::class)
 fun oleboApplication(di: DI, content: ApplicationContent) = application(exitProcessOnExit = false) {
-    withDI(di) {
+    WithDI(di) {
         OleboTheme {
             val trayManager = remember { TrayManagerImpl() }
 
@@ -32,6 +32,13 @@ fun oleboApplication(di: DI, content: ApplicationContent) = application(exitProc
                 Tray(icon = TrayIcon, state = trayManager.trayState, tooltip = trayManager.trayHint)
             }
         }
+    }
+}
+
+@Composable
+fun ApplicationScope.WithDI(di: DI, content: ApplicationContent) {
+    withDI(di) {
+        content()
     }
 
     DisposableEffect(Unit) {
