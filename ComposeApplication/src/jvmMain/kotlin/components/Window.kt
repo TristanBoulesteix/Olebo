@@ -74,4 +74,4 @@ private class OleboWindowStatusImpl(
     }
 }
 
-private fun DpSize.toAwtDimension() = Dimension(width.value.toInt(), height.value.toInt())
+internal fun DpSize.toAwtDimension() = Dimension(width.value.toInt(), height.value.toInt())

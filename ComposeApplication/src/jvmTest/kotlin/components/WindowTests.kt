@@ -4,8 +4,8 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.runComposeUiTest
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.WindowPlacement
 import fr.olebo.components.Window
+import fr.olebo.components.toAwtDimension
 import fr.olebo.tests.applicationScope
 import javax.swing.JFrame
 import kotlin.properties.Delegates
@@ -19,7 +19,6 @@ internal class WindowTests {
         val title = "test_window"
         val size = DpSize(800.dp, 600.dp)
         val minimumSize = DpSize(200.dp, 300.dp)
-        val placement = WindowPlacement.Floating
 
         var awtWindow: JFrame by Delegates.notNull()
 
@@ -27,13 +26,22 @@ internal class WindowTests {
             applicationScope.Window(
                 title = title,
                 size = size,
-                minimumSize = minimumSize,
-                placement = placement
+                minimumSize = minimumSize
             ) {
                 awtWindow = window
             }
         }
 
         assertEquals(awtWindow.title, title)
+        assertEquals(awtWindow.size, size.toAwtDimension())
+        assertEquals(awtWindow.minimumSize, minimumSize.toAwtDimension())
+    }
+
+    @Test
+    fun `convert DpSize to awt dimension`(){
+        val dimension = DpSize(800.dp, 600.dp).toAwtDimension()
+
+        assertEquals(dimension.width, 800)
+        assertEquals(dimension.height, 600)
     }
 }
