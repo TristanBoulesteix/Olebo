@@ -7,7 +7,7 @@ import androidx.compose.ui.window.*
 import java.awt.Dimension
 import java.awt.Window
 
-val LocalWindow = staticCompositionLocalOf<OleboWindowStatus?> { null }
+val LocalWindowInfo = staticCompositionLocalOf<OleboWindowInfo?> { null }
 
 @Composable
 fun ApplicationScope.Window(
@@ -39,17 +39,17 @@ fun ApplicationScope.Window(
             window.preferredSize = size.toAwtDimension()
         }
 
-        val parentWindow = LocalWindow.current
+        val parentWindow = LocalWindowInfo.current
 
-        CompositionLocalProvider(LocalWindow provides remember { OleboWindowStatusImpl(parentWindow, window) }) {
+        CompositionLocalProvider(LocalWindowInfo provides remember { OleboWindowInfoImpl(parentWindow, window) }) {
             content()
         }
     }
 }
 
 @Immutable
-sealed interface OleboWindowStatus {
-    val parentWindow: OleboWindowStatus?
+sealed interface OleboWindowInfo {
+    val parentWindow: OleboWindowInfo?
 
     val awtWindow: Window
 
@@ -59,10 +59,10 @@ sealed interface OleboWindowStatus {
 }
 
 @Immutable
-private class OleboWindowStatusImpl(
-    override val parentWindow: OleboWindowStatus?,
+private class OleboWindowInfoImpl(
+    override val parentWindow: OleboWindowInfo?,
     override val awtWindow: Window
-) : OleboWindowStatus {
+) : OleboWindowInfo {
     private val observers = mutableListOf<() -> Unit>()
 
     override fun addSettingsChangedListener(action: () -> Unit) {
