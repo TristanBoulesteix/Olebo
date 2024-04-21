@@ -1,5 +1,6 @@
 package fr.olebo.tests.components
 
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.runComposeUiTest
 import androidx.compose.ui.unit.DpSize
@@ -28,7 +29,7 @@ internal class WindowTests {
                 size = size,
                 minimumSize = minimumSize
             ) {
-                awtWindow = window
+                SideEffect { awtWindow = window }
             }
         }
 
