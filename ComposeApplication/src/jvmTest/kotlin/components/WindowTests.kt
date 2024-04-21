@@ -9,16 +9,10 @@ import fr.olebo.components.Window
 import fr.olebo.tests.applicationScope
 import javax.swing.JFrame
 import kotlin.properties.Delegates
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class WindowTests {
-    @BeforeTest
-    fun initialize() {
-        System.setProperty("java.awt.headless", "true")
-    }
-
     @OptIn(ExperimentalTestApi::class)
     @Test
     fun `create a window and update its dimensions`() = runComposeUiTest {
