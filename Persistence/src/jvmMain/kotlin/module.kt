@@ -10,7 +10,6 @@ import java.nio.file.Path
 import kotlin.io.path.div
 
 val persistenceModule by DI.Module {
-    bind<DI>() with contexted<DatabaseService>().provider { di }
     bindSingletonOf(::DatabaseService)
     appendConfiguration {
         object : DatabaseConfiguration {

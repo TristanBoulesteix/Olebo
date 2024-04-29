@@ -68,7 +68,7 @@ internal class DatabaseServiceTests {
     }
 
     @Test
-    fun `test that legacy tables are removed from the database`() = runTest {
+    fun `legacy tables are removed from the database`() = runTest {
         jdbcConnection.use {
             it.prepareStatement("CREATE TABLE Priority(id INT)").execute()
             it.prepareStatement("CREATE TABLE Test(id INT)").execute()
