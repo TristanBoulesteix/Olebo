@@ -3,6 +3,7 @@
 package fr.olebo
 
 import fr.olebo.application.oleboApplication
+import fr.olebo.features.startup.StartupWindow
 
 internal const val OLEBO_VERSION_NAME = "0.2.0"
 
@@ -12,5 +13,5 @@ internal const val OLEBO_VERSION_NAME = "0.2.0"
 internal const val OLEBO_VERSION_CODE = 10
 
 internal fun main() = oleboApplication(injector) {
-
+    StartupWindow()
 }

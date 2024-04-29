@@ -1,3 +1,5 @@
 <resources>
     <string name="olebo_is_running">Olebo est en cours d'exécution</string>
+    <string name="startup_window_title">Démarrage</string>
+    <string name="recent_project">Projets récents</string>
 </resources>

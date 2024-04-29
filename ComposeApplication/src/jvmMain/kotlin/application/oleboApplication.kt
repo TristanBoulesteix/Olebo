@@ -4,10 +4,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.window.*
 import fr.olebo.application.style.OleboTheme
 import fr.olebo.domain.coroutine.ApplicationIoScope
+import fr.olebo.resources.Res
+import fr.olebo.resources.olebo_is_running
 import kotlinx.coroutines.cancel
-import olebo.composeapplication.generated.resources.Res
-import olebo.composeapplication.generated.resources.olebo_is_running
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.getString
 import org.kodein.di.DI
 import org.kodein.di.compose.withDI
@@ -16,7 +15,6 @@ import org.kodein.di.instance
 
 typealias ApplicationContent = @Composable ApplicationScope.() -> Unit
 
-@OptIn(ExperimentalResourceApi::class)
 fun oleboApplication(di: DI, content: ApplicationContent) = application(exitProcessOnExit = false) {
     WithDI(di) {
         OleboTheme {

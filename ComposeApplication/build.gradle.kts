@@ -25,10 +25,6 @@ kotlin {
             implementation(projects.system)
 
             // Compose dependencies
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material)
-            implementation(compose.ui)
             implementation(compose.desktop.currentOs)
 
             // External dependencies
@@ -60,4 +56,8 @@ compose.desktop {
             packageVersion = "2.0.0"
         }
     }
+}
+
+compose.resources {
+    packageOfResClass = "fr.olebo.resources"
 }
