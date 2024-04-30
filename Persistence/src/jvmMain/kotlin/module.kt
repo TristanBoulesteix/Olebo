@@ -2,9 +2,11 @@ package fr.olebo.persistence
 
 import fr.olebo.domain.models.ConfigurationItem
 import fr.olebo.domain.models.appendConfiguration
+import fr.olebo.domain.persistence.MainTransaction
 import fr.olebo.persistence.services.DatabaseService
 import fr.olebo.persistence.tables.*
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.kodein.di.*
 import java.nio.file.Path
 import kotlin.io.path.div
@@ -13,7 +15,7 @@ val persistenceModule by DI.Module {
     bindSingletonOf(::DatabaseService)
     appendConfiguration {
         object : DatabaseConfiguration {
-            override val databaseFilePath = Path.of(instance<String>("olebo-directory")) / "database.db"
+            override val databaseFilePath = Path.of(instance<String>("olebo-directory")) / "olebo.db"
 
             override val connectionString = "jdbc:sqlite:${databaseFilePath.toAbsolutePath()}"
         }
@@ -34,6 +36,9 @@ val persistenceModule by DI.Module {
             BlueprintTagTable,
             ActTagTable
         )
+    }
+    bindProvider<MainTransaction> {
+        MainTransaction { action -> transaction(instance<DatabaseService>().database, action) }
     }
 }
 
