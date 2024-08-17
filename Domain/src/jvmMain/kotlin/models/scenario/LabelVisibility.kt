@@ -1,4 +1,4 @@
-package fr.olebo.domain.models
+package fr.olebo.domain.models.scenario
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString

@@ -3,8 +3,8 @@ package fr.olebo.domain
 import androidx.compose.ui.graphics.Color
 import fr.olebo.domain.coroutine.ApplicationIoScope
 import fr.olebo.domain.models.ConfigurationItem
-import fr.olebo.domain.models.LabelVisibility
-import fr.olebo.domain.models.SerializableColor
+import fr.olebo.domain.models.scenario.LabelVisibility
+import fr.olebo.domain.models.scenario.SerializableColor
 import fr.olebo.domain.models.appendConfiguration
 import fr.olebo.domain.serialization.ColorSerializer
 import kotlinx.coroutines.CoroutineScope

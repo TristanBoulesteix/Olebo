@@ -1,6 +1,6 @@
 package fr.olebo.persistence.tests.tables
 
-import fr.olebo.domain.models.Layer
+import fr.olebo.domain.models.scenario.Layer
 import fr.olebo.persistence.tables.LayerTable
 import fr.olebo.persistence.tests.ColumnData
 import fr.olebo.persistence.tests.checkColumnsOf

@@ -2,6 +2,8 @@ package fr.olebo.persistence.tests.tables
 
 import fr.olebo.domain.Constants
 import fr.olebo.domain.models.*
+import fr.olebo.domain.models.scenario.LabelVisibility
+import fr.olebo.domain.models.scenario.SerializableColor
 import fr.olebo.persistence.tables.SettingsTable
 import fr.olebo.persistence.tables.SettingsTable.AUTO_UPDATE
 import fr.olebo.persistence.tables.SettingsTable.CHANGELOGS_VERSION

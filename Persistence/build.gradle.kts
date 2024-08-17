@@ -6,11 +6,9 @@ plugins {
 group = "fr.olebo.persistence"
 
 kotlin {
-    jvm {
-        compilations.all {
-            jvmToolchain(21)
-        }
-    }
+    jvmToolchain(21)
+
+    jvm()
 
     sourceSets {
         jvmMain.dependencies {

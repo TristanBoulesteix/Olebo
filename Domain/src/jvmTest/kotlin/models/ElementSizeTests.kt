@@ -1,6 +1,6 @@
 package fr.olebo.domain.tests.models
 
-import fr.olebo.domain.models.ElementSize
+import fr.olebo.domain.models.scenario.ElementSize
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

@@ -4,14 +4,13 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.composeCompiler)
 }
 
 kotlin {
-    jvm {
-        compilations.all {
-            jvmToolchain(21)
-        }
-    }
+    jvmToolchain(21)
+
+    jvm()
 
     sourceSets {
         commonMain.dependencies {

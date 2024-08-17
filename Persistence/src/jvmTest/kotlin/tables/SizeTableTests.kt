@@ -1,6 +1,6 @@
 package fr.olebo.persistence.tests.tables
 
-import fr.olebo.domain.models.ElementSize
+import fr.olebo.domain.models.scenario.ElementSize
 import fr.olebo.persistence.tables.SizeTable
 import fr.olebo.persistence.tests.ColumnData
 import fr.olebo.persistence.tests.checkColumnsOf

@@ -1,6 +1,6 @@
 package fr.olebo.domain.tests.models
 
-import fr.olebo.domain.models.LabelVisibility
+import fr.olebo.domain.models.scenario.LabelVisibility
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse

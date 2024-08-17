@@ -1,7 +1,7 @@
 package fr.olebo.domain.tests.models
 
 import androidx.compose.ui.graphics.Color
-import fr.olebo.domain.models.SerializableColor
+import fr.olebo.domain.models.scenario.SerializableColor
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlin.test.Test
@@ -45,7 +45,7 @@ class SerializableColorTests {
 
     @Test
     fun `decode color`() {
-        val key = """{"type": "fr.olebo.domain.models.SerializableColor.RED"}"""
+        val key = """{"type": "fr.olebo.domain.models.scenario.SerializableColor.RED"}"""
         val color = SerializableColor[key]
         assertEquals(SerializableColor.RED, color, "Test existing color")
 
@@ -56,6 +56,6 @@ class SerializableColorTests {
     fun `encode color`() {
         val encodedString = SerializableColor.PURPLE.encode()
 
-        assertEquals("""{"type":"fr.olebo.domain.models.SerializableColor.PURPLE"}""", encodedString)
+        assertEquals("""{"type":"fr.olebo.domain.models.scenario.SerializableColor.PURPLE"}""", encodedString)
     }
 }

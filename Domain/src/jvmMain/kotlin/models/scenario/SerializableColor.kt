@@ -1,4 +1,4 @@
-package fr.olebo.domain.models
+package fr.olebo.domain.models.scenario
 
 import androidx.compose.ui.graphics.Color
 import fr.olebo.domain.serialization.ColorSerializer

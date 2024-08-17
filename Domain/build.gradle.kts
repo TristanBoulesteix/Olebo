@@ -2,16 +2,13 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.composeCompiler)
 }
 
 group = "fr.olebo.domain"
 
 kotlin {
-    jvm {
-        compilations.all {
-            jvmToolchain(21)
-        }
-    }
+    jvmToolchain(21)
 
     js(IR) {
         binaries.executable()
@@ -23,6 +20,8 @@ kotlin {
             }
         }
     }
+
+    jvm()
 
     sourceSets {
         commonMain.dependencies {

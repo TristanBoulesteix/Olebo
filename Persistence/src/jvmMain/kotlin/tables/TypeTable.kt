@@ -1,6 +1,6 @@
 package fr.olebo.persistence.tables
 
-import fr.olebo.domain.models.ElementType
+import fr.olebo.domain.models.scenario.ElementType
 
 internal object TypeTable : EnumInitializable<ElementType>(enumValues()) {
     override val enumValue = enumerationByName<ElementType>("type", 50)

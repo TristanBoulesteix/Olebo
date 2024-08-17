@@ -1,7 +1,7 @@
 [versions]
-compose = "1.6.10-dev1593"
+kotlin = "2.0.0"
+compose = "1.7.0-dev1756"
 junit = "4.13.2"
-kotlin = "1.9.22"
 ktor = "2.3.7"
 logback = "1.4.14"
 exposed = "0.47.0"
@@ -10,7 +10,7 @@ kodein = "7.21.2"
 slf4j = "2.0.0-alpha7"
 serialization = "1.6.3"
 coroutines = "1.8.0"
-mock = "1.9.22-1.4.0"
+mock = "2.2.0"
 kover = "0.7.6"
 
 [libraries]
@@ -40,6 +40,7 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose" }
+composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

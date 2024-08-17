@@ -1,6 +1,6 @@
 package fr.olebo.domain.tests.models
 
-import fr.olebo.domain.models.ElementType
+import fr.olebo.domain.models.scenario.ElementType
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue

@@ -17,6 +17,7 @@ fun RecentProjectPanel(modifier: Modifier) = Row(modifier.fillMaxSize()) {
 }
 
 @Composable
-private fun ProjectItem() {
+private fun ProjectItem() = Row {
+
 
 }

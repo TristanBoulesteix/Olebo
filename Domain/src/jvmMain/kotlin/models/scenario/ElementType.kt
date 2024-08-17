@@ -1,4 +1,4 @@
-package fr.olebo.domain.models
+package fr.olebo.domain.models.scenario
 
 /**
  * The type of element
