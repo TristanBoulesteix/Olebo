@@ -1,22 +1,20 @@
 [versions]
 kotlin = "2.0.0"
 compose = "1.7.0-dev1756"
-junit = "4.13.2"
-ktor = "2.3.7"
-logback = "1.4.14"
-exposed = "0.47.0"
-sqlite = "3.45.1.0"
-kodein = "7.21.2"
-slf4j = "2.0.0-alpha7"
-serialization = "1.6.3"
-coroutines = "1.8.0"
+junit = "5.11.1"
+ktor = "2.3.12"
+logback = "1.5.7"
+exposed = "0.53.0"
+sqlite = "3.46.0.1"
+kodein = "7.22.0"
+slf4j = "2.0.16"
+serialization = "1.7.1"
+coroutines = "1.8.1"
 mock = "2.2.0"
-kover = "0.7.6"
+kover = "0.8.3"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
-kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
