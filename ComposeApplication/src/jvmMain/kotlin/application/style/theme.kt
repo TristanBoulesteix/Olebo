@@ -4,7 +4,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.window.ApplicationScope
 import fr.olebo.application.ApplicationContent
-import fr.olebo.models.SystemDarkThemeProvider
 import org.kodein.di.compose.rememberInstance
 
 enum class ThemeMode {
@@ -20,6 +19,13 @@ interface ThemeManager {
     @get:Composable
     @get:ReadOnlyComposable
     val isDarkTheme: Boolean
+}
+
+
+internal fun interface SystemDarkThemeProvider {
+    @Composable
+    @ReadOnlyComposable
+    operator fun invoke(): Boolean
 }
 
 @Stable

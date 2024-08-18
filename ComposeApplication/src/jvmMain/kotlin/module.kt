@@ -2,11 +2,11 @@ package fr.olebo
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Stable
+import fr.olebo.application.style.SystemDarkThemeProvider
 import fr.olebo.domain.adaptors.OsAdaptor
 import fr.olebo.domain.domainModule
 import fr.olebo.domain.models.ConfigurationItem
 import fr.olebo.domain.models.OleboConfiguration
-import fr.olebo.models.SystemDarkThemeProvider
 import fr.olebo.persistence.persistenceModule
 import fr.olebo.system.systemModule
 import org.kodein.di.*

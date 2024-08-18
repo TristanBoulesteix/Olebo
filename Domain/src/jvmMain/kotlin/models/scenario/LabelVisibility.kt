@@ -16,7 +16,7 @@ enum class LabelVisibility {
     internal companion object {
         operator fun get(json: String) = try {
             Json.decodeFromString(json)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             OnlyForMaster
         }
     }
