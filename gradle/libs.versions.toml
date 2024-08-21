@@ -1,7 +1,6 @@
 [versions]
 kotlin = "2.0.20-RC2"
 compose = "1.7.0-dev1756"
-junit = "5.11.1"
 ktor = "2.3.12"
 logback = "1.5.7"
 exposed = "0.53.0"
@@ -15,8 +14,6 @@ kover = "0.8.3"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }

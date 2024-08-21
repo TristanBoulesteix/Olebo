@@ -3,4 +3,5 @@
     <string name="startup_window_title">Démarrage</string>
     <string name="create_new_project">Créer un nouveau projet</string>
     <string name="open_project">Ouvrir un projet</string>
+    <string name="search_in_recent_projects">Rechercher un projet récent</string>
 </resources>

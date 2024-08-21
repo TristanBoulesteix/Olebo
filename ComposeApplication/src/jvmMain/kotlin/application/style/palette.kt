@@ -8,11 +8,10 @@ import androidx.compose.ui.graphics.Color
 @Stable
 val darkColorPalette
     get() = darkColors(
-        primary = Color.White,
+        primary = Color.LightGray,
         primaryVariant = Color(0, 31, 153),
         secondaryVariant = Color.Black,
-        secondary = Color(0, 48, 125),
-        background = Color.DarkGray
+        secondary = Color(0, 48, 125)
     )
 
 @Stable

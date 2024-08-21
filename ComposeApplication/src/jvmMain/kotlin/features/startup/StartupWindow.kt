@@ -2,6 +2,7 @@ package fr.olebo.features.startup
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,16 +37,20 @@ fun ApplicationScope.StartupWindow() {
 
 @Composable
 private fun Title(title: String) = Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-    Text(title, fontWeight = FontWeight.Bold, fontSize = 22.sp)
+    Text(title, fontWeight = FontWeight.Bold, fontSize = 22.sp, color = MaterialTheme.colors.onBackground)
 }
 
 @Composable
 private fun Content(modifier: Modifier) = Column(modifier) {
     ButtonBar()
+    RecentProjectsPanel()
 }
 
 @Composable
-private fun ButtonBar()= Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(40.dp, Alignment.CenterHorizontally)) {
+private fun ButtonBar() = Row(
+    Modifier.fillMaxWidth(),
+    horizontalArrangement = Arrangement.spacedBy(40.dp, Alignment.CenterHorizontally)
+) {
     Button(onClick = { TODO() }) {
         Text(stringResource(Res.string.create_new_project))
     }
