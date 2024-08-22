@@ -74,5 +74,14 @@ internal class PreferenceServiceImplTest {
 
         // Then
         assertEquals(value, Json.decodeFromString<Data>(preferences.get(key, null)!!))
+
+        // Given
+        val newValue = Data("new value 2")
+
+        // When
+        preferenceService[key] = newValue
+
+        // Then
+        assertEquals(newValue, Json.decodeFromString<Data>(preferences.get(key, null)!!))
     }
 }
