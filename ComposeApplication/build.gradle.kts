@@ -22,12 +22,12 @@ kotlin {
             implementation(projects.domain)
             implementation(projects.persistence)
             implementation(projects.system)
+            implementation(projects.memory)
 
             // Compose dependencies
             implementation(compose.desktop.currentOs)
 
             // External dependencies
-            implementation(libs.kodein)
             implementation(libs.kodein.compose)
             implementation(libs.kotlinx.coroutines.swing)
         }

@@ -7,6 +7,7 @@ import fr.olebo.domain.adaptors.OsAdaptor
 import fr.olebo.domain.domainModule
 import fr.olebo.domain.models.ConfigurationItem
 import fr.olebo.domain.models.OleboConfiguration
+import fr.olebo.memory.memoryModule
 import fr.olebo.persistence.persistenceModule
 import fr.olebo.system.systemModule
 import org.kodein.di.*
@@ -28,4 +29,5 @@ val injector = DI {
     import(domainModule)
     import(systemModule)
     import(persistenceModule)
+    import(memoryModule)
 }

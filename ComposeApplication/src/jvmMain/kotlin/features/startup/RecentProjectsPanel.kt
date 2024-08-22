@@ -23,6 +23,12 @@ fun RecentProjectsPanel() = Card(Modifier.fillMaxSize().padding(15.dp)) {
     Column(Modifier.fillMaxSize()) {
         var searchString by remember { mutableStateOf("") }
 
-        TextField(value = searchString, onValueChange = { searchString = it }, singleLine = true, placeholder = { Text(stringResource(Res.string.search_in_recent_projects)) }, modifier = Modifier.fillMaxWidth())
+        TextField(
+            value = searchString,
+            onValueChange = { searchString = it },
+            singleLine = true,
+            placeholder = { Text(stringResource(Res.string.search_in_recent_projects)) },
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }

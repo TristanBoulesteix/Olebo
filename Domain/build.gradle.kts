@@ -27,7 +27,7 @@ kotlin {
         commonMain.dependencies {
             dependencies {
                 // External dependencies
-                implementation(libs.kodein)
+                api(libs.kodein)
                 implementation(libs.kotlinx.serialization)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(compose.ui)

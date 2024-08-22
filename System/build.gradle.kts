@@ -14,9 +14,6 @@ kotlin {
             dependencies {
                 // Internal dependencies
                 implementation(projects.domain)
-
-                // External dependencies
-                implementation(libs.kodein)
             }
         }
 

@@ -5,9 +5,9 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.runComposeUiTest
 import fr.olebo.application.style.LocalThemeManager
 import fr.olebo.application.style.OleboTheme
+import fr.olebo.application.style.SystemDarkThemeProvider
 import fr.olebo.application.style.ThemeMode
 import fr.olebo.application.style.darkColorPalette
-import fr.olebo.models.SystemDarkThemeProvider
 import fr.olebo.tests.applicationScope
 import fr.olebo.tests.assertColorsEquals
 import fr.olebo.tests.setContentWithDI

@@ -14,14 +14,12 @@ kotlin {
         jvmMain.dependencies {
             // Internal dependencies
             implementation(projects.domain)
-            implementation(projects.domain)
 
             // External dependencies
             implementation(libs.exposed.core)
             implementation(libs.exposed.dao)
             implementation(libs.exposed.jdbc)
             implementation(libs.jdbc.sqlite)
-            implementation(libs.kodein)
             implementation(libs.slf4j)
             implementation(libs.kotlinx.coroutines)
         }

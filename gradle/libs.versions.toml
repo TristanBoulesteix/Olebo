@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.0.20-RC2"
+kotlin = "2.0.0"
 compose = "1.7.0-dev1756"
 ktor = "2.3.12"
 logback = "1.5.7"
@@ -10,7 +10,6 @@ slf4j = "2.0.16"
 serialization = "1.7.1"
 coroutines = "1.8.1"
 mock = "2.2.0"
-kover = "0.8.3"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -40,4 +39,3 @@ ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 mock = { id = "dev.mokkery", version.ref = "mock" }
-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
