@@ -5,7 +5,7 @@ import fr.olebo.memory.services.PreferenceServiceImpl
 import fr.olebo.memory.services.get
 import fr.olebo.memory.services.set
 import fr.olebo.memory.tests.model.PreferencesMock
-import junit.framework.TestCase.assertEquals
+import kotlin.test.assertEquals
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlin.test.BeforeTest

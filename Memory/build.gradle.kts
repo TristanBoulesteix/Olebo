@@ -1,3 +1,5 @@
+import dev.mokkery.MockMode
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinx.serialization)
@@ -26,7 +28,14 @@ kotlin {
         jvmTest.dependencies {
             dependencies {
                 implementation(libs.kotlin.test)
+
+                // Internal dependencies
+                implementation(projects.testsUtils)
             }
         }
     }
+}
+
+mokkery {
+    defaultMockMode.set(MockMode.autoUnit)
 }
