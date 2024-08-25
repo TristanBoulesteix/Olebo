@@ -23,6 +23,7 @@ kotlin {
             implementation(projects.persistence)
             implementation(projects.system)
             implementation(projects.memory)
+            implementation(projects.viewModel)
 
             // Compose dependencies
             implementation(compose.desktop.currentOs)

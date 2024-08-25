@@ -27,7 +27,7 @@ val LocalWindowInfo = staticCompositionLocalOf<OleboWindowInfo?> { null }
  * @param content The composable content to be displayed within the window.
  */
 @Composable
-fun ApplicationScope.Window(
+fun ApplicationScope.OleboWindow(
     title: String,
     size: DpSize,
     minimumSize: DpSize? = null,

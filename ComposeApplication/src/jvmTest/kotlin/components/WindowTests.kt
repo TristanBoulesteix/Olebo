@@ -5,7 +5,7 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.runComposeUiTest
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import fr.olebo.components.Window
+import fr.olebo.components.OleboWindow
 import fr.olebo.components.toAwtDimension
 import fr.olebo.tests.applicationScope
 import javax.swing.JFrame
@@ -24,7 +24,7 @@ internal class WindowTests {
         var awtWindow: JFrame by Delegates.notNull()
 
         setContent {
-            applicationScope.Window(
+            applicationScope.OleboWindow(
                 title = title,
                 size = size,
                 minimumSize = minimumSize

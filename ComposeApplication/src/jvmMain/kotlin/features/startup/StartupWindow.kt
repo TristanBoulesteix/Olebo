@@ -12,18 +12,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.ApplicationScope
 import fr.olebo.application.style.smallWindowDimension
-import fr.olebo.components.Window
+import fr.olebo.components.OleboWindow
+import fr.olebo.domain.viewmodels.StartupViewModel
 import fr.olebo.resources.Res
-import fr.olebo.resources.create_new_project
-import fr.olebo.resources.open_project
+import fr.olebo.resources.create_new_scenario
+import fr.olebo.resources.open_scenario
 import fr.olebo.resources.startup_window_title
 import org.jetbrains.compose.resources.stringResource
+import org.kodein.di.compose.rememberInstance
 
 @Composable
 fun ApplicationScope.StartupWindow() {
     val title = stringResource(Res.string.startup_window_title)
 
-    Window(
+    OleboWindow(
         title = title,
         size = smallWindowDimension,
         minimumSize = smallWindowDimension
@@ -42,19 +44,21 @@ private fun Title(title: String) = Box(Modifier.fillMaxWidth(), contentAlignment
 
 @Composable
 private fun Content(modifier: Modifier) = Column(modifier) {
-    ButtonBar()
-    RecentProjectsPanel()
+    val viewModel: StartupViewModel by rememberInstance()
+
+    ButtonBar(viewModel::createScenario)
+    RecentScenariosPanel(viewModel.getRecentScenarios(), viewModel::createScenario)
 }
 
 @Composable
-private fun ButtonBar() = Row(
+private fun ButtonBar(createScenario: () -> Unit) = Row(
     Modifier.fillMaxWidth(),
     horizontalArrangement = Arrangement.spacedBy(40.dp, Alignment.CenterHorizontally)
 ) {
-    Button(onClick = { TODO() }) {
-        Text(stringResource(Res.string.create_new_project))
+    Button(onClick = createScenario) {
+        Text(stringResource(Res.string.create_new_scenario))
     }
     Button(onClick = { TODO() }) {
-        Text(stringResource(Res.string.open_project))
+        Text(stringResource(Res.string.open_scenario))
     }
 }

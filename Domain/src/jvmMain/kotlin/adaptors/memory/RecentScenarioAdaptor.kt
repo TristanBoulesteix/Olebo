@@ -5,14 +5,14 @@ import fr.olebo.domain.models.scenario.ScenarioInfo
 /**
  * Adaptor to manage recent projects
  */
-interface RecentProjectsAdaptor {
+interface RecentScenarioAdaptor {
 
     /**
      * Retrieves a list of recent projects.
      *
      * @return a list of [ScenarioInfo] representing recent projects.
      */
-    fun getRecentProjects(): List<ScenarioInfo>
+    fun getRecentScenarios(): List<ScenarioInfo>
 
     /**
      * Adds a project to the list of recent projects.

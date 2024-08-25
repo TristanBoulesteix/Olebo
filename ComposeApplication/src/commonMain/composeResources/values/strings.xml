@@ -1,7 +1,8 @@
 <resources>
     <string name="olebo_is_running">Olebo is running</string>
     <string name="startup_window_title">Startup</string>
-    <string name="create_new_project">Create New Project</string>
-    <string name="open_project">Open Project</string>
-    <string name="search_in_recent_projects">Search a recent project</string>
+    <string name="create_new_scenario">Create new scenario</string>
+    <string name="open_scenario">Open scenario</string>
+    <string name="search_in_recent_scenarios">Search in recent scenarios</string>
+    <string name="no_recent_scenario">You don't have any scenario yet.</string>
 </resources>

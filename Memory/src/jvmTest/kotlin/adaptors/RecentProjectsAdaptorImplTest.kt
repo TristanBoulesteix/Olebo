@@ -6,7 +6,7 @@ import dev.mokkery.mock
 import dev.mokkery.verify
 import fr.olebo.domain.models.scenario.ScenarioInfo
 import fr.olebo.memory.adaptors.RECENT_PROJECTS_KEY
-import fr.olebo.memory.adaptors.RecentProjectsAdaptorImpl
+import fr.olebo.memory.adaptors.RecentScenarioAdaptorImpl
 import fr.olebo.memory.services.PreferenceService
 import fr.olebo.tests.utils.serializer
 import kotlin.io.path.Path
@@ -18,11 +18,11 @@ import kotlin.test.assertTrue
 class RecentProjectsAdaptorImplTest {
     private lateinit var emptyPreferenceService: PreferenceService
 
-    private lateinit var emptyAdaptor: RecentProjectsAdaptorImpl
+    private lateinit var emptyAdaptor: RecentScenarioAdaptorImpl
 
     private lateinit var preferenceService: PreferenceService
 
-    private lateinit var adaptor: RecentProjectsAdaptorImpl
+    private lateinit var adaptor: RecentScenarioAdaptorImpl
 
     private lateinit var expectedRecentProjects: List<ScenarioInfo>
 
@@ -32,7 +32,7 @@ class RecentProjectsAdaptorImplTest {
             every { get(serializer<List<ScenarioInfo>?>(), RECENT_PROJECTS_KEY) } returns null
         }
 
-        emptyAdaptor = RecentProjectsAdaptorImpl(emptyPreferenceService)
+        emptyAdaptor = RecentScenarioAdaptorImpl(emptyPreferenceService)
 
         expectedRecentProjects = listOf(ScenarioInfo(Path(""), "scenario", 2), ScenarioInfo(Path(""), "scenario", 3))
 
@@ -40,17 +40,17 @@ class RecentProjectsAdaptorImplTest {
             every { get(serializer<List<ScenarioInfo>?>(), RECENT_PROJECTS_KEY) } returns expectedRecentProjects
         }
 
-        adaptor = RecentProjectsAdaptorImpl(preferenceService)
+        adaptor = RecentScenarioAdaptorImpl(preferenceService)
     }
 
     @Test
     fun `get an empty list for recent projects if no projects are stored`() {
-        assertTrue(emptyAdaptor.getRecentProjects().isEmpty())
+        assertTrue(emptyAdaptor.getRecentScenarios().isEmpty())
     }
 
     @Test
     fun `get a list of projects if some are stored`() {
-        assertContentEquals(adaptor.getRecentProjects(), expectedRecentProjects)
+        assertContentEquals(adaptor.getRecentScenarios(), expectedRecentProjects)
     }
 
     @Test
