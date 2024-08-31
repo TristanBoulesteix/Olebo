@@ -5,4 +5,8 @@
     <string name="open_scenario">Open scenario</string>
     <string name="search_in_recent_scenarios">Search in recent scenarios</string>
     <string name="no_recent_scenario">You don't have any scenario yet.</string>
+    <string name="scenario_creation_dialog_title">Scenario creation</string>
+    <string name="enter_name_for_scenario_tooltip">Choose a name for the scenario</string>
+    <string name="ok_button">Ok</string>
+    <string name="cancel_button">Cancel</string>
 </resources>

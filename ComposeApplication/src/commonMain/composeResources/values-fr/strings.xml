@@ -5,4 +5,8 @@
     <string name="open_scenario">Ouvrir un scénario</string>
     <string name="search_in_recent_scenarios">Rechercher dans les scénarios récent</string>
     <string name="no_recent_scenario">Vous n'avez pas encore de scénarios.</string>
+    <string name="scenario_creation_dialog_title">Création de scénario</string>
+    <string name="enter_name_for_scenario_tooltip">Entrez un nom pour le scénario</string>
+    <string name="ok_button">Ok</string>
+    <string name="cancel_button">Annuler</string>
 </resources>

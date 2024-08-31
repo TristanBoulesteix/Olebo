@@ -13,7 +13,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.ApplicationScope
 import fr.olebo.application.style.smallWindowDimension
 import fr.olebo.components.OleboWindow
+import fr.olebo.domain.models.scenario.ScenarioInfo
 import fr.olebo.domain.viewmodels.StartupViewModel
+import fr.olebo.features.create_scenario.NewScenarioDialog
 import fr.olebo.resources.Res
 import fr.olebo.resources.create_new_scenario
 import fr.olebo.resources.open_scenario
@@ -34,6 +36,8 @@ import org.kodein.di.compose.rememberInstance
  */
 @Composable
 fun ApplicationScope.StartupWindow() {
+    val viewModel: StartupViewModel by rememberInstance()
+
     val title = stringResource(Res.string.startup_window_title)
 
     OleboWindow(
@@ -43,7 +47,15 @@ fun ApplicationScope.StartupWindow() {
     ) {
         Column {
             Title(title)
-            Content(Modifier.padding(top = 8.dp))
+            Content(
+                modifier = Modifier.padding(top = 8.dp),
+                createScenario = viewModel::createScenario,
+                recentScenarios = viewModel.getRecentScenarios()
+            )
+        }
+
+        if(viewModel.scenarioInCreation) {
+            NewScenarioDialog(viewModel::cancelScenarioCreation, createScenario = viewModel::createAndLaunchScenario)
         }
     }
 }
@@ -59,18 +71,20 @@ private fun Title(title: String) = Box(Modifier.fillMaxWidth(), contentAlignment
 }
 
 /**
- * Composable function that represents the content of the startup window.
+ * Composable function representing the main content of the startup window.
  *
- * @param modifier The modifier for styling the content.
- * @see ButtonBar
- * @see RecentScenariosPanel
+ * @param modifier The modifier for the content.
+ * @param recentScenarios The list of recent scenarios to be displayed.
+ * @param createScenario The callback function to create a new scenario.
  */
 @Composable
-private fun Content(modifier: Modifier) = Column(modifier) {
-    val viewModel: StartupViewModel by rememberInstance()
-
-    ButtonBar(viewModel::createScenario)
-    RecentScenariosPanel(viewModel.getRecentScenarios(), viewModel::createScenario)
+private fun Content(
+    modifier: Modifier,
+    recentScenarios: List<ScenarioInfo>,
+    createScenario: () -> Unit
+) = Column(modifier) {
+    ButtonBar(createScenario)
+    RecentScenariosPanel(recentScenarios, createScenario)
 }
 
 /**

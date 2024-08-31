@@ -1,9 +1,7 @@
 package fr.olebo.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +30,7 @@ fun ApplicationScope.OleboWindow(
     size: DpSize,
     minimumSize: DpSize? = null,
     placement: WindowPlacement = WindowPlacement.Floating,
+    onCloseRequest: () -> Unit = ::exitApplication,
     content: @Composable FrameWindowScope.() -> Unit
 ) {
     // Remember the state of the window, including size, position, and placement
@@ -43,7 +42,7 @@ fun ApplicationScope.OleboWindow(
 
     // Create the window with the specified properties
     Window(
-        onCloseRequest = ::exitApplication,
+        onCloseRequest = onCloseRequest,
         state = windowState,
         title = title,
         focusable = true
@@ -65,9 +64,7 @@ fun ApplicationScope.OleboWindow(
 
         // Provide the window information to the composition local and display the content
         CompositionLocalProvider(LocalWindowInfo provides remember { OleboWindowInfoImpl(parentWindow, window) }) {
-            Box(Modifier.fillMaxSize().background(color = MaterialTheme.colors.background)) {
-                content()
-            }
+            Surface(Modifier.fillMaxSize()) { content() }
         }
     }
 }

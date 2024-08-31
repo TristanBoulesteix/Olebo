@@ -10,6 +10,9 @@ import fr.olebo.domain.viewmodels.StartupViewModel
 internal class StartupViewModelImpl(val recentScenarioAdaptor: RecentScenarioAdaptor) : StartupViewModel {
     private var cachedRecentScenarios: List<ScenarioInfo>? by mutableStateOf(null)
 
+    override var scenarioInCreation by mutableStateOf(false)
+        private set
+
     override fun getRecentScenarios(): List<ScenarioInfo> {
         if (cachedRecentScenarios == null) {
             val recentProjects = recentScenarioAdaptor.getRecentScenarios()
@@ -21,6 +24,14 @@ internal class StartupViewModelImpl(val recentScenarioAdaptor: RecentScenarioAda
     }
 
     override fun createScenario() {
+        scenarioInCreation = true
+    }
+
+    override fun cancelScenarioCreation() {
+        scenarioInCreation = false
+    }
+
+    override fun createAndLaunchScenario(scenarioName: String) {
         TODO("Not yet implemented")
     }
 }

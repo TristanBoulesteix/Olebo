@@ -9,6 +9,9 @@ import fr.olebo.domain.models.scenario.ScenarioInfo
  */
 @Immutable
 interface StartupViewModel {
+    @Stable
+    val scenarioInCreation: Boolean
+
     /**
      * Retrieves a list of recent scenarios.
      *
@@ -18,4 +21,8 @@ interface StartupViewModel {
     fun getRecentScenarios(): List<ScenarioInfo>
 
     fun createScenario()
+
+    fun cancelScenarioCreation()
+
+    fun createAndLaunchScenario(scenarioName: String)
 }
