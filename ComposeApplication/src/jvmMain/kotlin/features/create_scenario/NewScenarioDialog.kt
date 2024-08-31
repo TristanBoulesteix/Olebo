@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowScope
 import fr.olebo.components.OleboDialog
@@ -33,8 +34,9 @@ fun WindowScope.NewScenarioDialog(onClose: () -> Unit, createScenario: (scenario
     OleboDialog(
         onCloseRequest = onClose,
         title = title,
+        size = DpSize(400.dp, 180.dp),
     ) {
-        Column(Modifier.fillMaxSize().padding(4.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(Modifier.fillMaxSize().padding(4.dp).padding(top = 4.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             var scenarioName by remember { mutableStateOf("") }
 
             TextField(
