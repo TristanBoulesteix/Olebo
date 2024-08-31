@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -28,7 +29,7 @@ import fr.olebo.resources.scenario_creation_dialog_title
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun WindowScope.NewScenarioDialog(onClose: () -> Unit, createScenario: (scenarioName: String) -> Unit) {
+fun WindowScope.NewScenarioDialog(onClose: () -> Unit, validateName: (String) -> Boolean, createScenario: (scenarioName: String) -> Unit) {
     val title = stringResource(Res.string.scenario_creation_dialog_title)
 
     OleboDialog(
@@ -36,18 +37,22 @@ fun WindowScope.NewScenarioDialog(onClose: () -> Unit, createScenario: (scenario
         title = title,
         size = DpSize(400.dp, 180.dp),
     ) {
-        Column(Modifier.fillMaxSize().padding(4.dp).padding(top = 4.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            Modifier.fillMaxSize().padding(4.dp).padding(top = 4.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             var scenarioName by remember { mutableStateOf("") }
 
             TextField(
                 value = scenarioName,
                 onValueChange = { scenarioName = it },
-                modifier = Modifier.padding(top = 8.dp),
-                placeholder = { Text(stringResource(Res.string.enter_name_for_scenario_tooltip)) }
+                modifier = Modifier.padding(top = 8.dp).width(300.dp),
+                placeholder = { Text(stringResource(Res.string.enter_name_for_scenario_tooltip)) },
+                singleLine = true
             )
 
             ButtonRow(
-                isNameValid = scenarioName.isNotBlank(),
+                isNameValid = validateName(scenarioName),
                 onCancel = onClose,
                 submitScenario = {
                     createScenario(scenarioName)

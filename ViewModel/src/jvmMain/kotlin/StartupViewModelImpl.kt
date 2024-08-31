@@ -23,6 +23,8 @@ internal class StartupViewModelImpl(val recentScenarioAdaptor: RecentScenarioAda
         }
     }
 
+    override fun validateScenarioName(name: String) = name.isNotBlank() && name.length <= 20
+
     override fun createScenario() {
         scenarioInCreation = true
     }

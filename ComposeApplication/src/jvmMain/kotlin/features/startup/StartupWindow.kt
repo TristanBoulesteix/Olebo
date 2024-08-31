@@ -54,8 +54,12 @@ fun ApplicationScope.StartupWindow() {
             )
         }
 
-        if(viewModel.scenarioInCreation) {
-            NewScenarioDialog(viewModel::cancelScenarioCreation, createScenario = viewModel::createAndLaunchScenario)
+        if (viewModel.scenarioInCreation) {
+            NewScenarioDialog(
+                onClose = viewModel::cancelScenarioCreation,
+                createScenario = viewModel::createAndLaunchScenario,
+                validateName = viewModel::validateScenarioName
+            )
         }
     }
 }

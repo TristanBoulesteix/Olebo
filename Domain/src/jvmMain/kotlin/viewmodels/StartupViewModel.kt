@@ -20,6 +20,9 @@ interface StartupViewModel {
     @Stable
     fun getRecentScenarios(): List<ScenarioInfo>
 
+    @Stable
+    fun validateScenarioName(name: String): Boolean
+
     fun createScenario()
 
     fun cancelScenarioCreation()
