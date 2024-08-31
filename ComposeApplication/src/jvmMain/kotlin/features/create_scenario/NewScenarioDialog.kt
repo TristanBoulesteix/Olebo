@@ -28,6 +28,17 @@ import fr.olebo.resources.ok_button
 import fr.olebo.resources.scenario_creation_dialog_title
 import org.jetbrains.compose.resources.stringResource
 
+/**
+ * Displays a dialog window for creating a new scenario.
+ *
+ * The dialog includes a text field for entering the scenario name and buttons to cancel
+ * or submit the creation request. The submission button is enabled only if the scenario
+ * name is validated successfully.
+ *
+ * @param onClose The callback function to be invoked when the dialog is closed.
+ * @param validateName The function to validate the entered scenario name.
+ * @param createScenario The function to handle the creation of the scenario with the given name.
+ */
 @Composable
 fun WindowScope.NewScenarioDialog(onClose: () -> Unit, validateName: (String) -> Boolean, createScenario: (scenarioName: String) -> Unit) {
     val title = stringResource(Res.string.scenario_creation_dialog_title)
@@ -63,6 +74,13 @@ fun WindowScope.NewScenarioDialog(onClose: () -> Unit, validateName: (String) ->
     }
 }
 
+/**
+ * Represents a row of buttons for canceling or submitting a scenario.
+ *
+ * @param isNameValid A boolean indicating whether the current scenario name is valid.
+ * @param onCancel A callback function to be invoked when the cancel button is clicked.
+ * @param submitScenario A callback function to be invoked when the submit button is clicked.
+ */
 @Composable
 private fun ButtonRow(isNameValid: Boolean, onCancel: () -> Unit, submitScenario: () -> Unit) = Row(
     modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
