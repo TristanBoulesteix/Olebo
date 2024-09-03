@@ -3,10 +3,11 @@ package fr.olebo.domain
 import androidx.compose.ui.graphics.Color
 import fr.olebo.domain.coroutine.ApplicationIoScope
 import fr.olebo.domain.models.ConfigurationItem
+import fr.olebo.domain.models.appendConfiguration
 import fr.olebo.domain.models.scenario.LabelVisibility
 import fr.olebo.domain.models.scenario.SerializableColor
-import fr.olebo.domain.models.appendConfiguration
 import fr.olebo.domain.serialization.ColorSerializer
+import fr.olebo.domain.viewmodels.StartupViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.KSerializer
@@ -22,6 +23,7 @@ internal actual fun DI.Builder.specializedInjection() {
     bindSingleton<ApplicationIoScope> {
         object : ApplicationIoScope, CoroutineScope by CoroutineScope(Dispatchers.IO) {}
     }
+    bindProviderOf(::StartupViewModel)
 }
 
 data class Constants(val defaultLabelColor: String, val defaultLabelVisibility: String) : ConfigurationItem

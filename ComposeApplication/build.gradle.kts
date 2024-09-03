@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.compose
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
@@ -15,6 +16,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(compose.components.resources)
+            implementation(libs.compose.viewModel)
         }
 
         jvmMain.dependencies {
@@ -23,7 +25,6 @@ kotlin {
             implementation(projects.persistence)
             implementation(projects.system)
             implementation(projects.memory)
-            implementation(projects.viewModel)
 
             // Compose dependencies
             implementation(compose.desktop.currentOs)

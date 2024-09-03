@@ -10,7 +10,6 @@ import fr.olebo.domain.models.OleboConfiguration
 import fr.olebo.memory.memoryModule
 import fr.olebo.persistence.persistenceModule
 import fr.olebo.system.systemModule
-import fr.olebo.viewmodel.viewModelModule
 import org.kodein.di.*
 import java.io.File
 
@@ -31,5 +30,4 @@ val injector = DI {
     import(systemModule)
     import(persistenceModule)
     import(memoryModule)
-    import(viewModelModule)
 }

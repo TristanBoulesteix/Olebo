@@ -1,31 +1,44 @@
 package fr.olebo.domain.viewmodels
 
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import fr.olebo.domain.adaptors.memory.RecentScenarioAdaptor
 import fr.olebo.domain.models.scenario.ScenarioInfo
 
-/**
- * [Immutable] interface representing a view model for startup functionality.
- */
-@Immutable
-interface StartupViewModel {
-    @Stable
-    val scenarioInCreation: Boolean
-
-    /**
-     * Retrieves a list of recent scenarios.
-     *
-     * @return a list of [ScenarioInfo] representing recent scenarios.
-     */
-    @Stable
-    fun getRecentScenarios(): List<ScenarioInfo>
+@Stable
+open class StartupViewModel internal constructor(val recentScenarioAdaptor: RecentScenarioAdaptor) : ViewModel() {
+    private var cachedRecentScenarios: List<ScenarioInfo>? by mutableStateOf(null)
 
     @Stable
-    fun validateScenarioName(name: String): Boolean
+    var scenarioInCreation by mutableStateOf(false)
+        private set
 
-    fun createScenario()
+    @Stable
+    fun getRecentScenarios(): List<ScenarioInfo> {
+        if (cachedRecentScenarios == null) {
+            val recentProjects = recentScenarioAdaptor.getRecentScenarios()
+            cachedRecentScenarios = recentProjects
+            return recentProjects
+        } else {
+            return cachedRecentScenarios!!
+        }
+    }
 
-    fun cancelScenarioCreation()
+    @Stable
+    fun validateScenarioName(name: String) = name.isNotBlank() && name.length <= 20
 
-    fun createAndLaunchScenario(scenarioName: String)
+    fun createScenario() {
+        scenarioInCreation = true
+    }
+
+    fun cancelScenarioCreation() {
+        scenarioInCreation = false
+    }
+
+    fun createAndLaunchScenario(scenarioName: String) {
+        TODO("Not yet implemented")
+    }
 }

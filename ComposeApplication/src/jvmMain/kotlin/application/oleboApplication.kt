@@ -2,6 +2,7 @@ package fr.olebo.application
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.window.*
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import fr.olebo.application.style.OleboTheme
 import fr.olebo.domain.coroutine.ApplicationIoScope
 import fr.olebo.resources.Res
@@ -18,9 +19,13 @@ typealias ApplicationContent = @Composable ApplicationScope.() -> Unit
 fun oleboApplication(di: DI, content: ApplicationContent) = application(exitProcessOnExit = false) {
     WithDI(di) {
         OleboTheme {
-            val trayManager = remember { TrayManagerImpl() }
+            val trayManager = remember (::TrayManagerImpl)
+            val viewModelStoreOwner = remember (::CompositionScopedViewModelStoreOwner)
 
-            CompositionLocalProvider(LocalTrayManager provides trayManager) {
+            CompositionLocalProvider(
+                LocalTrayManager provides trayManager,
+                LocalViewModelStoreOwner provides viewModelStoreOwner
+            ) {
                 content()
 
                 LaunchedEffect(Unit) {

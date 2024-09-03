@@ -33,6 +33,7 @@ kotlin {
                 implementation(compose.ui)
                 implementation(compose.runtime)
                 implementation(libs.kotlinx.coroutines)
+                implementation(libs.compose.viewModel)
             }
         }
 
