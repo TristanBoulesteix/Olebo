@@ -18,6 +18,6 @@ internal class RecentScenarioAdaptorImpl(private val preferenceService: Preferen
     }
 
     override fun clearRecentProjects() {
-        preferenceService[RECENT_PROJECTS_KEY] = emptyList<ScenarioInfo>()
+        preferenceService[RECENT_PROJECTS_KEY] = emptySet<ScenarioInfo>()
     }
 }

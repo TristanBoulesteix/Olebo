@@ -44,12 +44,12 @@ class RecentProjectsAdaptorImplTest {
     }
 
     @Test
-    fun `get an empty list for recent projects if no projects are stored`() {
+    fun `get an empty set for recent projects if no projects are stored`() {
         assertTrue(emptyAdaptor.getRecentScenarios().isEmpty())
     }
 
     @Test
-    fun `get a list of projects if some are stored`() {
+    fun `get a set of projects if some are stored`() {
         assertContentEquals(adaptor.getRecentScenarios(), expectedRecentProjects as Iterable<ScenarioInfo>)
     }
 
@@ -58,7 +58,7 @@ class RecentProjectsAdaptorImplTest {
         adaptor.clearRecentProjects()
 
         verify {
-            preferenceService[serializer<List<ScenarioInfo>>(), RECENT_PROJECTS_KEY] = emptyList()
+            preferenceService[serializer<Set<ScenarioInfo>>(), RECENT_PROJECTS_KEY] = emptySet()
         }
     }
 
