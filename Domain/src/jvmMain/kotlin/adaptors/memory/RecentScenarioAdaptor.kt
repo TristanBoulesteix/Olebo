@@ -12,7 +12,7 @@ interface RecentScenarioAdaptor {
      *
      * @return a list of [ScenarioInfo] representing recent projects.
      */
-    fun getRecentScenarios(): List<ScenarioInfo>
+    fun getRecentScenarios(): Set<ScenarioInfo>
 
     /**
      * Adds a project to the list of recent projects.

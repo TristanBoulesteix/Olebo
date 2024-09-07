@@ -6,4 +6,4 @@ import java.nio.file.Path
 
 @Serializable
 @Immutable
-data class ScenarioInfo(val path: Path, val name: String, val sceneCount: Int)
+data class ScenarioInfo(val name: String, val sceneCount: Int = 0, val path: Path? = null)

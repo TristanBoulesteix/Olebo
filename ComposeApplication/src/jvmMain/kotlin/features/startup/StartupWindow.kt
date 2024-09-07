@@ -84,7 +84,7 @@ private fun Title(title: String) = Box(Modifier.fillMaxWidth(), contentAlignment
 @Composable
 private fun Content(
     modifier: Modifier,
-    recentScenarios: List<ScenarioInfo>,
+    recentScenarios: Set<ScenarioInfo>,
     createScenario: () -> Unit
 ) = Column(modifier) {
     ButtonBar(createScenario)

@@ -9,10 +9,10 @@ import fr.olebo.memory.services.set
 internal const val RECENT_PROJECTS_KEY = "recentProjects"
 
 internal class RecentScenarioAdaptorImpl(private val preferenceService: PreferenceService) : RecentScenarioAdaptor {
-    override fun getRecentScenarios(): List<ScenarioInfo> = preferenceService[RECENT_PROJECTS_KEY] ?: emptyList()
+    override fun getRecentScenarios(): Set<ScenarioInfo> = preferenceService[RECENT_PROJECTS_KEY] ?: emptySet()
 
     override fun addRecentProject(scenarioInfo: ScenarioInfo) {
-        val recentProjects = getRecentScenarios().toMutableList()
+        val recentProjects = getRecentScenarios().toMutableSet()
         recentProjects += scenarioInfo
         preferenceService[RECENT_PROJECTS_KEY] = recentProjects
     }

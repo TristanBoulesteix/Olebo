@@ -32,7 +32,7 @@ import org.jetbrains.compose.resources.stringResource
  * @param createNewScenario callback function to create a new scenario.
  */
 @Composable
-fun RecentScenariosPanel(recentScenarios: List<ScenarioInfo>, createNewScenario: () -> Unit) = Card(Modifier.fillMaxSize().padding(15.dp)) {
+fun RecentScenariosPanel(recentScenarios: Set<ScenarioInfo>, createNewScenario: () -> Unit) = Card(Modifier.fillMaxSize().padding(15.dp)) {
     if (recentScenarios.isNotEmpty()) {
         RecentScenariosList(recentScenarios)
     } else {
@@ -46,7 +46,7 @@ fun RecentScenariosPanel(recentScenarios: List<ScenarioInfo>, createNewScenario:
  * @param recentScenarios The list of recent scenarios to be displayed.
  */
 @Composable
-private fun RecentScenariosList(recentScenarios: List<ScenarioInfo>) = Column(Modifier.fillMaxSize()) {
+private fun RecentScenariosList(recentScenarios: Set<ScenarioInfo>) = Column(Modifier.fillMaxSize()) {
     var searchString by remember { mutableStateOf("") }
 
     TextField(

@@ -10,14 +10,14 @@ import fr.olebo.domain.models.scenario.ScenarioInfo
 
 @Stable
 class StartupViewModel internal constructor(val recentScenarioAdaptor: RecentScenarioAdaptor) : ViewModel() {
-    private var cachedRecentScenarios: List<ScenarioInfo>? by mutableStateOf(null)
+    private var cachedRecentScenarios: Set<ScenarioInfo>? by mutableStateOf(null)
 
     @Stable
     var scenarioInCreation by mutableStateOf(false)
         private set
 
     @Stable
-    fun getRecentScenarios(): List<ScenarioInfo> {
+    fun getRecentScenarios(): Set<ScenarioInfo> {
         if (cachedRecentScenarios == null) {
             val recentProjects = recentScenarioAdaptor.getRecentScenarios()
             cachedRecentScenarios = recentProjects
@@ -38,6 +38,8 @@ class StartupViewModel internal constructor(val recentScenarioAdaptor: RecentSce
     }
 
     fun createAndLaunchScenario(scenarioName: String) {
-        TODO("Not yet implemented")
+        val newScenario = ScenarioInfo(name = scenarioName)
+        recentScenarioAdaptor.addRecentProject(newScenario)
+
     }
 }
