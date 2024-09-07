@@ -21,10 +21,9 @@ class StartupViewModel internal constructor(val recentScenarioAdaptor: RecentSce
         if (cachedRecentScenarios == null) {
             val recentProjects = recentScenarioAdaptor.getRecentScenarios()
             cachedRecentScenarios = recentProjects
-            return recentProjects
-        } else {
-            return cachedRecentScenarios!!
         }
+
+        return cachedRecentScenarios!!
     }
 
     @Stable
