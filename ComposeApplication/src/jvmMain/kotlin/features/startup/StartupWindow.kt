@@ -11,7 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.ApplicationScope
-import fr.olebo.application.rememberViewModel
+import fr.olebo.application.rememberComposableViewModel
 import fr.olebo.application.style.smallWindowDimension
 import fr.olebo.components.OleboWindow
 import fr.olebo.domain.models.scenario.ScenarioInfo
@@ -36,7 +36,7 @@ import org.jetbrains.compose.resources.stringResource
  */
 @Composable
 fun ApplicationScope.StartupWindow() {
-    val viewModel: StartupViewModel by rememberViewModel()
+    val viewModel: StartupViewModel by rememberComposableViewModel()
 
     val title = stringResource(Res.string.startup_window_title)
 

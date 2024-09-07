@@ -12,6 +12,17 @@ import androidx.compose.ui.window.DialogWindowScope
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.rememberDialogState
 
+
+/**
+ * Displays a dialog window with a specified title and content.
+ *
+ * The dialog is not resizable, and its position and size can be defined.
+ *
+ * @param onCloseRequest A callback function to be invoked when the dialog is closed.
+ * @param title The title of the dialog window.
+ * @param size The dimensions of the dialog window, defaulting to 400x300 dp.
+ * @param content The composable content to be displayed inside the dialog.
+ */
 @Composable
 fun OleboDialog(
     onCloseRequest: () -> Unit,

@@ -9,7 +9,7 @@ import fr.olebo.domain.adaptors.memory.RecentScenarioAdaptor
 import fr.olebo.domain.models.scenario.ScenarioInfo
 
 @Stable
-open class StartupViewModel internal constructor(val recentScenarioAdaptor: RecentScenarioAdaptor) : ViewModel() {
+class StartupViewModel internal constructor(val recentScenarioAdaptor: RecentScenarioAdaptor) : ViewModel() {
     private var cachedRecentScenarios: List<ScenarioInfo>? by mutableStateOf(null)
 
     @Stable

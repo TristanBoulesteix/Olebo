@@ -26,4 +26,14 @@ internal actual fun DI.Builder.specializedInjection() {
     bindProviderOf(::StartupViewModel)
 }
 
+/**
+ * Data class representing the default constants for label color and visibility
+ * within the application's configuration system.
+ *
+ * @property defaultLabelColor Default color for labels represented as a string.
+ * @property defaultLabelVisibility Default visibility setting for labels represented as a string.
+ *
+ * Implements the [ConfigurationItem] interface, which allows instances of this class
+ * to be managed by the dependency injection framework within the application's configuration system.
+ */
 data class Constants(val defaultLabelColor: String, val defaultLabelVisibility: String) : ConfigurationItem
