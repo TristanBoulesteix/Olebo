@@ -24,20 +24,20 @@ class RecentProjectsAdaptorImplTest {
 
     private lateinit var adaptor: RecentScenarioAdaptorImpl
 
-    private lateinit var expectedRecentProjects: List<ScenarioInfo>
+    private lateinit var expectedRecentProjects: Set<ScenarioInfo>
 
     @BeforeTest
     fun initialize() {
         emptyPreferenceService = mock {
-            every { get(serializer<List<ScenarioInfo>?>(), RECENT_PROJECTS_KEY) } returns null
+            every { get(serializer<Set<ScenarioInfo>?>(), RECENT_PROJECTS_KEY) } returns null
         }
 
         emptyAdaptor = RecentScenarioAdaptorImpl(emptyPreferenceService)
 
-        expectedRecentProjects = listOf(ScenarioInfo(Path(""), "scenario", 2), ScenarioInfo(Path(""), "scenario", 3))
+        expectedRecentProjects = setOf(ScenarioInfo("scenario", 2, Path("")), ScenarioInfo("scenario", 3, Path("")))
 
         preferenceService = mock {
-            every { get(serializer<List<ScenarioInfo>?>(), RECENT_PROJECTS_KEY) } returns expectedRecentProjects
+            every { get(serializer<Set<ScenarioInfo>?>(), RECENT_PROJECTS_KEY) } returns expectedRecentProjects
         }
 
         adaptor = RecentScenarioAdaptorImpl(preferenceService)
@@ -50,7 +50,7 @@ class RecentProjectsAdaptorImplTest {
 
     @Test
     fun `get a list of projects if some are stored`() {
-        assertContentEquals(adaptor.getRecentScenarios(), expectedRecentProjects)
+        assertContentEquals(adaptor.getRecentScenarios(), expectedRecentProjects as Iterable<ScenarioInfo>)
     }
 
     @Test
@@ -64,15 +64,15 @@ class RecentProjectsAdaptorImplTest {
 
     @Test
     fun `add a project to recent projects`() {
-        val newRecentProject = ScenarioInfo(Path(""), "scenario", 1)
+        val newRecentProject = ScenarioInfo("scenario", 1, Path(""))
 
-        val recentProjects = expectedRecentProjects.toMutableList()
+        val recentProjects = expectedRecentProjects.toMutableSet()
         recentProjects += newRecentProject
 
         adaptor.addRecentProject(newRecentProject)
 
         verify {
-            preferenceService[serializer<List<ScenarioInfo>>(), RECENT_PROJECTS_KEY] = recentProjects
+            preferenceService[serializer<Set<ScenarioInfo>>(), RECENT_PROJECTS_KEY] = recentProjects
         }
     }
 }
