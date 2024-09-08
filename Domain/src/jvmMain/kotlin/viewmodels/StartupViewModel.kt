@@ -7,9 +7,14 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import fr.olebo.domain.adaptors.memory.RecentScenarioAdaptor
 import fr.olebo.domain.models.scenario.ScenarioInfo
+import fr.olebo.domain.navigation.NavigationHandler
+import fr.olebo.domain.navigation.ScenarioScreen
 
 @Stable
-class StartupViewModel internal constructor(val recentScenarioAdaptor: RecentScenarioAdaptor) : ViewModel() {
+class StartupViewModel internal constructor(
+    val recentScenarioAdaptor: RecentScenarioAdaptor,
+    val navigationHandler: NavigationHandler
+) : ViewModel() {
     private var cachedRecentScenarios: Set<ScenarioInfo>? by mutableStateOf(null)
 
     @Stable
@@ -41,5 +46,8 @@ class StartupViewModel internal constructor(val recentScenarioAdaptor: RecentSce
         val newScenario = ScenarioInfo(name = scenarioName)
         recentScenarioAdaptor.addRecentProject(newScenario)
 
+        launchScenario(newScenario)
     }
+
+    fun launchScenario(scenario: ScenarioInfo) = navigationHandler.navigate(ScenarioScreen(scenario))
 }

@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.0.0"
-compose = "1.7.0-dev1756"
+compose = "1.7.0-beta01"
 compose-viewModel = "2.8.0"
 ktor = "2.3.12"
 logback = "1.5.7"
@@ -33,6 +33,7 @@ kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core",
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 compose-viewModel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "compose-viewModel" }
+
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose" }

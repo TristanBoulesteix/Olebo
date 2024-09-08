@@ -11,12 +11,15 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowScope
@@ -52,12 +55,14 @@ fun WindowScope.NewScenarioDialog(onClose: () -> Unit, validateName: (String) ->
             Modifier.fillMaxSize().padding(4.dp).padding(top = 4.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            val focusRequester = remember(::FocusRequester)
+
             var scenarioName by remember { mutableStateOf("") }
 
             TextField(
                 value = scenarioName,
                 onValueChange = { scenarioName = it },
-                modifier = Modifier.padding(top = 8.dp).width(300.dp),
+                modifier = Modifier.padding(top = 8.dp).width(300.dp).focusRequester(focusRequester),
                 placeholder = { Text(stringResource(Res.string.enter_name_for_scenario_tooltip)) },
                 singleLine = true
             )
@@ -70,6 +75,8 @@ fun WindowScope.NewScenarioDialog(onClose: () -> Unit, validateName: (String) ->
                     onClose()
                 }
             )
+
+            LaunchedEffect(Unit) { focusRequester.requestFocus() }
         }
     }
 }
