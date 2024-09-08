@@ -1,4 +1,4 @@
-package fr.olebo.features.create_scenario
+package fr.olebo.features.scenario.creation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +20,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.key
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowScope
@@ -43,21 +45,41 @@ import org.jetbrains.compose.resources.stringResource
  * @param createScenario The function to handle the creation of the scenario with the given name.
  */
 @Composable
-fun WindowScope.NewScenarioDialog(onClose: () -> Unit, validateName: (String) -> Boolean, createScenario: (scenarioName: String) -> Unit) {
+fun WindowScope.NewScenarioDialog(
+    onClose: () -> Unit,
+    validateName: (String) -> Boolean,
+    createScenario: (scenarioName: String) -> Unit
+) {
     val title = stringResource(Res.string.scenario_creation_dialog_title)
+
+    var scenarioName by remember { mutableStateOf("") }
+
+    val submitScenario = {
+        createScenario(scenarioName)
+        onClose()
+    }
 
     OleboDialog(
         onCloseRequest = onClose,
         title = title,
         size = DpSize(400.dp, 180.dp),
+        onKeyEvent = {
+            if (it.key == Key.Enter && validateName(scenarioName)) {
+                submitScenario()
+                true
+            } else if (it.key == Key.Escape) {
+                onClose()
+                true
+            } else {
+                false
+            }
+        }
     ) {
         Column(
             Modifier.fillMaxSize().padding(4.dp).padding(top = 4.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             val focusRequester = remember(::FocusRequester)
-
-            var scenarioName by remember { mutableStateOf("") }
 
             TextField(
                 value = scenarioName,
@@ -70,10 +92,7 @@ fun WindowScope.NewScenarioDialog(onClose: () -> Unit, validateName: (String) ->
             ButtonRow(
                 isNameValid = validateName(scenarioName),
                 onCancel = onClose,
-                submitScenario = {
-                    createScenario(scenarioName)
-                    onClose()
-                }
+                submitScenario = submitScenario
             )
 
             LaunchedEffect(Unit) { focusRequester.requestFocus() }

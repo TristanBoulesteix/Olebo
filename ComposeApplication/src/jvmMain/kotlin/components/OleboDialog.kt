@@ -5,6 +5,7 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogWindow
@@ -16,18 +17,18 @@ import androidx.compose.ui.window.rememberDialogState
 /**
  * Displays a dialog window with a specified title and content.
  *
- * The dialog is not resizable, and its position and size can be defined.
- *
- * @param onCloseRequest A callback function to be invoked when the dialog is closed.
+ * @param onCloseRequest A callback function to be invoked when the dialog is requested to be closed.
  * @param title The title of the dialog window.
- * @param size The dimensions of the dialog window, defaulting to 400x300 dp.
- * @param content The composable content to be displayed inside the dialog.
+ * @param size The size of the dialog window. Defaults to DpSize(400.dp, 300.dp).
+ * @param onKeyEvent A callback function to handle key events. Defaults to a function that returns false.
+ * @param content The content to be displayed within the dialog window.
  */
 @Composable
 fun OleboDialog(
     onCloseRequest: () -> Unit,
     title: String,
     size: DpSize = DpSize(400.dp, 300.dp),
+    onKeyEvent: (KeyEvent) -> Boolean = { false },
     content: @Composable DialogWindowScope.() -> Unit
 ) = DialogWindow(
     onCloseRequest = onCloseRequest,
@@ -36,7 +37,8 @@ fun OleboDialog(
     state = rememberDialogState(
         position = WindowPosition(Alignment.Center),
         size = size,
-    )
+    ),
+    onPreviewKeyEvent = onKeyEvent
 ) {
     Surface(modifier = Modifier.fillMaxSize()) { content() }
 }

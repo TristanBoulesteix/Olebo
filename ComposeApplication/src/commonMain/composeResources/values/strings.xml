@@ -9,4 +9,5 @@
     <string name="enter_name_for_scenario_tooltip">Choose a name for the scenario</string>
     <string name="ok_button">Ok</string>
     <string name="cancel_button">Cancel</string>
+    <string name="game_master_window_title">Olebo - Dungeon Master window - "%1$s"</string>
 </resources>

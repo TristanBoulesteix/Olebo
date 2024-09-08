@@ -16,7 +16,7 @@ import fr.olebo.application.style.smallWindowDimension
 import fr.olebo.components.OleboWindow
 import fr.olebo.domain.models.scenario.ScenarioInfo
 import fr.olebo.domain.viewmodels.StartupViewModel
-import fr.olebo.features.create_scenario.NewScenarioDialog
+import fr.olebo.features.scenario.creation.NewScenarioDialog
 import fr.olebo.resources.Res
 import fr.olebo.resources.create_new_scenario
 import fr.olebo.resources.open_scenario
