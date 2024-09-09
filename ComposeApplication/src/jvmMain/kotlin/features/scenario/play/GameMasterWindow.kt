@@ -16,7 +16,7 @@ fun ApplicationScope.GameMasterWindow(scenarioInfo: ScenarioInfo) {
         title = stringResource(Res.string.game_master_window_title, scenarioInfo.name),
         size = fullScreenWindowDimension,
         minimumSize = fullScreenWindowDimension,
-        placement = WindowPlacement.Maximized,
+        placement = WindowPlacement.Maximized
     ) {
 
     }

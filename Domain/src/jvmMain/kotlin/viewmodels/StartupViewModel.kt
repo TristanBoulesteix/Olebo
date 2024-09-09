@@ -15,7 +15,8 @@ class StartupViewModel internal constructor(
     val recentScenarioAdaptor: RecentScenarioAdaptor,
     val navigationHandler: NavigationHandler
 ) : ViewModel() {
-    private var cachedRecentScenarios: Set<ScenarioInfo>? by mutableStateOf(null)
+    internal var cachedRecentScenarios: Set<ScenarioInfo>? by mutableStateOf(null)
+        private set
 
     @Stable
     var scenarioInCreation by mutableStateOf(false)
