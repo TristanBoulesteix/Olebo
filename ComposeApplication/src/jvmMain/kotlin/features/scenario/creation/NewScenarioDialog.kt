@@ -25,7 +25,7 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowScope
-import fr.olebo.components.OleboDialog
+import fr.olebo.components.window.OleboDialog
 import fr.olebo.resources.Res
 import fr.olebo.resources.cancel_button
 import fr.olebo.resources.enter_name_for_scenario_tooltip

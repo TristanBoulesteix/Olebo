@@ -1,4 +1,4 @@
-package fr.olebo.components
+package fr.olebo.components.window
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface

@@ -3,11 +3,16 @@ package fr.olebo.tests.application
 import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.runComposeUiTest
+import dev.mokkery.MockMode
+import dev.mokkery.answering.returns
+import dev.mokkery.every
+import dev.mokkery.mock
 import fr.olebo.application.style.LocalThemeManager
 import fr.olebo.application.style.OleboTheme
 import fr.olebo.application.style.SystemDarkThemeProvider
-import fr.olebo.application.style.ThemeMode
 import fr.olebo.application.style.darkColorPalette
+import fr.olebo.domain.adaptors.memory.ThemeStorageAdaptor
+import fr.olebo.domain.models.application.ThemeMode
 import fr.olebo.tests.applicationScope
 import fr.olebo.tests.assertColorsEquals
 import fr.olebo.tests.setContentWithDI
@@ -22,8 +27,22 @@ class OleboThemeTestsMode {
 
     @BeforeTest
     fun initialize() {
-        diDarkTheme = DI { bindProvider<SystemDarkThemeProvider> { SystemDarkThemeProvider { true } } }
-        diLightTheme = DI { bindProvider<SystemDarkThemeProvider> { SystemDarkThemeProvider { false } } }
+        val commonDI by DI.Module {
+            bindProvider<ThemeStorageAdaptor> {
+                mock(MockMode.autoUnit) {
+                    every { currentTheme } returns ThemeMode.Auto
+                }
+            }
+        }
+
+        diDarkTheme = DI {
+            bindProvider<SystemDarkThemeProvider> { SystemDarkThemeProvider { true } }
+            import(commonDI)
+        }
+        diLightTheme = DI {
+            bindProvider<SystemDarkThemeProvider> { SystemDarkThemeProvider { false } }
+            import(commonDI)
+        }
     }
 
     @OptIn(ExperimentalTestApi::class)

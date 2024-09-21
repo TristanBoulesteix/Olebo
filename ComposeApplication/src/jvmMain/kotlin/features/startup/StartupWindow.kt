@@ -13,7 +13,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.ApplicationScope
 import fr.olebo.application.rememberComposableViewModel
 import fr.olebo.application.style.smallWindowDimension
-import fr.olebo.components.OleboWindow
+import fr.olebo.components.menu.MainMenuBar
+import fr.olebo.components.window.OleboWindow
 import fr.olebo.domain.models.scenario.ScenarioInfo
 import fr.olebo.domain.viewmodels.StartupViewModel
 import fr.olebo.features.scenario.creation.NewScenarioDialog
@@ -45,6 +46,8 @@ fun ApplicationScope.StartupWindow() {
         size = smallWindowDimension,
         minimumSize = smallWindowDimension
     ) {
+        MainMenuBar()
+
         Column {
             Title(title)
             Content(

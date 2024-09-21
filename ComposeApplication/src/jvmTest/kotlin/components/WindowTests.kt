@@ -5,8 +5,8 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.runComposeUiTest
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import fr.olebo.components.OleboWindow
-import fr.olebo.components.toAwtDimension
+import fr.olebo.components.window.OleboWindow
+import fr.olebo.components.window.toAwtDimension
 import fr.olebo.tests.applicationScope
 import javax.swing.JFrame
 import kotlin.properties.Delegates

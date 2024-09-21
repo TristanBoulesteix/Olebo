@@ -10,4 +10,10 @@
     <string name="ok_button">Ok</string>
     <string name="cancel_button">Annuler</string>
     <string name="game_master_window_title">Olebo - Fenêtre Maître du Jeu - "%1$s"</string>
+    <string name="file_menu">Fichier</string>
+    <string name="settings_menu_item">Options</string>
+    <string name="theme_menu_item">Thème : %1$s</string>
+    <string name="dark_theme_label">Sombre</string>
+    <string name="light_theme_label">Clair</string>
+    <string name="auto_theme_label">Utiliser les paramètres systèmes</string>
 </resources>
