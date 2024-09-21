@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.mock)
 }
 
 kotlin {
@@ -46,10 +47,6 @@ kotlin {
 compose.desktop {
     application {
         mainClass = "fr.olebo.Olebo"
-
-        System.getenv("JDK_21")?.let {
-            javaHome = it
-        }
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg/*, TargetFormat.Msi*/, TargetFormat.Deb)
