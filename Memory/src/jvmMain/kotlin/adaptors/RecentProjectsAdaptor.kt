@@ -6,7 +6,7 @@ import fr.olebo.memory.services.PreferenceService
 import fr.olebo.memory.services.get
 import fr.olebo.memory.services.set
 
-internal const val RECENT_PROJECTS_KEY = "recentProjects"
+internal const val RECENT_PROJECTS_KEY = "recent_projects"
 
 internal class RecentScenarioAdaptorImpl(private val preferenceService: PreferenceService) : RecentScenarioAdaptor {
     override fun getRecentScenarios(): Set<ScenarioInfo> = preferenceService[RECENT_PROJECTS_KEY] ?: emptySet()

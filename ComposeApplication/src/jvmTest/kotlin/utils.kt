@@ -6,15 +6,15 @@ import androidx.compose.runtime.Stable
 import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.window.ApplicationScope
+import dev.mokkery.MockMode
+import dev.mokkery.mock
 import org.kodein.di.DI
 import org.kodein.di.compose.withDI
 import kotlin.test.assertEquals
 
 @Stable
 val applicationScope
-    get() = object : ApplicationScope {
-        override fun exitApplication() = Unit
-    }
+    get() = mock<ApplicationScope>(MockMode.autoUnit)
 
 fun assertColorsEquals(expectedColors: Colors, actualColors: Colors, message: (String) -> String) {
     assertEquals(expectedColors.primary, actualColors.primary, message("primary"))
