@@ -1,5 +1,5 @@
 package fr.olebo.domain.models.application
 
-enum class ThemeMode() {
+enum class ThemeMode {
     Dark, Light, Auto
 }

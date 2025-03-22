@@ -21,7 +21,7 @@ fun FrameWindowScope.MainMenuBar() = MenuBar {
 
 @Composable
 fun MenuBarScope.FileMenu() = Menu(text = stringResource(Res.string.file_menu), mnemonic = 'F') {
-    Item(text = stringResource(Res.string.settings_menu_item), mnemonic = 'S', enabled = false) {
+    Item(text = stringResource(Res.string.settings_menu_item), mnemonic = 'S') {
 
     }
 

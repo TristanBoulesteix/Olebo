@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import fr.olebo.application.style.OleboTheme
 import fr.olebo.domain.coroutine.ApplicationIoScope
+import fr.olebo.domain.models.system.Language
 import fr.olebo.resources.Res
 import fr.olebo.resources.olebo_is_running
 import kotlinx.coroutines.cancel
@@ -17,13 +18,13 @@ import org.kodein.di.compose.withDI
 import org.kodein.di.direct
 import org.kodein.di.instance
 
-
 /**
  * A type alias for a composable function that operates within an ApplicationScope.
  * This composable function represents the content of an application.
  */
 typealias ApplicationContent = @Composable ApplicationScope.() -> Unit
 
+val LocalLanguage = staticCompositionLocalOf<Language> { error("No language defined") }
 
 /**
  * Sets up and starts the Olebo application with Dependency Injection ([DI]) and theming.
@@ -34,12 +35,13 @@ typealias ApplicationContent = @Composable ApplicationScope.() -> Unit
 fun oleboApplication(di: DI, content: ApplicationContent) = application(exitProcessOnExit = false) {
     WithDI(di) {
         OleboTheme {
-            val trayManager = remember (::TrayManagerImpl)
-            val viewModelStoreOwner = remember (::CompositionScopedViewModelStoreOwner)
+            val trayManager = remember(::TrayManagerImpl)
+            val viewModelStoreOwner = remember(::CompositionScopedViewModelStoreOwner)
 
             CompositionLocalProvider(
                 LocalTrayManager provides trayManager,
-                LocalViewModelStoreOwner provides viewModelStoreOwner
+                LocalViewModelStoreOwner provides viewModelStoreOwner,
+                LocalLanguage provides Language.French
             ) {
                 content()
 

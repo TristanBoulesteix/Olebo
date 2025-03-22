@@ -9,6 +9,7 @@
     <string name="enter_name_for_scenario_tooltip">Entrez un nom pour le scénario</string>
     <string name="ok_button">Ok</string>
     <string name="cancel_button">Annuler</string>
+    <string name="save_button">Enregistrer</string>
     <string name="game_master_window_title">Olebo - Fenêtre Maître du Jeu - "%1$s"</string>
     <string name="file_menu">Fichier</string>
     <string name="settings_menu_item">Options</string>
@@ -16,4 +17,6 @@
     <string name="dark_theme_label">Sombre</string>
     <string name="light_theme_label">Clair</string>
     <string name="auto_theme_label">Utiliser les paramètres systèmes</string>
+    <string name="settings_dialog_title">Paramètres</string>
+    <string name="restore_default_settings">Paramètres par défaut</string>
 </resources>

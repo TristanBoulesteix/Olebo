@@ -9,6 +9,7 @@
     <string name="enter_name_for_scenario_tooltip">Choose a name for the scenario</string>
     <string name="ok_button">Ok</string>
     <string name="cancel_button">Cancel</string>
+    <string name="save_button">Save</string>
     <string name="game_master_window_title">Olebo - Dungeon Master window - "%1$s"</string>
     <string name="file_menu">Files</string>
     <string name="settings_menu_item">Settings</string>
@@ -16,4 +17,6 @@
     <string name="dark_theme_label">Dark</string>
     <string name="light_theme_label">Light</string>
     <string name="auto_theme_label">Use system theme</string>
+    <string name="settings_dialog_title">Settings</string>
+    <string name="restore_default_settings">Restore default settings</string>
 </resources>
