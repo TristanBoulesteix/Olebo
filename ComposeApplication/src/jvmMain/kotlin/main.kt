@@ -2,6 +2,8 @@
 
 package fr.olebo
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.window.ApplicationScope
 import fr.olebo.application.oleboApplication
 import fr.olebo.domain.navigation.HomeScreen
 import fr.olebo.domain.navigation.NavigationHandler
@@ -18,6 +20,11 @@ internal const val OLEBO_VERSION_NAME = "0.2.0"
 internal const val OLEBO_VERSION_CODE = 10
 
 internal fun main() = oleboApplication(injector) {
+    Application()
+}
+
+@Composable
+internal fun ApplicationScope.Application() {
     val navigationHandler by rememberInstance<NavigationHandler>()
 
     when (val screen = navigationHandler.currentScreen) {

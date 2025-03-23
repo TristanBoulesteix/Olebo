@@ -1,16 +1,17 @@
-import org.gradle.kotlin.dsl.compose
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.compose.hotReload)
     alias(libs.plugins.mock)
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(23)
 
     jvm()
 
@@ -42,6 +43,10 @@ kotlin {
             implementation(compose.uiTest)
         }
     }
+}
+
+composeCompiler {
+    featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
 }
 
 compose.desktop {
