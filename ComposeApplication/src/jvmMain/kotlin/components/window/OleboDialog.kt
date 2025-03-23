@@ -3,15 +3,16 @@ package fr.olebo.components.window
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogWindow
 import androidx.compose.ui.window.DialogWindowScope
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.rememberDialogState
+import java.awt.Window
 
 
 /**
@@ -30,15 +31,39 @@ fun OleboDialog(
     size: DpSize = DpSize(400.dp, 300.dp),
     onKeyEvent: (KeyEvent) -> Boolean = { false },
     content: @Composable DialogWindowScope.() -> Unit
-) = DialogWindow(
-    onCloseRequest = onCloseRequest,
-    resizable = false,
-    title = title,
-    state = rememberDialogState(
-        position = WindowPosition(Alignment.Center),
-        size = size,
-    ),
-    onPreviewKeyEvent = onKeyEvent
 ) {
-    Surface(modifier = Modifier.fillMaxSize()) { content() }
+   val awtWindow = LocalWindowInfo.current?.awtWindow
+
+    val position = calculateCenteredPosition(size, awtWindow)
+
+    DialogWindow(
+        onCloseRequest = onCloseRequest,
+        resizable = false,
+        title = title,
+        state = rememberDialogState(
+            position = WindowPosition(position.x, position.y),
+            size = size,
+        ),
+        onPreviewKeyEvent = onKeyEvent
+    ) {
+        Surface(modifier = Modifier.fillMaxSize()) { content() }
+    }
+}
+
+private fun calculateCenteredPosition(
+    dialogSize: DpSize,
+    parentWindow: Window?
+): DpOffset {
+    if (parentWindow == null) return DpOffset.Zero
+
+    val parentX = parentWindow.location.x
+    val parentY = parentWindow.location.y
+    val parentWidth = parentWindow.size.width
+    val parentHeight = parentWindow.size.height
+
+    // Calculate the center position for the dialog within the parent's bounds
+    val dialogX = parentX + (parentWidth - dialogSize.width.value.toInt()) / 2
+    val dialogY = parentY + (parentHeight - dialogSize.height.value.toInt()) / 2
+
+    return DpOffset(dialogX.dp, dialogY.dp)
 }
